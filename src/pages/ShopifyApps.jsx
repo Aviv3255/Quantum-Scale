@@ -1,0 +1,375 @@
+
+import React, { useState, useMemo } from 'react';
+import { ExternalLink, Palette, Package, TrendingUp, Mail, Zap, Server, FileText, MessageSquare } from 'lucide-react';
+
+export default function ShopifyApps() {
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const categories = [
+    { name: 'Theme', icon: Palette },
+    { name: 'Fulfillment', icon: Package },
+    { name: 'Conversion', icon: TrendingUp },
+    { name: 'Marketing', icon: Mail },
+    { name: 'Automation', icon: Zap },
+    { name: 'Dev & Monitoring', icon: Server }
+  ];
+
+  const apps = [
+    {
+      id: 1,
+      name: 'Shrine Theme',
+      category: 'Theme',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121029.783.png?v=1760087435',
+      description: "Proven as one of the world's highest-converting Shopify themes: ultra-fast load times, precise UX, and conversion-first sections that reduce friction at every step. Optimized layouts for storytelling, trust, and AOV lifts out-of-the-box. Install through our link and use code QUANTUMSCALE for 20% OFF.",
+      url: 'https://shrinesolutions.com/?ref=0d9fe741'
+    },
+    {
+      id: 2,
+      name: 'HyperSKU',
+      category: 'Fulfillment',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T115639.885.png?v=1760086613',
+      description: 'Private-agent sourcing & fulfillment with 5-day delivery options, branded packaging, combined orders in one parcel, improved pricing, and global shipping - with no upfront fees, no commitments, no monthly minimums. Sign up via our link for priority WhatsApp onboarding, faster SLAs, and better rates.',
+      url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq'
+    },
+    {
+      id: 3,
+      name: 'Section Store',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121113.691.png?v=1760087483',
+      description: 'The best plug-and-play sections library for Shopify. Ship premium landing pages and product experiences without code. Installing through our link unlocks a set of free sections inside the app - iterate faster and test more layouts at zero cost.',
+      url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+    },
+    {
+      id: 4,
+      name: 'Vitals',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121155.514.png?v=1760087521',
+      description: 'All-in-one conversion suite replacing dozens of apps: reviews, bundles, sticky ATC, urgency, trust, and more - with tight performance and fewer conflicts. Use our link to unlock an extended 40-day free trial and build a lean, high-converting stack.',
+      url: 'https://vitals.app/shopify/12548540'
+    },
+    {
+      id: 5,
+      name: 'ABConvert - A/B Testing',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121227.284.png?v=1760087566',
+      description: 'The #1 A/B testing tool for Shopify: test prices, headlines, layouts, CTAs, and more to find optimal combinations that maximize conversions and profit. Accurate tests, clean reporting, fast iteration. Install via our link and use coupon LASERCRO for 10% OFF.',
+      url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel'
+    },
+    {
+      id: 6,
+      name: 'Loox - Photo & Video Reviews',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121408.753.png?v=1760087656',
+      description: 'High-impact photo/video reviews and UGC widgets. The only Shopify reviews app supporting manual uploads and imports from any site. Our exclusive link unlocks a free trial not available via the public App Store.',
+      url: 'https://loox.io/app/LASERCRO'
+    },
+    {
+      id: 7,
+      name: 'Upsell Koala - Bundles & Discount',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121457.581.png?v=1760087714',
+      description: 'Smart bundles, mix-and-match, tiered discounts, and contextual upsells built to lift AOV without harming UX. Clean widgets, fast load, and granular per-product control. Install via our link for preferred perks.',
+      url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+    },
+    {
+      id: 8,
+      name: 'Essential - Free Shipping Bar',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121540.694.png?v=1760087745',
+      description: 'Dynamic free-shipping progress bars that nudge customers to complete bigger carts. Smart targeting, geo rules, and elegant themes that blend with premium stores. Install via our link for extended benefits.',
+      url: 'https://platform.shoffi.app/r/rl_ScO0HCCU'
+    },
+    {
+      id: 9,
+      name: 'Pumper - Bundles & Quantity Breaks',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121614.880.png?v=1760087779',
+      description: 'Drive bigger orders with quantity breaks, volume discounts, and bundle logic that feels native to your theme. Lightweight UX, fast rendering, and measurable AOV lifts. Installing via our link may unlock extra perks.',
+      url: 'https://platform.shoffi.app/r/rl_1koRpnhF'
+    },
+    {
+      id: 10,
+      name: 'Essential - Countdown Timer',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121640.898.png?v=1760087880',
+      description: 'Clean, brand-safe urgency for promos, drops, and limited stock. Designed to lift conversion without cheapening your brand. Use our link for extended features/trials where available.',
+      url: 'https://platform.shoffi.app/r/rl_6EEzhlj9'
+    },
+    {
+      id: 11,
+      name: 'Essential - Trust Badges & Icons',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121831.719.png?v=1760087916',
+      description: 'Elegant trust badges and compliant payment icons that increase perceived safety and reduce checkout hesitation. Tailored to premium storefronts with flexible placements. Install via our link for expanded options.',
+      url: 'https://platform.shoffi.app/r/rl_uUHJkiZx'
+    },
+    {
+      id: 12,
+      name: 'Kiwi - Size Chart & Recommender',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121859.861.png?v=1760087944',
+      description: 'Advanced size charts and AI fit recommendations that reduce returns and boost buyer confidence. Per-product rules, rich customization, and analytics on size behavior. Installing via our link may unlock extras.',
+      url: 'https://platform.shoffi.app/r/rl_XiVbySuW'
+    },
+    {
+      id: 13,
+      name: 'Swish (Wishlist King)',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121935.123.png?v=1760087980',
+      description: 'Premium wishlist that captures intent, syncs across devices, and fuels retargeting flows. Clean UI, fast performance, and deep ESP/SMS integrations to recover more carts and lift LTV.',
+      url: 'https://platform.shoffi.app/r/rl_39mmrwIL'
+    },
+    {
+      id: 14,
+      name: 'KeepCart - Stop Coupon Leaks',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122003.978.png?v=1760088020',
+      description: 'Stop coupon extensions from auto-injecting discounts and eroding margins. KeepCart preserves AOV, protects promo strategy, and returns control to your storefront economics.',
+      url: 'https://platform.shoffi.app/r/rl_U2L0seLE'
+    },
+    {
+      id: 15,
+      name: 'PayPal Tracking Info Sync',
+      category: 'Automation',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122054.732.png?v=1760088059',
+      description: 'Automatically sync order tracking to PayPal to reduce holds, unlock funds faster, and improve account health. A set-and-forget automation that saves support time and stabilizes cash flow.',
+      url: 'https://platform.shoffi.app/r/rl_Fn8dZcAb'
+    },
+    {
+      id: 16,
+      name: 'Adwisely',
+      category: 'Marketing',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122135.709.png?v=1760088099',
+      description: 'Automated Meta & Google ads for eCommerce: prospecting, retargeting, dynamic product ads, and ROAS-first optimization. Launch fast, iterate faster, scale with performance guardrails.',
+      url: 'https://platform.shoffi.app/r/rl_01nNfyRx'
+    },
+    {
+      id: 17,
+      name: 'SiteAgent',
+      category: 'Dev & Monitoring',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122158.820.png?v=1760088122',
+      description: "Real-time site monitoring and alerting so you don't lose revenue to silent breaks. Keep eyes on uptime, checkout flows, and performance - get alerted before customers feel the pain.",
+      url: 'https://platform.shoffi.app/r/rl_X32WvYHr'
+    },
+    {
+      id: 18,
+      name: 'Smart Search Bar & Filter',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122249.813.png?v=1760088175',
+      description: 'Lightning-fast search and faceted filters that help shoppers find the right product instantly. Synonyms, typo tolerance, merchandising rules - lift conversion across catalogs of any size.',
+      url: 'https://platform.shoffi.app/r/rl_Q4E8XoJz'
+    },
+    {
+      id: 19,
+      name: 'SupaEasy - Functions Generator',
+      category: 'Dev & Monitoring',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122358.486.png?v=1760088265',
+      description: 'Generate Shopify Functions (discounts, shipping logic, cart rules) without boilerplate. Safely deploy advanced logic in minutes and iterate promos with engineering-level precision - no heavy dev cycles.',
+      url: 'https://platform.shoffi.app/r/rl_f0iDQ89h'
+    },
+    {
+      id: 20,
+      name: 'PageFly',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T152254.617.png?v=1760271785',
+      description: 'The most powerful page builder for Shopify. Create high-converting landing pages, product pages, and entire storefronts with drag-and-drop ease. No coding required - build like a pro.',
+      url: 'https://apps.shopify.com/pagefly'
+    },
+    {
+      id: 21,
+      name: 'Upsell & Cross Sell — Selleasy',
+      category: 'Conversion',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T134136.646.png?v=1760265713',
+      description: 'The world\'s best upsell app with 18+ ways to increase AOV: cart page upsells, thank you page offers, post-purchase one-click upsells, and more. Proven to dramatically boost revenue per customer.',
+      url: 'https://platform.shoffi.app/r/rl_lYJ1Z4Eq'
+    },
+    {
+      id: 22,
+      name: 'TXTcart - SMS Marketing',
+      category: 'Marketing',
+      logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T140826.947.png?v=1760267314',
+      description: 'Powerful SMS marketing automation for eCommerce. Recover abandoned carts, send shipping updates, run promotions, and build customer relationships through text. High open rates = high ROI.',
+      url: 'https://apps.shopify.com/txtcart-plus'
+    }
+  ];
+
+  const filteredApps = useMemo(() => {
+    if (selectedCategories.length === 0) return apps;
+    return apps.filter(app => selectedCategories.includes(app.category));
+  }, [selectedCategories]);
+
+  const toggleCategory = (cat) => {
+    setSelectedCategories(prev =>
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  return (
+    <div className="min-h-screen" style={{ background: '#F9FAFB' }}>
+      <div className="max-w-7xl mx-auto p-4 md:p-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-4" style={{
+            color: '#1E1E1E',
+            fontFamily: 'Poppins, sans-serif',
+            letterSpacing: '-0.02em'
+          }}>
+            Discounted Shopify Apps
+          </h1>
+          <p className="mb-3 text-lg font-semibold" style={{ color: '#1E1E1E' }}>
+            Exclusive Partner Discounts:
+          </p>
+          <p className="text-base" style={{ color: '#6B7280' }}>
+            Install via our links to unlock special pricing, extended trials, and premium features not available elsewhere.
+            We've partnered with the best apps in the Shopify ecosystem to bring you exclusive deals.
+          </p>
+        </div>
+
+        <div className="mb-8 flex flex-wrap gap-3">
+          {categories.map(cat => {
+            const isActive = selectedCategories.includes(cat.name);
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.name}
+                onClick={() => toggleCategory(cat.name)}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl transition-all font-medium"
+                style={{
+                  background: isActive ? 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)' : '#FFFFFF',
+                  color: isActive ? '#FFFFFF' : '#6B7280',
+                  border: `1px solid ${isActive ? '#3B82F6' : '#E5E7EB'}`,
+                  boxShadow: isActive ? '0 4px 12px rgba(59, 130, 246, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
+                }}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{cat.name}</span>
+              </button>
+            );
+          })}
+          {selectedCategories.length > 0 && (
+            <button
+              onClick={() => setSelectedCategories([])}
+              className="px-5 py-3 rounded-xl font-medium transition-all"
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E5E7EB',
+                color: '#6B7280'
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
+          {filteredApps.map(app => (
+            <div
+              key={app.id}
+              onClick={() => setSelectedApp(app)}
+              className="cursor-pointer transition-all duration-300 hover:shadow-xl group relative rounded-2xl overflow-hidden"
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E5E7EB',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)'
+              }}
+            >
+              <div className="absolute -left-4 md:-left-6 lg:-left-8 top-3 md:top-4 lg:top-6 z-10" style={{ transform: 'rotate(-12deg)' }}>
+                <div className="px-2 md:px-4 lg:px-6 py-1 rounded-md text-[10px] md:text-xs font-medium tracking-wide text-white shadow whitespace-nowrap"
+                     style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)' }}>
+                  {app.category}
+                </div>
+              </div>
+
+              <div style={{
+                width: '100%',
+                aspectRatio: '1/1',
+                overflow: 'hidden',
+                background: '#F1F5F9',
+                borderRadius: '20px 20px 0 0'
+              }}>
+                <img
+                  src={app.logo}
+                  alt={app.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="p-2 md:p-3 lg:p-4">
+                <h3 className="font-semibold text-xs md:text-base lg:text-lg mb-1 line-clamp-2" style={{ color: '#1E1E1E' }}>
+                  {app.name}
+                </h3>
+                <p className="text-[10px] md:text-xs lg:text-sm" style={{ color: '#6B7280' }}>
+                  {app.category}
+                </p>
+              </div>
+
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                style={{ background: 'rgba(59, 130, 246, 0.08)', borderRadius: '20px' }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {selectedApp && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}
+            onClick={() => setSelectedApp(null)}
+          >
+            <div
+              className="max-w-2xl w-full max-h-[85vh] overflow-y-auto rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E5E7EB',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              <div style={{
+                width: '100%',
+                aspectRatio: '1/1',
+                maxHeight: '400px',
+                overflow: 'hidden',
+                background: '#F1F5F9',
+                borderRadius: '20px 20px 0 0'
+              }}>
+                <img
+                  src={selectedApp.logo}
+                  alt={selectedApp.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="p-5 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-3" style={{ color: '#1E1E1E' }}>
+                  {selectedApp.name}
+                </h2>
+
+                <p className="text-sm md:text-base leading-relaxed mb-5" style={{ color: '#6B7280' }}>
+                  {selectedApp.description}
+                </p>
+
+                <a
+                  href={selectedApp.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+                    color: 'white',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                >
+                  Install via Our Link
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
