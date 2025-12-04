@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: genrok
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: NEXT_PUBLIC_APP_NAME
+        value: Genrok
+      - key: NEXT_PUBLIC_APP_URL
+        fromService:
+          type: web
+          name: genrok
+          property: host
+    healthCheckPath: /
+    autoDeploy: true
