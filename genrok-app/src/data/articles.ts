@@ -1,6 +1,18 @@
 // Complete articles database for Quantum Scale - Extracted from original Base44 app
 // Total: 38 articles
 
+// Raw article interface (from Base44 export)
+interface RawArticle {
+  id: number;
+  thumbnail: string;
+  title: string;
+  intro?: string;
+  content: string;
+  specialFeatures?: { value: string; label: string }[];
+  buttons?: { text: string; url: string }[];
+}
+
+// Processed article interface (with generated fields)
 export interface Article {
   id: number;
   slug: string;
@@ -17,7 +29,7 @@ export interface Article {
   buttons?: { text: string; url: string }[];
 }
 
-export const articles: Article[] = [
+const articles: RawArticle[] = [
     {
       id: 1,
       thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
@@ -2905,7 +2917,7 @@ Brands that don't will continue fighting over prices and searching for "magic ta
         { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
       ]
     }
-  ];;
+  ];
 
 // Helper function to generate slug from title
 function generateSlug(title: string): string {
@@ -2916,7 +2928,7 @@ function generateSlug(title: string): string {
 }
 
 // Helper function to determine category based on content
-function determineCategory(article: any): Article['category'] {
+function determineCategory(article: RawArticle): Article['category'] {
   const title = article.title.toLowerCase();
   const content = article.content?.toLowerCase() || '';
   
