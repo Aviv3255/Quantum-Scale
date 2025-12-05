@@ -34,7 +34,7 @@ const navItems = [
     subItems: [
       { label: 'Shopify Apps', href: '/apps/shopify', description: 'Discounted apps' },
       { label: 'Secret Apps', href: '/apps/secret', description: 'Must-have tools' },
-      { label: 'AI Tools', href: '/apps/ai', description: 'Premium AI tools' },
+      { label: 'AI Tools', href: '/apps/ai-tools', description: 'Premium AI tools' },
       { label: 'TikTok Credits', href: '/tiktok-credits', description: 'Free ad credits' },
     ],
   },
@@ -67,7 +67,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              Genrok
+              Quantum Scale
             </span>
           </Link>
 
