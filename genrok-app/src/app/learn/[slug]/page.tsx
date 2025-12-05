@@ -13,7 +13,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { FadeIn } from '@/components/animations';
-import { articles, getArticleBySlug, getRelatedArticles } from '@/data/articles';
+import { getArticleBySlug, getRelatedArticles } from '@/data/articles';
 
 function parseMarkdown(content: string): string {
   return content

@@ -1,4 +1,6 @@
-// Complete articles database for Quantum Scale
+// Complete articles database for Quantum Scale - Extracted from original Base44 app
+// Total: 38 articles
+
 export interface Article {
   id: number;
   slug: string;
@@ -10,24 +12,23 @@ export interface Article {
   isFeatured?: boolean;
   stats?: { value: string; label: string }[];
   content: string;
+  intro?: string;
+  specialFeatures?: { value: string; label: string }[];
   buttons?: { text: string; url: string }[];
 }
 
 export const articles: Article[] = [
-  {
-    id: 1,
-    slug: 'best-private-agent',
-    title: 'Who Is the Best Private Agent in the Market Today',
-    description: '5-days home shipping, 18/6 Whatsapp support, cheaper prices..',
-    category: 'operations',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
-    isFeatured: true,
-    stats: [
-      { value: '3-5%', label: 'Savings' },
-      { value: '5-7 Days', label: 'Delivery' },
-    ],
-    content: `## What We Tested
+    {
+      id: 1,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
+      title: 'Who Is the Best Private Agent in the Market Today',
+      intro: '5-days home shipping, 18/6 Whatsapp support, cheaper prices..',
+      specialFeatures: [
+        { value: '3-5%', label: 'Shipping cost savings' },
+        { value: '5-7 Days', label: 'Delivery time' },
+        { value: '18/6', label: 'WhatsApp support' }
+      ],
+      content: `## What We Tested
 
 We ran two independent tests to create a realistic comparison.
 
@@ -53,20 +54,16 @@ We ran two independent tests to create a realistic comparison.
 ## Conclusion
 
 With pricing nearly identical, the deciding factors were speed, scale readiness, and service efficiency. The winning agent delivered faster shipping, more stable performance, and significantly better support, making it the strongest choice for long-term scaling.`,
-    buttons: [
-      { text: 'Connect the winning agent to your store', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-    ]
-  },
-  {
-    id: 2,
-    slug: 'stop-using-aliexpress',
-    title: 'Stop Using AliExpress Now',
-    description: 'AliExpress destroys your store faster than you realize.',
-    category: 'operations',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_1.jpg?v=1763290608',
-    isFeatured: false,
-    content: `## Why AliExpress Damages Your Brand
+      buttons: [
+        { text: 'Connect the winning agent to your store', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
+      ]
+    },
+    {
+      id: 2,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_1.jpg?v=1763290608',
+      title: 'Stop Using AliExpress Now',
+      intro: 'AliExpress destroys your store faster than you realize.',
+      content: `## Why AliExpress Damages Your Brand
 
 ### Problem 1: Slow Shipping Times
 AliExpress averages 21 to 45 days.
@@ -125,23 +122,16 @@ If you have no orders, you pay nothing.
 
 AliExpress might look simple, but it destroys customer experience and eliminates repeat customers.
 A private agent fixes every weakness and gives your brand the foundation required for real scale.`,
-    buttons: [
-      { text: 'Connect Private agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-    ]
-  },
-  {
-    id: 3,
-    slug: 'product-reviews-conversion',
-    title: 'Do Product Reviews Increase Conversion?',
-    description: "We've did a test if product reviews increase CVR, Here's the results",
-    category: 'conversion',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_2.jpg?v=1763290696',
-    isFeatured: true,
-    stats: [
-      { value: '12.7%', label: 'CVR Lift' },
-    ],
-    content: `## What We Tested
+      buttons: [
+        { text: 'Connect Private agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
+      ]
+    },
+    {
+      id: 3,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_2.jpg?v=1763290696',
+      title: 'Do Product Reviews Increase Conversion?',
+      intro: 'We\'ve did a test if product reviews increase CVR, Here\'s the results',
+      content: `## What We Tested
 
 We tested Shopify product reviews across multiple stores.
 Each product had between 2 and 55 reviews.
@@ -158,6 +148,8 @@ Product page without any reviews.
 Removing reviews reduced conversion by 12.7%.
 Version A outperformed Version B across every product tested.
 
+![A/B Test Result](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/45.jpg?v=1763049312)
+
 ## Why It Happens
 
 Reviews create social certainty and reduce hesitation.
@@ -173,21 +165,17 @@ Fake looking reviews can lower conversion instead of increasing it.
 
 Authentic product reviews improve trust and increase conversion.
 Removing them creates a measurable drop of 12.7%.`,
-    buttons: [
-      { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
-      { text: 'Social Proof course', url: 'https://quantum-scale.co/pages/the-social-proof' }
-    ]
-  },
-  {
-    id: 4,
-    slug: 'ecommerce-success-cheat-code',
-    title: 'Important: The Cheat Code for Ecommerce Success',
-    description: 'Do this to understand exactly how much each customer is worth to you',
-    category: 'ltv',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_3.jpg?v=1763297153',
-    isFeatured: true,
-    content: `## Have you heard of the Pareto principle?
+      buttons: [
+        { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
+        { text: 'Social Proof course', url: 'https://quantum-scale.co/pages/the-social-proof?_pos=1&_psq=social&_ss=e&_v=1.0' }
+      ]
+    },
+    {
+      id: 4,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_3.jpg?v=1763297153',
+      title: 'Important: The Cheat Code for Ecommerce success',
+      intro: 'Do this to understand exactly how much each customer is worth to you',
+      content: `## Have you heard of the Pareto principle?
 
 20% of the actions generate 80% of the results.
 
@@ -205,9 +193,15 @@ With this remarkable and **free** tool, you will see exactly how much each custo
 Remember what we said? 20% of the customers generate 80% of the revenue.
 Once you connect the software to your store, you will discover that it is actually **5% of the customers who generate 95% of the money**.
 
+For example, in the image below, you will see that in August 2025 we brought approximately 8,000 new customers to one of our sites. The image was captured in November, which means that what you see is the distribution of the Top Spenders among the new customers who arrived between August 1 and August 31.
+
 The top 25% of spenders, already by November, meaning 2 to 3 months after their first purchase, were worth on average about **$796 per customer**, and these 25% generated for us almost 1.6 million dollars.
 
+![Customer LTV Data](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468)
+
 In contrast, all the remaining customers, 25% to 100%, were worth significantly less, and these 75% generated an estimated $700,000.
+
+Pay attention: The customers in the top 25% spenders, within 2 to 3 months, spent on average $796 on our site. This means that within a year their average will be at least $1,600. The top 10% spent approximately $1,253 within the same 2 to 3 month period.
 
 ## What is the conclusion?
 
@@ -216,26 +210,24 @@ With this application we can:
 ✔️ Understand how much each customer is worth on average
 ✔️ Understand the customer segmentation by percentiles
 ✔️ Identify who these top 25% spenders are, what they share, and begin targeting individuals with similar characteristics
-✔️ Export within the application those top 25% spenders and create a Lookalike Audience in Meta`,
-    buttons: [
-      { text: 'Connect app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
-      { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-    ]
-  },
-  {
-    id: 5,
-    slug: 'roadmap-to-1m-month',
-    title: 'The Roadmap to $1M/Month',
-    description: 'When you build a system strong enough, You cannot be stopped.',
-    category: 'ltv',
-    readTime: 8,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_4.jpg?v=1763297241',
-    isFeatured: true,
-    stats: [
-      { value: '$1,000+', label: 'LTV Target' },
-      { value: '33', label: 'Daily Customers' },
-    ],
-    content: `## Step 1: Building a 1,000 Dollar LTV Machine for Every Customer
+✔️ Export within the application those top 25% spenders and create a Lookalike Audience in Meta, which means that from this point onward we will attract new customers who resemble precisely those who tend to spend thousands of dollars on our site. Meta identifies exactly what these individuals have in common and targets accordingly
+
+The same process can be applied to the top 10%, top 5% and additional segments.
+
+![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
+![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
+![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
+      buttons: [
+        { text: 'Connect app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
+        { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' }
+      ]
+    },
+    {
+      id: 5,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_4.jpg?v=1763297241',
+      title: 'The Roadmap to One $1M/Month',
+      intro: 'When you build a system strong enough, You cannot be stopped.',
+      content: `## Step 1: Building a 1,000 Dollar LTV Machine for Every Customer
 
 This is the entire secret.
 A 1,000 dollar LTV machine for every customer is what allows you to reach the truly large numbers.
@@ -251,6 +243,10 @@ You need few customers, but the right ones.
 
 And the CAC? Not limited. If it rises from $20 dollars to $40, who cares?
 
+And yes, maybe it sounds exaggerated, 1,000 dollars, believe us, it is possible:
+
+![LTV Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg?v=1760347643)
+
 ## Step 2: Building an Infrastructure That Holds Massive Scale
 
 Before running campaigns, you must turn the business into a stable machine.
@@ -262,6 +258,8 @@ Before running campaigns, you must turn the business into a stable machine.
 • A complete SMS marketing system
 • A complete email marketing system
 • A fast private agent that provides 5 - 8 day shipping with an option for home delivery
+
+([Click here to connect a private agent to your store](https://erp.matedropshipping.com/login?invite_id=915))
 
 A strong infrastructure creates resilience.
 Chasing algorithms is for the weak, you are not like that.
@@ -284,6 +282,28 @@ At a low CPC, 0.70 dollars on average, this is approximately:
 
 From this you build a system of $1M Per month.
 
+This is the whole beauty of this method: The budget is small, the system is big.
+
+## Step 4: Testing, Optimization, and the Beginning of Scale
+
+Now comes the stage where the business begins to move forward.
+
+**The actions:**
+• Product testing
+• Offer testing
+• Creative testing
+• Building deep social proof
+• Improving website conversion rates
+• Smart audience refinement inside Meta
+
+**The major advantage:**
+
+If the LTV is $1,000, you can pay a lot to acquire a customer and still be profitable.
+
+Meaning:
+Your system is resistant to shocks, algorithms, peaks in ad prices, new competition.
+It is simply stronger than anything that can harm it.
+
 ## Conclusion
 
 The path to one million dollars per month is not a dream.
@@ -293,30 +313,26 @@ It is simple mathematics plus a smart system plus high LTV.
 $385 per day.
 
 From here, your business becomes a machine that cannot be stopped.`,
-    buttons: [
-      { text: 'The Automatic System That Earn 1,000 Dollars per Customer', url: 'https://quantum-scale.co/pages/test1' },
-      { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' }
-    ]
-  },
-  {
-    id: 6,
-    slug: 'geo-location-announcement-bar',
-    title: 'Does a GEO-Location Announcement Bar Increase Conversion?',
-    description: 'We conducted an extensive test, and the results change the rules entirely.',
-    category: 'conversion',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_5.jpg?v=1763297318',
-    isFeatured: false,
-    stats: [
-      { value: '67%', label: 'CVR Increase' },
-    ],
-    content: `First, no need to keep you curious, we will begin with the conclusion.
+      buttons: [
+        { text: 'The Automatic System That Earn 1,000 Dollars per Customer', url: 'https://quantum-scale.co/pages/test1' },
+        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
+        { text: 'Abandoned Checkout Finisher', url: 'https://quantum-scale.co/pages/test3' }
+      ]
+    },
+    {
+      id: 6,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_5.jpg?v=1763297318',
+      title: 'Does a GEO-Location Announcement Bar Increase Conversion Rates, or Not?',
+      intro: 'We conducted an extensive test, and the results change the rules entirely.',
+      content: `First, no need to keep you curious, we will begin with the conclusion.
 
 The answer is absolutely **YES**, and by a significant margin.
 
 How significant? **A 67% increase in conversion rate.**
 
-These results come from multiple tests performed across four stores, with more than 64,000 visitors.
+![A/B Test Result](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/48.jpg?v=1763054191)
+
+These results come from multiple tests performed across four stores, and the screenshot above reflects one of them, with more than 64,000 visitors.
 
 In the three other stores, improvement ranged between **40%-75%** in conversion rate.
 
@@ -324,7 +340,12 @@ And despite offering a discount, surprisingly, carts also became larger in sever
 
 ## Let's understand what this announcement bar actually is:
 
-It appears at the top of the website, based on the visitor's location.
+It appears at the top of the website, based on the visitor's location, and this is how it looks:
+
+![Example 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/49.jpg?v=1763055232)
+![Example 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/51.jpg?v=1763055232)
+![Example 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/52.jpg?v=1763055232)
+![Example 4](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/50.jpg?v=1763055232)
 
 ## What does this mean?
 
@@ -336,11 +357,33 @@ But there is more.
 
 No matter when or from where the visitor enters, the system will always justify the discount with a local-based reason. Even if no local holiday exists, the banner will display something like "Summer Sale for Hungary".
 
+## To understand this more deeply, here are examples:
+
+If you are **French** and entered the website on **May 1**, you will see:
+Special Fête du Travail Sale for France: Use code FRANCE5 for **5% OFF**.
+
+If you are **American** and entered the website on **July 4**, you will see:
+Special Independence Day Sale for USA: Use code USA10 for **10% OFF**.
+
+If you are **Canadian** and entered the website on **July 1**, you will see:
+Special Canada Day Offer for Canada: Use code CA7 for **7% OFF**.
+
+If you are **German** and entered the website on **October 3**, you will see:
+Special German Unity Day Sale for Germany: Use code DE8 for **8% OFF**.
+
+If you are **British** and entered the website on **December 26**, you will see:
+Special Boxing Day Sale for United Kingdom: Use code UK15 for **15% OFF**.
+
+If you are **Australian** and entered the website on **January 26**, you will see:
+Special Australia Day Offer for Australia: Use code AU10 for **10% OFF**.
+
 ## Summary
 
 The system works fully automatically and is VPN-resistant. If a visitor attempts to cheat by switching to an Indian VPN to receive a larger discount, the system bypasses the VPN and shows the offer according to the real country.
 
 This leads to an immediate uplift of **45% to 70%** in conversion rates.
+
+Our explanation is simple, and it is built on two advantages.
 
 **Advantage 1: Matching income level and purchasing power**
 
@@ -353,30 +396,29 @@ In contrast, visitors from countries with weaker purchasing power will receive 1
 Imagine you are Polish during the Epiphany Holiday. You enter a global website and see a banner saying:
 "Happy Epiphany! Use code POL10 for 10% OFF."
 
-This feels extremely personal, as if the site was Polish. It creates a sense of luck and exclusivity.
+This feels extremely personal, as if the site was Polish. It creates a sense of luck and exclusivity, as though the discount exists only because you are Polish.
 
-## Field results: 45% to 70% increase in conversions`,
-    buttons: [
-      { text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }
-    ]
-  },
-  {
-    id: 7,
-    slug: 'wishlist-rev-per-visit',
-    title: 'Does a Wishlist on Your Website Increase REV/Visit?',
-    description: 'We conducted several A/B tests, and the results may surprise you.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_6.jpg?v=1763297348',
-    isFeatured: false,
-    stats: [
-      { value: '22%', label: 'AOV Lift' },
-    ],
-    content: `Many major brands use a Wishlist feature on their websites (see example: farfetch.com).
+## Field results: 45% to 70% increase in conversions
+
+And in three stores, AOV increased by 7% to 22%, likely due to the personal connection the visitor experienced.
+
+Since discovering this method, we have implemented it in every brand we manage, and the results have been consistent and clear.`,
+      buttons: [
+        { text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }
+      ]
+    },
+    {
+      id: 7,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_6.jpg?v=1763297348',
+      title: 'Does a Wishlist on Your Website Increase REV/Visit?',
+      intro: 'We conducted several A/B tests, and the results may surprise you.',
+      content: `Many major brands use a Wishlist feature on their websites (see example: farfetch.com).
 
 A few years ago, we decided to test why, and how significant it truly is.
 
 For this reason, we added an **Add to wishlist** button instead of a **Buy now** button.
+
+![Wishlist Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1763056442)
 
 The result is quite noticeable: an **8% lift in conversion rate** and a significant **22% increase in AOV**.
 
@@ -399,20 +441,16 @@ A Wishlist is not just a cosmetic addition.
 It is a layer of consumer behavior that deepens buying intention, increases positive emotional connection to the product, and generates a clear rise in revenue per visit.
 
 It is one of the simplest features to install, yet one of the most impactful for Rev/Visit, AOV, and overall conversions.`,
-    buttons: [
-      { text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }
-    ]
-  },
-  {
-    id: 8,
-    slug: 'email-vs-sms-revenue',
-    title: 'Email vs SMS: Which Generates More Revenue?',
-    description: 'On the 4th of July, we sent both an SMS and an email campaign to the same audience...',
-    category: 'marketing',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_7.jpg?v=1763297381',
-    isFeatured: false,
-    content: `There is constant debate around SMS and email, which one is better.
+      buttons: [
+        { text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }
+      ]
+    },
+    {
+      id: 8,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_7.jpg?v=1763297381',
+      title: 'Email vs SMS: Which Generates More Revenue?',
+      intro: 'On the 4th of July, we sent both an SMS and an email campaign to the same audience... Here are the results…',
+      content: `There is constant debate around SMS and email, which one is better.
 We decided to test it out of pure curiosity.
 
 We took one major event, the 4th of July, and within the same brand, to the exact same audience, we sent both an email campaign and an SMS campaign, with the same offer, same main text, and same timing.
@@ -422,6 +460,14 @@ The offer was a **15% sitewide coupon for 24 hours**.
 The goal was to measure cleanly which channel delivers higher Rev/Recipient, and which one performs better in real time.
 
 ## Here are the results.
+
+**Email campaign:**
+
+![Email Results](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/55.jpg?v=1763058917)
+
+**SMS campaign:**
+
+![SMS Results](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/54.jpg?v=1763058895)
 
 In simple terms,
 Every recipient on the SMS list was worth **several times more** than a recipient on the email list for this holiday campaign.
@@ -438,2158 +484,2498 @@ Absolutely not. Do not be lazy.
 
 Emails are almost free, SMS is also inexpensive, and you should send whenever the opportunity is right.
 
-It is money waiting to be collected, just like the **28,000$+** generated from a single email blast that took 5 minutes to send.`,
-    buttons: [
-      { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
-      { text: 'The Email marketing platform we use', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-    ]
-  },
-  {
-    id: 9,
-    slug: 'sticky-add-to-cart-test',
-    title: 'Does a Sticky Add-to-Cart Button Increase Sales?',
-    description: 'We tested sticky buttons across 3 stores with over 50,000 visitors.',
-    category: 'conversion',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_8.jpg?v=1763297400',
-    isFeatured: false,
-    stats: [
-      { value: '18%', label: 'Add to Cart Lift' },
-    ],
-    content: `## The Test Setup
+It is money waiting to be collected, just like the **28,000$+** generated from a single email blast that took 5 minutes to send.
 
-We ran A/B tests across 3 different stores in the fashion and accessories niche.
+If you want the full strategy for both email and SMS, it is available here:
+https://quantum-scale.co/pages/categories`,
+      buttons: [
+        { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
+        { text: 'The Email marketing platform we use', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
+      ]
+    },
+    {
+      id: 9,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_8.jpg?v=1763297448',
+      title: 'Email VS SMS for recovering abandoned carts, which one performs better?',
+      intro: 'Results collected over years, summarized.',
+      content: `Across a long period of time, in both large and small stores, we tested which method works better for recovering abandoned carts: automated email or AI-powered SMS that conducts a real conversation with the customer.
 
-**Version A:** Standard product page with add-to-cart button in the normal position
-**Version B:** Same page with a sticky add-to-cart bar that appears when scrolling past the main button
+There is no theory here, only data.
 
-Total visitors tested: 52,847
+## Email Automation
 
-## Results
+• Open rate: **25%-27%**
+• Abandoned checkout recovery rate: around **60%**
+• Revenue per recipient: approximately **$2.6**
 
-The sticky add-to-cart button increased add-to-cart rate by **18%** on average.
+Email works, but it stays "in the background". The customer does not always return to it in time, and most people postpone opening it.
 
-More importantly, it reduced bounce rate on product pages by **12%**.
+## AI-Powered SMS (our method)
 
-## Why It Works
-
-When visitors scroll down to read reviews, see more images, or check product details, the buy button disappears.
-
-The sticky bar keeps the purchase option always visible, removing friction at the exact moment of highest intent.
-
-## Implementation Tips
-
-✔️ Keep the sticky bar minimal - product name, price, and button only
-✔️ Use the same button color as your main CTA
-✔️ Show variant selection if applicable
-✔️ Make sure it works perfectly on mobile
+• Open rate: **91%-97%**
+• Cart recovery rate: around **85%** on average
+• Revenue per recipient: approximately **$7-$8**
 
 ## Conclusion
 
-A sticky add-to-cart button is one of the easiest wins for any eCommerce store. The implementation takes minutes, and the results are immediate and measurable.`,
-    buttons: [
-      { text: 'Add Sticky Cart to Your Store', url: 'https://apps.shopify.com/sticky-add-to-cart' }
-    ]
-  },
-  {
-    id: 10,
-    slug: 'abandoned-cart-recovery-secrets',
-    title: 'How We Recover 73% of Abandoned Carts',
-    description: 'The exact sequence that brings back 7 out of 10 customers who leave.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_9.jpg?v=1763297420',
-    isFeatured: true,
-    stats: [
-      { value: '73%', label: 'Recovery Rate' },
-      { value: '4x', label: 'ROI' },
-    ],
-    content: `## The Problem
+Based on stable, long-term data:
 
-70% of online shopping carts are abandoned.
+AI-powered SMS recovers more carts, generates more revenue, and produces significantly higher conversion per recipient compared to email.
 
-For every 10 customers who add to cart, 7 leave without buying. This is not a leak - it is a flood.
+The meaning is clear: anyone running smart SMS earns more from every abandoned customer.
 
-## Our Recovery System
+But, **use both**. Never leave money on the floor.
 
-We built a multi-channel abandonment sequence that runs automatically:
+However, it is important to choose the correct tactic for SMS automation, one that does not expose you to legal risk.`,
+      buttons: [
+        { text: 'Copy our method that recovers 82% of abandoned checkouts', url: 'https://quantum-scale.co/pages/test3' }
+      ]
+    },
+    {
+      id: 10,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_9.jpg?v=1763297491',
+      title: 'The Pareto Law in eCommerce: The truth that 98% of entrepreneurs miss',
+      intro: 'Very few customers are responsible for almost all of your profit.',
+      content: `Most store owners believe their revenue is spread more or less evenly across all customers. Reality is far from that.
 
-### Hour 1: SMS #1
-Short, friendly reminder. No discount.
-"Hey! You left something behind. Your cart is saved: [link]"
+In eCommerce, the Pareto Law is not only valid, it is dramatically more extreme.
 
-### Hour 3: Email #1
-Show the exact products they left. Include reviews. Still no discount.
+If in traditional business we say "20% generate 80%",
 
-### Hour 12: SMS #2
-Add light urgency.
-"Your items are going fast. Complete your order before they sell out."
+in eCommerce the truth is far sharper:
 
-### Hour 24: Email #2
-Now introduce a small discount (5-10%).
-Include social proof and guarantee information.
+**5% of customers generate up to 95% of total long term revenue.**
 
-### Hour 48: Final SMS
-Last chance message with the discount code.
-"Final reminder: Your 10% off expires in 2 hours."
+This pattern repeats itself in every healthy brand that measures LTV continuously.
 
-## Results
+## Why this happens specifically in eCommerce:
 
-This sequence recovers **73% of abandoned carts** with an average ROI of **4x**.
+The reason is simple yet critical.
+Most people buy once.
+A very small minority buys twice, three times, five times, ten times. And every additional purchase increases their value to the business exponentially.
 
-The key is the timing and channel mix:
-• SMS gets 98% open rates but costs more
-• Email is nearly free but has 20-25% open rates
-• Using both together captures everyone
+It is not that you did something different for those 5% (for example each customer in that group spends around $2,000 in their first two years, compared to $85 across the other 95%), but rather the type of person, the behavioral profile.
 
-## Critical Rules
+That is what turns them into the true engine of the business, there is something shared among all these individuals.
 
-✔️ Never start with a discount - many will buy without one
-✔️ Make the first touch personal, not salesy
-✔️ Always show the exact products they left
-✔️ Include free shipping threshold if close
-✔️ End with real urgency (stock or time)
+## How we see this in real data:
 
-## Conclusion
+We track customer value across months and years using a deep LTV analysis tool, and almost always see the same picture.
+Most revenue comes from a razor-thin minority of customers.
 
-Abandoned cart recovery is the highest ROI marketing you can do. Set it up once, and it runs forever.`,
-    buttons: [
-      { text: 'SMS Recovery Platform', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
-      { text: 'Email Platform', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-    ]
-  },
-  {
-    id: 11,
-    slug: 'free-shipping-threshold-test',
-    title: 'The Perfect Free Shipping Threshold (Tested)',
-    description: 'We tested 5 different thresholds to find the sweet spot for maximum AOV.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_10.jpg?v=1763297440',
-    isFeatured: false,
-    stats: [
-      { value: '24%', label: 'AOV Increase' },
-    ],
-    content: `## The Experiment
+Here is a real example from one of our stores.
+In August 2025, approximately **8,000 new customers** joined.
+The screenshot below was taken in November, showing their value after only 2–3 months.
 
-We tested 5 different free shipping thresholds on a store with $45 average order value:
+![Customer LTV Data](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468)
 
-1. No free shipping
-2. Free shipping at $40 (below AOV)
-3. Free shipping at $50 (slightly above AOV)
-4. Free shipping at $65 (40% above AOV)
-5. Free shipping at $80 (80% above AOV)
+## Actual breakdown
 
-Each test ran for 2 weeks with equal traffic.
+**Top 25% Spenders**
+• Average value per customer: **$796**
+• Total revenue: almost **$1.6M**
 
-## Results
+**Remaining 75% of customers**
+• Value per customer: $89-$123
+• Total revenue: around $700,000
 
-**Winner: $65 threshold (40% above AOV)**
+**And the Top 10%**
+• Average value per customer within 2–3 months: **$1,253**
 
-• AOV increased by **24%** compared to no free shipping
-• Conversion rate stayed nearly identical
-• Total revenue increased by **21%**
+If a customer is worth $796 in just three months (top 25% spenders),
+their yearly value is expected to exceed **$1,600**.
 
-The $50 threshold only increased AOV by 8%.
-The $80 threshold killed conversion rate.
+## What this means from a business standpoint
 
-## The Psychology
+A business that does not know who its top customers are,
+spends budget on the wrong audience,
+erodes profitability,
+and collects "one-time sales" instead of building a strong brand and printing money.
 
-When the threshold is too easy to reach, customers don't add more.
-When it's too high, they give up.
+**A business that does know can:**
 
-The sweet spot is **30-40% above your current AOV**.
+✔ Identify which customers drive high profitability
+✔ Understand what they have in common
+✔ Replicate them with precision
+✔ Attract people who are predisposed to spend heavily
+✔ Build a smart system that generates ongoing profit
+✔ Allocate budget where it produces several times more revenue
 
-## Implementation
+## How to turn this into a marketing weapon
 
-✔️ Show a progress bar: "Add $X more for FREE shipping"
-✔️ Suggest products that help reach the threshold
-✔️ Display the threshold prominently in the header
-✔️ Remind customers in the cart
+When the tool analyzes all your customers by percentiles, you receive a precise picture.
 
-## Conclusion
+Who are the Top 25%
+Who are the Top 10%
+Who are the Top 5%
 
-Free shipping thresholds are one of the most powerful AOV levers. Set yours at 30-40% above current AOV and watch average orders grow.`,
-    buttons: [
-      { text: 'Free Shipping Bar App', url: 'https://apps.shopify.com/free-shipping-bar' }
-    ]
-  },
-  {
-    id: 12,
-    slug: 'trust-badges-placement-test',
-    title: 'Where Should Trust Badges Go? (A/B Test Results)',
-    description: 'We tested 4 different placements to find where trust badges convert best.',
-    category: 'conversion',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_11.jpg?v=1763297460',
-    isFeatured: false,
-    stats: [
-      { value: '15%', label: 'CVR Lift' },
-    ],
-    content: `## Test Setup
+And how much each one is worth over time.
 
-We tested 4 placements for trust badges (secure payment, money-back guarantee, fast shipping):
+Then comes the truly powerful move.
 
-**Position A:** Below the Add to Cart button
-**Position B:** Above the product description
-**Position C:** In the product image gallery area
-**Position D:** Fixed at the bottom of the screen
+With the incredible free tool we use, you can export those customers and create a highly accurate Lookalike in Meta.
 
-## Results
+Meta identifies all patterns shared by your Top Spenders, those spending $1,000, $2,000 and more:
 
-**Winner: Position A (Below Add to Cart)**
+• Interests
+• Demographics
+• Consumer behavior
+• Buying habits
+• Strength of purchase intent
 
-Conversion rate increased by **15%** compared to no badges.
+Meta uses all 52,000 data points it collects across Facebook, Instagram, WhatsApp and Threads to understand exactly what these people share, and bring you only more people like them.
 
-Position B increased CVR by only 6%.
-Position C had no measurable impact.
-Position D actually decreased conversion by 3% (too intrusive).
+Now you attract the type of customers who already proved to be worth hundreds or thousands of dollars to your business.
 
-## Why Below Add to Cart Wins
+If the customers in the Top 25% are worth on average $800 over two years, your LLA campaigns will now bring only people like that. so instead getting average 24-Months LTV of $124, You will get $800.
 
-The moment of highest anxiety is right before clicking "buy."
+The same tactic works identically for the Top 10% and the Top 5%.
 
-Trust badges immediately below the button address concerns exactly when they matter most:
-• "Is my payment secure?"
-• "What if I don't like it?"
-• "Will it arrive on time?"
+![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
+![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
+![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
+      buttons: [
+        { text: 'Connect the app to your store', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+      ]
+    },
+    {
+      id: 11,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_10.jpg?v=1763297561',
+      title: 'Should you add WhatsApp support on your website?',
+      intro: 'It sounds convenient and accessible, but is it the right choice?',
+      content: `## Is it recommended to place WhatsApp on your site?
 
-## Best Trust Badge Combination
+We will start with the conclusion, **no**.
 
-Based on our tests, these 4 badges work best together:
+Although it looks like a fast and accessible support solution, real-world data and experience show that it creates far more problems than solutions.
 
-✔️ Secure Checkout (with lock icon)
-✔️ Money-Back Guarantee
-✔️ Fast Shipping (with timeframe)
-✔️ Customer count or review score
+**WhatsApp is an "overly accessible" channel.**
+
+The customer sends a message without thinking, then another one, and then another.
+
+He enters WhatsApp to check other messages and reminds himself to message you again.
+
+Within two days, you receive three inquiries from the same person about the same issue, or with no issue at all.
+
+## The result:
+
+• Unnecessary customer support overload
+• Duplicate inquiries
+• Endless noise
+• Your frustration
+• Lower quality of responses
+• Wasted work time
+
+## Why only email is better
+
+✔️ Email filters out all the noise.
+✔️ Only those who truly need help reach out.
+✔️ They think before writing, explain the issue, attach details, and allow structured handling.
+✔️ They also do not speak to you as if you are their high school friend.
+
+## To make this work correctly:
+
+• Place a structured contact form on the support page
+• Add the email in the footer so it is accessible but not "pushy"
 
 ## Conclusion
 
-Trust badges work, but placement matters. Keep them directly below your add-to-cart button where they reduce friction at the critical moment.`,
-    buttons: []
-  },
-  {
-    id: 13,
-    slug: 'product-video-conversion-impact',
-    title: 'Do Product Videos Actually Increase Sales?',
-    description: 'We added videos to product pages and measured the real impact.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_12.jpg?v=1763297480',
-    isFeatured: true,
-    stats: [
-      { value: '31%', label: 'CVR Increase' },
-    ],
-    content: `## The Test
+WhatsApp creates overload.
+Email creates order.
 
-We added product videos to 12 top-selling items and compared performance over 4 weeks.
+For anyone who wants clean, clear and efficient support, email only is the correct choice.
 
-**Video types tested:**
-• Product demo showing the item in use
-• 360-degree rotation views
-• Lifestyle footage with models
-• Unboxing videos
+We personally like adding this section on the Contact Us form to still provide a sense of differentiation and avoid looking like the other 30 million eCommerce stores:
 
-## Results
+![Contact Form Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/56.jpg?v=1763062329)`,
+      buttons: [
+        { text: 'Add This Contact form to your store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
+      ]
+    },
+    {
+      id: 12,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_11.jpg?v=1763297609',
+      title: 'LIVE TEST: Is Meta lying about creative performance reporting?',
+      intro: 'The results will genuinely shock you.',
+      content: `## Introduction
 
-Pages with videos converted **31% higher** than pages without.
+Many entrepreneurs make decisions based solely on Meta's dashboard.
+It seems logical: Meta tells you what generated purchases, what did not, and which creatives should be turned off.
 
-But here's the interesting part - not all videos performed equally:
+The problem is simple.
+Since IOS14, Meta cannot attribute all purchases, and it presents only a partial picture.
 
-**Best performer:** Lifestyle + demo combination (+38%)
-**Second:** Product demo only (+29%)
-**Third:** 360-degree rotation (+18%)
-**Worst:** Unboxing only (+8%)
+But it gets worse, it also attributes purchases to the wrong creatives and campaigns.
 
-## Why Videos Work
+We tested this properly using an external attribution system with extremely high accuracy (100% accuracy, in 100% of cases, which makes it fully reliable).
 
-Visitors cannot touch or try products online.
-Video bridges this gap by showing:
-• Real size and scale
-• How the product moves/functions
-• Quality of materials
-• How it looks on a real person
+The results are surprising, although for us it is no longer surprising.
 
-## Video Best Practices
+![Shocked GIF](https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOGxvamtraGNzcnU0eTZoeXltb3hicmVhOXh4eHJhejU5NWIwN2V0dyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/cPNXOm7ln8HwK7UcbV/giphy-downsized.gif)
 
-✔️ Keep videos under 30 seconds
-✔️ No sound required (most watch muted)
-✔️ Show the product being used, not just sitting
-✔️ Include a human element when possible
-✔️ Place video as the 2nd media item (after main image)
+## What we tested
 
-## Conclusion
+The same store and the same ad account, connected to both an external pixel and Meta's pixel.
 
-Product videos are not optional anymore. They are one of the highest-impact additions you can make to product pages.`,
-    buttons: []
-  },
-  {
-    id: 14,
-    slug: 'countdown-timer-scarcity-test',
-    title: 'Do Countdown Timers Actually Work? (Honest Results)',
-    description: 'We tested countdown timers and the results were surprising.',
-    category: 'psychology',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_13.jpg?v=1763297500',
-    isFeatured: false,
-    stats: [
-      { value: '+23%', label: 'Short Term' },
-      { value: '-12%', label: 'Long Term' },
-    ],
-    content: `## The Uncomfortable Truth
+We reviewed one week of campaigns in both dashboards (the external pixel dashboard and the Meta dashboard).
 
-We tested countdown timers across multiple stores and campaigns.
+## Findings
 
-The results were mixed - and this matters.
+### 1. Meta reported only 67% of purchases
 
-## Short-Term Results
+Meaning, around **33% of the revenue** simply did not appear in Meta.
+Real purchases happened, but according to Meta they "did not exist".
 
-Countdown timers on flash sales increased conversion by **23%** in the first 24-48 hours.
+**External pixel:**
+![External Pixel](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/57.jpg?v=1763063431)
 
-Urgency works. This is psychology 101.
+**Meta:**
+![Meta Dashboard](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/58.jpg?v=1763063768)
 
-## Long-Term Problem
+This alone creates extreme distortion in analysis.
+Meta does not show much information, and it also does not collect enough data to help itself optimize correctly.
 
-Here's what most gurus won't tell you:
+But this is only the beginning.
 
-Stores that used "fake" countdown timers (that reset, or ran constantly) saw:
-• **12% decrease** in returning customer rate
-• **Higher refund rates**
-• **More negative reviews** mentioning "fake urgency"
+### 2. Large deviation in creative attribution
 
-## When Timers Work
+This is the most critical issue.
 
-✔️ Real flash sales with genuine deadlines
-✔️ Limited inventory notifications (when actually true)
-✔️ Holiday promotions with fixed end dates
-✔️ New product launches
+**Real example**
+• Meta showed a certain creative with a CPA of **$25.11**
+• The external system showed that exact same creative with a CPA of **$17.53**
+• The campaign's average CPA was $19-$20
 
-## When Timers Backfire
+**What this means**
 
-❌ Evergreen timers that reset for each visitor
-❌ "Only 3 left" when you have 3,000
-❌ Sales that never actually end
-❌ Constant "ending soon" messaging
+If we had followed Meta, we would have turned off an excellent creative, and kept weaker ones.
 
-## The Right Approach
+Do you understand what happens in this scenario?
 
-Use scarcity honestly. Run real sales with real deadlines.
+You filter out creatives that are "not good" according to Meta, and leave only the ones Meta claims are good.
 
-Your customers are smart. They will notice if the timer resets every time they visit.
+Then, the results collapse the next day and you cannot understand why.
 
-Trust is worth more than a short-term conversion bump.
+In reality, many of the creatives you turned off were actually top performers.
+Meta's tracking limitations (post-IOS14) simply prevented accurate attribution.
 
 ## Conclusion
 
-Countdown timers work, but only when they're real. Fake urgency destroys trust and hurts long-term business.`,
-    buttons: []
-  },
-  {
-    id: 15,
-    slug: 'subscription-model-ltv-boost',
-    title: 'How Subscriptions Increased Our LTV by 340%',
-    description: 'Adding a subscription option transformed our entire business model.',
-    category: 'ltv',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_14.jpg?v=1763297520',
-    isFeatured: true,
-    stats: [
-      { value: '340%', label: 'LTV Increase' },
-      { value: '67%', label: 'Retention' },
-    ],
-    content: `## The Transformation
+Meta shows only part of the picture.
+And even the data it does show is often misleading.
 
-We added a subscription option to consumable products and the results changed everything.
+Therefore, you must not make decisions based on Meta alone.
 
-**Before subscriptions:**
-• Average LTV: $89
-• Repeat purchase rate: 18%
-• Average orders per customer: 1.4
+**Anyone who blindly trusts Meta**
 
-**After subscriptions:**
-• Average LTV: $392 (340% increase)
-• Subscriber retention at 6 months: 67%
-• Average orders per subscriber: 8.2
+❌ Turns off profitable ads
+❌ Leaves losing ads running
+❌ Loses the ability to scale properly
+❌ Misses their strongest creatives
 
-## How We Did It
+**Anyone who uses external attribution sees reality as it truly is.**
 
-### Step 1: Identify Subscription-Worthy Products
-Not everything works for subscriptions. Look for:
-• Consumables (skincare, supplements, food)
-• Products with regular replacement cycles
-• Items customers already reorder
+And in eCommerce, **accuracy in data is the difference between growth and collapse**.
 
-### Step 2: Make the Offer Compelling
-• 15% discount for subscribing
-• Free shipping on all subscription orders
-• Easy pause/skip functionality
-• No commitment - cancel anytime
+We personally use an outstanding tool (#1 in the world) for external attribution.
+We arranged a discount link for our community if you choose to install through it.`,
+      buttons: [
+        { text: 'Connect the Pixel to your store', url: 'https://www.triplewhale.com/' }
+      ]
+    },
+    {
+      id: 13,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_12.jpg?v=1763297680',
+      title: 'Do you actually know everything about your customers?',
+      intro: 'Post Purchase Surveys will reveal a completely different reality that is worth a lot of money.',
+      content: `**Introduction:** Most store owners are convinced they understand what makes the customer buy, who their customers are, what motivates them, and what their biggest concerns are.
 
-### Step 3: Reduce Friction
-• Subscribe option as prominent as one-time buy
-• Pre-selected subscription by default (test this)
-• Clear explanation of how it works
-• SMS reminders before each shipment
+In 90–95% of cases **this is simply wrong and harms conversions**.
 
-## Key Metrics to Watch
+This is where Post Purchase Surveys enter: It is one of the most powerful tools for building a business based on real data instead of guesses.
 
-✔️ Subscription conversion rate (aim for 15%+ of sales)
-✔️ Churn rate month over month
-✔️ Average subscription lifetime
-✔️ Subscriber LTV vs one-time buyer LTV
+You will not hear any YouTube guru talk about this, yet **this is where business giants are built**.
 
-## Conclusion
+## Why this is so critical:
 
-If you sell consumable products and don't offer subscriptions, you're leaving massive money on the table. The economics are transformative.`,
-    buttons: [
-      { text: 'Subscription App', url: 'https://apps.shopify.com/skio' }
-    ]
-  },
-  {
-    id: 16,
-    slug: 'upsell-strategies-that-work',
-    title: '5 Upsell Strategies That Actually Work',
-    description: 'These upsells increased our AOV by 35% without annoying customers.',
-    category: 'conversion',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_15.jpg?v=1763297540',
-    isFeatured: false,
-    stats: [
-      { value: '35%', label: 'AOV Lift' },
-    ],
-    content: `## The 5 Upsells We Use
+A short survey after purchase reveals what the eye does not see:
 
-### 1. Product Page Bundles
-Show "Frequently Bought Together" with 2-3 complementary products.
-**Result:** 18% of customers take the bundle
+• What actually made the customer buy
+• What almost stopped him
+• Where he came from
+• How many times he was exposed to you before purchasing
+• What attracted him psychologically
+• What is relevant to him and what he does not care about
+• Who he is demographically
 
-### 2. Cart Drawer Add-Ons
-When cart opens, show small add-ons under $15.
-**Result:** 24% add something extra
+The customer has already paid, therefore there is no conversion loss, and the amount of truth revealed at this stage is enormous.
 
-### 3. Post-Purchase Upsell
-After checkout, before confirmation, offer one more product at a discount.
-**Result:** 12% acceptance rate
+## How it works:
 
-### 4. Free Gift Threshold
-"Add $X more to get a FREE gift"
-**Result:** 31% increase their order to qualify
+Immediately after payment, the customer sees 4–6 short questions.
+It takes about 5 seconds and he answers with no pressure.
 
-### 5. Upgrade Offers
-"Upgrade to the premium version for just $X more"
-**Result:** 15% choose the upgrade
+(You will be surprised to know that **60–70% of people answer these surveys**).
 
-## What Makes Upsells Work
+Since this happens after the payment, it does not affect conversions at all.
 
-✔️ Relevance - The upsell must make sense
-✔️ Value - Clear benefit to the customer
-✔️ Timing - Right moment, not too pushy
-✔️ Simplicity - One click to add
+You do not need hundreds of answers. After 20–30 responses clear patterns begin to appear, often the opposite of what you thought.
 
-## What Kills Upsells
+This is the moment the business becomes razor sharp.
+You finally understand why people buy, and how to make them return.
 
-❌ Too many offers at once
-❌ Irrelevant product suggestions
-❌ Aggressive popups that block checkout
-❌ Prices that feel too high
+## The stage where the data becomes a weapon:
 
-## Combined Impact
+At a later stage, once you have a larger customer base, the surveys reveal who the top 5% are that generate 95% of the profit.
 
-Using all 5 strategies together:
-• AOV increased by **35%**
-• Customer complaints: Zero increase
-• Checkout abandonment: No change
+For example, if out of 1,000 customers there are 200 customers who spent over $2,000 within half a year, you go to the survey answers of this elite group and discover what they have in common:
+
+• Their style
+• Their age
+• What interested them
+• Why they returned
+• What triggered repeated purchases
+
+This allows you to build a marketing system aimed precisely at the most profitable customers and **replicate your best customers again and again**.
+
+You will know not only which audience to target and how to speak to them to generate conversions, but **which audience brings real money**.
+
+## Examples of effective questions
+
+Adapted to a men's fashion brand:
+
+**What is your age?:** 18–24 / 25–34 / 35–44 / 45+
+
+**Which style do you prefer?:** Old Money / Rugged Masculine / Classic / Streetwear
+
+**How many times did you see us before purchasing?:** 1 / 2–5 / 5–10 / 10+
+
+**How often do you buy clothes online?:** Once a month / Once every three months / Rarely
+
+**What is your status?:** Single / Married
+
+**What do you want your clothing to communicate?:** Wealth / Masculinity / Classic style / Style
 
 ## Conclusion
 
-Upsells work when they help customers get more value. Make them relevant, time them right, and keep them simple.`,
-    buttons: [
-      { text: 'Upsell App', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell' }
-    ]
-  },
-  {
-    id: 17,
-    slug: 'facebook-ads-creative-testing',
-    title: 'How to Test Facebook Ad Creatives (Our System)',
-    description: 'The exact process we use to find winning ads consistently.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_16.jpg?v=1763297560',
-    isFeatured: false,
-    content: `## The Testing Framework
+Post Purchase Surveys transform you from a business that operates on intuition into a business built on truth.
 
-We test new creatives every week using a systematic approach.
+They reveal patterns that cannot be identified in any other way and allow you to focus your marketing exactly where the real money is made.
 
-### Phase 1: Concept Generation
-Create 5-10 unique concepts per week:
-• Different hooks (problem, benefit, curiosity)
-• Different formats (video, static, carousel)
-• Different styles (UGC, professional, raw)
+For example, if you look at the surveys of the 200 customers who spent the most money with you, at least $1,000 within six months, and discover that 75% of them are age 35–44, prefer Old Money, want to communicate wealth through their clothing, and needed 10+ impressions before purchasing, everything becomes clear.
 
-### Phase 2: Initial Test
-• Budget: $20-30 per creative
-• Duration: 3-4 days minimum
-• Audience: Broad or proven winner
-• Metric: Cost per landing page view
+So from now on, you target only men age 35–44 who like Old Money.
 
-### Phase 3: Evaluation
-Kill creatives with:
-• CPM over 2x average
-• CTR under 1%
-• Hook rate under 25% (for video)
+In your ads you highlight that your clothing communicates wealth. You run aggressive remarketing because you understood that your high quality customers are those who need time to trust a brand before the first purchase, 10+ impressions until they buy.
 
-Scale creatives with:
-• CTR above 2%
-• Low CPA after 3-4 days
-• Strong hook rate (35%+)
+The result is simple. From now on you acquire only customers who are worth a lot to the business, instead of those who buy once for $70 and disappear.
 
-## What We've Learned
+You attract customers who within half a year are worth $1,000 each, and within two years $3,000.`,
+      buttons: [
+        { text: 'Add Post Purchase Surveys to your store', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }
+      ]
+    },
+    {
+      id: 14,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_13.jpg?v=1763297723',
+      title: 'The Truth About Fonts',
+      intro: 'The font you choose directly affects trust and conversions.',
+      content: `## A short and precise lesson
 
-**Winners usually show signal fast.**
-If a creative isn't showing promise in $50-75 of spend, it rarely becomes a winner.
+A font is a psychological decision before it is an aesthetic one.
+The brain evaluates your site within seconds, and the wrong font triggers effort, confusion, and lower conversions.
 
-**UGC outperforms 80% of the time.**
-Real people using products beat polished ads.
+### Readability
 
-**The hook is everything.**
-First 3 seconds determine success or failure.
+An unclear font increases cognitive load and reduces purchase intention by about twenty to twenty six percent.
 
-## Our Hit Rate
+### Processing speed
 
-Out of every 10 creatives tested:
-• 6-7 are clear losers
-• 2-3 are breakeven/okay
-• 1 is a potential winner
+Sans serif fonts are read up to twenty two percent faster on mobile, which helps the user understand the message instantly.
 
-This is normal. The key is testing volume.
+### Trust
 
-## Conclusion
+A font that curves, shifts, or looks "too artistic" is perceived as unprofessional and unreliable.
+A clean, neutral font is interpreted as controlled, serious, and trustworthy.
 
-Creative testing is a numbers game. Build a system, test consistently, and accept that most creatives won't work. The winners pay for all the tests.`,
-    buttons: []
-  },
-  {
-    id: 18,
-    slug: 'email-welcome-flow-optimization',
-    title: 'The Welcome Email Flow That Converts 28%',
-    description: 'Our exact welcome sequence that turns subscribers into customers.',
-    category: 'marketing',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_17.jpg?v=1763297580',
-    isFeatured: false,
-    stats: [
-      { value: '28%', label: 'Conversion Rate' },
-    ],
-    content: `## The 5-Email Welcome Sequence
+## Important rule
 
-### Email 1: Instant (Welcome + Offer)
-• Thank them for joining
-• Deliver the promised discount
-• Show bestselling products
-• Clear CTA to shop
+Do not mix different fonts on the site.
+It creates cognitive overload, breaks hierarchy, and makes the user feel something is disorganized.
 
-**Open rate:** 65%+ expected
+## Examples of good ecommerce fonts
 
-### Email 2: Day 1 (Brand Story)
-• Why we exist
-• What makes us different
-• Customer testimonials
-• Soft CTA
+These fonts read fast, read clean, and support conversion focused interfaces.
 
-### Email 3: Day 2 (Social Proof)
-• Reviews and ratings
-• User-generated photos
-• Press mentions
-• "See what customers are saying"
+**1. Inter**
+Clean, sharp, extremely readable.
+Signals modernity, stability, and trust.
+Suitable for most niches.
 
-### Email 4: Day 4 (Education)
-• How to use the product
-• Tips and guides
-• Video content
-• Build expertise and trust
+**2. Shopify Sans**
+Shopify's native font.
+Engineered specifically for fast reading on mobile.
+Communicates professionalism and consistency.
 
-### Email 5: Day 7 (Last Chance)
-• Discount expiring reminder
-• Create urgency
-• Final push to convert
+**3. Helvetica Neue**
+Classic, elegant, balanced.
+Signals a mature, premium brand.
+Great for lifestyle, fashion, and cosmetics.
 
-## Key Metrics
+**4. Roboto**
+Highly readable on mobile.
+Signals simplicity, accessibility, and flow.
+Perfect for home goods, sports, and wellness brands.
 
-• Welcome flow revenue: 15-20% of total email revenue
-• Conversion rate (subscriber to customer): 28%
-• Average order from welcome flow: $62
+## Examples of fonts that are less suitable for ecommerce
 
-## Best Practices
+These fonts increase cognitive load and hurt conversions.
 
-✔️ Mobile-optimized design (70% open on mobile)
-✔️ One clear CTA per email
-✔️ Personalization with first name
-✔️ Consistent branding
-✔️ Easy unsubscribe (keeps list healthy)
+**1. Script fonts (handwritten fonts)**
+Look "over designed"
+Hard to read at speed
+Maybe acceptable for a logo, not for body text
+
+**2. Heavy serif fonts**
+Sharp edges and visual complexity
+Create emotional distance and heaviness
+Not compatible with modern ecommerce UX
+
+**3. Display fonts**
+Bold, decorative, "character heavy"
+Good for magazine headlines
+Not for product pages that must convert fast
+
+## What each font communicates
+
+A font is a subconscious message.
+Here is how the brain interprets common fonts:
+
+• **Inter:** efficiency, order, modern brand
+• **Helvetica Neue:** quiet luxury, quality, maturity
+• **Roboto:** practicality, technology, reliability
+• **Heavy serif:** formality, distance, reduced warmth
+• **Script:** artistic, decorative, less professional in ecommerce
+• **Display:** too much personality, distracts from the message
 
 ## Conclusion
 
-Your welcome flow runs automatically and converts strangers into customers. It's one of the highest-ROI email investments you can make.`,
-    buttons: [
-      { text: 'Email Platform', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-    ]
-  },
-  {
-    id: 19,
-    slug: 'product-page-layout-test',
-    title: 'The Best Product Page Layout (Split Test Results)',
-    description: 'We tested 4 different layouts to find what converts best.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_18.jpg?v=1763297600',
-    isFeatured: false,
-    stats: [
-      { value: '21%', label: 'CVR Winner' },
-    ],
-    content: `## The 4 Layouts Tested
+The right font is one of the most influential factors in creating a user experience with high trust.
 
-### Layout A: Classic
-Image left, details right, description below
+Choose a clean, consistent, sharp font.
+Do not mix fonts.
+And your conversions will rise naturally.
 
-### Layout B: Full-Width Gallery
-Large images spanning full width, details below
+If you want, I can prepare a font recommendation list tailored to specific niches like jewelry, men's fashion, cosmetics, sports, and more.`,
+      buttons: []
+    },
+    {
+      id: 15,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_14.jpg?v=1763297792',
+      title: 'The campaign that delivers 18 ROAS on Google',
+      intro: 'Brand Search is one of the most profitable moves in any store.',
+      content: `## How & Why this works
 
-### Layout C: Story Format
-Images and text alternating, scrolling story
+A customer sees you on Meta, becomes interested, but does not buy immediately.
+Maybe he was busy or his credit limit was full.
 
-### Layout D: Minimal
-Single large image, minimal text, focus on buy button
+One or two days later he is finally ready to buy.
 
-## Results
+What does he do? He goes to Google and types your brand name.
 
-**Winner: Layout A (Classic) with modifications**
+If you are not in the top results he will not find you, and he may think you are a scam or that he remembered the brand name incorrectly. This is a guaranteed lost sale.
 
-The classic layout outperformed by **21%**, but only with these elements:
+Brand Search is a paid Google campaign that captures customers who are ready to buy now, which is why it delivers a **35% conversion rate and 18 ROAS** in almost every store we worked with.
 
-✔️ Sticky add-to-cart on scroll
-✔️ Trust badges below button
-✔️ Reviews visible without scrolling
-✔️ Multiple thumbnail images (5-8)
-✔️ Size guide easily accessible
+![Brand Search Results](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-11-14T112255.482.png?v=1763112213)
 
-## Why Classic Works
+Nobody searches your brand name by accident.
+Anyone typing your brand into Google is a hot customer, which is the entire logic behind this campaign.
 
-Visitors have learned to navigate classic layouts.
-They know where to look for price, variants, and the buy button.
+The campaign runs on a very small budget. You can set **5$ per day**, and in many cases it will not even spend the full amount depending on your traffic volume.
 
-Novel layouts require learning. Learning creates friction.
+## How to set it up correctly
 
-## The Modifications That Matter
+The setup is simple but must be executed with precision.
 
-The basic classic layout converted at baseline.
-Adding these elements increased conversion by 21%:
+### 1. Choose a Search campaign
+In Google Ads, open a standard Search campaign.
 
-1. **Sticky cart button** (+7%)
-2. **Trust badges** (+5%)
-3. **Visible reviews** (+6%)
-4. **More images** (+3%)
+### 2. Keywords – Exact Match only
 
-## Conclusion
+In a Brand Search campaign you do not want variations, broad match, phrase match, or partial options.
 
-Don't reinvent the product page. Use the classic layout with proven conversion elements. Save creativity for marketing, not UX.`,
-    buttons: []
-  },
-  {
-    id: 20,
-    slug: 'influencer-marketing-roi',
-    title: 'Influencer Marketing: What Actually Works',
-    description: 'After spending $50K+ on influencers, here is what we learned.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_19.jpg?v=1763297620',
-    isFeatured: false,
-    content: `## Our Influencer Journey
+**Only one thing: Exact Match only.**
 
-Over 18 months, we worked with 200+ influencers ranging from nano (1K followers) to macro (1M+ followers).
+Only users searching your exact brand name enter.
+This brings 100% hot traffic.
 
-Total spend: $53,000
-Total revenue attributed: $187,000
-ROI: 3.5x
+No waste. No noise. No random audiences.
 
-But the averages hide the real story.
+**Enter the keywords exactly like this:**
+• [brand]
+• [brand store]
+• [brand shop]
+• [brand official]
+• [brand] in your local language
+• [brannd] (common misspelling)
 
-## What We Learned
+That is all.
+No quotation marks.
+No broad match.
+Only Exact Match.
 
-### 1. Micro-Influencers (10K-100K) Win
-• Best engagement rates
-• Most authentic content
-• Lowest cost per acquisition
-• 73% of our influencer revenue came from this tier
+Anyone searching for you finds you.
+Anyone who is not searching for you does not enter.
 
-### 2. Engagement Rate > Follower Count
-An influencer with 20K followers and 8% engagement outperforms one with 200K followers and 1% engagement.
+### Ad
 
-### 3. Content Rights Are Gold
-Pay extra for rights to use their content in ads.
-Our best-performing Facebook ads are all influencer UGC.
+Simple and clean:
+• Headline: your brand name
+• Second headline: Official Store
+• Short focused description
+• Link to your homepage
 
-### 4. Long-Term Partnerships Beat One-Offs
-Influencers who posted 3+ times generated 4x the revenue per post compared to one-time posts.
+### Budget
 
-## Red Flags to Avoid
+Very low.
+Brand Search almost never spends a lot, but every click is a hot buyer.
 
-❌ Followers bought in bulk (check for sudden spikes)
-❌ Low comments relative to likes
-❌ Generic comments ("Nice!" "Great!")
-❌ Unwillingness to share past performance data
-
-## Our Current Strategy
-
-• 80% budget on micro-influencers (10K-50K)
-• 20% budget on larger creators for brand awareness
-• All deals include content usage rights
-• Focus on 5-10 long-term partners vs. 50 one-timers
+Start with **5$ per day** with a bid of **0.5$ per click**.
 
 ## Conclusion
 
-Influencer marketing works, but the game is in the details. Focus on micro-influencers, negotiate content rights, and build long-term relationships.`,
-    buttons: []
-  },
-  {
-    id: 21,
-    slug: 'customer-service-impact-ltv',
-    title: 'How Customer Service Impacts LTV (Data Inside)',
-    description: 'Great support is not a cost center. It is a profit driver.',
-    category: 'ltv',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_20.jpg?v=1763297640',
-    isFeatured: false,
-    stats: [
-      { value: '3.2x', label: 'LTV Difference' },
-    ],
-    content: `## The Data
+A Brand Search campaign is mandatory for every store:
 
-We analyzed 12 months of customer data and split customers into two groups:
+• It captures customers who already decided to buy
+• It prevents losing visitors who return later
+• It delivers a 35% conversion rate
+• It produces an almost unrealistic ROAS
+• It is extremely cheap to maintain
 
-**Group A:** Customers who contacted support and had a positive resolution
-**Group B:** Customers who never needed support
+This is one of the few campaigns that consistently delivers guaranteed results in every store.`,
+      buttons: []
+    },
+    {
+      id: 16,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_15.jpg?v=1763297827',
+      title: 'Do Swatch Variants Increase Conversion Rates?',
+      intro: 'A small change, a reasonable lift.',
+      content: `Let us start with the conclusion, **yes**.
+It is not a massive change, but it is still meaningful.
 
-## Surprising Results
+## Our explanation
 
-**Group A (support contact) had 3.2x higher LTV than Group B.**
+Choosing variants through text labels such as "Black", "Blue", "Red" creates unnecessary cognitive load.
 
-This seems counterintuitive. If they had a problem, shouldn't they be less loyal?
+The brain needs to imagine the color, understand the differences, and sometimes even go back to the images.
 
-## Why This Happens
+This creates a small delay in the decision process, and a small delay in eCommerce means fewer conversions.
 
-A customer who has a problem AND gets it solved well experiences something powerful:
+![Text vs Swatches](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533)
 
-**They see how you handle adversity.**
+**Image swatches, not color dots**, create a completely different experience.
 
-This builds deeper trust than a transaction that goes perfectly but feels impersonal.
+The customer sees the options instantly with no thinking required.
+A visual choice equals a faster decision.
 
-## The Support Principles We Follow
+## The result
 
-### 1. Speed Wins
-First response under 4 hours.
-Resolution under 24 hours.
+After an A/B Test with identical traffic, identical products, and identical design, changing only the variant display method, from text to image swatches, **increased conversion rate by 3.4%**.
 
-### 2. Empower Agents
-Agents can issue refunds up to $50 without approval.
-No scripts - real human responses.
+## The reason, most likely
 
-### 3. Go Beyond
-If shipping is late, proactively reach out with a discount.
-Don't wait for complaints.
-
-### 4. Follow Up
-After resolution, check in 48 hours later.
-"Just wanted to make sure everything arrived okay."
-
-## The Numbers
-
-• Customer support cost per order: $0.85
-• LTV increase from great support: +$47 average
-• ROI: 55x
+• Reduced cognitive load
+• Less confusion
+• Immediate understanding of differences
+• A more elegant and premium purchasing experience
 
 ## Conclusion
 
-Customer service is not a cost to minimize. It is an investment in lifetime value. Every great support interaction creates a more loyal customer.`,
-    buttons: []
-  },
-  {
-    id: 22,
-    slug: 'mobile-checkout-optimization',
-    title: 'Mobile Checkout Optimization: 9 Quick Wins',
-    description: '9 changes that reduced our mobile checkout abandonment by 31%.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_21.jpg?v=1763297660',
-    isFeatured: false,
-    stats: [
-      { value: '31%', label: 'Less Abandonment' },
-    ],
-    content: `## The Problem
+Swatches are not just "prettier".
 
-72% of our traffic was mobile, but mobile conversion was 40% lower than desktop.
+They reduce effort, improve the buying experience, and increase conversions in a measurable way.
 
-The culprit: checkout friction.
+Any store with variants should be using them.`,
+      buttons: [
+        { text: 'Add Swatches to your store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }
+      ]
+    },
+    {
+      id: 17,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_16.jpg?v=1763297869',
+      title: 'Buy Now Button - Does It Hurt Revenue per Visit?',
+      intro: 'The data is clear, the conclusions are clear.',
+      content: `First of all, **yes**.
+It harms both conversion rate and AOV in a significant way.
 
-## The 9 Fixes
+## The explanation
 
-### 1. Apple Pay / Google Pay
-One-tap checkout for saved payment users.
-**Impact:** +14% mobile conversion
+The Buy Now button looks like a reasonable shortcut to purchase, but in practice it works against the psychology of buying in most stores.
 
-### 2. Guest Checkout Default
-No account required. Optional account creation after purchase.
-**Impact:** +8% completion rate
+**When the customer clicks Buy Now:**
 
-### 3. Larger Touch Targets
-All buttons minimum 48px height.
-**Impact:** Reduced mis-taps by 60%
+• He is thrown straight to checkout
+• He has no time to "warm up" to the decision
+• The experience feels too sharp and abrupt
+• He enters a "single-item purchase" mindset rather than a "build a basket" mindset
+• Some customers get startled by the sudden jump and abandon
 
-### 4. Auto-Advance Between Fields
-Cursor moves automatically after completing each field.
-**Impact:** 12% faster checkout completion
+This transition reduces AOV, reduces upsells, and lowers revenue.
 
-### 5. Smart Keyboard Types
-Email field shows email keyboard. Phone field shows number pad.
-**Impact:** Reduced input errors by 23%
+## What happened when we removed Buy Now?
 
-### 6. Address Autocomplete
-Google Places integration for address entry.
-**Impact:** 35% faster address input
+In a clear A/B Test:
+**Removing Buy Now increased REV/VISIT by 15.9%.**
 
-### 7. Progress Indicator
-Shows "Step 2 of 3" so customers know how close they are.
-**Impact:** +5% completion rate
+![A/B Test Results](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/60.jpg)
 
-### 8. Sticky Order Summary
-Total always visible without scrolling.
-**Impact:** Reduced "surprise" abandonment
+## Why?
 
-### 9. Trust Badges on Every Step
-Security indicators throughout checkout.
-**Impact:** +7% conversion
+• The customer moves to Add to Cart
+• The Cart Drawer opens
+• He sees upsells inside the cart
+• Many more customers add extra products
+• The shopping experience becomes calm, high quality, and profitable
+• Abandonment rate drops
+• AOV rises
 
-## Combined Results
+## An additional improvement – adding a Wishlist
 
-After implementing all 9 changes:
-• Mobile checkout abandonment: -31%
-• Mobile conversion rate: +26%
-• Mobile now converts at 92% of desktop
+Instead of the Buy Now button we added a Wishlist button.
+
+The result was an additional lift in conversions because customers feel freedom of choice:
+
+• No sales pressure
+• They can "save and return"
+• This reduces friction and increases the likelihood of returning and buying
+
+![Wishlist Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1763056442)
+
+Wishlist functions as a psychological bridge to purchase, not a shortcut.
 
 ## Conclusion
 
-Mobile checkout optimization is not optional. Most of your customers are on phones. Make the experience frictionless.`,
-    buttons: []
-  },
-  {
-    id: 23,
-    slug: 'pricing-psychology-strategies',
-    title: '7 Pricing Psychology Tricks That Work',
-    description: 'How to price products for maximum perceived value and conversion.',
-    category: 'psychology',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_22.jpg?v=1763297680',
-    isFeatured: false,
-    content: `## The 7 Strategies
+The Buy Now button looks good on paper, but in most stores it hurts revenue.
 
-### 1. Charm Pricing ($29.99 vs $30)
-The left digit matters most. $29.99 feels like "twenty-something."
-Use for: Most products, especially under $100
+Removing it increases conversions and REV/VISIT significantly and opens an additional revenue path through cart upsells.
 
-### 2. Round Numbers for Premium
-$100 feels more premium than $99.97.
-Use for: Luxury items, high-end positioning
+**Add to Cart + Cart Drawer + cart upsells + Wishlist**
 
-### 3. Anchor Pricing
-Show the higher "Compare at" price first.
-$79 ~~$129~~ makes $79 feel like a deal.
-Use for: Sales, promotions, value positioning
+This structure produces more money, more items per order, and more purchases.`,
+      buttons: [
+        { text: 'Add Wishlist', url: 'https://vitals.app/shopify/12548540' },
+        { text: 'Add cart upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }
+      ]
+    },
+    {
+      id: 18,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_17.jpg?v=1763297911',
+      title: 'Add to Cart Button – Rounded or Not?',
+      intro: 'We tested it. A 28px rounded shape produced the highest conversion rate.',
+      content: `## Explanation
 
-### 4. Bundle Pricing
-Three products at $89 feels better than $30 each.
-Even if the math is the same.
-Use for: Increasing AOV, moving inventory
+The Add to Cart button plays a psychological role.
+It must feel clear, accessible, visually pleasant, and inviting to click.
 
-### 5. Price per Unit
-"Only $0.50 per use" makes $30 feel small.
-Use for: Consumables, subscription products
+Even small changes in its shape affect user perception and click behavior.
 
-### 6. Good-Better-Best
-Three tiers make the middle option most popular.
-The "best" option makes "better" seem reasonable.
-Use for: Products with variants or tiers
+In our A/B test we compared:
+• A square button
+• A lightly rounded button
+• A deeply rounded button at 28px
 
-### 7. Free Shipping Threshold
-"Free shipping over $50" beats "$5 shipping always."
-Customers will add items to avoid the shipping "loss."
-Use for: Increasing AOV
+## The results
 
-## What NOT to Do
+**The deep 28px rounding produced the highest conversion rate.**
 
-❌ Too many price points (decision paralysis)
-❌ Prices ending in 7 or 4 (no evidence they work)
-❌ Hiding the price (increases bounce rate)
-❌ Complicated discount math
+The improvement was not dramatic, but in ecommerce even a 0.5 to 1 percent lift compounds into significant revenue over time.
 
-## Conclusion
+## Why it works
 
-Pricing is psychology. Small changes in how prices are displayed can significantly impact conversion and AOV. Test these strategies on your own products.`,
-    buttons: []
-  },
-  {
-    id: 24,
-    slug: 'retargeting-ads-strategy',
-    title: 'Retargeting Strategy: The Complete Guide',
-    description: 'How to bring back visitors without being annoying.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_23.jpg?v=1763297700',
-    isFeatured: false,
-    stats: [
-      { value: '11x', label: 'ROAS' },
-    ],
-    content: `## Retargeting Fundamentals
+• Rounded buttons feel more approachable and safe
+• The shape flows better visually, especially on mobile
+• It increases click willingness on a subconscious level
 
-Only 2-3% of visitors buy on their first visit.
-Retargeting brings back the other 97%.
+![Button Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1763056442)
 
-Our retargeting ROAS: 11x average
+## Recommended CSS Code
 
-## The Audience Segments
+Add this in:
+**Customize → Theme Settings → Custom CSS**
 
-### Segment 1: Cart Abandoners (0-3 days)
-**Hottest audience.** Show the exact products they left.
-Budget: 40% of retargeting spend
+\`\`\`css
+.btn.product-form__cart-submit,
+.shopify-payment-button__button,
+input[type="submit"][name="add"],
+button[name="add"] {
+  border-radius: 68px !important;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background-color: #007aff;
+  border: none;
+  padding: 12px 24px;
+}
+\`\`\`
 
-### Segment 2: Product Viewers (0-7 days)
-Viewed products but didn't add to cart.
-Show social proof and reviews.
-Budget: 30% of retargeting spend
-
-### Segment 3: All Visitors (0-30 days)
-Broadest audience.
-Show bestsellers and brand story.
-Budget: 20% of retargeting spend
-
-### Segment 4: Past Purchasers (30-180 days)
-Bring back for repeat purchase.
-Show new arrivals or complementary products.
-Budget: 10% of retargeting spend
-
-## Frequency Rules
-
-**Do:**
-• Cap at 3-5 impressions per day
-• Rotate creatives every 1-2 weeks
-• Use different messages for each stage
-
-**Don't:**
-• Show the same ad 20 times a day
-• Keep running the same creative for months
-• Retarget for more than 30-60 days
-
-## Creative Strategy
-
-**Days 1-3:** Product-focused, direct CTA
-**Days 4-7:** Add social proof, reviews
-**Days 8-14:** Add urgency, limited offer
-**Days 15-30:** Brand story, broader messaging
+(Note: 68px in CSS creates a deep rounded effect, visually similar to a 28px rounding on most buttons.)
 
 ## Conclusion
 
-Retargeting is the highest ROI advertising you can do. Segment your audiences, control frequency, and rotate creative to maximize results.`,
-    buttons: []
-  },
-  {
-    id: 25,
-    slug: 'product-photography-tips',
-    title: 'Product Photography That Sells (DIY Guide)',
-    description: 'How to take professional product photos without expensive equipment.',
-    category: 'conversion',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_24.jpg?v=1763297720',
-    isFeatured: false,
-    content: `## The Basics
-
-Great product photos can double your conversion rate.
-Bad photos kill sales before visitors even read the description.
-
-Good news: You don't need expensive equipment.
-
-## Equipment Needed
-
-• Smartphone (2019 or newer)
-• White foam board ($3 at any craft store)
-• Natural light (window)
-• White poster board for background
-
-Total cost: Under $20
-
-## The Setup
-
-### Step 1: Find Your Light
-• North-facing window is best (no direct sun)
-• Shoot between 10am-2pm
-• Place product 2-3 feet from window
-
-### Step 2: Create Your Background
-• Tape white poster board to wall, curving down
-• No visible edges or creases
-• Clean surface only
-
-### Step 3: Use the Bounce
-• Place foam board opposite the window
-• Reflects light back, reduces shadows
-• Creates even, professional lighting
-
-## Shooting Tips
-
-✔️ Fill 80% of the frame with product
-✔️ Shoot multiple angles (5-8 minimum)
-✔️ Include scale reference where helpful
-✔️ Get close-up detail shots
-✔️ Show product in use
-
-## Editing
-
-Free apps that work:
-• Snapseed (mobile)
-• VSCO (mobile)
-• Canva (desktop/mobile)
-
-Basic edits needed:
-• Exposure/brightness
-• White balance
-• Crop and straighten
-• Remove background if needed
-
-## Common Mistakes
-
-❌ Yellow/warm lighting
-❌ Cluttered backgrounds
-❌ Harsh shadows
-❌ Blurry images
-❌ Inconsistent style across products
-
-## Conclusion
-
-You don't need a studio or expensive camera. Natural light, a white background, and a decent smartphone can produce photos that convert.`,
-    buttons: []
-  },
-  {
-    id: 26,
-    slug: 'holiday-marketing-calendar',
-    title: 'The Complete Holiday Marketing Calendar',
-    description: 'When to run promotions for maximum revenue throughout the year.',
-    category: 'marketing',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_25.jpg?v=1763297740',
-    isFeatured: false,
-    content: `## The Revenue Opportunities
-
-Not all holidays are equal. Here's our revenue data by event:
-
-### Tier 1: Major Revenue Events
-**Black Friday/Cyber Monday** (Nov)
-• 3-4x normal revenue
-• Start teasing 2 weeks early
-• Biggest discount of the year
-
-**Christmas** (Dec 1-20)
-• 2x normal revenue
-• Gift guides and bundles
-• Last shipping dates critical
-
-### Tier 2: Strong Performers
-**Valentine's Day** (Feb 14)
-• 1.5x revenue for gift-friendly products
-• Start campaigns Feb 1
-
-**Mother's Day** (May)
-• 1.5x revenue
-• Gift bundles work well
-• "Last chance" shipping crucial
-
-**4th of July** (USA)
-• Great for flash sales
-• Patriotic messaging optional
-
-### Tier 3: Bonus Opportunities
-**New Year** (Jan 1-7)
-• "New Year, New You" angle
-• Resolution-related products
-
-**Easter** (Spring)
-• Smaller bump, family gifts
-• Pastel and spring themes
-
-**Father's Day** (June)
-• Lower than Mother's Day
-• Direct and practical messaging
-
-**Back to School** (Aug-Sep)
-• Depends heavily on product type
-
-**Halloween** (Oct)
-• Costume and party related only
-
-## Planning Timeline
-
-**8 weeks before:** Finalize offers and creative concepts
-**4 weeks before:** Email list segmentation and warmup
-**2 weeks before:** Teaser campaigns begin
-**1 week before:** VIP/early access
-**Day of:** Full campaign launch
-**Day after:** Last chance messaging
-
-## Conclusion
-
-Plan your promotional calendar annually. The big events require preparation. Winging it leaves money on the table.`,
-    buttons: []
-  },
-  {
-    id: 27,
-    slug: 'social-proof-types-ranked',
-    title: 'Social Proof Types Ranked by Conversion Impact',
-    description: 'Not all social proof is equal. Here is what actually moves the needle.',
-    category: 'psychology',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_26.jpg?v=1763297760',
-    isFeatured: true,
-    stats: [
-      { value: '#1', label: 'UGC Photos' },
-    ],
-    content: `## The Ranking (Based on Our Tests)
-
-### #1: User-Generated Photos in Reviews (+32% CVR)
-Real customers showing real products in real life.
-This is the gold standard.
-
-### #2: Video Testimonials (+27% CVR)
-Real people talking about their experience.
-Harder to fake, higher trust.
-
-### #3: Star Ratings with Count (+18% CVR)
-"4.8 stars from 2,847 reviews"
-The count matters as much as the rating.
-
-### #4: Recent Purchase Notifications (+12% CVR)
-"Sarah from Miami just purchased..."
-Creates urgency and social validation.
-
-### #5: Media Logos (+9% CVR)
-"As seen in Forbes, Vogue, GQ"
-Works better for new brands building credibility.
-
-### #6: Customer Count (+7% CVR)
-"Join 50,000+ happy customers"
-Good supporting element, not primary.
-
-### #7: Influencer Endorsements (+5% CVR)
-Unless the influencer is very well known, impact is limited.
-
-## How to Get More UGC
-
-✔️ Ask for photos in post-purchase emails
-✔️ Offer incentives (discount on next order)
-✔️ Create a branded hashtag
-✔️ Feature the best UGC on your site
-
-## Placement Matters
-
-• Reviews: Product page, near buy button
-• Purchase notifications: Homepage and product pages
-• Media logos: Homepage, above fold
-• Customer count: Homepage, checkout page
-
-## Conclusion
-
-Focus on getting user-generated photos and video testimonials. These are the most powerful forms of social proof and worth investing in.`,
-    buttons: []
-  },
-  {
-    id: 28,
-    slug: 'shipping-speed-conversion',
-    title: 'How Shipping Speed Impacts Conversion',
-    description: 'Fast shipping is not just a nice-to-have. It is a conversion driver.',
-    category: 'operations',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_27.jpg?v=1763297780',
-    isFeatured: false,
-    stats: [
-      { value: '23%', label: 'CVR Lift' },
-    ],
-    content: `## The Data
-
-We tested messaging different shipping timeframes:
-
-**Version A:** "Ships in 2-4 weeks"
-**Version B:** "Ships in 7-10 business days"
-**Version C:** "Ships in 5-7 business days"
-**Version D:** "Ships in 3-5 business days"
-
-## Results
-
-Conversion rate by version:
-• Version A: Baseline
-• Version B: +8%
-• Version C: +16%
-• Version D: +23%
-
-Every improvement in shipping speed increased conversion.
-
-## The Psychology
-
-Amazon has trained consumers to expect fast delivery.
-Anything over 7-10 days now feels "slow."
-
-Slow shipping creates:
-• Doubt ("Is this legitimate?")
-• Impatience ("I could get it faster elsewhere")
-• Abandonment ("I'll think about it")
-
-## How to Ship Faster (Dropshipping)
-
-### Option 1: Private Agent
-5-7 day delivery via DHL/FedEx from China.
-Cost: $3-8 per order depending on weight.
-
-### Option 2: Local Warehousing
-Stock bestsellers in US/EU warehouses.
-2-4 day delivery possible.
-
-### Option 3: Hybrid
-Private agent for most orders.
-Local stock for your top 10% products.
-
-## Display Strategy
-
-✔️ Show shipping time prominently on product page
-✔️ Include it near the buy button
-✔️ Mention it in your announcement bar
-✔️ Add estimated delivery date at checkout
-
-## Conclusion
-
-Shipping speed directly impacts conversion. Invest in faster fulfillment and make sure customers see it before they buy.`,
-    buttons: [
-      { text: 'Connect Private Agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-    ]
-  },
-  {
-    id: 29,
-    slug: 'loyalty-program-setup',
-    title: 'How to Build a Loyalty Program That Works',
-    description: 'The structure that increased repeat purchase rate by 47%.',
-    category: 'ltv',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_28.jpg?v=1763297800',
-    isFeatured: false,
-    stats: [
-      { value: '47%', label: 'Repeat Rate Lift' },
-    ],
-    content: `## The Structure
-
-Our loyalty program is simple. Complexity kills engagement.
-
-### Earning Points
-• 1 point per $1 spent
-• 50 points for account creation
-• 100 points for review with photo
-• 50 points for social media follow
-
-### Redeeming Points
-• 100 points = $5 off
-• 200 points = $12 off
-• 500 points = $35 off
-
-Non-linear rewards incentivize larger redemptions.
-
-### VIP Tiers
-**Bronze:** 0-500 lifetime points
-• Basic earning rates
-
-**Silver:** 500-2000 lifetime points
-• 1.5x points on purchases
-• Early access to sales
-
-**Gold:** 2000+ lifetime points
-• 2x points on purchases
-• Free shipping always
-• Birthday gift
-
-## Results After 6 Months
-
-• Repeat purchase rate: +47%
-• Average order frequency: +0.8 orders per customer
-• Email engagement from loyalty members: 3x higher
-• Program members LTV: 2.4x non-members
-
-## Keys to Success
-
-✔️ Make it dead simple to understand
-✔️ Show points balance everywhere
-✔️ Send reminders about unused points
-✔️ Celebrate tier upgrades
-✔️ Make rewards feel valuable
-
-## Common Mistakes
-
-❌ Complicated earning/redemption rules
-❌ Points that expire too quickly
-❌ Rewards that feel cheap
-❌ No communication about the program
-
-## Conclusion
-
-A loyalty program is an LTV machine. Keep it simple, make rewards meaningful, and communicate regularly.`,
-    buttons: [
-      { text: 'Loyalty Program App', url: 'https://apps.shopify.com/smile-io' }
-    ]
-  },
-  {
-    id: 30,
-    slug: 'exit-intent-popup-optimization',
-    title: 'Exit Intent Popups: What Works in 2024',
-    description: 'The exit popup strategy that captures 12% of abandoning visitors.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_29.jpg?v=1763297820',
-    isFeatured: false,
-    stats: [
-      { value: '12%', label: 'Capture Rate' },
-    ],
-    content: `## The Strategy
-
-Exit intent popups appear when someone moves to leave your site.
-Done well: 12% capture rate.
-Done poorly: Annoying your customers.
-
-## What Works
-
-### 1. Offer Real Value
-"Get 10% off your first order"
-Specific, tangible benefit.
-
-### 2. Single Focus
-Email OR discount code
-Not email AND phone AND survey
-
-### 3. Easy Close
-Large X button, click outside to close
-Don't trap people
-
-### 4. Mobile Consideration
-Exit intent is harder on mobile
-Use scroll-depth trigger instead
-
-## What Doesn't Work
-
-❌ Generic "Don't leave!" messaging
-❌ Multiple form fields
-❌ No clear benefit stated
-❌ Popup that appears every visit
-❌ Countdown timers on email capture
-
-## Our Best-Performing Popup
-
-**Headline:** "Wait! Your cart misses you"
-**Subhead:** "Complete your purchase and get 10% off"
-**CTA:** "Claim My Discount"
-**Note:** Only shows to cart abandoners
-
-Conversion rate: 14.2%
-
-## Technical Settings
-
-• Show once per session
-• Don't show to returning customers within 7 days
-• Exclude from pages: checkout, thank you
-• Delay by 3+ seconds after page load
-
-## Email-Only Popup
-
-For visitors without items in cart:
-
-**Headline:** "Join 50,000+ subscribers"
-**Subhead:** "Get exclusive deals and style tips"
-**CTA:** "Subscribe"
-**Field:** Email only
-
-Conversion rate: 8.6%
-
-## Conclusion
-
-Exit popups work when they offer real value and respect the visitor's time. One chance, one clear offer, easy to dismiss.`,
-    buttons: []
-  },
-  {
-    id: 31,
-    slug: 'bundle-strategy-aov',
-    title: 'Product Bundles That Actually Sell',
-    description: 'How we use bundles to increase AOV by 40%.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_30.jpg?v=1763297840',
-    isFeatured: false,
-    stats: [
-      { value: '40%', label: 'AOV Increase' },
-    ],
-    content: `## Bundle Types That Work
-
-### 1. Starter Kit Bundle
-Everything needed to get started.
-Example: Skincare routine with cleanser + serum + moisturizer
-Discount: 15-20% off individual prices
-
-### 2. Best Sellers Bundle
-Your top 3 products together.
-Example: "Customer favorites pack"
-Discount: 10-15% off
-
-### 3. Complete Collection
-Full product line in one purchase.
-Example: All 5 protein flavors
-Discount: 20-25% off
-
-### 4. Mix and Match
-Customer builds their own bundle.
-Example: Pick any 3 items, save 15%
-Discount: Tiered based on quantity
-
-## Pricing Strategy
-
-**Individual total:** $90
-**Bundle price:** $69 (23% off)
-
-The savings must feel meaningful.
-Under 10% savings: Not compelling enough
-Over 30% savings: Questions about value
-
-## Bundle Placement
-
-✔️ Dedicated bundles collection page
-✔️ Product page "Frequently Bought Together"
-✔️ Cart page suggestions
-✔️ Homepage featured section
-
-## Results
-
-After implementing bundles:
-• AOV increased 40%
-• Bundle products account for 28% of revenue
-• Return rate on bundles: Lower (customers feel they got value)
-
-## Keys to Bundle Success
-
-✔️ Products that logically go together
-✔️ Clear savings displayed
-✔️ Great bundle photography
-✔️ "Build your own" option for personalization
-
-## Conclusion
-
-Bundles increase AOV while providing genuine value to customers. Start with your bestsellers and logical product combinations.`,
-    buttons: []
-  },
-  {
-    id: 32,
-    slug: 'google-shopping-setup',
-    title: 'Google Shopping Setup for Beginners',
-    description: 'How to launch Google Shopping ads that actually make money.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_31.jpg?v=1763297860',
-    isFeatured: false,
-    content: `## Why Google Shopping
-
-Google Shopping captures high-intent buyers.
-Someone searching "buy blue running shoes size 10" is ready to purchase.
-
-ROAS on Shopping typically beats Facebook for established products.
-
-## Setup Checklist
-
-### Step 1: Google Merchant Center
-• Verify your website
-• Upload product feed (Shopify does this automatically)
-• Fix any feed errors
-
-### Step 2: Link to Google Ads
-• Connect Merchant Center to Ads account
-• Enable automatic item updates
-• Set up conversion tracking
-
-### Step 3: Create Shopping Campaign
-• Start with Standard Shopping
-• Set reasonable daily budget ($20-50 to start)
-• Target countries you ship to
-
-## Feed Optimization
-
-Your product feed is everything. Optimize:
-
-✔️ **Titles:** Include brand + product + key attributes
-✔️ **Descriptions:** Detailed, keyword-rich
-✔️ **Images:** Clean, white background
-✔️ **Price:** Competitive, accurate
-✔️ **Availability:** Always up to date
-
-## Campaign Structure
-
-**Beginner approach:**
-• Single campaign
-• All products
-• Let Google optimize
-
-**Intermediate approach:**
-• Separate campaigns by category
-• Different bids by product margin
-• Exclude poor performers
-
-## Key Metrics to Watch
-
-• Cost per click (aim for under $0.50 starting out)
-• ROAS (aim for 4x+ to be profitable)
-• Impression share (how often you show up)
-• Click-through rate (industry average is 0.8-1%)
-
-## Common Mistakes
-
-❌ Ignoring feed errors
-❌ Bidding too high initially
-❌ Not excluding unprofitable products
-❌ Poor product images
-
-## Conclusion
-
-Google Shopping is essential for eCommerce. Start simple, optimize your feed, and scale what works.`,
-    buttons: []
-  },
-  {
-    id: 33,
-    slug: 'customer-segmentation-guide',
-    title: 'Customer Segmentation: The Ultimate Guide',
-    description: 'How to segment customers for personalized marketing that converts.',
-    category: 'marketing',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_32.jpg?v=1763297880',
-    isFeatured: false,
-    content: `## Why Segment
-
-Sending the same message to everyone = low engagement.
-Personalized messaging = 3-5x higher conversion.
-
-## The Core Segments
-
-### Segment 1: VIP Customers (Top 10% by spend)
-• Highest LTV
-• Most engaged
-• First access to new products
-• Personal outreach works
-
-### Segment 2: Repeat Buyers
-• Purchased 2+ times
-• Proven interest
-• Upsell and cross-sell candidates
-• Loyalty program targets
-
-### Segment 3: One-Time Buyers
-• Purchased once
-• At risk of never returning
-• Need re-engagement campaigns
-• Win-back offers effective
-
-### Segment 4: Engaged Non-Buyers
-• On email list, browse frequently
-• Haven't purchased
-• Need different offers or messaging
-• Social proof heavy approach
-
-### Segment 5: At-Risk Customers
-• Previously active, now quiet
-• 60-90 days since last open/purchase
-• Win-back campaign targets
-
-## Messaging by Segment
-
-**VIPs:** Early access, exclusive products, personal notes
-**Repeat:** Cross-sell, bundles, loyalty rewards
-**One-time:** Review request, education, related products
-**Non-buyers:** Strong offers, social proof, urgency
-**At-risk:** Win-back offer, "We miss you"
-
-## Implementation
-
-Most email platforms (Klaviyo, Omnisend) have built-in segmentation.
-
-Start with these 5 segments.
-Create 1-2 dedicated flows for each.
-Watch engagement rates by segment.
-
-## Results
-
-Segmented campaigns vs. blast campaigns:
-• Open rates: 2x higher
-• Click rates: 3x higher
-• Revenue per email: 4x higher
-
-## Conclusion
-
-Stop sending the same email to everyone. Segment your list and speak to each group's specific needs and behaviors.`,
-    buttons: [
-      { text: 'Email Platform', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-    ]
-  },
-  {
-    id: 34,
-    slug: 'page-speed-optimization',
-    title: 'Page Speed Optimization: The Quick Wins',
-    description: 'How we improved load time by 60% and saw conversion jump.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_33.jpg?v=1763297900',
-    isFeatured: false,
-    stats: [
-      { value: '60%', label: 'Faster Load' },
-    ],
-    content: `## Why Speed Matters
-
-Every 1 second of load time costs 7% in conversions.
-A 5-second site loses 35% of potential sales to speed alone.
-
-## The Quick Wins
-
-### 1. Compress Images
-Before: 2MB product images
-After: 150KB with no visible quality loss
-Tool: TinyPNG or Shopify's built-in compression
-
-**Impact:** 40% faster load time
-
-### 2. Remove Unused Apps
-Every Shopify app adds JavaScript.
-Audit your apps. Remove anything not actively used.
-
-**Impact:** 15-30% faster depending on app count
-
-### 3. Lazy Load Images
-Images below the fold load only when scrolled to.
-Most themes support this. Enable it.
-
-**Impact:** 20% faster initial load
-
-### 4. Use a Fast Theme
-Some themes are bloated with features you don't use.
-Stick to lightweight, well-coded themes.
-
-**Impact:** Varies widely
-
-### 5. Minimize Custom Code
-Every custom script adds load time.
-Audit and remove unnecessary tracking pixels.
-
-**Impact:** 10-20% faster
-
-## How to Measure
-
-Free tools:
-• Google PageSpeed Insights
-• GTmetrix
-• Shopify's built-in speed report
-
-Aim for:
-• Mobile score: 50+ (70+ is excellent)
-• Load time: Under 3 seconds
-
-## Our Results
-
-Before optimization:
-• Mobile score: 28
-• Load time: 6.2 seconds
-• Mobile conversion: 1.8%
-
-After optimization:
-• Mobile score: 67
-• Load time: 2.5 seconds
-• Mobile conversion: 2.6%
-
-## Conclusion
-
-Page speed is a conversion factor. Spend a few hours optimizing, and the results compound forever.`,
-    buttons: []
-  },
-  {
-    id: 35,
-    slug: 'tiktok-ads-beginners',
-    title: 'TikTok Ads for Beginners: Complete Guide',
-    description: 'How to start advertising on TikTok without wasting money.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_34.jpg?v=1763297920',
-    isFeatured: false,
-    content: `## Why TikTok
-
-• 1 billion+ monthly active users
-• Cheaper CPMs than Facebook (for now)
-• Highly engaged audience
-• Great for products under $50
-
-## Getting Started
-
-### Step 1: Create Business Account
-TikTok Business Center
-Link your Shopify store
-Install TikTok pixel
-
-### Step 2: Understand the Platform
-Spend 30 minutes scrolling TikTok
-See what content performs
-Note: TikTok is NOT Instagram
-
-### Step 3: Create TikTok-Native Content
-• Vertical video only (9:16)
-• No polished ads - raw performs better
-• Hook in first 1-2 seconds
-• Show product in use
-
-## Campaign Setup
-
-**Objective:** Website Conversions
-**Budget:** Start $50-100/day
-**Optimization:** Purchase or Add to Cart
-**Audience:** Broad (let TikTok optimize)
-
-## Creative Best Practices
-
-✔️ UGC-style content wins
-✔️ Text overlays for sound-off viewers
-✔️ Trending sounds can help reach
-✔️ Problem → Solution format works
-✔️ Show results/transformations
-
-❌ Don't use polished brand ads
-❌ Don't reuse Instagram/Facebook creative
-❌ Don't make ads that "look like ads"
-
-## What to Expect
-
-Week 1-2: Learning phase, unstable results
-Week 3-4: Algorithm optimizes, costs stabilize
-Month 2+: Scale what works, kill what doesn't
-
-## Key Metrics
-
-• CPM: $5-15 typical
-• CTR: 1%+ is good
-• CPC: $0.50-2.00
-• ROAS: Aim for 2x+ to be profitable
-
-## Conclusion
-
-TikTok ads work when you embrace the platform's style. Create native content, start with broad targeting, and let the algorithm do its job.`,
-    buttons: [
-      { text: 'TikTok Credits', url: '/tiktok-credits' }
-    ]
-  },
-  {
-    id: 36,
-    slug: 'returns-policy-conversion',
-    title: 'How Your Returns Policy Affects Conversion',
-    description: 'A generous returns policy increases sales. Here is the data.',
-    category: 'conversion',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_35.jpg?v=1763297940',
-    isFeatured: false,
-    stats: [
-      { value: '17%', label: 'CVR Increase' },
-    ],
-    content: `## The Test
-
-We tested three different returns policies:
-
-**Policy A:** 14-day returns, customer pays shipping
-**Policy B:** 30-day returns, free return shipping
-**Policy C:** 60-day returns, free return shipping, no questions asked
-
-## Results
-
-Conversion rate relative to Policy A:
-• Policy B: +12%
-• Policy C: +17%
-
-Return rate:
-• Policy A: 4.2%
-• Policy B: 5.1%
-• Policy C: 5.8%
-
-**Net result:** Policy C generated 14% more revenue after accounting for increased returns.
-
-## Why It Works
-
-A generous returns policy removes the #1 online shopping fear:
-"What if I don't like it?"
-
-When the risk is zero, more people buy.
-
-## Best Practices
-
-✔️ Display policy prominently (product page, footer, checkout)
-✔️ Make the process simple and clear
-✔️ Respond to return requests quickly
-✔️ Consider free return shipping (it pays for itself)
-
-## The Psychology
-
-**Endowment Effect:** Once someone owns something, they value it more.
-Many people who intend to return end up keeping the product.
-
-**Trust Signal:** A generous policy signals confidence in your product.
-
-## Implementation
-
-Your returns policy should state:
-• Timeframe (30-60 days recommended)
-• Condition requirements (reasonable)
-• Refund method (original payment)
-• Process (simple steps)
-
-## Conclusion
-
-A generous returns policy is a conversion driver, not a cost center. The increase in sales outweighs the increase in returns.`,
-    buttons: []
-  },
-  {
-    id: 37,
-    slug: 'copywriting-formulas-ecommerce',
-    title: '7 Copywriting Formulas That Sell Products',
-    description: 'Proven copywriting frameworks for product descriptions and ads.',
-    category: 'psychology',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_36.jpg?v=1763297960',
-    isFeatured: false,
-    content: `## The 7 Formulas
-
-### 1. PAS (Problem - Agitate - Solution)
-**Problem:** Identify the pain point
-**Agitate:** Make them feel it deeply
-**Solution:** Present your product as the answer
-
-Example:
-"Tired of waking up with back pain? (Problem)
-Every morning starts with stiffness, affecting your entire day. (Agitate)
-Our ergonomic pillow aligns your spine while you sleep. (Solution)"
-
-### 2. AIDA (Attention - Interest - Desire - Action)
-**Attention:** Hook them immediately
-**Interest:** Share compelling details
-**Desire:** Make them want it
-**Action:** Tell them what to do
-
-### 3. FAB (Features - Advantages - Benefits)
-**Features:** What it has
-**Advantages:** Why that matters
-**Benefits:** How it improves their life
-
-Example:
-"Made with memory foam (Feature)
-Contours to your body shape (Advantage)
-So you wake up pain-free and energized (Benefit)"
-
-### 4. Before - After - Bridge
-**Before:** Their current painful situation
-**After:** Their ideal future state
-**Bridge:** Your product connects the two
-
-### 5. The 4 Ps (Picture - Promise - Prove - Push)
-**Picture:** Paint a vivid scenario
-**Promise:** What you'll deliver
-**Prove:** Evidence it works
-**Push:** Call to action
-
-### 6. So What? Test
-After every statement, ask "So what?"
-Keep answering until you reach the real benefit.
-
-"It's made of bamboo." So what?
-"Bamboo is sustainable." So what?
-"You can feel good about your purchase." ← Real benefit
-
-### 7. One Reader Rule
-Write to one specific person, not "customers."
-Use "you" not "our customers."
-Be specific, not generic.
-
-## Application Tips
-
-✔️ Use PAS for product descriptions
-✔️ Use AIDA for ads and landing pages
-✔️ Use FAB for feature lists
-✔️ Always end with clear CTA
-
-## Conclusion
-
-Good copy sells. Learn these formulas, practice them, and watch conversion improve.`,
-    buttons: []
-  },
-  {
-    id: 38,
-    slug: 'sms-marketing-best-practices',
-    title: 'SMS Marketing: Rules for 2024',
-    description: 'How to use SMS without annoying customers or getting blocked.',
-    category: 'marketing',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_37.jpg?v=1763297980',
-    isFeatured: false,
-    stats: [
-      { value: '98%', label: 'Open Rate' },
-    ],
-    content: `## Why SMS Works
-
-• 98% open rate (vs 20% for email)
-• 90% read within 3 minutes
-• Higher conversion rate than any other channel
-• Direct access to customers
-
-## The Rules
-
-### Rule 1: Get Explicit Consent
-• Double opt-in required
-• Clear disclosure of message frequency
-• Easy opt-out on every message
-• Compliance is non-negotiable
-
-### Rule 2: Frequency Limits
-• Maximum 4-6 messages per month
-• Never more than 1 per day
-• Skip a week sometimes
-• Quality over quantity
-
-### Rule 3: Provide Value
-Every SMS must offer something:
-• Exclusive discount
-• Important update (shipping, back in stock)
-• Early access
-• Genuinely useful information
-
-### Rule 4: Timing Matters
-• Best times: 10am-12pm, 7pm-9pm
-• Never before 9am or after 9pm
-• Consider time zones
-• Avoid Monday mornings and Sunday evenings
-
-## Message Templates
-
-**Flash Sale:**
-"[Brand]: Flash sale! 25% off everything for 24 hours only. Shop now: [link] Reply STOP to opt out"
-
-**Abandoned Cart:**
-"Hey [Name]! You left items in your cart. Complete your order and get 10% off: [link] - [Brand]"
-
-**Back in Stock:**
-"[Brand]: Good news! [Product] is back in stock. Grab yours before it sells out again: [link]"
-
-## Metrics to Track
-
-• Delivery rate (should be 95%+)
-• Click-through rate (aim for 10%+)
-• Opt-out rate (keep under 2% per campaign)
-• Revenue per message
-
-## Conclusion
-
-SMS is powerful but requires restraint. Send fewer, better messages and always provide clear value.`,
-    buttons: [
-      { text: 'SMS Platform', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' }
-    ]
-  },
-  {
-    id: 39,
-    slug: 'post-purchase-experience',
-    title: 'The Post-Purchase Experience That Builds LTV',
-    description: 'What happens after the sale determines if they come back.',
-    category: 'ltv',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_38.jpg?v=1763298000',
-    isFeatured: true,
-    stats: [
-      { value: '2.8x', label: 'Repeat Rate' },
-    ],
-    content: `## The Journey After Purchase
-
-Most brands focus on getting the sale.
-Smart brands focus on what happens next.
-
-Our post-purchase system increased repeat purchase rate by 2.8x.
-
-## The Timeline
-
-### Day 0: Order Confirmation
-• Immediate email with order details
-• Thank you message (personalized)
-• Set delivery expectations
-• Introduce the brand story
-
-### Day 1: Shipping Notification
-• Tracking number and link
-• Expected delivery date
-• What to expect in the package
-
-### Day 3-5: In Transit Update
-• "Your order is on its way!"
-• Tracking update
-• Build anticipation for arrival
-
-### Day Delivered: Arrival Confirmation
-• "Your order has arrived!"
-• Care instructions if applicable
-• How to get help if needed
-
-### Day 7: Check-In
-• "How are you enjoying your [product]?"
-• Request feedback
-• Offer help if any issues
-
-### Day 14: Review Request
-• Ask for review (with photo incentive)
-• Make it easy (direct link)
-• Thank them for their purchase
-
-### Day 30: Cross-Sell
-• Recommend complementary products
-• Exclusive offer for existing customers
-• "Customers who bought X also loved Y"
-
-## The Unboxing Experience
-
-Don't overlook physical touchpoints:
-
-✔️ Quality packaging (not cheap plastic)
-✔️ Branded elements (tissue paper, stickers)
-✔️ Thank you card with personal touch
-✔️ Small unexpected gift
-✔️ Care instructions/how-to guide
-
-## Results
-
-Customers who complete our post-purchase flow:
-• 2.8x more likely to purchase again
-• 3.2x more likely to leave a review
-• 45% higher LTV
-
-## Conclusion
-
-The sale is just the beginning. The post-purchase experience determines whether you have a customer or a fan.`,
-    buttons: []
-  },
-  {
-    id: 40,
-    slug: 'scaling-facebook-ads',
-    title: 'How to Scale Facebook Ads Without Killing Performance',
-    description: 'The scaling method that took us from $500 to $5,000/day.',
-    category: 'marketing',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_39.jpg?v=1763298020',
-    isFeatured: false,
-    content: `## The Scaling Problem
-
-You find a winning ad at $100/day.
-You increase to $500/day.
-Performance tanks.
-
-This happens because Facebook's algorithm needs time to adjust.
-
-## The 20% Rule
-
-**Never increase budget more than 20% at a time.**
-
-$100 → $120 → $144 → $173 → $207...
-
-Wait 3-4 days between increases.
-Let the algorithm stabilize at each level.
-
-## Horizontal Scaling
-
-Instead of increasing budget on one ad set, duplicate it:
-
-**Original:** $100/day to Broad Audience
-**Duplicate 1:** $100/day to Lookalike 1%
-**Duplicate 2:** $100/day to Interest Stack A
-**Duplicate 3:** $100/day to Interest Stack B
-
-Same creative, different audiences.
-Total spend increases without algorithm shock.
-
-## Vertical vs Horizontal
-
-**Vertical Scaling:**
-• Increase budget on winning ad sets
-• Use 20% rule
-• Slower but maintains efficiency
-
-**Horizontal Scaling:**
-• Duplicate to new audiences
-• Test more creatives
-• Faster but requires more management
-
-Best approach: Both together.
-
-## When to Scale
-
-Scale when:
-✔️ ROAS above target for 4+ days
-✔️ CPA stable or decreasing
-✔️ Sufficient conversion volume (50+ per week)
-
-Don't scale when:
-❌ Performance volatile day-to-day
-❌ Less than 4 days of data
-❌ Major changes to ad or landing page
-
-## Creative Scaling
-
-One winning ad isn't enough at scale.
-You need 3-5 winning creatives running simultaneously.
-
-Continuously test new creative.
-Replace fatigued ads before performance drops.
-
-## Our Scaling Journey
-
-Week 1: $100/day (testing)
-Week 2-3: $300/day (validating)
-Week 4-6: $1,000/day (initial scale)
-Week 7-10: $3,000/day (aggressive scale)
-Week 11+: $5,000/day (optimization)
-
-## Conclusion
-
-Scaling requires patience. Follow the 20% rule, combine vertical and horizontal approaches, and never stop testing new creative.`,
-    buttons: []
-  },
-];
+A rounded Add to Cart button converts slightly better than a square one.
+
+It will not transform the entire business, but it improves the buying experience and adds incremental conversion gains.
+
+In ecommerce, every percent matters, and this is an easy win.`,
+      buttons: []
+    },
+    {
+      id: 19,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_18.jpg?v=1763297988',
+      title: 'Which Shopify Theme Is the Best?',
+      intro: 'Shrine VS. Impulse – Who\'s the king?',
+      content: `## What we tested
+
+We examined two highly popular themes:
+**Impulse versus Shrine**.
+
+The test was conducted on the same store, same product, same traffic, same creatives, with no other changes on the site. The design was kept as similar as possible, although differences naturally existed because they are different themes, and that is exactly the point.
+
+## The goal was simple:
+
+to find which theme creates a smoother buying experience and increases conversion rate.
+
+## The results:
+
+**Shrine won by a very large margin, with a 34.9% increase in CVR.**
+
+![Theme Comparison](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/61.jpg?v=1763114928)
+
+## The main reasons, in our opinion:
+
+• Faster loading, especially on mobile
+• Cleaner and sharper product page structure
+• Fewer distractions, more purchase focus
+• More efficient placement of key information above the fold
+
+Impulse is still an excellent theme, but in a direct comparison Shrine simply outperformed it across the board.`,
+      buttons: [
+        { text: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }
+      ]
+    },
+    {
+      id: 20,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_19.jpg?v=1763298027',
+      title: 'Your Store Is Leaking Coupons',
+      intro: 'Do this now to stop losing profit without noticing.',
+      content: `## The Explanation
+
+If you have even one discount code on your site, no matter how hidden or how specific it is, you are losing money every single day.
+
+**Why?**
+
+Browser extensions like Honey, Capital One Shopping, and Coupert scan your store, detect every active coupon, and show it to every shopper at checkout (if the shopper use this extensions).
+
+Including people who were never supposed to receive a discount.
+
+## A Real Example
+
+You create an abandoned-cart automation with a 20% discount code, meant to be sent only after two months to customers who left without buying.
+
+In reality, these extensions crawl your site, find that code, and present it to every visitor.
+
+Someone who was ready to pay full price suddenly gets a discount… for free.
+
+That is pure profit erased, quietly and with zero alerts.
+
+The result is lower margins without any clear explanation.
+
+## The Solution
+
+There is a Shopify app that completely blocks these coupon extensions from accessing your discount codes.
+
+It automatically prevents Honey and other extensions from revealing your coupons, keeping them exclusive to the customers you intended.
+
+## The result
+
+• Full control over your discounts
+• No more coupon leaks
+• Your profit stays with you
+
+This is the first mandatory step we implement for every brand we build.`,
+      buttons: [
+        { text: 'Install coupon blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }
+      ]
+    },
+    {
+      id: 21,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_20.jpg?v=1763298065',
+      title: 'Meta\'s New Brain: Andromeda – How You Must Operate From Now On',
+      intro: 'Meta has upgraded its advertising engine. Those who adapt will earn more from every cent spent.',
+      content: `## What Andromeda Is
+
+Andromeda is Meta's new advertising engine.
+
+It is the brain that decides who sees each ad and who even enters the auction.
+
+It replaces the old engine and operates through far more advanced AI models that analyze:
+
+• The visual structure of your creative
+• How users behave on your site
+• Scrolling and viewing patterns
+• Who buys and who only shows interest
+
+The new engine can detect the fit between an ad and a specific person with far greater accuracy than before.
+
+## Why It Is More Powerful
+
+To run Andromeda, Meta built an entirely new AI infrastructure:
+
+**NVIDIA's advanced chips:** They run large AI models in real time at very high speeds.
+
+**Meta's internal chip, MTIA:** A chip designed specifically to measure user behavior and generate advertising recommendations.
+
+This combination allows Meta to process enormous volumes of data within seconds.
+
+The result: the system can choose far more accurately who should see your ads and who is most likely to buy.
+
+## What Changes For Advertisers
+
+As Meta's brain becomes smarter, manual control becomes less relevant.
+
+### 1. Manual targeting works less
+Fewer interests, fewer segments, fewer tricks.
+Andromeda selects the audience better than we can.
+
+### 2. Creative becomes the targeting
+The system analyzes the video or image itself and decides who it fits.
+Therefore you need more distinct creatives and narrative angles, not micro-variations.
+
+### 3. Your account structure must be simple
+• Fewer campaigns
+• Fewer ad sets
+• More creatives
+• More concentrated budget
+• Fewer splits
+
+### 4. Signals must be clean
+• Pixel and CAPI must be connected properly.
+• Real conversions, no duplicates.
+• Otherwise, the system makes the wrong decisions.
+
+## How To Operate Correctly In The Andromeda Era
+
+### Step 1: Account Structure
+• One strong campaign per objective
+• One broad ad set
+• Concentrated budget
+• Minimal manual segmentation
+
+### Step 2: Creatives
+• Ten to twenty different creatives per campaign
+• Distinct hooks
+• Different psychological angles
+• Mixed formats: UGC, aesthetic, studio, stills
+
+Creative is the targeting.
+The broader your library, the stronger your results.
+
+Feed Meta with all the assets it needs, because this brain requires tools to work.
+
+### Step 3: Signals
+• Clean pixel
+• Connected CAPI
+• Real events
+• Measure only business outcomes: ROAS, CAC, MER
+
+### Step 4: A New Mindset
+
+Instead of micromanaging, your role is to supply Meta with:
+• A strong offer
+• Diverse, powerful creatives
+• Clean data
+
+Then allow Andromeda to make the adjustments.
+
+## Bottom Line
+
+Andromeda has changed the rules.
+
+Those who continue splitting audiences and trying to outsmart the algorithm will lose.
+
+Those who understand that the system is now an AI-driven matching engine, and focus on creative and offer, will generate stronger results on the same budget.`,
+      buttons: []
+    },
+    {
+      id: 22,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_21.jpg?v=1763298175',
+      title: 'The Genius Business Model of Gillette – And How It Can Transform Your Store',
+      intro: 'They sold the main product for almost nothing… and made billions elsewhere.',
+      content: `## The Full Story
+
+In the early 20th century, when most competitors were selling traditional razors at standard prices, Gillette made a move no one expected.
+
+Instead of making money on the razor handle, they **almost gave it away**.
+
+### A simple numerical comparison:
+• Competitors sold razor handles for the equivalent of 20–30 dollars today.
+• Gillette sold the handle for around 5 dollars, sometimes even less, and in many cases gave it away as part of a promotion.
+
+Customers would walk into a store, see a high-quality handle priced far below the competition, and think:
+"This is cheap, looks great, why not try it."
+
+But that was only the beginning.
+
+Once the customer bought the handle, they were **locked into the Gillette system**.
+
+Gillette's blades were proprietary, designed only for Gillette handles, and came in small packs that ran out quickly.
+
+And here is where the real revenue started:
+• A pack of blades often cost almost as much as the handle
+• Customers needed to buy new blades every month
+• Over a year, the customer's value was many times higher than the initial purchase
+
+The customer bought cheaply, but stayed for a decade.
+
+Gillette wasn't selling razors.
+They were creating a **hidden subscription model**, years before anyone called it that.
+
+And the smartest part?
+
+Customers didn't really check the price of replacement blades during the first purchase.
+They focused on the handle and the cheap deal, not on the long-term cost of blade refills.
+
+## What This Means for Ecommerce
+
+Every major brand today follows the Gillette strategy:
+• A simple, low-priced entry product
+• Followed by a system that increases revenue over time
+
+This is the method that allows brands to scale to millions even if the profit does not come from the first sale.
+
+## What You Should Learn From This
+
+**1. The first sale is not the profit.**
+It is the customer's entry ticket into your system.
+
+**2. The profit is everything that happens afterward.**
+Upsells, post-purchase sequences, unboxing experience, loyalty programs, SMS, email, fast shipping, and customer service.
+
+**3. True growth comes from LTV.**
+One early customer can be worth 1,000–2,000 dollars in a year without additional ad spend.
+
+**4. Your strategy must focus on building a system that increases value over time, not on making money from the first transaction.**
+
+## The Conclusion
+
+Gillette didn't win because it sold a better razor.
+It won because it sold a **cheap entry into a long-term profit engine**.
+
+The same principle can turn any ecommerce store into an LTV machine.
+
+If you want, I can show you exactly how to apply the Gillette model to your brand step by step.`,
+      buttons: []
+    },
+    {
+      id: 23,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_22.jpg?v=1763298233',
+      title: 'The Best Ecommerce Niches for 2026',
+      intro: 'To reach seven figures in 2026, you must choose a niche that creates a long customer journey.',
+      content: `## Introduction
+
+As you already know, we are obsessed with LTV.
+
+It is the engine that determines whether you become a 100K–per–month store… or a million–per–month brand.
+
+But there is another truth no one talks about enough:
+**your niche must allow a long customer journey.**
+
+Not a one–time purchase, not a single transaction, but a full progression where the customer keeps buying, upgrading, and spending more over time.
+
+This is exactly why niches like Fashion and Home Decor work so well.
+
+They are naturally journeys, not isolated purchases.
+
+Clothes, accessories, interior products — all of these have a built-in continuation: seasons, collections, upgrades, sets, complements, and lifestyle evolutions.
+
+**A strong niche for 2026 must meet three conditions:**
+
+1. Potential for high-value or large purchases
+2. Potential for recurring customers as part of a journey
+3. Ability to price at least 2.5x above cost
+
+## The Niches That Meet All Three Foundations
+
+Below are the niches that allow a true journey + high LTV + solid margins.
+
+### 1. Fashion – but in a focused sub-niche
+
+Men's apparel, jewelry, accessories, outerwear, bags, premium pieces.
+
+Fashion is a continuous path:
+• Customers start with one item
+• Then build a collection
+• Return each season
+• Upgrade styles
+• Purchase sets, bundles, variants
+
+**Benefits:**
+✔ High LTV
+✔ Low-ticket entry, high-ticket follow-ups
+✔ Huge margins
+✔ Endless journey, endless reasons to return
+
+### 2. Home Decor – the ultimate lifestyle upgrade pathway
+
+Customers do not buy one item.
+They build an atmosphere.
+
+Examples:
+• Smart lighting
+• Minimalist décor
+• Luxury bathroom accessories
+• Bedroom styling
+• Living-room upgrades
+• Complementary sets
+
+When someone changes their design style, they usually change multiple items.
+This creates a long, multi-step customer journey — perfect for LTV.
+
+### 3. Men's Grooming – hair, beard, skin, overall appearance
+
+This niche contains both a journey and constant renewal:
+• Products run out
+• Customers upgrade every few months
+• Routines get deeper
+• Multiple steps = multiple products
+
+This is a genuine monthly journey, not a one-time buy.
+
+### 4. Supplements and Functional Health
+
+This is not a "product", it is a lifestyle.
+
+• Energy
+• Sleep
+• Focus
+• Performance
+• Hormonal support
+• Men's health
+
+Once a customer begins, they enter a long-term progression, with some staying subscribed for years.
+
+### 5. Babies & Kids – but only replenishable products
+
+Not clothing, not shoes.
+Only products parents **must** buy repeatedly:
+
+• Care products
+• Feeding
+• Sleep aids
+• Practical daily needs
+
+This vertical has emotional buying, high trust, and consistent repeat purchases.
+
+## Summary
+
+The best niche in 2026 is not "what sells right now", but:
+**which niche allows you to place the customer on a long journey.**
+
+A journey where they:
+✔ return
+✔ upgrade
+✔ add more products
+✔ complete sets
+✔ and build around your brand
+
+The longer the journey, the higher the LTV, the more resistant your CAC becomes, and the easier it is to reach millions without relying on luck or hacks.`,
+      buttons: []
+    },
+    {
+      id: 24,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_23.jpg?v=1763298300',
+      title: 'The Two Rules That Determine Whether a Product Can Win on Meta',
+      intro: 'Only products that meet these two rules can scale to real volume.',
+      content: `## 1. The product must be special enough — even in Fashion or Home Decor
+
+On Meta, the customer must do something difficult:
+stop scrolling, feel something, get up from the sofa, grab a credit card, trust a brand they have never heard of, and wait for shipping.
+
+This never happens with a generic product.
+
+A USP does not have to be technological. It can come from:
+
+• A FIT that makes the body look exceptional
+• Design that triggers a specific emotion
+• Colors or textures you cannot find in local stores
+• A brand-like visual identity rather than an AliExpress look
+• Proportions that elevate the product (for example: an oversized, premium wall clock instead of a simple white one)
+
+### Clear example:
+
+Nobody will rush to order a plain white wall clock. You can buy that anywhere.
+
+But an oversized modern clock that transforms a room's atmosphere?
+That creates a stop in the feed.
+
+### Same in Fashion:
+
+A basic black t-shirt will not convert.
+
+But a black t-shirt with a FIT that sharpens the shoulders, defines the chest, and flatters the physique — that is a USP.
+
+That creates "I need this now".
+
+**A winning product must generate a two-second reaction:**
+"This is special, this is different, and I want it right now."
+
+If the product has no strong USP, Meta will burn your budget endlessly.
+
+## 2. The product cannot be too specific
+
+This is where most sellers fail.
+
+Over-specific products create:
+• Many objections
+• High return rates
+• A very small audience
+• High CAC
+• Difficulty scaling
+
+**Examples of problematic products:**
+• Fashion items requiring ultra-precise fit (for example, very specific trousers cuts)
+• Products requiring special knowledge or complex adjustments
+• Items with a naturally tiny audience
+
+You want a product that fits a **wide audience**, without unnecessary friction.
+
+## Bottom Line
+
+Before spending one dollar on Meta, ask yourself:
+
+**1. Is the product special enough to make someone stop scrolling and buy from a new brand?**
+If not, move on.
+
+**2. Is it broad enough to sell to a large audience without creating objections?**
+If not, it will never scale.
+
+Winning products on Meta always combine two elements:
+**a sharp USP + broad market fit.**
+
+If you want, I can prepare a list of product examples with strong USP in every niche.`,
+      buttons: [
+        { text: 'Product Mapping Manipulation course', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
+      ]
+    },
+    {
+      id: 25,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_24.jpg?v=1763298453',
+      title: 'A simple trick to reduce CAC on Meta',
+      intro: 'Use every inch of the ad to destroy objections before they appear.',
+      content: `## How it works
+
+Instead of waiting for real comments, you place a single pinned comment under every Meta ad that answers the deepest objections.
+
+This creates the effect of high activity, builds trust, and removes friction before the user even clicks.
+
+It works especially well in categories with emotional or functional hesitations.
+
+Below is the exact template we use for a women's hair-growth supplement.
+
+## The Comment (copy and paste in your ads)
+
+**We've received a lot of questions, so here are the most common ones:**
+
+**1. Does it actually work, or is it just another supplement you don't feel anything from?**
+The formula includes clinically studied ingredients that support hair thickness, reduce shedding, and strengthen the roots. Most women report visible improvement within 6–8 weeks of consistent use.
+
+**2. Is it safe and are there side effects?**
+It is produced in a GMP-certified facility, with no sugar, gluten, GMOs, or hormonal components. Safe for most women, including postpartum, although consultation is recommended in case of medical conditions.
+
+**3. Will it work for my hair type?**
+Yes. Because it works internally, it supports all hair types by improving follicle activity and scalp health.
+
+**4. Why do results take a few months?**
+Hair grows in biological cycles, so the supplement supports the new growth phase, which naturally takes several weeks.
+
+**5. Is there a guarantee if I don't see results?**
+Yes. If used consistently with no improvement, there is a full product guarantee. The goal is real results and long term customers.
+
+## Why this reduces CAC
+
+• It eliminates the five strongest objections in the hair-supplement category
+• It increases trust before the click
+• It leverages unused ad real estate to add perceived credibility
+• It works even with zero real engagement
+• It consistently lowers CAC by filtering hesitation at the subconscious level
+
+If you want, I can now prepare versions for skincare, clothing, home decor, jewelry, fitness, or any other niche.`,
+      buttons: []
+    },
+    {
+      id: 26,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_25.jpg?v=1763298514',
+      title: 'Does Adding a Mastercard Logo Increase Conversion Rates?',
+      intro: 'Research shows that sometimes one small icon is enough to make people spend more.',
+      content: `## The Psychology Behind It
+
+Most store owners believe that money starts flowing only when the customer enters their card details.
+
+Behavioral science shows the exact opposite.
+
+**The decision to pay begins long before checkout.**
+
+![Credit Card Psychology](https://i.pinimg.com/736x/56/fd/48/56fd486a48ff235156b8773c238f8da9.jpg)
+
+In a well-known study from Duke University by psychologists John Bargh and Mary McClelland, researchers tested something that sounded almost absurd:
+
+What happens in the human brain when it simply sees a credit card logo, without touching a card or making a purchase?
+
+### Experiment 1: Restaurant
+
+Two groups received the same bill.
+One group got it inside a folder with a MasterCard logo.
+The second group got a folder with no logo.
+
+**Result: the MasterCard group tipped more than 25% higher.**
+
+### Experiment 2: Donations
+
+In one room, a MasterCard logo was visible on the wall.
+In the other, nothing.
+
+**33% of people donated in the room without the logo.**
+**87% donated in the room with the logo.**
+
+Even more surprising, **the donations were made in cash**.
+
+## Why does this happen?
+
+The subconscious mind does not treat credit as "real money."
+It interprets it as virtual, lighter, less painful to spend.
+
+A simple logo triggers this perception and reduces resistance.
+
+## Conclusion for Ecommerce
+
+Adding a small MasterCard (or similar payment) logo on your product page or checkout page can **increase conversion rates**, because it reduces perceived financial friction and increases willingness to purchase.
+
+Across many stores we see a consistent lift in the "willingness to pay" metric when the icon is present.`,
+      buttons: []
+    },
+    {
+      id: 27,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_26.jpg?v=1763298626',
+      title: 'The Formula to Sell Anything to Anyone',
+      intro: 'The 4 elements for unlimited sales',
+      content: `## 1. Dream Outcome
+
+**Goal: Increase**
+
+The Dream Outcome is the future your customer imagines for themselves. Your role is to make that future vivid, emotionally charged, and significantly better than their current reality.
+
+This is not describing the product.
+This is describing the transformation.
+
+When the Dream Outcome is strong enough, customers begin to feel the result even before buying, which dramatically increases willingness to pay and reduces hesitation.
+
+## 2. Perceived Likelihood of Achievement
+
+**Goal: Increase**
+
+Even the strongest desire collapses if the customer doubts their ability to achieve the result.
+
+You must increase their confidence that success is certain and realistic.
+
+This is built through:
+• Social proof
+• Clear evidence
+• Consistent brand experience
+• Predictable and structured onboarding
+
+When Perceived Likelihood rises, the emotional decision to buy is made.
+
+The course that makes this a reality: [The Social Proof](https://quantum-scale.co/pages/the-social-proof)
+
+## 3. Perceived Time Delay Between Start and Achievement
+
+**Goal: Decrease**
+
+The further away the reward feels, the lower the motivation.
+
+Your responsibility is to shorten the psychological distance between "purchase" and "reward."
+
+Shift the perception so the result feels close, immediate, and already in motion.
+
+This is where people take action quickly because the brain rewards what feels near.
+
+The course that teaches how to engineer this: [The Subconscious Trap](https://quantum-scale.co/pages/test2)
+
+## 4. Perceived Effort and Sacrifice
+
+**Goal: Decrease**
+
+Customers do not fear paying.
+They fear complexity, uncertainty, and cognitive effort.
+
+When you reduce perceived effort, you make the decision feel light, simple, and low risk.
+
+This is what turns a purchase into an easy yes.
+
+The secret key for this part is also found in: [The Subconscious Trap](https://quantum-scale.co/pages/test2)
+
+## The Equation
+
+When all four components align:
+
+**High Dream Outcome**
+plus **High Perceived Likelihood**
+plus **Short Time Delay**
+plus **Low Effort and Sacrifice**
+equals a buying decision that feels almost inevitable.
+
+This is how you sell anything to anyone at scale.`,
+      buttons: [
+        { text: 'The Social Proof', url: 'https://quantum-scale.co/pages/the-social-proof' },
+        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' }
+      ]
+    },
+    {
+      id: 28,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_27.jpg?v=1763298626',
+      title: 'How to Choose the Right Products for Ecommerce',
+      intro: 'Two rules decide everything. Win or lose.',
+      content: `## 1. The product must be special enough
+
+Your product needs one core quality:
+**a real reason to buy**.
+
+Remember the situation your customer is in.
+
+They are on the couch, tired, with low attention.
+Their wallet is in the kitchen.
+They do not know you, do not trust you, and did not plan to buy anything.
+
+To make someone in that state get up, check your sizing and shipping, grab a card, type details on a brand they do not know, and wait for delivery, the product must have a strong USP.
+
+### Example from home décor:
+
+A simple white wall clock will never sell.
+There is no motivation.
+They can get the same clock, or better, in a local store they already trust.
+
+But a uniquely designed clock, non standard, visually striking?
+That creates motivation.
+It is special, memorable, and worth ordering online.
+
+### Same in fashion:
+
+A basic black T shirt? No one will bother.
+
+A T shirt with a flawless fit that enhances shoulders and chest?
+That creates emotional desire and drives action.
+
+**Rule:**
+Never sell boring products.
+Sell products that justify ordering online.
+
+## 2. Do not go too specific or too extreme
+
+This is the paradox.
+The product must be unique, but not risky.
+Special, but not intimidating.
+Desirable, but not limited to a tiny audience.
+
+**Examples in women's fashion:**
+• Items that are too tight create fear of wrong sizing
+• Items that run small lead to huge return rates
+• Extremely bold styles appeal to almost no one
+
+**Your goal is simple:**
+
+Choose a product that 700 out of 1000 people would like, and then make sure it is unique and elevated enough to be worth ordering online.
+
+If customers can find something similar near their home, the product is not suitable for ecommerce.
+
+## The deeper truth
+
+Ecommerce is a long journey.
+
+That is why categories like fashion and home decor perform extremely well.
+
+They allow emotional discovery, repeat purchases, and higher LTV.
+
+**The longer the journey, the stronger the LTV engine.**
+
+## 3. The final two filters
+
+Before you add a product to your store or ads, ask:
+
+• **Is the product special enough to stop someone in the middle of their day**
+• **Is it broad enough to speak to a large audience without creating fear, hesitation, or returns**
+
+If either answer is no, the product is not suitable.
+
+## Want to go deeper and master this at a professional level
+
+These two resources will take you to the next stage:`,
+      buttons: [
+        { text: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
+        { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
+      ]
+    },
+    {
+      id: 29,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_28.jpg?v=1763298859',
+      title: 'Gary Halbert\'s Secret to Selling Anything to Anyone',
+      intro: 'You do not sell the product. You sell the outcome.',
+      content: `Gary Halbert's greatest advantage was not copywriting talent, creativity, or clever tactics.
+
+It was something much simpler and far more powerful:
+**he sold what people already wanted.**
+
+Not features.
+Not descriptions.
+Not technical details.
+
+**Only the final result the customer dreamed of.**
+
+![Gary Halbert](https://carminemastropierro.com/wp-content/uploads/2020/09/Gary-Halbert.jpg)
+
+Halbert understood that the market's existing desire is stronger than any persuasion skill.
+
+If you align your offer with a desire people already feel, the sale becomes natural and resistance disappears.
+
+He explained it with his famous example.
+
+If he had to compete in the burger business and choose only one advantage, he would not choose better ingredients, better branding, or better pricing.
+
+He would choose one thing: **a crowd of hungry customers**.
+
+A hungry customer does not need convincing.
+They need a solution.
+
+![Hungry Crowd](https://miro.medium.com/v2/resize:fit:1400/1*NZxA6EqiVBslZ5Evbg8gFA.jpeg)
+
+## The Core Principle: Keep It Simple
+
+Halbert believed that 90% of marketers fail because they complicate the message.
+
+They describe the product, add layers of information, and try to "educate" the customer.
+
+The customer does not want education.
+**The customer wants the end result.**
+
+Clarity and simplicity always outperform complexity.
+
+Your job is not to explain the product, but to make the customer instantly understand what life looks like **after** the product works.
+
+This is the Dream Outcome.
+And this is the only thing the brain cares about when making a decision.
+
+## How to Apply Halbert's Rule in Ecommerce
+
+### 1. Sell the Dream Outcome, not the item
+
+People do not buy a hair supplement.
+They buy thicker hair, confidence, femininity, and control over a problem that frustrates them.
+
+People do not buy a shirt.
+They buy a better silhouette, compliments, and a sense of presence.
+
+People do not buy décor.
+They buy a home they are proud to invite friends into.
+
+If your message focuses on the feature, the customer scrolls.
+If your message focuses on the outcome, the customer stops.
+
+### 2. Look for existing desire
+
+The strongest products solve a problem or fulfill a desire that already exists in the customer's mind.
+
+You do not "convince" customers to care.
+You identify what they care about and attach your product to it.
+
+### 3. Remove complexity
+
+Keep your offer simple.
+Keep your argument simple.
+Keep your promise simple.
+
+The brain avoids effort.
+Simplicity converts.
+
+### 4. Speak the customer's language
+
+Halbert noticed that when customers read something that reflects their own unspoken thoughts, trust forms instantly.
+
+Your message should feel like it comes from inside their mind, not from your marketing team.
+
+## Why this method works
+
+It is immune to algorithms, platform changes, and ad costs because it is built on psychology, not tactics.
+
+• Existing desire is stable
+• Dream outcomes create emotional momentum
+• Simple messages reduce cognitive load
+• Selling the result creates higher willingness to pay
+• Resistance disappears when the brain sees a fast path to reward
+
+**Customers buy the future version of themselves, not the product that gets them there.**
+
+Halbert built his entire empire on this truth.`,
+      buttons: []
+    },
+    {
+      id: 30,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_29.jpg?v=1763298901',
+      title: 'How to Sell Rocks for 30 Million Dollars?',
+      intro: 'This marketer sold beach stones for thirty million dollars.',
+      content: `In 1975, **Gary Dahl** was sitting in a bar with friends. Everyone complained about pets, the mess, the responsibility, the feeding and the care.
+
+Amid the noise, smoke and laughter, Dahl threw a joke:
+"The easiest pet in the world? A rock. You don't have to do anything with it."
+
+His friends laughed.
+But something in him lit up for real, not as a joke.
+
+![Pet Rock](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/unnamed_1.jpg?v=1759747660)
+
+The next day he collected stones from the beach, created a box with air holes, added a humorous instruction booklet called "Pet Rock"…
+
+and invented a product that generated over **six million dollars in six months**, which is worth over **thirty million dollars** today.
+
+![Pet Rock Box](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/unnamed_3.jpg?v=1759747660)
+
+## His costs:
+
+• Rock: zero
+• Box: thirty cents
+• Booklet: ten cents
+• Sale price: 3.95 dollars
+• **Profit: about ninety five percent**
+
+No Instagram, no influencers, no campaigns, no pixel, no budgets.
+
+## How did this happen?
+
+Dahl did not sell a rock.
+He sold a joke.
+An experience.
+Belonging.
+A conversation piece.
+Meaning.
+
+**He sold a story.**
+
+![Pet Rock Manual](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/unnamed_2.jpg?v=1759747660)
+
+## The real lesson: a product does not create value. A story creates value.
+
+A store sells a product.
+**A brand sells identity.**
+
+That is why Apple, Gymshark, Lululemon and countless others do not compete on price.
+
+They compete on meaning.
+On how it makes the customer feel.
+On what it signals to others.
+
+The customer is not excited by a product.
+**He is excited by the meaning the product gives him.**
+
+## And now you
+
+You might be selling a watch, a shirt, a candle, a bag, a toy… but what are you **трудно** selling?
+
+• Confidence
+• Belonging
+• Power
+• Style
+• Status
+• Solution
+• Peace of mind
+• Comfort
+• Aesthetic
+
+Until you define the story, you cannot control perceived value and you cannot control price.
+
+## How to begin building a story that sells? Answer five simple questions:
+
+1. Why did you create the product in the first place?
+2. Which obsession, problem or frustration led you to it?
+3. What did you do to reach this level of quality?
+4. What differentiates it from anything else in the market?
+5. Why are you the right person to sell it?
+
+Add this story to your product pages, ads, and emails.
+
+## And the next stage (optional): turning it into a money machine
+
+At Quantum Scale we teach exactly this, how to take a product that seems ordinary and transform it into a brand people feel compelled to buy.
+
+**Three courses that will change your thinking at the foundation level:**`,
+      buttons: [
+        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
+        { text: 'Offer Workshop', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
+        { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
+      ]
+    },
+    {
+      id: 31,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_30.jpg?v=1763300006',
+      title: 'How Starbucks Makes $14,099 From Every Customer?',
+      intro: 'Be stingy about this, and you will never lack money for the rest of your life.',
+      content: `Winning brands share one repeating principle:
+
+They do not look at immediate profit, the only thing that matters to them is **CAC vs LTV**.
+
+When you look at Starbucks' data, you understand how powerful this principle is.
+
+According to an analysis by Kissmetrics, **the LTV of an average Starbucks customer is $14,099 over their lifetime**.
+
+Meaning, each individual customer generates more than fourteen thousand dollars for the brand from buying coffee again and again.
+
+Yes, even if you bought there only once in your entire life, you are included in the average, which means some people spend $100,000 with them over their lifetime.
+
+**$14,099 is the average.**
+
+![Starbucks Revenue](https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyOGxvamtraGNzcnU0eTZoeXltb3hicmVhOXh4eHJhejU0NWIwN2V0dyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HzYHJZ7uLnvJoVMgIw/200w.gif)
+
+## How does that happen?
+
+Not because of price.
+Not because of discounts.
+
+But because of a **system designed to make the customer return again, and again, and again**.
+
+The same formula works in every major brand.
+
+## Let's run a simple exercise on ZARA.
+
+Assume the average female customer buys there:
+• 6 times per year
+• With a $120 average order value
+• Annual total: $720
+
+She starts buying at age 15 and continues at least until age 40.
+
+**25 years × $720 = $18,000 per customer.**
+
+And this is **without:**
+• An app
+• A loyalty program
+• Purchases for kids
+• Word-of-mouth referrals
+• Collaborations
+• Holidays and seasonal events
+
+In reality, the true LTV is **much higher**.
+
+## What these brands do differently
+
+They do not ask "How much did we sell today".
+They ask **"How much value are we creating from the customer over time"**.
+
+They build a system where every customer is an asset that continues generating revenue for years.
+
+Customer experience, branding, quality, routine, emotional closeness, consistency, these keep the customer loyal.
+
+## And here is the amazing part:
+
+Once you have a stable system that produces recurring value, every 100 new customers can generate millions in the long run.
+
+This creates a situation where they can afford to pay a fortune to acquire new customers.
+
+If a brand that relies only on one-time purchases of $100 can afford to pay up to $25 CAC, ZARA can afford to pay $300 and earn thousands in net profit from the same customer.
+
+With the same items.
+
+**This is how big money is made.**
+
+## Time for your own reality check
+
+If a coffee shop can reach $14,099 per customer, and a fashion brand can reach $18,000 per customer, what should **your** LTV be?
+
+And how much money are you leaving on the table every month just because you do not have a system designed to increase customer value over time?
+
+**The difference between a regular store and an unbeatable brand is simple:**
+A winning brand knows how to make customers stay.
+
+## And now – the next step:
+
+### The critical part that actually builds a high LTV
+
+**How to measure it, understand it, and control it**
+
+Most stores guess.
+And when you guess, you always lose.
+
+We work only with real data, using one simple and free tool that connects everything:
+
+## The New Pareto Rule of Ecommerce:
+
+**Not 20/80, the real number is 5/95**
+
+Everyone knows the 80/20 rule, but after connecting our system to large stores we discovered something far more extreme:
+
+**5% of customers generate 95% of the money.**
+
+This is the number that separates a random business from a million-dollar operation.
+
+Once you know who these 5% are, you know exactly whom to attract, and whom you don't want at all.
+
+## A real example from the field
+
+**8,000 new customers acquired in August 2025**
+
+In one of our ecommerce brands.
+The following image was taken in November, meaning 2–3 months after the first purchase:
+
+![Customer Data](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468)
+
+### The data:
+
+**Top 25% spenders**
+• Spent **$796** on average per customer within just 2–3 months
+• Generated almost **$1.6M**
+
+**Remaining 75% of customers**
+• Generated only about **$700K** combined
+
+Notice this:
+A customer who spends $796 within 2–3 months will exceed $1,600 within the first year.
+
+And the top 10% already reached **$1,253**.
+
+This redefines the entire business.
+
+## What the system enables
+
+### The precise cheat code for increasing LTV
+
+The free application allows you to:
+
+✔ Measure exactly how much each customer is worth
+✔ Understand segmentation by percentiles
+✔ Identify the customers generating most of the profit
+✔ Discover what they have in common
+✔ Create Meta Lookalikes based only on the highest-value customers
+✔ Attract customers who spend hundreds and thousands of dollars
+✔ View LTV data at 1, 3, 6, 12, and 24 months
+
+This is a system that builds a high LTV almost automatically.
+
+## What does this mean?
+
+It means that the top 25% of the brand's customers (the highest spenders) within two years are worth at least about **$1,500 each**.
+
+With this application we not only know our true LTV and customer segmentation, but we can also export these top customers and create a Meta Lookalike based specifically on them, so from this moment we attract only customers who are worth $1,500 each.
+
+And yes, the products on this site cost $30–$55.
+
+![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
+![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
+![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
+      buttons: [
+        { text: 'Connect the app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
+        { text: 'Full LTV Course', url: 'https://quantum-scale.co/pages/test1' }
+      ]
+    },
+    {
+      id: 32,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_31.jpg?v=1763300076',
+      title: 'How to Write Killer Ad Headlines',
+      intro: 'Your headline is 80% of your ad\'s success. Master this and you master the money.',
+      content: `Most advertisers obsess over colors, edits, effects, transitions, and long copy.
+
+But they ignore the one element that decides whether the ad succeeds or fails: **the headline**.
+
+David Ogilvy, one of the greatest advertisers of all time, said:
+**"On average, five times as many people read the headline as read the body copy."**
+
+Meaning:
+If your headline doesn't stop them, you've lost them before the ad even begins.
+
+And Claude Hopkins said it even more sharply:
+**"If your headline can't sell the product by itself, you've failed."**
+
+And today, this is truer than ever.
+
+## So what is a headline in a Meta ad?
+
+It is the line above the video or image.
+
+The line that must make the brain pause, not scroll, and want to understand what's going on.
+
+It is the moment where **80% of the success is decided**.
+
+## A real example from the field
+
+We ran an ad that generated more than **12,000 sales** at an acquisition cost of under **$6.5**.
+
+The headline was:
+**"Why you need our new and improved earplugs."**
+
+![Ad Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-05_164210.png?v=1759671783)
+
+No magic in design.
+No fancy effects.
+
+A headline operating like a neural trigger, opening a curiosity loop the brain **must** resolve.
+
+## Why does a headline work this way?
+
+The brain decides within **0.3 seconds** whether to scroll or stop.
+
+A strong headline activates mechanisms such as:
+• Curiosity
+• Fear of missing out
+• "What am I missing?" tension
+• Immediate emotional engagement
+
+If you don't fire something in one second, you are invisible.
+
+Out of every 100 ads, only 2 use the correct type of headline.
+And those two are printing money.
+
+## That's exactly why we created this
+
+### 85 Meta Ad Headlines & Hooks Templates
+
+A collection of 85 proven, psychology-based headlines tested across hundreds of campaigns, generating millions in revenue.
+
+Each headline is engineered to stop the scroll, open a curiosity loop, and activate the buyer's decision-making system.
+
+If you're ready to stop guessing and start using formulas that are scientifically and psychologically proven, this is for you.`,
+      buttons: [
+        { text: '85 Meta Ad Headlines & Hooks Templates', url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks' }
+      ]
+    },
+    {
+      id: 33,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_37.jpg?v=1763398897',
+      title: 'Two Dirty Tricks to Sell Anything to Anyone',
+      intro: 'Use them responsibly, they\'re too powerful.',
+      content: `**These psychological mechanisms are extremely powerful. Use them responsibly. We strongly oppose unethical, manipulative, or deceptive selling.**
+
+## 1. The Dream Outcome
+
+The mind never buys a product. **It buys a future version of itself.**
+
+If the customer does not see a vivid, exaggerated, emotionally charged outcome, they will not move, will not act, and will not buy.
+
+Take the most extreme example: crypto course sellers.
+
+They are not selling videos. They are selling a fantasy:
+
+a brand-new Lamborghini Aventador SVJ,
+a V12 engine shaking the entire street,
+a sixty-thousand-dollar watch,
+private island vacations,
+and a lifestyle designed to make the viewer think,
+"If I succeed, this will be my life."
+
+**This is the power of the Dream Outcome.**
+
+When the result feels larger than life, the price becomes irrelevant.
+
+And here is the truth:
+**If customers believed they would definitely get the promised outcome, they would pay 5–10 times the price.**
+
+### Examples:
+
+• **A $35 shirt?**
+If they believed it would get 14 women to look at them every night, they'd pay $200.
+
+• **A $49 clock?**
+If they believed it would make their home feel like a luxury penthouse, they'd pay $500.
+
+• **A $29 hair supplement?**
+If they believed it would fully restore hair in 8 weeks, they'd pay $300.
+
+**The Dream Outcome sets the entire perceived value of the purchase.**
+
+## 2. Perceived Likelihood of Achievement
+
+But even the strongest fantasy is worthless unless the customer believes they will actually get it.
+
+This is where the second engine of persuasion activates:
+**Perceived Likelihood of Achievement.**
+
+This is the part where course sellers win the psychological war.
+
+Because no one believes they will become rich in a month…
+**unless you make them believe.**
+
+### How do they do it?
+
+The same mechanism that works in every niche:
+**aggressive, overwhelming Social Proof.**
+
+• Testimonials from "people just like you"
+• Screenshots of "bank deposits"
+• Photos of cars
+• Transformation videos
+• Endless stories of "students who succeeded in two weeks"
+
+Psychologically, the brain cannot distinguish between repeated exposure and truth.
+
+**Flood it with proof… and doubt collapses.**
+
+At that moment, the dream shifts from possibility to certainty.
+Once the brain is convinced, the price becomes irrelevant.
+
+And this applies everywhere:
+fashion, supplements, home decor, gadgets, wellness, and digital products.
+
+## The brutal mechanism behind all high-performing ads
+
+A sale happens only when these two forces operate together:
+
+**Dream Outcome**
+**+**
+**High Likelihood of Achievement**
+
+Miss one, and the sale dies.
+Combine both, and you can sell almost anything to almost anyone at almost any reasonable price.
+
+This is the psychology used by the best marketers in the world.`,
+      buttons: [
+        { text: 'Apply Social Proof Protocol to your strategy', url: 'https://quantum-scale.co/pages/the-social-proof' }
+      ]
+    },
+    {
+      id: 34,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_32.jpg?v=1763397612',
+      title: 'The Lookalike Audience That Will Explode Your Business',
+      intro: 'The Golden Nugget Every Ecommerce Entrepreneur Must Use',
+      content: `There are moments in ecommerce when you discover a growth engine that is not just another tool, but a breach in the system.
+
+The following audience is exactly that.
+
+If you are using the free data app we recommended several times, you have probably already discovered what large store owners understand only after spending millions of dollars on advertising:
+
+Not every customer is worth money to you.
+
+But one small group of customers is worth almost all the money.
+
+20% of the customers generate 80% of the revenue.
+
+And in practice, for most ecommerce businesses, it is much more extreme.
+
+5% of the customers generate over 95% of the profit.
+
+Now imagine that you create a new audience in Meta that is a Lookalike of these exact people.
+
+Not of all customers.
+Not of the buyers of the cheap product.
+Not of someone who bought once upon a time.
+
+But of the customers who generate for you on average, each one of them, within one year from the moment of purchase:
+
+$1,529…
+$2,420…
+$981…
+$1,582…
+$2,215…
+$1,092…
+
+This audience is built from only three components, all inside the same audience in Meta, all pulled directly from the app:
+
+## Top 25% Spenders
+
+(And if you have 10,000 customers and above, switch to Top 10% Spenders).
+
+These are the people who enter your site and buy again, again, and again with values that are not similar to anything else.
+
+![Customer Data](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468)
+
+## RFM Segments: Champion + Loyal + Promising
+
+The best customers, with the highest activity, the closest last purchase, and the highest amounts.
+
+They too will be in the same audience, all together.
+
+This is the gold layer, The core of the elite.
+
+This is the audience that, thanks to Meta's new chips (the Andromeda model), it knows how to replicate into the human type every business dreams of.
+
+![RFM Segments](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Learn_how_for_only_12_you_will_also_get_449_worth_of_bonuses_for_FREE.jpg?v=1763313316)
+
+## What happens when you run LLA on it?
+
+It is simple:
+
+Meta takes the psychological, behavioral, demographic, and economic profile of your most profitable people, and finds their "twins" across the country.
+
+**The field result:**
+
+CAC of $8 to $10 for a customer worth to you $1,500 to $2,000 per year while your average product prices is only $30 to $60.
+
+And from now on, you are not attracting one-time purchase customers, but only customers worth $1,000+ each…
+
+This is not a strategy.
+This is not a tactic.
+This is a new business model.
+
+A business based on attracting such an audience is not dependent on competition.
+Is not dependent on volatility in Meta.
+Is not dependent on market noise.
+
+It becomes a business with a power coefficient ten times higher than any competitor.
+
+And this, dear entrepreneurs, is the golden nugget of the marketing world.`,
+      buttons: [
+        { text: 'Connect the free data app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+      ]
+    },
+    {
+      id: 35,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_33.jpg?v=1763397653',
+      title: 'CBO vs ABO – The Only Scaling Structure That Works Under Andromeda',
+      intro: 'The debate "ABO or CBO?" is outdated. They are not alternatives. They are two different systems with two different jobs.',
+      content: `ABO is your testing lab.
+CBO is your scaling engine.
+
+## ABO – Constant Testing, Maximum Creative Diversity
+
+ABO gives manual control, which makes it perfect for testing:
+• Concepts
+• Hooks
+• Angles
+• Formats
+• Avatars
+• Offers
+
+ABO should run nonstop.
+
+Your goal is simple: feed Meta with as many different creative concepts as possible, because Andromeda learns from volume and variety.
+
+Anything that works in ABO gets duplicated into CBO.
+
+And if it works, you never shut it off.
+
+If it brings money, it stays alive.
+
+But here is the critical part:
+
+Without accurate data, ABO tests are meaningless.
+
+If the system misattributes 20-30% of conversions, your decisions are based on noise, not truth.
+
+Good ads die. Bad ads stay alive.
+
+And your entire testing pipeline collapses.
+
+## CBO – The Only Way to Scale Under Andromeda
+
+CBO is built for:
+• High budgets
+• Dynamic optimisation
+• Pattern recognition
+• Long-term stability
+
+This is exactly how Andromeda operates.
+
+It does not "target audiences".
+It detects behavioral patterns at scale and allocates budget accordingly.
+
+But it can only do that if you feed it correctly:
+
+**Large volume of diverse creatives**
+
+**Clean, perfectly accurate data**
+
+Without both, Andromeda learns the wrong patterns.
+
+## The Winning Method
+
+1. **ABO – Continuous Testing**
+40–50 creatives weekly, maximum variety.
+
+2. **CBO – Scaling**
+A big CBO filled with 12–30 winning, diverse creatives.
+
+3. **Never shut off what makes money**
+Meta needs more signals, not fewer.
+
+4. **Accuracy is non-negotiable**
+Creatives mean nothing if the attribution is wrong.
+
+The real question is simple:
+
+Does Meta see the truth, or an illusion?
+
+To work correctly under Andromeda, your data must be 100% accurate.
+
+Below, we will provide access to a free external pixel that delivers exact attribution.
+
+Only then can ABO testing and CBO scaling operate at full power.`,
+      buttons: [
+        { text: 'Connect Accurate Pixel', url: 'https://www.triplewhale.com/pixel' }
+      ]
+    },
+    {
+      id: 36,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_34.jpg?v=1763397682',
+      title: 'The Power of Personalization',
+      intro: 'The psychological weapon behind the GEO-Location Announcement Bar',
+      content: `In a world where eCommerce stores look far too similar, personalization has become the mechanism that separates a brand that sells out of pressure from a brand that sells out of human understanding.
+
+Think about it, your customer is exposed to thousands of ads per day, enters dozens of websites every week.
+
+Who wins their attention?
+
+The one who gives them personal attention.
+
+Give them personal attention and you are already ten levels above every store they visited in the past month. They enter with a positive emotional baseline, the subconscious shifts into a cooperative mode rather than a defensive one.
+
+One of the simplest and most powerful tools in this context is the GEO-Location Announcement Bar, which, when implemented correctly, can produce a sharp increase in conversion rates and profitability.
+
+Across multiple stores we tested in recent months, the results repeated themselves consistently. Significant jumps in CVR, sometimes unusually large, alongside surprising increases in AOV.
+
+In other articles we showed A/B test data from different stores.
+
+Here, we dive into the psychology behind the phenomenon.
+
+![A/B Test Result](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/48.jpg?v=1763054191)
+
+The goal is to understand why a mechanism so simple on the surface can create such a powerful impact on buyer behavior.
+
+## Price Adaptation to Purchasing Power
+
+Behavioral economics has emphasized for decades the importance of the consumer's trust in price fairness.
+
+The average buyer is not calculating percentages. They are asking themselves one thing:
+"Is this offer aligned with my reality?"
+
+When the discount changes based on the visitor's location, something interesting happens: the price feels tailored to the customer's economic reality, rather than a generic, mass marketing tactic.
+
+In research, this is known as Price-Income Fit.
+
+When the offer matches the economic environment of the shopper, resistance drops sharply. The customer stops comparing themselves to a global market and begins perceiving the offer as natural, local and relevant.
+
+Obvious, right?
+
+Someone earning 750 dollars a month seeing a shirt priced at 40 dollars probably needs a 20 percent discount to feel comfortable purchasing.
+
+But someone whose national average salary is 4,500 dollars?
+
+Five percent is enough, and they buy in three seconds.
+
+## The Game Changer: A Personalized Message Anchored in Identity
+
+Psychological research on identity shows that when a message references a visitor's country, holiday or cultural norm, it creates a moment of belonging.
+
+When the visitor enters the site and sees a message targeted specifically to their country, the brain interprets it as personal attention. This increases trust, lowers skepticism and raises purchase intent dramatically.
+
+If you are Brazilian and today happens to be Independence Day, and you enter a global store and see this…
+
+![Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/51.jpg?v=1763055232)
+
+How will you feel?
+
+You will feel emotionally elevated.
+
+You will ask yourself:
+"Why do they know this? Do they care about Brazilians? Is the founder Brazilian?"
+
+Bottom line, you can understand the emotional force this creates.
+
+## The Compound Effect
+
+When these two mechanisms work together, meaning true economic fit plus a personalized identity-driven message, a psychological environment is created that dramatically increases purchase likelihood.
+
+Not only is the banner perceived as thoughtful and personal, it also projects higher credibility.
+
+And all this happens without touching the product page, without changing prices and without building new funnels.
+
+The key is that the message appears in the first seconds of the visit, right when the shopper forms their first impression.
+
+Controlling this moment produces an advantage that carries through the entire purchasing journey.
+
+## What We Saw in Real Stores
+
+If you know us, you know we test everything with microscopic precision before we adopt it, and certainly before we recommend it.
+
+So we tested this mechanism across multiple stores, industries and regions.
+
+The result was consistent repetition of increased conversion rates, sometimes double-digit jumps, sometimes with an added boost in AOV.
+
+These patterns repeated in multiple niches even when no other variables in the store changed.
+
+We can say confidently that in stores with a wide product catalog (40+ items) the improvement was even more significant.
+
+## Summary
+
+Personalization is not a trick and not a cosmetic add-on.
+
+It is a deep psychological mechanism that triggers the part of the shopper's mind that feels the brand is with them, not against them.
+
+The GEO-Location Announcement Bar is one of the most effective methods to activate this mechanism in a scalable, systematic way.
+
+As markets become more competitive, the feeling of personal relevance is becoming one of the strongest defensive walls a brand can build.
+
+Not marketing tactics.
+Human understanding.`,
+      buttons: [
+        { text: 'Add this Announcement bar to your store', url: 'https://parityrocket.com/' }
+      ]
+    },
+    {
+      id: 37,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_35.jpg?v=1763397898',
+      title: 'No one cares about you!',
+      intro: 'Apply This Method in Your Copywriting and You Will Sell More',
+      content: `The principle is simple, and it completely shifts how customers respond to your message:
+
+People do not care about you.
+They care only about themselves.
+
+Human cognition operates through a single filter:
+"How does this improve my life?"
+
+This is the Self-Interest Bias, and it dominates every purchase decision.
+
+When your copy speaks about your brand, your history, or your values, the customer disconnects.
+
+When your copy reflects the customer's world, desires, frustrations, and ambitions, they lean in.
+
+This is where Authority Transfer enters.
+
+Instead of presenting your brand as the hero, transfer the authority to the customer's transformation.
+
+Your expertise exists only to elevate them, not you.
+
+## Example:
+
+Instead of writing:
+"We have 20 years of experience in footwear design."
+
+Write:
+"For 20 years we refined one purpose: giving you shoes that feel weightless, soft and effortless with every step."
+
+Same information, different hierarchy.
+
+You remove yourself from the center and position the customer as the protagonist.
+
+Your authority is not stated, it is transferred into the benefit they will experience.
+
+## The rule:
+
+Every line of copy must answer one question, clearly and instantly:
+"How does this make the customer's life better?"
+
+If it does not, remove it.
+
+Because the fastest way to make someone fall in love with your brand is to make them fall in love with the version of themselves they become with your product.`,
+      buttons: []
+    },
+    {
+      id: 38,
+      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_36.jpg?v=1763398676',
+      title: 'Do You Really Need High Creative Volume in 2026?',
+      intro: 'Andromeda Has Completely Changed the Rules',
+      content: `Let's start with the answer.
+
+Yes.
+
+But you're probably thinking the reason is "As long as I test more, I have a higher chance of finding good creatives."
+
+That is not the only reason.
+
+Up until two years ago, that was the main reason.
+
+You could win on Meta with 3–5 good creatives.
+
+If you had one strong winning video, you could run it for a month.
+
+Not anymore.
+
+Andromeda is Meta's new brain, built on advanced chips recently developed by Nvidia.
+
+And it is no longer an advertising engine, it is a prediction engine.
+
+It is built on:
+• Behavioral pattern recognition
+• Micro matching between users
+• Deep message analysis
+• Matching different avatars to different concepts
+• Understanding message structure, tone, visuals, and hooks
+
+And it does not work well when given little information.
+
+It needs volume.
+And it needs diversity.
+
+This is why the leading strategy for 2026 is:
+
+**Volumetric Creative System** – a system that produces large volume and wide diversity of creatives.
+
+## Why Is Diversity Critical in Andromeda?
+
+### 1. Because Meta no longer looks only for "audience" – it looks for behavior
+
+In the past you targeted "Women 25–44 who like fashion".
+
+Today that barely matters.
+
+Meta takes different creatives, sees who reacts to what, and based on behavior, identifies the psychological profile behind every interaction.
+
+The more creative types you have, the more Andromeda can understand:
+• Which avatars respond to which message
+• Which hook works on which personality
+• Which format fits which state of mind
+• Which style attracts buyers most likely to convert
+
+Without diversity, the system simply doesn't have enough data to work with.
+
+### 2. Because the creative is the new algorithm
+
+If optimization used to be about audiences and campaign structure, in 2026, 80% of performance is determined by Creative Architecture.
+
+Meaning:
+• How many styles you have
+• How many message angles
+• How many hooks
+• How many formats
+• How much weekly experiment depth exists
+
+Those who supply the system with depth and breadth in content maintain low CAC over time.
+
+## How Many Creatives Do You Actually Need?
+
+The new reality is simple:
+
+Anyone not producing 40–70 creatives per week will not keep up.
+
+Yes, the number is high.
+
+And that is exactly the point.
+
+Meta in 2026 rewards brands that provide a wide variety of:
+• Concepts
+• Messages
+• Narratives
+• Visual styles
+• Experimental hooks
+• Psychological angles
+
+The system becomes smarter the more you feed it.
+
+## The Secret: Deep Diversity, Not "Another Version"
+
+Most people think they are creating diversity.
+
+But what do they actually do?
+
+Take the same video, change 3 words, add different captions, and call it a "new concept".
+
+It's not.
+
+Real diversity looks like this:
+• Emotional UGC
+• Punchy UGC
+• Sharply lit image
+• Comparison image
+• Before/After
+• Strong social proof
+• Product in daily scenarios
+• User-experience video
+• Clean minimalistic image
+• Pain-based narrative
+• Dream-based narrative
+• Objection-based narrative
+
+This kind of diversity turns Andromeda into a monster that produces real scale.
+
+## So Do You Need Creative Volume in 2026?
+
+Absolutely.
+
+And not just volume, but deep, rich, varied, psychologically wide volume, relevant to dozens of audience mindsets.
+
+Brands that master this will enjoy stable CAC, deep scale, and natural optimization.
+
+Brands that don't will continue fighting over prices and searching for "magic targeting tricks" that no longer exist.`,
+      buttons: [
+        { text: '500 Ad Templates in Canva', url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates' },
+        { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
+      ]
+    }
+  ];;
+
+// Helper function to generate slug from title
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+// Helper function to determine category based on content
+function determineCategory(article: any): Article['category'] {
+  const title = article.title.toLowerCase();
+  const content = article.content?.toLowerCase() || '';
+  
+  if (title.includes('ltv') || title.includes('lifetime') || title.includes('pareto') || title.includes('starbucks') || title.includes('gillette')) {
+    return 'ltv';
+  }
+  if (title.includes('meta') || title.includes('ad') || title.includes('email') || title.includes('sms') || title.includes('google') || title.includes('marketing') || title.includes('creative') || title.includes('lookalike') || title.includes('cbo') || title.includes('abo')) {
+    return 'marketing';
+  }
+  if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
+    return 'conversion';
+  }
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline')) {
+    return 'psychology';
+  }
+  if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {
+    return 'operations';
+  }
+  return 'marketing';
+}
+
+// Helper function to estimate read time
+function estimateReadTime(content: string): number {
+  const words = content.split(/s+/).length;
+  return Math.max(3, Math.ceil(words / 200));
+}
+
+// Process articles to add missing fields
+export const processedArticles: Article[] = articles.map((article, index) => ({
+  ...article,
+  slug: generateSlug(article.title),
+  description: article.intro || article.title,
+  category: determineCategory(article),
+  readTime: estimateReadTime(article.content || ''),
+  isFeatured: index < 5,
+}));
 
 // Helper function to get articles by category
 export function getArticlesByCategory(category: string): Article[] {
-  if (category === 'all') return articles;
-  return articles.filter(a => a.category === category);
+  if (category === 'all') return processedArticles;
+  return processedArticles.filter(a => a.category === category);
 }
 
 // Helper function to get featured articles
 export function getFeaturedArticles(): Article[] {
-  return articles.filter(a => a.isFeatured);
+  return processedArticles.filter(a => a.isFeatured);
 }
 
 // Helper function to get article by slug
 export function getArticleBySlug(slug: string): Article | undefined {
-  return articles.find(a => a.slug === slug);
+  return processedArticles.find(a => a.slug === slug);
 }
 
 // Helper function to get related articles
 export function getRelatedArticles(currentSlug: string, limit: number = 3): Article[] {
-  const current = articles.find(a => a.slug === currentSlug);
-  if (!current) return articles.slice(0, limit);
+  const current = processedArticles.find(a => a.slug === currentSlug);
+  if (!current) return processedArticles.slice(0, limit);
 
-  return articles
+  return processedArticles
     .filter(a => a.slug !== currentSlug && a.category === current.category)
     .slice(0, limit);
 }

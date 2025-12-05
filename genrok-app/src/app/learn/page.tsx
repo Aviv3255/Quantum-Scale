@@ -18,7 +18,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
-import { articles, Article } from '@/data/articles';
+import { processedArticles as articles, Article } from '@/data/articles';
 
 // Categories for filtering
 const categories = [
