@@ -53,28 +53,49 @@ export default function LoginPage() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {/* Mobile Logo */}
       <div className="lg:hidden text-center mb-8">
-        <Link href="/" className="inline-block">
-          <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-            Genrok
+        <Link href="/" className="inline-flex items-center gap-2">
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center"
+            style={{ background: '#fdf6e3' }}
+          >
+            <span className="text-lg">🐵</span>
+          </div>
+          <span
+            className="text-xl font-bold"
+            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+          >
+            Quantum Scale
           </span>
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <div className="bg-white rounded-2xl p-8" style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-600">Sign in to your account to continue</p>
+          <h1
+            className="text-2xl font-bold mb-2"
+            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#000' }}
+          >
+            Welcome back
+          </h1>
+          <p style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
+            Enter your credentials to continue
+          </p>
         </div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm"
+            className="mb-6 p-4 rounded-xl text-sm"
+            style={{
+              background: 'rgba(239, 68, 68, 0.06)',
+              border: '1px solid rgba(239, 68, 68, 0.15)',
+              color: '#ef4444',
+            }}
           >
             {error}
           </motion.div>
@@ -82,74 +103,130 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#2c1810' }}
+            >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('email')}
                 type="email"
                 id="email"
                 placeholder="you@example.com"
-                className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                  errors.email ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.email ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.email) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.email ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
             </div>
             {errors.email && (
-              <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.email.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium"
+                style={{ color: '#2c1810' }}
+              >
+                Password
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium transition-colors"
+                style={{ color: '#8b6914' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#2c1810';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#8b6914';
+                }}
+              >
+                Forgot password?
+              </Link>
+            </div>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('password')}
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Enter your password"
-                className={`w-full pl-12 pr-12 py-3.5 rounded-xl border ${
-                  errors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-12 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.password ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.password) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.password ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? <EyeOff className="w-5 h-5" strokeWidth={1.5} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
               </button>
             </div>
             {errors.password && (
-              <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.password.message}</p>
             )}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-600">Remember me</span>
-            </label>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Forgot password?
-            </Link>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white font-semibold bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              background: '#8b6914',
+              boxShadow: '0 2px 8px rgba(139, 105, 20, 0.25)',
+            }}
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.background = '#2c1810';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(44, 24, 16, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#8b6914';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(139, 105, 20, 0.25)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
           >
             {isSubmitting ? (
               <>
@@ -159,16 +236,26 @@ export default function LoginPage() {
             ) : (
               <>
                 Sign In
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
               </>
             )}
           </button>
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">
+          <p style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link
+              href="/signup"
+              className="font-semibold transition-colors"
+              style={{ color: '#8b6914' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#2c1810';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#8b6914';
+              }}
+            >
               Sign up for free
             </Link>
           </p>

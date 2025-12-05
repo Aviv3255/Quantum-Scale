@@ -21,28 +21,24 @@ const features = [
     title: 'Learning Center',
     description: '38+ in-depth articles on eCommerce psychology, LTV optimization, and scaling strategies.',
     href: '/learn',
-    color: 'from-blue-500 to-cyan-500',
   },
   {
     icon: BarChart3,
     title: 'Advanced Calculators',
     description: 'Profit simulation and KPI X-Ray tools to diagnose and optimize your business metrics.',
     href: '/calculators',
-    color: 'from-violet-500 to-purple-500',
   },
   {
     icon: AppWindow,
     title: 'Curated Apps',
     description: 'Handpicked Shopify apps, secret tools, and AI solutions with exclusive discounts.',
     href: '/apps/shopify',
-    color: 'from-emerald-500 to-teal-500',
   },
   {
     icon: Palette,
     title: 'Design Inspiration',
     description: 'Award-winning eCommerce designs, conversion sections, and brand imagery.',
     href: '/design/web',
-    color: 'from-pink-500 to-rose-500',
   },
 ];
 
@@ -60,28 +56,37 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex items-center justify-center py-20">
         {/* Background Elements */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl" />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(139, 105, 20, 0.08) 0%, rgba(139, 105, 20, 0.02) 50%, transparent 70%)',
+            }}
+          />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <FadeIn>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">Your eCommerce Growth Partner</span>
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+              style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
+            >
+              <span className="text-xl">🐵</span>
+              <span className="text-sm font-medium" style={{ color: '#8b6914' }}>Follow the Monkey</span>
             </div>
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1
+              className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+            >
               Scale Your Brand to
-              <span className="block gradient-text">7 Figures & Beyond</span>
+              <span className="block" style={{ color: '#8b6914' }}>7 Figures & Beyond</span>
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+            <p className="text-xl max-w-3xl mx-auto mb-10" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
               Data-driven strategies, proven systems, and premium tools used by 8 & 9 figure brands.
               Everything you need to build an unstoppable eCommerce machine.
             </p>
@@ -91,14 +96,38 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/signup"
-                className="group inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl hover:shadow-xl hover:shadow-blue-500/25 transition-all"
+                className="group inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all"
+                style={{
+                  background: '#8b6914',
+                  boxShadow: '0 4px 14px rgba(139, 105, 20, 0.25)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#2c1810';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(44, 24, 16, 0.3)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#8b6914';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(139, 105, 20, 0.25)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
               >
                 Get Started Free
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
               </Link>
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl transition-all"
+                style={{
+                  background: '#fdf6e3',
+                  color: '#2c1810',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(139, 105, 20, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#fdf6e3';
+                }}
               >
                 Explore Learning Center
               </Link>
@@ -108,15 +137,18 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16" style={{ background: '#fdf6e3' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat) => (
               <StaggerItem key={stat.label} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold mb-2"
+                  style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#8b6914' }}
+                >
                   {stat.value}
                 </div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div style={{ color: 'rgba(44, 24, 16, 0.6)' }}>{stat.label}</div>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -124,14 +156,17 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-4"
+              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+            >
               Everything You Need to
-              <span className="gradient-text"> Win</span>
+              <span style={{ color: '#8b6914' }}> Win</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
               Comprehensive tools and resources designed for serious eCommerce entrepreneurs.
             </p>
           </FadeIn>
@@ -141,18 +176,33 @@ export default function Home() {
               <StaggerItem key={feature.title}>
                 <Link
                   href={feature.href}
-                  className="group block p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-gray-200 transition-all"
+                  className="group block p-8 bg-white rounded-2xl transition-all"
+                  style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.08)';
+                    e.currentTarget.style.borderColor = 'rgba(139, 105, 20, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.06)';
+                  }}
                 >
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-6`}>
-                    <feature.icon className="w-6 h-6 text-white" />
+                  <div
+                    className="inline-flex p-3 rounded-xl mb-6"
+                    style={{ background: 'rgba(139, 105, 20, 0.1)' }}
+                  >
+                    <feature.icon className="w-6 h-6" style={{ color: '#8b6914' }} strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                  <h3
+                    className="text-2xl font-bold mb-3 transition-colors"
+                    style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+                  >
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 mb-4">{feature.description}</p>
-                  <span className="inline-flex items-center gap-1 text-blue-600 font-medium">
+                  <p className="mb-4" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>{feature.description}</p>
+                  <span className="inline-flex items-center gap-1 font-medium" style={{ color: '#8b6914' }}>
                     Learn more
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
                   </span>
                 </Link>
               </StaggerItem>
@@ -162,18 +212,24 @@ export default function Home() {
       </section>
 
       {/* LTV Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+      <section className="py-24" style={{ background: '#2c1810' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <FadeIn direction="left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-6">
-                <TrendingUp className="w-4 h-4 text-blue-400" />
-                <span className="text-sm font-medium text-blue-300">The Secret to Scale</span>
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+                style={{ background: 'rgba(139, 105, 20, 0.2)', border: '1px solid rgba(139, 105, 20, 0.3)' }}
+              >
+                <TrendingUp className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                <span className="text-sm font-medium" style={{ color: '#8b6914' }}>The Secret to Scale</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <h2
+                className="text-4xl md:text-5xl font-bold mb-6"
+                style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#fdf6e3' }}
+              >
                 Build a $1,000+ LTV Machine
               </h2>
-              <p className="text-xl text-gray-300 mb-8">
+              <p className="text-xl mb-8" style={{ color: 'rgba(253, 246, 227, 0.7)' }}>
                 When every customer is worth $1,000+ over their lifetime, scaling becomes simple.
                 Learn the exact systems used by 8-figure brands to maximize customer value.
               </p>
@@ -184,46 +240,73 @@ export default function Home() {
                   'Lookalike audiences built from your top 5% customers',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                    <div
+                      className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ background: '#22c55e' }}
+                    >
                       <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">{item}</span>
+                    <span style={{ color: 'rgba(253, 246, 227, 0.8)' }}>{item}</span>
                   </li>
                 ))}
               </ul>
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold bg-white text-gray-900 rounded-xl hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl transition-all"
+                style={{ background: '#fdf6e3', color: '#2c1810' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#8b6914';
+                  e.currentTarget.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#fdf6e3';
+                  e.currentTarget.style.color = '#2c1810';
+                }}
               >
                 Start Learning
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
               </Link>
             </FadeIn>
 
             <FadeIn direction="right" className="relative">
-              <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-3xl p-8 border border-white/10">
+              <div
+                className="rounded-3xl p-8"
+                style={{ background: 'rgba(139, 105, 20, 0.1)', border: '1px solid rgba(139, 105, 20, 0.2)' }}
+              >
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white/5 rounded-2xl p-6 text-center backdrop-blur-sm">
-                    <Target className="w-8 h-8 mx-auto mb-3 text-blue-400" />
-                    <div className="text-3xl font-bold mb-1">$1,000+</div>
-                    <div className="text-sm text-gray-400">12-Month LTV</div>
+                  <div
+                    className="rounded-2xl p-6 text-center"
+                    style={{ background: 'rgba(253, 246, 227, 0.05)' }}
+                  >
+                    <Target className="w-8 h-8 mx-auto mb-3" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                    <div className="text-3xl font-bold mb-1" style={{ color: '#fdf6e3' }}>$1,000+</div>
+                    <div className="text-sm" style={{ color: 'rgba(253, 246, 227, 0.5)' }}>12-Month LTV</div>
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-6 text-center backdrop-blur-sm">
-                    <Zap className="w-8 h-8 mx-auto mb-3 text-cyan-400" />
-                    <div className="text-3xl font-bold mb-1">5-7%</div>
-                    <div className="text-sm text-gray-400">Conversion Rate</div>
+                  <div
+                    className="rounded-2xl p-6 text-center"
+                    style={{ background: 'rgba(253, 246, 227, 0.05)' }}
+                  >
+                    <Zap className="w-8 h-8 mx-auto mb-3" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                    <div className="text-3xl font-bold mb-1" style={{ color: '#fdf6e3' }}>5-7%</div>
+                    <div className="text-sm" style={{ color: 'rgba(253, 246, 227, 0.5)' }}>Conversion Rate</div>
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-6 text-center backdrop-blur-sm">
-                    <BarChart3 className="w-8 h-8 mx-auto mb-3 text-green-400" />
-                    <div className="text-3xl font-bold mb-1">1:46</div>
-                    <div className="text-sm text-gray-400">Upsell ROI</div>
+                  <div
+                    className="rounded-2xl p-6 text-center"
+                    style={{ background: 'rgba(253, 246, 227, 0.05)' }}
+                  >
+                    <BarChart3 className="w-8 h-8 mx-auto mb-3" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                    <div className="text-3xl font-bold mb-1" style={{ color: '#fdf6e3' }}>1:46</div>
+                    <div className="text-sm" style={{ color: 'rgba(253, 246, 227, 0.5)' }}>Upsell ROI</div>
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-6 text-center backdrop-blur-sm">
-                    <TrendingUp className="w-8 h-8 mx-auto mb-3 text-violet-400" />
-                    <div className="text-3xl font-bold mb-1">80%+</div>
-                    <div className="text-sm text-gray-400">Cart Recovery</div>
+                  <div
+                    className="rounded-2xl p-6 text-center"
+                    style={{ background: 'rgba(253, 246, 227, 0.05)' }}
+                  >
+                    <TrendingUp className="w-8 h-8 mx-auto mb-3" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                    <div className="text-3xl font-bold mb-1" style={{ color: '#fdf6e3' }}>80%+</div>
+                    <div className="text-sm" style={{ color: 'rgba(253, 246, 227, 0.5)' }}>Cart Recovery</div>
                   </div>
                 </div>
               </div>
@@ -233,50 +316,76 @@ export default function Home() {
       </section>
 
       {/* TikTok Credits CTA */}
-      <section className="py-24">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 p-[2px]">
-              <div className="bg-white rounded-3xl p-8 md:p-12">
-                <div className="grid lg:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 border border-pink-100 mb-6">
-                      <span className="text-sm font-semibold text-pink-600">EXCLUSIVE PARTNERSHIP</span>
-                    </div>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                      Get Up to $6,000 in Free TikTok Ad Credits
-                    </h2>
-                    <p className="text-xl text-gray-600 mb-6">
-                      Scale faster with our exclusive TikTok partnership. Unlock your tier, launch instantly,
-                      and get priority support from TikTok&apos;s growth team.
-                    </p>
-                    <Link
-                      href="/tiktok-credits"
-                      className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl hover:shadow-xl hover:shadow-pink-500/25 transition-all"
-                    >
-                      Claim Your Credits
-                      <ArrowRight className="w-5 h-5" />
-                    </Link>
+            <div
+              className="rounded-3xl p-8 md:p-12"
+              style={{ background: '#fdf6e3', border: '1px solid rgba(139, 105, 20, 0.15)' }}
+            >
+              <div className="grid lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+                    style={{ background: 'rgba(139, 105, 20, 0.1)', border: '1px solid rgba(139, 105, 20, 0.2)' }}
+                  >
+                    <Sparkles className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                    <span className="text-sm font-semibold" style={{ color: '#8b6914' }}>EXCLUSIVE PARTNERSHIP</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-cyan-50 rounded-2xl">
-                      <div className="text-2xl font-bold text-cyan-600">$2K</div>
-                      <div className="text-xs text-gray-600">Spend</div>
-                      <div className="text-lg font-bold text-cyan-700 mt-1">$1K</div>
-                      <div className="text-xs text-gray-500">Credit</div>
-                    </div>
-                    <div className="text-center p-4 bg-purple-50 rounded-2xl">
-                      <div className="text-2xl font-bold text-purple-600">$5K</div>
-                      <div className="text-xs text-gray-600">Spend</div>
-                      <div className="text-lg font-bold text-purple-700 mt-1">$3K</div>
-                      <div className="text-xs text-gray-500">Credit</div>
-                    </div>
-                    <div className="text-center p-4 bg-pink-50 rounded-2xl border-2 border-pink-200">
-                      <div className="text-2xl font-bold text-pink-600">$10K</div>
-                      <div className="text-xs text-gray-600">Spend</div>
-                      <div className="text-lg font-bold text-pink-700 mt-1">$6K</div>
-                      <div className="text-xs text-gray-500">Credit</div>
-                    </div>
+                  <h2
+                    className="text-4xl md:text-5xl font-bold mb-4"
+                    style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+                  >
+                    Get Up to $6,000 in Free TikTok Ad Credits
+                  </h2>
+                  <p className="text-xl mb-6" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
+                    Scale faster with our exclusive TikTok partnership. Unlock your tier, launch instantly,
+                    and get priority support from TikTok&apos;s growth team.
+                  </p>
+                  <Link
+                    href="/tiktok-credits"
+                    className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all"
+                    style={{ background: '#8b6914', boxShadow: '0 4px 14px rgba(139, 105, 20, 0.25)' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#2c1810';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#8b6914';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    Claim Your Credits
+                    <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
+                  </Link>
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div
+                    className="text-center p-4 rounded-2xl"
+                    style={{ background: 'rgba(139, 105, 20, 0.08)' }}
+                  >
+                    <div className="text-2xl font-bold" style={{ color: '#8b6914' }}>$2K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Spend</div>
+                    <div className="text-lg font-bold mt-1" style={{ color: '#2c1810' }}>$1K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Credit</div>
+                  </div>
+                  <div
+                    className="text-center p-4 rounded-2xl"
+                    style={{ background: 'rgba(139, 105, 20, 0.08)' }}
+                  >
+                    <div className="text-2xl font-bold" style={{ color: '#8b6914' }}>$5K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Spend</div>
+                    <div className="text-lg font-bold mt-1" style={{ color: '#2c1810' }}>$3K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Credit</div>
+                  </div>
+                  <div
+                    className="text-center p-4 rounded-2xl"
+                    style={{ background: 'rgba(139, 105, 20, 0.15)', border: '1px solid rgba(139, 105, 20, 0.3)' }}
+                  >
+                    <div className="text-2xl font-bold" style={{ color: '#8b6914' }}>$10K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Spend</div>
+                    <div className="text-lg font-bold mt-1" style={{ color: '#2c1810' }}>$6K</div>
+                    <div className="text-xs" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Credit</div>
                   </div>
                 </div>
               </div>
@@ -286,21 +395,36 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24" style={{ background: '#fdf6e3' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <div className="mb-8">
+              <span className="text-6xl">🐵</span>
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-6"
+              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+            >
               Ready to Scale Your Brand?
             </h2>
-            <p className="text-xl text-gray-600 mb-10">
-              Join thousands of eCommerce entrepreneurs using Genrok to build 7 & 8 figure brands.
+            <p className="text-xl mb-10" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
+              Join thousands of eCommerce entrepreneurs using Quantum Scale to build 7 & 8 figure brands.
             </p>
             <Link
               href="/signup"
-              className="group inline-flex items-center gap-2 px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl hover:shadow-2xl hover:shadow-blue-500/30 transition-all"
+              className="group inline-flex items-center gap-2 px-10 py-5 text-xl font-bold text-white rounded-2xl transition-all"
+              style={{ background: '#8b6914', boxShadow: '0 6px 20px rgba(139, 105, 20, 0.3)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#2c1810';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#8b6914';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
               Get Started Now — It&apos;s Free
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
             </Link>
           </FadeIn>
         </div>

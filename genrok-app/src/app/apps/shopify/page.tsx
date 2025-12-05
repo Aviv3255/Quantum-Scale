@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import {
   AppWindow,
   Palette,
@@ -150,35 +150,45 @@ export default function ShopifyAppsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-20 bg-white">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(139, 105, 20, 0.08) 0%, rgba(139, 105, 20, 0.02) 50%, transparent 70%)',
+            }}
+          />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
-              <Gift className="w-4 h-4 text-emerald-600" />
-              <span className="text-sm font-medium text-emerald-700">Exclusive Discounts</span>
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+              style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
+            >
+              <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+              <span className="text-sm font-medium" style={{ color: '#8b6914' }}>Exclusive Discounts</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Discounted <span className="gradient-text">Shopify Apps</span>
+            <h1
+              className="text-4xl md:text-6xl font-bold mb-6"
+              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+            >
+              Discounted <span style={{ color: '#8b6914' }}>Shopify Apps</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl mb-8" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
               Install via our links to unlock special pricing, extended trials, and premium features
               not available elsewhere.
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+            <div className="flex items-center justify-center gap-6 text-sm" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
               <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                <Star className="w-4 h-4" style={{ color: '#8b6914' }} fill="#8b6914" />
                 <span>22 curated apps</span>
               </div>
-              <div className="w-1 h-1 bg-gray-300 rounded-full" />
+              <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(44, 24, 16, 0.3)' }} />
               <div className="flex items-center gap-2">
-                <Gift className="w-4 h-4 text-emerald-500" />
+                <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
                 <span>Exclusive deals</span>
               </div>
             </div>
@@ -187,20 +197,35 @@ export default function ShopifyAppsPage() {
       </section>
 
       {/* Categories */}
-      <section className="py-8 border-y border-gray-100 bg-gray-50/50 sticky top-16 z-40 backdrop-blur-xl">
+      <section
+        className="py-8 sticky top-16 z-40 backdrop-blur-xl"
+        style={{ background: 'rgba(253, 246, 227, 0.95)', borderTop: '1px solid rgba(0, 0, 0, 0.06)', borderBottom: '1px solid rgba(0, 0, 0, 0.06)' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all ${
-                  activeCategory === category.id
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/25'
-                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                }`}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all"
+                style={{
+                  background: activeCategory === category.id ? '#8b6914' : 'white',
+                  color: activeCategory === category.id ? 'white' : '#2c1810',
+                  border: activeCategory === category.id ? 'none' : '1px solid rgba(0, 0, 0, 0.06)',
+                  boxShadow: activeCategory === category.id ? '0 4px 12px rgba(139, 105, 20, 0.25)' : 'none',
+                }}
+                onMouseEnter={(e) => {
+                  if (activeCategory !== category.id) {
+                    e.currentTarget.style.background = 'rgba(139, 105, 20, 0.08)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeCategory !== category.id) {
+                    e.currentTarget.style.background = 'white';
+                  }
+                }}
               >
-                <category.icon className="w-4 h-4" />
+                <category.icon className="w-4 h-4" strokeWidth={1.5} />
                 <span className="text-sm font-medium">{category.name}</span>
               </button>
             ))}
@@ -215,11 +240,25 @@ export default function ShopifyAppsPage() {
             <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredApps.map((app) => (
                 <StaggerItem key={app.id}>
-                  <div className="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all overflow-hidden">
+                  <div
+                    className="group bg-white rounded-2xl overflow-hidden transition-all"
+                    style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.08)';
+                      e.currentTarget.style.borderColor = 'rgba(139, 105, 20, 0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.06)';
+                    }}
+                  >
                     {/* Header */}
                     <div className="p-6 pb-4">
                       <div className="flex items-start gap-4">
-                        <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div
+                          className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"
+                          style={{ background: '#fdf6e3' }}
+                        >
                           <Image
                             src={app.logo}
                             alt={app.name}
@@ -228,10 +267,16 @@ export default function ShopifyAppsPage() {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-gray-900 text-lg truncate">
+                          <h3
+                            className="font-bold text-lg truncate"
+                            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+                          >
                             {app.name}
                           </h3>
-                          <span className="inline-block mt-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                          <span
+                            className="inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full"
+                            style={{ background: 'rgba(139, 105, 20, 0.08)', color: '#8b6914' }}
+                          >
                             {app.category}
                           </span>
                         </div>
@@ -240,7 +285,7 @@ export default function ShopifyAppsPage() {
 
                     {/* Description */}
                     <div className="px-6 pb-4">
-                      <p className="text-gray-600 text-sm line-clamp-3">
+                      <p className="text-sm line-clamp-3" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
                         {app.description}
                       </p>
                     </div>
@@ -248,9 +293,12 @@ export default function ShopifyAppsPage() {
                     {/* Discount Badge */}
                     {app.discount && (
                       <div className="px-6 pb-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-lg">
-                          <Gift className="w-4 h-4 text-emerald-600" />
-                          <span className="text-sm font-semibold text-emerald-700">
+                        <div
+                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg"
+                          style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
+                        >
+                          <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+                          <span className="text-sm font-semibold" style={{ color: '#8b6914' }}>
                             {app.discount} OFF
                           </span>
                         </div>
@@ -261,19 +309,29 @@ export default function ShopifyAppsPage() {
                     {app.couponCode && (
                       <div className="px-6 pb-4">
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 px-3 py-2 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                            <code className="text-sm font-mono font-semibold text-gray-700">
+                          <div
+                            className="flex-1 px-3 py-2 rounded-lg"
+                            style={{ background: '#fdf6e3', border: '1px dashed rgba(139, 105, 20, 0.3)' }}
+                          >
+                            <code className="text-sm font-mono font-semibold" style={{ color: '#8b6914' }}>
                               {app.couponCode}
                             </code>
                           </div>
                           <button
                             onClick={() => copyCode(app.couponCode!)}
-                            className="p-2 text-gray-500 hover:text-emerald-600 transition-colors"
+                            className="p-2 transition-colors"
+                            style={{ color: 'rgba(44, 24, 16, 0.5)' }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = '#8b6914';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = 'rgba(44, 24, 16, 0.5)';
+                            }}
                           >
                             {copiedCode === app.couponCode ? (
-                              <Check className="w-5 h-5 text-emerald-600" />
+                              <Check className="w-5 h-5" style={{ color: '#22c55e' }} strokeWidth={1.5} />
                             ) : (
-                              <Copy className="w-5 h-5" />
+                              <Copy className="w-5 h-5" strokeWidth={1.5} />
                             )}
                           </button>
                         </div>
@@ -286,10 +344,19 @@ export default function ShopifyAppsPage() {
                         href={app.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
+                        className="flex items-center justify-center gap-2 w-full py-3 px-4 text-white font-semibold rounded-xl transition-all"
+                        style={{ background: '#8b6914', boxShadow: '0 4px 12px rgba(139, 105, 20, 0.25)' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#2c1810';
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#8b6914';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }}
                       >
                         Install App
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-4 h-4" strokeWidth={1.5} />
                       </a>
                     </div>
                   </div>

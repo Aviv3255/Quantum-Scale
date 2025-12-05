@@ -76,23 +76,33 @@ export default function SignupPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 text-center"
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+        className="bg-white rounded-2xl p-8 text-center"
+        style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
       >
-        <div className="w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
-          <Check className="w-8 h-8 text-green-600" />
+        <div
+          className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(34, 197, 94, 0.1)' }}
+        >
+          <Check className="w-8 h-8" style={{ color: '#22c55e' }} strokeWidth={1.5} />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h1>
-        <p className="text-gray-600 mb-6">
+        <h1
+          className="text-2xl font-bold mb-2"
+          style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#000' }}
+        >
+          Check your email
+        </h1>
+        <p className="mb-6" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
           We&apos;ve sent a confirmation link to your email address.
           Please click the link to activate your account.
         </p>
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+          className="inline-flex items-center gap-2 font-semibold transition-colors"
+          style={{ color: '#8b6914' }}
         >
           Back to Sign In
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
         </Link>
       </motion.div>
     );
@@ -102,30 +112,47 @@ export default function SignupPage() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {/* Mobile Logo */}
       <div className="lg:hidden text-center mb-8">
-        <Link href="/" className="inline-block">
-          <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-            Genrok
+        <Link href="/" className="inline-flex items-center gap-2">
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center"
+            style={{ background: '#fdf6e3' }}
+          >
+            <span className="text-lg">🐵</span>
+          </div>
+          <span
+            className="text-xl font-bold"
+            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
+          >
+            Quantum Scale
           </span>
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <div className="bg-white rounded-2xl p-8" style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Create your account</h1>
-          <p className="text-gray-600">Start scaling your brand today</p>
+          <h1
+            className="text-2xl font-bold mb-2"
+            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#000' }}
+          >
+            Create your account
+          </h1>
+          <p style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Start scaling your brand today</p>
         </div>
 
         {/* Benefits */}
-        <div className="mb-6 p-4 bg-blue-50 rounded-xl">
-          <p className="text-sm font-semibold text-blue-900 mb-2">Free access includes:</p>
+        <div
+          className="mb-6 p-4 rounded-xl"
+          style={{ background: 'rgba(139, 105, 20, 0.06)', border: '1px solid rgba(139, 105, 20, 0.1)' }}
+        >
+          <p className="text-sm font-semibold mb-2" style={{ color: '#8b6914' }}>Free access includes:</p>
           <ul className="space-y-1">
             {benefits.map((benefit) => (
-              <li key={benefit} className="flex items-center gap-2 text-sm text-blue-700">
-                <Check className="w-4 h-4 text-blue-500" />
+              <li key={benefit} className="flex items-center gap-2 text-sm" style={{ color: '#2c1810' }}>
+                <Check className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
                 {benefit}
               </li>
             ))}
@@ -136,7 +163,12 @@ export default function SignupPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm"
+            className="mb-6 p-4 rounded-xl text-sm"
+            style={{
+              background: 'rgba(239, 68, 68, 0.06)',
+              border: '1px solid rgba(239, 68, 68, 0.15)',
+              color: '#ef4444',
+            }}
           >
             {error}
           </motion.div>
@@ -144,88 +176,147 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="fullName"
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#2c1810' }}
+            >
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <User
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('fullName')}
                 type="text"
                 id="fullName"
                 placeholder="John Doe"
-                className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                  errors.fullName ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.fullName ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.fullName) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.fullName ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
             </div>
             {errors.fullName && (
-              <p className="mt-2 text-sm text-red-600">{errors.fullName.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.fullName.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#2c1810' }}
+            >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('email')}
                 type="email"
                 id="email"
                 placeholder="you@example.com"
-                className={`w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                  errors.email ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.email ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.email) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.email ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
             </div>
             {errors.email && (
-              <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.email.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#2c1810' }}
+            >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('password')}
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Create a strong password"
-                className={`w-full pl-12 pr-12 py-3.5 rounded-xl border ${
-                  errors.password ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-12 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.password ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.password) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.password ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? <EyeOff className="w-5 h-5" strokeWidth={1.5} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
               </button>
             </div>
             {errors.password && (
-              <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.password.message}</p>
             )}
             {password && (
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {passwordRequirements.map((req) => (
                   <div
                     key={req.label}
-                    className={`flex items-center gap-1.5 text-xs ${
-                      req.met ? 'text-green-600' : 'text-gray-400'
-                    }`}
+                    className="flex items-center gap-1.5 text-xs"
+                    style={{ color: req.met ? '#22c55e' : 'rgba(44, 24, 16, 0.4)' }}
                   >
                     <div
-                      className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${
-                        req.met ? 'bg-green-100' : 'bg-gray-100'
-                      }`}
+                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center"
+                      style={{ background: req.met ? 'rgba(34, 197, 94, 0.1)' : 'rgba(0, 0, 0, 0.04)' }}
                     >
-                      {req.met && <Check className="w-2.5 h-2.5" />}
+                      {req.met && <Check className="w-2.5 h-2.5" strokeWidth={2} />}
                     </div>
                     {req.label}
                   </div>
@@ -235,47 +326,77 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium mb-2"
+              style={{ color: '#2c1810' }}
+            >
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
+                strokeWidth={1.5}
+              />
               <input
                 {...register('confirmPassword')}
                 type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 placeholder="Confirm your password"
-                className={`w-full pl-12 pr-12 py-3.5 rounded-xl border ${
-                  errors.confirmPassword ? 'border-red-300 focus:ring-red-500' : 'border-gray-200 focus:ring-blue-500'
-                } focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+                className="w-full pl-12 pr-12 py-3.5 rounded-xl transition-all outline-none"
+                style={{
+                  border: errors.confirmPassword ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  if (!errors.confirmPassword) {
+                    e.currentTarget.style.border = '1px solid #8b6914';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(139, 105, 20, 0.1)';
+                  }
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = errors.confirmPassword ? '1px solid #ef4444' : '1px solid rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: 'rgba(44, 24, 16, 0.4)' }}
               >
-                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showConfirmPassword ? <EyeOff className="w-5 h-5" strokeWidth={1.5} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>
+              <p className="mt-2 text-sm" style={{ color: '#ef4444' }}>{errors.confirmPassword.message}</p>
             )}
           </div>
 
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-3">
             <input
               type="checkbox"
               id="terms"
               required
-              className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="mt-1 w-5 h-5 rounded-md cursor-pointer"
+              style={{ accentColor: '#8b6914' }}
             />
-            <label htmlFor="terms" className="text-sm text-gray-600">
+            <label htmlFor="terms" className="text-sm" style={{ color: 'rgba(44, 24, 16, 0.7)' }}>
               I agree to the{' '}
-              <Link href="/terms" className="text-blue-600 hover:underline">
+              <Link
+                href="/terms"
+                className="font-medium transition-colors"
+                style={{ color: '#8b6914' }}
+              >
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link href="/privacy" className="text-blue-600 hover:underline">
+              <Link
+                href="/privacy"
+                className="font-medium transition-colors"
+                style={{ color: '#8b6914' }}
+              >
                 Privacy Policy
               </Link>
             </label>
@@ -284,7 +405,23 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white font-semibold bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              background: '#8b6914',
+              boxShadow: '0 2px 8px rgba(139, 105, 20, 0.25)',
+            }}
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.background = '#2c1810';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(44, 24, 16, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#8b6914';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(139, 105, 20, 0.25)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
           >
             {isSubmitting ? (
               <>
@@ -294,16 +431,20 @@ export default function SignupPage() {
             ) : (
               <>
                 Create Account
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
               </>
             )}
           </button>
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">
+          <p style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
             Already have an account?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link
+              href="/login"
+              className="font-semibold transition-colors"
+              style={{ color: '#8b6914' }}
+            >
               Sign in
             </Link>
           </p>
