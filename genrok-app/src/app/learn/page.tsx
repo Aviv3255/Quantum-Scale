@@ -18,6 +18,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { articles, Article } from '@/data/articles';
 
 // Categories for filtering
 const categories = [
@@ -27,107 +28,6 @@ const categories = [
   { id: 'marketing', name: 'Marketing', icon: Zap },
   { id: 'operations', name: 'Operations', icon: BarChart3 },
   { id: 'psychology', name: 'Psychology', icon: Users },
-];
-
-// Sample articles data (will be replaced with Supabase data)
-const articles = [
-  {
-    id: 1,
-    slug: 'best-private-agent',
-    title: 'Who Is the Best Private Agent in the Market Today',
-    description: '5-days home shipping, 18/6 Whatsapp support, cheaper prices..',
-    category: 'operations',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
-    isFeatured: true,
-    stats: [
-      { value: '3-5%', label: 'Savings' },
-      { value: '5-7 Days', label: 'Delivery' },
-    ],
-  },
-  {
-    id: 2,
-    slug: 'stop-using-aliexpress',
-    title: 'Stop Using AliExpress Now',
-    description: 'AliExpress destroys your store faster than you realize.',
-    category: 'operations',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_1.jpg?v=1763290608',
-    isFeatured: false,
-  },
-  {
-    id: 3,
-    slug: 'product-reviews-conversion',
-    title: 'Do Product Reviews Increase Conversion?',
-    description: "We've did a test if product reviews increase CVR, Here's the results",
-    category: 'conversion',
-    readTime: 4,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_2.jpg?v=1763290696',
-    isFeatured: true,
-    stats: [
-      { value: '12.7%', label: 'CVR Lift' },
-    ],
-  },
-  {
-    id: 4,
-    slug: 'ecommerce-success-cheat-code',
-    title: 'Important: The Cheat Code for Ecommerce Success',
-    description: 'Do this to understand exactly how much each customer is worth to you',
-    category: 'ltv',
-    readTime: 7,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_3.jpg?v=1763297153',
-    isFeatured: true,
-  },
-  {
-    id: 5,
-    slug: 'roadmap-to-1m-month',
-    title: 'The Roadmap to $1M/Month',
-    description: 'When you build a system strong enough, You cannot be stopped.',
-    category: 'ltv',
-    readTime: 8,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_4.jpg?v=1763297241',
-    isFeatured: true,
-    stats: [
-      { value: '$1,000+', label: 'LTV Target' },
-      { value: '33', label: 'Daily Customers' },
-    ],
-  },
-  {
-    id: 6,
-    slug: 'geo-location-announcement-bar',
-    title: 'Does a GEO-Location Announcement Bar Increase Conversion?',
-    description: 'We conducted an extensive test, and the results change the rules entirely.',
-    category: 'conversion',
-    readTime: 6,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_5.jpg?v=1763297318',
-    isFeatured: false,
-    stats: [
-      { value: '67%', label: 'CVR Increase' },
-    ],
-  },
-  {
-    id: 7,
-    slug: 'wishlist-rev-per-visit',
-    title: 'Does a Wishlist on Your Website Increase REV/Visit?',
-    description: 'We conducted several A/B tests, and the results may surprise you.',
-    category: 'conversion',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_6.jpg?v=1763297348',
-    isFeatured: false,
-    stats: [
-      { value: '22%', label: 'AOV Lift' },
-    ],
-  },
-  {
-    id: 8,
-    slug: 'email-vs-sms-revenue',
-    title: 'Email vs SMS: Which Generates More Revenue?',
-    description: 'On the 4th of July, we sent both an SMS and an email campaign to the same audience...',
-    category: 'marketing',
-    readTime: 5,
-    thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_7.jpg?v=1763297381',
-    isFeatured: false,
-  },
 ];
 
 export default function LearnPage() {
@@ -268,7 +168,7 @@ export default function LearnPage() {
 }
 
 interface ArticleCardProps {
-  article: typeof articles[0];
+  article: Article;
   featured?: boolean;
 }
 
