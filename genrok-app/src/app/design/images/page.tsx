@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Image as ImageIcon, Camera, Palette, Sparkles, Download, ExternalLink, Check } from 'lucide-react';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { Image as ImageIcon, Camera, Palette, Sparkles, ExternalLink, Check } from 'lucide-react';
+import { useAuthStore } from '@/store/auth';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const imageCategories = [
   {
@@ -12,7 +13,6 @@ const imageCategories = [
     name: 'Product Photography',
     description: 'Clean, professional product shots that sell. White backgrounds, lifestyle contexts, and detail shots.',
     icon: Camera,
-    color: 'from-blue-500 to-cyan-500',
     tips: [
       'Use natural lighting or softboxes',
       'Shoot multiple angles (minimum 5-6)',
@@ -31,7 +31,6 @@ const imageCategories = [
     name: 'Lifestyle Imagery',
     description: 'Show your products in real-life situations. Help customers imagine owning and using your products.',
     icon: Sparkles,
-    color: 'from-pink-500 to-rose-500',
     tips: [
       'Feature diverse, relatable models',
       'Match your target audience aesthetic',
@@ -50,7 +49,6 @@ const imageCategories = [
     name: 'Color Palettes',
     description: 'Cohesive brand colors that evoke the right emotions. Color psychology drives buying decisions.',
     icon: Palette,
-    color: 'from-purple-500 to-violet-500',
     tips: [
       'Limit to 3-5 core brand colors',
       'Use contrast for CTAs (orange/green work best)',
@@ -75,7 +73,6 @@ const imageCategories = [
     name: 'UGC & Social Proof',
     description: 'User-generated content builds trust faster than any professional photo. Real customers, real results.',
     icon: ImageIcon,
-    color: 'from-orange-500 to-amber-500',
     tips: [
       'Encourage customers to share with hashtags',
       'Offer incentives for photo reviews',
@@ -110,8 +107,37 @@ const photoTips = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function ImagesPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuthStore();
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   const copyColor = (color: string) => {
     navigator.clipboard.writeText(color);
@@ -120,147 +146,135 @@ export default function ImagesPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 mb-6">
-              <ImageIcon className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium text-orange-700">Brand Imagery</span>
+    <DashboardLayout>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Visual Brand Building</h1>
+              <p>Great product photos are your #1 conversion driver</p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="gradient-text">Visual</span> Brand Building
-            </h1>
-            <p className="text-xl text-gray-600">
-              Great product photos are your #1 conversion driver. Learn how to create
-              a visual brand that customers trust and remember.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Quick Tips */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-6">
-            {photoTips.map((tip, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white p-6 rounded-2xl border border-gray-100"
-              >
-                <h3 className="font-bold text-gray-900 mb-2">{tip.title}</h3>
-                <p className="text-gray-600 text-sm">{tip.description}</p>
-              </motion.div>
-            ))}
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
+              <ImageIcon size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--accent-gold)]">Brand Imagery</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </header>
 
-      {/* Categories */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <StaggerContainer className="space-y-12">
-            {imageCategories.map((category) => (
-              <StaggerItem key={category.id}>
-                <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                  {/* Header */}
-                  <div className={`p-8 bg-gradient-to-br ${category.color}`}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <category.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div>
-                        <h2 className="text-2xl font-bold text-white">{category.name}</h2>
-                        <p className="text-white/80">{category.description}</p>
-                      </div>
+        {/* Quick Tips */}
+        <section className="grid md:grid-cols-4 gap-4 mb-8">
+          {photoTips.map((tip, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="card"
+            >
+              <h3 className="font-semibold text-[var(--text-primary)] mb-2">{tip.title}</h3>
+              <p className="text-sm text-[var(--text-muted)]">{tip.description}</p>
+            </motion.div>
+          ))}
+        </section>
+
+        {/* Categories */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-8"
+        >
+          {imageCategories.map((category) => (
+            <motion.div key={category.id} variants={itemVariants}>
+              <div className="card overflow-hidden" style={{ padding: 0 }}>
+                {/* Header */}
+                <div className="p-8 bg-[var(--accent-gold-bg)]">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--accent-gold)]/20 flex items-center justify-center">
+                      <category.icon size={32} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-semibold text-[var(--text-primary)]">{category.name}</h2>
+                      <p className="text-[var(--text-muted)]">{category.description}</p>
                     </div>
                   </div>
+                </div>
 
-                  {/* Content */}
-                  <div className="p-8">
-                    <div className="grid md:grid-cols-2 gap-8">
-                      {/* Tips */}
-                      <div>
-                        <h3 className="font-bold text-gray-900 mb-4">Best Practices</h3>
-                        <ul className="space-y-3">
-                          {category.tips.map((tip, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-gray-600">{tip}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                {/* Content */}
+                <div className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {/* Tips */}
+                    <div>
+                      <h3 className="font-semibold text-[var(--text-primary)] mb-4">Best Practices</h3>
+                      <ul className="space-y-3">
+                        {category.tips.map((tip, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <Check size={20} className="text-green-500 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+                            <span className="text-[var(--text-muted)]">{tip}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                      {/* Resources or Palettes */}
-                      <div>
-                        {category.palettes ? (
-                          <>
-                            <h3 className="font-bold text-gray-900 mb-4">Popular Palettes</h3>
-                            <div className="space-y-4">
-                              {category.palettes.map((palette, i) => (
-                                <div key={i}>
-                                  <p className="text-sm text-gray-600 mb-2">{palette.name}</p>
-                                  <div className="flex gap-2">
-                                    {palette.colors.map((color) => (
-                                      <button
-                                        key={color}
-                                        onClick={() => copyColor(color)}
-                                        className="w-12 h-12 rounded-lg shadow-sm hover:scale-110 transition-transform relative"
-                                        style={{ backgroundColor: color }}
-                                        title={color}
-                                      >
-                                        {copiedColor === color && (
-                                          <span className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg">
-                                            <Check className="w-4 h-4 text-white" />
-                                          </span>
-                                        )}
-                                      </button>
-                                    ))}
-                                  </div>
+                    {/* Resources or Palettes */}
+                    <div>
+                      {category.palettes && (
+                        <>
+                          <h3 className="font-semibold text-[var(--text-primary)] mb-4">Popular Palettes</h3>
+                          <div className="space-y-4 mb-6">
+                            {category.palettes.map((palette, i) => (
+                              <div key={i}>
+                                <p className="text-sm text-[var(--text-muted)] mb-2">{palette.name}</p>
+                                <div className="flex gap-2">
+                                  {palette.colors.map((color) => (
+                                    <button
+                                      key={color}
+                                      onClick={() => copyColor(color)}
+                                      className="w-12 h-12 rounded-lg shadow-sm hover:scale-110 transition-transform relative"
+                                      style={{ backgroundColor: color }}
+                                      title={color}
+                                    >
+                                      {copiedColor === color && (
+                                        <span className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg">
+                                          <Check size={16} className="text-white" strokeWidth={1.5} />
+                                        </span>
+                                      )}
+                                    </button>
+                                  ))}
                                 </div>
-                              ))}
-                            </div>
-                          </>
-                        ) : null}
-
-                        <h3 className="font-bold text-gray-900 mb-4 mt-6">Resources</h3>
-                        <div className="space-y-3">
-                          {category.resources.map((resource) => (
-                            <a
-                              key={resource.name}
-                              href={resource.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                            >
-                              <div>
-                                <p className="font-medium text-gray-900">{resource.name}</p>
-                                <p className="text-sm text-gray-500">{resource.description}</p>
                               </div>
-                              <ExternalLink className="w-4 h-4 text-gray-400" />
-                            </a>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
+                      <h3 className="font-semibold text-[var(--text-primary)] mb-4">Resources</h3>
+                      <div className="space-y-3">
+                        {category.resources.map((resource) => (
+                          <a
+                            key={resource.name}
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
+                          >
+                            <div>
+                              <p className="font-medium text-[var(--text-primary)]">{resource.name}</p>
+                              <p className="text-sm text-[var(--text-muted)]">{resource.description}</p>
+                            </div>
+                            <ExternalLink size={16} className="text-[var(--text-muted)]" strokeWidth={1.5} />
+                          </a>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-    </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </DashboardLayout>
   );
 }
