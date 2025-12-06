@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check, CheckCircle, Rocket } from 'lucide-react';
-import { signUp } from '@/lib/supabase';
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check, Rocket } from 'lucide-react';
+import { signUp, signIn } from '@/lib/supabase';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -38,7 +38,6 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   const {
     register,
@@ -68,36 +67,18 @@ export default function SignupPage() {
       return;
     }
 
-    setSuccess(true);
-  };
+    // Auto sign-in after signup (skip email verification)
+    const { error: signInError } = await signIn(data.email, data.password);
 
-  if (success) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-        className="text-center"
-      >
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center bg-[var(--success)]/10">
-          <CheckCircle className="w-8 h-8 text-[var(--success)]" strokeWidth={1.5} />
-        </div>
-        <h2 className="text-2xl font-bold mb-2 text-[var(--text-primary)]">
-          Check your email
-        </h2>
-        <p className="mb-6 text-[var(--text-muted)]">
-          We sent a confirmation link to your inbox. Click it to activate your account and start your journey.
-        </p>
-        <Link
-          href="/login"
-          className="inline-flex items-center gap-2 text-[var(--accent-gold)] font-semibold hover:text-[var(--accent-gold-hover)] transition-colors"
-        >
-          Back to Sign In
-          <ArrowRight size={16} strokeWidth={1.5} />
-        </Link>
-      </motion.div>
-    );
-  }
+    if (signInError) {
+      // If sign-in fails, show success but redirect to login
+      router.push('/login');
+      return;
+    }
+
+    // Redirect directly to dashboard
+    router.push('/dashboard');
+  };
 
   return (
     <motion.div
