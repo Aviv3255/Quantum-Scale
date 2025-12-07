@@ -83,15 +83,17 @@ export default function AuthLayout({
       </div>
 
       {/* Mobile Layout */}
-      <div className="auth-container-mobile">
-        {/* Header - Above Video */}
-        <div className="auth-mobile-header">
-          <h1 className="auth-mobile-title">Welcome back</h1>
-          <p className="auth-mobile-subtitle">Sign in to continue building your empire</p>
-        </div>
+      <div className={`auth-container-mobile ${showForm ? 'form-active' : ''}`}>
+        {/* Header - Only show when buttons are visible */}
+        {!showForm && (
+          <div className="auth-mobile-header">
+            <h1 className="auth-mobile-title">Welcome back</h1>
+            <p className="auth-mobile-subtitle">Sign in to continue building your empire</p>
+          </div>
+        )}
 
-        {/* Video Section */}
-        <div className="auth-mobile-video">
+        {/* Video Section - Smaller when form is shown */}
+        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`}>
           <video
             src={randomVideo}
             autoPlay
@@ -103,7 +105,7 @@ export default function AuthLayout({
         </div>
 
         {/* Bottom Section - Buttons or Form */}
-        <div className="auth-mobile-bottom">
+        <div className={`auth-mobile-bottom ${showForm ? 'expanded' : ''}`}>
           <div className={`auth-mobile-slide-container ${showForm ? 'show-form' : ''}`}>
             {/* Buttons Panel */}
             <div className="auth-mobile-slide-buttons">
