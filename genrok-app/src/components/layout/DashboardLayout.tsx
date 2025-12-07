@@ -5,90 +5,140 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard,
+  Home,
+  Briefcase,
   CheckSquare,
   BookOpen,
-  Wrench,
-  AppWindow,
+  Database,
+  ShoppingBag,
+  Package,
   Palette,
-  FileText,
-  Settings,
-  LogOut,
+  TrendingUp,
   Bell,
+  LogOut,
   Search,
   Menu,
   X,
-  Sun,
-  Moon,
-  Rocket,
-  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
   ChevronRight,
+  ExternalLink,
+  Rocket,
+  type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { signOut } from '@/lib/supabase';
 
-interface NavItem {
-  label: string;
+interface SubNavItem {
+  title: string;
   href: string;
-  icon: React.ReactNode;
-  badge?: string;
 }
 
-const mainNavItems: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.5} /> },
-  { label: 'Checklist', href: '/checklist', icon: <CheckSquare size={20} strokeWidth={1.5} />, badge: '250' },
-  { label: 'Learning Center', href: '/learn', icon: <BookOpen size={20} strokeWidth={1.5} /> },
-  { label: 'Tools', href: '/calculators', icon: <Wrench size={20} strokeWidth={1.5} /> },
-];
-
-const resourceNavItems: NavItem[] = [
-  { label: 'Apps', href: '/apps/shopify', icon: <AppWindow size={20} strokeWidth={1.5} /> },
-  { label: 'Design', href: '/design/web', icon: <Palette size={20} strokeWidth={1.5} /> },
-  { label: 'Templates', href: '/templates', icon: <FileText size={20} strokeWidth={1.5} /> },
-];
-
-function getTimeBasedGreeting(userName: string) {
-  const hour = new Date().getHours();
-  const firstName = userName?.split(' ')[0] || 'there';
-
-  if (hour >= 5 && hour < 12) {
-    return {
-      greeting: `Good morning, ${firstName}`,
-      icon: Sun,
-      message: "Fresh start, fresh opportunities. Let's make today count.",
-    };
-  } else if (hour >= 12 && hour < 17) {
-    return {
-      greeting: `Good afternoon, ${firstName}`,
-      icon: Rocket,
-      message: "You're in the zone. Keep that momentum going.",
-    };
-  } else if (hour >= 17 && hour < 21) {
-    return {
-      greeting: `Good evening, ${firstName}`,
-      icon: Sparkles,
-      message: "Wrapping up? Take a moment to celebrate your wins today.",
-    };
-  } else {
-    return {
-      greeting: `Working late, ${firstName}?`,
-      icon: Moon,
-      message: "Night owls build empires. But don't forget to rest.",
-    };
-  }
+interface NavItem {
+  title: string;
+  href?: string;
+  icon: LucideIcon;
+  isCategory?: boolean;
+  subItems?: SubNavItem[];
+  external?: boolean;
 }
+
+const navigationItems: NavItem[] = [
+  {
+    title: "Overview",
+    href: "/dashboard",
+    icon: Home,
+  },
+  {
+    title: "Business Planning & Forecasts",
+    icon: Briefcase,
+    isCategory: true,
+    subItems: [
+      { title: "Calculators & Forecasts", href: "/calculators" },
+      { title: "$100K Blueprint", href: "/blueprint" }
+    ]
+  },
+  {
+    title: "Checklists",
+    icon: CheckSquare,
+    isCategory: true,
+    subItems: [
+      { title: "Setup Checklist", href: "/checklist" },
+      { title: "Scale Checklist", href: "/scale-checklist" }
+    ]
+  },
+  {
+    title: "Learning Center",
+    href: "/learn",
+    icon: BookOpen,
+  },
+  {
+    title: "Data Center",
+    href: "/data-center",
+    icon: Database,
+  },
+  {
+    title: "Products",
+    icon: ShoppingBag,
+    isCategory: true,
+    subItems: [
+      { title: "AliExpress Stores", href: "/products/aliexpress" },
+      { title: "Sell These Products", href: "/products/sell-these" },
+      { title: "Private Agent", href: "/products/private-agent" }
+    ]
+  },
+  {
+    title: "Secret Apps",
+    icon: Package,
+    isCategory: true,
+    subItems: [
+      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
+      { title: "Secret Apps", href: "/apps/secret" }
+    ]
+  },
+  {
+    title: "Design",
+    icon: Palette,
+    isCategory: true,
+    subItems: [
+      { title: "Web UI Inspiration", href: "/design/web" },
+      { title: "Sections Inspiration", href: "/design/sections" },
+      { title: "Image Inspiration", href: "/design/images" },
+      { title: "AI Tools", href: "/design/ai-tools" },
+      { title: "Shrine Theme", href: "/design/shrine-theme" },
+      { title: "A/B Test Results", href: "/design/ab-tests" }
+    ]
+  },
+  {
+    title: "$6,000 Credit for TikTok Ads",
+    href: "/tiktok-credits",
+    icon: TrendingUp,
+  },
+  {
+    title: "Updates",
+    href: "/updates",
+    icon: Bell,
+  },
+  {
+    title: "Build a Bundle & Save 35%",
+    href: "https://quantum-scale.co/pages/bundle-builder",
+    icon: Package,
+    external: true
+  },
+];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const userEmail = user?.email || '';
   const userInitials = userName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
-
-  const { greeting, icon: GreetingIcon, message } = getTimeBasedGreeting(userName);
 
   const handleSignOut = async () => {
     await signOut();
@@ -99,6 +149,171 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
+
+  // Auto-expand category if a sub-item is active
+  useEffect(() => {
+    for (const item of navigationItems) {
+      if (item.isCategory && item.subItems) {
+        const hasActiveSubItem = item.subItems.some(sub =>
+          pathname === sub.href || pathname.startsWith(sub.href + '/')
+        );
+        if (hasActiveSubItem) {
+          setExpandedCategory(item.title);
+          break;
+        }
+      }
+    }
+  }, [pathname]);
+
+  const isItemActive = (item: NavItem): boolean => {
+    if (item.external) return false;
+    if (item.href) {
+      if (item.title === "Overview") {
+        return pathname === '/dashboard' || pathname === item.href;
+      }
+      return pathname === item.href || pathname.startsWith(item.href + '/');
+    }
+    return false;
+  };
+
+  const isSubItemActive = (subItem: SubNavItem): boolean => {
+    return pathname === subItem.href || pathname.startsWith(subItem.href + '/');
+  };
+
+  const hasCategoryActiveItem = (item: NavItem): boolean => {
+    if (!item.subItems) return false;
+    return item.subItems.some(sub => isSubItemActive(sub));
+  };
+
+  const renderNavItem = (item: NavItem, index: number, isMobile: boolean = false) => {
+    const Icon = item.icon;
+
+    if (item.isCategory) {
+      const isExpanded = expandedCategory === item.title;
+      const hasActiveChild = hasCategoryActiveItem(item);
+
+      // Collapsed sidebar - show only icon with hover tooltip
+      if (sidebarCollapsed && !isMobile) {
+        return (
+          <div key={index} className="relative group">
+            <div
+              className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
+              title={item.title}
+            >
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+            </div>
+            {/* Hover dropdown for collapsed state */}
+            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
+                 style={{
+                   background: 'var(--bg-sidebar)',
+                   border: '1px solid var(--border-subtle)',
+                   borderRadius: '12px',
+                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                 }}>
+              <div className="p-2 space-y-1">
+                {item.subItems?.map((subItem, subIdx) => (
+                  <Link
+                    key={subIdx}
+                    href={subItem.href}
+                    className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                      isSubItemActive(subItem) ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)]' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                    }`}
+                  >
+                    {subItem.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div key={index} className="space-y-1">
+          <button
+            onClick={() => {
+              setExpandedCategory(isExpanded ? null : item.title);
+              if (isMobile) setSidebarOpen(true);
+            }}
+            className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
+          >
+            <div className="flex items-center gap-3">
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+              <span>{item.title}</span>
+            </div>
+            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="pl-8 space-y-1 py-1">
+                  {item.subItems?.map((subItem, subIdx) => (
+                    <Link
+                      key={subIdx}
+                      href={subItem.href}
+                      className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                        isSubItemActive(subItem)
+                          ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)] font-medium'
+                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                      }`}
+                      onClick={() => isMobile && setSidebarOpen(false)}
+                    >
+                      {subItem.title}
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    // External link
+    if (item.external && item.href) {
+      return (
+        <a
+          key={index}
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="nav-item"
+          title={sidebarCollapsed && !isMobile ? item.title : undefined}
+          onClick={() => isMobile && setSidebarOpen(false)}
+        >
+          <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+          {(!sidebarCollapsed || isMobile) && (
+            <>
+              <span className="flex-1">{item.title}</span>
+              <ExternalLink size={14} className="opacity-50" />
+            </>
+          )}
+        </a>
+      );
+    }
+
+    // Regular link
+    const isActive = isItemActive(item);
+    return (
+      <Link
+        key={index}
+        href={item.href || '/dashboard'}
+        className={`nav-item ${isActive ? 'active' : ''}`}
+        title={sidebarCollapsed && !isMobile ? item.title : undefined}
+        onClick={() => isMobile && setSidebarOpen(false)}
+      >
+        <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+        {(!sidebarCollapsed || isMobile) && <span>{item.title}</span>}
+      </Link>
+    );
+  };
 
   return (
     <div className="app-wrapper">
@@ -116,56 +331,49 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
           <div className="w-8 h-8 bg-[var(--accent-gold-bg)] rounded-lg flex items-center justify-center">
             <Rocket size={18} className="text-[var(--accent-gold)]" />
           </div>
-          <span>Quantum Scale</span>
+          {!sidebarCollapsed && <span>Quantum Scale</span>}
         </div>
+
+        {/* Collapse Toggle (Desktop only) */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
+          style={{
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--accent-gold)',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}
+        >
+          {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
-          {/* Main Section */}
-          <div className="sidebar-section">
-            <div className="sidebar-section-title">Main</div>
-            {mainNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`nav-item ${pathname === item.href || pathname.startsWith(item.href + '/') ? 'active' : ''}`}
-              >
-                <span className="nav-item-icon">{item.icon}</span>
-                <span>{item.label}</span>
-                {item.badge && <span className="nav-item-badge">{item.badge}</span>}
-              </Link>
-            ))}
-          </div>
-
-          {/* Resources Section */}
-          <div className="sidebar-section">
-            <div className="sidebar-section-title">Resources</div>
-            {resourceNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`nav-item ${pathname === item.href || pathname.startsWith(item.href.split('/').slice(0, 2).join('/')) ? 'active' : ''}`}
-              >
-                <span className="nav-item-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
+          <div className="space-y-1">
+            {navigationItems.map((item, idx) => renderNavItem(item, idx, false))}
           </div>
         </nav>
 
         {/* User Section */}
         <div className="sidebar-user">
-          <div className="sidebar-user-avatar">{userInitials}</div>
-          <div className="sidebar-user-info">
-            <div className="sidebar-user-name">{userName}</div>
-            <div className="sidebar-user-email">{userEmail}</div>
-          </div>
+          {!sidebarCollapsed ? (
+            <>
+              <div className="sidebar-user-avatar">{userInitials}</div>
+              <div className="sidebar-user-info">
+                <div className="sidebar-user-name">{userName}</div>
+                <div className="sidebar-user-email">{userEmail}</div>
+              </div>
+            </>
+          ) : (
+            <div className="sidebar-user-avatar mx-auto" title={userName}>{userInitials}</div>
+          )}
           <button
             onClick={handleSignOut}
             className="btn-icon"
@@ -177,7 +385,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Area */}
-      <div className="main-area">
+      <div className={`main-area ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Top Bar */}
         <header className="topbar">
           <div className="topbar-left">
@@ -211,11 +419,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 3
               </span>
             </button>
-
-            {/* Settings */}
-            <Link href="/settings" className="btn-icon">
-              <Settings size={20} strokeWidth={1.5} />
-            </Link>
           </div>
         </header>
 
