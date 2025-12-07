@@ -81,6 +81,9 @@
 /* ===== BASE STYLES ===== */
 html {
   scroll-behavior: smooth;
+  /* iOS Safari viewport fix */
+  height: 100%;
+  height: -webkit-fill-available;
 }
 
 body {
@@ -91,6 +94,9 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* iOS Safari viewport fix */
+  min-height: 100%;
+  min-height: -webkit-fill-available;
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -1156,33 +1162,42 @@ h4, .text-h4 {
 }
 
 .auth-mobile-video-player {
-  width: 90%;
+  width: 90% !important;
   max-height: 100%;
   border-radius: 16px;
   object-fit: contain;
+  -webkit-object-fit: contain;
 }
 
 .auth-mobile-video.compact .auth-mobile-video-player {
-  width: 90%;
+  width: 90% !important;
   max-height: 28vh;
 }
 
 .auth-mobile-bottom {
   background: #FFFFFF;
   padding: 0 24px 20px;
+  /* iOS Safari safe area support */
+  padding-bottom: 20px;
+  padding-bottom: calc(20px + constant(safe-area-inset-bottom));
   padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
   transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
 }
 
 /* Expanded bottom when form is shown */
 .auth-mobile-bottom.expanded {
   flex: 1;
   padding: 0 24px 16px;
+  /* iOS Safari safe area support */
+  padding-bottom: 16px;
+  padding-bottom: calc(16px + constant(safe-area-inset-bottom));
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -1713,7 +1728,13 @@ h4, .text-h4 {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* iOS Safari viewport fix */
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
     background: #FFFFFF;
+    /* Safe area padding for iOS */
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .main-content {
@@ -1760,27 +1781,31 @@ h4, .text-h4 {
   }
 
   .auth-mobile-video-player {
-    width: 85%;
+    width: 90% !important;
     border-radius: 14px;
   }
 
   .auth-mobile-video.compact {
-    padding-top: 6px;
+    padding-top: 4px;
     padding-bottom: 0;
   }
 
   .auth-mobile-video.compact .auth-mobile-video-player {
-    width: 85%;
-    max-height: 25vh;
+    width: 90% !important;
+    max-height: 26vh;
   }
 
   .auth-mobile-bottom {
     padding: 0 20px 16px;
+    padding-bottom: 16px;
+    padding-bottom: calc(16px + constant(safe-area-inset-bottom));
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
 
   .auth-mobile-bottom.expanded {
     padding: 0 20px 12px;
+    padding-bottom: 12px;
+    padding-bottom: calc(12px + constant(safe-area-inset-bottom));
     padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   }
 
@@ -1822,27 +1847,31 @@ h4, .text-h4 {
   }
 
   .auth-mobile-video-player {
-    width: 80%;
+    width: 90% !important;
     border-radius: 12px;
   }
 
   .auth-mobile-video.compact {
-    padding-top: 4px;
+    padding-top: 2px;
     padding-bottom: 0;
   }
 
   .auth-mobile-video.compact .auth-mobile-video-player {
-    width: 80%;
-    max-height: 22vh;
+    width: 90% !important;
+    max-height: 24vh;
   }
 
   .auth-mobile-bottom {
     padding: 0 16px 12px;
+    padding-bottom: 12px;
+    padding-bottom: calc(12px + constant(safe-area-inset-bottom));
     padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   }
 
   .auth-mobile-bottom.expanded {
     padding: 0 16px 8px;
+    padding-bottom: 8px;
+    padding-bottom: calc(8px + constant(safe-area-inset-bottom));
     padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
 
