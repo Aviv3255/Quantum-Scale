@@ -1,8 +1,14 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
+
+// Get random video - runs on every page load/refresh
+const getRandomVideo = (videos: string[]) => {
+  const randomIndex = Math.floor(Math.random() * videos.length);
+  return videos[randomIndex];
+};
 
 // Video URLs for the right panel (15 videos with equal probability)
 const VIDEOS = [
@@ -33,11 +39,8 @@ export default function AuthLayout({
   const pathname = usePathname();
   const [showForm, setShowForm] = useState(false);
 
-  // Select a random video once per session
-  const randomVideo = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * VIDEOS.length);
-    return VIDEOS[randomIndex];
-  }, []);
+  // Random video - changes on every refresh/new window
+  const [randomVideo] = useState(() => getRandomVideo(VIDEOS));
 
   const handleLogin = () => {
     if (pathname !== '/login') {
