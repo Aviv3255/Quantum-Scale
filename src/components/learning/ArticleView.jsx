@@ -11,32 +11,30 @@ export default function ArticleView({ article, onBack }) {
 
   const ActionButtons = () => (
     article.buttons && article.buttons.length > 0 ? (
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-4">
         {article.buttons.map((button, idx) => (
           <a
             key={idx}
             href={button.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all text-sm"
-            style={{
-              background: idx === 0 ? '#007DFF' : 'rgba(0, 125, 255, 0.08)',
-              border: idx === 0 ? 'none' : '1px solid rgba(0, 125, 255, 0.2)',
-              color: idx === 0 ? '#FFFFFF' : '#007DFF',
-              boxShadow: idx === 0 ? '0 2px 8px rgba(0, 125, 255, 0.25)' : 'none'
+            className={`inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all text-sm ${idx === 0 ? 'btn-primary' : ''}`}
+            style={idx === 0 ? {} : {
+              background: '#FFFFFF',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
+              color: '#000000',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
             }}
             onMouseEnter={(e) => {
-              if (idx === 0) {
-                e.currentTarget.style.background = '#0066DD';
-              } else {
-                e.currentTarget.style.background = 'rgba(0, 125, 255, 0.12)';
+              if (idx !== 0) {
+                e.currentTarget.style.background = '#FAFAFA';
+                e.currentTarget.style.transform = 'translateY(-1px)';
               }
             }}
             onMouseLeave={(e) => {
-              if (idx === 0) {
-                e.currentTarget.style.background = '#007DFF';
-              } else {
-                e.currentTarget.style.background = 'rgba(0, 125, 255, 0.08)';
+              if (idx !== 0) {
+                e.currentTarget.style.background = '#FFFFFF';
+                e.currentTarget.style.transform = 'translateY(0)';
               }
             }}
           >
@@ -54,17 +52,19 @@ export default function ArticleView({ article, onBack }) {
         {/* Back Button */}
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl font-semibold transition-all"
+          className="inline-flex items-center gap-2 mb-10 px-4 py-2 rounded-xl font-semibold transition-all"
           style={{
-            background: 'rgba(0, 125, 255, 0.08)',
-            border: '1px solid rgba(0, 125, 255, 0.2)',
-            color: '#007DFF'
+            background: '#FAFAFA',
+            border: '1px solid rgba(0, 0, 0, 0.06)',
+            color: '#000000'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(0, 125, 255, 0.12)';
+            e.currentTarget.style.background = '#F5F5F5';
+            e.currentTarget.style.transform = 'translateY(-1px)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(0, 125, 255, 0.08)';
+            e.currentTarget.style.background = '#FAFAFA';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           <ArrowLeft className="w-4 h-4" />
@@ -72,9 +72,9 @@ export default function ArticleView({ article, onBack }) {
         </button>
 
         {/* Title & Intro */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{
-            color: '#010C31',
+        <div className="mb-14">
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-premium-heading" style={{
+            color: '#000000',
             fontFamily: 'Poppins, sans-serif',
             letterSpacing: '-0.02em',
             lineHeight: '1.2'
@@ -82,28 +82,28 @@ export default function ArticleView({ article, onBack }) {
             {article.title}
           </h1>
 
-          <p className="text-xl leading-relaxed mb-6" style={{ 
-            color: '#4B5563'
+          <p className="text-xl leading-relaxed mb-8" style={{
+            color: '#6B7280'
           }}>
             {article.intro}
           </p>
 
           {/* Action Buttons - Top */}
-          <div className="pb-8 border-b" style={{ borderColor: '#E5E7EB' }}>
+          <div className="pb-10 border-b" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
             <ActionButtons />
           </div>
         </div>
 
         {/* Special Features (for Article 1) */}
         {article.specialFeatures && (
-          <div className="mb-12 grid md:grid-cols-3 gap-6">
+          <div className="mb-14 grid md:grid-cols-3 gap-6">
             {article.specialFeatures.map((feature, idx) => (
-              <div key={idx} className="p-6 rounded-2xl text-center" style={{
-                background: 'rgba(16, 185, 129, 0.06)',
-                border: '1px solid rgba(16, 185, 129, 0.15)'
+              <div key={idx} className="p-8 rounded-2xl text-center premium-card" style={{
+                background: '#FFFFFF',
+                border: '1px solid rgba(0,0,0,0.06)'
               }}>
-                <ArrowUp className="w-6 h-6 mx-auto mb-3" style={{ color: '#10B981' }} />
-                <div className="font-bold text-2xl mb-2" style={{ color: '#010C31' }}>
+                <ArrowUp className="w-6 h-6 mx-auto mb-4" style={{ color: '#000000' }} />
+                <div className="font-bold text-2xl mb-2" style={{ color: '#000000' }}>
                   {feature.value}
                 </div>
                 <div className="text-sm font-medium" style={{ color: '#6B7280' }}>
@@ -115,22 +115,22 @@ export default function ArticleView({ article, onBack }) {
         )}
 
         {/* Article Content */}
-        <div className="prose prose-lg max-w-none mb-12">
+        <div className="prose prose-lg max-w-none mb-14">
           <ReactMarkdown
             components={{
-              h2: ({node, ...props}) => <h2 className="text-3xl font-bold mt-12 mb-6" style={{ color: '#010C31', fontFamily: 'Poppins, sans-serif' }} {...props} />,
-              h3: ({node, ...props}) => <h3 className="text-2xl font-bold mt-8 mb-4" style={{ color: '#010C31', fontFamily: 'Poppins, sans-serif' }} {...props} />,
-              h4: ({node, ...props}) => <h4 className="text-xl font-semibold mt-6 mb-3" style={{ color: '#010C31' }} {...props} />,
+              h2: ({node, ...props}) => <h2 className="text-3xl font-bold mt-14 mb-6 text-premium-heading" style={{ color: '#000000', fontFamily: 'Poppins, sans-serif' }} {...props} />,
+              h3: ({node, ...props}) => <h3 className="text-2xl font-bold mt-10 mb-4 text-premium-heading" style={{ color: '#000000', fontFamily: 'Poppins, sans-serif' }} {...props} />,
+              h4: ({node, ...props}) => <h4 className="text-xl font-semibold mt-8 mb-3" style={{ color: '#000000' }} {...props} />,
               p: ({node, ...props}) => <p className="text-lg leading-relaxed mb-6" style={{ color: '#374151' }} {...props} />,
-              ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />,
+              ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-3" {...props} />,
               li: ({node, ...props}) => <li className="text-lg leading-relaxed" style={{ color: '#374151' }} {...props} />,
-              strong: ({node, ...props}) => <strong style={{ color: '#010C31', fontWeight: '700' }} {...props} />,
+              strong: ({node, ...props}) => <strong style={{ color: '#000000', fontWeight: '700' }} {...props} />,
               img: ({node, ...props}) => (
-                <div className="my-8 w-full overflow-hidden" style={{ aspectRatio: '16/9', maxHeight: '350px' }}>
+                <div className="my-10 w-full overflow-hidden rounded-xl" style={{ aspectRatio: '16/9', maxHeight: '350px' }}>
                   <img className="w-full h-full object-cover" {...props} />
                 </div>
               ),
-              a: ({node, ...props}) => <a className="text-blue-600 hover:text-blue-700 underline" {...props} />
+              a: ({node, ...props}) => <a className="font-medium underline" style={{ color: '#000000' }} {...props} />
             }}
           >
             {article.content}
@@ -139,7 +139,7 @@ export default function ArticleView({ article, onBack }) {
 
         {/* Action Buttons - Bottom */}
         {article.buttons && article.buttons.length > 0 && (
-          <div className="pt-8 border-t" style={{ borderColor: '#E5E7EB' }}>
+          <div className="pt-10 border-t" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
             <ActionButtons />
           </div>
         )}
@@ -148,17 +148,19 @@ export default function ArticleView({ article, onBack }) {
         <div className="mt-16 text-center">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all"
             style={{
-              background: '#F3F4F6',
-              border: '1px solid #E5E7EB',
+              background: '#FAFAFA',
+              border: '1px solid rgba(0,0,0,0.06)',
               color: '#6B7280'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#E5E7EB';
+              e.currentTarget.style.background = '#F5F5F5';
+              e.currentTarget.style.color = '#000000';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#F3F4F6';
+              e.currentTarget.style.background = '#FAFAFA';
+              e.currentTarget.style.color = '#6B7280';
             }}
           >
             <ArrowLeft className="w-4 h-4" />

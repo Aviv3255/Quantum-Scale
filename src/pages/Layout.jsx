@@ -416,21 +416,11 @@ export default function Layout({ children }) {
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-xl font-semibold transition-all"
+                className="w-full py-3.5 rounded-xl font-semibold transition-all btn-primary"
                 style={{
-                  background: 'linear-gradient(135deg, #007DFF 0%, #00A8FF 100%)',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  boxShadow: '0 4px 16px rgba(0, 125, 255, 0.3)',
-                  fontSize: '15px'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 8px 24px rgba(0, 125, 255, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = '0 4px 16px rgba(0, 125, 255, 0.3)';
+                  fontSize: '15px',
+                  padding: '14px 24px',
+                  borderRadius: '12px'
                 }}
               >
                 Enter Dashboard
@@ -459,10 +449,10 @@ export default function Layout({ children }) {
           <div key={idx} className="relative group">
             <div
               className={`sidebar-item flex items-center justify-center px-4 py-3 text-sm ${hasActiveSubItem ? 'active' : ''}`}
-              style={{ color: hasActiveSubItem ? '#60A5FA' : '#94A3B8' }}
+              style={{ color: hasActiveSubItem ? '#FFFFFF' : '#94A3B8' }}
               title={item.title}
             >
-              <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#60A5FA' }} />
+              <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: hasActiveSubItem ? '#FFFFFF' : '#94A3B8' }} />
             </div>
             <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
                  style={{
@@ -480,10 +470,10 @@ export default function Layout({ children }) {
                       key={subIdx}
                       to={subItem.url}
                       className={`block px-4 py-2 text-sm rounded-lg transition-colors ${isActive ? '' : ''}`}
-                      style={{ 
-                        color: isActive ? '#60A5FA' : '#94A3B8', 
+                      style={{
+                        color: isActive ? '#FFFFFF' : '#94A3B8',
                         fontWeight: isActive ? '600' : '500',
-                        background: isActive ? 'rgba(96, 165, 250, 0.1)' : 'transparent'
+                        background: isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
                       }}
                       onMouseEnter={(e) => !isActive && (e.currentTarget.style.background = 'rgba(148, 163, 184, 0.1)')}
                       onMouseLeave={(e) => !isActive && (e.currentTarget.style.background = 'transparent')}
@@ -497,7 +487,7 @@ export default function Layout({ children }) {
           </div>
         );
       }
-      
+
       // For non-collapsed categories or mobile: render as an expandable category
       return (
         <div key={idx} className="space-y-1">
@@ -508,10 +498,10 @@ export default function Layout({ children }) {
               if (isMobile) setIsMobileMenuOpen(true);
             }}
             className={`sidebar-item flex items-center justify-between gap-3 px-4 py-3 text-sm w-full transition-colors ${hasActiveSubItem ? 'active' : ''}`}
-            style={{ color: hasActiveSubItem ? '#60A5FA' : '#94A3B8', fontWeight: hasActiveSubItem ? '600' : '500' }}
+            style={{ color: hasActiveSubItem ? '#FFFFFF' : '#94A3B8', fontWeight: hasActiveSubItem ? '600' : '500' }}
           >
             <div className="flex items-center gap-3">
-              <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#60A5FA' }} />
+              <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: hasActiveSubItem ? '#FFFFFF' : '#94A3B8' }} />
               <span>{item.title}</span>
             </div>
             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -526,10 +516,10 @@ export default function Layout({ children }) {
                     key={subIdx}
                     to={subItem.url}
                     className={`block px-4 py-2 text-sm rounded-lg transition-colors ${isActive ? '' : ''}`}
-                    style={{ 
-                      color: isActive ? '#60A5FA' : '#94A3B8', 
+                    style={{
+                      color: isActive ? '#FFFFFF' : '#94A3B8',
                       fontWeight: isActive ? '600' : '500',
-                      background: isActive ? 'rgba(96, 165, 250, 0.1)' : 'transparent'
+                      background: isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
                     }}
                     onMouseEnter={(e) => !isActive && (e.currentTarget.style.background = 'rgba(148, 163, 184, 0.1)')}
                     onMouseLeave={(e) => !isActive && (e.currentTarget.style.background = 'transparent')}
@@ -573,7 +563,7 @@ export default function Layout({ children }) {
           title={isSidebarCollapsed && !isMobile ? item.title : ''}
           onClick={() => isMobile && setIsMobileMenuOpen(false)}
         >
-          <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#60A5FA' }} />
+          <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#94A3B8' }} />
           {(!isSidebarCollapsed || isMobile) && (
             <>
               <span className="flex-1">{item.title}</span>
@@ -583,17 +573,17 @@ export default function Layout({ children }) {
         </a>
       );
     }
-    
+
     return (
       <Link
         key={idx}
         to={item.url}
         className={`sidebar-item flex items-center gap-3 px-4 py-3 text-sm ${isActive ? 'active' : ''}`}
-        style={{ color: isActive ? '#60A5FA' : '#94A3B8', fontWeight: isActive ? '600' : '500' }}
+        style={{ color: isActive ? '#FFFFFF' : '#94A3B8', fontWeight: isActive ? '600' : '500' }}
         title={isSidebarCollapsed && !isMobile ? item.title : ''}
         onClick={() => isMobile && setIsMobileMenuOpen(false)}
       >
-        <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#60A5FA' }} />
+        <item.icon className="w-5 h-5 flex-shrink-0" style={{ color: isActive ? '#FFFFFF' : '#94A3B8' }} />
         {(!isSidebarCollapsed || isMobile) && <span>{item.title}</span>}
       </Link>
     );
@@ -611,8 +601,8 @@ export default function Layout({ children }) {
         }
 
         body {
-          background: #F9FAFB !important;
-          color: #1E1E1E;
+          background: #FFFFFF !important;
+          color: #1A1A1A;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
           overflow-x: hidden;
         }
@@ -631,8 +621,8 @@ export default function Layout({ children }) {
         }
 
         .sidebar-item.active {
-          background: rgba(96, 165, 250, 0.1);
-          color: #60A5FA;
+          background: rgba(255, 255, 255, 0.1);
+          color: #FFFFFF;
         }
 
         .sidebar-item.active::after {
@@ -643,7 +633,7 @@ export default function Layout({ children }) {
           transform: translateY(-50%);
           width: 3px;
           height: 60%;
-          background: #60A5FA;
+          background: #B8860B;
           border-radius: 2px 0 0 2px;
         }
 
@@ -670,7 +660,7 @@ export default function Layout({ children }) {
         }
       `}</style>
 
-      <div className="min-h-screen flex" style={{ background: '#F9FAFB' }}>
+      <div className="min-h-screen flex" style={{ background: '#FFFFFF' }}>
         {/* Mobile Header */}
         <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4"
              style={{ background: '#000000', borderBottom: '1px solid #1E293B', boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
@@ -818,7 +808,7 @@ export default function Layout({ children }) {
             style={{
               background: '#1E293B',
               border: '1px solid #334155',
-              color: '#60A5FA',
+              color: '#FFFFFF',
               boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
               zIndex: 100
             }}
@@ -828,7 +818,7 @@ export default function Layout({ children }) {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto pt-20 lg:pt-0" style={{ background: '#F9FAFB' }}>
+        <div className="flex-1 overflow-auto pt-20 lg:pt-0" style={{ background: '#FFFFFF' }}>
           {children}
         </div>
       </div>

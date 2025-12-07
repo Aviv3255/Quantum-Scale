@@ -2909,25 +2909,25 @@ Brands that don't will continue fighting over prices and searching for "magic ta
   // Otherwise show articles grid
   return (
     <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
-      <div className="max-w-7xl mx-auto p-6 md:p-12">
+      <div className="max-w-7xl mx-auto p-8 lg:p-12">
         {/* Hero Section */}
         <div className="mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ 
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-premium-heading" style={{
             color: '#000000',
             fontFamily: 'Poppins, sans-serif',
-            letterSpacing: '-0.03em',
+            letterSpacing: '-0.02em',
             lineHeight: '1.2'
           }}>
             The Learning Center
           </h1>
-          
+
           <p className="text-xl leading-relaxed max-w-4xl" style={{ color: '#6B7280' }}>
             Years of experience, hundreds of A/B tests, conversations with thousands of students, and proven tactics from 8 & 9 figure brands, all in one place, 100% transparency.
           </p>
         </div>
 
         {/* Articles Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => (
             <ArticleCard
               key={article.id}
