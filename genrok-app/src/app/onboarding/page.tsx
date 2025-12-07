@@ -240,22 +240,8 @@ export default function OnboardingPage() {
           router.push('/dashboard');
           return;
         }
-        // Resume from saved step
-        setCurrentStep(profile.onboarding_step || 0);
-        // Load existing answers
-        const existingAnswers: Record<string, string> = {};
-        if (profile.full_name) existingAnswers.full_name = profile.full_name;
-        if (profile.age) existingAnswers.age = profile.age;
-        if (profile.country) existingAnswers.country = profile.country;
-        if (profile.occupation) existingAnswers.occupation = profile.occupation;
-        if (profile.niche) existingAnswers.niche = profile.niche;
-        if (profile.platform) existingAnswers.platform = profile.platform;
-        if (profile.monthly_revenue) existingAnswers.monthly_revenue = profile.monthly_revenue;
-        if (profile.time_in_field) existingAnswers.time_in_field = profile.time_in_field;
-        if (profile.main_traffic_source) existingAnswers.main_traffic_source = profile.main_traffic_source;
-        if (profile.monthly_ad_budget) existingAnswers.monthly_ad_budget = profile.monthly_ad_budget;
-        if (profile.store_link) existingAnswers.store_link = profile.store_link;
-        setAnswers(existingAnswers);
+        // Always start from the beginning if not completed
+        setCurrentStep(0);
       }
 
       setLoading(false);

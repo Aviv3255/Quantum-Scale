@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 // Video URLs for the right panel (15 videos with equal probability)
 const VIDEOS = [
@@ -111,7 +111,6 @@ export default function AuthLayout({
                   className="btn-auth-primary w-full"
                 >
                   LOG IN
-                  <ArrowRight size={18} strokeWidth={2} />
                 </button>
                 <button
                   type="button"
