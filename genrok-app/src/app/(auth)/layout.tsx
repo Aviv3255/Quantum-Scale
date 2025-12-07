@@ -10,7 +10,7 @@ const getRandomVideo = (videos: string[]) => {
   return videos[randomIndex];
 };
 
-// Video URLs for the right panel (15 videos with equal probability)
+// Video URLs for the right panel (25 videos with equal probability)
 const VIDEOS = [
   'https://cdn.shopify.com/videos/c/o/v/c4d75a58dbd34d33ba8f13202f17053f.mp4', // Waving with sunglasses
   'https://cdn.shopify.com/videos/c/o/v/f3311340d3ab4a9a8c678baf2bede90f.mp4', // Smoking cigar
@@ -28,6 +28,15 @@ const VIDEOS = [
   'https://cdn.shopify.com/videos/c/o/v/0b6a143059e44ccc9709c2dfa6e105c0.mp4', // Climbing money mountain 2
   'https://cdn.shopify.com/videos/c/o/v/db18c3e6ce2d4b169594dd188276c4d3.mp4', // Flying on rocket
   'https://cdn.shopify.com/videos/c/o/v/568c4d18549f45c6a337e87f078a6c9d.mp4', // With Rolex
+  'https://cdn.shopify.com/videos/c/o/v/6965f4746da64620a2f2248dac317742.mp4', // On red carpet
+  'https://cdn.shopify.com/videos/c/o/v/ba9d0444c0744d229d3e4d41a0f07474.mp4', // Spinning on chair
+  'https://cdn.shopify.com/videos/c/o/v/2a8156529505466d945adaf8f09d831c.mp4', // Spinning globe
+  'https://cdn.shopify.com/videos/c/o/v/1b60ab46224e492ab422efb0ff2a9d85.mp4', // Holding moon
+  'https://cdn.shopify.com/videos/c/o/v/4661df02be814de38fc8fffaed6c4807.mp4', // Walking on moon
+  'https://cdn.shopify.com/videos/c/o/v/1b62a2426aaf4e4fb7306edf2e41e3d7.mp4', // Coming out of wall
+  'https://cdn.shopify.com/videos/c/o/v/2953d3b660984d92a55585bb5d3af62c.mp4', // Looking in mirror
+  'https://cdn.shopify.com/videos/c/o/v/be2846b30fb24372a5c962cda13d11cd.mp4', // Standing on graph
+  'https://cdn.shopify.com/videos/c/o/v/15af124a7d4b46aeab67fa4f3af81aa3.mp4', // Walking on street
 ];
 
 export default function AuthLayout({
