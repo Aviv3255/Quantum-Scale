@@ -831,10 +831,16 @@ h4, .text-h4 {
 
 /* ===== AUTH LAYOUT ===== */
 
-.auth-container {
+/* Desktop Layout */
+.auth-container-desktop {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
+}
+
+/* Mobile Layout - Hidden on desktop */
+.auth-container-mobile {
+  display: none;
 }
 
 /* Left Panel - Form (Very Light Gray Background) */
@@ -879,16 +885,17 @@ h4, .text-h4 {
   margin-bottom: 32px;
 }
 
+/* Header - 15% larger */
 .auth-form-header h2 {
   font-family: var(--font-heading);
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .auth-form-header p {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--text-muted);
 }
 
@@ -1079,6 +1086,101 @@ h4, .text-h4 {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+/* Secondary Auth Button (outline style) */
+.btn-auth-secondary {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1.5px solid #000000;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.btn-auth-secondary:hover {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+/* ===== MOBILE AUTH LAYOUT ===== */
+
+.auth-mobile-video {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #FFFFFF;
+}
+
+.auth-mobile-video-player {
+  width: 70%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 20px;
+  object-fit: contain;
+}
+
+.auth-mobile-bottom {
+  background: #FFFFFF;
+  padding: 32px 24px 48px;
+  overflow: hidden;
+}
+
+.auth-mobile-buttons {
+  text-align: center;
+}
+
+.auth-mobile-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.auth-mobile-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.auth-mobile-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-mobile-form {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.auth-mobile-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.auth-mobile-back:hover {
+  color: #000000;
 }
 
 /* Auth centered layout for forgot/reset password */
@@ -1483,15 +1585,16 @@ h4, .text-h4 {
     margin-left: 0;
   }
 
-  .auth-container {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-media-side {
+  /* Hide desktop layout on mobile */
+  .auth-container-desktop {
     display: none;
   }
 
-  .auth-form-side {
+  /* Show mobile layout */
+  .auth-container-mobile {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background: #FFFFFF;
   }
 

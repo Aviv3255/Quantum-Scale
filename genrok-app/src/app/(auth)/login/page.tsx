@@ -96,14 +96,9 @@ export default function LoginPage() {
 
         {/* Password Field */}
         <div className="form-field">
-          <div className="form-label-row">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <Link href="/forgot-password" className="form-link">
-              Forgot password?
-            </Link>
-          </div>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <div className="input-group">
             <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
@@ -125,8 +120,14 @@ export default function LoginPage() {
               )}
             </button>
           </div>
-          {errors.password && (
+          {errors.password ? (
             <span className="form-error">{errors.password.message}</span>
+          ) : (
+            <div className="text-right mt-2">
+              <Link href="/forgot-password" className="form-link">
+                Forgot password?
+              </Link>
+            </div>
           )}
         </div>
 
