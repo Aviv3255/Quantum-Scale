@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check, Rocket } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
 import { signUp, signIn } from '@/lib/supabase';
 
 const signupSchema = z.object({
@@ -86,18 +86,6 @@ export default function SignupPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {/* Mobile Logo */}
-      <div className="lg:hidden text-center mb-8">
-        <Link href="/login" className="inline-flex items-center gap-3">
-          <div className="w-10 h-10 bg-[var(--accent-gold-bg)] rounded-xl flex items-center justify-center">
-            <Rocket size={20} className="text-[var(--accent-gold)]" />
-          </div>
-          <span className="text-xl font-bold text-[var(--text-primary)]">
-            Quantum Scale
-          </span>
-        </Link>
-      </div>
-
       {/* Form Header */}
       <div className="auth-form-header">
         <h2>Start your journey</h2>
@@ -105,12 +93,12 @@ export default function SignupPage() {
       </div>
 
       {/* Benefits */}
-      <div className="mb-6 p-4 rounded-xl bg-[var(--accent-gold-bg)] border border-[var(--accent-gold)]/10">
-        <p className="text-sm font-semibold mb-3 text-[var(--accent-gold)]">Free access includes:</p>
+      <div className="mb-6 p-4 rounded-xl bg-[#F5F5F7] border border-[#E0E0E0]">
+        <p className="text-sm font-semibold mb-3 text-[#000000]">Free access includes:</p>
         <ul className="grid grid-cols-2 gap-2">
           {benefits.map((benefit) => (
             <li key={benefit} className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-              <Check className="w-4 h-4 text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <Check className="w-4 h-4 text-[#000000]" strokeWidth={2} />
               {benefit}
             </li>
           ))}
@@ -136,7 +124,7 @@ export default function SignupPage() {
             Full Name
           </label>
           <div className="input-group">
-            <User className="input-icon" size={18} strokeWidth={1.5} />
+            <User className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('fullName')}
               type="text"
@@ -156,7 +144,7 @@ export default function SignupPage() {
             Email
           </label>
           <div className="input-group">
-            <Mail className="input-icon" size={18} strokeWidth={1.5} />
+            <Mail className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('email')}
               type="email"
@@ -176,7 +164,7 @@ export default function SignupPage() {
             Password
           </label>
           <div className="input-group">
-            <Lock className="input-icon" size={18} strokeWidth={1.5} />
+            <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
@@ -187,7 +175,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
             >
               {showPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -206,8 +194,8 @@ export default function SignupPage() {
                   key={req.label}
                   className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-full ${
                     req.met
-                      ? 'bg-[var(--success)]/10 text-[var(--success)]'
-                      : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'
+                      ? 'bg-[#000000]/10 text-[#000000]'
+                      : 'bg-[#F5F5F7] text-[var(--text-muted)]'
                   }`}
                 >
                   {req.met && <Check size={12} strokeWidth={2} />}
@@ -224,7 +212,7 @@ export default function SignupPage() {
             Confirm Password
           </label>
           <div className="input-group">
-            <Lock className="input-icon" size={18} strokeWidth={1.5} />
+            <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('confirmPassword')}
               type={showConfirmPassword ? 'text' : 'password'}
@@ -235,7 +223,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
             >
               {showConfirmPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -255,25 +243,25 @@ export default function SignupPage() {
             type="checkbox"
             id="terms"
             required
-            className="checkbox mt-0.5"
+            className="checkbox-black mt-0.5"
           />
           <label htmlFor="terms" className="text-sm text-[var(--text-muted)]">
             I agree to the{' '}
-            <Link href="/terms" className="text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)]">
+            <Link href="/terms" className="text-[#000000] font-medium hover:underline">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)]">
+            <Link href="/privacy" className="text-[#000000] font-medium hover:underline">
               Privacy Policy
             </Link>
           </label>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button - Premium Black */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn btn-primary btn-full btn-lg"
+          className="btn-auth-primary w-full"
         >
           {isSubmitting ? (
             <>
@@ -283,7 +271,7 @@ export default function SignupPage() {
           ) : (
             <>
               Create Account
-              <ArrowRight size={18} strokeWidth={1.5} />
+              <ArrowRight size={18} strokeWidth={2} />
             </>
           )}
         </button>

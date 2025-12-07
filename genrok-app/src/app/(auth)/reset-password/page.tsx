@@ -43,10 +43,10 @@ export default function ResetPasswordPage() {
   const password = watch('password', '');
 
   const passwordRequirements = [
-    { label: 'At least 8 characters', met: password.length >= 8 },
-    { label: 'One uppercase letter', met: /[A-Z]/.test(password) },
-    { label: 'One lowercase letter', met: /[a-z]/.test(password) },
-    { label: 'One number', met: /[0-9]/.test(password) },
+    { label: '8+ characters', met: password.length >= 8 },
+    { label: 'Uppercase', met: /[A-Z]/.test(password) },
+    { label: 'Lowercase', met: /[a-z]/.test(password) },
+    { label: 'Number', met: /[0-9]/.test(password) },
   ];
 
   const onSubmit = async (data: ResetPasswordFormData) => {
@@ -73,8 +73,8 @@ export default function ResetPasswordPage() {
         transition={{ duration: 0.5 }}
         className="auth-form text-center"
       >
-        <div className="w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
-          <Check className="w-8 h-8 text-green-600" strokeWidth={1.5} />
+        <div className="w-16 h-16 mx-auto mb-6 bg-[#F5F5F7] rounded-full flex items-center justify-center">
+          <Check className="w-8 h-8 text-[#000000]" strokeWidth={2} />
         </div>
         <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Password updated!</h1>
         <p className="text-[var(--text-muted)] mb-6">
@@ -82,10 +82,10 @@ export default function ResetPasswordPage() {
         </p>
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] font-semibold"
+          className="inline-flex items-center gap-2 text-[#000000] hover:underline font-semibold"
         >
           Sign In Now
-          <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+          <ArrowRight className="w-4 h-4" strokeWidth={2} />
         </Link>
       </motion.div>
     );
@@ -97,15 +97,6 @@ export default function ResetPasswordPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Mobile Logo */}
-      <div className="lg:hidden text-center mb-8">
-        <Link href="/" className="inline-block">
-          <span className="text-3xl font-bold text-[var(--accent-gold)]">
-            Quantum Scale
-          </span>
-        </Link>
-      </div>
-
       <div className="auth-form">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Reset your password</h1>
@@ -127,42 +118,38 @@ export default function ResetPasswordPage() {
             <label htmlFor="password" className="form-label">
               New Password
             </label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" strokeWidth={1.5} />
+            <div className="input-group">
+              <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
               <input
                 {...register('password')}
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Create a strong password"
-                className={`form-input pl-12 pr-12 ${errors.password ? 'border-red-300 focus:ring-red-500' : ''}`}
+                className={`form-input input-with-icon pr-12 ${errors.password ? 'border-[var(--error)]' : ''}`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" strokeWidth={1.5} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
+                {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
               </button>
             </div>
             {errors.password && (
               <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
             )}
             {password && (
-              <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {passwordRequirements.map((req) => (
                   <div
                     key={req.label}
-                    className={`flex items-center gap-1.5 text-xs ${
-                      req.met ? 'text-green-600' : 'text-[var(--text-muted)]'
+                    className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-full ${
+                      req.met
+                        ? 'bg-[#000000]/10 text-[#000000]'
+                        : 'bg-[#F5F5F7] text-[var(--text-muted)]'
                     }`}
                   >
-                    <div
-                      className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${
-                        req.met ? 'bg-green-100' : 'bg-[var(--bg-secondary)]'
-                      }`}
-                    >
-                      {req.met && <Check className="w-2.5 h-2.5" strokeWidth={2} />}
-                    </div>
+                    {req.met && <Check size={12} strokeWidth={2} />}
                     {req.label}
                   </div>
                 ))}
@@ -174,21 +161,21 @@ export default function ResetPasswordPage() {
             <label htmlFor="confirmPassword" className="form-label">
               Confirm New Password
             </label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" strokeWidth={1.5} />
+            <div className="input-group">
+              <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
               <input
                 {...register('confirmPassword')}
                 type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 placeholder="Confirm your new password"
-                className={`form-input pl-12 pr-12 ${errors.confirmPassword ? 'border-red-300 focus:ring-red-500' : ''}`}
+                className={`form-input input-with-icon pr-12 ${errors.confirmPassword ? 'border-[var(--error)]' : ''}`}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
               >
-                {showConfirmPassword ? <EyeOff className="w-5 h-5" strokeWidth={1.5} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
+                {showConfirmPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
               </button>
             </div>
             {errors.confirmPassword && (
@@ -199,7 +186,7 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn btn-primary w-full justify-center"
+            className="btn-auth-primary w-full"
           >
             {isSubmitting ? (
               <>
@@ -209,7 +196,7 @@ export default function ResetPasswordPage() {
             ) : (
               <>
                 Update Password
-                <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
+                <ArrowRight className="w-5 h-5" strokeWidth={2} />
               </>
             )}
           </button>

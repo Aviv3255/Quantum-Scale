@@ -1,101 +1,70 @@
 'use client';
 
-import Link from 'next/link';
-import { Rocket, Target, BookOpen, Sparkles } from 'lucide-react';
+import { useMemo } from 'react';
+
+// GIF URLs for the right panel
+const GIFS = [
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_Make_him_put_sunglasses_wave_hello_and_then_remove_t_90a0f9b6-601a-4b6e-8fc0-cdaff0eb7a18_0.gif?v=1765098349',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_He_is_smoking_cigar_--ar_11_--motion_high_--video_1__83e440a0-116d-454f-9a20-45e0b1a7215e_2.gif?v=1765099339',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_The_machine_keeps_printing_money_slowling_and_the_ca_29033f6d-3ad8-4de1-b4f5-a26cbe23a7f0_0.gif?v=1765101158',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_He_is_opening_the_door_and_enters_a_room_close_the_d_2c0cacb5-dace-426e-a81d-526a03b9fbf6_3.gif?v=1765101763',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_httpss.mj.runCFik5M_QPfE_He_is_dancing_super-energet_89da8cf1-ff9d-42a3-ad7a-85354d965974_2.gif?v=1765102312',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_httpss.mj.runCFik5M_QPfE_He_is_dancing_salsa_smooth__c75c0c3c-2251-4487-8f47-b01dd208176d_0.gif?v=1765102462',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_httpss.mj.runCFik5M_QPfE_He_is_dancing_breakdance_sp_3287a54b-3512-4a4d-86a1-15abd50532aa_0.gif?v=1765102543',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_httpss.mj.runCFik5M_QPfE_He_is_dancing_robot_stiff_m_7ea4f925-e7cd-4b0c-85a0-788ac702b8bc_2.gif?v=1765102667',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_httpss.mj.runCFik5M_QPfE_He_is_walking_reverse_moonw_41855ce1-0c71-4b3d-aede-636417f59d77_0.gif?v=1765103088',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_He_claps_his_hands._--ar_11_--motion_high_--video_1__2d4892f2-0476-42cd-ae22-6d6b2048cd72_3.gif?v=1765103542',
+  'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/aviv3255_He_is_smoking_a_big_cigar_--ar_11_--motion_high_--vi_858cf3d0-8ecb-4dba-8900-60557f8f1b48_2.gif?v=1765103758',
+];
+
+// Video URL (special case)
+const VIDEOS = [
+  'https://cdn.shopify.com/videos/c/o/v/b793644b86164f048208eba43398aa01.mp4',
+];
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Select a random media once per session (useMemo ensures it stays the same during the session)
+  const randomMedia = useMemo(() => {
+    const allMedia = [
+      ...GIFS.map(url => ({ type: 'gif' as const, url })),
+      ...VIDEOS.map(url => ({ type: 'video' as const, url })),
+    ];
+    const randomIndex = Math.floor(Math.random() * allMedia.length);
+    return allMedia[randomIndex];
+  }, []);
+
   return (
     <div className="auth-container">
-      {/* Left Panel - Branding */}
-      <div className="auth-branding">
-        <div className="auth-branding-content">
-          {/* Logo */}
-          <div className="auth-logo">
-            <div className="w-12 h-12 bg-[var(--accent-gold-bg)] rounded-xl flex items-center justify-center">
-              <Rocket size={24} className="text-[var(--accent-gold)]" />
-            </div>
-            <span>Quantum Scale</span>
-          </div>
-
-          {/* Monkey Illustration */}
-          <div className="auth-monkey">
-            <div className="w-full h-full rounded-3xl flex items-center justify-center bg-[var(--accent-gold-bg)] animate-float">
-              {/* Replace with Lottie animation or SVG monkey */}
-              <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Monkey body */}
-                <ellipse cx="90" cy="110" rx="50" ry="45" fill="#B8860B" opacity="0.2"/>
-                {/* Monkey head */}
-                <circle cx="90" cy="70" r="40" fill="#C4A574"/>
-                {/* Face inner */}
-                <ellipse cx="90" cy="78" rx="28" ry="24" fill="#E8D5B7"/>
-                {/* Eyes */}
-                <circle cx="76" cy="68" r="8" fill="white"/>
-                <circle cx="104" cy="68" r="8" fill="white"/>
-                <circle cx="78" cy="69" r="4" fill="#2D1810"/>
-                <circle cx="106" cy="69" r="4" fill="#2D1810"/>
-                {/* Eye shine */}
-                <circle cx="79" cy="67" r="1.5" fill="white"/>
-                <circle cx="107" cy="67" r="1.5" fill="white"/>
-                {/* Nose */}
-                <ellipse cx="90" cy="80" rx="6" ry="4" fill="#A67B4C"/>
-                {/* Smile */}
-                <path d="M80 88 Q90 96 100 88" stroke="#A67B4C" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                {/* Ears */}
-                <circle cx="52" cy="65" r="14" fill="#C4A574"/>
-                <circle cx="52" cy="65" r="9" fill="#E8D5B7"/>
-                <circle cx="128" cy="65" r="14" fill="#C4A574"/>
-                <circle cx="128" cy="65" r="9" fill="#E8D5B7"/>
-                {/* Crown/sparkle */}
-                <path d="M70 30 L75 40 L65 35 L75 35 L65 40 Z" fill="#B8860B"/>
-                <path d="M110 30 L115 40 L105 35 L115 35 L105 40 Z" fill="#B8860B"/>
-              </svg>
-            </div>
-          </div>
-
-          {/* Tagline */}
-          <h1 className="auth-tagline">Follow the Monkey</h1>
-          <p className="auth-subtitle">Your path to eCommerce success</p>
-
-          {/* Stats */}
-          <div className="flex items-center justify-center gap-8 mt-12">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <BookOpen size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">38+</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Articles</span>
-            </div>
-            <div className="w-px h-10 bg-[var(--border-light)]" />
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <Target size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">250</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Checklist Steps</span>
-            </div>
-            <div className="w-px h-10 bg-[var(--border-light)]" />
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <Sparkles size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">22</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Tools</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Background pattern */}
-        <div className="auth-bg-pattern" />
-      </div>
-
-      {/* Right Panel - Form */}
+      {/* Left Panel - Form */}
       <div className="auth-form-side">
         <div className="auth-form-wrapper">
           {children}
+        </div>
+      </div>
+
+      {/* Right Panel - GIF/Video only */}
+      <div className="auth-media-side">
+        <div className="auth-media-wrapper">
+          {randomMedia.type === 'video' ? (
+            <video
+              src={randomMedia.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="auth-media"
+            />
+          ) : (
+            <img
+              src={randomMedia.url}
+              alt=""
+              className="auth-media"
+            />
+          )}
         </div>
       </div>
     </div>

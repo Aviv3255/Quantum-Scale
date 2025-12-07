@@ -48,8 +48,8 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.5 }}
         className="auth-form text-center"
       >
-        <div className="w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
-          <Check className="w-8 h-8 text-green-600" strokeWidth={1.5} />
+        <div className="w-16 h-16 mx-auto mb-6 bg-[#F5F5F7] rounded-full flex items-center justify-center">
+          <Check className="w-8 h-8 text-[#000000]" strokeWidth={2} />
         </div>
         <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Check your email</h1>
         <p className="text-[var(--text-muted)] mb-6">
@@ -57,9 +57,9 @@ export default function ForgotPasswordPage() {
         </p>
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] font-semibold"
+          className="inline-flex items-center gap-2 text-[#000000] hover:underline font-semibold"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+          <ArrowLeft className="w-4 h-4" strokeWidth={2} />
           Back to Sign In
         </Link>
       </motion.div>
@@ -72,19 +72,10 @@ export default function ForgotPasswordPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Mobile Logo */}
-      <div className="lg:hidden text-center mb-8">
-        <Link href="/" className="inline-block">
-          <span className="text-3xl font-bold text-[var(--accent-gold)]">
-            Quantum Scale
-          </span>
-        </Link>
-      </div>
-
       <div className="auth-form">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 mx-auto mb-4 bg-[var(--accent-gold-bg)] rounded-full flex items-center justify-center">
-            <KeyRound className="w-7 h-7 text-[var(--accent-gold)]" strokeWidth={1.5} />
+          <div className="w-14 h-14 mx-auto mb-4 bg-[#F5F5F7] rounded-full flex items-center justify-center">
+            <KeyRound className="w-7 h-7 text-[#000000]" strokeWidth={1.5} />
           </div>
           <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Forgot your password?</h1>
           <p className="text-[var(--text-muted)]">
@@ -107,14 +98,14 @@ export default function ForgotPasswordPage() {
             <label htmlFor="email" className="form-label">
               Email address
             </label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" strokeWidth={1.5} />
+            <div className="input-group">
+              <Mail className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
               <input
                 {...register('email')}
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className={`form-input pl-12 ${errors.email ? 'border-red-300 focus:ring-red-500' : ''}`}
+                className={`form-input input-with-icon ${errors.email ? 'border-[var(--error)]' : ''}`}
               />
             </div>
             {errors.email && (
@@ -125,7 +116,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn btn-primary w-full justify-center"
+            className="btn-auth-primary w-full"
           >
             {isSubmitting ? (
               <>
@@ -135,7 +126,7 @@ export default function ForgotPasswordPage() {
             ) : (
               <>
                 Reset Password
-                <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
+                <ArrowRight className="w-5 h-5" strokeWidth={2} />
               </>
             )}
           </button>
@@ -144,7 +135,7 @@ export default function ForgotPasswordPage() {
         <div className="mt-6 text-center">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--accent-gold)] font-medium"
+            className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[#000000] font-medium"
           >
             <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
             Back to Sign In
