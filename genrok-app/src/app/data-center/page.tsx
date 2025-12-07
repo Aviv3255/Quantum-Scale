@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   BarChart3,
@@ -9,7 +10,8 @@ import {
   PieChart,
   Vote,
 } from 'lucide-react';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { useAuthStore } from '@/store/auth';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const polls = [
   {
@@ -65,97 +67,120 @@ const stats = [
   { label: 'Average AOV', value: '$87', icon: BarChart3 },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function DataCenterPage() {
-  const [selectedPoll, setSelectedPoll] = useState<number | null>(null);
+  const router = useRouter();
+  const { user, isLoading } = useAuthStore();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-6">
-              <PieChart className="w-4 h-4 text-indigo-600" />
-              <span className="text-sm font-medium text-indigo-700">Community Data</span>
+    <DashboardLayout>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Data Center</h1>
+              <p>See how other eCommerce entrepreneurs are performing. Anonymous community polls and benchmarks.</p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="gradient-text">Data Center</span>
-            </h1>
-            <p className="text-xl text-gray-600">
-              See how other eCommerce entrepreneurs are performing. Anonymous community polls and benchmarks.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-2xl p-6 text-center border border-gray-100"
-              >
-                <stat.icon className="w-8 h-8 mx-auto mb-3 text-indigo-600" />
-                <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-sm text-gray-500">{stat.label}</p>
-              </motion.div>
-            ))}
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
+              <PieChart size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--accent-gold)]">Community Data</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </header>
 
-      {/* Polls */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Community Polls</h2>
-            <p className="text-gray-600">See how you compare to other store owners</p>
-          </FadeIn>
+        {/* Stats */}
+        <section className="stats-grid mb-12">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="stat-card"
+            >
+              <div className="stat-icon">
+                <stat.icon size={22} strokeWidth={1.5} />
+              </div>
+              <div>
+                <span className="stat-label">{stat.label}</span>
+                <span className="stat-value">{stat.value}</span>
+              </div>
+            </motion.div>
+          ))}
+        </section>
 
-          <StaggerContainer className="space-y-8">
+        {/* Polls */}
+        <section>
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Community Polls</h2>
+            <p className="text-[var(--text-muted)]">See how you compare to other store owners</p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6 max-w-3xl mx-auto"
+          >
             {polls.map((poll) => (
-              <StaggerItem key={poll.id}>
-                <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                  <div className="p-6 border-b border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-900">{poll.question}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{poll.totalVotes.toLocaleString()} responses</p>
+              <motion.div key={poll.id} variants={itemVariants}>
+                <div className="card overflow-hidden" style={{ padding: 0 }}>
+                  <div className="p-6 border-b border-[var(--border-light)]">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)]">{poll.question}</h3>
+                    <p className="text-sm text-[var(--text-muted)] mt-1">{poll.totalVotes.toLocaleString()} responses</p>
                   </div>
                   <div className="p-6 space-y-4">
                     {poll.options.map((option, i) => (
                       <div key={i}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="text-gray-700">{option.label}</span>
-                          <span className="font-medium text-gray-900">{option.percentage}%</span>
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-[var(--text-secondary)]">{option.label}</span>
+                          <span className="font-medium text-[var(--text-primary)]">{option.percentage}%</span>
                         </div>
-                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-3 bg-[var(--bg-secondary)] rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${option.percentage}%` }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: i * 0.1 }}
-                            className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full"
+                            className="h-full rounded-full bg-[var(--accent-gold)]"
                           />
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
-              </StaggerItem>
+              </motion.div>
             ))}
-          </StaggerContainer>
-        </div>
-      </section>
-    </div>
+          </motion.div>
+        </section>
+      </div>
+    </DashboardLayout>
   );
 }

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Globe, ExternalLink, Star, Filter, Search } from 'lucide-react';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { Globe, ExternalLink, Star, Search } from 'lucide-react';
+import { useAuthStore } from '@/store/auth';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const websites = [
   {
@@ -119,9 +120,38 @@ const websites = [
 
 const categories = ['All', 'Fitness', 'Footwear', 'Eyewear', 'Luggage', 'Beauty', 'Home', 'Watches', 'Bedding', 'Supplements', 'Activewear', 'Health', 'Fashion'];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function WebDesignPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuthStore();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   const filteredWebsites = websites.filter((site) => {
     const matchesCategory = selectedCategory === 'All' || site.category === selectedCategory;
@@ -131,126 +161,114 @@ export default function WebDesignPage() {
   });
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100 mb-6">
-              <Globe className="w-4 h-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">Web UI Inspiration</span>
+    <DashboardLayout>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Award-Winning eCommerce Designs</h1>
+              <p>Study the best DTC brands and steal their design patterns</p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="gradient-text">Award-Winning</span> eCommerce Designs
-            </h1>
-            <p className="text-xl text-gray-600">
-              Study the best DTC brands and steal their design patterns. Every site here is optimized for conversions.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Filters */}
-      <section className="py-8 border-b border-gray-100 sticky top-16 bg-white/80 backdrop-blur-xl z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Search */}
-            <div className="relative w-full md:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search brands..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-            </div>
-
-            {/* Category Filter */}
-            <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
-              {categories.slice(0, 6).map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedCategory === category
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
+              <Globe size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--accent-gold)]">Web UI Inspiration</span>
             </div>
           </div>
+        </header>
+
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
+          {/* Search */}
+          <div className="search-input w-full md:w-64">
+            <Search className="search-input-icon" size={18} strokeWidth={1.5} />
+            <input
+              type="text"
+              placeholder="Search brands..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input"
+              style={{ paddingLeft: '44px' }}
+            />
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
+            {categories.slice(0, 6).map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                  selectedCategory === category
+                    ? 'bg-[var(--accent-gold)] text-white'
+                    : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
-      </section>
 
-      {/* Websites Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWebsites.map((site) => (
-              <StaggerItem key={site.id}>
-                <div className="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all overflow-hidden h-full flex flex-col">
-                  {/* Preview Area */}
-                  <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                    <div className="text-center">
-                      <Globe className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                      <span className="text-sm text-gray-500">{site.name}</span>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">{site.name}</h3>
-                        <span className="text-sm text-purple-600">{site.category}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {[...Array(site.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                    </div>
-
-                    <p className="text-gray-600 text-sm mb-4 flex-1">{site.description}</p>
-
-                    {/* Highlights */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {site.highlights.map((highlight, i) => (
-                        <span
-                          key={i}
-                          className="text-xs font-medium px-2.5 py-1 bg-purple-50 text-purple-700 rounded-full"
-                        >
-                          {highlight}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Action */}
-                    <a
-                      href={site.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-all"
-                    >
-                      Visit Site
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+        {/* Websites Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid-3"
+        >
+          {filteredWebsites.map((site) => (
+            <motion.div key={site.id} variants={itemVariants}>
+              <div className="card card-hover h-full flex flex-col overflow-hidden" style={{ padding: 0 }}>
+                {/* Preview Area */}
+                <div className="h-40 bg-[var(--bg-secondary)] flex items-center justify-center">
+                  <div className="text-center">
+                    <Globe size={40} className="text-[var(--text-muted)] mx-auto mb-2" strokeWidth={1.5} />
+                    <span className="text-sm text-[var(--text-muted)]">{site.name}</span>
                   </div>
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-    </div>
+
+                {/* Content */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)]">{site.name}</h3>
+                      <span className="text-sm text-[var(--accent-gold)]">{site.category}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(site.rating)].map((_, i) => (
+                        <Star key={i} size={16} className="fill-[var(--accent-gold)] text-[var(--accent-gold)]" />
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-[var(--text-muted)] mb-4 flex-1">{site.description}</p>
+
+                  {/* Highlights */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {site.highlights.map((highlight, i) => (
+                      <span key={i} className="badge badge-gold">
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action */}
+                  <a
+                    href={site.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary w-full justify-center"
+                  >
+                    Visit Site
+                    <ExternalLink size={16} strokeWidth={1.5} />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </DashboardLayout>
   );
 }

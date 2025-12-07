@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   Sparkles,
@@ -14,22 +15,13 @@ import {
   DollarSign,
   ChevronRight,
 } from 'lucide-react';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { useAuthStore } from '@/store/auth';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const creditTiers = [
-  {
-    spend: '$2,000',
-    credit: '$1,000',
-  },
-  {
-    spend: '$5,000',
-    credit: '$3,000',
-    popular: true,
-  },
-  {
-    spend: '$10,000',
-    credit: '$6,000',
-  },
+  { spend: '$2,000', credit: '$1,000' },
+  { spend: '$5,000', credit: '$3,000', popular: true },
+  { spend: '$10,000', credit: '$6,000' },
 ];
 
 const benefits = [
@@ -66,26 +58,10 @@ const benefits = [
 ];
 
 const steps = [
-  {
-    number: '01',
-    title: 'Apply Below',
-    description: 'Fill out the quick application form with your business details.',
-  },
-  {
-    number: '02',
-    title: 'Get Approved',
-    description: 'Our team reviews your application (usually within 24-48 hours).',
-  },
-  {
-    number: '03',
-    title: 'Start Spending',
-    description: 'Begin running TikTok ads and automatically unlock credits as you spend.',
-  },
-  {
-    number: '04',
-    title: 'Receive Credits',
-    description: 'Credits are automatically applied to your account at each tier milestone.',
-  },
+  { number: '01', title: 'Apply Below', description: 'Fill out the quick application form with your business details.' },
+  { number: '02', title: 'Get Approved', description: 'Our team reviews your application (usually within 24-48 hours).' },
+  { number: '03', title: 'Start Spending', description: 'Begin running TikTok ads and automatically unlock credits as you spend.' },
+  { number: '04', title: 'Receive Credits', description: 'Credits are automatically applied to your account at each tier milestone.' },
 ];
 
 const faqs = [
@@ -107,272 +83,167 @@ const faqs = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function TikTokCreditsPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuthStore();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen pt-20 bg-white">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
-            style={{
-              background: 'radial-gradient(circle, rgba(139, 105, 20, 0.1) 0%, rgba(139, 105, 20, 0.02) 50%, transparent 70%)',
-            }}
-          />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center max-w-4xl mx-auto">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-              style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
-            >
-              <Sparkles className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
-              <span className="text-sm font-semibold" style={{ color: '#8b6914' }}>EXCLUSIVE PARTNERSHIP</span>
+    <DashboardLayout>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Get Up to $6,000 in Free TikTok Ad Credits</h1>
+              <p>Scale faster with our exclusive TikTok partnership. Unlock your tier, launch instantly, and get priority support.</p>
             </div>
-
-            <h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-            >
-              Get Up to{' '}
-              <span style={{ color: '#8b6914' }}>$6,000</span>{' '}
-              in Free TikTok Ad Credits
-            </h1>
-
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
-              Scale faster with our exclusive TikTok partnership. Unlock your tier, launch instantly,
-              and get priority support from TikTok&apos;s growth team.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#apply"
-                className="group inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all"
-                style={{ background: '#8b6914', boxShadow: '0 4px 14px rgba(139, 105, 20, 0.25)' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#2c1810';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#8b6914';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                Claim Your Credits
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
-              </a>
-              <a
-                href="#how-it-works"
-                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl transition-all"
-                style={{ background: '#fdf6e3', color: '#2c1810' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(139, 105, 20, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#fdf6e3';
-                }}
-              >
-                How It Works
-              </a>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
+              <Sparkles size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--accent-gold)]">Exclusive Partnership</span>
             </div>
-          </FadeIn>
-        </div>
-      </section>
+          </div>
+        </header>
 
-      {/* Credit Tiers */}
-      <section className="py-20" style={{ background: '#fdf6e3' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-12">
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-            >
-              Choose Your <span style={{ color: '#8b6914' }}>Credit Tier</span>
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
-              The more you spend, the more free credits you unlock. It&apos;s that simple.
-            </p>
-          </FadeIn>
+        {/* Credit Tiers */}
+        <section className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Choose Your Credit Tier</h2>
+            <p className="text-[var(--text-muted)]">The more you spend, the more free credits you unlock.</p>
+          </div>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          >
             {creditTiers.map((tier, index) => (
-              <StaggerItem key={index}>
+              <motion.div key={index} variants={itemVariants}>
                 <div
-                  className="relative bg-white rounded-3xl p-8 transition-all"
-                  style={{
-                    border: tier.popular ? '2px solid #8b6914' : '1px solid rgba(0, 0, 0, 0.06)',
-                    transform: tier.popular ? 'scale(1.05)' : 'scale(1)',
-                  }}
+                  className={`relative card text-center ${tier.popular ? 'ring-2 ring-[var(--accent-gold)] scale-105' : ''}`}
                 >
                   {tier.popular && (
-                    <div
-                      className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full"
-                      style={{ background: '#8b6914' }}
-                    >
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[var(--accent-gold)]">
                       <span className="text-xs font-semibold text-white">MOST POPULAR</span>
                     </div>
                   )}
 
-                  <div className="text-center">
-                    <div
-                      className="rounded-2xl p-6 mb-6"
-                      style={{ background: 'rgba(139, 105, 20, 0.08)' }}
-                    >
-                      <p className="text-sm font-medium mb-1" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Spend</p>
-                      <p className="text-3xl font-bold" style={{ color: '#8b6914' }}>{tier.spend}</p>
-                    </div>
+                  <div className="rounded-xl p-6 mb-6 bg-[var(--accent-gold-bg)]">
+                    <p className="text-sm font-medium mb-1 text-[var(--text-muted)]">Spend</p>
+                    <p className="text-3xl font-bold text-[var(--accent-gold)]">{tier.spend}</p>
+                  </div>
 
-                    <div className="mb-6">
-                      <p className="text-sm font-medium mb-1" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>Get</p>
-                      <p className="text-5xl font-bold" style={{ color: '#2c1810' }}>
-                        {tier.credit}
-                      </p>
-                      <p className="text-sm mt-1" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>in free credits</p>
-                    </div>
+                  <div className="mb-6">
+                    <p className="text-sm font-medium mb-1 text-[var(--text-muted)]">Get</p>
+                    <p className="text-5xl font-bold text-[var(--text-primary)]">{tier.credit}</p>
+                    <p className="text-sm mt-1 text-[var(--text-muted)]">in free credits</p>
+                  </div>
 
-                    <div className="flex items-center justify-center gap-2" style={{ color: '#22c55e' }}>
-                      <DollarSign className="w-5 h-5" strokeWidth={1.5} />
-                      <span className="font-semibold">
-                        {Math.round((parseInt(tier.credit.replace(/\D/g, '')) / parseInt(tier.spend.replace(/\D/g, ''))) * 100)}% bonus
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-center gap-2 text-green-600">
+                    <DollarSign size={20} strokeWidth={1.5} />
+                    <span className="font-semibold">
+                      {Math.round((parseInt(tier.credit.replace(/\D/g, '')) / parseInt(tier.spend.replace(/\D/g, ''))) * 100)}% bonus
+                    </span>
                   </div>
                 </div>
-              </StaggerItem>
+              </motion.div>
             ))}
-          </StaggerContainer>
-        </div>
-      </section>
+          </motion.div>
+        </section>
 
-      {/* Benefits */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-12">
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-            >
-              Why Use Our <span style={{ color: '#8b6914' }}>TikTok Partnership</span>
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
-              Beyond free credits, you get exclusive benefits not available anywhere else.
-            </p>
-          </FadeIn>
+        {/* Benefits */}
+        <section className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Why Use Our TikTok Partnership</h2>
+            <p className="text-[var(--text-muted)]">Beyond free credits, you get exclusive benefits not available anywhere else.</p>
+          </div>
 
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {benefits.map((benefit, index) => (
-              <StaggerItem key={index}>
-                <div
-                  className="bg-white rounded-2xl p-6 transition-all"
-                  style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.08)';
-                    e.currentTarget.style.borderColor = 'rgba(139, 105, 20, 0.2)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.06)';
-                  }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: 'rgba(139, 105, 20, 0.1)' }}
-                  >
-                    <benefit.icon className="w-6 h-6" style={{ color: '#8b6914' }} strokeWidth={1.5} />
+              <motion.div key={index} variants={itemVariants}>
+                <div className="card card-hover h-full">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-[var(--accent-gold-bg)]">
+                    <benefit.icon size={24} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
                   </div>
-                  <h3
-                    className="text-lg font-bold mb-2"
-                    style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-                  >
-                    {benefit.title}
-                  </h3>
-                  <p style={{ color: 'rgba(44, 24, 16, 0.6)' }}>{benefit.description}</p>
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">{benefit.title}</h3>
+                  <p className="text-[var(--text-muted)]">{benefit.description}</p>
                 </div>
-              </StaggerItem>
+              </motion.div>
             ))}
-          </StaggerContainer>
-        </div>
-      </section>
+          </motion.div>
+        </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-20" style={{ background: '#2c1810' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-16">
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#fdf6e3' }}
-            >
-              How It Works
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(253, 246, 227, 0.6)' }}>
-              Getting your free TikTok credits is simple. Here&apos;s the process.
-            </p>
-          </FadeIn>
+        {/* How It Works */}
+        <section className="mb-12 card p-8 bg-[var(--text-primary)]">
+          <div className="text-center mb-10">
+            <h2 className="text-xl font-semibold text-white mb-2">How It Works</h2>
+            <p className="text-white/70">Getting your free TikTok credits is simple.</p>
+          </div>
 
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             {steps.map((step, index) => (
-              <StaggerItem key={index}>
-                <div className="relative">
-                  {index < steps.length - 1 && (
-                    <div
-                      className="hidden lg:block absolute top-8 left-full w-full h-0.5"
-                      style={{ background: 'linear-gradient(to right, rgba(139, 105, 20, 0.5), transparent)' }}
-                    />
-                  )}
-                  <div
-                    className="text-5xl font-bold mb-4"
-                    style={{ color: 'rgba(139, 105, 20, 0.3)' }}
-                  >
-                    {step.number}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2" style={{ color: '#fdf6e3' }}>{step.title}</h3>
-                  <p style={{ color: 'rgba(253, 246, 227, 0.6)' }}>{step.description}</p>
-                </div>
-              </StaggerItem>
+              <div key={index} className="relative">
+                {index < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-[var(--accent-gold)]/30" />
+                )}
+                <div className="text-5xl font-bold mb-4 text-[var(--accent-gold)]/30">{step.number}</div>
+                <h3 className="text-lg font-semibold mb-2 text-white">{step.title}</h3>
+                <p className="text-white/60">{step.description}</p>
+              </div>
             ))}
-          </StaggerContainer>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* FAQ */}
-      <section className="py-20 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-12">
-            <h2
-              className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-            >
-              Frequently Asked <span style={{ color: '#8b6914' }}>Questions</span>
-            </h2>
-          </FadeIn>
+        {/* FAQ */}
+        <section className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Frequently Asked Questions</h2>
+          </div>
 
-          <div className="space-y-4">
+          <div className="max-w-3xl mx-auto space-y-4">
             {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl overflow-hidden"
-                style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
-              >
+              <div key={index} className="card overflow-hidden" style={{ padding: 0 }}>
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
                   className="w-full px-6 py-5 flex items-center justify-between text-left"
                 >
-                  <span
-                    className="font-semibold"
-                    style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-                  >
-                    {faq.question}
-                  </span>
+                  <span className="font-semibold text-[var(--text-primary)]">{faq.question}</span>
                   <ChevronRight
-                    className={`w-5 h-5 transition-transform ${openFaq === index ? 'rotate-90' : ''}`}
-                    style={{ color: '#8b6914' }}
+                    size={20}
+                    className={`text-[var(--accent-gold)] transition-transform ${openFaq === index ? 'rotate-90' : ''}`}
                     strokeWidth={1.5}
                   />
                 </button>
@@ -380,57 +251,35 @@ export default function TikTokCreditsPage() {
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
                     className="px-6 pb-5"
                   >
-                    <p style={{ color: 'rgba(44, 24, 16, 0.6)' }}>{faq.answer}</p>
+                    <p className="text-[var(--text-muted)]">{faq.answer}</p>
                   </motion.div>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA */}
-      <section id="apply" className="py-20" style={{ background: '#8b6914' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <FadeIn>
-            <div className="mb-6">
-              <span className="text-6xl">🐵</span>
-            </div>
-            <h2
-              className="text-3xl md:text-5xl font-bold mb-6"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#fdf6e3' }}
-            >
-              Ready to Scale with Free Ad Credits?
-            </h2>
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: 'rgba(253, 246, 227, 0.8)' }}>
-              Join thousands of eCommerce brands already using our TikTok partnership to scale profitably.
-            </p>
-            <a
-              href="https://ads.tiktok.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-10 py-5 text-xl font-bold rounded-2xl transition-all"
-              style={{ background: '#fdf6e3', color: '#2c1810' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#fff';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#fdf6e3';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              Apply Now — It&apos;s Free
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} />
-            </a>
-          </FadeIn>
-        </div>
-      </section>
-    </div>
+        {/* CTA */}
+        <section className="card p-8 text-center bg-[var(--accent-gold)]">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Ready to Scale with Free Ad Credits?
+          </h2>
+          <p className="text-lg text-white/80 mb-8">
+            Join thousands of eCommerce brands already using our TikTok partnership to scale profitably.
+          </p>
+          <a
+            href="https://ads.tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn bg-white text-[var(--text-primary)] hover:bg-gray-100"
+          >
+            Apply Now - It&apos;s Free
+            <ArrowRight size={16} strokeWidth={1.5} />
+          </a>
+        </section>
+      </div>
+    </DashboardLayout>
   );
 }

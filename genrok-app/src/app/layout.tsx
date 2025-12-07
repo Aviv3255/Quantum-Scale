@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "Quantum Scale | Follow the Monkey",
@@ -33,27 +31,16 @@ export default function RootLayout({
         {/* Preconnect to font sources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.fontshare.com" />
 
-        {/* Satoshi font for headings */}
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@700,600,500&display=swap"
-          rel="stylesheet"
-        />
-
-        {/* Inter font for body text */}
+        {/* Inter font for all text */}
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased bg-white">
+      <body className="font-sans antialiased bg-white text-[var(--text-secondary)]">
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen pt-16">
-            {children}
-          </main>
-          <Footer />
+          {children}
         </AuthProvider>
       </body>
     </html>

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   AppWindow,
   Palette,
@@ -17,7 +18,8 @@ import {
   Star,
   Gift,
 } from 'lucide-react';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { useAuthStore } from '@/store/auth';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const categories = [
   { id: 'all', name: 'All Apps', icon: AppWindow },
@@ -29,7 +31,6 @@ const categories = [
   { id: 'Dev & Monitoring', name: 'Dev & Monitoring', icon: Server },
 ];
 
-// Sample apps data (will be replaced with Supabase data)
 const apps = [
   {
     id: 1,
@@ -135,9 +136,38 @@ const apps = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function ShopifyAppsPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   const filteredApps = apps.filter(
     (app) => activeCategory === 'all' || app.category === activeCategory
@@ -150,222 +180,133 @@ export default function ShopifyAppsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-white">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{
-              background: 'radial-gradient(circle, rgba(139, 105, 20, 0.08) 0%, rgba(139, 105, 20, 0.02) 50%, transparent 70%)',
-            }}
-          />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center max-w-3xl mx-auto">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-              style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
-            >
-              <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
-              <span className="text-sm font-medium" style={{ color: '#8b6914' }}>Exclusive Discounts</span>
+    <DashboardLayout>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Discounted Shopify Apps</h1>
+              <p>Install via our links to unlock special pricing and extended trials</p>
             </div>
-            <h1
-              className="text-4xl md:text-6xl font-bold mb-6"
-              style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-            >
-              Discounted <span style={{ color: '#8b6914' }}>Shopify Apps</span>
-            </h1>
-            <p className="text-xl mb-8" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
-              Install via our links to unlock special pricing, extended trials, and premium features
-              not available elsewhere.
-            </p>
-            <div className="flex items-center justify-center gap-6 text-sm" style={{ color: 'rgba(44, 24, 16, 0.5)' }}>
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4" style={{ color: '#8b6914' }} fill="#8b6914" />
-                <span>22 curated apps</span>
-              </div>
-              <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(44, 24, 16, 0.3)' }} />
-              <div className="flex items-center gap-2">
-                <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
-                <span>Exclusive deals</span>
-              </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
+              <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--accent-gold)]">22 Curated Apps</span>
             </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section
-        className="py-8 sticky top-16 z-40 backdrop-blur-xl"
-        style={{ background: 'rgba(253, 246, 227, 0.95)', borderTop: '1px solid rgba(0, 0, 0, 0.06)', borderBottom: '1px solid rgba(0, 0, 0, 0.06)' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all"
-                style={{
-                  background: activeCategory === category.id ? '#8b6914' : 'white',
-                  color: activeCategory === category.id ? 'white' : '#2c1810',
-                  border: activeCategory === category.id ? 'none' : '1px solid rgba(0, 0, 0, 0.06)',
-                  boxShadow: activeCategory === category.id ? '0 4px 12px rgba(139, 105, 20, 0.25)' : 'none',
-                }}
-                onMouseEnter={(e) => {
-                  if (activeCategory !== category.id) {
-                    e.currentTarget.style.background = 'rgba(139, 105, 20, 0.08)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (activeCategory !== category.id) {
-                    e.currentTarget.style.background = 'white';
-                  }
-                }}
-              >
-                <category.icon className="w-4 h-4" strokeWidth={1.5} />
-                <span className="text-sm font-medium">{category.name}</span>
-              </button>
-            ))}
           </div>
+        </header>
+
+        {/* Categories Filter */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveCategory(category.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
+                activeCategory === category.id
+                  ? 'bg-[var(--accent-gold)] text-white'
+                  : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+              }`}
+            >
+              <category.icon size={16} strokeWidth={1.5} />
+              <span>{category.name}</span>
+            </button>
+          ))}
         </div>
-      </section>
 
-      {/* Apps Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatePresence mode="wait">
-            <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredApps.map((app) => (
-                <StaggerItem key={app.id}>
-                  <div
-                    className="group bg-white rounded-2xl overflow-hidden transition-all"
-                    style={{ border: '1px solid rgba(0, 0, 0, 0.06)' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.08)';
-                      e.currentTarget.style.borderColor = 'rgba(139, 105, 20, 0.2)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = 'none';
-                      e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.06)';
-                    }}
-                  >
-                    {/* Header */}
-                    <div className="p-6 pb-4">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"
-                          style={{ background: '#fdf6e3' }}
-                        >
-                          <Image
-                            src={app.logo}
-                            alt={app.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3
-                            className="font-bold text-lg truncate"
-                            style={{ fontFamily: 'Satoshi, Inter, sans-serif', color: '#2c1810' }}
-                          >
-                            {app.name}
-                          </h3>
-                          <span
-                            className="inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full"
-                            style={{ background: 'rgba(139, 105, 20, 0.08)', color: '#8b6914' }}
-                          >
-                            {app.category}
-                          </span>
-                        </div>
+        {/* Apps Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid-3"
+          >
+            {filteredApps.map((app) => (
+              <motion.div key={app.id} variants={itemVariants}>
+                <div className="card card-hover overflow-hidden" style={{ padding: 0 }}>
+                  {/* Header */}
+                  <div className="p-6 pb-4">
+                    <div className="flex items-start gap-4">
+                      <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-[var(--bg-secondary)]">
+                        <Image
+                          src={app.logo}
+                          alt={app.name}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="px-6 pb-4">
-                      <p className="text-sm line-clamp-3" style={{ color: 'rgba(44, 24, 16, 0.6)' }}>
-                        {app.description}
-                      </p>
-                    </div>
-
-                    {/* Discount Badge */}
-                    {app.discount && (
-                      <div className="px-6 pb-4">
-                        <div
-                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg"
-                          style={{ background: 'rgba(139, 105, 20, 0.08)', border: '1px solid rgba(139, 105, 20, 0.15)' }}
-                        >
-                          <Gift className="w-4 h-4" style={{ color: '#8b6914' }} strokeWidth={1.5} />
-                          <span className="text-sm font-semibold" style={{ color: '#8b6914' }}>
-                            {app.discount} OFF
-                          </span>
-                        </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg text-[var(--text-primary)] truncate">
+                          {app.name}
+                        </h3>
+                        <span className="badge badge-gold mt-1">
+                          {app.category}
+                        </span>
                       </div>
-                    )}
-
-                    {/* Coupon Code */}
-                    {app.couponCode && (
-                      <div className="px-6 pb-4">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="flex-1 px-3 py-2 rounded-lg"
-                            style={{ background: '#fdf6e3', border: '1px dashed rgba(139, 105, 20, 0.3)' }}
-                          >
-                            <code className="text-sm font-mono font-semibold" style={{ color: '#8b6914' }}>
-                              {app.couponCode}
-                            </code>
-                          </div>
-                          <button
-                            onClick={() => copyCode(app.couponCode!)}
-                            className="p-2 transition-colors"
-                            style={{ color: 'rgba(44, 24, 16, 0.5)' }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.color = '#8b6914';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.color = 'rgba(44, 24, 16, 0.5)';
-                            }}
-                          >
-                            {copiedCode === app.couponCode ? (
-                              <Check className="w-5 h-5" style={{ color: '#22c55e' }} strokeWidth={1.5} />
-                            ) : (
-                              <Copy className="w-5 h-5" strokeWidth={1.5} />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Action */}
-                    <div className="p-6 pt-0">
-                      <a
-                        href={app.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-3 px-4 text-white font-semibold rounded-xl transition-all"
-                        style={{ background: '#8b6914', boxShadow: '0 4px 12px rgba(139, 105, 20, 0.25)' }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#2c1810';
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = '#8b6914';
-                          e.currentTarget.style.transform = 'translateY(0)';
-                        }}
-                      >
-                        Install App
-                        <ExternalLink className="w-4 h-4" strokeWidth={1.5} />
-                      </a>
                     </div>
                   </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </AnimatePresence>
-        </div>
-      </section>
-    </div>
+
+                  {/* Description */}
+                  <div className="px-6 pb-4">
+                    <p className="text-sm text-[var(--text-muted)] line-clamp-3">
+                      {app.description}
+                    </p>
+                  </div>
+
+                  {/* Discount Badge */}
+                  {app.discount && (
+                    <div className="px-6 pb-4">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--accent-gold-bg)] border border-[var(--border-gold)]">
+                        <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                        <span className="text-sm font-semibold text-[var(--accent-gold)]">
+                          {app.discount} OFF
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Coupon Code */}
+                  {app.couponCode && (
+                    <div className="px-6 pb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-secondary)] border border-dashed border-[var(--border-gold)]">
+                          <code className="text-sm font-mono font-semibold text-[var(--accent-gold)]">
+                            {app.couponCode}
+                          </code>
+                        </div>
+                        <button
+                          onClick={() => copyCode(app.couponCode!)}
+                          className="p-2 text-[var(--text-muted)] hover:text-[var(--accent-gold)] transition-colors"
+                        >
+                          {copiedCode === app.couponCode ? (
+                            <Check size={20} className="text-green-500" strokeWidth={1.5} />
+                          ) : (
+                            <Copy size={20} strokeWidth={1.5} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action */}
+                  <div className="p-6 pt-0">
+                    <a
+                      href={app.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary w-full justify-center"
+                    >
+                      Install App
+                      <ExternalLink size={16} strokeWidth={1.5} />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </DashboardLayout>
   );
 }
