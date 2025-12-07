@@ -287,6 +287,8 @@ export interface Database {
           age: string | null
           country: string | null
           occupation: string | null
+          ecommerce_model: string | null
+          fulfillment_method: string | null
           niche: string | null
           platform: string | null
           monthly_revenue: string | null
@@ -306,6 +308,8 @@ export interface Database {
           age?: string | null
           country?: string | null
           occupation?: string | null
+          ecommerce_model?: string | null
+          fulfillment_method?: string | null
           niche?: string | null
           platform?: string | null
           monthly_revenue?: string | null
@@ -325,6 +329,8 @@ export interface Database {
           age?: string | null
           country?: string | null
           occupation?: string | null
+          ecommerce_model?: string | null
+          fulfillment_method?: string | null
           niche?: string | null
           platform?: string | null
           monthly_revenue?: string | null

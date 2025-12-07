@@ -65,6 +65,8 @@ export type UserProfile = {
   age: string | null;
   country: string | null;
   occupation: string | null;
+  ecommerce_model: string | null;
+  fulfillment_method: string | null;
   niche: string | null;
   platform: string | null;
   monthly_revenue: string | null;
@@ -108,13 +110,15 @@ export const updateUserProfile = async (
     age?: string;
     country?: string;
     occupation?: string;
+    ecommerce_model?: string;
+    fulfillment_method?: string;
     niche?: string;
     platform?: string;
     monthly_revenue?: string;
     time_in_field?: string;
     main_traffic_source?: string;
     monthly_ad_budget?: string;
-    store_link?: string;
+    store_link?: string | null;
     onboarding_completed?: boolean;
     onboarding_step?: number;
   }
