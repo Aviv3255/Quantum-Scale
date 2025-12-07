@@ -26,12 +26,6 @@ const signupSchema = z.object({
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-const benefits = [
-  '250-step success checklist',
-  '38+ in-depth articles',
-  'Premium calculator tools',
-  'Exclusive app discounts',
-];
 
 export default function SignupPage() {
   const router = useRouter();
@@ -90,19 +84,6 @@ export default function SignupPage() {
       <div className="auth-form-header">
         <h2>Start your journey</h2>
         <p>Create an account and begin building your empire</p>
-      </div>
-
-      {/* Benefits */}
-      <div className="mb-6 p-4 rounded-xl bg-[#F5F5F7] border border-[#E0E0E0]">
-        <p className="text-sm font-semibold mb-3 text-[#000000]">Free access includes:</p>
-        <ul className="grid grid-cols-2 gap-2">
-          {benefits.map((benefit) => (
-            <li key={benefit} className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-              <Check className="w-4 h-4 text-[#000000]" strokeWidth={2} />
-              {benefit}
-            </li>
-          ))}
-        </ul>
       </div>
 
       {/* Error Message */}

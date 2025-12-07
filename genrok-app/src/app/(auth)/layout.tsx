@@ -1,6 +1,8 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 // Video URLs for the right panel (19 videos with equal probability)
 const VIDEOS = [
@@ -30,11 +32,29 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Select a random video once per session (using crypto for true randomness)
+  const router = useRouter();
+  const pathname = usePathname();
+  const [showForm, setShowForm] = useState(false);
+
+  // Select a random video once per session
   const randomVideo = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * VIDEOS.length);
     return VIDEOS[randomIndex];
   }, []);
+
+  const handleLogin = () => {
+    if (pathname !== '/login') {
+      router.push('/login');
+    }
+    setShowForm(true);
+  };
+
+  const handleSignup = () => {
+    if (pathname !== '/signup') {
+      router.push('/signup');
+    }
+    setShowForm(true);
+  };
 
   return (
     <>
@@ -64,7 +84,13 @@ export default function AuthLayout({
 
       {/* Mobile Layout */}
       <div className="auth-container-mobile">
-        {/* Top Section - Video */}
+        {/* Header - Above Video */}
+        <div className="auth-mobile-header">
+          <h1 className="auth-mobile-title">Welcome back</h1>
+          <p className="auth-mobile-subtitle">Sign in to continue building your empire</p>
+        </div>
+
+        {/* Video Section */}
         <div className="auth-mobile-video">
           <video
             src={randomVideo}
@@ -76,9 +102,43 @@ export default function AuthLayout({
           />
         </div>
 
-        {/* Bottom Section - Form */}
+        {/* Bottom Section - Buttons or Form */}
         <div className="auth-mobile-bottom">
-          {children}
+          <div className={`auth-mobile-slide-container ${showForm ? 'show-form' : ''}`}>
+            {/* Buttons Panel */}
+            <div className="auth-mobile-slide-buttons">
+              <div className="auth-mobile-btn-group">
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className="btn-auth-primary w-full"
+                >
+                  LOG IN
+                  <ArrowRight size={18} strokeWidth={2} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSignup}
+                  className="btn-auth-secondary w-full"
+                >
+                  SIGN UP
+                </button>
+              </div>
+            </div>
+
+            {/* Form Panel */}
+            <div className="auth-mobile-slide-form">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="auth-mobile-back"
+              >
+                <ArrowLeft size={16} />
+                Back
+              </button>
+              {children}
+            </div>
+          </div>
         </div>
       </div>
     </>
