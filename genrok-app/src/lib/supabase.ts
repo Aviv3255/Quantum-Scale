@@ -56,3 +56,74 @@ export const getSession = async () => {
   const { data: { session }, error } = await supabase.auth.getSession();
   return { session, error };
 };
+
+// User Profile types
+export type UserProfile = {
+  id: string;
+  user_id: string;
+  full_name: string | null;
+  age: string | null;
+  country: string | null;
+  occupation: string | null;
+  niche: string | null;
+  platform: string | null;
+  monthly_revenue: string | null;
+  time_in_field: string | null;
+  main_traffic_source: string | null;
+  monthly_ad_budget: string | null;
+  store_link: string | null;
+  onboarding_completed: boolean;
+  onboarding_step: number;
+  created_at: string;
+  updated_at: string;
+};
+
+// User Profile helpers
+export const getUserProfile = async (userId: string): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+  return { data: data as UserProfile | null, error };
+};
+
+export const createUserProfile = async (userId: string): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('user_profiles' as const)
+    .insert({
+      user_id: userId,
+      onboarding_completed: false,
+      onboarding_step: 0,
+    } as never)
+    .select()
+    .single();
+  return { data: data as UserProfile | null, error };
+};
+
+export const updateUserProfile = async (
+  userId: string,
+  updates: {
+    full_name?: string;
+    age?: string;
+    country?: string;
+    occupation?: string;
+    niche?: string;
+    platform?: string;
+    monthly_revenue?: string;
+    time_in_field?: string;
+    main_traffic_source?: string;
+    monthly_ad_budget?: string;
+    store_link?: string;
+    onboarding_completed?: boolean;
+    onboarding_step?: number;
+  }
+): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('user_profiles' as const)
+    .update({ ...updates, updated_at: new Date().toISOString() } as never)
+    .eq('user_id', userId)
+    .select()
+    .single();
+  return { data: data as UserProfile | null, error };
+};

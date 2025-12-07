@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
-import { signUp, signIn } from '@/lib/supabase';
+import { signUp, signIn, createUserProfile } from '@/lib/supabase';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -62,7 +62,7 @@ export default function SignupPage() {
     }
 
     // Auto sign-in after signup (skip email verification)
-    const { error: signInError } = await signIn(data.email, data.password);
+    const { data: signInData, error: signInError } = await signIn(data.email, data.password);
 
     if (signInError) {
       // If sign-in fails, show success but redirect to login
@@ -70,8 +70,13 @@ export default function SignupPage() {
       return;
     }
 
-    // Redirect directly to dashboard
-    router.push('/dashboard');
+    // Create user profile for onboarding
+    if (signInData?.user) {
+      await createUserProfile(signInData.user.id);
+    }
+
+    // Redirect to onboarding
+    router.push('/onboarding');
   };
 
   return (

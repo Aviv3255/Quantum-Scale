@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
-import { signIn } from '@/lib/supabase';
+import { signIn, getUserProfile, createUserProfile } from '@/lib/supabase';
 import { useAuthStore } from '@/store/auth';
 
 const loginSchema = z.object({
@@ -45,6 +45,24 @@ export default function LoginPage() {
     if (authData.user && authData.session) {
       setUser(authData.user);
       setSession(authData.session);
+
+      // Check if user has completed onboarding
+      const { data: profile, error: profileError } = await getUserProfile(authData.user.id);
+
+      if (profileError && profileError.code === 'PGRST116') {
+        // No profile exists, create one and redirect to onboarding
+        await createUserProfile(authData.user.id);
+        router.push('/onboarding');
+        return;
+      }
+
+      if (profile && !profile.onboarding_completed) {
+        // Onboarding not complete, redirect to onboarding
+        router.push('/onboarding');
+        return;
+      }
+
+      // Onboarding complete, go to dashboard
       router.push('/dashboard');
     }
   };
