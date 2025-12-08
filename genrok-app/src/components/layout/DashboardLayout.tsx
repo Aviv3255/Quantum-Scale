@@ -123,7 +123,7 @@ const navigationItems: NavItem[] = [
   },
   {
     title: "Preview Onboarding",
-    href: "/onboarding",
+    href: "/onboarding?preview=true",
     icon: UserCircle,
   },
   {
