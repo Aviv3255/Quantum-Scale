@@ -1,103 +1,156 @@
 'use client';
 
-import Link from 'next/link';
-import { Rocket, Target, BookOpen, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+
+// Get random video - runs on every page load/refresh
+const getRandomVideo = (videos: string[]) => {
+  const randomIndex = Math.floor(Math.random() * videos.length);
+  return videos[randomIndex];
+};
+
+// Video URLs for the right panel (25 videos with equal probability)
+const VIDEOS = [
+  'https://cdn.shopify.com/videos/c/o/v/c4d75a58dbd34d33ba8f13202f17053f.mp4', // Waving with sunglasses
+  'https://cdn.shopify.com/videos/c/o/v/f3311340d3ab4a9a8c678baf2bede90f.mp4', // Smoking cigar
+  'https://cdn.shopify.com/videos/c/o/v/de358ce3176a4b63971c703a11fb617b.mp4', // Printing money
+  'https://cdn.shopify.com/videos/c/o/v/ea85282e437d4099b0a48257428bdb4b.mp4', // Opening door
+  'https://cdn.shopify.com/videos/c/o/v/00dfc99eda684430ba42235578e42e59.mp4', // Moonwalk
+  'https://cdn.shopify.com/videos/c/o/v/b418dc1ab0e449878966438784c205a7.mp4', // Leaning on dollar, clapping
+  'https://cdn.shopify.com/videos/c/o/v/066c3aa20af24efcb9cf59197bac63e8.mp4', // Leaning on dollar, lighting cigar
+  'https://cdn.shopify.com/videos/c/o/v/b793644b86164f048208eba43398aa01.mp4', // Leaning on Shopify, clapping
+  'https://cdn.shopify.com/videos/c/o/v/719d004e46734351b31128cb2e7881af.mp4', // Money falling from sky
+  'https://cdn.shopify.com/videos/c/o/v/19d3c39f4e5e4d57bc9bbdc8db9d1639.mp4', // Drinking in hammock
+  'https://cdn.shopify.com/videos/c/o/v/f074d80da8f54b2e9fdf2414633445ca.mp4', // Giving kiss
+  'https://cdn.shopify.com/videos/c/o/v/f4e014ea4ee64397a4c6ff88675b34ce.mp4', // Chasing dollars
+  'https://cdn.shopify.com/videos/c/o/v/65197cabd21f4d1d9d9f7d8e42bed164.mp4', // Climbing money mountain 1
+  'https://cdn.shopify.com/videos/c/o/v/0b6a143059e44ccc9709c2dfa6e105c0.mp4', // Climbing money mountain 2
+  'https://cdn.shopify.com/videos/c/o/v/db18c3e6ce2d4b169594dd188276c4d3.mp4', // Flying on rocket
+  'https://cdn.shopify.com/videos/c/o/v/568c4d18549f45c6a337e87f078a6c9d.mp4', // With Rolex
+  'https://cdn.shopify.com/videos/c/o/v/6965f4746da64620a2f2248dac317742.mp4', // On red carpet
+  'https://cdn.shopify.com/videos/c/o/v/ba9d0444c0744d229d3e4d41a0f07474.mp4', // Spinning on chair
+  'https://cdn.shopify.com/videos/c/o/v/2a8156529505466d945adaf8f09d831c.mp4', // Spinning globe
+  'https://cdn.shopify.com/videos/c/o/v/1b60ab46224e492ab422efb0ff2a9d85.mp4', // Holding moon
+  'https://cdn.shopify.com/videos/c/o/v/4661df02be814de38fc8fffaed6c4807.mp4', // Walking on moon
+  'https://cdn.shopify.com/videos/c/o/v/1b62a2426aaf4e4fb7306edf2e41e3d7.mp4', // Coming out of wall
+  'https://cdn.shopify.com/videos/c/o/v/2953d3b660984d92a55585bb5d3af62c.mp4', // Looking in mirror
+  'https://cdn.shopify.com/videos/c/o/v/be2846b30fb24372a5c962cda13d11cd.mp4', // Standing on graph
+  'https://cdn.shopify.com/videos/c/o/v/15af124a7d4b46aeab67fa4f3af81aa3.mp4', // Walking on street
+];
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [showForm, setShowForm] = useState(false);
+
+  // Random video - changes on every refresh/new window
+  const [randomVideo] = useState(() => getRandomVideo(VIDEOS));
+
+  const handleLogin = () => {
+    if (pathname !== '/login') {
+      router.push('/login');
+    }
+    setShowForm(true);
+  };
+
+  const handleSignup = () => {
+    if (pathname !== '/signup') {
+      router.push('/signup');
+    }
+    setShowForm(true);
+  };
+
   return (
-    <div className="auth-container">
-      {/* Left Panel - Branding */}
-      <div className="auth-branding">
-        <div className="auth-branding-content">
-          {/* Logo */}
-          <div className="auth-logo">
-            <div className="w-12 h-12 bg-[var(--accent-gold-bg)] rounded-xl flex items-center justify-center">
-              <Rocket size={24} className="text-[var(--accent-gold)]" />
-            </div>
-            <span>Quantum Scale</span>
-          </div>
-
-          {/* Monkey Illustration */}
-          <div className="auth-monkey">
-            <div className="w-full h-full rounded-3xl flex items-center justify-center bg-[var(--accent-gold-bg)] animate-float">
-              {/* Replace with Lottie animation or SVG monkey */}
-              <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Monkey body */}
-                <ellipse cx="90" cy="110" rx="50" ry="45" fill="#B8860B" opacity="0.2"/>
-                {/* Monkey head */}
-                <circle cx="90" cy="70" r="40" fill="#C4A574"/>
-                {/* Face inner */}
-                <ellipse cx="90" cy="78" rx="28" ry="24" fill="#E8D5B7"/>
-                {/* Eyes */}
-                <circle cx="76" cy="68" r="8" fill="white"/>
-                <circle cx="104" cy="68" r="8" fill="white"/>
-                <circle cx="78" cy="69" r="4" fill="#2D1810"/>
-                <circle cx="106" cy="69" r="4" fill="#2D1810"/>
-                {/* Eye shine */}
-                <circle cx="79" cy="67" r="1.5" fill="white"/>
-                <circle cx="107" cy="67" r="1.5" fill="white"/>
-                {/* Nose */}
-                <ellipse cx="90" cy="80" rx="6" ry="4" fill="#A67B4C"/>
-                {/* Smile */}
-                <path d="M80 88 Q90 96 100 88" stroke="#A67B4C" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                {/* Ears */}
-                <circle cx="52" cy="65" r="14" fill="#C4A574"/>
-                <circle cx="52" cy="65" r="9" fill="#E8D5B7"/>
-                <circle cx="128" cy="65" r="14" fill="#C4A574"/>
-                <circle cx="128" cy="65" r="9" fill="#E8D5B7"/>
-                {/* Crown/sparkle */}
-                <path d="M70 30 L75 40 L65 35 L75 35 L65 40 Z" fill="#B8860B"/>
-                <path d="M110 30 L115 40 L105 35 L115 35 L105 40 Z" fill="#B8860B"/>
-              </svg>
-            </div>
-          </div>
-
-          {/* Tagline */}
-          <h1 className="auth-tagline">Follow the Monkey</h1>
-          <p className="auth-subtitle">Your path to eCommerce success</p>
-
-          {/* Stats */}
-          <div className="flex items-center justify-center gap-8 mt-12">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <BookOpen size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">38+</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Articles</span>
-            </div>
-            <div className="w-px h-10 bg-[var(--border-light)]" />
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <Target size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">250</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Checklist Steps</span>
-            </div>
-            <div className="w-px h-10 bg-[var(--border-light)]" />
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <Sparkles size={14} className="text-[var(--accent-gold)]" />
-                <span className="text-2xl font-bold text-[var(--text-primary)]">22</span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">Tools</span>
-            </div>
+    <>
+      {/* Desktop Layout */}
+      <div className="auth-container-desktop">
+        {/* Left Panel - Form */}
+        <div className="auth-form-side">
+          <div className="auth-form-wrapper">
+            {children}
           </div>
         </div>
 
-        {/* Background pattern */}
-        <div className="auth-bg-pattern" />
-      </div>
-
-      {/* Right Panel - Form */}
-      <div className="auth-form-side">
-        <div className="auth-form-wrapper">
-          {children}
+        {/* Right Panel - Video only */}
+        <div className="auth-media-side">
+          <div className="auth-media-wrapper">
+            <video
+              src={randomVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="auth-media"
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Layout */}
+      <div className={`auth-container-mobile ${showForm ? 'form-active' : ''}`}>
+        {/* Header - Only show when buttons are visible */}
+        {!showForm && (
+          <div className="auth-mobile-header">
+            <h1 className="auth-mobile-title">Welcome back</h1>
+            <p className="auth-mobile-subtitle">Sign in to continue building your empire</p>
+          </div>
+        )}
+
+        {/* Video Section - Smaller when form is shown */}
+        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`}>
+          <video
+            src={randomVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="auth-mobile-video-player"
+          />
+        </div>
+
+        {/* Bottom Section - Buttons or Form */}
+        <div className={`auth-mobile-bottom ${showForm ? 'expanded' : ''}`}>
+          <div className={`auth-mobile-slide-container ${showForm ? 'show-form' : ''}`}>
+            {/* Buttons Panel */}
+            <div className="auth-mobile-slide-buttons">
+              <div className="auth-mobile-btn-group">
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className="btn-auth-primary w-full"
+                >
+                  LOG IN
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSignup}
+                  className="btn-auth-secondary w-full"
+                >
+                  SIGN UP
+                </button>
+              </div>
+            </div>
+
+            {/* Form Panel */}
+            <div className="auth-mobile-slide-form">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="auth-mobile-back"
+              >
+                <ArrowLeft size={16} />
+                Back
+              </button>
+              {children}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

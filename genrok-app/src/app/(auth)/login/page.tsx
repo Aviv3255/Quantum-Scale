@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, Rocket } from 'lucide-react';
-import { signIn } from '@/lib/supabase';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
+import { signIn, getUserProfile, createUserProfile } from '@/lib/supabase';
 import { useAuthStore } from '@/store/auth';
 
 const loginSchema = z.object({
@@ -45,6 +45,24 @@ export default function LoginPage() {
     if (authData.user && authData.session) {
       setUser(authData.user);
       setSession(authData.session);
+
+      // Check if user has completed onboarding
+      const { data: profile, error: profileError } = await getUserProfile(authData.user.id);
+
+      if (profileError && profileError.code === 'PGRST116') {
+        // No profile exists, create one and redirect to onboarding
+        await createUserProfile(authData.user.id);
+        router.push('/onboarding');
+        return;
+      }
+
+      if (profile && !profile.onboarding_completed) {
+        // Onboarding not complete, redirect to onboarding
+        router.push('/onboarding');
+        return;
+      }
+
+      // Onboarding complete, go to dashboard
       router.push('/dashboard');
     }
   };
@@ -55,18 +73,6 @@ export default function LoginPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {/* Mobile Logo */}
-      <div className="lg:hidden text-center mb-8">
-        <Link href="/login" className="inline-flex items-center gap-3">
-          <div className="w-10 h-10 bg-[var(--accent-gold-bg)] rounded-xl flex items-center justify-center">
-            <Rocket size={20} className="text-[var(--accent-gold)]" />
-          </div>
-          <span className="text-xl font-bold text-[var(--text-primary)]">
-            Quantum Scale
-          </span>
-        </Link>
-      </div>
-
       {/* Form Header */}
       <div className="auth-form-header">
         <h2>Welcome back</h2>
@@ -92,7 +98,7 @@ export default function LoginPage() {
             Email
           </label>
           <div className="input-group">
-            <Mail className="input-icon" size={18} strokeWidth={1.5} />
+            <Mail className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('email')}
               type="email"
@@ -108,16 +114,11 @@ export default function LoginPage() {
 
         {/* Password Field */}
         <div className="form-field">
-          <div className="form-label-row">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <Link href="/forgot-password" className="form-link">
-              Forgot password?
-            </Link>
-          </div>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <div className="input-group">
-            <Lock className="input-icon" size={18} strokeWidth={1.5} />
+            <Lock className="input-icon text-[#888888]" size={18} strokeWidth={1.5} />
             <input
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
@@ -128,7 +129,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
             >
               {showPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -137,16 +138,22 @@ export default function LoginPage() {
               )}
             </button>
           </div>
-          {errors.password && (
+          {errors.password ? (
             <span className="form-error">{errors.password.message}</span>
+          ) : (
+            <div className="text-right mt-2">
+              <Link href="/forgot-password" className="form-link">
+                Forgot password?
+              </Link>
+            </div>
           )}
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button - Premium Black */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn btn-primary btn-full btn-lg"
+          className="btn-auth-primary w-full"
         >
           {isSubmitting ? (
             <>
@@ -156,7 +163,7 @@ export default function LoginPage() {
           ) : (
             <>
               Sign In
-              <ArrowRight size={18} strokeWidth={1.5} />
+              <ArrowRight size={18} strokeWidth={2} />
             </>
           )}
         </button>

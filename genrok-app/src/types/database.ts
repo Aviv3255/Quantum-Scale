@@ -279,6 +279,71 @@ export interface Database {
           updated_at?: string
         }
       }
+      user_profiles: {
+        Row: {
+          id: string
+          user_id: string
+          full_name: string | null
+          age: string | null
+          country: string | null
+          occupation: string | null
+          ecommerce_model: string | null
+          fulfillment_method: string | null
+          niche: string | null
+          platform: string | null
+          monthly_revenue: string | null
+          time_in_field: string | null
+          main_traffic_source: string | null
+          monthly_ad_budget: string | null
+          store_link: string | null
+          onboarding_completed: boolean
+          onboarding_step: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          full_name?: string | null
+          age?: string | null
+          country?: string | null
+          occupation?: string | null
+          ecommerce_model?: string | null
+          fulfillment_method?: string | null
+          niche?: string | null
+          platform?: string | null
+          monthly_revenue?: string | null
+          time_in_field?: string | null
+          main_traffic_source?: string | null
+          monthly_ad_budget?: string | null
+          store_link?: string | null
+          onboarding_completed?: boolean
+          onboarding_step?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          full_name?: string | null
+          age?: string | null
+          country?: string | null
+          occupation?: string | null
+          ecommerce_model?: string | null
+          fulfillment_method?: string | null
+          niche?: string | null
+          platform?: string | null
+          monthly_revenue?: string | null
+          time_in_field?: string | null
+          main_traffic_source?: string | null
+          monthly_ad_budget?: string | null
+          store_link?: string | null
+          onboarding_completed?: boolean
+          onboarding_step?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
