@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
@@ -9,116 +9,6 @@ const getRandomVideo = (videos: string[]) => {
   const randomIndex = Math.floor(Math.random() * videos.length);
   return videos[randomIndex];
 };
-
-// Shuffle array utility
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
-
-// Rotating quotes for desktop
-const QUOTES = [
-  "We've cracked the code. Literally. Now we're sharing it with you.",
-  "We didn't build Quantum Scale to inspire you. We built it to enrich you.",
-  "Follow the monkey, he will make you rich as fuck.",
-  "Monkey See, Monkey do. Just do what the software tells you.",
-  "Plot twist: You're the success story.",
-  "We removed the guesswork. You just need to show up.",
-  "The system inside the software works. The only variable is you.",
-  "Follow the steps. Get the results. It's that boring. It's that proven.",
-  "We reverse-engineered success. You just need to press play.",
-  "We already A/B tested your future. This version wins.",
-  "We turned 'how?' into a checklist. Just check it off.",
-  "We didn't come here to motivate you. We came to make you dangerous.",
-  "We already won. Now we're passing you the playbook.",
-  "We ate the failures so you could feast on the wins.",
-  "Thinking is overrated. Copying is profitable.",
-  "We made eCommerce stupid simple. 100,000+ entrepreneurs thank us monthly.",
-  "No brains required. Just follow the damn steps.",
-  "The dumbest monkey in the room followed the system. Now he's the richest.",
-  "We built Quantum Scale so you don't have to think.",
-  "The software tells you what to do. You do it. You win.",
-  "Quantum Scale already made the decisions. You just click.",
-  "We turned 'I don't know how' into 'I don't need to know how.'",
-  "We didn't build software. We built your unfair advantage.",
-  "We spent years figuring it out. You spend minutes following it.",
-  "Quantum Scale is the brain. You're the hands. Money is the result.",
-  "We built the GPS to wealth. It's called Quantum Scale. Just drive the highway.",
-  "We put everything we know into the software. You just extract the profits.",
-  "Quantum Scale tells you when, what, and how. You just do.",
-  "We built Quantum Scale for people who are done guessing.",
-  "We built Quantum Scale to make any idiot rich with eCommerce. No thinking required. So far, 100,000+ entrepreneurs proved it works.",
-  "Quantum Scale was built for one reason: to make you money without making you think. 100,000+ did it. You're next.",
-  "No skills. No experience. No problem. Quantum Scale made 100,000+ regular people into eCommerce winners.",
-  "Quantum Scale: Built to turn anyone into a money-making machine. 100,000+ and counting.",
-  "Zero brainpower needed. Maximum profits possible. That's Quantum Scale. Ask the 100,000+ who scaled.",
-  "Quantum Scale is what happens when obsessed people build for lazy people.",
-  "We burned through $2M in failures so you could pay $0 for the answers.",
-  "Follow the software like your rent depends on it. Because soon, it won't.",
-  "We built Quantum Scale because we got sick of watching broke people stay broke.",
-  "We didn't build a tool. We built the fucking shortcut your competition will never find.",
-  "Quantum Scale: Because 'figure it out yourself' is advice for people with time to waste.",
-  "We didn't crack eCommerce. We packaged it, gift-wrapped it, and handed it to you. You're welcome.",
-  "Quantum Scale: Built by paranoid perfectionists for regular people who just want to get paid.",
-];
-
-// Typing effect component
-function TypingQuote({ quotes }: { quotes: string[] }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [shuffledQuotes] = useState(() => shuffleArray(quotes));
-
-  const currentQuote = shuffledQuotes[currentIndex];
-
-  useEffect(() => {
-    const typingSpeed = 30;
-    const deletingSpeed = 15;
-    const pauseAfterTyping = 3000;
-    const pauseAfterDeleting = 500;
-
-    let timeout: NodeJS.Timeout;
-
-    if (!isDeleting) {
-      if (displayText.length < currentQuote.length) {
-        timeout = setTimeout(() => {
-          setDisplayText(currentQuote.slice(0, displayText.length + 1));
-        }, typingSpeed);
-      } else {
-        timeout = setTimeout(() => {
-          setIsDeleting(true);
-        }, pauseAfterTyping);
-      }
-    } else {
-      if (displayText.length > 0) {
-        timeout = setTimeout(() => {
-          setDisplayText(displayText.slice(0, -1));
-        }, deletingSpeed);
-      } else {
-        timeout = setTimeout(() => {
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % shuffledQuotes.length);
-        }, pauseAfterDeleting);
-      }
-    }
-
-    return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, currentQuote, shuffledQuotes.length]);
-
-  return (
-    <div className="auth-quote-container">
-      <div className="auth-quote-separator" />
-      <p className="auth-quote-text">
-        {displayText}
-        <span className="auth-quote-cursor">|</span>
-      </p>
-    </div>
-  );
-}
 
 // Base videos that work on both mobile and desktop
 const BASE_VIDEOS = [
@@ -205,9 +95,9 @@ export default function AuthLayout({
           </div>
         </div>
 
-        {/* Right Panel - Video + Quotes */}
+        {/* Right Panel - Video */}
         <div className="auth-media-side">
-          <div className="auth-media-content">
+          <div className="auth-media-content" style={{ justifyContent: 'center' }}>
             <div className="auth-media-wrapper">
               <video
                 src={desktopVideo}
@@ -218,7 +108,6 @@ export default function AuthLayout({
                 className="auth-media"
               />
             </div>
-            <TypingQuote quotes={QUOTES} />
           </div>
         </div>
       </div>

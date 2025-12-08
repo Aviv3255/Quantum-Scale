@@ -340,9 +340,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
-            <Rocket size={18} className="text-white" />
-          </div>
+          <img
+            src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
+            alt="Quantum Scale"
+            className="w-8 h-8 rounded-lg object-cover"
+          />
           {!sidebarCollapsed && <span>Quantum Scale</span>}
         </div>
 

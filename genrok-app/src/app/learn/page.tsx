@@ -206,6 +206,7 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           src={article.thumbnail}
           alt={article.title}
           fill
+          unoptimized
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
