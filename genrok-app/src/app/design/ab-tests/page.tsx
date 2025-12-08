@@ -2,114 +2,146 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import {
-  TrendingUp,
-  TrendingDown,
-  BarChart3,
-  ExternalLink,
-  Lightbulb,
-} from 'lucide-react';
+import { TrendingUp, ExternalLink, ArrowRight, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-const abTests = [
+interface App {
+  name: string;
+  url: string;
+}
+
+interface Test {
+  title: string;
+  versionA: string;
+  versionB: string;
+  result: string;
+  insight: string;
+  apps: App[];
+  image: string | null;
+  niche: string;
+}
+
+const tests: Test[] = [
   {
-    id: 1,
-    title: 'Product Reviews vs No Reviews',
-    category: 'Social Proof',
-    controlCvr: 2.8,
-    variantCvr: 3.16,
-    lift: 12.7,
-    sampleSize: 45000,
-    insight: 'Authentic reviews with photos increase trust and reduce hesitation.',
-    recommendation: 'Add photo/video reviews to all product pages.',
-    recommendedApp: 'Loox Reviews',
-    recommendedAppUrl: 'https://loox.io/app/LASERCRO',
+    title: 'Product Page - Sticky "Add to Cart" on Mobile',
+    versionA: 'No sticky button',
+    versionB: 'Sticky "Add to Cart" button remains visible at bottom of screen',
+    result: '+5.2% CVR',
+    insight: 'Customers don\'t need to "scroll back to find the button". Constant availability maintains emotional momentum during scrolling.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Vitals', url: 'https://vitals.app/shopify/12548540' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/677ff53e14b1cae22104f133_sticky_atc.avif?v=1760274015',
+    niche: 'Fashion & Apparel'
   },
   {
-    id: 2,
-    title: 'GEO-Location Discount Bar',
-    category: 'Personalization',
-    controlCvr: 2.1,
-    variantCvr: 3.51,
-    lift: 67,
-    sampleSize: 64000,
-    insight: 'Personalized discounts based on location create exclusivity and urgency.',
-    recommendation: 'Show location-based discounts with local holiday themes.',
-    recommendedApp: 'Parity Rocket',
-    recommendedAppUrl: 'https://parityrocket.com/',
+    title: 'Product Page - Adding "Best Seller" Tag',
+    versionA: 'No tag',
+    versionB: '"Best Seller" tag above product name',
+    result: '+5.8% CVR',
+    insight: 'Authority labeling acts as immediate social proof, increasing trust and the feeling of "I\'m choosing right".',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Section Store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-12_160307.png?v=1760274209',
+    niche: 'Beauty & Cosmetics'
   },
   {
-    id: 3,
-    title: 'Wishlist Button vs Buy Now',
-    category: 'UX',
-    controlCvr: 3.2,
-    variantCvr: 3.46,
-    lift: 8,
-    aovLift: 22,
-    sampleSize: 28000,
-    insight: 'Wishlist triggers the Endowment Effect - partial ownership increases desire.',
-    recommendation: 'Add wishlist functionality to product pages.',
-    recommendedApp: 'Vitals',
-    recommendedAppUrl: 'https://vitals.app/shopify/12548540',
+    title: 'Product Page - Adding UGC Video Reviews',
+    versionA: 'Text reviews only',
+    versionB: 'Added short UGC videos (15-20 seconds)',
+    result: '+28.9% CVR',
+    insight: 'The brain believes eyes more than words. Authentic video = subconscious truth.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Section Store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/l5idxghcfemk0tlt1hp0phiqdsby_1.png?v=1760274329',
+    niche: 'Electronics & Gadgets'
   },
   {
-    id: 4,
-    title: 'Sticky Add to Cart (Mobile)',
-    category: 'Mobile UX',
-    controlCvr: 2.4,
-    variantCvr: 2.93,
-    lift: 22,
-    sampleSize: 52000,
-    insight: 'Reducing friction on mobile by keeping CTA always visible.',
-    recommendation: 'Add sticky ATC button on mobile product pages.',
-    recommendedApp: 'Vitals',
-    recommendedAppUrl: 'https://vitals.app/shopify/12548540',
+    title: 'Urgency Block - Countdown Timer on Homepage',
+    versionA: 'No timer, text said "Until end of sale"',
+    versionB: 'Timer showing "Offer ends in 02:59:00"',
+    result: '+21.9% CVR',
+    insight: 'A small difference that illustrates pressure and fear. FOMO is one of the strongest tools you can use.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Essential Countdown Timer', url: 'https://platform.shoffi.app/r/rl_6EEzhlj9' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-12_at_16.06.56_d3fbd0c5.jpg?v=1760274438',
+    niche: 'Home & Living'
   },
   {
-    id: 5,
-    title: 'Trust Badges Below CTA',
-    category: 'Trust',
-    controlCvr: 2.9,
-    variantCvr: 3.19,
-    lift: 10,
-    sampleSize: 35000,
-    insight: 'Visual trust signals reduce checkout anxiety.',
-    recommendation: 'Add payment icons and security badges near CTA.',
-    recommendedApp: 'Essential Trust Badges',
-    recommendedAppUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx',
+    title: 'Checkout Page - "Place Order" vs. "Complete Order"',
+    versionA: 'Complete Order',
+    versionB: 'Place Order',
+    result: '+4.9% CVR',
+    insight: 'Words affect decision processing. "Complete" sounds committing, "Place" feels light and pleasant.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' }
+    ],
+    image: null,
+    niche: 'Multi-Category'
   },
   {
-    id: 6,
-    title: 'Free Shipping Progress Bar',
-    category: 'AOV',
-    controlCvr: 3.1,
-    variantCvr: 3.1,
-    lift: 0,
-    aovLift: 18,
-    sampleSize: 41000,
-    insight: 'Progress bars motivate customers to add more items to unlock free shipping.',
-    recommendation: 'Add dynamic free shipping bar in cart drawer.',
-    recommendedApp: 'Essential Free Shipping Bar',
-    recommendedAppUrl: 'https://platform.shoffi.app/r/rl_ScO0HCCU',
+    title: 'Homepage - Adding "Trusted by 10,000+ Customers"',
+    versionA: 'No text',
+    versionB: 'Text added above the Hero',
+    result: '+4.3% CVR',
+    insight: 'Social trust is psychological fuel. A simple sentence creates the feeling of "I\'m part of a successful community".',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Section Store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/social-proof_1.jpg?v=1760274530',
+    niche: 'Health & Wellness'
   },
+  {
+    title: 'Product Page - Adding Delivery Time Estimate Below "Buy Now"',
+    versionA: 'No delivery time information',
+    versionB: 'Added text "Estimated Delivery: 3-5 Business Days" below button',
+    result: '+4.4% CVR',
+    insight: 'The brain calms down when it knows "when it will arrive". Uncertainty is a psychological sales barrier – simple information removes fear and increases trust.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Section Store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/lx0yjsynussrs5rjk0gw2lco4joc.png?v=1760274580',
+    niche: 'Sports & Fitness'
+  },
+  {
+    title: 'Checkout Page - Adding Mastercard Logo',
+    versionA: 'No credit card logos',
+    versionB: 'Added Mastercard logo next to PayPal and Visa',
+    result: '+6.74% Checkout Completion',
+    insight: 'The brain seeks external confirmation for security. Displaying a familiar logo triggers the feeling of "known and safe" – like buying from a brand you know.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-12_161029.png?v=1760274656',
+    niche: 'Fashion & Accessories'
+  },
+  {
+    title: 'Cart Page - Adding "Free Shipping Progress Bar"',
+    versionA: 'No indication',
+    versionB: 'Bar showing "You\'re $12 away from Free Shipping!"',
+    result: '+8.3% Average Order Value',
+    insight: 'When the customer sees a clear goal — they want to "beat the system". A psychological bar that drives additional purchase.',
+    apps: [
+      { name: 'ABConvert', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' },
+      { name: 'Essential Free Shipping Bar', url: 'https://platform.shoffi.app/r/rl_ScO0HCCU' }
+    ],
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-12_161222.png?v=1760274770',
+    niche: 'Pet Supplies'
+  }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-export default function ABTestsPage() {
+export default function ABTestResultsPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
 
@@ -130,103 +162,201 @@ export default function ABTestsPage() {
   return (
     <DashboardLayout>
       <div className="page-wrapper">
-        {/* Page Header */}
-        <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1>A/B Test Results</h1>
-              <p>Real results from real tests. See what actually moves the needle for conversion rates and AOV.</p>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <BarChart3 size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Real Data</span>
-            </div>
+        {/* Hero Section */}
+        <div className="mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+               style={{ background: '#F3E8FF', border: '1px solid #E9D5FF' }}>
+            <Sparkles className="w-4 h-4" style={{ color: '#8B5CF6' }} />
+            <span className="text-sm font-semibold" style={{ color: '#8B5CF6' }}>REAL DATA FROM REAL TESTS</span>
           </div>
-        </header>
 
-        {/* Tests Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid md:grid-cols-2 gap-6"
-        >
-          {abTests.map((test) => (
-            <motion.div key={test.id} variants={itemVariants}>
-              <div className="card card-hover overflow-hidden" style={{ padding: 0 }}>
-                {/* Header */}
-                <div className="p-6 border-b border-[var(--border-light)]">
-                  <span className="badge badge-gold">
-                    {test.category}
-                  </span>
-                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mt-3">
-                    {test.title}
-                  </h3>
-                </div>
+          <h1 className="text-5xl font-bold mb-4" style={{
+            color: '#1E1E1E',
+            fontFamily: 'Poppins, sans-serif',
+            letterSpacing: '-0.02em'
+          }}>
+            A/B Test Results - Real Data
+          </h1>
 
-                {/* Results */}
-                <div className="p-6 bg-[var(--bg-secondary)]">
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Control</p>
-                      <p className="text-2xl font-bold text-[var(--text-primary)]">{test.controlCvr}%</p>
+          <p className="text-lg mb-6" style={{ color: '#6B7280', maxWidth: '900px' }}>
+            These are actual results from A/B tests we&apos;ve run across our brands.
+            We perform all A/B tests using ABConvert.
+          </p>
+
+          <div className="p-6 rounded-xl mb-4" style={{
+            background: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          }}>
+            <p className="mb-3" style={{ color: '#1E1E1E' }}>
+              <strong>Want to run your own tests?</strong> Use code <strong style={{ color: '#3B82F6' }}>LASERCRO</strong> for 10% OFF ABConvert
+            </p>
+            <a
+              href="https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition-all text-sm hover:-translate-y-0.5 hover:shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+              }}
+            >
+              Get ABConvert with 10% OFF
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+
+          <div className="p-4 rounded-xl" style={{
+            background: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          }}>
+            <p style={{ color: '#6B7280' }}>
+              We reveal all the secrets of psychological design that triggers impulse purchases in our course{' '}
+              <a
+                href="https://quantum-scale.co/products/the-subconscious-switch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold underline"
+                style={{ color: '#3B82F6' }}
+              >
+                The Subconscious Trap
+              </a>
+            </p>
+          </div>
+        </div>
+
+        {/* Test Results */}
+        <div className="space-y-8">
+          {tests.map((test, idx) => (
+            <div key={idx} className="rounded-2xl overflow-hidden" style={{
+              background: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+            }}>
+              <div className="grid lg:grid-cols-2 gap-0">
+                {/* Content Column */}
+                <div className="p-8">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold mb-3" style={{ color: '#1E1E1E' }}>
+                        {test.title}
+                      </h3>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
+                           style={{
+                             background: '#DCFCE7',
+                             border: '1px solid #BBF7D0',
+                             color: '#16A34A'
+                           }}>
+                        <TrendingUp className="w-4 h-4" />
+                        {test.result}
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Variant</p>
-                      <p className="text-2xl font-bold text-green-600">{test.variantCvr}%</p>
+                    <span className="text-xs font-medium px-3 py-1.5 rounded-full ml-4"
+                          style={{
+                            background: '#EFF6FF',
+                            color: '#3B82F6',
+                            border: '1px solid #DBEAFE',
+                            whiteSpace: 'nowrap'
+                          }}>
+                      {test.niche}
+                    </span>
+                  </div>
+
+                  <div className="space-y-5">
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm" style={{ color: '#6B7280' }}>
+                        VERSION A (Control)
+                      </h4>
+                      <p style={{ color: '#1E1E1E', lineHeight: '1.6' }}>{test.versionA}</p>
                     </div>
-                    <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Lift</p>
-                      <div className="flex items-center justify-center gap-1">
-                        {test.lift > 0 ? (
-                          <TrendingUp size={20} className="text-green-600" strokeWidth={1.5} />
-                        ) : (
-                          <TrendingDown size={20} className="text-[var(--text-muted)]" strokeWidth={1.5} />
-                        )}
-                        <p className={`text-2xl font-bold ${test.lift > 0 ? 'text-green-600' : 'text-[var(--text-muted)]'}`}>
-                          {test.lift > 0 ? '+' : ''}{test.lift}%
-                        </p>
+
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm flex items-center gap-2" style={{ color: '#16A34A' }}>
+                        <ArrowRight className="w-4 h-4" />
+                        VERSION B (Winner)
+                      </h4>
+                      <p style={{ color: '#1E1E1E', lineHeight: '1.6' }}>{test.versionB}</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm" style={{ color: '#3B82F6' }}>
+                        PSYCHOLOGICAL INSIGHT
+                      </h4>
+                      <p className="italic" style={{ color: '#6B7280', lineHeight: '1.6' }}>&quot;{test.insight}&quot;</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-3 text-sm" style={{ color: '#3B82F6' }}>
+                        APPS USED
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {test.apps.map((app, i) => (
+                          <a
+                            key={i}
+                            href={app.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all hover:scale-105"
+                            style={{
+                              background: '#EFF6FF',
+                              border: '1px solid #DBEAFE',
+                              color: '#3B82F6'
+                            }}
+                          >
+                            {app.name}
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        ))}
                       </div>
                     </div>
                   </div>
-                  {test.aovLift && (
-                    <div className="text-center p-2 rounded-lg bg-[var(--accent-gold-bg)]">
-                      <span className="text-sm font-medium text-[var(--accent-gold)]">
-                        +{test.aovLift}% AOV increase
-                      </span>
-                    </div>
-                  )}
-                  <p className="text-xs text-center mt-2 text-[var(--text-muted)]">
-                    Sample size: {test.sampleSize.toLocaleString()} visitors
-                  </p>
                 </div>
 
-                {/* Insight */}
-                <div className="p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <Lightbulb size={20} className="text-[var(--accent-gold)] flex-shrink-0 mt-0.5" strokeWidth={1.5} />
-                    <div>
-                      <p className="font-medium text-[var(--text-primary)] mb-1">Insight</p>
-                      <p className="text-sm text-[var(--text-muted)]">{test.insight}</p>
-                    </div>
+                {/* Image Column */}
+                {test.image && (
+                  <div className="relative flex items-center justify-center p-4" style={{ background: '#F9FAFB' }}>
+                    <img
+                      src={test.image}
+                      alt={test.title}
+                      className="w-full h-auto object-contain"
+                      style={{ maxHeight: '600px', borderRadius: '12px' }}
+                    />
                   </div>
-                  <div className="p-4 rounded-xl bg-[var(--accent-gold-bg)]">
-                    <p className="text-sm text-[var(--text-primary)] mb-2">{test.recommendation}</p>
-                    <a
-                      href={test.recommendedAppUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] transition-colors"
-                    >
-                      Try {test.recommendedApp}
-                      <ExternalLink size={14} strokeWidth={1.5} />
-                    </a>
-                  </div>
-                </div>
+                )}
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center p-8 rounded-2xl" style={{
+          background: '#FFFFFF',
+          border: '1px solid #E5E7EB',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+        }}>
+          <h3 className="text-2xl font-bold mb-3" style={{ color: '#1E1E1E' }}>
+            Want to Master Conversion Psychology?
+          </h3>
+          <p className="mb-6" style={{ color: '#6B7280' }}>
+            Learn the psychological triggers that turn visitors into buyers
+          </p>
+          <a
+            href="https://quantum-scale.co/products/the-subconscious-switch"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+            }}
+          >
+            GET THE SUBCONSCIOUS TRAP COURSE
+            <ExternalLink className="w-5 h-5" />
+          </a>
+        </div>
       </div>
     </DashboardLayout>
   );
