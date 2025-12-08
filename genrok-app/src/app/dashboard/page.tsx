@@ -23,34 +23,34 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 
 function getTimeBasedGreeting(userName: string) {
   const hour = new Date().getHours();
-  const firstName = userName?.split(' ')[0] || 'there';
+  const firstName = userName?.split(' ')[0] || 'אורח';
 
   if (hour >= 5 && hour < 12) {
     return {
-      greeting: `Good morning, ${firstName}`,
+      greeting: `בוקר טוב, ${firstName}`,
       icon: Sun,
-      message: "Fresh start, fresh opportunities. Let's make today count.",
+      message: "התחלה חדשה, הזדמנויות חדשות. בואו נהפוך את היום הזה למשמעותי.",
       mood: 'morning',
     };
   } else if (hour >= 12 && hour < 17) {
     return {
-      greeting: `Good afternoon, ${firstName}`,
+      greeting: `צהריים טובים, ${firstName}`,
       icon: Rocket,
-      message: "You're in the zone. Keep that momentum going.",
+      message: "אתה בזרימה. תשמור על המומנטום.",
       mood: 'afternoon',
     };
   } else if (hour >= 17 && hour < 21) {
     return {
-      greeting: `Good evening, ${firstName}`,
+      greeting: `ערב טוב, ${firstName}`,
       icon: Sparkles,
-      message: "Wrapping up? Take a moment to celebrate your wins today.",
+      message: "מסיימים את היום? קחו רגע לחגוג את ההצלחות של היום.",
       mood: 'evening',
     };
   } else {
     return {
-      greeting: `Working late, ${firstName}?`,
+      greeting: `עובדים מאוחר, ${firstName}?`,
       icon: Moon,
-      message: "Night owls build empires. But don't forget to rest.",
+      message: "ינשופי לילה בונים אימפריות. אבל אל תשכחו לנוח.",
       mood: 'night',
     };
   }
@@ -58,36 +58,36 @@ function getTimeBasedGreeting(userName: string) {
 
 const stats = [
   {
-    label: 'Checklist Progress',
+    label: 'התקדמות בצ׳קליסט',
     value: '12',
     total: '250',
-    unit: 'steps',
-    change: '+3 this week',
+    unit: 'צעדים',
+    change: '+3 השבוע',
     positive: true,
     icon: CheckSquare,
   },
   {
-    label: 'Articles Read',
+    label: 'מאמרים שנקראו',
     value: '5',
     total: '38',
-    unit: 'articles',
-    change: '+2 this week',
+    unit: 'מאמרים',
+    change: '+2 השבוע',
     positive: true,
     icon: BookOpen,
   },
   {
-    label: 'Current Streak',
+    label: 'רצף נוכחי',
     value: '7',
-    unit: 'days',
-    change: 'Keep it going!',
+    unit: 'ימים',
+    change: 'המשיכו כך!',
     positive: true,
     icon: Flame,
   },
   {
-    label: 'Tools Used',
+    label: 'כלים בשימוש',
     value: '3',
-    unit: 'tools',
-    change: 'Try more',
+    unit: 'כלים',
+    change: 'נסו עוד',
     positive: true,
     icon: Zap,
   },
@@ -95,32 +95,32 @@ const stats = [
 
 const quickActions = [
   {
-    title: 'Continue Checklist',
-    description: 'Pick up where you left off',
+    title: 'המשך בצ׳קליסט',
+    description: 'המשיכו מאיפה שעצרתם',
     href: '/checklist',
     icon: CheckSquare,
     color: 'bg-[var(--accent-gold-bg)]',
     iconColor: 'text-[var(--accent-gold)]',
   },
   {
-    title: 'Read Articles',
-    description: '38+ in-depth guides',
+    title: 'קראו מאמרים',
+    description: '38+ מדריכים מעמיקים',
     href: '/learn',
     icon: BookOpen,
     color: 'bg-blue-50',
     iconColor: 'text-blue-600',
   },
   {
-    title: 'Use Calculators',
-    description: 'Profit & KPI tools',
+    title: 'מחשבונים',
+    description: 'כלי רווח ו-KPI',
     href: '/calculators',
     icon: TrendingUp,
     color: 'bg-green-50',
     iconColor: 'text-green-600',
   },
   {
-    title: 'Browse Apps',
-    description: 'Curated app directory',
+    title: 'גלו אפליקציות',
+    description: 'מאגר אפליקציות מומלצות',
     href: '/apps/shopify',
     icon: Target,
     color: 'bg-purple-50',
@@ -181,7 +181,7 @@ export default function DashboardPage() {
             </div>
             <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
               <Flame size={16} className="text-[var(--accent-gold)]" />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Day 7 Streak</span>
+              <span className="text-sm font-medium text-[var(--accent-gold)]">רצף של 7 ימים</span>
             </div>
           </div>
         </motion.header>
@@ -223,7 +223,7 @@ export default function DashboardPage() {
         >
           <div className="section-header">
             <Target size={20} className="section-icon" />
-            <h2 className="section-title">Quick Actions</h2>
+            <h2 className="section-title">פעולות מהירות</h2>
           </div>
           <div className="grid-4">
             {quickActions.map((action) => (
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                   {action.description}
                 </p>
                 <div className="flex items-center gap-1 text-sm font-medium text-[var(--accent-gold)] group-hover:gap-2 transition-all">
-                  Get Started
+                  התחילו עכשיו
                   <ArrowRight size={14} strokeWidth={1.5} />
                 </div>
               </Link>
@@ -259,16 +259,16 @@ export default function DashboardPage() {
         >
           <div className="section-header">
             <Trophy size={20} className="section-icon" />
-            <h2 className="section-title">Your Journey</h2>
+            <h2 className="section-title">המסע שלכם</h2>
           </div>
           <div className="card">
             <div className="flex flex-col md:flex-row md:items-center gap-6">
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-                  250-Step Success Checklist
+                  צ׳קליסט הצלחה של 250 צעדים
                 </h3>
                 <p className="text-[var(--text-muted)] mb-4">
-                  You&apos;re making progress. Every step brings you closer to building a successful eCommerce brand.
+                  אתם מתקדמים. כל צעד מקרב אתכם לבניית מותג איקומרס מצליח.
                 </p>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex-1">
@@ -287,7 +287,7 @@ export default function DashboardPage() {
                   href="/checklist"
                   className="btn btn-primary"
                 >
-                  Continue Checklist
+                  המשיכו בצ׳קליסט
                   <ArrowRight size={16} strokeWidth={1.5} />
                 </Link>
               </div>
@@ -323,25 +323,25 @@ export default function DashboardPage() {
         >
           <div className="section-header">
             <Sparkles size={20} className="section-icon" />
-            <h2 className="section-title">Keep the Momentum</h2>
+            <h2 className="section-title">שמרו על המומנטום</h2>
           </div>
           <div className="grid-2">
             <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Recommended Article</h4>
+              <h4 className="font-semibold text-[var(--text-primary)] mb-2">מאמר מומלץ</h4>
               <p className="text-sm text-[var(--text-muted)] mb-4">
-                Based on your progress, we recommend reading about customer lifetime value optimization.
+                בהתאם להתקדמות שלכם, אנחנו ממליצים לקרוא על אופטימיזציה של ערך חיי לקוח (CLV).
               </p>
               <Link href="/learn" className="text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] inline-flex items-center gap-1">
-                Read Now <ArrowRight size={14} />
+                קראו עכשיו <ArrowRight size={14} />
               </Link>
             </div>
             <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Today&apos;s Focus</h4>
+              <h4 className="font-semibold text-[var(--text-primary)] mb-2">הפוקוס של היום</h4>
               <p className="text-sm text-[var(--text-muted)] mb-4">
-                Complete 3 more checklist items to maintain your streak and unlock your next milestone.
+                השלימו עוד 3 פריטים בצ׳קליסט כדי לשמור על הרצף ולפתוח את אבן הדרך הבאה.
               </p>
               <Link href="/checklist" className="text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] inline-flex items-center gap-1">
-                View Checklist <ArrowRight size={14} />
+                לצ׳קליסט <ArrowRight size={14} />
               </Link>
             </div>
           </div>
