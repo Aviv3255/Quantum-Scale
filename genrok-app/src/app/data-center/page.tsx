@@ -1,88 +1,226 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import {
-  BarChart3,
-  Users,
-  TrendingUp,
-  PieChart,
-  Vote,
-} from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-const polls = [
+interface PollOption {
+  text: string;
+  votes: number;
+}
+
+interface Poll {
+  id: number;
+  question: string;
+  category: string;
+  options: PollOption[];
+  totalVotes: number;
+}
+
+const polls: Poll[] = [
   {
     id: 1,
     question: 'What is your current monthly revenue?',
+    category: 'Revenue',
     options: [
-      { label: '$0 - $10K', votes: 342, percentage: 45 },
-      { label: '$10K - $50K', votes: 215, percentage: 28 },
-      { label: '$50K - $100K', votes: 98, percentage: 13 },
-      { label: '$100K+', votes: 105, percentage: 14 },
+      { text: '$0 - $10K', votes: 342 },
+      { text: '$10K - $50K', votes: 215 },
+      { text: '$50K - $100K', votes: 98 },
+      { text: '$100K+', votes: 105 },
     ],
     totalVotes: 760,
   },
   {
     id: 2,
     question: 'Which advertising platform gives you the best ROAS?',
+    category: 'Advertising',
     options: [
-      { label: 'Meta (Facebook/Instagram)', votes: 412, percentage: 52 },
-      { label: 'TikTok', votes: 198, percentage: 25 },
-      { label: 'Google', votes: 142, percentage: 18 },
-      { label: 'Other', votes: 40, percentage: 5 },
+      { text: 'Meta (Facebook/Instagram)', votes: 412 },
+      { text: 'TikTok', votes: 198 },
+      { text: 'Google', votes: 142 },
+      { text: 'Other', votes: 40 },
     ],
     totalVotes: 792,
   },
   {
     id: 3,
     question: 'What is your biggest challenge right now?',
+    category: 'Challenges',
     options: [
-      { label: 'Finding winning products', votes: 289, percentage: 35 },
-      { label: 'Scaling profitably', votes: 247, percentage: 30 },
-      { label: 'Improving conversion rate', votes: 165, percentage: 20 },
-      { label: 'Customer retention', votes: 124, percentage: 15 },
+      { text: 'Finding winning products', votes: 289 },
+      { text: 'Scaling profitably', votes: 247 },
+      { text: 'Improving conversion rate', votes: 165 },
+      { text: 'Customer retention', votes: 124 },
     ],
     totalVotes: 825,
   },
   {
     id: 4,
     question: 'How many products do you have in your store?',
+    category: 'Products',
     options: [
-      { label: '1-10', votes: 456, percentage: 55 },
-      { label: '11-50', votes: 215, percentage: 26 },
-      { label: '51-100', votes: 89, percentage: 11 },
-      { label: '100+', votes: 66, percentage: 8 },
+      { text: '1-10', votes: 456 },
+      { text: '11-50', votes: 215 },
+      { text: '51-100', votes: 89 },
+      { text: '100+', votes: 66 },
     ],
     totalVotes: 826,
   },
-];
-
-const stats = [
-  { label: 'Community Members', value: '10,000+', icon: Users },
-  { label: 'Total Poll Responses', value: '3,200+', icon: Vote },
-  { label: 'Average CVR Reported', value: '3.2%', icon: TrendingUp },
-  { label: 'Average AOV', value: '$87', icon: BarChart3 },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
+  {
+    id: 5,
+    question: 'What is your average order value (AOV)?',
+    category: 'Revenue',
+    options: [
+      { text: 'Under $30', votes: 189 },
+      { text: '$30 - $60', votes: 312 },
+      { text: '$60 - $100', votes: 245 },
+      { text: 'Over $100', votes: 178 },
+    ],
+    totalVotes: 924,
   },
-};
+  {
+    id: 6,
+    question: 'How long did it take you to reach $10K/month?',
+    category: 'Growth',
+    options: [
+      { text: 'Less than 3 months', votes: 87 },
+      { text: '3-6 months', votes: 234 },
+      { text: '6-12 months', votes: 345 },
+      { text: 'Over a year', votes: 198 },
+    ],
+    totalVotes: 864,
+  },
+  {
+    id: 7,
+    question: 'What type of products do you sell?',
+    category: 'Products',
+    options: [
+      { text: 'Fashion & Apparel', votes: 312 },
+      { text: 'Beauty & Health', votes: 267 },
+      { text: 'Home & Garden', votes: 189 },
+      { text: 'Electronics & Gadgets', votes: 156 },
+    ],
+    totalVotes: 924,
+  },
+  {
+    id: 8,
+    question: 'What is your main traffic source?',
+    category: 'Marketing',
+    options: [
+      { text: 'Paid Social (Meta, TikTok)', votes: 445 },
+      { text: 'Organic/SEO', votes: 178 },
+      { text: 'Influencers', votes: 134 },
+      { text: 'Email Marketing', votes: 89 },
+    ],
+    totalVotes: 846,
+  },
+];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
+function PollCard({ poll }: { poll: Poll }) {
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [hasVoted, setHasVoted] = useState(false);
+
+  const handleVote = (optionIndex: number) => {
+    if (!hasVoted) {
+      setSelectedOption(optionIndex);
+      setHasVoted(true);
+    }
+  };
+
+  const getPercentage = (votes: number) => {
+    return Math.round((votes / poll.totalVotes) * 100);
+  };
+
+  return (
+    <div
+      className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid #E5E7EB',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+      }}
+    >
+      {/* Category Badge */}
+      <div className="px-5 pt-5">
+        <span
+          className="inline-block px-3 py-1 rounded-full text-xs font-semibold"
+          style={{ background: '#FEF3C7', color: '#D97706' }}
+        >
+          {poll.category}
+        </span>
+      </div>
+
+      {/* Question */}
+      <div className="p-5 pt-3">
+        <h3 className="font-bold text-base mb-4" style={{ color: '#1E1E1E' }}>
+          {poll.question}
+        </h3>
+
+        {/* Options */}
+        <div className="space-y-3">
+          {poll.options.map((option, idx) => {
+            const percentage = getPercentage(option.votes);
+            const isSelected = selectedOption === idx;
+
+            return (
+              <button
+                key={idx}
+                onClick={() => handleVote(idx)}
+                className="w-full text-left transition-all rounded-xl overflow-hidden"
+                style={{
+                  background: isSelected ? '#EFF6FF' : '#F9FAFB',
+                  border: isSelected ? '2px solid #3B82F6' : '1px solid #E5E7EB',
+                }}
+              >
+                <div className="relative p-3">
+                  {/* Progress bar background */}
+                  {hasVoted && (
+                    <div
+                      className="absolute inset-0 transition-all duration-500"
+                      style={{
+                        background: isSelected ? 'rgba(59, 130, 246, 0.15)' : 'rgba(209, 213, 219, 0.3)',
+                        width: `${percentage}%`,
+                      }}
+                    />
+                  )}
+
+                  <div className="relative flex justify-between items-center">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: isSelected ? '#3B82F6' : '#4B5563' }}
+                    >
+                      {option.text}
+                    </span>
+                    {hasVoted && (
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: isSelected ? '#3B82F6' : '#6B7280' }}
+                      >
+                        {percentage}%
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Total votes */}
+        <p className="mt-4 text-xs" style={{ color: '#9CA3AF' }}>
+          {poll.totalVotes.toLocaleString()} votes
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function DataCenterPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -98,88 +236,88 @@ export default function DataCenterPage() {
     );
   }
 
+  const filteredPolls = polls.filter(poll =>
+    poll.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    poll.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
-        {/* Page Header */}
-        <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1>Data Center</h1>
-              <p>See how other eCommerce entrepreneurs are performing. Anonymous community polls and benchmarks.</p>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <PieChart size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Community Data</span>
-            </div>
-          </div>
-        </header>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap');
+      `}</style>
 
-        {/* Stats */}
-        <section className="stats-grid mb-12">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="stat-card"
-            >
-              <div className="stat-icon">
-                <stat.icon size={22} strokeWidth={1.5} />
-              </div>
-              <div>
-                <span className="stat-label">{stat.label}</span>
-                <span className="stat-value">{stat.value}</span>
-              </div>
-            </motion.div>
-          ))}
-        </section>
+      <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+          {/* Header */}
+          <div className="mb-10">
+            <div className="flex items-start justify-between mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold flex-1" style={{
+                color: '#000000',
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: 'italic',
+                letterSpacing: '-0.005em',
+                lineHeight: '1.2'
+              }}>
+                Your questions, answered by<br />the wisdom of the crowd.
+              </h1>
 
-        {/* Polls */}
-        <section>
-          <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Community Polls</h2>
-            <p className="text-[var(--text-muted)]">See how you compare to other store owners</p>
+              <button
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all text-base flex-shrink-0 hover:bg-gray-200"
+                style={{
+                  background: '#F3F4F6',
+                  border: '1px solid #D1D5DB',
+                  color: '#4B5563',
+                  boxShadow: 'none',
+                  fontFamily: "'Open Sans', sans-serif",
+                  fontWeight: '800'
+                }}
+              >
+                <Plus className="w-5 h-5" />
+                Post a Poll
+              </button>
+            </div>
+
+            <p className="text-lg leading-relaxed max-w-3xl mb-6" style={{ color: '#6B7280' }}>
+              Real insights from real eCommerce operators. Updated live as the community votes.
+            </p>
           </div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="space-y-6 max-w-3xl mx-auto"
-          >
-            {polls.map((poll) => (
-              <motion.div key={poll.id} variants={itemVariants}>
-                <div className="card overflow-hidden" style={{ padding: 0 }}>
-                  <div className="p-6 border-b border-[var(--border-light)]">
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)]">{poll.question}</h3>
-                    <p className="text-sm text-[var(--text-muted)] mt-1">{poll.totalVotes.toLocaleString()} responses</p>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    {poll.options.map((option, i) => (
-                      <div key={i}>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span className="text-[var(--text-secondary)]">{option.label}</span>
-                          <span className="font-medium text-[var(--text-primary)]">{option.percentage}%</span>
-                        </div>
-                        <div className="h-3 bg-[var(--bg-secondary)] rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${option.percentage}%` }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: i * 0.1 }}
-                            className="h-full rounded-full bg-[var(--accent-gold)]"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#9CA3AF' }} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search polls..."
+                className="w-full pl-12 pr-4 py-3 rounded-xl text-base transition-all"
+                style={{
+                  background: '#F9FAFB',
+                  border: '1px solid #E5E7EB',
+                  color: '#010C31',
+                  outline: 'none'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Polls Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {filteredPolls.map(poll => (
+              <PollCard key={poll.id} poll={poll} />
             ))}
-          </motion.div>
-        </section>
+          </div>
+
+          {filteredPolls.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-xl" style={{ color: '#6B7280' }}>
+                No polls found
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </DashboardLayout>
   );
