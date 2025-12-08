@@ -98,7 +98,7 @@ export default function AuthLayout({
         {/* Right Panel - Video */}
         <div className="auth-media-side">
           <div className="auth-media-content" style={{ justifyContent: 'center' }}>
-            <div className="auth-media-wrapper">
+            <div className="auth-media-wrapper" style={{ borderRadius: '32px', overflow: 'hidden' }}>
               <video
                 src={desktopVideo}
                 autoPlay
@@ -106,6 +106,7 @@ export default function AuthLayout({
                 muted
                 playsInline
                 className="auth-media"
+                style={{ borderRadius: '32px' }}
               />
             </div>
           </div>
@@ -123,7 +124,7 @@ export default function AuthLayout({
         )}
 
         {/* Video Section - Smaller when form is shown */}
-        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`}>
+        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`} style={{ overflow: 'hidden' }}>
           <video
             src={mobileVideo}
             autoPlay
@@ -131,6 +132,7 @@ export default function AuthLayout({
             muted
             playsInline
             className="auth-mobile-video-player"
+            style={{ borderRadius: '24px' }}
           />
         </div>
 
