@@ -103,20 +103,24 @@ export default function LearnPage() {
 
         {/* Categories Filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
-                activeCategory === category.id
-                  ? 'bg-[var(--primary)] text-white'
-                  : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
-              }`}
-            >
-              <category.icon size={16} strokeWidth={1.5} />
-              <span>{category.name}</span>
-            </button>
-          ))}
+          {categories.map((category) => {
+            const isActive = activeCategory === category.id;
+            return (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
+                  isActive
+                    ? 'bg-[var(--primary)]'
+                    : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                }`}
+                style={isActive ? { color: '#FFFFFF' } : undefined}
+              >
+                <category.icon size={16} strokeWidth={1.5} style={isActive ? { color: '#FFFFFF' } : undefined} />
+                <span>{category.name}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Featured Articles */}
