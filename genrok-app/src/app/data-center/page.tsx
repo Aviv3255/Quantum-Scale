@@ -464,59 +464,35 @@ export default function DataCenterPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
-          {/* Header */}
-          <div className="mb-10">
-            <div className="flex items-start justify-between mb-4">
-              <h1 className="text-4xl md:text-5xl font-bold flex-1" style={{
-                color: '#000000',
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: 'italic',
-                letterSpacing: '-0.005em',
-                lineHeight: '1.2'
-              }}>
-                Your questions, answered by<br />the wisdom of the crowd.
-              </h1>
-
-              <button
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all text-base flex-shrink-0"
-                style={{
-                  background: '#F3F4F6',
-                  border: '1px solid #D1D5DB',
-                  color: '#4B5563',
-                  fontWeight: '800'
-                }}
-              >
-                <Plus className="w-5 h-5" />
-                Post a Poll
-              </button>
+      <div className="page-wrapper">
+        {/* Page Header */}
+        <header className="page-header">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1>Data Center</h1>
+              <p>Real insights from real eCommerce operators. Updated live as the community votes.</p>
             </div>
-
-            <p className="text-lg leading-relaxed max-w-3xl mb-6" style={{ color: '#6B7280' }}>
-              Real insights from real eCommerce operators. Updated live as the community votes.
-            </p>
+            <button className="btn btn-secondary flex-shrink-0">
+              <Plus size={16} strokeWidth={1.5} />
+              Post a Poll
+            </button>
           </div>
+        </header>
 
-          {/* Search Bar */}
-          <div className="mb-8">
-            <div className="relative max-w-md">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#9CA3AF' }} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search polls..."
-                className="w-full pl-12 pr-4 py-3 rounded-xl text-base"
-                style={{
-                  background: '#F9FAFB',
-                  border: '1px solid #E5E7EB',
-                  color: '#010C31',
-                  outline: 'none'
-                }}
-              />
-            </div>
+        {/* Search Bar */}
+        <div className="mb-8">
+          <div className="relative max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search polls..."
+              className="w-full pl-12 pr-4 py-3 rounded-xl text-sm bg-[var(--bg-secondary)] border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+            />
           </div>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">{filteredPolls.length} polls</p>
+        </div>
 
           {/* Polls Grid */}
           <motion.div
@@ -526,7 +502,7 @@ export default function DataCenterPage() {
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
           >
             {filteredPolls.map((poll) => (
-              <motion.div key={poll.id} variants={itemVariants}>
+              <motion.div key={poll.id} variants={itemVariants} className="h-full">
                 <PollCard
                   poll={poll}
                   userVote={userVotes[poll.id]}
@@ -536,14 +512,13 @@ export default function DataCenterPage() {
             ))}
           </motion.div>
 
-          {filteredPolls.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-xl" style={{ color: '#6B7280' }}>
-                No polls found
-              </p>
-            </div>
-          )}
-        </div>
+        {filteredPolls.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-xl text-[var(--text-muted)]">
+              No polls found
+            </p>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
@@ -559,22 +534,16 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
   const maxPercentage = Math.max(...poll.options.map(o => o.percentage));
 
   return (
-    <div
-      className="p-5 rounded-2xl transition-all"
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid #E5E7EB',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
-      }}
-    >
-      <h3 className="text-base font-bold mb-4 leading-tight" style={{
-        color: '#010C31',
-        fontFamily: 'Poppins, sans-serif'
-      }}>
-        {poll.question}
-      </h3>
+    <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
+      {/* Question */}
+      <div className="p-5 pb-3">
+        <h3 className="text-sm font-semibold leading-tight text-[var(--text-primary)]">
+          {poll.question}
+        </h3>
+      </div>
 
-      <div className="space-y-2.5 mb-4">
+      {/* Options */}
+      <div className="px-5 pb-4 space-y-2 flex-1">
         {poll.options.map((option, index) => {
           const isUserChoice = userVote === index;
           const isTopChoice = option.percentage === maxPercentage;
@@ -583,51 +552,41 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
             <button
               key={index}
               onClick={() => onVote(index)}
-              className="w-full text-left relative overflow-hidden rounded-lg transition-all"
+              className="w-full text-left relative overflow-hidden rounded-lg transition-all hover:border-[var(--primary)]"
               style={{
-                border: isUserChoice ? '2px solid #007DFF' : '1px solid #E5E7EB',
-                background: '#FFFFFF',
+                border: isUserChoice ? '2px solid var(--primary)' : '1px solid var(--border-light)',
+                background: 'var(--bg-card)',
                 cursor: 'pointer'
               }}
             >
               <div
                 className="absolute inset-0 transition-all"
                 style={{
-                  background: 'linear-gradient(90deg, rgba(0, 125, 255, 0.015) 0%, rgba(0, 125, 255, 0.005) 100%)',
+                  background: isUserChoice
+                    ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.01) 100%)'
+                    : 'linear-gradient(90deg, rgba(0, 125, 255, 0.02) 0%, transparent 100%)',
                   width: `${option.percentage}%`
                 }}
               />
 
-              <div className="relative px-3 py-2.5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="relative px-3 py-2 flex items-center justify-between">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
                   {isUserChoice ? (
                     <div
-                      className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{
-                        background: '#007DFF',
-                        border: '2px solid #007DFF'
-                      }}
+                      className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 bg-[var(--primary)]"
                     >
-                      <CheckCircle className="w-3 h-3" style={{ color: '#FFFFFF' }} />
+                      <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   ) : (
                     <div
-                      className="w-5 h-5 rounded-full flex-shrink-0"
-                      style={{
-                        border: '2px solid #D1D5DB'
-                      }}
+                      className="w-4 h-4 rounded-full flex-shrink-0 border-2 border-[var(--border-medium)]"
                     />
                   )}
-                  <span className="text-sm" style={{
-                    color: '#010C31',
-                    fontWeight: '400'
-                  }}>
+                  <span className="text-xs text-[var(--text-secondary)] truncate">
                     {option.text}
                   </span>
                 </div>
-                <span className="font-bold text-sm" style={{
-                  color: isTopChoice ? '#007DFF' : '#4B5563'
-                }}>
+                <span className={`font-bold text-xs flex-shrink-0 ml-2 ${isTopChoice ? 'text-[var(--info)]' : 'text-[var(--text-muted)]'}`}>
                   {option.percentage.toFixed(2)}%
                 </span>
               </div>
@@ -636,26 +595,23 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
         })}
       </div>
 
+      {/* Buttons */}
       {poll.buttons && poll.buttons.length > 0 && (
-        <div className="flex flex-col gap-2 pt-3 border-t" style={{ borderColor: '#F3F4F6' }}>
-          {poll.buttons.map((button, idx) => (
-            <a
-              key={idx}
-              href={button.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg transition-all text-sm"
-              style={{
-                background: '#007DFF',
-                color: '#FFFFFF',
-                textDecoration: 'underline',
-                fontWeight: '800'
-              }}
-            >
-              <span>{button.text}</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          ))}
+        <div className="p-5 pt-0 mt-auto">
+          <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-light)]">
+            {poll.buttons.map((button, idx) => (
+              <a
+                key={idx}
+                href={button.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary w-full justify-center text-xs py-2"
+              >
+                {button.text}
+                <ArrowRight className="w-3 h-3" />
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>
