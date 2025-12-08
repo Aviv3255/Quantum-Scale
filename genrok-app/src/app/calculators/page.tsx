@@ -1,639 +1,383 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  Calculator,
-  TrendingUp,
-  Target,
-  DollarSign,
-  Users,
-  Zap,
-  ArrowRight,
-  Activity,
-  Gauge,
-  ChevronRight,
-  Check,
-  AlertCircle,
-} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-// Circular Gauge Component - Tesla style
-function CircularGauge({
-  value,
-  max,
-  label,
-  suffix = '',
-  color = 'var(--primary)',
-  size = 120
-}: {
-  value: number;
-  max: number;
-  label: string;
-  suffix?: string;
-  color?: string;
-  size?: number;
-}) {
-  const percentage = Math.min((value / max) * 100, 100);
-  const strokeWidth = 8;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (percentage / 100) * circumference;
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg className="transform -rotate-90" width={size} height={size}>
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="var(--border-light)"
-            strokeWidth={strokeWidth}
-          />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={color}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            className="transition-all duration-700 ease-out"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold text-[var(--text-primary)]">
-            {typeof value === 'number' ? value.toLocaleString() : value}{suffix}
-          </span>
-        </div>
-      </div>
-      <span className="mt-2 text-xs text-[var(--text-muted)] text-center">{label}</span>
-    </div>
-  );
+// Calculator inputs state
+interface CalculatorInputs {
+  aov: number;
+  dailyBudget: number;
+  cpa: number;
+  cogs: number;
+  ltv3m: number;
+  conversionRate: number;
 }
 
-// Metric Card Component
-function MetricCard({
-  label,
-  value,
-  prefix = '',
-  suffix = '',
-  trend,
-  color = 'var(--text-primary)'
-}: {
-  label: string;
-  value: number | string;
-  prefix?: string;
-  suffix?: string;
-  trend?: 'up' | 'down' | 'neutral';
-  color?: string;
-}) {
-  return (
-    <div className="rounded-xl p-4 bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-      <p className="text-xs text-[var(--text-muted)] mb-1">{label}</p>
-      <p className="text-xl font-bold" style={{ color }}>
-        {prefix}{typeof value === 'number' ? value.toLocaleString() : value}{suffix}
-      </p>
-    </div>
-  );
+// Calculated results
+interface CalculatorResults {
+  dailyCustomers: number;
+  dailyRevenue: number;
+  dailyProfit: number;
+  monthlyProfit: number;
+  margin: number;
+  roas: number;
+  ltvToCac: number;
 }
 
-// Section Label Component
-function SectionLabel({ children, color = 'var(--primary)' }: { children: React.ReactNode; color?: string }) {
-  return (
-    <h4 className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color }}>
-      {children}
-    </h4>
-  );
-}
-
-// Growth Path Chart
-function GrowthPathChart({ data }: { data: { month: string; value: number; percentage: number }[] }) {
-  const maxValue = Math.max(...data.map(d => d.value));
-
-  return (
-    <div className="relative h-48 flex items-end justify-between gap-2 px-4">
-      {/* Grid lines */}
-      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="border-t border-[var(--border-light)]" />
-        ))}
-      </div>
-
-      {/* Data points with connecting line */}
-      <svg className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--error)" />
-            <stop offset="50%" stopColor="var(--warning)" />
-            <stop offset="100%" stopColor="var(--success)" />
-          </linearGradient>
-        </defs>
-        <polyline
-          fill="none"
-          stroke="url(#lineGradient)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          points={data.map((d, i) => {
-            const x = (i / (data.length - 1)) * 100;
-            const y = 100 - (d.value / maxValue) * 80;
-            return `${x}%,${y}%`;
-          }).join(' ')}
-        />
-        {data.map((d, i) => {
-          const x = (i / (data.length - 1)) * 100;
-          const y = 100 - (d.value / maxValue) * 80;
-          const color = d.value < 0 ? 'var(--error)' : d.value < maxValue * 0.5 ? 'var(--warning)' : 'var(--success)';
-          return (
-            <g key={i}>
-              <circle
-                cx={`${x}%`}
-                cy={`${y}%`}
-                r="8"
-                fill={color}
-                className="drop-shadow-lg"
-              />
-              <text
-                x={`${x}%`}
-                y={`${y - 8}%`}
-                textAnchor="middle"
-                fill={color}
-                fontSize="11"
-                fontWeight="bold"
-              >
-                ${d.value > 0 ? d.value.toLocaleString() : d.value.toLocaleString()}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* X-axis labels */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 transform translate-y-6">
-        {data.map((d, i) => (
-          <div key={i} className="text-center">
-            <span className="text-xs text-[var(--text-muted)]">{d.month}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Status Indicator
-function StatusIndicator({ status, label }: { status: 'ready' | 'warning' | 'critical'; label: string }) {
-  const colors = {
-    ready: { bg: 'var(--success)', text: 'Ready to Scale' },
-    warning: { bg: 'var(--warning)', text: 'Almost There' },
-    critical: { bg: 'var(--error)', text: 'Needs Attention' },
-  };
-
-  return (
-    <div className="flex items-center gap-3 p-4 rounded-xl bg-[var(--bg-secondary)]">
-      <div
-        className="w-4 h-4 rounded-full animate-pulse"
-        style={{ backgroundColor: colors[status].bg }}
-      />
-      <div>
-        <p className="font-semibold text-[var(--text-primary)]">{colors[status].text}</p>
-        <p className="text-xs text-[var(--text-muted)]">{label}</p>
-      </div>
-    </div>
-  );
-}
-
-// Profit Simulation Calculator - Cockpit Style
-function ProfitSimulator() {
-  const [inputs, setInputs] = useState({
-    aov: 60,
-    dailyAdBudget: 500,
-    ltv1m: 25,
-    ltv3m: 75,
-    ltv6m: 150,
-    ltv12m: 300,
-    acquisitionMethod: 'cpa' as 'cpa' | 'cr_cpc',
-    cpa: 25,
-    conversionRate: 2.5,
-    cpc: 1.5,
-    processingFees: 2.9,
-    cogs: 35,
-    currency: 'USD',
-  });
-
-  const [calculated, setCalculated] = useState(false);
-
-  // Calculations
-  const results = useMemo(() => {
-    const effectiveCPA = inputs.acquisitionMethod === 'cpa'
-      ? inputs.cpa
-      : inputs.cpc / (inputs.conversionRate / 100);
-
-    const dailyCustomers = inputs.dailyAdBudget / effectiveCPA;
+function useCalculator(inputs: CalculatorInputs): CalculatorResults {
+  return useMemo(() => {
+    const dailyCustomers = inputs.dailyBudget / inputs.cpa;
     const dailyRevenue = dailyCustomers * inputs.aov;
-    const dailyCOGS = dailyRevenue * (inputs.cogs / 100);
-    const dailyFees = dailyRevenue * (inputs.processingFees / 100);
-    const dailyNetProfit = dailyRevenue - dailyCOGS - dailyFees - inputs.dailyAdBudget;
-    const dailyMargin = (dailyNetProfit / dailyRevenue) * 100;
-
-    const monthlyCustomers = dailyCustomers * 30;
-    const monthlyRevenue = dailyRevenue * 30;
-    const monthlyNetProfit = dailyNetProfit * 30;
-
-    // LTV projections (per cohort of monthly customers)
-    const profit1m = (monthlyCustomers * inputs.ltv1m) - (inputs.dailyAdBudget * 30) - (monthlyCustomers * inputs.ltv1m * (inputs.cogs + inputs.processingFees) / 100);
-    const profit3m = (monthlyCustomers * inputs.ltv3m) - (inputs.dailyAdBudget * 30) - (monthlyCustomers * inputs.ltv3m * (inputs.cogs + inputs.processingFees) / 100);
-    const profit6m = (monthlyCustomers * inputs.ltv6m) - (inputs.dailyAdBudget * 30) - (monthlyCustomers * inputs.ltv6m * (inputs.cogs + inputs.processingFees) / 100);
-    const profit12m = (monthlyCustomers * inputs.ltv12m) - (inputs.dailyAdBudget * 30) - (monthlyCustomers * inputs.ltv12m * (inputs.cogs + inputs.processingFees) / 100);
-
-    // Daily future profit (based on 12m LTV)
-    const dailyFutureProfit = profit12m / 30;
-
-    // Scale readiness
-    const margin = dailyMargin;
-    const ltvToCac = inputs.ltv12m / effectiveCPA;
-    const isReady = margin > 15 && ltvToCac > 3;
+    const dailyCosts = dailyRevenue * (inputs.cogs / 100);
+    const dailyProfit = dailyRevenue - dailyCosts - inputs.dailyBudget;
+    const monthlyProfit = dailyProfit * 30;
+    const margin = (dailyProfit / dailyRevenue) * 100;
+    const roas = dailyRevenue / inputs.dailyBudget;
+    const ltvToCac = inputs.ltv3m / inputs.cpa;
 
     return {
       dailyCustomers: Math.round(dailyCustomers * 10) / 10,
       dailyRevenue: Math.round(dailyRevenue),
-      dailyNetProfit: Math.round(dailyNetProfit),
-      dailyMargin: Math.round(dailyMargin * 10) / 10,
-      monthlyCustomers: Math.round(monthlyCustomers * 10) / 10,
-      monthlyRevenue: Math.round(monthlyRevenue),
-      monthlyNetProfit: Math.round(monthlyNetProfit),
-      profit1m: Math.round(profit1m),
-      profit3m: Math.round(profit3m),
-      profit6m: Math.round(profit6m),
-      profit12m: Math.round(profit12m),
-      dailyFutureProfit: Math.round(dailyFutureProfit),
-      monthlyFutureProfit: Math.round(profit12m),
-      effectiveCPA,
-      ltvToCac,
-      isReady,
+      dailyProfit: Math.round(dailyProfit),
+      monthlyProfit: Math.round(monthlyProfit),
+      margin: Math.round(margin * 10) / 10,
+      roas: Math.round(roas * 100) / 100,
+      ltvToCac: Math.round(ltvToCac * 10) / 10,
     };
   }, [inputs]);
+}
 
-  const growthData = [
-    { month: '1M', value: results.profit1m, percentage: -37.9 },
-    { month: '3M', value: results.profit3m, percentage: 28.8 },
-    { month: '6M', value: results.profit6m, percentage: 45.4 },
-    { month: '12M', value: results.profit12m, percentage: 53.8 },
+// ============================================================================
+// STYLE 1: SPLIT DASHBOARD (Like shipment tracking)
+// ============================================================================
+function Style1({ inputs, setInputs, results }: StyleProps) {
+  const calculators = [
+    { id: 'profit', name: 'Profit Sim', active: true },
+    { id: 'kpi', name: 'KPI X-Ray', active: false },
+    { id: 'ltv', name: 'LTV Calc', active: false },
+    { id: 'scale', name: 'Scale Ready', active: false },
   ];
 
   return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      {/* Left Panel - Inputs */}
-      <div className="card" style={{ padding: 0 }}>
-        <div className="p-6 border-b border-[var(--border-light)]">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center">
-              <Calculator size={20} className="text-[var(--primary)]" strokeWidth={1.5} />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-[var(--text-primary)]">
-                Profit Simulation
-              </h3>
-              <p className="text-sm text-[var(--text-muted)]">
-                Adjust your inputs - see how every decision impacts your profit
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6 space-y-6">
-          {/* Core Inputs */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--primary)">Core Inputs</SectionLabel>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">Average Order Value</label>
-                <input
-                  type="number"
-                  value={inputs.aov}
-                  onChange={(e) => setInputs({ ...inputs, aov: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">Daily Ad Budget</label>
-                <input
-                  type="number"
-                  value={inputs.dailyAdBudget}
-                  onChange={(e) => setInputs({ ...inputs, dailyAdBudget: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Customer LTV */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--success)">Customer LTV (Per Customer)</SectionLabel>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">1 Month</label>
-                <input
-                  type="number"
-                  value={inputs.ltv1m}
-                  onChange={(e) => setInputs({ ...inputs, ltv1m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">3 Months</label>
-                <input
-                  type="number"
-                  value={inputs.ltv3m}
-                  onChange={(e) => setInputs({ ...inputs, ltv3m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">6 Months</label>
-                <input
-                  type="number"
-                  value={inputs.ltv6m}
-                  onChange={(e) => setInputs({ ...inputs, ltv6m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">12 Months</label>
-                <input
-                  type="number"
-                  value={inputs.ltv12m}
-                  onChange={(e) => setInputs({ ...inputs, ltv12m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Acquisition Method */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--info)">Acquisition Method</SectionLabel>
-            <div className="flex gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="acquisitionMethod"
-                  checked={inputs.acquisitionMethod === 'cpa'}
-                  onChange={() => setInputs({ ...inputs, acquisitionMethod: 'cpa' })}
-                  className="w-4 h-4 text-[var(--primary)]"
-                />
-                <span className="text-sm text-[var(--text-primary)]">CPA</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="acquisitionMethod"
-                  checked={inputs.acquisitionMethod === 'cr_cpc'}
-                  onChange={() => setInputs({ ...inputs, acquisitionMethod: 'cr_cpc' })}
-                  className="w-4 h-4 text-[var(--primary)]"
-                />
-                <span className="text-sm text-[var(--text-primary)]">CR + CPC</span>
-              </label>
-            </div>
-            {inputs.acquisitionMethod === 'cpa' ? (
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">Cost Per Acquisition (CPA)</label>
-                <input
-                  type="number"
-                  value={inputs.cpa}
-                  onChange={(e) => setInputs({ ...inputs, cpa: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs text-[var(--text-muted)] mb-1 block">Conversion Rate (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={inputs.conversionRate}
-                    onChange={(e) => setInputs({ ...inputs, conversionRate: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-[var(--text-muted)] mb-1 block">Cost Per Click (CPC)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={inputs.cpc}
-                    onChange={(e) => setInputs({ ...inputs, cpc: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Business Costs */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--error)">Business Costs</SectionLabel>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">Processing Fees (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={inputs.processingFees}
-                  onChange={(e) => setInputs({ ...inputs, processingFees: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">COGS (% of revenue)</label>
-                <input
-                  type="number"
-                  value={inputs.cogs}
-                  onChange={(e) => setInputs({ ...inputs, cogs: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Currency */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <label className="text-xs text-[var(--text-muted)] mb-1 block">Currency</label>
-            <select
-              value={inputs.currency}
-              onChange={(e) => setInputs({ ...inputs, currency: e.target.value })}
-              className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-            >
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="ILS">ILS</option>
-            </select>
-          </div>
-
+    <div className="h-[calc(100vh-140px)] flex gap-4">
+      {/* Left Panel - Calculator Selection */}
+      <div className="w-64 flex flex-col gap-2">
+        {calculators.map((calc) => (
           <button
-            onClick={() => setCalculated(true)}
-            className="btn btn-primary w-full justify-center py-3"
+            key={calc.id}
+            className={`p-4 rounded-2xl text-left transition-all ${
+              calc.active
+                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20'
+                : 'bg-white border border-[var(--border-light)] hover:border-[var(--primary)]/30'
+            }`}
           >
-            CALCULATE PROFITS
+            <span className="font-medium">{calc.name}</span>
           </button>
-        </div>
-      </div>
+        ))}
 
-      {/* Right Panel - Results Dashboard */}
-      <div className="space-y-6">
-        {/* Growth Path Visualization */}
-        <div className="card">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
-            Visualize Your Growth Path
-          </h3>
-          <p className="text-sm text-[var(--text-muted)] mb-6">
-            Short term to long term profit projection
-          </p>
-          <GrowthPathChart data={growthData} />
-        </div>
-
-        {/* Profit Analysis */}
-        <div className="card">
-          <div className="flex items-center gap-2 mb-4">
-            <Activity size={18} className="text-[var(--primary)]" />
-            <h3 className="text-lg font-semibold text-[var(--text-primary)]">
-              Profit Analysis
-            </h3>
-          </div>
-          <p className="text-xs text-[var(--text-muted)] mb-4">
-            Your daily/monthly profit based on AOV (immediate, short-term profit)
-          </p>
-
-          {/* Daily Performance */}
-          <p className="text-sm font-medium text-[var(--primary)] mb-3">Daily Performance</p>
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <MetricCard label="Customers" value={results.dailyCustomers} />
-            <MetricCard label="Revenue" value={results.dailyRevenue} prefix="$" />
-            <MetricCard
-              label="Net Profit"
-              value={results.dailyNetProfit}
-              prefix="$"
-              color={results.dailyNetProfit >= 0 ? 'var(--success)' : 'var(--error)'}
-            />
-            <MetricCard
-              label="Margin"
-              value={results.dailyMargin}
-              suffix="%"
-              color={results.dailyMargin >= 20 ? 'var(--success)' : results.dailyMargin >= 10 ? 'var(--warning)' : 'var(--error)'}
-            />
-          </div>
-
-          {/* Monthly Performance */}
-          <p className="text-sm font-medium text-[var(--primary)] mb-3">Monthly (30 days)</p>
-          <div className="grid grid-cols-2 gap-3">
-            <MetricCard label="Customers" value={results.monthlyCustomers} />
-            <MetricCard label="Revenue" value={results.monthlyRevenue} prefix="$" />
-            <MetricCard
-              label="Net Profit"
-              value={results.monthlyNetProfit}
-              prefix="$"
-              color={results.monthlyNetProfit >= 0 ? 'var(--success)' : 'var(--error)'}
-            />
-            <MetricCard
-              label="Margin"
-              value={results.dailyMargin}
-              suffix="%"
-              color={results.dailyMargin >= 20 ? 'var(--success)' : results.dailyMargin >= 10 ? 'var(--warning)' : 'var(--error)'}
-            />
-          </div>
-        </div>
-
-        {/* Long-term Profit with LTV */}
-        <div className="card">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
-            Long-term Profit with LTV (per acquired cohort)
-          </h3>
-          <p className="text-xs text-[var(--text-muted)] mb-4">
-            Projected total profit generated by one month's new customers over time.
-          </p>
-
-          <div className="grid grid-cols-4 gap-3 mb-6">
-            {growthData.map((item) => (
-              <div key={item.month} className="text-center p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-                <p className="text-xs text-[var(--text-muted)] mb-1">{item.month}</p>
-                <p className={`text-lg font-bold ${item.value >= 0 ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
-                  ${item.value.toLocaleString()}
-                </p>
-                <p className="text-xs text-[var(--text-muted)]">{item.percentage}%</p>
+        {/* Compact Inputs */}
+        <div className="mt-4 p-4 bg-white rounded-2xl border border-[var(--border-light)] flex-1">
+          <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">Inputs</p>
+          <div className="space-y-3">
+            {[
+              { label: 'AOV', value: inputs.aov, key: 'aov', prefix: '$' },
+              { label: 'Daily Budget', value: inputs.dailyBudget, key: 'dailyBudget', prefix: '$' },
+              { label: 'CPA', value: inputs.cpa, key: 'cpa', prefix: '$' },
+              { label: 'COGS %', value: inputs.cogs, key: 'cogs', suffix: '%' },
+            ].map((input) => (
+              <div key={input.key} className="flex items-center justify-between">
+                <span className="text-xs text-[var(--text-muted)]">{input.label}</span>
+                <input
+                  type="number"
+                  value={input.value}
+                  onChange={(e) => setInputs({ ...inputs, [input.key]: Number(e.target.value) })}
+                  className="w-20 text-right text-sm font-medium bg-[var(--bg-secondary)] rounded-lg px-2 py-1 border-0 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+                />
               </div>
             ))}
           </div>
+        </div>
+      </div>
 
-          {/* Future Profit Cards */}
-          <div className="space-y-3">
-            <div className="p-4 rounded-xl bg-[var(--success)]/10 border border-[var(--success)]/20">
-              <p className="text-2xl font-bold text-[var(--success)]">
-                ${results.dailyFutureProfit.toLocaleString()}
-              </p>
-              <p className="text-xs text-[var(--text-muted)]">
-                Future profit (based on 12-month LTV of a cohort) you generate daily
-              </p>
-            </div>
-            <div className="p-4 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20">
-              <p className="text-2xl font-bold text-[var(--primary)]">
-                ${results.monthlyFutureProfit.toLocaleString()}
-              </p>
-              <p className="text-xs text-[var(--text-muted)]">
-                Future profit (based on 12-month LTV of a cohort) you generate monthly
-              </p>
+      {/* Right Panel - Visual Results */}
+      <div className="flex-1 flex flex-col gap-4">
+        {/* Main Visual Area */}
+        <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50 rounded-3xl p-8 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[var(--primary)]/5 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-full blur-2xl" />
+
+          <div className="relative z-10 h-full flex flex-col">
+            <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">Profit Analysis</h2>
+            <p className="text-sm text-[var(--text-muted)] mb-8">Real-time calculation based on your inputs</p>
+
+            {/* Big Numbers */}
+            <div className="flex-1 flex items-center justify-center gap-16">
+              <div className="text-center">
+                <p className="text-6xl font-bold bg-gradient-to-r from-[var(--primary)] to-blue-600 bg-clip-text text-transparent">
+                  ${results.monthlyProfit.toLocaleString()}
+                </p>
+                <p className="text-sm text-[var(--text-muted)] mt-2">Monthly Profit</p>
+              </div>
+              <div className="w-px h-24 bg-gradient-to-b from-transparent via-[var(--border-light)] to-transparent" />
+              <div className="text-center">
+                <p className={`text-5xl font-bold ${results.margin >= 20 ? 'text-emerald-500' : results.margin >= 10 ? 'text-amber-500' : 'text-rose-500'}`}>
+                  {results.margin}%
+                </p>
+                <p className="text-sm text-[var(--text-muted)] mt-2">Profit Margin</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Scale Readiness X-RAY */}
-        <div className="card">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-[var(--info)]/10 flex items-center justify-center">
-              <Target size={20} className="text-[var(--info)]" strokeWidth={1.5} />
+        {/* Bottom Stats Bar */}
+        <div className="h-20 bg-white rounded-2xl border border-[var(--border-light)] flex items-center px-6 gap-8">
+          {[
+            { label: 'Daily Revenue', value: `$${results.dailyRevenue.toLocaleString()}` },
+            { label: 'Daily Profit', value: `$${results.dailyProfit.toLocaleString()}`, color: results.dailyProfit >= 0 ? 'text-emerald-500' : 'text-rose-500' },
+            { label: 'ROAS', value: `${results.roas}x` },
+            { label: 'Customers/Day', value: results.dailyCustomers },
+          ].map((stat, i) => (
+            <div key={i} className="flex-1">
+              <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+              <p className={`text-lg font-semibold ${stat.color || 'text-[var(--text-primary)]'}`}>{stat.value}</p>
             </div>
-            <h3 className="text-lg font-semibold text-[var(--text-primary)]">
-              Scale Readiness X-RAY
-            </h3>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// STYLE 2: CENTERED FOCUS (Big visual in center)
+// ============================================================================
+function Style2({ inputs, setInputs, results }: StyleProps) {
+  return (
+    <div className="h-[calc(100vh-140px)] flex flex-col">
+      {/* Top Bar - Inputs */}
+      <div className="flex items-center justify-center gap-6 mb-6">
+        {[
+          { label: 'AOV', value: inputs.aov, key: 'aov' },
+          { label: 'Budget', value: inputs.dailyBudget, key: 'dailyBudget' },
+          { label: 'CPA', value: inputs.cpa, key: 'cpa' },
+          { label: 'COGS', value: inputs.cogs, key: 'cogs' },
+        ].map((input, i) => (
+          <div key={input.key} className="flex items-center gap-2 bg-white rounded-full px-4 py-2 border border-[var(--border-light)]">
+            <span className="text-xs text-[var(--text-muted)]">{input.label}</span>
+            <input
+              type="number"
+              value={input.value}
+              onChange={(e) => setInputs({ ...inputs, [input.key]: Number(e.target.value) })}
+              className="w-16 text-center text-sm font-semibold bg-transparent border-0 focus:outline-none"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Main Visual - Circular Display */}
+      <div className="flex-1 flex items-center justify-center relative">
+        {/* Background Glow */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[var(--primary)]/10 via-purple-500/5 to-transparent blur-3xl" />
+        </div>
+
+        {/* Central Circle */}
+        <div className="relative">
+          <div className="w-80 h-80 rounded-full bg-gradient-to-br from-white to-slate-50 shadow-2xl shadow-slate-200/50 flex items-center justify-center border border-white/50">
+            <div className="text-center">
+              <p className="text-sm text-[var(--text-muted)] mb-2">Monthly Profit</p>
+              <p className="text-5xl font-bold text-[var(--text-primary)]">
+                ${results.monthlyProfit.toLocaleString()}
+              </p>
+              <p className={`text-xl font-semibold mt-2 ${results.margin >= 20 ? 'text-emerald-500' : 'text-amber-500'}`}>
+                {results.margin}% margin
+              </p>
+            </div>
           </div>
 
-          <StatusIndicator
-            status={results.isReady ? 'ready' : results.dailyMargin > 10 ? 'warning' : 'critical'}
-            label="Business health status"
-          />
+          {/* Floating Stats */}
+          {[
+            { label: 'ROAS', value: `${results.roas}x`, angle: -45, distance: 200 },
+            { label: 'Daily', value: `$${results.dailyProfit}`, angle: 45, distance: 200 },
+            { label: 'Customers', value: results.dailyCustomers, angle: 135, distance: 200 },
+            { label: 'Revenue', value: `$${results.dailyRevenue}`, angle: 225, distance: 200 },
+          ].map((stat, i) => {
+            const x = Math.cos((stat.angle * Math.PI) / 180) * stat.distance;
+            const y = Math.sin((stat.angle * Math.PI) / 180) * stat.distance;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="absolute bg-white rounded-2xl px-4 py-3 shadow-lg border border-[var(--border-light)]"
+                style={{ left: `calc(50% + ${x}px - 50px)`, top: `calc(50% + ${y}px - 30px)` }}
+              >
+                <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+                <p className="text-lg font-bold text-[var(--text-primary)]">{stat.value}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-          <div className="mt-4">
-            <p className="text-sm font-medium text-[var(--primary)] flex items-center gap-1 mb-3">
-              <Zap size={14} /> Recommended Actions
-            </p>
-            <div className="space-y-2">
+// ============================================================================
+// STYLE 3: DARK COCKPIT (Dark theme with glowing elements)
+// ============================================================================
+function Style3({ inputs, setInputs, results }: StyleProps) {
+  return (
+    <div className="h-[calc(100vh-140px)] bg-slate-900 rounded-3xl p-6 flex gap-6 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full" />
+
+      <div className="relative z-10 flex gap-6 w-full">
+        {/* Left - Inputs Panel */}
+        <div className="w-72 bg-white/5 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
+          <h3 className="text-white font-semibold mb-4">Control Panel</h3>
+          <div className="space-y-4">
+            {[
+              { label: 'Average Order Value', value: inputs.aov, key: 'aov' },
+              { label: 'Daily Ad Budget', value: inputs.dailyBudget, key: 'dailyBudget' },
+              { label: 'Cost Per Acquisition', value: inputs.cpa, key: 'cpa' },
+              { label: 'COGS Percentage', value: inputs.cogs, key: 'cogs' },
+            ].map((input) => (
+              <div key={input.key}>
+                <label className="text-xs text-slate-400 block mb-1">{input.label}</label>
+                <input
+                  type="number"
+                  value={input.value}
+                  onChange={(e) => setInputs({ ...inputs, [input.key]: Number(e.target.value) })}
+                  className="w-full bg-white/10 border border-white/10 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500/50"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right - Visual Display */}
+        <div className="flex-1 flex flex-col">
+          {/* Main Display */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-slate-400 text-sm uppercase tracking-widest mb-4">Projected Monthly Profit</p>
+              <p className="text-7xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                ${results.monthlyProfit.toLocaleString()}
+              </p>
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <span className={`inline-block w-3 h-3 rounded-full ${results.margin >= 20 ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`} />
+                <span className="text-slate-300">{results.margin}% Profit Margin</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Gauges */}
+          <div className="grid grid-cols-4 gap-4">
+            {[
+              { label: 'ROAS', value: results.roas, suffix: 'x', max: 5 },
+              { label: 'Daily Profit', value: results.dailyProfit, prefix: '$', max: 1000 },
+              { label: 'Customers', value: results.dailyCustomers, max: 50 },
+              { label: 'Revenue', value: results.dailyRevenue, prefix: '$', max: 5000 },
+            ].map((gauge, i) => (
+              <div key={i} className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/10">
+                <p className="text-xs text-slate-500 mb-2">{gauge.label}</p>
+                <p className="text-xl font-bold text-white">{gauge.prefix}{gauge.value.toLocaleString()}{gauge.suffix}</p>
+                <div className="h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all"
+                    style={{ width: `${Math.min((gauge.value / gauge.max) * 100, 100)}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// STYLE 4: GLASS MORPHISM (Frosted glass with depth)
+// ============================================================================
+function Style4({ inputs, setInputs, results }: StyleProps) {
+  return (
+    <div className="h-[calc(100vh-140px)] relative overflow-hidden rounded-3xl">
+      {/* Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-100 via-rose-50 to-amber-50" />
+      <div className="absolute top-20 right-20 w-72 h-72 bg-violet-400/30 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 left-20 w-96 h-96 bg-rose-400/20 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-300/20 rounded-full blur-3xl" />
+
+      {/* Content */}
+      <div className="relative z-10 h-full p-8 flex gap-8">
+        {/* Left Panel */}
+        <div className="w-80">
+          <div className="bg-white/40 backdrop-blur-xl rounded-3xl p-6 border border-white/50 shadow-xl">
+            <h3 className="font-semibold text-[var(--text-primary)] mb-6">Profit Calculator</h3>
+            <div className="grid grid-cols-2 gap-3">
               {[
-                { text: 'Improve profit margins', show: results.dailyMargin < 20 },
-                { text: 'Increase customer LTV', show: results.ltvToCac < 4 },
-                { text: 'Optimize acquisition channels', show: results.effectiveCPA > 30 },
-              ].filter(a => a.show).map((action, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-                  <span className="text-sm text-[var(--text-primary)]">{action.text}</span>
-                  <Link href="/learn" className="btn btn-primary text-xs py-1 px-3">
-                    View Resources <ChevronRight size={12} />
-                  </Link>
+                { label: 'AOV', value: inputs.aov, key: 'aov' },
+                { label: 'Budget', value: inputs.dailyBudget, key: 'dailyBudget' },
+                { label: 'CPA', value: inputs.cpa, key: 'cpa' },
+                { label: 'COGS %', value: inputs.cogs, key: 'cogs' },
+              ].map((input) => (
+                <div key={input.key} className="bg-white/50 rounded-2xl p-3">
+                  <label className="text-xs text-[var(--text-muted)] block mb-1">{input.label}</label>
+                  <input
+                    type="number"
+                    value={input.value}
+                    onChange={(e) => setInputs({ ...inputs, [input.key]: Number(e.target.value) })}
+                    className="w-full bg-transparent text-lg font-semibold text-[var(--text-primary)] focus:outline-none"
+                  />
                 </div>
               ))}
-              {results.isReady && results.dailyMargin >= 20 && results.ltvToCac >= 4 && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--success)]/10 border border-[var(--success)]/20">
-                  <Check size={16} className="text-[var(--success)]" />
-                  <span className="text-sm text-[var(--success)]">Your metrics look great! Ready to scale.</span>
-                </div>
-              )}
             </div>
+          </div>
+        </div>
+
+        {/* Right Panel - Results */}
+        <div className="flex-1 flex flex-col gap-6">
+          {/* Main Card */}
+          <div className="flex-1 bg-white/60 backdrop-blur-xl rounded-3xl p-8 border border-white/50 shadow-xl flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-sm text-[var(--text-muted)] uppercase tracking-wider mb-2">Monthly Projection</p>
+              <p className="text-6xl font-bold text-[var(--text-primary)]">
+                ${results.monthlyProfit.toLocaleString()}
+              </p>
+              <div className="flex items-center justify-center gap-6 mt-6">
+                <div className="text-center">
+                  <p className="text-3xl font-bold text-violet-600">{results.margin}%</p>
+                  <p className="text-xs text-[var(--text-muted)]">Margin</p>
+                </div>
+                <div className="w-px h-12 bg-[var(--border-light)]" />
+                <div className="text-center">
+                  <p className="text-3xl font-bold text-rose-500">{results.roas}x</p>
+                  <p className="text-xs text-[var(--text-muted)]">ROAS</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Stats */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { label: 'Daily Revenue', value: `$${results.dailyRevenue.toLocaleString()}`, color: 'from-violet-500 to-purple-500' },
+              { label: 'Daily Profit', value: `$${results.dailyProfit.toLocaleString()}`, color: 'from-rose-500 to-pink-500' },
+              { label: 'Customers/Day', value: results.dailyCustomers, color: 'from-amber-500 to-orange-500' },
+            ].map((stat, i) => (
+              <div key={i} className="bg-white/40 backdrop-blur rounded-2xl p-4 border border-white/50">
+                <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+                <p className={`text-2xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>{stat.value}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -641,250 +385,99 @@ function ProfitSimulator() {
   );
 }
 
-// KPI X-Ray Calculator - Cockpit Style
-function KPIXRay() {
-  const [inputs, setInputs] = useState({
-    conversionRate: 2.5,
-    aov: 60,
-    ltv1m: 55,
-    ltv3m: 300,
-    ltv6m: 5,
-    ltv12m: 1000,
-    transactionFees: 2,
-    cogs: 35,
-  });
-
-  // Targets
-  const targets = {
-    ltv1m: 200,
-    ltv3m: 400,
-    ltv6m: 500,
-    ltv12m: 800,
-    fees: 3,
-  };
-
-  // Gap analysis
-  const gaps = [
-    { name: 'Ltv1m', current: inputs.ltv1m, target: targets.ltv1m, met: inputs.ltv1m >= targets.ltv1m },
-    { name: 'Ltv6m', current: inputs.ltv6m, target: targets.ltv6m, met: inputs.ltv6m >= targets.ltv6m },
-    { name: 'Fees', current: inputs.transactionFees, target: targets.fees, met: inputs.transactionFees <= targets.fees, isLower: true },
-  ];
-
-  const unmetCount = gaps.filter(g => !g.met).length;
-  const overallStatus = unmetCount === 0 ? 'ready' : unmetCount <= 1 ? 'warning' : 'critical';
-
+// ============================================================================
+// STYLE 5: MINIMAL GRID (Ultra clean with grid layout)
+// ============================================================================
+function Style5({ inputs, setInputs, results }: StyleProps) {
   return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      {/* Left Panel - Inputs */}
-      <div className="card" style={{ padding: 0 }}>
-        <div className="p-6 border-b border-[var(--border-light)]">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
-            KPI X-Ray
-          </h3>
-          <p className="text-sm text-[var(--text-muted)]">
-            Spot weaknesses. Strengthen your foundations. Build data confidence.
-          </p>
-        </div>
-
-        <div className="p-6 space-y-6">
-          {/* Business Metrics */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--primary)">Business Metrics</SectionLabel>
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">Conversion Rate (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={inputs.conversionRate}
-                  onChange={(e) => setInputs({ ...inputs, conversionRate: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">AOV ($)</label>
-                <input
-                  type="number"
-                  value={inputs.aov}
-                  onChange={(e) => setInputs({ ...inputs, aov: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
+    <div className="h-[calc(100vh-140px)] grid grid-cols-3 grid-rows-2 gap-4">
+      {/* Top Left - Inputs */}
+      <div className="bg-white rounded-2xl border border-[var(--border-light)] p-6">
+        <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-4">Inputs</p>
+        <div className="space-y-3">
+          {[
+            { label: 'AOV', value: inputs.aov, key: 'aov' },
+            { label: 'Daily Budget', value: inputs.dailyBudget, key: 'dailyBudget' },
+            { label: 'CPA', value: inputs.cpa, key: 'cpa' },
+            { label: 'COGS %', value: inputs.cogs, key: 'cogs' },
+          ].map((input) => (
+            <div key={input.key} className="flex items-center justify-between">
+              <span className="text-sm text-[var(--text-muted)]">{input.label}</span>
+              <input
+                type="number"
+                value={input.value}
+                onChange={(e) => setInputs({ ...inputs, [input.key]: Number(e.target.value) })}
+                className="w-24 text-right font-semibold bg-[var(--bg-secondary)] rounded-lg px-3 py-1.5 border-0 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              />
             </div>
-          </div>
-
-          {/* LTV Metrics */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--success)">LTV Metrics</SectionLabel>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">1 Month LTV</label>
-                <input
-                  type="number"
-                  value={inputs.ltv1m}
-                  onChange={(e) => setInputs({ ...inputs, ltv1m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">3 Month LTV</label>
-                <input
-                  type="number"
-                  value={inputs.ltv3m}
-                  onChange={(e) => setInputs({ ...inputs, ltv3m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">6 Month LTV</label>
-                <input
-                  type="number"
-                  value={inputs.ltv6m}
-                  onChange={(e) => setInputs({ ...inputs, ltv6m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">12 Month LTV</label>
-                <input
-                  type="number"
-                  value={inputs.ltv12m}
-                  onChange={(e) => setInputs({ ...inputs, ltv12m: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Cost Structure */}
-          <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-            <SectionLabel color="var(--error)">Cost Structure</SectionLabel>
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">All Transaction Fees (% of revenue)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={inputs.transactionFees}
-                  onChange={(e) => setInputs({ ...inputs, transactionFees: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-[var(--text-muted)] mb-1 block">COGS (% of revenue)</label>
-                <input
-                  type="number"
-                  value={inputs.cogs}
-                  onChange={(e) => setInputs({ ...inputs, cogs: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          <button className="btn btn-primary w-full justify-center py-3">
-            DIAGNOSE
-          </button>
+          ))}
         </div>
       </div>
 
-      {/* Right Panel - Results */}
-      <div className="space-y-6">
-        {/* Alert Banner */}
-        {unmetCount > 0 && (
-          <div className="p-4 rounded-xl bg-[var(--warning)]/10 border border-[var(--warning)]/30">
-            <p className="text-sm text-[var(--warning)] font-medium">
-              {unmetCount} metric{unmetCount > 1 ? 's' : ''} need attention - fix them to unlock scale readiness
-            </p>
-          </div>
-        )}
-
-        {/* Overall Readiness */}
-        <div className="card">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
-            Overall Readiness
-          </h3>
-          <div className={`flex items-center gap-3 p-4 rounded-xl ${
-            overallStatus === 'ready' ? 'bg-[var(--success)]/10' :
-            overallStatus === 'warning' ? 'bg-[var(--warning)]/10' : 'bg-[var(--error)]/10'
-          }`}>
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-              overallStatus === 'ready' ? 'bg-[var(--success)]' :
-              overallStatus === 'warning' ? 'bg-[var(--warning)]' : 'bg-[var(--error)]'
-            }`}>
-              {overallStatus === 'ready' ? (
-                <Check size={24} className="text-white" />
-              ) : (
-                <AlertCircle size={24} className="text-white" />
-              )}
-            </div>
-            <div>
-              <p className="font-semibold text-[var(--text-primary)]">
-                {overallStatus === 'ready' ? 'Ready to Scale' :
-                 overallStatus === 'warning' ? 'Almost There' : 'Needs Work'}
-              </p>
-              <p className="text-xs text-[var(--text-muted)]">
-                {unmetCount} KPI{unmetCount !== 1 ? 's' : ''} need attention
-              </p>
-            </div>
-          </div>
+      {/* Top Center & Right - Main Result */}
+      <div className="col-span-2 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 flex items-center justify-between">
+        <div>
+          <p className="text-slate-400 text-sm mb-2">Monthly Profit</p>
+          <p className="text-5xl font-bold text-white">${results.monthlyProfit.toLocaleString()}</p>
         </div>
-
-        {/* Gap Analysis */}
-        <div className="card">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
-            Gap Analysis
-          </h3>
-          <div className="space-y-3">
-            {gaps.map((gap, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-                <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${gap.met ? 'bg-[var(--success)]' : 'bg-[var(--error)]'}`} />
-                  <div>
-                    <p className="text-sm font-medium text-[var(--text-primary)]">{gap.name}</p>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      Target: {gap.isLower ? '≤' : '≥'} {gap.target}
-                    </p>
-                  </div>
-                </div>
-                <p className={`text-lg font-bold ${gap.met ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
-                  {gap.current}{gap.name === 'Fees' ? '%' : '$'}
-                </p>
-              </div>
-            ))}
+        <div className="flex gap-8">
+          <div className="text-right">
+            <p className="text-4xl font-bold text-emerald-400">{results.margin}%</p>
+            <p className="text-slate-400 text-sm">Margin</p>
           </div>
-        </div>
-
-        {/* Recommended Actions */}
-        <div className="card">
-          <p className="text-sm font-medium text-[var(--primary)] flex items-center gap-1 mb-4">
-            <Zap size={14} /> Recommended Actions
-          </p>
-          <div className="space-y-3">
-            {gaps.filter(g => !g.met).map((gap, i) => (
-              <div key={i} className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-light)]">
-                <p className="text-sm font-medium text-[var(--primary)] mb-1">
-                  Improve {gap.name}
-                </p>
-                <p className="text-xs text-[var(--text-muted)] mb-3">
-                  Current: {gap.current} | Target: {gap.isLower ? '≤' : '≥'} {gap.target}
-                </p>
-                <Link href="/learn" className="btn btn-secondary text-xs py-1.5 px-3">
-                  View Resources <ChevronRight size={12} />
-                </Link>
-              </div>
-            ))}
+          <div className="text-right">
+            <p className="text-4xl font-bold text-cyan-400">{results.roas}x</p>
+            <p className="text-slate-400 text-sm">ROAS</p>
           </div>
         </div>
       </div>
+
+      {/* Bottom Row - Stats Grid */}
+      {[
+        { label: 'Daily Revenue', value: `$${results.dailyRevenue.toLocaleString()}`, sub: 'Based on AOV × Customers' },
+        { label: 'Daily Profit', value: `$${results.dailyProfit.toLocaleString()}`, sub: 'Revenue - Costs - Ad Spend', highlight: results.dailyProfit >= 0 },
+        { label: 'Customers/Day', value: results.dailyCustomers, sub: 'Budget ÷ CPA' },
+      ].map((stat, i) => (
+        <div key={i} className={`rounded-2xl p-6 ${stat.highlight === false ? 'bg-rose-50 border border-rose-100' : stat.highlight ? 'bg-emerald-50 border border-emerald-100' : 'bg-white border border-[var(--border-light)]'}`}>
+          <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">{stat.label}</p>
+          <p className={`text-3xl font-bold mt-2 ${stat.highlight === false ? 'text-rose-600' : stat.highlight ? 'text-emerald-600' : 'text-[var(--text-primary)]'}`}>{stat.value}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">{stat.sub}</p>
+        </div>
+      ))}
     </div>
   );
 }
+
+// Style Props Interface
+interface StyleProps {
+  inputs: CalculatorInputs;
+  setInputs: (inputs: CalculatorInputs) => void;
+  results: CalculatorResults;
+}
+
+// Style names for toggle
+const STYLES = [
+  { id: 1, name: 'Dashboard', icon: '▦' },
+  { id: 2, name: 'Focus', icon: '◉' },
+  { id: 3, name: 'Cockpit', icon: '◈' },
+  { id: 4, name: 'Glass', icon: '◇' },
+  { id: 5, name: 'Grid', icon: '▤' },
+];
 
 export default function CalculatorsPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'profit' | 'kpi'>('profit');
+  const [activeStyle, setActiveStyle] = useState(1);
+  const [inputs, setInputs] = useState<CalculatorInputs>({
+    aov: 60,
+    dailyBudget: 500,
+    cpa: 25,
+    cogs: 35,
+    ltv3m: 150,
+    conversionRate: 2.5,
+  });
+
+  const results = useCalculator(inputs);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -900,53 +493,51 @@ export default function CalculatorsPage() {
     );
   }
 
+  const styleProps = { inputs, setInputs, results };
+
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
-        {/* Page Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-2" style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
-            Profit Intelligence Center
-          </h1>
-          <p className="text-[var(--text-muted)]">
-            Model your numbers. Predict your growth. Scale with precision.
-          </p>
-        </header>
+      <div className="h-screen overflow-hidden p-6">
+        {/* Header with Toggle */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Profit Intelligence</h1>
+            <p className="text-sm text-[var(--text-muted)]">Model your numbers. Scale with precision.</p>
+          </div>
 
-        {/* Tab Switcher */}
-        <div className="flex gap-2 mb-8">
-          <button
-            onClick={() => setActiveTab('profit')}
-            className={`px-6 py-2.5 rounded-xl font-medium transition-all ${
-              activeTab === 'profit'
-                ? 'bg-[var(--primary)] text-white'
-                : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'
-            }`}
-          >
-            Profit Simulation
-          </button>
-          <button
-            onClick={() => setActiveTab('kpi')}
-            className={`px-6 py-2.5 rounded-xl font-medium transition-all ${
-              activeTab === 'kpi'
-                ? 'bg-[var(--primary)] text-white'
-                : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'
-            }`}
-          >
-            KPI X-Ray
-          </button>
+          {/* Style Toggle */}
+          <div className="flex items-center gap-1 bg-[var(--bg-secondary)] rounded-2xl p-1">
+            {STYLES.map((style) => (
+              <button
+                key={style.id}
+                onClick={() => setActiveStyle(style.id)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
+                  activeStyle === style.id
+                    ? 'bg-white text-[var(--text-primary)] shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                }`}
+              >
+                <span>{style.icon}</span>
+                <span className="hidden md:inline">{style.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Calculator Content */}
+        {/* Active Style Component */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeTab}
+            key={activeStyle}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            {activeTab === 'profit' ? <ProfitSimulator /> : <KPIXRay />}
+            {activeStyle === 1 && <Style1 {...styleProps} />}
+            {activeStyle === 2 && <Style2 {...styleProps} />}
+            {activeStyle === 3 && <Style3 {...styleProps} />}
+            {activeStyle === 4 && <Style4 {...styleProps} />}
+            {activeStyle === 5 && <Style5 {...styleProps} />}
           </motion.div>
         </AnimatePresence>
       </div>
