@@ -549,7 +549,7 @@ export default function DataCenterPage() {
           setPolls(fallbackPolls);
         } else if (data && data.length > 0) {
           // Transform Supabase data to our Poll format
-          const transformedPolls: Poll[] = data.map((poll, index) => {
+          const transformedPolls: Poll[] = (data as Array<{ id: number; question: string; options: unknown; votes: unknown }>).map((poll, index) => {
             const options = poll.options as { label: string }[];
             const votes = (poll.votes as Record<string, number>) || {};
             const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
