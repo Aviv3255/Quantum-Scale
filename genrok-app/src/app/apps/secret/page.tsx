@@ -160,9 +160,9 @@ export default function SecretAppsPage() {
               <h1>The Secret Apps Checklist</h1>
               <p>The right apps can transform your business 180 degrees. This is your must-install checklist.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Sparkles size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Must-Have Apps</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Sparkles size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Must-Have Apps</span>
             </div>
           </div>
         </header>
@@ -178,14 +178,14 @@ export default function SecretAppsPage() {
             <motion.div key={app.id} variants={itemVariants}>
               <div className="card card-hover h-full flex flex-col overflow-hidden" style={{ padding: 0 }}>
                 {/* Header */}
-                <div className="p-6 bg-[var(--accent-gold-bg)]">
+                <div className="p-6 bg-[var(--bg-secondary)]">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[var(--accent-gold)]/20 flex items-center justify-center">
-                      <app.icon size={28} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                    <div className="w-14 h-14 rounded-xl bg-[var(--primary)]/20 flex items-center justify-center">
+                      <app.icon size={28} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-[var(--text-primary)]">{app.name}</h3>
-                      <span className="text-sm text-[var(--accent-gold)]">{app.category}</span>
+                      <span className="text-sm text-[var(--text-primary)]">{app.category}</span>
                     </div>
                   </div>
                 </div>
@@ -210,8 +210,8 @@ export default function SecretAppsPage() {
                   )}
 
                   {app.conversionLift && (
-                    <div className="mb-4 p-3 bg-[var(--accent-gold-bg)] rounded-xl">
-                      <span className="text-lg font-bold text-[var(--accent-gold)]">{app.conversionLift}</span>
+                    <div className="mb-4 p-3 bg-[var(--bg-secondary)] rounded-xl">
+                      <span className="text-lg font-bold text-[var(--text-primary)]">{app.conversionLift}</span>
                       <span className="text-sm text-[var(--accent-gold-hover)] ml-2">conversion lift</span>
                     </div>
                   )}
@@ -235,7 +235,7 @@ export default function SecretAppsPage() {
                         </div>
                         <button
                           onClick={() => copyCode(app.couponCode!)}
-                          className="p-2 text-[var(--text-muted)] hover:text-[var(--accent-gold)] transition-colors"
+                          className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                         >
                           {copiedCode === app.couponCode ? (
                             <Check size={20} className="text-green-600" strokeWidth={1.5} />

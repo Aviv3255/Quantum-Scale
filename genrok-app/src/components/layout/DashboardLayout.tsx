@@ -206,7 +206,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
             >
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
             </div>
             {/* Hover dropdown for collapsed state */}
             <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
@@ -222,7 +222,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     key={subIdx}
                     href={subItem.href}
                     className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
-                      isSubItemActive(subItem) ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)]' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                      isSubItemActive(subItem) ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                     }`}
                   >
                     {subItem.title}
@@ -244,7 +244,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
           >
             <div className="flex items-center gap-3">
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
               <span>{item.title}</span>
             </div>
             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -266,8 +266,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       href={subItem.href}
                       className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
-                          ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)] font-medium'
-                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                          ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
+                          : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                       }`}
                       onClick={() => isMobile && setSidebarOpen(false)}
                     >
@@ -294,7 +294,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           title={sidebarCollapsed && !isMobile ? item.title : undefined}
           onClick={() => isMobile && setSidebarOpen(false)}
         >
-          <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+          <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
           {(!sidebarCollapsed || isMobile) && (
             <>
               <span className="flex-1">{item.title}</span>
@@ -315,7 +315,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         title={sidebarCollapsed && !isMobile ? item.title : undefined}
         onClick={() => isMobile && setSidebarOpen(false)}
       >
-        <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+        <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
         {(!sidebarCollapsed || isMobile) && <span>{item.title}</span>}
       </Link>
     );
@@ -340,8 +340,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <div className="w-8 h-8 bg-[var(--accent-gold-bg)] rounded-lg flex items-center justify-center">
-            <Rocket size={18} className="text-[var(--accent-gold)]" />
+          <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center">
+            <Rocket size={18} className="text-white" />
           </div>
           {!sidebarCollapsed && <span>Quantum Scale</span>}
         </div>
@@ -352,9 +352,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
           style={{
             background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            color: 'var(--accent-gold)',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            border: '1px solid var(--border-light)',
+            color: 'var(--text-tertiary)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
           }}
         >
           {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -421,7 +421,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Notifications */}
             <button className="btn-icon relative">
               <Bell size={20} strokeWidth={1.5} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--accent-gold)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 3
               </span>
             </button>

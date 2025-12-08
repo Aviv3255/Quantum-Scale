@@ -58,8 +58,8 @@ export default function LearnPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -109,8 +109,8 @@ export default function LearnPage() {
               onClick={() => setActiveCategory(category.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
                 activeCategory === category.id
-                  ? 'bg-[var(--accent-gold)] text-white'
-                  : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                  ? 'bg-[var(--primary)] text-white'
+                  : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
               }`}
             >
               <category.icon size={16} strokeWidth={1.5} />
@@ -174,8 +174,8 @@ export default function LearnPage() {
                 exit={{ opacity: 0, y: -20 }}
                 className="empty-state"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-[var(--accent-gold-bg)]">
-                  <Search size={24} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-[var(--bg-secondary)]">
+                  <Search size={24} className="text-[var(--text-tertiary)]" strokeWidth={1.5} />
                 </div>
                 <h3>No articles found</h3>
                 <p>Try adjusting your search or filter criteria</p>
@@ -197,23 +197,27 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
   return (
     <Link
       href={`/learn/${article.slug}`}
-      className={`card card-hover group block overflow-hidden ${featured ? 'border-[var(--border-gold)]' : ''}`}
+      className={`card card-hover group block overflow-hidden ${featured ? 'border-[var(--border-strong)]' : ''}`}
       style={{ padding: 0 }}
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-secondary)]">
         <Image
           src={article.thumbnail}
           alt={article.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }}
         />
         {featured && (
-          <div className="absolute top-4 left-4 badge badge-gold">
+          <div className="absolute top-4 left-4 badge badge-primary">
             Featured
           </div>
         )}
-        <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-sm rounded-full bg-white/90">
+        <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-md rounded-full bg-white/90 border border-white/50">
           <Clock size={14} className="text-[var(--text-muted)]" strokeWidth={1.5} />
           <span className="text-xs font-medium text-[var(--text-secondary)]">{article.readTime} min read</span>
         </div>
@@ -227,7 +231,7 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           </span>
         </div>
 
-        <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2 line-clamp-2 group-hover:text-[var(--accent-gold)] transition-colors">
+        <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2 line-clamp-2 group-hover:opacity-70 transition-opacity">
           {article.title}
         </h3>
 
@@ -240,14 +244,14 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           <div className="flex gap-4 mb-4">
             {article.stats.map((stat, i) => (
               <div key={i} className="flex items-center gap-1.5">
-                <span className="text-sm font-bold text-[var(--accent-gold)]">{stat.value}</span>
+                <span className="text-sm font-bold text-[var(--text-primary)]">{stat.value}</span>
                 <span className="text-xs text-[var(--text-muted)]">{stat.label}</span>
               </div>
             ))}
           </div>
         )}
 
-        <div className="flex items-center gap-1 font-medium text-sm text-[var(--accent-gold)] group-hover:gap-2 transition-all">
+        <div className="flex items-center gap-1 font-medium text-sm text-[var(--text-primary)] group-hover:gap-2 transition-all">
           Read article
           <ChevronRight size={16} strokeWidth={1.5} />
         </div>

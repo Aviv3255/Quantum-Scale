@@ -92,8 +92,8 @@ export default function DataCenterPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -108,9 +108,9 @@ export default function DataCenterPage() {
               <h1>Data Center</h1>
               <p>See how other eCommerce entrepreneurs are performing. Anonymous community polls and benchmarks.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <PieChart size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Community Data</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <PieChart size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Community Data</span>
             </div>
           </div>
         </header>
@@ -169,7 +169,7 @@ export default function DataCenterPage() {
                             whileInView={{ width: `${option.percentage}%` }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: i * 0.1 }}
-                            className="h-full rounded-full bg-[var(--accent-gold)]"
+                            className="h-full rounded-full bg-[var(--primary)]"
                           />
                         </div>
                       </div>

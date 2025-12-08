@@ -107,8 +107,8 @@ export default function ChecklistPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -131,9 +131,9 @@ export default function ChecklistPage() {
               <h1>Store Setup Checklist</h1>
               <p>Follow each step to activate your full earning potential and launch with confidence.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Sparkles size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Launch Steps</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Sparkles size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Launch Steps</span>
             </div>
           </div>
         </header>
@@ -146,7 +146,7 @@ export default function ChecklistPage() {
         >
           <div className="flex justify-between items-center mb-3">
             <span className="font-semibold text-[var(--text-primary)]">Your Progress</span>
-            <span className="text-2xl font-bold text-[var(--accent-gold)]">
+            <span className="text-2xl font-bold text-[var(--text-primary)]">
               {completed.length} / {steps.length}
             </span>
           </div>
@@ -187,7 +187,7 @@ export default function ChecklistPage() {
                     className="flex-shrink-0 mt-1 transition-transform hover:scale-110"
                   >
                     {isComplete ? (
-                      <CheckCircle2 size={24} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                      <CheckCircle2 size={24} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                     ) : (
                       <Circle size={24} className="text-[var(--text-muted)]" strokeWidth={1.5} />
                     )}
@@ -205,9 +205,9 @@ export default function ChecklistPage() {
                           href={step.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-shrink-0 p-2 rounded-lg transition-all bg-[var(--bg-secondary)] hover:bg-[var(--accent-gold-bg)]"
+                          className="flex-shrink-0 p-2 rounded-lg transition-all bg-[var(--bg-secondary)] hover:bg-[var(--bg-secondary)]"
                         >
-                          <ExternalLink size={18} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                          <ExternalLink size={18} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                         </a>
                       )}
                     </div>
@@ -217,8 +217,8 @@ export default function ChecklistPage() {
                     </p>
 
                     {step.note && (
-                      <div className="text-sm p-3 rounded-xl bg-[var(--accent-gold-bg)] border-l-3 border-[var(--accent-gold)]">
-                        <strong className="text-[var(--accent-gold)]">Pro tip:</strong>{' '}
+                      <div className="text-sm p-3 rounded-xl bg-[var(--bg-secondary)] border-l-3 border-[var(--primary)]">
+                        <strong className="text-[var(--text-primary)]">Pro tip:</strong>{' '}
                         <span className="text-[var(--text-secondary)]">{step.note}</span>
                       </div>
                     )}

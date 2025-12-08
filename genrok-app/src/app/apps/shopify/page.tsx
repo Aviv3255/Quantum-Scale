@@ -189,9 +189,9 @@ export default function ShopifyAppsPage() {
               <h1>Discounted Shopify Apps</h1>
               <p>Install via our links to unlock special pricing and extended trials</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">22 Curated Apps</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">22 Curated Apps</span>
             </div>
           </div>
         </header>
@@ -204,7 +204,7 @@ export default function ShopifyAppsPage() {
               onClick={() => setActiveCategory(category.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
                 activeCategory === category.id
-                  ? 'bg-[var(--accent-gold)] text-white'
+                  ? 'bg-[var(--primary)] text-white'
                   : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
               }`}
             >
@@ -257,9 +257,9 @@ export default function ShopifyAppsPage() {
                   {/* Discount Badge */}
                   {app.discount && (
                     <div className="px-6 pb-4">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--accent-gold-bg)] border border-[var(--border-gold)]">
-                        <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-                        <span className="text-sm font-semibold text-[var(--accent-gold)]">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-gold)]">
+                        <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+                        <span className="text-sm font-semibold text-[var(--text-primary)]">
                           {app.discount} OFF
                         </span>
                       </div>
@@ -271,13 +271,13 @@ export default function ShopifyAppsPage() {
                     <div className="px-6 pb-4">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-secondary)] border border-dashed border-[var(--border-gold)]">
-                          <code className="text-sm font-mono font-semibold text-[var(--accent-gold)]">
+                          <code className="text-sm font-mono font-semibold text-[var(--text-primary)]">
                             {app.couponCode}
                           </code>
                         </div>
                         <button
                           onClick={() => copyCode(app.couponCode!)}
-                          className="p-2 text-[var(--text-muted)] hover:text-[var(--accent-gold)] transition-colors"
+                          className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                         >
                           {copiedCode === app.couponCode ? (
                             <Check size={20} className="text-green-500" strokeWidth={1.5} />

@@ -152,7 +152,7 @@ export default function AIToolsPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -168,8 +168,8 @@ export default function AIToolsPage() {
               <p>Leverage artificial intelligence to create better content and scale faster</p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Sparkles size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">AI-Powered</span>
+              <Sparkles size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">AI-Powered</span>
             </div>
           </div>
         </header>
@@ -188,11 +188,11 @@ export default function AIToolsPage() {
                 <div className="p-6 bg-[var(--accent-gold-bg)]">
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-xl bg-[var(--accent-gold)]/20 flex items-center justify-center">
-                      <tool.icon size={28} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                      <tool.icon size={28} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-[var(--text-primary)]">{tool.name}</h3>
-                      <span className="text-sm text-[var(--accent-gold)]">{tool.category}</span>
+                      <span className="text-sm text-[var(--text-primary)]">{tool.category}</span>
                     </div>
                   </div>
                 </div>
@@ -240,7 +240,7 @@ export default function AIToolsPage() {
             {tips.map((tip) => (
               <div key={tip.number} className="p-4 rounded-xl bg-[var(--bg-secondary)]">
                 <div className="w-10 h-10 rounded-lg bg-[var(--accent-gold-bg)] flex items-center justify-center mb-4">
-                  <span className="text-lg font-bold text-[var(--accent-gold)]">{tip.number}</span>
+                  <span className="text-lg font-bold text-[var(--text-primary)]">{tip.number}</span>
                 </div>
                 <h3 className="font-semibold text-[var(--text-primary)] mb-2">{tip.title}</h3>
                 <p className="text-sm text-[var(--text-muted)]">{tip.description}</p>

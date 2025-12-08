@@ -202,7 +202,7 @@ export default function ImageInspirationPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }

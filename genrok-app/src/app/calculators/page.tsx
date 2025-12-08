@@ -55,7 +55,7 @@ function ProfitSimulator() {
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Monthly Revenue</span>
-              <span className="text-[var(--accent-gold)]">${inputs.monthlyRevenue.toLocaleString()}</span>
+              <span className="text-[var(--text-primary)]">${inputs.monthlyRevenue.toLocaleString()}</span>
             </label>
             <input
               type="range"
@@ -65,14 +65,14 @@ function ProfitSimulator() {
               value={inputs.monthlyRevenue}
               onChange={(e) => setInputs({ ...inputs, monthlyRevenue: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
 
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>COGS (Cost of Goods Sold)</span>
-              <span className="text-[var(--accent-gold)]">{inputs.cogs}%</span>
+              <span className="text-[var(--text-primary)]">{inputs.cogs}%</span>
             </label>
             <input
               type="range"
@@ -82,14 +82,14 @@ function ProfitSimulator() {
               value={inputs.cogs}
               onChange={(e) => setInputs({ ...inputs, cogs: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
 
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Shipping Cost per Order</span>
-              <span className="text-[var(--accent-gold)]">${inputs.shippingCost}</span>
+              <span className="text-[var(--text-primary)]">${inputs.shippingCost}</span>
             </label>
             <input
               type="range"
@@ -99,14 +99,14 @@ function ProfitSimulator() {
               value={inputs.shippingCost}
               onChange={(e) => setInputs({ ...inputs, shippingCost: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
 
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Monthly Ad Spend</span>
-              <span className="text-[var(--accent-gold)]">${inputs.adSpend.toLocaleString()}</span>
+              <span className="text-[var(--text-primary)]">${inputs.adSpend.toLocaleString()}</span>
             </label>
             <input
               type="range"
@@ -116,14 +116,14 @@ function ProfitSimulator() {
               value={inputs.adSpend}
               onChange={(e) => setInputs({ ...inputs, adSpend: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
 
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Other Monthly Costs</span>
-              <span className="text-[var(--accent-gold)]">${inputs.otherCosts.toLocaleString()}</span>
+              <span className="text-[var(--text-primary)]">${inputs.otherCosts.toLocaleString()}</span>
             </label>
             <input
               type="range"
@@ -133,7 +133,7 @@ function ProfitSimulator() {
               value={inputs.otherCosts}
               onChange={(e) => setInputs({ ...inputs, otherCosts: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
         </div>
@@ -171,7 +171,7 @@ function ProfitSimulator() {
             </div>
           </div>
 
-          <div className="mt-6 p-4 rounded-xl bg-[var(--accent-gold)] text-white">
+          <div className="mt-6 p-4 rounded-xl bg-[var(--primary)] text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="font-medium">Net Profit</span>
               <span className="text-2xl font-bold">
@@ -187,10 +187,10 @@ function ProfitSimulator() {
           </div>
 
           {profitMargin < 15 && (
-            <div className="mt-4 p-4 rounded-xl bg-[var(--accent-gold-bg)] border border-[var(--border-gold)]">
+            <div className="mt-4 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-medium)]">
               <div className="flex items-start gap-2">
-                <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-[var(--accent-gold)]" strokeWidth={1.5} />
-                <p className="text-sm text-[var(--accent-gold)]">
+                <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-[var(--text-primary)]" strokeWidth={1.5} />
+                <p className="text-sm text-[var(--text-primary)]">
                   Your profit margin is below 15%. Consider reducing COGS or improving conversion rates to increase profitability.
                 </p>
               </div>
@@ -243,7 +243,7 @@ function KPIXRay() {
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Monthly Visitors</span>
-              <span className="text-[var(--accent-gold)]">{inputs.visitors.toLocaleString()}</span>
+              <span className="text-[var(--text-primary)]">{inputs.visitors.toLocaleString()}</span>
             </label>
             <input
               type="range"
@@ -253,14 +253,14 @@ function KPIXRay() {
               value={inputs.visitors}
               onChange={(e) => setInputs({ ...inputs, visitors: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
           </div>
 
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Conversion Rate</span>
-              <span className="text-[var(--accent-gold)]">{inputs.conversionRate}%</span>
+              <span className="text-[var(--text-primary)]">{inputs.conversionRate}%</span>
             </label>
             <input
               type="range"
@@ -270,7 +270,7 @@ function KPIXRay() {
               value={inputs.conversionRate}
               onChange={(e) => setInputs({ ...inputs, conversionRate: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
             <div className="flex justify-between mt-1">
               <span className="text-xs text-[var(--text-muted)]">Poor</span>
@@ -281,7 +281,7 @@ function KPIXRay() {
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Average Order Value (AOV)</span>
-              <span className="text-[var(--accent-gold)]">${inputs.aov}</span>
+              <span className="text-[var(--text-primary)]">${inputs.aov}</span>
             </label>
             <input
               type="range"
@@ -291,7 +291,7 @@ function KPIXRay() {
               value={inputs.aov}
               onChange={(e) => setInputs({ ...inputs, aov: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
             <div className="flex justify-between mt-1">
               <span className="text-xs text-[var(--text-muted)]">Low</span>
@@ -302,7 +302,7 @@ function KPIXRay() {
           <div>
             <label className="flex items-center justify-between text-sm font-medium mb-2 text-[var(--text-secondary)]">
               <span>Customer Acquisition Cost (CAC)</span>
-              <span className="text-[var(--accent-gold)]">${inputs.cac}</span>
+              <span className="text-[var(--text-primary)]">${inputs.cac}</span>
             </label>
             <input
               type="range"
@@ -312,7 +312,7 @@ function KPIXRay() {
               value={inputs.cac}
               onChange={(e) => setInputs({ ...inputs, cac: Number(e.target.value) })}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-[var(--bg-secondary)]"
-              style={{ accentColor: 'var(--accent-gold)' }}
+              style={{ accentColor: 'var(--primary)' }}
             />
             <div className="flex justify-between mt-1">
               <span className="text-xs text-[var(--error)]">High</span>
@@ -421,7 +421,7 @@ export default function CalculatorsPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -460,8 +460,8 @@ export default function CalculatorsPage() {
           className="mt-12"
         >
           <div className="card text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-[var(--accent-gold-bg)] flex items-center justify-center">
-              <Wrench size={28} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center">
+              <Wrench size={28} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
             <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
               Want to Improve These Numbers?
