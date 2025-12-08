@@ -179,8 +179,8 @@ export default function DashboardPage() {
               </h1>
               <p className="mt-2">{message}</p>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)] text-white">
-              <Flame size={16} />
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]" style={{ color: '#FFFFFF' }}>
+              <Flame size={16} style={{ color: '#FFFFFF' }} />
               <span className="text-sm font-medium">Day 7 Streak</span>
             </div>
           </div>
