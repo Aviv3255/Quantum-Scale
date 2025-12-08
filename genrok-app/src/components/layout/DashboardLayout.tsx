@@ -242,12 +242,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               if (isMobile) setSidebarOpen(true);
             }}
             className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
+            style={{ textAlign: 'left' }}
           >
-            <div className="flex items-center gap-3">
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
-              <span>{item.title}</span>
+            <div className="flex items-center gap-3 flex-1">
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
+              <span className="text-left">{item.title}</span>
             </div>
-            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {isExpanded ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
           </button>
 
           <AnimatePresence>
@@ -339,12 +340,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
-        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '12px 0' }}>
+        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '16px 0' }}>
           <img
             src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-12 h-12 rounded-xl object-cover" : "w-20 h-20 rounded-xl object-cover"}
-            style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+            className={sidebarCollapsed ? "w-12 h-12 rounded-xl object-cover" : "w-24 h-24 rounded-xl object-cover"}
           />
         </div>
 
