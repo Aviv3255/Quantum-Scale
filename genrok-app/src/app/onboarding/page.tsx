@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Loader2, Globe, Search, ChevronDown, X } from 'lucide-react';
@@ -529,7 +529,7 @@ function CountryDropdown({
   );
 }
 
-export default function OnboardingPage() {
+function OnboardingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isPreviewMode = searchParams.get('preview') === 'true';
@@ -853,5 +853,18 @@ export default function OnboardingPage() {
         </motion.div>
       </AnimatePresence>
     </div>
+  );
+}
+
+// Wrap in Suspense for useSearchParams
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={
+      <div className="onboarding-container">
+        <Loader2 className="w-8 h-8 animate-spin text-black" />
+      </div>
+    }>
+      <OnboardingContent />
+    </Suspense>
   );
 }
