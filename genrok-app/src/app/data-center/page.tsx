@@ -1,14 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  BarChart3,
-  Users,
-  TrendingUp,
-  PieChart,
-  Vote,
+  Plus,
+  Search,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -17,61 +14,98 @@ const polls = [
   {
     id: 1,
     question: 'What is your current monthly revenue?',
+    category: 'Revenue',
     options: [
-      { label: '$0 - $10K', votes: 342, percentage: 45 },
-      { label: '$10K - $50K', votes: 215, percentage: 28 },
-      { label: '$50K - $100K', votes: 98, percentage: 13 },
-      { label: '$100K+', votes: 105, percentage: 14 },
+      { label: '$0 - $10K', percentage: 45 },
+      { label: '$10K - $50K', percentage: 28 },
+      { label: '$50K - $100K', percentage: 13 },
+      { label: '$100K+', percentage: 14 },
     ],
-    totalVotes: 760,
   },
   {
     id: 2,
     question: 'Which advertising platform gives you the best ROAS?',
+    category: 'Advertising',
     options: [
-      { label: 'Meta (Facebook/Instagram)', votes: 412, percentage: 52 },
-      { label: 'TikTok', votes: 198, percentage: 25 },
-      { label: 'Google', votes: 142, percentage: 18 },
-      { label: 'Other', votes: 40, percentage: 5 },
+      { label: 'Meta (Facebook/Instagram)', percentage: 52 },
+      { label: 'TikTok', percentage: 25 },
+      { label: 'Google', percentage: 18 },
+      { label: 'Other', percentage: 5 },
     ],
-    totalVotes: 792,
   },
   {
     id: 3,
     question: 'What is your biggest challenge right now?',
+    category: 'Challenges',
     options: [
-      { label: 'Finding winning products', votes: 289, percentage: 35 },
-      { label: 'Scaling profitably', votes: 247, percentage: 30 },
-      { label: 'Improving conversion rate', votes: 165, percentage: 20 },
-      { label: 'Customer retention', votes: 124, percentage: 15 },
+      { label: 'Finding winning products', percentage: 35 },
+      { label: 'Scaling profitably', percentage: 30 },
+      { label: 'Improving conversion rate', percentage: 20 },
+      { label: 'Customer retention', percentage: 15 },
     ],
-    totalVotes: 825,
   },
   {
     id: 4,
     question: 'How many products do you have in your store?',
+    category: 'Store',
     options: [
-      { label: '1-10', votes: 456, percentage: 55 },
-      { label: '11-50', votes: 215, percentage: 26 },
-      { label: '51-100', votes: 89, percentage: 11 },
-      { label: '100+', votes: 66, percentage: 8 },
+      { label: '1-10', percentage: 55 },
+      { label: '11-50', percentage: 26 },
+      { label: '51-100', percentage: 11 },
+      { label: '100+', percentage: 8 },
     ],
-    totalVotes: 826,
   },
-];
-
-const stats = [
-  { label: 'Community Members', value: '10,000+', icon: Users },
-  { label: 'Total Poll Responses', value: '3,200+', icon: Vote },
-  { label: 'Average CVR Reported', value: '3.2%', icon: TrendingUp },
-  { label: 'Average AOV', value: '$87', icon: BarChart3 },
+  {
+    id: 5,
+    question: 'What theme are you using?',
+    category: 'Store',
+    options: [
+      { label: 'Shrine', percentage: 42 },
+      { label: 'Dawn', percentage: 28 },
+      { label: 'Custom', percentage: 18 },
+      { label: 'Other Premium', percentage: 12 },
+    ],
+  },
+  {
+    id: 6,
+    question: 'What is your average order value (AOV)?',
+    category: 'Revenue',
+    options: [
+      { label: 'Under $50', percentage: 32 },
+      { label: '$50 - $100', percentage: 38 },
+      { label: '$100 - $200', percentage: 20 },
+      { label: '$200+', percentage: 10 },
+    ],
+  },
+  {
+    id: 7,
+    question: 'How do you source products?',
+    category: 'Products',
+    options: [
+      { label: 'AliExpress / CJ', percentage: 45 },
+      { label: 'Private Agent', percentage: 30 },
+      { label: 'US/EU Suppliers', percentage: 15 },
+      { label: 'Own Manufacturing', percentage: 10 },
+    ],
+  },
+  {
+    id: 8,
+    question: 'What is your conversion rate?',
+    category: 'Conversion',
+    options: [
+      { label: 'Under 1%', percentage: 25 },
+      { label: '1% - 2%', percentage: 35 },
+      { label: '2% - 4%', percentage: 28 },
+      { label: '4%+', percentage: 12 },
+    ],
+  },
 ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.05 },
   },
 };
 
@@ -83,6 +117,7 @@ const itemVariants = {
 export default function DataCenterPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -98,89 +133,172 @@ export default function DataCenterPage() {
     );
   }
 
+  const filteredPolls = polls.filter(poll =>
+    poll.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    poll.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
-        {/* Page Header */}
-        <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1>Data Center</h1>
-              <p>See how other eCommerce entrepreneurs are performing. Anonymous community polls and benchmarks.</p>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
-              <PieChart size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--text-primary)]">Community Data</span>
-            </div>
-          </div>
-        </header>
+      <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+          {/* Header */}
+          <div className="mb-10">
+            <div className="flex items-start justify-between mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold flex-1" style={{
+                color: '#000000',
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: 'italic',
+                letterSpacing: '-0.005em',
+                lineHeight: '1.2'
+              }}>
+                Your questions, answered by<br />the wisdom of the crowd.
+              </h1>
 
-        {/* Stats */}
-        <section className="stats-grid mb-12">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="stat-card"
-            >
-              <div className="stat-icon">
-                <stat.icon size={22} strokeWidth={1.5} />
-              </div>
-              <div>
-                <span className="stat-label">{stat.label}</span>
-                <span className="stat-value">{stat.value}</span>
-              </div>
-            </motion.div>
-          ))}
-        </section>
+              <button
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all text-base flex-shrink-0"
+                style={{
+                  background: '#F3F4F6',
+                  border: '1px solid #D1D5DB',
+                  color: '#4B5563',
+                  boxShadow: 'none',
+                  fontWeight: '800'
+                }}
+              >
+                <Plus className="w-5 h-5" />
+                Post a Poll
+              </button>
+            </div>
 
-        {/* Polls */}
-        <section>
-          <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Community Polls</h2>
-            <p className="text-[var(--text-muted)]">See how you compare to other store owners</p>
+            <p className="text-lg leading-relaxed max-w-3xl mb-6" style={{ color: '#6B7280' }}>
+              Real insights from real eCommerce operators. Updated live as the community votes.
+            </p>
           </div>
 
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#9CA3AF' }} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search polls..."
+                className="w-full pl-12 pr-4 py-3 rounded-xl text-base"
+                style={{
+                  background: '#F9FAFB',
+                  border: '1px solid #E5E7EB',
+                  color: '#010C31',
+                  outline: 'none'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Polls Grid */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-6 max-w-3xl mx-auto"
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
           >
-            {polls.map((poll) => (
+            {filteredPolls.map((poll) => (
               <motion.div key={poll.id} variants={itemVariants}>
-                <div className="card overflow-hidden" style={{ padding: 0 }}>
-                  <div className="p-6 border-b border-[var(--border-light)]">
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)]">{poll.question}</h3>
-                    <p className="text-sm text-[var(--text-muted)] mt-1">{poll.totalVotes.toLocaleString()} responses</p>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    {poll.options.map((option, i) => (
-                      <div key={i}>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span className="text-[var(--text-secondary)]">{option.label}</span>
-                          <span className="font-medium text-[var(--text-primary)]">{option.percentage}%</span>
-                        </div>
-                        <div className="h-3 bg-[var(--bg-secondary)] rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${option.percentage}%` }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: i * 0.1 }}
-                            className="h-full rounded-full bg-[var(--primary)]"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <PollCard poll={poll} />
               </motion.div>
             ))}
           </motion.div>
-        </section>
+
+          {filteredPolls.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-xl" style={{ color: '#6B7280' }}>
+                No polls found
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+interface PollOption {
+  label: string;
+  percentage: number;
+}
+
+interface Poll {
+  id: number;
+  question: string;
+  category: string;
+  options: PollOption[];
+}
+
+function PollCard({ poll }: { poll: Poll }) {
+  const maxPercentage = Math.max(...poll.options.map(o => o.percentage));
+
+  return (
+    <div
+      className="p-5 rounded-2xl transition-all"
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid #E5E7EB',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+      }}
+    >
+      <h3 className="text-base font-bold mb-4 leading-tight" style={{
+        color: '#010C31',
+        fontFamily: 'Poppins, sans-serif'
+      }}>
+        {poll.question}
+      </h3>
+
+      <div className="space-y-2.5">
+        {poll.options.map((option, index) => {
+          const isTopChoice = option.percentage === maxPercentage;
+
+          return (
+            <div
+              key={index}
+              className="relative overflow-hidden rounded-lg"
+              style={{
+                border: '1px solid #E5E7EB',
+                background: '#FFFFFF',
+              }}
+            >
+              <div
+                className="absolute inset-0 transition-all"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(0, 125, 255, 0.015) 0%, rgba(0, 125, 255, 0.005) 100%)',
+                  width: `${option.percentage}%`
+                }}
+              />
+
+              <div className="relative px-3 py-2.5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-5 h-5 rounded-full flex-shrink-0"
+                    style={{
+                      border: '2px solid #D1D5DB'
+                    }}
+                  />
+                  <span className="text-sm" style={{
+                    color: '#010C31',
+                    fontWeight: '400'
+                  }}>
+                    {option.label}
+                  </span>
+                </div>
+                <span className="font-bold text-sm" style={{
+                  color: isTopChoice ? '#007DFF' : '#4B5563'
+                }}>
+                  {option.percentage}%
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

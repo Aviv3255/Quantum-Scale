@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -8,15 +9,6 @@ import {
   ExternalLink,
   Copy,
   Check,
-  TrendingUp,
-  Shield,
-  BarChart3,
-  ShoppingCart,
-  Eye,
-  CreditCard,
-  Target,
-  Zap,
-  DollarSign,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -26,7 +18,7 @@ const apps = [
     id: 1,
     name: 'ABConvert',
     category: 'A/B Testing',
-    icon: Target,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121227.284.png?v=1760087566',
     shortDesc: 'A single test increased conversions by 220%. If you\'re not testing, you\'re leaving money on the floor.',
     description: 'The world\'s best A/B Testing app that allows you to automatically test between different versions - product pages, sections, themes, product prices, shipping prices, etc.',
     url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel',
@@ -37,7 +29,7 @@ const apps = [
     id: 2,
     name: 'KeepCart',
     category: 'Coupon Protection',
-    icon: Shield,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122003.978.png?v=1760088020',
     shortDesc: 'Stop Honey and coupon extensions from stealing your profits. Block unauthorized discounts instantly.',
     description: 'Blocks coupon extensions like Honey from leaking your discount codes to the public, protecting your margins.',
     url: 'https://platform.shoffi.app/r/rl_U2L0seLE',
@@ -46,7 +38,7 @@ const apps = [
     id: 3,
     name: 'Post-Purchase Survey',
     category: 'Customer Intelligence',
-    icon: Eye,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121408.753.png?v=1760087656',
     shortDesc: 'Know exactly what makes customers buy. This data is pure gold for scaling your store.',
     description: 'Data is power. The more you know about your customers, the more you can triple your conversion rate and sell to each customer again and again.',
     url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
@@ -55,7 +47,7 @@ const apps = [
     id: 4,
     name: 'ReConvert',
     category: 'Post-Purchase Upsells',
-    icon: DollarSign,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-26T171048.292.png?v=1761491628',
     shortDesc: 'Free money. Adds $7.4 pure profit per order. 1:46 ROI. Absolute must-have.',
     description: 'This app on average adds $7.4 pure profit to each order. The average ROI on Post Purchase upsell apps is 1:46.',
     url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva',
@@ -65,7 +57,7 @@ const apps = [
     id: 5,
     name: 'Cart Drawer Upsell',
     category: 'Cart Optimization',
-    icon: ShoppingCart,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T134136.646.png?v=1760265713',
     shortDesc: 'The Starbucks checkout trick. Add impulse buys at cart - pure profit on every order.',
     description: 'Put 8-10 general upsells in the cart that many will want for $20-$50, simply money on the floor.',
     url: 'https://platform.shoffi.app/r/rl_cm697iNI',
@@ -74,7 +66,7 @@ const apps = [
     id: 6,
     name: 'DataDrew',
     category: 'Analytics',
-    icon: BarChart3,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121155.514.png?v=1760087521',
     shortDesc: 'Know your numbers. LTV, repeat rate, top customers - all the metrics that matter. Free.',
     description: 'You must know how much each customer is worth to you, what your Re-purchase rate is, and every possible metric.',
     url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
@@ -84,7 +76,7 @@ const apps = [
     id: 7,
     name: 'Parity Rocket',
     category: 'Geo-Targeting',
-    icon: Zap,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121113.691.png?v=1760087483',
     shortDesc: 'Easy cheat code: 45-70% conversion lift. Geo-targeted discounts that print money.',
     description: 'Creates a banner with a coupon code according to the country the visitor enters from and the purchasing power of that country.',
     url: 'https://parityrocket.com/',
@@ -94,7 +86,7 @@ const apps = [
     id: 8,
     name: 'Triple Whale',
     category: 'Attribution',
-    icon: TrendingUp,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-09T234106.192.png?v=1760042538',
     shortDesc: '100% accurate attribution. Stop making decisions blindfolded. Free under $250K revenue.',
     description: 'Uses advanced technology to overcome iOS14 limitations with 100% accuracy. See exactly where each sale came from.',
     url: 'https://www.triplewhale.com/',
@@ -105,7 +97,7 @@ const apps = [
     id: 9,
     name: 'PayPal Tracking Sync',
     category: 'Payment Protection',
-    icon: CreditCard,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122054.732.png?v=1760088059',
     shortDesc: 'Don\'t get $60K locked for 180 days. Auto-sync tracking to PayPal instantly.',
     description: 'Automatically updates order status in PayPal + tracking number directly, preventing account holds and fund locks.',
     url: 'https://platform.shoffi.app/r/rl_Fn8dZcAb',
@@ -177,15 +169,24 @@ export default function SecretAppsPage() {
           {apps.map((app) => (
             <motion.div key={app.id} variants={itemVariants}>
               <div className="card card-hover h-full flex flex-col overflow-hidden" style={{ padding: 0 }}>
-                {/* Header */}
-                <div className="p-6 bg-[var(--bg-secondary)]">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[var(--primary)]/20 flex items-center justify-center">
-                      <app.icon size={28} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+                {/* Header with Logo */}
+                <div className="p-6 pb-4">
+                  <div className="flex items-start gap-4">
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-[var(--bg-secondary)]">
+                      <Image
+                        src={app.logo}
+                        alt={app.name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-[var(--text-primary)]">{app.name}</h3>
-                      <span className="text-sm text-[var(--text-primary)]">{app.category}</span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-lg text-[var(--text-primary)] truncate">
+                        {app.name}
+                      </h3>
+                      <span className="badge badge-gold mt-1">
+                        {app.category}
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -343,9 +343,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <img
             src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
             alt="Quantum Scale"
-            className="w-8 h-8 rounded-lg object-cover"
+            className={sidebarCollapsed ? "w-8 h-8 rounded-lg object-cover" : "w-10 h-10 rounded-lg object-cover"}
           />
-          {!sidebarCollapsed && <span>Quantum Scale</span>}
         </div>
 
         {/* Collapse Toggle (Desktop only) */}
