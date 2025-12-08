@@ -25,6 +25,7 @@ import {
   ChevronRight,
   ExternalLink,
   Rocket,
+  UserCircle,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -119,6 +120,11 @@ const navigationItems: NavItem[] = [
     title: "Updates",
     href: "/updates",
     icon: Bell,
+  },
+  {
+    title: "Preview Onboarding",
+    href: "/onboarding",
+    icon: UserCircle,
   },
   {
     title: "Build a Bundle & Save 35%",
