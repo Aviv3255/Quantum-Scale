@@ -2,143 +2,263 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Layers, CheckCircle2, Shield, Star, Users, Zap, ArrowRight, ShoppingCart, Award, Clock } from 'lucide-react';
+import { ExternalLink, Eye, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-const sectionTypes = [
+const sections = [
+  // Shoffi sections
   {
-    id: 1,
-    name: 'Hero Section',
-    category: 'Above the Fold',
-    icon: Zap,
-    description: 'The first thing visitors see. Make it compelling with a clear value proposition and strong CTA.',
-    tips: [
-      'Keep headline under 10 words',
-      'Show product in use, not just the product',
-      'Single, clear call-to-action',
-      'Add urgency or scarcity elements',
-    ],
-    example: {
-      headline: 'Sleep Better Tonight',
-      subheadline: 'Our award-winning mattress adapts to your body for the perfect night\'s sleep.',
-      cta: 'Shop Now - Free Shipping',
-    },
+    name: 'Social proof',
+    description: 'Build trust instantly by showcasing real customer reviews, ratings, and purchases to boost credibility and conversions.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/814uw9tt4drjktj9g6m3tceqmn31',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 2,
-    name: 'Trust Badges',
-    category: 'Social Proof',
-    icon: Shield,
-    description: 'Build instant credibility with trust indicators. Place them prominently above the fold.',
-    tips: [
-      'Include money-back guarantee',
-      'Show secure payment icons',
-      'Display customer count or reviews',
-      'Add any press mentions',
-    ],
-    badges: ['100% Satisfaction Guarantee', 'Free Returns', 'Secure Checkout', '10,000+ Happy Customers'],
+    name: 'Hero #41',
+    description: 'Captivate visitors immediately with a stunning, high-impact hero section designed to drive engagement and sales.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/3qeglbygd9ubojboxac2bkevny6g',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 3,
-    name: 'Testimonials',
-    category: 'Social Proof',
-    icon: Star,
-    description: 'Real customer stories that resonate with potential buyers. Video testimonials work 3x better.',
-    tips: [
-      'Use real photos and names',
-      'Include specific results',
-      'Show variety of customers',
-      'Add verification badges',
-    ],
-    testimonial: {
-      quote: 'This product literally changed my life. I went from struggling to sleep to getting 8 hours every night.',
-      author: 'Sarah J.',
-      title: 'Verified Buyer',
-      rating: 5,
-    },
+    name: 'Product reviews',
+    description: 'Display authentic customer feedback to build confidence and eliminate purchase hesitation at the critical decision moment.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/4j9ft2yfm1mseia76bxdinrk8op1',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 4,
-    name: 'Features Grid',
-    category: 'Product Info',
-    icon: CheckCircle2,
-    description: 'Highlight key product benefits in an easy-to-scan format. Focus on benefits, not features.',
-    tips: [
-      'Lead with benefits, not specs',
-      'Use icons for visual interest',
-      '3-6 features is optimal',
-      'Keep descriptions short',
-    ],
+    name: 'Upsell & cross-sell #2',
+    description: 'Increase average order value effortlessly by suggesting complementary products right when customers are ready to buy.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/h6c2102e842uoeg4cd686eplxkvf',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 5,
-    name: 'Comparison Table',
-    category: 'Product Info',
-    icon: Award,
-    description: 'Show why your product is better than alternatives. Use checkmarks and X marks for clarity.',
-    tips: [
-      'Compare to known alternatives',
-      'Highlight your advantages',
-      'Keep it honest and fair',
-      'Include price comparison',
-    ],
+    name: 'Slider #15',
+    description: 'Showcase multiple products or offers in one space with smooth, eye-catching sliders that keep visitors engaged.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/3qblryq54yo0bme638zxcydnpplq',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 6,
-    name: 'Urgency Bar',
-    category: 'Conversion',
-    icon: Clock,
-    description: 'Create FOMO with limited-time offers or low stock warnings. Use sparingly and honestly.',
-    tips: [
-      'Use real scarcity only',
-      'Show countdown timers',
-      'Display stock levels',
-      'Offer flash sales',
-    ],
+    name: 'Comparison table #25',
+    description: 'Help customers make confident decisions by clearly comparing product features, pricing, and benefits side-by-side.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/gy067pxpnt99tqosp95vun3edbxs',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 7,
-    name: 'FAQ Accordion',
-    category: 'Objection Handling',
-    icon: Users,
-    description: 'Address common objections before they become barriers. Place near the add-to-cart button.',
-    tips: [
-      'Answer real customer questions',
-      'Address shipping and returns',
-      'Include sizing/fit info',
-      'Cover payment options',
-    ],
+    name: 'Testimonial #12',
+    description: 'Leverage powerful customer stories and success testimonials to overcome objections and inspire purchasing confidence.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/1bkuydvv0lqjq30a0nwumxdkem0a',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
   {
-    id: 8,
-    name: 'Add to Cart Section',
-    category: 'Conversion',
-    icon: ShoppingCart,
-    description: 'The most critical section. Make buying effortless with clear pricing and prominent buttons.',
-    tips: [
-      'Show clear pricing',
-      'Display payment options',
-      'Add quantity selector',
-      'Include trust elements nearby',
-    ],
+    name: 'Collection #5',
+    description: 'Present curated product collections beautifully to guide shoppers through your catalog and increase discovery.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/v7hz94t8gykvpq4ueqney9mjpxj9',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
   },
+  {
+    name: 'Scrolling text #3',
+    description: 'Grab attention with dynamic scrolling announcements for promotions, shipping offers, or important updates.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/9csexgbkualsmvdcqey8fj9j1v65',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Product variants',
+    description: 'Make product selection seamless with intuitive variant pickers that showcase all available options at a glance.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/ops6fi3n4fsi5597n2nm6oww5f36',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Featured collection #16',
+    description: 'Highlight your best-selling or seasonal products with premium collection displays that drive targeted sales.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/o4zdg2cvbu6o3l9etqvtyehaf35z',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Product addons #3',
+    description: 'Maximize revenue by offering relevant add-ons and extras at checkout that complement the main purchase.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/j1b34dlkiz7jxe5r6ddoagykh0r1',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Collection tabs #3',
+    description: 'Organize multiple product collections efficiently with tabbed navigation that keeps your store clean and browseable.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/k78drb14bklx4cn3k9onjwmmayiv',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Collection #4',
+    description: 'Create visually stunning product galleries that make browsing enjoyable and encourage exploration.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/mku199my5fuouf3d0vywl5y7jmt9',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Contact form #5',
+    description: 'Build customer relationships with beautiful, easy-to-use contact forms that encourage inquiries and support requests.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/sp7tnsslb9zhjf19dex7d73omqo3',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Testimonial #9',
+    description: 'Transform visitor skepticism into trust with compelling testimonials that showcase real customer satisfaction.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/48qwjez9t96y0qfjl6kgp1i8y1jf',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Trust badges #4',
+    description: 'Eliminate purchase anxiety by displaying security badges, payment icons, and guarantees prominently.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/48lofvu05aewk39lzpb72jwh80ee',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Testimonial #17',
+    description: 'Showcase authentic customer experiences in a premium format that resonates with potential buyers.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/cjpj7p7akhf9lcj8ne7yjaofjp7u',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Image with text #13',
+    description: 'Combine powerful imagery with persuasive copy to tell your brand story and highlight key value propositions.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/ldndnf3yp7iyxnu6v1nvveq8yx9d',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Eco Testimonial',
+    description: 'Appeal to conscious consumers by highlighting sustainability values and eco-friendly customer testimonials.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_15.22.08_c7cff76d.jpg?v=1761484951',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Countdown timer #6',
+    description: 'Create irresistible urgency with dynamic countdown timers that drive immediate action on limited offers.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/cdn0ij2ir2u7sbr8cddotny2si7y',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Scrolling product text',
+    description: 'Highlight product benefits and features with engaging scrolling text that captures attention without overwhelming.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/d4epom86u7zj6k0c2axppwtewz8r',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'FAQ #6',
+    description: 'Address common concerns and questions proactively with a clean FAQ section that reduces support tickets.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/v3qcyevtnmm9c8wzops64fswythu',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Testimonial #6',
+    description: 'Feature customer praise strategically throughout your site to continuously reinforce trust and credibility.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/3bi7pmeulalsd23yc1pn0coqto0d',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Hero #20',
+    description: 'Make an unforgettable first impression with a premium hero section that immediately communicates your value.',
+    image: 'https://d1xgiem9kow01r.cloudfront.net/dkx38mcq2a6ku59hir4hw64kv661',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  {
+    name: 'Header #11 (Transparent header)',
+    description: 'Create a modern, elegant browsing experience with a sleek transparent header that enhances visual appeal.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_15.33.20_0bce4421.jpg?v=1761485657',
+    url: 'https://platform.shoffi.app/r/rl_WvFtTikK'
+  },
+  // Vitals sections
+  {
+    name: 'Sticky Add to Cart',
+    description: 'Improves conversion rate by displaying a sticky add-to-cart bar as shoppers scroll down your product pages.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff53e14b1cae22104f133_sticky_atc.avif',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  {
+    name: 'Recently Viewed',
+    description: 'Cross-sell efficiently by displaying products that your visitors have recently viewed on product pages and in the cart.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff511347f066083eacac3_recently_viewed.avif',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  {
+    name: 'Cart Notice',
+    description: 'Create urgency in the cart page with a custom message shown on top of the cart line items.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff64660aafe3b8f7bbe88_cart_notice.png',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  {
+    name: 'Inactive Tab Message',
+    description: 'Reduce cart abandonment by dynamically modifying the browser tab\'s title when visitors navigate away from your store.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff48014b1cae22104181f_inactive_tab.avif',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  {
+    name: 'Wishlist',
+    description: 'Prevent cart abandonment and increase your customers engagement by allowing them to save products in Wishlists, and shop later.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff320deed5853ba11cfd4_wishlist.avif',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  {
+    name: 'Stock Scarcity',
+    description: 'Create urgency by letting visitors know that inventory is running low on products they\'re currently browsing through.',
+    image: 'https://cdn.prod.website-files.com/6048ec75bd641c038b84031e/677ff4ee304eab0177294794_stock_scarcity2.avif',
+    url: 'https://vitals.app/shopify/12548540'
+  },
+  // Bundle sections
+  {
+    name: 'Classic quantity breaks',
+    description: 'Boost average order value by rewarding customers with progressive discounts as they buy more units.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_16.43.42_29fad852.jpg?v=1761490161',
+    url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+  },
+  {
+    name: 'Buy X, get Y free (BOGO)',
+    description: 'Drive volume sales with compelling buy-one-get-one promotions that customers can\'t resist.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_16.45.16_91bd9fcb.jpg?v=1761490220',
+    url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+  },
+  {
+    name: 'Quantity breaks with gift',
+    description: 'Incentivize larger purchases by offering exclusive free gifts when customers hit specific quantity thresholds.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_16.45.48_f8b192c4.jpg?v=1761490295',
+    url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+  },
+  {
+    name: 'Quantity breaks with ranges',
+    description: 'Maximize order value with flexible tiered pricing that rewards bulk purchases across product ranges.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_16.46.18_130025c9.jpg?v=1761490358',
+    url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+  },
+  {
+    name: 'Bundle builder',
+    description: 'Let customers create their perfect bundle while saving money, increasing satisfaction and cart value simultaneously.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_16.47.02_b02f6ced.jpg?v=1761490404',
+    url: 'https://platform.shoffi.app/r/rl_8RUcC8L4'
+  },
+  // Reconvert upsells
+  {
+    name: 'Thank-you page multi product upsell',
+    description: 'Turn completed purchases into bigger wins with strategic post-purchase upsells on the thank-you page.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-26T171048.292.png?v=1761491628',
+    url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva'
+  },
+  {
+    name: 'Checkout upsells',
+    description: 'Capture additional revenue at the critical checkout moment with non-intrusive, relevant product recommendations.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/44.jpg?v=1761491700',
+    url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva'
+  },
+  {
+    name: 'Post purchase one click upsell',
+    description: 'Increase AOV effortlessly with one-click upsells immediately after checkout, no re-entering payment info required.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-26T171619.599.png?v=1761491788',
+    url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva'
+  },
+  // Cart upsell - different link
+  {
+    name: 'Cart upsell',
+    description: 'Boost revenue by suggesting complementary products right in the cart before customers complete their purchase.',
+    image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-10-26_at_17.19.34_22a0366c.jpg?v=1761492014',
+    url: 'https://platform.shoffi.app/r/rl_cm697iNI'
+  }
 ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
 
 export default function SectionsPage() {
   const router = useRouter();
@@ -162,116 +282,75 @@ export default function SectionsPage() {
     <DashboardLayout>
       <div className="page-wrapper">
         {/* Page Header */}
-        <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1>High-Converting Sections</h1>
-              <p>Every section on your product page has a job. Learn which sections drive conversions.</p>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Layers size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Section Designs</span>
-            </div>
+        <div className="mb-8 md:mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+               style={{ background: '#F3E8FF', border: '1px solid #E9D5FF' }}>
+            <Sparkles className="w-4 h-4" style={{ color: '#8B5CF6' }} />
+            <span className="text-sm font-semibold" style={{ color: '#8B5CF6' }}>SECTIONS LIBRARY</span>
           </div>
-        </header>
+
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 md:mb-4" style={{
+            color: '#1E1E1E',
+            fontFamily: 'Poppins, sans-serif',
+            letterSpacing: '-0.02em'
+          }}>
+            Sections <span style={{ fontStyle: 'italic', fontFamily: 'Georgia, serif', fontWeight: '700', letterSpacing: '0.05em' }}>Inspiration</span>
+          </h1>
+          <p className="text-base md:text-lg" style={{ color: '#6B7280' }}>
+            The right sections can serve as cheat codes for success. Below are all of our favorite sections from various apps.
+          </p>
+        </div>
 
         {/* Sections Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid md:grid-cols-2 gap-6 mb-12"
-        >
-          {sectionTypes.map((section) => (
-            <motion.div key={section.id} variants={itemVariants}>
-              <div className="card card-hover h-full overflow-hidden" style={{ padding: 0 }}>
-                {/* Header */}
-                <div className="p-6 bg-[var(--accent-gold-bg)]">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[var(--accent-gold)]/20 flex items-center justify-center">
-                      <section.icon size={28} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-[var(--text-primary)]">{section.name}</h3>
-                      <span className="text-sm text-[var(--accent-gold)]">{section.category}</span>
-                    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sections.map((section, idx) => (
+            <a
+              key={idx}
+              href={section.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group overflow-hidden transition-all duration-300 rounded-2xl hover:-translate-y-1"
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E5E7EB',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+              }}
+            >
+              <div className="relative overflow-hidden" style={{ height: '240px', background: '#F9FAFB' }}>
+                <img
+                  src={section.image}
+                  alt={section.name}
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="flex items-center gap-2 px-6 py-3 rounded-xl"
+                       style={{
+                         background: '#FFFFFF',
+                         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                       }}>
+                    <Eye className="w-5 h-5" style={{ color: '#3B82F6' }} />
+                    <span className="font-semibold" style={{ color: '#1E1E1E' }}>View Section</span>
+                    <ExternalLink className="w-4 h-4" style={{ color: '#3B82F6' }} />
                   </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <p className="text-[var(--text-muted)] mb-6">{section.description}</p>
-
-                  {/* Tips */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-[var(--text-primary)] mb-3">Best Practices:</h4>
-                    <ul className="space-y-2">
-                      {section.tips.map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
-                          <CheckCircle2 size={16} className="text-green-500 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                          {tip}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Example Preview */}
-                  {section.example && (
-                    <div className="bg-[var(--bg-secondary)] rounded-xl p-4">
-                      <p className="text-xs text-[var(--text-muted)] mb-2">Example:</p>
-                      <p className="font-bold text-[var(--text-primary)]">{section.example.headline}</p>
-                      <p className="text-sm text-[var(--text-muted)] mt-1">{section.example.subheadline}</p>
-                      <button className="mt-3 px-4 py-2 bg-[var(--accent-gold)] text-white text-sm font-medium rounded-lg">
-                        {section.example.cta}
-                      </button>
-                    </div>
-                  )}
-
-                  {section.badges && (
-                    <div className="flex flex-wrap gap-2">
-                      {section.badges.map((badge, i) => (
-                        <span key={i} className="text-xs font-medium px-3 py-1.5 bg-green-50 text-green-700 rounded-full flex items-center gap-1">
-                          <Shield size={12} strokeWidth={1.5} />
-                          {badge}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {section.testimonial && (
-                    <div className="bg-[var(--bg-secondary)] rounded-xl p-4">
-                      <div className="flex gap-1 mb-2">
-                        {[...Array(section.testimonial.rating)].map((_, i) => (
-                          <Star key={i} size={16} className="fill-[var(--accent-gold)] text-[var(--accent-gold)]" />
-                        ))}
-                      </div>
-                      <p className="text-[var(--text-secondary)] italic text-sm">&quot;{section.testimonial.quote}&quot;</p>
-                      <p className="text-[var(--text-primary)] font-medium mt-2 text-sm">{section.testimonial.author}</p>
-                      <p className="text-[var(--text-muted)] text-xs">{section.testimonial.title}</p>
-                    </div>
-                  )}
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
 
-        {/* CTA Section */}
-        <section className="card p-8 text-center">
-          <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">Ready to Optimize Your Product Page?</h2>
-          <p className="text-[var(--text-muted)] mb-8">
-            Implement these sections in the right order and watch your conversion rate climb.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/ab-tests" className="btn btn-primary">
-              See A/B Test Results
-              <ArrowRight size={16} strokeWidth={1.5} />
-            </Link>
-            <Link href="/learn" className="btn btn-secondary">
-              Read CRO Guides
-            </Link>
-          </div>
-        </section>
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-2" style={{ color: '#1E1E1E' }}>
+                  {section.name}
+                </h3>
+                <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B7280' }}>
+                  {section.description}
+                </p>
+                <div className="flex items-center gap-1 text-xs" style={{ color: '#3B82F6' }}>
+                  <ExternalLink className="w-3 h-3" />
+                  Click to view
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </DashboardLayout>
   );
