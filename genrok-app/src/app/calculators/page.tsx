@@ -196,6 +196,7 @@ export default function CalculatorsPage() {
   const [exchangeRates, setExchangeRates] = useState<Record<string, number>>(DEFAULT_RATES);
   const [ratesLoading, setRatesLoading] = useState(false);
   const [lastRateUpdate, setLastRateUpdate] = useState<Date | null>(null);
+  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
 
   const [inputs, setInputs] = useState<CalcInputs>({
     aov: 60, dailyBudget: 500, ltv1m: 60, ltv3m: 120, ltv6m: 200, ltv12m: 350,
@@ -344,143 +345,166 @@ export default function CalculatorsPage() {
         </div>
 
         {/* BOTTOM SECTION - 45% - Inputs and Results */}
-        <div className="flex flex-row border-t border-neutral-100" style={{ height: '45%' }}>
-          {/* Left - Ultra Compact Data Input Panel - flex with justify-between to spread content */}
-          <div className="w-56 xl:w-64 px-2 py-1.5 flex flex-col justify-between bg-black overflow-hidden">
+        <div className="flex flex-row border-t border-neutral-200" style={{ height: '45%' }}>
+          {/* Left - Data Input Panel */}
+          <div className="w-72 xl:w-80 px-4 py-3 flex flex-col gap-2 bg-neutral-950 overflow-hidden">
             {/* Row 1 - Basic Inputs */}
-            <div className="grid grid-cols-2 gap-1">
-              <MiniInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
-              <MiniInput label="Daily Budget" value={inputs.dailyBudget} onChange={(v) => handleInputChange('dailyBudget', v)} prefix={currencyInfo.symbol} />
+            <div className="grid grid-cols-2 gap-2">
+              <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
+              <CompactInput label="Daily Budget" value={inputs.dailyBudget} onChange={(v) => handleInputChange('dailyBudget', v)} prefix={currencyInfo.symbol} />
             </div>
-            {/* Row 2 - Acquisition */}
+            {/* Row 2 - Acquisition Mode */}
             <div>
-              <div className="flex gap-0.5 mb-0.5">
+              <div className="flex gap-1 mb-1">
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'cpa' }))}
-                  className={`flex-1 py-0.5 text-[6px] font-semibold rounded ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60'}`}>CPA</button>
+                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CPA Mode</button>
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'crcpc' }))}
-                  className={`flex-1 py-0.5 text-[6px] font-semibold rounded ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60'}`}>CR+CPC</button>
+                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CR + CPC</button>
               </div>
               {inputs.acquisitionMode === 'cpa' ? (
-                <MiniInput label="CPA" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
+                <CompactInput label="Cost Per Acquisition" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
               ) : (
-                <div className="grid grid-cols-2 gap-1">
-                  <MiniInput label="CR%" value={inputs.conversionRate} onChange={(v) => handleInputChange('conversionRate', v)} suffix="%" step={0.1} />
-                  <MiniInput label="CPC" value={inputs.cpc} onChange={(v) => handleInputChange('cpc', v)} prefix={currencyInfo.symbol} step={0.01} />
+                <div className="grid grid-cols-2 gap-2">
+                  <CompactInput label="Conv. Rate" value={inputs.conversionRate} onChange={(v) => handleInputChange('conversionRate', v)} suffix="%" step={0.1} />
+                  <CompactInput label="CPC" value={inputs.cpc} onChange={(v) => handleInputChange('cpc', v)} prefix={currencyInfo.symbol} step={0.01} />
                 </div>
               )}
             </div>
             {/* Row 3 - LTV */}
             <div>
-              <p className="text-[6px] text-white/50 uppercase">LTV by Period</p>
-              <div className="grid grid-cols-4 gap-0.5">
+              <p className="text-[9px] text-white/60 uppercase font-medium mb-1">Customer LTV by Period</p>
+              <div className="grid grid-cols-4 gap-1.5">
                 {[{ k: 'ltv1m' as const, l: '1M' }, { k: 'ltv3m' as const, l: '3M' }, { k: 'ltv6m' as const, l: '6M' }, { k: 'ltv12m' as const, l: '12M' }].map(({ k, l }) => (
                   <div key={k}>
-                    <label className="text-[5px] text-white/40 block text-center">{l}</label>
+                    <label className="text-[8px] text-white/50 block text-center mb-0.5">{l}</label>
                     <input type="number" value={inputs[k]} onChange={(e) => handleInputChange(k, e.target.value)}
-                      className="w-full bg-white/10 border border-white/20 rounded py-0.5 text-white text-[7px] text-center focus:outline-none" />
+                      className="w-full bg-white/10 border border-white/20 rounded px-1 py-1 text-white text-[11px] text-center focus:outline-none focus:border-white/40 transition-colors" />
                   </div>
                 ))}
               </div>
             </div>
             {/* Row 4 - Fees */}
-            <div className="grid grid-cols-2 gap-1">
-              <MiniInput label="Processing %" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
-              <MiniInput label="COGS %" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
+            <div className="grid grid-cols-2 gap-2">
+              <CompactInput label="Processing Fee" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
+              <CompactInput label="COGS" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
             </div>
-            {/* Row 5 - Currency */}
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="text-[6px] text-white/50">Currency</label>
-                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[5px] text-white/40 hover:text-white/60 flex items-center gap-0.5">
-                  <RefreshCw className={`w-2 h-2 ${ratesLoading ? 'animate-spin' : ''}`} />
-                  {lastRateUpdate ? 'Synced' : 'Sync'}
+            {/* Row 5 - Currency with Custom Dropdown */}
+            <div className="relative">
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-[9px] text-white/60 uppercase font-medium">Currency</label>
+                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[8px] text-white/50 hover:text-white/80 flex items-center gap-1 transition-colors">
+                  <RefreshCw className={`w-2.5 h-2.5 ${ratesLoading ? 'animate-spin' : ''}`} />
+                  {lastRateUpdate ? 'Synced' : 'Sync Rates'}
                 </button>
               </div>
-              <div className="relative">
-                <select value={inputs.currency} onChange={(e) => handleInputChange('currency', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded py-0.5 pl-4 pr-1 text-white text-[7px] focus:outline-none appearance-none">
-                  {CURRENCIES.map(c => <option key={c.code} value={c.code} className="bg-black">{c.code}</option>)}
-                </select>
-                <img src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`} alt="" className="absolute left-1 top-1/2 -translate-y-1/2 w-2.5 h-1.5 object-cover rounded-[1px]" />
-              </div>
+              <button
+                onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
+                className="w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[11px] focus:outline-none focus:border-white/40 transition-colors flex items-center gap-2"
+              >
+                <img src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
+                <span className="font-medium">{currencyInfo.code}</span>
+                <span className="text-white/50 text-[10px]">{currencyInfo.name}</span>
+                <ChevronRight className={`w-3 h-3 ml-auto text-white/40 transition-transform ${currencyDropdownOpen ? 'rotate-90' : ''}`} />
+              </button>
+              {currencyDropdownOpen && (
+                <div className="absolute bottom-full left-0 right-0 mb-1 bg-neutral-900 border border-white/20 rounded-lg shadow-xl max-h-48 overflow-y-auto z-50">
+                  {CURRENCIES.map(c => (
+                    <button
+                      key={c.code}
+                      onClick={() => { handleInputChange('currency', c.code); setCurrencyDropdownOpen(false); }}
+                      className={`w-full px-3 py-2 flex items-center gap-2 hover:bg-white/10 transition-colors text-left ${c.code === inputs.currency ? 'bg-white/10' : ''}`}
+                    >
+                      <img src={`https://flagcdn.com/w20/${c.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
+                      <span className="text-white text-[11px] font-medium">{c.code}</span>
+                      <span className="text-white/50 text-[10px]">{c.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Right - Results Slider */}
-          <div className="flex-1 bg-white px-4 py-2 flex flex-col overflow-hidden">
+          {/* Right - Premium Results Slider */}
+          <div className="flex-1 bg-gradient-to-br from-neutral-50 to-white px-6 py-4 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xs font-bold text-neutral-900">{slides[activeSlide]}</h2>
-              <div className="flex items-center gap-1">
-                {slides.map((_, i) => (
-                  <button key={i} onClick={() => setActiveSlide(i)} className={`h-1 rounded-full transition-all ${i === activeSlide ? 'bg-neutral-900 w-3' : 'bg-neutral-300 w-1'}`} />
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h2 className="text-base font-bold text-neutral-900">{slides[activeSlide]}</h2>
+                <p className="text-[10px] text-neutral-500">Real-time business insights</p>
+              </div>
+              <div className="flex items-center gap-2">
+                {slides.map((s, i) => (
+                  <button key={i} onClick={() => setActiveSlide(i)}
+                    className={`px-2 py-1 rounded text-[9px] font-medium transition-all ${i === activeSlide ? 'bg-neutral-900 text-white' : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300'}`}>
+                    {s.split(' ')[0]}
+                  </button>
                 ))}
-                <button onClick={prevSlide} className="ml-2 w-5 h-5 rounded-full border border-neutral-300 flex items-center justify-center"><ChevronLeft className="w-3 h-3 text-neutral-600" /></button>
-                <button onClick={nextSlide} className="w-5 h-5 rounded-full bg-neutral-900 flex items-center justify-center"><ChevronRight className="w-3 h-3 text-white" /></button>
               </div>
             </div>
 
-            {/* Slides */}
-            <div className="flex-1 overflow-hidden">
-              <div className="flex transition-transform duration-500 h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+            {/* Slides Container */}
+            <div className="flex-1 overflow-hidden rounded-xl">
+              <div className="flex transition-transform duration-500 ease-out h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
                 {/* Slide 1: Profit Analysis */}
-                <div className="w-full flex-shrink-0 pr-4 flex flex-col">
-                  <div className="grid grid-cols-4 gap-2 mb-2">
-                    <MetricBox label="Daily Revenue" value={fmt(results.daily.revenue)} />
-                    <MetricBox label="Daily Profit" value={fmt(results.daily.profit)} negative={results.daily.profit < 0} />
-                    <MetricBox label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
-                    <MetricBox label="Monthly Profit" value={fmt(results.netProfit)} negative={results.netProfit < 0} />
+                <div className="w-full flex-shrink-0 pr-6 flex flex-col">
+                  <div className="grid grid-cols-4 gap-3 mb-3">
+                    <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} icon="💰" />
+                    <PremiumMetricCard label="Daily Profit" value={fmt(results.daily.profit)} negative={results.daily.profit < 0} icon="📈" />
+                    <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} icon="🏆" />
+                    <PremiumMetricCard label="Monthly Profit" value={fmt(results.netProfit)} negative={results.netProfit < 0} icon="💎" />
                   </div>
-                  <p className="text-[9px] font-bold text-neutral-700 uppercase mb-1">Cost Breakdown</p>
-                  <div className="flex-1 flex flex-col justify-center gap-1.5">
-                    {[
-                      { label: 'COGS', value: results.breakdown.cogs },
-                      { label: 'Ad Spend', value: results.breakdown.adSpend },
-                      { label: 'Processing', value: results.breakdown.processing },
-                    ].map((item, i) => {
-                      const safeValue = isFinite(item.value) ? item.value : 0;
-                      const safePct = results.totalCosts > 0 && isFinite(results.totalCosts)
-                        ? Math.min(100, Math.max(0, Math.round((safeValue / results.totalCosts) * 100)))
-                        : 0;
-                      return (
-                        <div key={i} className="flex items-center gap-2">
-                          <span className="text-[9px] font-semibold text-neutral-700 w-16">{item.label}</span>
-                          <div className="flex-1 h-4 bg-neutral-100 rounded overflow-hidden relative">
-                            <motion.div initial={{ width: 0 }} animate={{ width: `${safePct}%` }} transition={{ duration: 0.6 }}
-                              className="h-full rounded" style={{ background: 'linear-gradient(90deg, #8b6914 0%, #2c1810 60%, #000 100%)' }} />
-                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[8px] font-bold text-neutral-700">{fmt(safeValue)}</span>
+                  <div className="flex-1 bg-white rounded-xl border border-neutral-200 p-4 shadow-sm">
+                    <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-3">Cost Breakdown</p>
+                    <div className="flex flex-col justify-center gap-3 h-[calc(100%-2rem)]">
+                      {[
+                        { label: 'COGS', value: results.breakdown.cogs, color: '#8b6914' },
+                        { label: 'Ad Spend', value: results.breakdown.adSpend, color: '#2c1810' },
+                        { label: 'Processing', value: results.breakdown.processing, color: '#000' },
+                      ].map((item, i) => {
+                        const safeValue = isFinite(item.value) ? item.value : 0;
+                        const safePct = results.totalCosts > 0 && isFinite(results.totalCosts)
+                          ? Math.min(100, Math.max(0, Math.round((safeValue / results.totalCosts) * 100)))
+                          : 0;
+                        return (
+                          <div key={i} className="flex items-center gap-3">
+                            <span className="text-xs font-semibold text-neutral-700 w-20">{item.label}</span>
+                            <div className="flex-1 h-6 bg-neutral-100 rounded-lg overflow-hidden relative">
+                              <motion.div initial={{ width: 0 }} animate={{ width: `${safePct}%` }} transition={{ duration: 0.6, ease: 'easeOut' }}
+                                className="h-full rounded-lg" style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}dd)` }} />
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-neutral-700">{fmt(safeValue)}</span>
+                            </div>
+                            <span className="text-xs font-bold text-neutral-800 w-12 text-right">{safePct}%</span>
                           </div>
-                          <span className="text-[8px] font-semibold text-neutral-600 w-8 text-right">{safePct}%</span>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
 
                 {/* Slide 2: Future Projection */}
-                <div className="w-full flex-shrink-0 px-4 flex flex-col">
-                  <div className="p-2 rounded-lg border border-neutral-200 bg-gradient-to-br from-neutral-50 to-white mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b6914, #2c1810)' }}>
-                        <TrendingUp className="w-3.5 h-3.5 text-white" />
+                <div className="w-full flex-shrink-0 px-6 flex flex-col">
+                  <div className="p-4 rounded-xl border border-neutral-200 bg-white shadow-sm mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b6914, #2c1810)' }}>
+                        <TrendingUp className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-[8px] text-neutral-600">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
-                        <p className="text-sm font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
+                        <p className="text-[11px] text-neutral-500 font-medium">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
+                        <p className="text-xl font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
                       </div>
                     </div>
                   </div>
-                  <p className="text-[9px] font-bold text-neutral-700 uppercase mb-1">LTV Profit by Period</p>
-                  <div className="flex-1 grid grid-cols-4 gap-2 content-center">
+                  <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-2">LTV Profit Projection</p>
+                  <div className="flex-1 grid grid-cols-4 gap-3 content-center">
                     {results.ltvProjections.map((ltv, i) => {
                       const isHighest = ltv.period === results.highestLTV.period;
                       const safeProfit = isFinite(ltv.profit) ? ltv.profit : 0;
                       const safeMargin = isFinite(ltv.margin) ? ltv.margin : 0;
                       return (
-                        <div key={i} className={`p-2 rounded-lg text-center border ${isHighest ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-200 bg-white'}`}>
-                          <p className={`text-[8px] font-semibold mb-0.5 ${isHighest ? 'text-white/60' : 'text-neutral-500'}`}>{ltv.period}</p>
-                          <p className={`text-sm font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
-                          <p className={`text-[7px] ${isHighest ? 'text-white/40' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}%</p>
+                        <div key={i} className={`p-4 rounded-xl text-center border-2 transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900 shadow-lg scale-105' : 'border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-md'}`}>
+                          <p className={`text-xs font-bold mb-1 ${isHighest ? 'text-white/70' : 'text-neutral-500'}`}>{ltv.period}</p>
+                          <p className={`text-lg font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
+                          <p className={`text-[10px] font-medium ${isHighest ? 'text-white/50' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}% margin</p>
                         </div>
                       );
                     })}
@@ -488,8 +512,7 @@ export default function CalculatorsPage() {
                 </div>
 
                 {/* Slide 3: KPI X-Ray */}
-                <div className="w-full flex-shrink-0 px-4">
-                  {/* Define gradient once at the top */}
+                <div className="w-full flex-shrink-0 px-6">
                   <svg width="0" height="0" style={{ position: 'absolute' }}>
                     <defs>
                       <linearGradient id="kpi-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -499,23 +522,23 @@ export default function CalculatorsPage() {
                       </linearGradient>
                     </defs>
                   </svg>
-                  <div className="grid grid-cols-3 gap-2 h-full content-center">
+                  <div className="grid grid-cols-3 gap-4 h-full content-center">
                     {results.kpiAnalysis.map((kpi, i) => {
                       const safePct = isFinite(kpi.value) && isFinite(kpi.target) && kpi.target > 0
                         ? Math.min(100, Math.max(0, (kpi.value / (kpi.target * 1.5)) * 100))
                         : 0;
                       const color = kpi.status === 'green' ? 'url(#kpi-grad)' : kpi.status === 'amber' ? '#f59e0b' : '#ef4444';
-                      const dashOffset = 88 - (safePct / 100) * 88;
+                      const dashOffset = 113 - (safePct / 100) * 113;
                       return (
-                        <div key={i} className="p-2 rounded-lg border border-neutral-200 bg-white flex flex-col items-center">
-                          <svg width="36" height="36" className="transform -rotate-90">
-                            <circle cx="18" cy="18" r="14" fill="none" stroke="#e5e5e5" strokeWidth="4" />
-                            <circle cx="18" cy="18" r="14" fill="none" stroke={color} strokeWidth="4" strokeLinecap="round"
-                              strokeDasharray={88} strokeDashoffset={dashOffset} style={{ transition: 'stroke-dashoffset 0.6s' }} />
+                        <div key={i} className="p-4 rounded-xl border border-neutral-200 bg-white shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
+                          <svg width="48" height="48" className="transform -rotate-90">
+                            <circle cx="24" cy="24" r="18" fill="none" stroke="#e5e5e5" strokeWidth="5" />
+                            <circle cx="24" cy="24" r="18" fill="none" stroke={color} strokeWidth="5" strokeLinecap="round"
+                              strokeDasharray={113} strokeDashoffset={dashOffset} style={{ transition: 'stroke-dashoffset 0.6s ease-out' }} />
                           </svg>
-                          <p className="text-[8px] font-bold text-neutral-800 mt-1">{kpi.name}</p>
-                          <p className="text-xs font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
-                          <p className="text-[7px] text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
+                          <p className="text-[11px] font-bold text-neutral-800 mt-2">{kpi.name}</p>
+                          <p className="text-base font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
+                          <p className="text-[10px] text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
                         </div>
                       );
                     })}
@@ -523,30 +546,33 @@ export default function CalculatorsPage() {
                 </div>
 
                 {/* Slide 4: Scale Readiness */}
-                <div className="w-full flex-shrink-0 pl-4 flex flex-col">
-                  <div className={`p-2 rounded-lg border mb-2 ${results.readyToScale ? 'border-green-300 bg-green-50' : 'border-neutral-200 bg-neutral-50'}`}>
-                    <div className="flex items-center gap-2">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-400'}`}>
-                        <Rocket className="w-4 h-4 text-white" />
+                <div className="w-full flex-shrink-0 pl-6 flex flex-col">
+                  <div className={`p-4 rounded-xl border-2 mb-3 ${results.readyToScale ? 'border-green-400 bg-green-50' : 'border-neutral-200 bg-neutral-50'}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-400'}`}>
+                        <Rocket className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-neutral-900">{results.readyToScale ? 'Ready to Scale!' : 'Not Ready Yet'}</p>
-                        <p className="text-[9px] text-neutral-600">{readinessScore}/4 criteria met</p>
+                        <p className="text-lg font-bold text-neutral-900">{results.readyToScale ? 'Ready to Scale!' : 'Not Ready Yet'}</p>
+                        <p className="text-xs text-neutral-600">{readinessScore}/4 scaling criteria met</p>
                       </div>
                     </div>
                   </div>
-                  <div className="flex-1 grid grid-cols-2 gap-1.5 content-center">
+                  <div className="flex-1 grid grid-cols-2 gap-3 content-center">
                     {[
-                      { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk },
-                      { label: 'LTV:CAC ≥3x', ok: results.scaleReadiness.ltvCacOk },
-                      { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk },
-                      { label: `Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue },
+                      { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk, desc: 'Healthy profit margins' },
+                      { label: 'LTV:CAC ≥3x', ok: results.scaleReadiness.ltvCacOk, desc: 'Customer value vs cost' },
+                      { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk, desc: 'Product profitability' },
+                      { label: `Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue, desc: 'Revenue threshold' },
                     ].map((item, i) => (
-                      <div key={i} className={`p-1.5 rounded-lg border flex items-center gap-1.5 ${item.ok ? 'border-green-300 bg-green-50' : 'border-neutral-200 bg-white'}`}>
-                        <div className={`w-4 h-4 rounded-full flex items-center justify-center ${item.ok ? 'bg-green-500' : 'bg-neutral-300'}`}>
-                          {item.ok ? <Check className="w-2.5 h-2.5 text-white" /> : <X className="w-2.5 h-2.5 text-white" />}
+                      <div key={i} className={`p-3 rounded-xl border-2 flex items-center gap-3 transition-all ${item.ok ? 'border-green-400 bg-green-50' : 'border-neutral-200 bg-white'}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-green-500' : 'bg-neutral-300'}`}>
+                          {item.ok ? <Check className="w-4 h-4 text-white" /> : <X className="w-4 h-4 text-white" />}
                         </div>
-                        <span className={`text-[9px] font-semibold ${item.ok ? 'text-green-700' : 'text-neutral-500'}`}>{item.label}</span>
+                        <div>
+                          <p className={`text-xs font-bold ${item.ok ? 'text-green-700' : 'text-neutral-600'}`}>{item.label}</p>
+                          <p className="text-[10px] text-neutral-500">{item.desc}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -561,25 +587,28 @@ export default function CalculatorsPage() {
 }
 
 // Helper Components
-function MiniInput({ label, value, onChange, prefix, suffix, step = 1 }: { label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number; }) {
+function CompactInput({ label, value, onChange, prefix, suffix, step = 1 }: { label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number; }) {
   return (
     <div>
-      <label className="text-[6px] text-white/60 block">{label}</label>
+      <label className="text-[9px] text-white/60 uppercase font-medium block mb-0.5">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-1 top-1/2 -translate-y-1/2 text-[7px] text-white/50">{prefix}</span>}
+        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] text-white/50">{prefix}</span>}
         <input type="number" step={step} value={value} onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/10 border border-white/20 rounded py-0.5 text-white text-[8px] focus:outline-none ${prefix ? 'pl-3 pr-1' : suffix ? 'pl-1 pr-3' : 'px-1'}`} />
-        {suffix && <span className="absolute right-1 top-1/2 -translate-y-1/2 text-[7px] text-white/50">{suffix}</span>}
+          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[12px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-5' : ''}`} />
+        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-white/50">{suffix}</span>}
       </div>
     </div>
   );
 }
 
-function MetricBox({ label, value, negative }: { label: string; value: string; negative?: boolean }) {
+function PremiumMetricCard({ label, value, negative, icon }: { label: string; value: string; negative?: boolean; icon?: string }) {
   return (
-    <div className="p-1.5 rounded-lg border border-neutral-200 bg-white">
-      <p className="text-[7px] font-semibold text-neutral-600 uppercase mb-0.5">{label}</p>
-      <p className={`text-[11px] font-bold ${negative ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
+    <div className="p-3 rounded-xl border border-neutral-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-center gap-1.5 mb-1">
+        {icon && <span className="text-sm">{icon}</span>}
+        <p className="text-[10px] font-semibold text-neutral-500 uppercase">{label}</p>
+      </div>
+      <p className={`text-sm font-bold ${negative ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
     </div>
   );
 }
