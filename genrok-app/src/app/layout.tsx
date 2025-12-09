@@ -32,11 +32,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Favicon */}
-        <link rel="icon" href="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846" type="image/png" />
-        <link rel="shortcut icon" href="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846" type="image/png" />
-        <link rel="apple-touch-icon" href="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846" />
-
         {/* iOS Safe Area Support */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
