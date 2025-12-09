@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { ChevronLeft, ChevronRight, TrendingUp, Rocket, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, TrendingUp, Rocket, RefreshCw, Check, X } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MONKEY VIDEO STATES - 18 levels (1=worst, 18=best)
@@ -34,37 +34,16 @@ const MONKEY_VIDEOS = [
 ];
 
 // Video level thresholds based on Future Monthly Profit (in USD)
-// Level 1: < $0, Level 5: $30K, Level 18: $2M+
 const PROFIT_THRESHOLDS = [
-  0,        // Level 1: < $0
-  0,        // Level 2: $0+
-  10000,    // Level 3: $10K+
-  20000,    // Level 4: $20K+
-  25000,    // Level 5: $25K+ (~$30K midpoint)
-  35000,    // Level 6: $35K+
-  50000,    // Level 7: $50K+
-  75000,    // Level 8: $75K+
-  100000,   // Level 9: $100K+
-  150000,   // Level 10: $150K+
-  200000,   // Level 11: $200K+
-  300000,   // Level 12: $300K+
-  450000,   // Level 13: $450K+
-  650000,   // Level 14: $650K+
-  900000,   // Level 15: $900K+
-  1200000,  // Level 16: $1.2M+
-  1500000,  // Level 17: $1.5M+
-  2000000,  // Level 18: $2M+
+  0, 0, 10000, 20000, 25000, 35000, 50000, 75000, 100000,
+  150000, 200000, 300000, 450000, 650000, 900000, 1200000, 1500000, 2000000,
 ];
 
-// Calculate monkey state (1-18) based on Future Monthly Profit
 function calculateMonkeyState(futureMonthlyProfitUSD: number): number {
   if (!isFinite(futureMonthlyProfitUSD) || isNaN(futureMonthlyProfitUSD)) return 1;
   if (futureMonthlyProfitUSD < 0) return 1;
-
   for (let i = PROFIT_THRESHOLDS.length - 1; i >= 0; i--) {
-    if (futureMonthlyProfitUSD >= PROFIT_THRESHOLDS[i]) {
-      return Math.min(i + 1, 18);
-    }
+    if (futureMonthlyProfitUSD >= PROFIT_THRESHOLDS[i]) return Math.min(i + 1, 18);
   }
   return 1;
 }
@@ -82,7 +61,6 @@ interface CalcInputs {
   processingFees: number;
   cogs: number;
   currency: string;
-  // CPA mode vs CR+CPC mode
   acquisitionMode: 'cpa' | 'crcpc';
   cpa: number;
   conversionRate: number;
@@ -115,7 +93,7 @@ interface CurrencyInfo {
   code: string;
   symbol: string;
   name: string;
-  flag: string; // Country code for flagcdn.com
+  flag: string;
 }
 
 const CURRENCIES: CurrencyInfo[] = [
@@ -151,7 +129,6 @@ const CURRENCIES: CurrencyInfo[] = [
   { code: 'PHP', symbol: '₱', name: 'Philippine Peso', flag: 'ph' },
 ];
 
-// Default rates (fallback if API fails)
 const DEFAULT_RATES: Record<string, number> = {
   USD: 1, EUR: 0.92, GBP: 0.79, JPY: 149.5, AUD: 1.53, CAD: 1.36, CHF: 0.88,
   CNY: 7.24, HKD: 7.82, NZD: 1.65, SEK: 10.42, KRW: 1320, SGD: 1.34, NOK: 10.85,
@@ -164,10 +141,7 @@ const DEFAULT_RATES: Record<string, number> = {
 // ANIMATED NUMBER COMPONENT
 // ═══════════════════════════════════════════════════════════════════════════════
 function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: {
-  value: number;
-  prefix?: string;
-  suffix?: string;
-  decimals?: number;
+  value: number; prefix?: string; suffix?: string; decimals?: number;
 }) {
   const safeValue = isFinite(value) && !isNaN(value) ? value : 0;
   const [displayValue, setDisplayValue] = useState(safeValue);
@@ -178,29 +152,156 @@ function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: {
     const endValue = safeValue;
     const duration = 600;
     const startTime = performance.now();
-
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      const currentValue = startValue + (endValue - startValue) * easeOutQuart;
-      setDisplayValue(currentValue);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        previousValue.current = endValue;
-      }
+      setDisplayValue(startValue + (endValue - startValue) * easeOutQuart);
+      if (progress < 1) requestAnimationFrame(animate);
+      else previousValue.current = endValue;
     };
-
     requestAnimationFrame(animate);
   }, [safeValue]);
 
-  const formattedValue = decimals > 0
-    ? displayValue.toFixed(decimals)
-    : Math.round(displayValue).toLocaleString();
-
+  const formattedValue = decimals > 0 ? displayValue.toFixed(decimals) : Math.round(displayValue).toLocaleString();
   return <span>{prefix}{formattedValue}{suffix}</span>;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PREMIUM VISUALIZATION COMPONENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Progress Ring for KPIs
+function ProgressRing({ value, max, size = 48, status }: { value: number; max: number; size?: number; status: string }) {
+  const strokeWidth = 4;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const percent = Math.min(Math.max(value / max, 0), 1);
+  const offset = circumference - percent * circumference;
+
+  const getGradientId = () => `ring-gradient-${Math.random().toString(36).substr(2, 9)}`;
+  const gradientId = getGradientId();
+
+  const statusColor = status === 'green' ? '#22c55e' : status === 'amber' ? '#f59e0b' : '#ef4444';
+
+  return (
+    <svg width={size} height={size} className="transform -rotate-90">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8b6914" />
+          <stop offset="50%" stopColor="#2c1810" />
+          <stop offset="100%" stopColor="#000000" />
+        </linearGradient>
+      </defs>
+      <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#e5e5e5" strokeWidth={strokeWidth} />
+      <circle
+        cx={size/2} cy={size/2} r={radius} fill="none"
+        stroke={status === 'green' ? `url(#${gradientId})` : statusColor}
+        strokeWidth={strokeWidth} strokeLinecap="round"
+        strokeDasharray={circumference} strokeDashoffset={offset}
+        style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+      />
+    </svg>
+  );
+}
+
+// Bar Chart for Cost Breakdown
+function CostBarChart({ data, fmt }: { data: Array<{ label: string; value: number; pct: number }>; fmt: (n: number) => string }) {
+  const maxPct = Math.max(...data.map(d => d.pct), 1);
+  return (
+    <div className="space-y-2">
+      {data.map((item, i) => (
+        <div key={i} className="flex items-center gap-2">
+          <span className="text-[10px] font-medium text-neutral-700 w-16">{item.label}</span>
+          <div className="flex-1 h-5 bg-neutral-100 rounded overflow-hidden relative">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${(item.pct / maxPct) * 100}%` }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="h-full rounded"
+              style={{ background: 'linear-gradient(90deg, #8b6914 0%, #2c1810 60%, #000000 100%)' }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold text-neutral-700">
+              {fmt(item.value)}
+            </span>
+          </div>
+          <span className="text-[9px] text-neutral-500 w-8 text-right">{item.pct}%</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Area Chart for LTV Projection
+function LTVAreaChart({ data, fmt }: { data: Array<{ period: string; profit: number; months: number }>; fmt: (n: number) => string }) {
+  const maxProfit = Math.max(...data.map(d => Math.abs(d.profit)), 1);
+  const minProfit = Math.min(...data.map(d => d.profit), 0);
+  const range = maxProfit - minProfit;
+
+  const points = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * 100;
+    const y = 100 - ((d.profit - minProfit) / range) * 80 - 10;
+    return { x, y, ...d };
+  });
+
+  const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+  const areaD = `${pathD} L 100 100 L 0 100 Z`;
+
+  return (
+    <div className="relative h-24">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
+        <defs>
+          <linearGradient id="area-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#8b6914" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#8b6914" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#8b6914" />
+            <stop offset="50%" stopColor="#2c1810" />
+            <stop offset="100%" stopColor="#000000" />
+          </linearGradient>
+        </defs>
+        <path d={areaD} fill="url(#area-gradient)" />
+        <path d={pathD} fill="none" stroke="url(#line-gradient)" strokeWidth="2" strokeLinecap="round" />
+        {points.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="3" fill="#2c1810" stroke="#fff" strokeWidth="1.5" />
+        ))}
+      </svg>
+      <div className="absolute bottom-0 left-0 right-0 flex justify-between px-1">
+        {data.map((d, i) => (
+          <div key={i} className="text-center">
+            <p className="text-[9px] font-semibold text-neutral-800">{d.period}</p>
+            <p className="text-[8px] text-neutral-500">{fmt(d.profit)}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Readiness Gauge
+function ReadinessGauge({ score, ready }: { score: number; ready: boolean }) {
+  const angle = (score / 4) * 180 - 90;
+  return (
+    <div className="relative w-28 h-16 mx-auto">
+      <svg viewBox="0 0 100 60" className="w-full h-full">
+        <defs>
+          <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="50%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#22c55e" />
+          </linearGradient>
+        </defs>
+        <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="#e5e5e5" strokeWidth="8" strokeLinecap="round" />
+        <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="url(#gauge-gradient)" strokeWidth="8" strokeLinecap="round"
+          strokeDasharray="126" strokeDashoffset={126 - (score / 4) * 126} style={{ transition: 'stroke-dashoffset 0.6s ease' }} />
+        <circle cx="50" cy="55" r="4" fill={ready ? '#22c55e' : '#2c1810'} />
+        <line x1="50" y1="55" x2={50 + Math.cos(angle * Math.PI / 180) * 30} y2={55 + Math.sin(angle * Math.PI / 180) * 30}
+          stroke="#2c1810" strokeWidth="2" strokeLinecap="round" style={{ transition: 'all 0.6s ease' }} />
+      </svg>
+      <p className="text-center text-[10px] font-semibold text-neutral-800 -mt-1">{score}/4 Criteria Met</p>
+    </div>
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -209,94 +310,59 @@ function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: {
 function useCalculations(inputs: CalcInputs, exchangeRate: number): AllResults {
   return useMemo(() => {
     const { aov, dailyBudget, cogs, processingFees, ltv1m, ltv3m, ltv6m, ltv12m, acquisitionMode, cpa, conversionRate, cpc } = inputs;
-
-    // Safe number helper
     const safe = (n: number) => (isFinite(n) && !isNaN(n)) ? n : 0;
 
-    // Calculate effective CPA based on mode
     let effectiveCPA = safe(cpa);
     if (acquisitionMode === 'crcpc') {
-      // CPA = CPC / (CR / 100)
       const cr = safe(conversionRate);
-      const costPerClick = safe(cpc);
-      effectiveCPA = cr > 0 ? costPerClick / (cr / 100) : 0;
+      effectiveCPA = cr > 0 ? safe(cpc) / (cr / 100) : 0;
     }
 
-    // Monthly ad spend = daily budget * 30
     const monthlyAdSpend = safe(dailyBudget) * 30;
-
-    // Monthly orders = monthly ad spend / CPA
     const monthlyOrders = effectiveCPA > 0 ? monthlyAdSpend / effectiveCPA : 0;
-
-    // Monthly revenue = orders * AOV
     const monthlyRevenue = safe(monthlyOrders) * safe(aov);
-
-    // Costs
     const cogsCost = monthlyRevenue * (safe(cogs) / 100);
     const processingCost = monthlyRevenue * (safe(processingFees) / 100);
     const totalCosts = cogsCost + monthlyAdSpend + processingCost;
-
-    // Profits
     const grossProfit = monthlyRevenue - cogsCost;
     const netProfit = monthlyRevenue - totalCosts;
     const profitMargin = monthlyRevenue > 0 ? (netProfit / monthlyRevenue) * 100 : 0;
 
-    // Daily metrics
-    const dailyRevenue = monthlyRevenue / 30;
-    const dailyProfit = netProfit / 30;
-    const dailyOrders = monthlyOrders / 30;
-
-    // LTV projections
     const ltvValues = [
       { period: '1M', value: safe(ltv1m), months: 1 },
       { period: '3M', value: safe(ltv3m), months: 3 },
       { period: '6M', value: safe(ltv6m), months: 6 },
       { period: '12M', value: safe(ltv12m), months: 12 },
     ];
-
     const highestLTV = ltvValues.reduce((max, curr) => curr.value > max.value ? curr : max, ltvValues[0]);
-
-    // Future Monthly Profit = (Monthly Customers × Highest LTV) - Ad Spend - COGS% - Processing%
     const futureRevenue = monthlyOrders * highestLTV.value;
-    const futureCOGS = futureRevenue * (safe(cogs) / 100);
-    const futureProcessing = futureRevenue * (safe(processingFees) / 100);
-    const futureMonthlyProfit = futureRevenue - monthlyAdSpend - futureCOGS - futureProcessing;
-
-    // Convert to USD for video level calculation
+    const futureMonthlyProfit = futureRevenue - monthlyAdSpend - futureRevenue * (safe(cogs) / 100) - futureRevenue * (safe(processingFees) / 100);
     const futureMonthlyProfitUSD = exchangeRate > 0 ? futureMonthlyProfit / exchangeRate : futureMonthlyProfit;
 
     const ltvProjections = ltvValues.map(ltv => {
       const cohortRevenue = monthlyOrders * ltv.value;
-      const cohortCOGS = cohortRevenue * (safe(cogs) / 100);
-      const cohortProcessing = cohortRevenue * (safe(processingFees) / 100);
-      const cohortCosts = cohortCOGS + monthlyAdSpend + cohortProcessing;
+      const cohortCosts = cohortRevenue * (safe(cogs) / 100) + monthlyAdSpend + cohortRevenue * (safe(processingFees) / 100);
       const cohortProfit = cohortRevenue - cohortCosts;
-      const margin = cohortRevenue > 0 ? (cohortProfit / cohortRevenue) * 100 : 0;
-      return { ...ltv, profit: cohortProfit, margin, revenue: cohortRevenue };
+      return { ...ltv, profit: cohortProfit, margin: cohortRevenue > 0 ? (cohortProfit / cohortRevenue) * 100 : 0, revenue: cohortRevenue };
     });
 
-    // Health score
-    const healthFactors = {
-      profitMargin: Math.min(Math.max((profitMargin + 20) * 2, 0), 40),
-      ltvToCac: effectiveCPA > 0 ? Math.min((highestLTV.value / effectiveCPA) * 5, 30) : 0,
-      grossMargin: Math.min((100 - safe(cogs)) * 0.3, 30),
-    };
-    const healthScore = Math.round(healthFactors.profitMargin + healthFactors.ltvToCac + healthFactors.grossMargin);
+    const healthScore = Math.round(
+      Math.min(Math.max((profitMargin + 20) * 2, 0), 40) +
+      (effectiveCPA > 0 ? Math.min((highestLTV.value / effectiveCPA) * 5, 30) : 0) +
+      Math.min((100 - safe(cogs)) * 0.3, 30)
+    );
 
-    // Scale readiness
     const scaleReadiness = {
       profitMarginOk: profitMargin >= 15,
       ltvCacOk: effectiveCPA > 0 && highestLTV.value / effectiveCPA >= 3,
       grossMarginOk: (100 - safe(cogs)) >= 50,
       consistentRevenue: monthlyRevenue >= 10000,
     };
-    const readyToScale = Object.values(scaleReadiness).filter(Boolean).length >= 3;
 
-    // KPI Analysis
     const currencySymbol = CURRENCIES.find(c => c.code === inputs.currency)?.symbol || '$';
     const kpiAnalysis = [
       { name: 'Profit Margin', value: safe(profitMargin), target: 20, direction: 'higher', unit: '%' },
-      { name: 'LTV:CAC Ratio', value: effectiveCPA > 0 ? safe(highestLTV.value / effectiveCPA) : 0, target: 3, direction: 'higher', unit: 'x' },
+      { name: 'LTV:CAC', value: effectiveCPA > 0 ? safe(highestLTV.value / effectiveCPA) : 0, target: 3, direction: 'higher', unit: 'x' },
       { name: 'Gross Margin', value: 100 - safe(cogs), target: 50, direction: 'higher', unit: '%' },
       { name: 'CPA', value: safe(effectiveCPA), target: safe(aov) * 0.3, direction: 'lower', unit: currencySymbol },
       { name: 'COGS', value: safe(cogs), target: 33, direction: 'lower', unit: '%' },
@@ -309,25 +375,14 @@ function useCalculations(inputs: CalcInputs, exchangeRate: number): AllResults {
     }));
 
     return {
-      daily: { revenue: safe(dailyRevenue), profit: safe(dailyProfit), orders: safe(dailyOrders), adSpend: safe(dailyBudget) },
+      daily: { revenue: safe(monthlyRevenue / 30), profit: safe(netProfit / 30), orders: safe(monthlyOrders / 30), adSpend: safe(dailyBudget) },
       monthly: { revenue: safe(monthlyRevenue), profit: safe(netProfit), orders: safe(monthlyOrders), margin: safe(profitMargin), adSpend: safe(monthlyAdSpend) },
-      grossProfit: safe(grossProfit),
-      netProfit: safe(netProfit),
-      profitMargin: safe(profitMargin),
+      grossProfit: safe(grossProfit), netProfit: safe(netProfit), profitMargin: safe(profitMargin),
       healthScore: Math.min(safe(healthScore), 100),
-      futureMonthlyProfit: safe(futureMonthlyProfit),
-      futureMonthlyProfitUSD: safe(futureMonthlyProfitUSD),
-      highestLTV,
-      ltvProjections,
-      scaleReadiness,
-      readyToScale,
-      kpiAnalysis,
-      totalCosts: safe(totalCosts),
-      breakdown: {
-        cogs: safe(cogsCost),
-        adSpend: safe(monthlyAdSpend),
-        processing: safe(processingCost),
-      },
+      futureMonthlyProfit: safe(futureMonthlyProfit), futureMonthlyProfitUSD: safe(futureMonthlyProfitUSD),
+      highestLTV, ltvProjections, scaleReadiness, readyToScale: Object.values(scaleReadiness).filter(Boolean).length >= 3,
+      kpiAnalysis, totalCosts: safe(totalCosts),
+      breakdown: { cogs: safe(cogsCost), adSpend: safe(monthlyAdSpend), processing: safe(processingCost) },
       effectiveCPA: safe(effectiveCPA),
     };
   }, [inputs, exchangeRate]);
@@ -344,76 +399,72 @@ export default function CalculatorsPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Exchange rates
   const [exchangeRates, setExchangeRates] = useState<Record<string, number>>(DEFAULT_RATES);
   const [ratesLoading, setRatesLoading] = useState(false);
   const [lastRateUpdate, setLastRateUpdate] = useState<Date | null>(null);
+  const prevCurrencyRef = useRef('USD');
 
   const [inputs, setInputs] = useState<CalcInputs>({
-    aov: 60,
-    dailyBudget: 500,
-    ltv1m: 60,
-    ltv3m: 120,
-    ltv6m: 200,
-    ltv12m: 350,
-    processingFees: 2.9,
-    cogs: 35,
-    currency: 'USD',
-    acquisitionMode: 'cpa',
-    cpa: 25,
-    conversionRate: 2.5,
-    cpc: 0.5,
+    aov: 60, dailyBudget: 500, ltv1m: 60, ltv3m: 120, ltv6m: 200, ltv12m: 350,
+    processingFees: 2.9, cogs: 35, currency: 'USD',
+    acquisitionMode: 'cpa', cpa: 25, conversionRate: 2.5, cpc: 0.5,
   });
 
   const currentRate = exchangeRates[inputs.currency] || 1;
   const results = useCalculations(inputs, currentRate);
   const currencyInfo = CURRENCIES.find(c => c.code === inputs.currency) || CURRENCIES[0];
 
-  // Format currency with correct symbol
+  // Currency conversion function - converts and displays in selected currency
   const fmt = useCallback((amount: number) => {
     const safeAmount = isFinite(amount) && !isNaN(amount) ? amount : 0;
     return `${currencyInfo.symbol}${Math.round(safeAmount).toLocaleString()}`;
   }, [currencyInfo.symbol]);
 
-  // Fetch exchange rates
+  // Handle currency change - convert all monetary inputs
+  const handleCurrencyChange = useCallback((newCurrency: string) => {
+    const oldRate = exchangeRates[inputs.currency] || 1;
+    const newRate = exchangeRates[newCurrency] || 1;
+    const conversionFactor = newRate / oldRate;
+
+    setInputs(prev => ({
+      ...prev,
+      currency: newCurrency,
+      aov: Math.round(prev.aov * conversionFactor * 100) / 100,
+      dailyBudget: Math.round(prev.dailyBudget * conversionFactor * 100) / 100,
+      cpa: Math.round(prev.cpa * conversionFactor * 100) / 100,
+      cpc: Math.round(prev.cpc * conversionFactor * 1000) / 1000,
+      ltv1m: Math.round(prev.ltv1m * conversionFactor * 100) / 100,
+      ltv3m: Math.round(prev.ltv3m * conversionFactor * 100) / 100,
+      ltv6m: Math.round(prev.ltv6m * conversionFactor * 100) / 100,
+      ltv12m: Math.round(prev.ltv12m * conversionFactor * 100) / 100,
+    }));
+    prevCurrencyRef.current = newCurrency;
+  }, [exchangeRates, inputs.currency]);
+
   const fetchExchangeRates = useCallback(async () => {
     setRatesLoading(true);
     try {
       const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
       if (response.ok) {
         const data = await response.json();
-        if (data.rates) {
-          setExchangeRates(data.rates);
-          setLastRateUpdate(new Date());
-        }
+        if (data.rates) { setExchangeRates(data.rates); setLastRateUpdate(new Date()); }
       }
-    } catch (error) {
-      console.warn('Failed to fetch exchange rates, using defaults');
-    }
+    } catch { console.warn('Failed to fetch exchange rates'); }
     setRatesLoading(false);
   }, []);
 
-  // Fetch rates on mount
-  useEffect(() => {
-    fetchExchangeRates();
-  }, [fetchExchangeRates]);
+  useEffect(() => { fetchExchangeRates(); }, [fetchExchangeRates]);
 
-  // Update monkey state based on Future Monthly Profit
   useEffect(() => {
     const newState = calculateMonkeyState(results.futureMonthlyProfitUSD);
     if (newState !== currentMonkeyState) {
       setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentMonkeyState(newState);
-        setIsTransitioning(false);
-      }, 300);
+      setTimeout(() => { setCurrentMonkeyState(newState); setIsTransitioning(false); }, 300);
     }
   }, [results.futureMonthlyProfitUSD, currentMonkeyState]);
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/login');
-    }
+    if (!isLoading && !user) router.push('/login');
   }, [user, isLoading, router]);
 
   if (isLoading || !user) {
@@ -430,45 +481,33 @@ export default function CalculatorsPage() {
   const currentMonkey = MONKEY_VIDEOS[currentMonkeyState - 1];
 
   const handleInputChange = (key: keyof CalcInputs, value: string | number) => {
-    setInputs(prev => ({ ...prev, [key]: typeof value === 'string' ? (Number(value) || 0) : value }));
+    if (key === 'currency') {
+      handleCurrencyChange(value as string);
+    } else {
+      setInputs(prev => ({ ...prev, [key]: typeof value === 'string' ? (Number(value) || 0) : value }));
+    }
   };
+
+  const readinessScore = Object.values(results.scaleReadiness).filter(Boolean).length;
 
   return (
     <DashboardLayout>
-      <div className="h-[calc(100vh-60px)] w-full flex flex-col bg-white overflow-hidden">
-        {/* TOP SECTION - 60% - Video and Metrics */}
-        <div className="flex flex-row flex-1" style={{ flex: '0 0 60%' }}>
-          {/* Center - Monkey Video (Full Size, No Shadows) */}
-          <div className="flex-1 flex items-center justify-center bg-white">
-            <div className="relative h-full max-h-[90%] aspect-square flex items-center justify-center">
-              <motion.div
-                animate={{ opacity: isTransitioning ? 0 : 1 }}
-                transition={{ duration: 0.4 }}
-                className="w-full h-full rounded-2xl overflow-hidden"
-              >
-                <video
-                  ref={videoRef}
-                  key={currentMonkey?.url}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover rounded-2xl"
-                >
+      {/* Full width wrapper - negative margin to counter any layout padding */}
+      <div className="h-[calc(100vh-60px)] w-full flex flex-col bg-white overflow-hidden -m-0">
+        {/* TOP SECTION - 58% - Video and Metrics */}
+        <div className="flex flex-row" style={{ flex: '0 0 58%' }}>
+          {/* Center - Monkey Video */}
+          <div className="flex-1 flex items-center justify-center bg-white p-2">
+            <div className="relative h-full max-h-[95%] aspect-square flex items-center justify-center">
+              <motion.div animate={{ opacity: isTransitioning ? 0 : 1 }} transition={{ duration: 0.4 }} className="w-full h-full rounded-xl overflow-hidden">
+                <video ref={videoRef} key={currentMonkey?.url} autoPlay loop muted playsInline className="w-full h-full object-cover rounded-xl">
                   <source src={currentMonkey?.url} type="video/mp4" />
                 </video>
-
-                {/* Level indicator badge */}
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="px-3 py-1.5 rounded-lg bg-black/50 backdrop-blur-sm flex items-center gap-2">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{
-                        background: currentMonkeyState >= 13 ? '#22c55e' : currentMonkeyState >= 7 ? '#f59e0b' : '#ef4444'
-                      }}
-                    />
-                    <span className="text-white text-xs font-medium">{currentMonkey?.name}</span>
-                    <span className="text-white/40 text-[10px] ml-auto">Level {currentMonkeyState}/18</span>
+                <div className="absolute bottom-2 left-2 right-2">
+                  <div className="px-2 py-1 rounded-md bg-black/50 backdrop-blur-sm flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: currentMonkeyState >= 13 ? '#22c55e' : currentMonkeyState >= 7 ? '#f59e0b' : '#ef4444' }} />
+                    <span className="text-white text-[10px] font-medium">{currentMonkey?.name}</span>
+                    <span className="text-white/50 text-[9px] ml-auto">Level {currentMonkeyState}/18</span>
                   </div>
                 </div>
               </motion.div>
@@ -476,299 +515,218 @@ export default function CalculatorsPage() {
           </div>
 
           {/* Right - Key Metrics */}
-          <div className="w-72 xl:w-80 p-4 xl:p-6 flex flex-col justify-center bg-white">
+          <div className="w-64 xl:w-72 p-3 flex flex-col justify-center bg-white">
             {/* Net Profit */}
-            <div className="mb-5">
-              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Net Profit / Month</p>
-              <p className="text-2xl xl:text-3xl font-semibold tracking-tight" style={{ color: results.netProfit >= 0 ? '#1a1a1a' : '#dc2626' }}>
+            <div className="mb-4">
+              <p className="text-[9px] font-semibold text-neutral-500 uppercase tracking-wider mb-0.5">Net Profit / Month</p>
+              <p className="text-xl xl:text-2xl font-bold tracking-tight" style={{ color: results.netProfit >= 0 ? '#171717' : '#dc2626' }}>
                 <AnimatedNumber value={results.netProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[11px] text-neutral-400 mt-0.5">Daily: {fmt(results.daily.profit)}</p>
+              <p className="text-[10px] text-neutral-500 mt-0.5">Based on AOV, immediate profit</p>
             </div>
 
             {/* Profit Margin */}
-            <div className="mb-5">
-              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Profit Margin</p>
-              <p className="text-2xl xl:text-3xl font-semibold tracking-tight" style={{ color: results.profitMargin >= 20 ? '#1a1a1a' : results.profitMargin >= 0 ? '#1a1a1a' : '#dc2626' }}>
+            <div className="mb-4">
+              <p className="text-[9px] font-semibold text-neutral-500 uppercase tracking-wider mb-0.5">Profit Margin</p>
+              <p className="text-xl xl:text-2xl font-bold tracking-tight" style={{ color: results.profitMargin >= 0 ? '#171717' : '#dc2626' }}>
                 <AnimatedNumber value={results.profitMargin} suffix="%" decimals={1} />
               </p>
-              <p className="text-[11px] text-neutral-400 mt-0.5">Target: 20%+</p>
+              <p className="text-[10px] text-neutral-500 mt-0.5">Target: 20%+</p>
             </div>
 
             {/* Future Profit */}
-            <div className="mb-5">
-              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Future Monthly Profit</p>
-              <p className="text-2xl xl:text-3xl font-semibold tracking-tight text-neutral-900">
+            <div className="mb-4">
+              <p className="text-[9px] font-semibold text-neutral-500 uppercase tracking-wider mb-0.5">Future Monthly Profit</p>
+              <p className="text-xl xl:text-2xl font-bold tracking-tight text-neutral-900">
                 <AnimatedNumber value={results.futureMonthlyProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[11px] text-neutral-400 mt-0.5">Based on {results.highestLTV.period} LTV</p>
+              <p className="text-[10px] text-neutral-500 mt-0.5">Based on {results.highestLTV.period} LTV</p>
             </div>
 
             {/* Health Score */}
             <div>
-              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Business Health</p>
+              <p className="text-[9px] font-semibold text-neutral-500 uppercase tracking-wider mb-0.5">Business Health</p>
               <div className="flex items-baseline gap-1">
-                <p className="text-2xl xl:text-3xl font-semibold tracking-tight text-neutral-900">
-                  <AnimatedNumber value={results.healthScore} />
-                </p>
-                <span className="text-sm text-neutral-300">/100</span>
+                <p className="text-xl xl:text-2xl font-bold tracking-tight text-neutral-900"><AnimatedNumber value={results.healthScore} /></p>
+                <span className="text-xs text-neutral-400">/100</span>
               </div>
-              <div className="mt-2 h-1 bg-neutral-100 rounded-full overflow-hidden">
-                <motion.div
-                  animate={{ width: `${results.healthScore}%` }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="h-full rounded-full"
-                  style={{
-                    background: results.healthScore >= 70 ? '#22c55e' : results.healthScore >= 40 ? '#f59e0b' : '#ef4444'
-                  }}
-                />
+              <div className="mt-1.5 h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+                <motion.div animate={{ width: `${results.healthScore}%` }} transition={{ duration: 0.5 }} className="h-full rounded-full"
+                  style={{ background: results.healthScore >= 70 ? '#22c55e' : results.healthScore >= 40 ? '#f59e0b' : '#ef4444' }} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* BOTTOM SECTION - 40% - Inputs and Results */}
-        <div className="flex flex-row" style={{ flex: '0 0 40%' }}>
-          {/* Left - Data Input Panel (Pure Black) */}
-          <div className="w-80 xl:w-[340px] p-3 xl:p-4 flex flex-col" style={{ background: '#000000' }}>
+        {/* BOTTOM SECTION - 42% - Inputs and Results */}
+        <div className="flex flex-row" style={{ flex: '0 0 42%' }}>
+          {/* Left - Compact Data Input Panel */}
+          <div className="w-72 xl:w-80 p-2 xl:p-3 flex flex-col justify-between" style={{ background: '#000000' }}>
             {/* Row 1: AOV & Daily Budget */}
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <InputField label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
-              <InputField label="Daily Ad Budget" value={inputs.dailyBudget} onChange={(v) => handleInputChange('dailyBudget', v)} prefix={currencyInfo.symbol} />
+            <div className="grid grid-cols-2 gap-1.5">
+              <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
+              <CompactInput label="Daily Budget" value={inputs.dailyBudget} onChange={(v) => handleInputChange('dailyBudget', v)} prefix={currencyInfo.symbol} />
             </div>
 
-            {/* Row 2: CPA / CR+CPC Toggle */}
-            <div className="mb-2">
-              <div className="flex gap-1 mb-1.5">
-                <button
-                  onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'cpa' }))}
-                  className={`flex-1 py-1 text-[9px] font-medium rounded transition-all ${
-                    inputs.acquisitionMode === 'cpa'
-                      ? 'bg-white text-black'
-                      : 'bg-white/10 text-white/60 hover:bg-white/20'
-                  }`}
-                >
-                  CPA Mode
+            {/* Row 2: CPA Toggle */}
+            <div>
+              <div className="flex gap-1 mb-1">
+                <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'cpa' }))}
+                  className={`flex-1 py-0.5 text-[8px] font-medium rounded ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60'}`}>
+                  CPA
                 </button>
-                <button
-                  onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'crcpc' }))}
-                  className={`flex-1 py-1 text-[9px] font-medium rounded transition-all ${
-                    inputs.acquisitionMode === 'crcpc'
-                      ? 'bg-white text-black'
-                      : 'bg-white/10 text-white/60 hover:bg-white/20'
-                  }`}
-                >
-                  CR + CPC Mode
+                <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'crcpc' }))}
+                  className={`flex-1 py-0.5 text-[8px] font-medium rounded ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60'}`}>
+                  CR+CPC
                 </button>
               </div>
               {inputs.acquisitionMode === 'cpa' ? (
-                <InputField label="CPA (Cost Per Acquisition)" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
+                <CompactInput label="CPA" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
               ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  <InputField label="CR %" value={inputs.conversionRate} onChange={(v) => handleInputChange('conversionRate', v)} suffix="%" step={0.1} />
-                  <InputField label="CPC" value={inputs.cpc} onChange={(v) => handleInputChange('cpc', v)} prefix={currencyInfo.symbol} step={0.01} />
+                <div className="grid grid-cols-2 gap-1.5">
+                  <CompactInput label="CR%" value={inputs.conversionRate} onChange={(v) => handleInputChange('conversionRate', v)} suffix="%" step={0.1} />
+                  <CompactInput label="CPC" value={inputs.cpc} onChange={(v) => handleInputChange('cpc', v)} prefix={currencyInfo.symbol} step={0.01} />
                 </div>
               )}
             </div>
 
-            {/* Row 3: LTV Values */}
-            <div className="mb-2">
-              <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1">LTV by Period</p>
+            {/* Row 3: LTV */}
+            <div>
+              <p className="text-[8px] text-white/50 uppercase mb-0.5">LTV by Period</p>
               <div className="grid grid-cols-4 gap-1">
-                {[
-                  { key: 'ltv1m' as const, label: '1M' },
-                  { key: 'ltv3m' as const, label: '3M' },
-                  { key: 'ltv6m' as const, label: '6M' },
-                  { key: 'ltv12m' as const, label: '12M' },
-                ].map(({ key, label }) => (
+                {[{ key: 'ltv1m' as const, label: '1M' }, { key: 'ltv3m' as const, label: '3M' }, { key: 'ltv6m' as const, label: '6M' }, { key: 'ltv12m' as const, label: '12M' }].map(({ key, label }) => (
                   <div key={key}>
-                    <label className="text-[8px] text-white/50 mb-0.5 block text-center">{label}</label>
-                    <input
-                      type="number"
-                      value={inputs[key]}
-                      onChange={(e) => handleInputChange(key, e.target.value)}
-                      className="w-full bg-white/10 border border-white/20 rounded py-1 text-white text-[10px] text-center focus:outline-none focus:border-white/40"
-                    />
+                    <label className="text-[7px] text-white/40 block text-center">{label}</label>
+                    <input type="number" value={inputs[key]} onChange={(e) => handleInputChange(key, e.target.value)}
+                      className="w-full bg-white/10 border border-white/20 rounded py-0.5 text-white text-[9px] text-center focus:outline-none focus:border-white/40" />
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Row 4: Processing & COGS */}
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <InputField label="Processing Fees %" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
-              <InputField label="COGS %" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
+            {/* Row 4: Fees */}
+            <div className="grid grid-cols-2 gap-1.5">
+              <CompactInput label="Processing %" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
+              <CompactInput label="COGS %" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
             </div>
 
-            {/* Row 5: Currency Selector */}
+            {/* Row 5: Currency */}
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-[9px] text-white/50">Currency</label>
-                <button
-                  onClick={fetchExchangeRates}
-                  disabled={ratesLoading}
-                  className="text-[8px] text-white/40 hover:text-white/60 flex items-center gap-1 transition-colors"
-                >
-                  <RefreshCw className={`w-2.5 h-2.5 ${ratesLoading ? 'animate-spin' : ''}`} />
-                  {lastRateUpdate ? `Updated ${lastRateUpdate.toLocaleTimeString()}` : 'Sync rates'}
+              <div className="flex items-center justify-between mb-0.5">
+                <label className="text-[8px] text-white/50">Currency</label>
+                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[7px] text-white/40 hover:text-white/60 flex items-center gap-0.5">
+                  <RefreshCw className={`w-2 h-2 ${ratesLoading ? 'animate-spin' : ''}`} />
+                  {lastRateUpdate ? 'Synced' : 'Sync'}
                 </button>
               </div>
               <div className="relative">
-                <select
-                  value={inputs.currency}
-                  onChange={(e) => handleInputChange('currency', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded py-1.5 pl-8 pr-2 text-white text-[11px] focus:outline-none focus:border-white/40 appearance-none cursor-pointer"
-                >
-                  {CURRENCIES.map(c => (
-                    <option key={c.code} value={c.code} className="bg-black text-white">
-                      {c.code} - {c.name}
-                    </option>
-                  ))}
+                <select value={inputs.currency} onChange={(e) => handleInputChange('currency', e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded py-1 pl-6 pr-2 text-white text-[9px] focus:outline-none appearance-none cursor-pointer">
+                  {CURRENCIES.map(c => <option key={c.code} value={c.code} className="bg-black text-white">{c.code} - {c.name}</option>)}
                 </select>
-                {/* Flag image */}
-                <img
-                  src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`}
-                  srcSet={`https://flagcdn.com/w40/${currencyInfo.flag}.png 2x`}
-                  alt={currencyInfo.code}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-3 object-cover rounded-[2px]"
-                />
+                <img src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`} alt={currencyInfo.code}
+                  className="absolute left-1.5 top-1/2 -translate-y-1/2 w-3.5 h-2.5 object-cover rounded-[1px]" />
               </div>
             </div>
           </div>
 
-          {/* Right - Results Slider */}
-          <div className="flex-1 bg-white p-4 flex flex-col border-l border-neutral-100 overflow-hidden">
+          {/* Right - Results Slider with Premium Visualizations */}
+          <div className="flex-1 bg-white p-3 flex flex-col overflow-hidden">
             {/* Slider Header */}
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-neutral-900 tracking-tight">{slides[activeSlide]}</h2>
-              <div className="flex items-center gap-2">
-                <div className="flex gap-1 mr-2">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xs font-bold text-neutral-900">{slides[activeSlide]}</h2>
+              <div className="flex items-center gap-1.5">
+                <div className="flex gap-0.5 mr-1">
                   {slides.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveSlide(i)}
-                      className={`h-1 rounded-full transition-all duration-300 ${i === activeSlide ? 'bg-neutral-900 w-4' : 'bg-neutral-200 w-1 hover:bg-neutral-300'}`}
-                    />
+                    <button key={i} onClick={() => setActiveSlide(i)}
+                      className={`h-1 rounded-full transition-all ${i === activeSlide ? 'bg-neutral-900 w-3' : 'bg-neutral-300 w-1'}`} />
                   ))}
                 </div>
-                <button onClick={prevSlide} className="w-6 h-6 rounded-full border border-neutral-200 flex items-center justify-center hover:border-neutral-300 transition-colors">
-                  <ChevronLeft className="w-3 h-3 text-neutral-500" />
+                <button onClick={prevSlide} className="w-5 h-5 rounded-full border border-neutral-300 flex items-center justify-center hover:border-neutral-400">
+                  <ChevronLeft className="w-3 h-3 text-neutral-600" />
                 </button>
-                <button onClick={nextSlide} className="w-6 h-6 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-neutral-800 transition-colors">
+                <button onClick={nextSlide} className="w-5 h-5 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-neutral-800">
                   <ChevronRight className="w-3 h-3 text-white" />
                 </button>
               </div>
             </div>
 
-            {/* Slides Container */}
+            {/* Slides */}
             <div className="flex-1 overflow-hidden">
               <div className="flex transition-transform duration-500 ease-out h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
-                {/* Slide 1: Profit Analysis */}
-                <div className="w-full flex-shrink-0 pr-4">
-                  <div className="grid grid-cols-4 gap-2 mb-3">
-                    <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
-                    <PremiumMetricCard label="Daily Profit" value={fmt(results.daily.profit)} highlight={results.daily.profit >= 0 ? 'positive' : 'negative'} />
-                    <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
-                    <PremiumMetricCard label="Monthly Profit" value={fmt(results.netProfit)} highlight={results.netProfit >= 0 ? 'positive' : 'negative'} />
+                {/* Slide 1: Profit Analysis with Bar Chart */}
+                <div className="w-full flex-shrink-0 pr-3">
+                  <div className="grid grid-cols-4 gap-1.5 mb-2">
+                    <MetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
+                    <MetricCard label="Daily Profit" value={fmt(results.daily.profit)} highlight={results.daily.profit >= 0 ? 'positive' : 'negative'} />
+                    <MetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
+                    <MetricCard label="Monthly Profit" value={fmt(results.netProfit)} highlight={results.netProfit >= 0 ? 'positive' : 'negative'} />
                   </div>
-                  <div>
-                    <p className="text-[10px] text-neutral-400 uppercase tracking-wider mb-2">Cost Breakdown</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { label: 'COGS', value: results.breakdown.cogs, pct: results.totalCosts > 0 ? Math.round((results.breakdown.cogs / results.totalCosts) * 100) : 0 },
-                        { label: 'Ad Spend', value: results.breakdown.adSpend, pct: results.totalCosts > 0 ? Math.round((results.breakdown.adSpend / results.totalCosts) * 100) : 0 },
-                        { label: 'Processing', value: results.breakdown.processing, pct: results.totalCosts > 0 ? Math.round((results.breakdown.processing / results.totalCosts) * 100) : 0 },
-                      ].map((item, i) => (
-                        <div key={i} className="p-2 rounded-lg border border-neutral-100 bg-neutral-50/50">
-                          <p className="text-[9px] text-neutral-400 mb-1">{item.label}</p>
-                          <p className="text-sm font-medium text-neutral-900">{fmt(item.value)}</p>
-                          <p className="text-[9px] text-neutral-300">{item.pct}% of costs</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <p className="text-[9px] font-semibold text-neutral-700 uppercase mb-1.5">Cost Breakdown</p>
+                  <CostBarChart data={[
+                    { label: 'COGS', value: results.breakdown.cogs, pct: results.totalCosts > 0 ? Math.round((results.breakdown.cogs / results.totalCosts) * 100) : 0 },
+                    { label: 'Ad Spend', value: results.breakdown.adSpend, pct: results.totalCosts > 0 ? Math.round((results.breakdown.adSpend / results.totalCosts) * 100) : 0 },
+                    { label: 'Processing', value: results.breakdown.processing, pct: results.totalCosts > 0 ? Math.round((results.breakdown.processing / results.totalCosts) * 100) : 0 },
+                  ]} fmt={fmt} />
                 </div>
 
-                {/* Slide 2: Future Projection */}
-                <div className="w-full flex-shrink-0 px-4">
-                  <div className="grid grid-cols-4 gap-2 mb-3">
-                    {results.ltvProjections.map((ltv, i) => {
-                      const isHighest = ltv.period === results.highestLTV.period;
-                      return (
-                        <div
-                          key={i}
-                          className={`p-2 rounded-lg text-center border transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-100 bg-white hover:border-neutral-200'}`}
-                        >
-                          <p className={`text-[9px] font-medium mb-1 ${isHighest ? 'text-white/60' : 'text-neutral-400'}`}>{ltv.period}</p>
-                          <p className={`text-sm font-semibold ${isHighest ? 'text-white' : ltv.profit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>
-                            {fmt(ltv.profit)}
-                          </p>
-                          <p className={`text-[9px] ${isHighest ? 'text-white/40' : 'text-neutral-300'}`}>{ltv.margin.toFixed(1)}%</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="p-3 rounded-lg border border-neutral-100 bg-neutral-50/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-white" />
+                {/* Slide 2: Future Projection with Area Chart */}
+                <div className="w-full flex-shrink-0 px-3">
+                  <div className="mb-2 p-2 rounded-lg border border-neutral-200 bg-gradient-to-br from-neutral-50 to-white">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b6914 0%, #2c1810 100%)' }}>
+                        <TrendingUp className="w-3.5 h-3.5 text-white" />
                       </div>
                       <div>
-                        <p className="text-[10px] text-neutral-400">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
-                        <p className="text-lg font-semibold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
+                        <p className="text-[9px] text-neutral-600">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
+                        <p className="text-base font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
                       </div>
                     </div>
                   </div>
+                  <p className="text-[9px] font-semibold text-neutral-700 uppercase mb-1">LTV Profit Trajectory</p>
+                  <LTVAreaChart data={results.ltvProjections} fmt={fmt} />
                 </div>
 
-                {/* Slide 3: KPI X-Ray */}
-                <div className="w-full flex-shrink-0 px-4">
+                {/* Slide 3: KPI X-Ray with Progress Rings */}
+                <div className="w-full flex-shrink-0 px-3">
                   <div className="grid grid-cols-3 gap-2">
                     {results.kpiAnalysis.map((kpi, i) => (
-                      <div key={i} className="p-2 rounded-lg border border-neutral-100 bg-white">
-                        <div className="flex items-center gap-1.5 mb-1">
-                          <div
-                            className="w-1.5 h-1.5 rounded-full"
-                            style={{ background: kpi.status === 'green' ? '#22c55e' : kpi.status === 'amber' ? '#f59e0b' : '#ef4444' }}
-                          />
-                          <span className="text-[9px] text-neutral-500">{kpi.name}</span>
-                        </div>
-                        <p className="text-base font-semibold text-neutral-900">
-                          {kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0)}{kpi.unit}
-                        </p>
-                        <p className="text-[9px] text-neutral-300 mt-0.5">
-                          Target: {kpi.direction === 'higher' ? '≥' : '≤'} {kpi.target.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 0 : 0)}{kpi.unit}
-                        </p>
+                      <div key={i} className="p-2 rounded-lg border border-neutral-200 bg-white flex flex-col items-center">
+                        <ProgressRing value={kpi.value} max={kpi.target * 1.5} size={40} status={kpi.status} />
+                        <p className="text-[9px] font-semibold text-neutral-800 mt-1">{kpi.name}</p>
+                        <p className="text-sm font-bold text-neutral-900">{kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0)}{kpi.unit}</p>
+                        <p className="text-[8px] text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Slide 4: Scale Readiness */}
-                <div className="w-full flex-shrink-0 pl-4">
-                  <div className={`p-3 rounded-lg border mb-3 ${results.readyToScale ? 'border-green-200 bg-green-50/50' : 'border-neutral-200 bg-neutral-50/50'}`}>
+                {/* Slide 4: Scale Readiness with Gauge */}
+                <div className="w-full flex-shrink-0 pl-3">
+                  <div className={`p-3 rounded-lg border mb-2 ${results.readyToScale ? 'border-green-300 bg-green-50' : 'border-neutral-200 bg-neutral-50'}`}>
                     <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-300'}`}>
-                        <Rocket className="w-4 h-4 text-white" />
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-400'}`}>
+                        <Rocket className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900">{results.readyToScale ? 'Ready to Scale' : 'Not Ready Yet'}</p>
-                        <p className="text-[10px] text-neutral-400">{results.readyToScale ? 'Healthy fundamentals for scaling' : 'Improve the metrics below first'}</p>
+                        <p className="text-sm font-bold text-neutral-900">{results.readyToScale ? 'Ready to Scale!' : 'Not Ready Yet'}</p>
+                        <p className="text-[10px] text-neutral-600">{results.readyToScale ? 'Your metrics look healthy' : 'Improve metrics below'}</p>
                       </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <ReadinessGauge score={readinessScore} ready={results.readyToScale} />
+                  <div className="grid grid-cols-2 gap-1.5 mt-2">
                     {[
                       { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk },
                       { label: 'LTV:CAC ≥3x', ok: results.scaleReadiness.ltvCacOk },
                       { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk },
-                      { label: `Revenue ≥${currencyInfo.symbol}10K/mo`, ok: results.scaleReadiness.consistentRevenue },
+                      { label: `Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue },
                     ].map((item, i) => (
-                      <div key={i} className={`p-2 rounded-lg border flex items-center gap-2 ${item.ok ? 'border-green-200 bg-green-50/30' : 'border-neutral-100 bg-white'}`}>
-                        <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold ${item.ok ? 'bg-green-500 text-white' : 'bg-neutral-200 text-neutral-400'}`}>
-                          {item.ok ? '✓' : '–'}
+                      <div key={i} className={`p-1.5 rounded border flex items-center gap-1.5 ${item.ok ? 'border-green-300 bg-green-50' : 'border-neutral-200 bg-white'}`}>
+                        <div className={`w-4 h-4 rounded-full flex items-center justify-center ${item.ok ? 'bg-green-500' : 'bg-neutral-300'}`}>
+                          {item.ok ? <Check className="w-2.5 h-2.5 text-white" /> : <X className="w-2.5 h-2.5 text-white" />}
                         </div>
-                        <span className={`text-[10px] ${item.ok ? 'text-green-700' : 'text-neutral-400'}`}>{item.label}</span>
+                        <span className={`text-[9px] font-medium ${item.ok ? 'text-green-700' : 'text-neutral-500'}`}>{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -785,37 +743,27 @@ export default function CalculatorsPage() {
 // ═══════════════════════════════════════════════════════════════════════════════
 // HELPER COMPONENTS
 // ═══════════════════════════════════════════════════════════════════════════════
-function InputField({ label, value, onChange, prefix, suffix, step = 1 }: {
-  label: string;
-  value: number;
-  onChange: (v: string) => void;
-  prefix?: string;
-  suffix?: string;
-  step?: number;
+function CompactInput({ label, value, onChange, prefix, suffix, step = 1 }: {
+  label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number;
 }) {
   return (
     <div>
-      <label className="text-[9px] text-white/60 mb-1 block">{label}</label>
+      <label className="text-[8px] text-white/60 mb-0.5 block">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-white/40">{prefix}</span>}
-        <input
-          type="number"
-          step={step}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/10 border border-white/20 rounded py-1.5 text-white text-[11px] focus:outline-none focus:border-white/40 ${prefix ? 'pl-5 pr-2' : suffix ? 'pl-2 pr-5' : 'px-2'}`}
-        />
-        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-white/40">{suffix}</span>}
+        {prefix && <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[9px] text-white/50">{prefix}</span>}
+        <input type="number" step={step} value={value} onChange={(e) => onChange(e.target.value)}
+          className={`w-full bg-white/10 border border-white/20 rounded py-1 text-white text-[10px] focus:outline-none focus:border-white/40 ${prefix ? 'pl-4 pr-1.5' : suffix ? 'pl-1.5 pr-4' : 'px-1.5'}`} />
+        {suffix && <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[9px] text-white/50">{suffix}</span>}
       </div>
     </div>
   );
 }
 
-function PremiumMetricCard({ label, value, highlight }: { label: string; value: string; highlight?: 'positive' | 'negative' }) {
+function MetricCard({ label, value, highlight }: { label: string; value: string; highlight?: 'positive' | 'negative' }) {
   return (
-    <div className="p-2 rounded-lg border border-neutral-100 bg-white">
-      <p className="text-[9px] text-neutral-400 uppercase tracking-wide mb-1">{label}</p>
-      <p className={`text-sm font-semibold ${highlight === 'negative' ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
+    <div className="p-1.5 rounded border border-neutral-200 bg-white">
+      <p className="text-[8px] font-medium text-neutral-600 uppercase mb-0.5">{label}</p>
+      <p className={`text-xs font-bold ${highlight === 'negative' ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
     </div>
   );
 }
