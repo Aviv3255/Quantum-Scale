@@ -2,34 +2,52 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { ChevronLeft, ChevronRight, TrendingUp, Target, Zap, Rocket, BarChart3 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, TrendingUp, Rocket } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MONKEY VIDEO STATES - 18 levels from struggling to empire
+// MONKEY VIDEO STATES - 18 levels (1=worst, 18=best)
+// State calculation: Based on profit size + margin health
 // ═══════════════════════════════════════════════════════════════════════════════
 const MONKEY_VIDEOS = [
-  { id: 1, name: 'Homeless', url: 'https://cdn.shopify.com/videos/c/o/v/639e07e9268a4bf2875c7a8665d2a469.mp4', minMargin: -Infinity, maxMargin: -50 },
-  { id: 2, name: 'Struggling', url: 'https://cdn.shopify.com/videos/c/o/v/8e8b8097e0d74e51a133ea885e86924f.mp4', minMargin: -50, maxMargin: -30 },
-  { id: 3, name: 'Surviving', url: 'https://cdn.shopify.com/videos/c/o/v/0d96734e40dd42aaac6647fcd98b9576.mp4', minMargin: -30, maxMargin: -15 },
-  { id: 4, name: 'Getting By', url: 'https://cdn.shopify.com/videos/c/o/v/5e2b0ef6ef74411e8157fd146a17b137.mp4', minMargin: -15, maxMargin: -5 },
-  { id: 5, name: 'Stable', url: 'https://cdn.shopify.com/videos/c/o/v/a7759003dfca4403b8dd663a60304f82.mp4', minMargin: -5, maxMargin: 5 },
-  { id: 6, name: 'Improving', url: 'https://cdn.shopify.com/videos/c/o/v/16787ad04e6b479db6ba97cf9de8cf68.mp4', minMargin: 5, maxMargin: 10 },
-  { id: 7, name: 'Comfortable', url: 'https://cdn.shopify.com/videos/c/o/v/07a6058a491249d5a7f24712de3e9edc.mp4', minMargin: 10, maxMargin: 15 },
-  { id: 8, name: 'Doing Well', url: 'https://cdn.shopify.com/videos/c/o/v/8c1d9a9490a84309ac84ba909ab49e1c.mp4', minMargin: 15, maxMargin: 20 },
-  { id: 9, name: 'Professional', url: 'https://cdn.shopify.com/videos/c/o/v/d9df1a51b53e47b5b5883c6dea45c0ef.mp4', minMargin: 20, maxMargin: 25 },
-  { id: 10, name: 'Established', url: 'https://cdn.shopify.com/videos/c/o/v/463041b48b3a496f85ce1d969dd1c6bb.mp4', minMargin: 25, maxMargin: 30 },
-  { id: 11, name: 'Successful', url: 'https://cdn.shopify.com/videos/c/o/v/234b9710ba904b7b93d02f959c365dff.mp4', minMargin: 30, maxMargin: 35 },
-  { id: 12, name: 'Thriving', url: 'https://cdn.shopify.com/videos/c/o/v/c961d8e551c64e5780efadc19c799eab.mp4', minMargin: 35, maxMargin: 40 },
-  { id: 13, name: 'Wealthy', url: 'https://cdn.shopify.com/videos/c/o/v/c343d8c0801147c990fc89db9dfe91bd.mp4', minMargin: 40, maxMargin: 45 },
-  { id: 14, name: 'Rich', url: 'https://cdn.shopify.com/videos/c/o/v/e7c2f5e913124c4396e00b8ce587aa8a.mp4', minMargin: 45, maxMargin: 50 },
-  { id: 15, name: 'Elite', url: 'https://cdn.shopify.com/videos/c/o/v/6bda13bfa2894e13a407c1f99f7dd742.mp4', minMargin: 50, maxMargin: 55 },
-  { id: 16, name: 'Mogul', url: 'https://cdn.shopify.com/videos/c/o/v/2a47ae17ae184f66972ef1923ec75455.mp4', minMargin: 55, maxMargin: 60 },
-  { id: 17, name: 'Tycoon', url: 'https://cdn.shopify.com/videos/c/o/v/46966eb60df241cf95bc4a5d4f22e7cf.mp4', minMargin: 60, maxMargin: 70 },
-  { id: 18, name: 'Empire', url: 'https://cdn.shopify.com/videos/c/o/v/f19366a8a038416888b2d781b50e67f6.mp4', minMargin: 70, maxMargin: Infinity },
+  { id: 1, name: 'Homeless', url: 'https://cdn.shopify.com/videos/c/o/v/639e07e9268a4bf2875c7a8665d2a469.mp4' },
+  { id: 2, name: 'Struggling', url: 'https://cdn.shopify.com/videos/c/o/v/8e8b8097e0d74e51a133ea885e86924f.mp4' },
+  { id: 3, name: 'Surviving', url: 'https://cdn.shopify.com/videos/c/o/v/0d96734e40dd42aaac6647fcd98b9576.mp4' },
+  { id: 4, name: 'Getting By', url: 'https://cdn.shopify.com/videos/c/o/v/5e2b0ef6ef74411e8157fd146a17b137.mp4' },
+  { id: 5, name: 'Stable', url: 'https://cdn.shopify.com/videos/c/o/v/a7759003dfca4403b8dd663a60304f82.mp4' },
+  { id: 6, name: 'Improving', url: 'https://cdn.shopify.com/videos/c/o/v/16787ad04e6b479db6ba97cf9de8cf68.mp4' },
+  { id: 7, name: 'Comfortable', url: 'https://cdn.shopify.com/videos/c/o/v/07a6058a491249d5a7f24712de3e9edc.mp4' },
+  { id: 8, name: 'Doing Well', url: 'https://cdn.shopify.com/videos/c/o/v/8c1d9a9490a84309ac84ba909ab49e1c.mp4' },
+  { id: 9, name: 'Professional', url: 'https://cdn.shopify.com/videos/c/o/v/d9df1a51b53e47b5b5883c6dea45c0ef.mp4' },
+  { id: 10, name: 'Established', url: 'https://cdn.shopify.com/videos/c/o/v/463041b48b3a496f85ce1d969dd1c6bb.mp4' },
+  { id: 11, name: 'Successful', url: 'https://cdn.shopify.com/videos/c/o/v/234b9710ba904b7b93d02f959c365dff.mp4' },
+  { id: 12, name: 'Thriving', url: 'https://cdn.shopify.com/videos/c/o/v/c961d8e551c64e5780efadc19c799eab.mp4' },
+  { id: 13, name: 'Wealthy', url: 'https://cdn.shopify.com/videos/c/o/v/c343d8c0801147c990fc89db9dfe91bd.mp4' },
+  { id: 14, name: 'Rich', url: 'https://cdn.shopify.com/videos/c/o/v/e7c2f5e913124c4396e00b8ce587aa8a.mp4' },
+  { id: 15, name: 'Elite', url: 'https://cdn.shopify.com/videos/c/o/v/6bda13bfa2894e13a407c1f99f7dd742.mp4' },
+  { id: 16, name: 'Mogul', url: 'https://cdn.shopify.com/videos/c/o/v/2a47ae17ae184f66972ef1923ec75455.mp4' },
+  { id: 17, name: 'Tycoon', url: 'https://cdn.shopify.com/videos/c/o/v/46966eb60df241cf95bc4a5d4f22e7cf.mp4' },
+  { id: 18, name: 'Empire', url: 'https://cdn.shopify.com/videos/c/o/v/f19366a8a038416888b2d781b50e67f6.mp4' },
 ];
+
+// Calculate monkey state (1-18) based on profit and margin
+function calculateMonkeyState(monthlyProfit: number, profitMargin: number): number {
+  // Scoring: 60% weight on profit, 40% on margin
+  // Profit score: -10k or less = 0, 50k+ = 100
+  const profitScore = Math.min(100, Math.max(0, (monthlyProfit + 10000) / 600));
+
+  // Margin score: <0% = 0, 40%+ = 100
+  const marginScore = Math.min(100, Math.max(0, profitMargin * 2.5));
+
+  // Combined score (0-100)
+  const combinedScore = (profitScore * 0.6) + (marginScore * 0.4);
+
+  // Map to state 1-18
+  const state = Math.max(1, Math.min(18, Math.ceil(combinedScore / 100 * 18)));
+  return state;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -95,7 +113,7 @@ function AnimatedNumber({ value, prefix = '', suffix = '', decimals = 0 }: {
   useEffect(() => {
     const startValue = previousValue.current;
     const endValue = value;
-    const duration = 800;
+    const duration = 600;
     const startTime = performance.now();
 
     const animate = (currentTime: number) => {
@@ -247,20 +265,17 @@ export default function CalculatorsPage() {
     return `${CURRENCIES[inputs.currency]}${Math.round(converted).toLocaleString()}`;
   }, [inputs.currency]);
 
-  // Update monkey state based on profit margin
+  // Update monkey state based on profit + margin (1=worst, 18=best)
   useEffect(() => {
-    const profitMargin = results.profitMargin;
-    const newMonkeyState = MONKEY_VIDEOS.findIndex(
-      m => profitMargin >= m.minMargin && profitMargin < m.maxMargin
-    );
-    if (newMonkeyState !== -1 && newMonkeyState !== currentMonkeyState) {
+    const newState = calculateMonkeyState(results.netProfit, results.profitMargin);
+    if (newState !== currentMonkeyState) {
       setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentMonkeyState(newMonkeyState);
+        setCurrentMonkeyState(newState);
         setIsTransitioning(false);
       }, 300);
     }
-  }, [results.profitMargin, currentMonkeyState]);
+  }, [results.netProfit, results.profitMargin, currentMonkeyState]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -271,7 +286,7 @@ export default function CalculatorsPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[#007AFF] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -279,7 +294,7 @@ export default function CalculatorsPage() {
   const slides = ['Profit Analysis', 'Future Projection', 'KPI X-Ray', 'Scale Readiness'];
   const nextSlide = () => setActiveSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  const currentMonkey = MONKEY_VIDEOS[currentMonkeyState];
+  const currentMonkey = MONKEY_VIDEOS[currentMonkeyState - 1]; // -1 because array is 0-indexed
 
   const handleInputChange = (key: keyof CalcInputs, value: string | number) => {
     setInputs(prev => ({ ...prev, [key]: typeof value === 'string' ? (Number(value) || 0) : value }));
@@ -287,30 +302,16 @@ export default function CalculatorsPage() {
 
   return (
     <DashboardLayout>
-      <div className="h-[calc(100vh-60px)] flex flex-col" style={{ background: '#FAFAFA' }}>
-        {/* TOP SECTION - 60% viewport with video and metrics */}
-        <div className="flex-1 min-h-0 flex flex-col lg:flex-row relative overflow-hidden" style={{ flex: '0 0 60%' }}>
-          {/* Left side icons */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-3">
-            <button className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
-              <BarChart3 className="w-5 h-5 text-gray-600" />
-            </button>
-            <button className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
-              <Target className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
-
-          {/* Center - Monkey Video */}
-          <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
-            <div className="relative w-full max-w-md aspect-square">
+      <div className="h-[calc(100vh-60px)] flex flex-col bg-white">
+        {/* TOP SECTION - 60% - Video and Metrics */}
+        <div className="flex flex-row" style={{ flex: '0 0 60%' }}>
+          {/* Center - Monkey Video (Full Size, No Shadows) */}
+          <div className="flex-1 flex items-center justify-center bg-white p-4">
+            <div className="relative w-full h-full max-w-xl flex items-center justify-center">
               <motion.div
-                animate={{ opacity: isTransitioning ? 0 : 1, scale: isTransitioning ? 0.95 : 1 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl"
-                style={{
-                  background: 'linear-gradient(145deg, #1a1a1a, #0a0a0a)',
-                  boxShadow: '0 25px 80px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.2)'
-                }}
+                animate={{ opacity: isTransitioning ? 0 : 1 }}
+                transition={{ duration: 0.4 }}
+                className="w-full aspect-square rounded-2xl overflow-hidden"
               >
                 <video
                   ref={videoRef}
@@ -319,86 +320,73 @@ export default function CalculatorsPage() {
                   loop
                   muted
                   playsInline
-                  className="w-full h-full object-cover"
-                  style={{ borderRadius: '24px' }}
+                  className="w-full h-full object-cover rounded-2xl"
                 >
                   <source src={currentMonkey?.url} type="video/mp4" />
                 </video>
 
-                {/* Status badge */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div
-                    className="px-4 py-2 rounded-xl backdrop-blur-md flex items-center gap-2"
-                    style={{
-                      background: 'rgba(0,0,0,0.6)',
-                      border: '1px solid rgba(255,255,255,0.1)'
-                    }}
-                  >
+                {/* Minimal status badge */}
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="px-3 py-1.5 rounded-lg bg-black/50 backdrop-blur-sm flex items-center gap-2">
                     <div
-                      className="w-2 h-2 rounded-full animate-pulse"
+                      className="w-1.5 h-1.5 rounded-full"
                       style={{
-                        background: results.profitMargin >= 20 ? '#22c55e' : results.profitMargin >= 0 ? '#f59e0b' : '#ef4444'
+                        background: currentMonkeyState >= 13 ? '#22c55e' : currentMonkeyState >= 7 ? '#f59e0b' : '#ef4444'
                       }}
                     />
-                    <span className="text-white text-sm font-medium">{currentMonkey?.name}</span>
-                    <span className="text-white/50 text-xs ml-auto">Level {currentMonkeyState + 1}/18</span>
+                    <span className="text-white text-xs font-medium">{currentMonkey?.name}</span>
+                    <span className="text-white/40 text-[10px] ml-auto">Level {currentMonkeyState}/18</span>
                   </div>
                 </div>
               </motion.div>
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-2xl" />
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 blur-2xl" />
             </div>
           </div>
 
-          {/* Right side - Key Metrics */}
-          <div className="lg:w-80 xl:w-96 p-4 lg:p-6 flex flex-col justify-center gap-3">
+          {/* Right - Key Metrics (No Cards, Just Numbers) */}
+          <div className="w-72 xl:w-80 p-6 flex flex-col justify-center bg-white">
             {/* Net Profit */}
-            <div className="p-4 rounded-2xl bg-white" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Net Profit / Month</p>
-              <p className="text-2xl xl:text-3xl font-bold transition-colors duration-300" style={{ color: results.netProfit >= 0 ? '#22c55e' : '#ef4444' }}>
+            <div className="mb-6">
+              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Net Profit / Month</p>
+              <p className="text-3xl xl:text-4xl font-semibold tracking-tight" style={{ color: results.netProfit >= 0 ? '#1a1a1a' : '#dc2626' }}>
                 <AnimatedNumber value={results.netProfit} prefix={CURRENCIES[inputs.currency]} />
               </p>
-              <p className="text-[10px] text-gray-400 mt-1">Daily: {fmt(results.daily.profit)}</p>
+              <p className="text-[11px] text-neutral-400 mt-0.5">Daily: {fmt(results.daily.profit)}</p>
             </div>
 
             {/* Profit Margin */}
-            <div className="p-4 rounded-2xl bg-white" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Profit Margin</p>
-              <p className="text-2xl xl:text-3xl font-bold transition-colors duration-300" style={{ color: results.profitMargin >= 20 ? '#22c55e' : results.profitMargin >= 0 ? '#f59e0b' : '#ef4444' }}>
+            <div className="mb-6">
+              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Profit Margin</p>
+              <p className="text-3xl xl:text-4xl font-semibold tracking-tight" style={{ color: results.profitMargin >= 20 ? '#1a1a1a' : results.profitMargin >= 0 ? '#1a1a1a' : '#dc2626' }}>
                 <AnimatedNumber value={results.profitMargin} suffix="%" decimals={1} />
               </p>
-              <p className="text-[10px] text-gray-400 mt-1">Target: 20%+</p>
+              <p className="text-[11px] text-neutral-400 mt-0.5">Target: 20%+</p>
             </div>
 
             {/* Future Profit */}
-            <div className="p-4 rounded-2xl bg-white" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Future Monthly Profit</p>
-              <p className="text-2xl xl:text-3xl font-bold text-gray-900">
+            <div className="mb-6">
+              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Future Monthly Profit</p>
+              <p className="text-3xl xl:text-4xl font-semibold tracking-tight text-neutral-900">
                 <AnimatedNumber value={results.futureMonthlyProfit} prefix={CURRENCIES[inputs.currency]} />
               </p>
-              <p className="text-[10px] text-gray-400 mt-1">Based on {results.highestLTV.period} LTV</p>
+              <p className="text-[11px] text-neutral-400 mt-0.5">Based on {results.highestLTV.period} LTV</p>
             </div>
 
             {/* Health Score */}
-            <div className="p-4 rounded-2xl bg-white" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">Business Health</p>
-              <div className="flex items-end gap-2">
-                <p className="text-2xl xl:text-3xl font-bold text-gray-900">
+            <div>
+              <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">Business Health</p>
+              <div className="flex items-baseline gap-1">
+                <p className="text-3xl xl:text-4xl font-semibold tracking-tight text-neutral-900">
                   <AnimatedNumber value={results.healthScore} />
                 </p>
-                <span className="text-sm text-gray-400 mb-1">/100</span>
+                <span className="text-sm text-neutral-300">/100</span>
               </div>
-              <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div className="mt-2 h-1 bg-neutral-100 rounded-full overflow-hidden">
                 <motion.div
                   animate={{ width: `${results.healthScore}%` }}
-                  transition={{ duration: 0.7, ease: 'easeOut' }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
                   className="h-full rounded-full"
                   style={{
-                    background: results.healthScore >= 70 ? 'linear-gradient(90deg, #22c55e, #10b981)' :
-                               results.healthScore >= 40 ? 'linear-gradient(90deg, #f59e0b, #fbbf24)' :
-                               'linear-gradient(90deg, #ef4444, #dc2626)'
+                    background: results.healthScore >= 70 ? '#22c55e' : results.healthScore >= 40 ? '#f59e0b' : '#ef4444'
                   }}
                 />
               </div>
@@ -406,57 +394,33 @@ export default function CalculatorsPage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION - 40% viewport with inputs and results slider */}
-        <div className="flex flex-col lg:flex-row" style={{ flex: '0 0 40%', minHeight: 0 }}>
-          {/* Left - Data Input Panel (Dark) */}
-          <div className="lg:w-[380px] xl:w-[420px] p-5 overflow-y-auto" style={{ background: 'linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%)' }}>
-            {/* Section selector */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-white/40 text-xs">Sections</span>
-              <div className="flex gap-1 ml-2">
-                {['1', '2', '3', '4'].map((num, i) => (
-                  <button
-                    key={num}
-                    className={`w-7 h-7 rounded-lg text-[10px] font-medium transition-all ${i === 0 ? 'bg-white text-black' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {/* Revenue & Orders */}
-              <div className="space-y-2">
-                <h3 className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">Revenue & Orders</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <InputField label="Monthly Revenue" value={inputs.monthlyRevenue} onChange={(v) => handleInputChange('monthlyRevenue', v)} prefix="$" />
-                  <InputField label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix="$" />
-                </div>
+        {/* BOTTOM SECTION - 40% - Inputs and Results */}
+        <div className="flex flex-row" style={{ flex: '0 0 40%' }}>
+          {/* Left - Data Input Panel (Pure Black, No Scroll) */}
+          <div className="w-80 xl:w-96 p-4 xl:p-5 flex flex-col" style={{ background: '#000000' }}>
+            <div className="flex-1 flex flex-col gap-3">
+              {/* Row 1: Revenue & AOV */}
+              <div className="grid grid-cols-2 gap-2">
+                <InputField label="Monthly Revenue" value={inputs.monthlyRevenue} onChange={(v) => handleInputChange('monthlyRevenue', v)} prefix="$" />
+                <InputField label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix="$" />
               </div>
 
-              {/* Acquisition */}
-              <div className="space-y-2">
-                <h3 className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">Acquisition</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <InputField label="CAC" value={inputs.cac} onChange={(v) => handleInputChange('cac', v)} prefix="$" />
-                  <InputField label="Ad Spend" value={inputs.adSpend} onChange={(v) => handleInputChange('adSpend', v)} prefix="$" />
-                </div>
+              {/* Row 2: CAC & Ad Spend */}
+              <div className="grid grid-cols-2 gap-2">
+                <InputField label="CAC" value={inputs.cac} onChange={(v) => handleInputChange('cac', v)} prefix="$" />
+                <InputField label="Ad Spend" value={inputs.adSpend} onChange={(v) => handleInputChange('adSpend', v)} prefix="$" />
               </div>
 
-              {/* Costs */}
-              <div className="space-y-2">
-                <h3 className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">Costs</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <InputField label="COGS (%)" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
-                  <InputField label="Fees (%)" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
-                </div>
-                <InputField label="Other Monthly Costs" value={inputs.otherCosts} onChange={(v) => handleInputChange('otherCosts', v)} prefix="$" />
+              {/* Row 3: COGS, Fees, Other */}
+              <div className="grid grid-cols-3 gap-2">
+                <InputField label="COGS %" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} />
+                <InputField label="Fees %" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} step={0.1} />
+                <InputField label="Other" value={inputs.otherCosts} onChange={(v) => handleInputChange('otherCosts', v)} prefix="$" />
               </div>
 
-              {/* LTV Metrics */}
-              <div className="space-y-2">
-                <h3 className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">LTV Metrics</h3>
+              {/* Row 4: LTV Values */}
+              <div>
+                <p className="text-[9px] text-white/40 uppercase tracking-wider mb-1.5">LTV by Period</p>
                 <div className="grid grid-cols-5 gap-1.5">
                   {[
                     { key: 'ltv1m' as const, label: '1M' },
@@ -466,67 +430,62 @@ export default function CalculatorsPage() {
                     { key: 'ltv24m' as const, label: '24M' },
                   ].map(({ key, label }) => (
                     <div key={key}>
-                      <label className="text-[9px] text-white/50 mb-1 block text-center">{label}</label>
+                      <label className="text-[8px] text-white/50 mb-0.5 block text-center">{label}</label>
                       <input
                         type="number"
                         value={inputs[key]}
                         onChange={(e) => handleInputChange(key, e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg py-1.5 text-white text-xs text-center focus:outline-none focus:border-white/30"
+                        className="w-full bg-white/10 border border-white/20 rounded py-1.5 text-white text-[11px] text-center focus:outline-none focus:border-white/40"
                       />
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Currency */}
-              <div>
-                <label className="text-[10px] text-white/50 mb-1.5 block">Currency</label>
-                <select
-                  value={inputs.currency}
-                  onChange={(e) => handleInputChange('currency', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-white text-sm focus:outline-none focus:border-white/30"
-                >
-                  {Object.keys(CURRENCIES).map(c => (
-                    <option key={c} value={c} className="bg-[#1a1a1a]">{c} ({CURRENCIES[c]})</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Info card */}
-            <div className="mt-5 p-3 rounded-xl" style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' }}>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-4 h-4 text-white" />
-                </div>
+              {/* Row 5: Currency */}
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-white font-semibold text-xs">Real-time Analysis</p>
-                  <p className="text-white/70 text-[10px] mt-0.5">Metrics update instantly as you adjust</p>
+                  <label className="text-[9px] text-white/50 mb-1 block">Currency</label>
+                  <select
+                    value={inputs.currency}
+                    onChange={(e) => handleInputChange('currency', e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded py-1.5 text-white text-[11px] focus:outline-none focus:border-white/40"
+                  >
+                    {Object.keys(CURRENCIES).map(c => (
+                      <option key={c} value={c} className="bg-black text-white">{c}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <div className="w-full py-1.5 px-2 rounded bg-white/5 border border-white/10">
+                    <p className="text-[9px] text-white/40">Orders/mo</p>
+                    <p className="text-white text-sm font-medium">{Math.round(results.monthly.orders)}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right - Results Slider */}
-          <div className="flex-1 bg-white p-5 overflow-hidden flex flex-col">
+          {/* Right - Results Slider (Premium Design) */}
+          <div className="flex-1 bg-white p-5 flex flex-col border-l border-neutral-100">
             {/* Slider Header */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-900">{slides[activeSlide]}</h2>
+              <h2 className="text-sm font-semibold text-neutral-900 tracking-tight">{slides[activeSlide]}</h2>
               <div className="flex items-center gap-2">
-                <div className="flex gap-1 mr-3">
+                <div className="flex gap-1 mr-2">
                   {slides.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setActiveSlide(i)}
-                      className={`h-1.5 rounded-full transition-all ${i === activeSlide ? 'bg-gray-900 w-5' : 'bg-gray-300 w-1.5 hover:bg-gray-400'}`}
+                      className={`h-1 rounded-full transition-all duration-300 ${i === activeSlide ? 'bg-neutral-900 w-4' : 'bg-neutral-200 w-1 hover:bg-neutral-300'}`}
                     />
                   ))}
                 </div>
-                <button onClick={prevSlide} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                  <ChevronLeft className="w-4 h-4 text-gray-600" />
+                <button onClick={prevSlide} className="w-7 h-7 rounded-full border border-neutral-200 flex items-center justify-center hover:border-neutral-300 transition-colors">
+                  <ChevronLeft className="w-3.5 h-3.5 text-neutral-500" />
                 </button>
-                <button onClick={nextSlide} className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center hover:bg-gray-800 transition-colors">
-                  <ChevronRight className="w-4 h-4 text-white" />
+                <button onClick={nextSlide} className="w-7 h-7 rounded-full bg-neutral-900 flex items-center justify-center hover:bg-neutral-800 transition-colors">
+                  <ChevronRight className="w-3.5 h-3.5 text-white" />
                 </button>
               </div>
             </div>
@@ -536,27 +495,25 @@ export default function CalculatorsPage() {
               <div className="flex transition-transform duration-500 ease-out h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
                 {/* Slide 1: Profit Analysis */}
                 <div className="w-full flex-shrink-0 pr-4">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    <MetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
-                    <MetricCard label="Daily Profit" value={fmt(results.daily.profit)} color={results.daily.profit >= 0 ? '#22c55e' : '#ef4444'} />
-                    <MetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
-                    <MetricCard label="Monthly Profit" value={fmt(results.netProfit)} color={results.netProfit >= 0 ? '#22c55e' : '#ef4444'} />
+                  <div className="grid grid-cols-4 gap-3 mb-4">
+                    <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
+                    <PremiumMetricCard label="Daily Profit" value={fmt(results.daily.profit)} highlight={results.daily.profit >= 0 ? 'positive' : 'negative'} />
+                    <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
+                    <PremiumMetricCard label="Monthly Profit" value={fmt(results.netProfit)} highlight={results.netProfit >= 0 ? 'positive' : 'negative'} />
                   </div>
-                  <div className="mt-4">
-                    <h3 className="text-xs font-semibold text-gray-900 mb-2">Cost Breakdown</h3>
+                  <div>
+                    <p className="text-[10px] text-neutral-400 uppercase tracking-wider mb-2">Cost Breakdown</p>
                     <div className="grid grid-cols-4 gap-2">
                       {[
-                        { label: 'COGS', value: results.breakdown.cogs, color: '#ef4444' },
-                        { label: 'Ad Spend', value: results.breakdown.adSpend, color: '#f59e0b' },
-                        { label: 'Processing', value: results.breakdown.processing, color: '#3b82f6' },
-                        { label: 'Other', value: results.breakdown.other, color: '#8b5cf6' },
+                        { label: 'COGS', value: results.breakdown.cogs, pct: Math.round((results.breakdown.cogs / results.totalCosts) * 100) },
+                        { label: 'Ad Spend', value: results.breakdown.adSpend, pct: Math.round((results.breakdown.adSpend / results.totalCosts) * 100) },
+                        { label: 'Processing', value: results.breakdown.processing, pct: Math.round((results.breakdown.processing / results.totalCosts) * 100) },
+                        { label: 'Other', value: results.breakdown.other, pct: Math.round((results.breakdown.other / results.totalCosts) * 100) },
                       ].map((item, i) => (
-                        <div key={i} className="p-2 rounded-lg bg-gray-50">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <div className="w-1.5 h-1.5 rounded-full" style={{ background: item.color }} />
-                            <span className="text-[10px] text-gray-500">{item.label}</span>
-                          </div>
-                          <p className="text-sm font-bold text-gray-900">{fmt(item.value)}</p>
+                        <div key={i} className="p-2.5 rounded-lg border border-neutral-100 bg-neutral-50/50">
+                          <p className="text-[9px] text-neutral-400 mb-1">{item.label}</p>
+                          <p className="text-sm font-medium text-neutral-900">{fmt(item.value)}</p>
+                          <p className="text-[9px] text-neutral-300">{item.pct || 0}% of costs</p>
                         </div>
                       ))}
                     </div>
@@ -565,30 +522,31 @@ export default function CalculatorsPage() {
 
                 {/* Slide 2: Future Projection */}
                 <div className="w-full flex-shrink-0 px-4">
-                  <div className="grid grid-cols-5 gap-2">
-                    {results.ltvProjections.map((ltv, i) => (
-                      <div
-                        key={i}
-                        className="p-3 rounded-xl text-center transition-all hover:scale-105"
-                        style={{
-                          background: ltv.period === results.highestLTV.period ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' : '#f9fafb',
-                          color: ltv.period === results.highestLTV.period ? 'white' : 'inherit'
-                        }}
-                      >
-                        <p className={`text-[10px] font-semibold mb-1 ${ltv.period === results.highestLTV.period ? 'text-white/80' : 'text-gray-400'}`}>{ltv.period}</p>
-                        <p className={`text-sm font-bold mb-0.5 ${ltv.period === results.highestLTV.period ? 'text-white' : ltv.profit >= 0 ? 'text-green-600' : 'text-red-500'}`}>{fmt(ltv.profit)}</p>
-                        <p className={`text-[9px] ${ltv.period === results.highestLTV.period ? 'text-white/70' : 'text-gray-400'}`}>{ltv.margin.toFixed(1)}%</p>
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-5 gap-2 mb-4">
+                    {results.ltvProjections.map((ltv, i) => {
+                      const isHighest = ltv.period === results.highestLTV.period;
+                      return (
+                        <div
+                          key={i}
+                          className={`p-3 rounded-lg text-center border transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-100 bg-white hover:border-neutral-200'}`}
+                        >
+                          <p className={`text-[9px] font-medium mb-1 ${isHighest ? 'text-white/60' : 'text-neutral-400'}`}>{ltv.period}</p>
+                          <p className={`text-sm font-semibold ${isHighest ? 'text-white' : ltv.profit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>
+                            {fmt(ltv.profit)}
+                          </p>
+                          <p className={`text-[9px] ${isHighest ? 'text-white/40' : 'text-neutral-300'}`}>{ltv.margin.toFixed(1)}%</p>
+                        </div>
+                      );
+                    })}
                   </div>
-                  <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+                  <div className="p-4 rounded-lg border border-neutral-100 bg-neutral-50/30">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
-                        <TrendingUp className="w-5 h-5 text-white" />
+                      <div className="w-9 h-9 rounded-lg bg-neutral-900 flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
-                        <p className="text-2xl font-bold text-gray-900">{fmt(results.futureMonthlyProfit)}</p>
+                        <p className="text-[10px] text-neutral-400">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
+                        <p className="text-xl font-semibold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
                       </div>
                     </div>
                   </div>
@@ -598,22 +556,20 @@ export default function CalculatorsPage() {
                 <div className="w-full flex-shrink-0 px-4">
                   <div className="grid grid-cols-3 gap-2">
                     {results.kpiAnalysis.map((kpi, i) => (
-                      <div
-                        key={i}
-                        className="p-3 rounded-xl border"
-                        style={{
-                          background: kpi.status === 'green' ? '#f0fdf4' : kpi.status === 'amber' ? '#fffbeb' : '#fef2f2',
-                          borderColor: kpi.status === 'green' ? '#bbf7d0' : kpi.status === 'amber' ? '#fde68a' : '#fecaca'
-                        }}
-                      >
-                        <div className="flex items-center gap-1.5 mb-1">
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: kpi.status === 'green' ? '#22c55e' : kpi.status === 'amber' ? '#f59e0b' : '#ef4444' }} />
-                          <span className="text-[10px] font-medium text-gray-600">{kpi.name}</span>
+                      <div key={i} className="p-3 rounded-lg border border-neutral-100 bg-white">
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <div
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ background: kpi.status === 'green' ? '#22c55e' : kpi.status === 'amber' ? '#f59e0b' : '#ef4444' }}
+                          />
+                          <span className="text-[10px] text-neutral-500">{kpi.name}</span>
                         </div>
-                        <p className="text-lg font-bold" style={{ color: kpi.status === 'green' ? '#16a34a' : kpi.status === 'amber' ? '#d97706' : '#dc2626' }}>
+                        <p className="text-lg font-semibold text-neutral-900">
                           {kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0)}{kpi.unit}
                         </p>
-                        <p className="text-[9px] text-gray-400">Target: {kpi.direction === 'higher' ? '≥' : '≤'} {kpi.target}{kpi.unit}</p>
+                        <p className="text-[9px] text-neutral-300 mt-1">
+                          Target: {kpi.direction === 'higher' ? '≥' : '≤'} {kpi.target}{kpi.unit}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -621,20 +577,14 @@ export default function CalculatorsPage() {
 
                 {/* Slide 4: Scale Readiness */}
                 <div className="w-full flex-shrink-0 pl-4">
-                  <div
-                    className="p-4 rounded-xl mb-3"
-                    style={{
-                      background: results.readyToScale ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' : 'linear-gradient(135deg, #fef2f2 0%, #fecaca 100%)',
-                      border: `1px solid ${results.readyToScale ? '#bbf7d0' : '#fecaca'}`
-                    }}
-                  >
+                  <div className={`p-4 rounded-lg border mb-3 ${results.readyToScale ? 'border-green-200 bg-green-50/50' : 'border-neutral-200 bg-neutral-50/50'}`}>
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: results.readyToScale ? '#22c55e' : '#ef4444' }}>
-                        <Rocket className="w-6 h-6 text-white" />
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-300'}`}>
+                        <Rocket className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-gray-900">{results.readyToScale ? 'Ready to Scale!' : 'Not Ready Yet'}</p>
-                        <p className="text-xs text-gray-500">{results.readyToScale ? 'Healthy fundamentals for scaling' : 'Improve factors below first'}</p>
+                        <p className="text-base font-semibold text-neutral-900">{results.readyToScale ? 'Ready to Scale' : 'Not Ready Yet'}</p>
+                        <p className="text-[11px] text-neutral-400">{results.readyToScale ? 'Healthy fundamentals for scaling' : 'Improve the metrics below first'}</p>
                       </div>
                     </div>
                   </div>
@@ -645,15 +595,11 @@ export default function CalculatorsPage() {
                       { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk },
                       { label: 'Revenue ≥$10K/mo', ok: results.scaleReadiness.consistentRevenue },
                     ].map((item, i) => (
-                      <div
-                        key={i}
-                        className="p-3 rounded-lg flex items-center gap-2"
-                        style={{ background: item.ok ? '#f0fdf4' : '#f9fafb', border: `1px solid ${item.ok ? '#bbf7d0' : '#e5e7eb'}` }}
-                      >
-                        <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: item.ok ? '#22c55e' : '#d1d5db' }}>
+                      <div key={i} className={`p-2.5 rounded-lg border flex items-center gap-2 ${item.ok ? 'border-green-200 bg-green-50/30' : 'border-neutral-100 bg-white'}`}>
+                        <div className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold ${item.ok ? 'bg-green-500 text-white' : 'bg-neutral-200 text-neutral-400'}`}>
                           {item.ok ? '✓' : '–'}
                         </div>
-                        <span className={`text-xs font-medium ${item.ok ? 'text-green-700' : 'text-gray-500'}`}>{item.label}</span>
+                        <span className={`text-[11px] ${item.ok ? 'text-green-700' : 'text-neutral-400'}`}>{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -680,7 +626,7 @@ function InputField({ label, value, onChange, prefix, suffix, step = 1 }: {
 }) {
   return (
     <div>
-      <label className="text-[10px] text-white/50 mb-1 block">{label}</label>
+      <label className="text-[9px] text-white/60 mb-1 block">{label}</label>
       <div className="relative">
         {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-white/40">{prefix}</span>}
         <input
@@ -688,7 +634,7 @@ function InputField({ label, value, onChange, prefix, suffix, step = 1 }: {
           step={step}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/5 border border-white/10 rounded-lg py-1.5 text-white text-sm focus:outline-none focus:border-white/30 ${prefix ? 'pl-5 pr-2' : suffix ? 'pl-2 pr-5' : 'px-2'}`}
+          className={`w-full bg-white/10 border border-white/20 rounded py-1.5 text-white text-[11px] focus:outline-none focus:border-white/40 ${prefix ? 'pl-4 pr-2' : suffix ? 'pl-2 pr-4' : 'px-2'}`}
         />
         {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-white/40">{suffix}</span>}
       </div>
@@ -696,11 +642,11 @@ function InputField({ label, value, onChange, prefix, suffix, step = 1 }: {
   );
 }
 
-function MetricCard({ label, value, color }: { label: string; value: string; color?: string }) {
+function PremiumMetricCard({ label, value, highlight }: { label: string; value: string; highlight?: 'positive' | 'negative' }) {
   return (
-    <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-      <p className="text-[10px] font-medium text-gray-400 uppercase mb-0.5">{label}</p>
-      <p className="text-lg font-bold" style={{ color: color || '#1a1a1a' }}>{value}</p>
+    <div className="p-3 rounded-lg border border-neutral-100 bg-white">
+      <p className="text-[9px] text-neutral-400 uppercase tracking-wide mb-1">{label}</p>
+      <p className={`text-base font-semibold ${highlight === 'negative' ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
     </div>
   );
 }
