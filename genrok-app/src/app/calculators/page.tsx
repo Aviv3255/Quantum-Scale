@@ -344,10 +344,10 @@ export default function CalculatorsPage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION - 40% - Inputs and Results with consistent bottom padding */}
-        <div className="flex flex-row border-t border-neutral-200 pb-2" style={{ height: '40%' }}>
-          {/* Left - Data Input Panel */}
-          <div className="w-72 xl:w-80 px-3 py-2 flex flex-col justify-between bg-neutral-950 overflow-hidden">
+        {/* BOTTOM SECTION - 40% - Inputs and Results */}
+        <div className="flex flex-row border-t border-neutral-200" style={{ height: '40%' }}>
+          {/* Left - Data Input Panel - Black background extends to bottom */}
+          <div className="w-72 xl:w-80 px-3 py-3 flex flex-col justify-between bg-neutral-950 overflow-hidden">
             {/* Row 1 - Basic Inputs */}
             <div className="grid grid-cols-2 gap-1.5">
               <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
@@ -590,13 +590,15 @@ export default function CalculatorsPage() {
 
 // Helper Components
 function CompactInput({ label, value, onChange, prefix, suffix, step = 1 }: { label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number; }) {
+  // Dynamic padding based on prefix length (handles C$, HK$, NT$, etc.)
+  const prefixPadding = prefix ? (prefix.length > 1 ? 'pl-7' : 'pl-5') : '';
   return (
     <div>
       <label className="text-[9px] text-white/70 uppercase font-medium block">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[12px] text-white/50">{prefix}</span>}
+        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] text-white/50">{prefix}</span>}
         <input type="number" step={step} value={value} onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[13px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-5' : ''}`} />
+          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[13px] focus:outline-none focus:border-white/40 transition-colors ${prefixPadding} ${suffix ? 'pr-5' : ''}`} />
         {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-white/50">{suffix}</span>}
       </div>
     </div>
