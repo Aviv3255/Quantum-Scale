@@ -310,31 +310,31 @@ export default function CalculatorsPage() {
           {/* Right - Key Metrics - No border, slightly more centered */}
           <div className="w-56 xl:w-64 px-6 py-3 flex flex-col justify-center bg-white">
             <div className="mb-3">
-              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Net Profit / Month</p>
-              <p className="text-xl xl:text-2xl font-bold" style={{ color: results.netProfit >= 0 ? '#0a0a0a' : '#dc2626' }}>
+              <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Net Profit / Month</p>
+              <p className="text-2xl xl:text-3xl font-bold" style={{ color: results.netProfit >= 0 ? '#0a0a0a' : '#dc2626' }}>
                 <AnimatedNumber value={results.netProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[9px] text-neutral-400">Based on AOV, immediate profit</p>
+              <p className="text-[10px] text-neutral-400">Based on AOV, immediate profit</p>
             </div>
             <div className="mb-3">
-              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Profit Margin</p>
-              <p className="text-xl xl:text-2xl font-bold" style={{ color: results.profitMargin >= 0 ? '#0a0a0a' : '#dc2626' }}>
-                <AnimatedNumber value={results.profitMargin} suffix="%" decimals={1} />
+              <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Profit Margin ({results.highestLTV.period} LTV)</p>
+              <p className="text-2xl xl:text-3xl font-bold" style={{ color: results.ltvProjections.find(l => l.period === results.highestLTV.period)?.margin ?? 0 >= 0 ? '#0a0a0a' : '#dc2626' }}>
+                <AnimatedNumber value={results.ltvProjections.find(l => l.period === results.highestLTV.period)?.margin ?? 0} suffix="%" decimals={1} />
               </p>
-              <p className="text-[9px] text-neutral-400">Target: 20%+</p>
+              <p className="text-[10px] text-neutral-400">Based on highest LTV period</p>
             </div>
             <div className="mb-3">
-              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Future Monthly Profit</p>
-              <p className="text-xl xl:text-2xl font-bold text-neutral-900">
+              <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Future Monthly Profit</p>
+              <p className="text-2xl xl:text-3xl font-bold text-neutral-900">
                 <AnimatedNumber value={results.futureMonthlyProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[9px] text-neutral-400">Based on {results.highestLTV.period} LTV</p>
+              <p className="text-[10px] text-neutral-400">Based on {results.highestLTV.period} LTV</p>
             </div>
             <div>
-              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Business Health</p>
+              <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Business Health</p>
               <div className="flex items-baseline gap-1">
-                <p className="text-xl xl:text-2xl font-bold text-neutral-900"><AnimatedNumber value={results.healthScore} /></p>
-                <span className="text-xs text-neutral-400">/100</span>
+                <p className="text-2xl xl:text-3xl font-bold text-neutral-900"><AnimatedNumber value={results.healthScore} /></p>
+                <span className="text-sm text-neutral-400">/100</span>
               </div>
               <div className="mt-1 h-1 w-24 bg-neutral-200 rounded-full overflow-hidden">
                 <motion.div animate={{ width: `${results.healthScore}%` }} transition={{ duration: 0.5 }} className="h-full rounded-full"
@@ -346,25 +346,25 @@ export default function CalculatorsPage() {
 
         {/* BOTTOM SECTION - 40% - Inputs and Results */}
         <div className="flex flex-row border-t border-neutral-200" style={{ height: '40%' }}>
-          {/* Left - Data Input Panel */}
-          <div className="w-72 xl:w-80 px-4 py-2.5 flex flex-col gap-1.5 bg-neutral-950 overflow-hidden">
+          {/* Left - Data Input Panel - with safe padding to prevent cutoff */}
+          <div className="w-72 xl:w-80 px-3 py-2 pb-3 flex flex-col gap-1 bg-neutral-950 overflow-hidden">
             {/* Row 1 - Basic Inputs */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-1.5">
               <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
               <CompactInput label="Daily Budget" value={inputs.dailyBudget} onChange={(v) => handleInputChange('dailyBudget', v)} prefix={currencyInfo.symbol} />
             </div>
             {/* Row 2 - Acquisition Mode */}
             <div>
-              <div className="flex gap-1.5 mb-1">
+              <div className="flex gap-1 mb-0.5">
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'cpa' }))}
-                  className={`flex-1 py-1.5 text-[11px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CPA Mode</button>
+                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CPA Mode</button>
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'crcpc' }))}
-                  className={`flex-1 py-1.5 text-[11px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CR + CPC</button>
+                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CR + CPC</button>
               </div>
               {inputs.acquisitionMode === 'cpa' ? (
-                <CompactInput label="Cost Per Acquisition" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
+                <CompactInput label="CPA" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
               ) : (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-1.5">
                   <CompactInput label="Conv. Rate" value={inputs.conversionRate} onChange={(v) => handleInputChange('conversionRate', v)} suffix="%" step={0.1} />
                   <CompactInput label="CPC" value={inputs.cpc} onChange={(v) => handleInputChange('cpc', v)} prefix={currencyInfo.symbol} step={0.01} />
                 </div>
@@ -372,38 +372,38 @@ export default function CalculatorsPage() {
             </div>
             {/* Row 3 - LTV */}
             <div>
-              <p className="text-[10px] text-white/70 uppercase font-medium mb-1">Customer LTV by Period</p>
-              <div className="grid grid-cols-4 gap-1.5">
+              <p className="text-[9px] text-white/70 uppercase font-medium mb-0.5">Customer LTV by Period</p>
+              <div className="grid grid-cols-4 gap-1">
                 {[{ k: 'ltv1m' as const, l: '1M' }, { k: 'ltv3m' as const, l: '3M' }, { k: 'ltv6m' as const, l: '6M' }, { k: 'ltv12m' as const, l: '12M' }].map(({ k, l }) => (
                   <div key={k}>
-                    <label className="text-[9px] text-white/50 block text-center mb-0.5">{l}</label>
+                    <label className="text-[8px] text-white/50 block text-center">{l}</label>
                     <input type="number" value={inputs[k]} onChange={(e) => handleInputChange(k, e.target.value)}
-                      className="w-full bg-white/10 border border-white/20 rounded px-1 py-1.5 text-white text-[13px] text-center focus:outline-none focus:border-white/40 transition-colors" />
+                      className="w-full bg-white/10 border border-white/20 rounded px-1 py-1 text-white text-[12px] text-center focus:outline-none focus:border-white/40 transition-colors" />
                   </div>
                 ))}
               </div>
             </div>
             {/* Row 4 - Fees */}
-            <div className="grid grid-cols-2 gap-2">
-              <CompactInput label="Processing Fee" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
-              <CompactInput label="COGS" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
+            <div className="grid grid-cols-2 gap-1.5">
+              <CompactInput label="Processing %" value={inputs.processingFees} onChange={(v) => handleInputChange('processingFees', v)} suffix="%" step={0.1} />
+              <CompactInput label="COGS %" value={inputs.cogs} onChange={(v) => handleInputChange('cogs', v)} suffix="%" />
             </div>
             {/* Row 5 - Currency with Custom Dropdown */}
             <div className="relative">
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-[10px] text-white/70 uppercase font-medium">Currency</label>
-                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[9px] text-white/50 hover:text-white/80 flex items-center gap-1 transition-colors">
-                  <RefreshCw className={`w-3 h-3 ${ratesLoading ? 'animate-spin' : ''}`} />
-                  {lastRateUpdate ? 'Synced' : 'Sync Rates'}
+              <div className="flex items-center justify-between">
+                <label className="text-[9px] text-white/70 uppercase font-medium">Currency</label>
+                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[8px] text-white/50 hover:text-white/80 flex items-center gap-1 transition-colors">
+                  <RefreshCw className={`w-2.5 h-2.5 ${ratesLoading ? 'animate-spin' : ''}`} />
+                  {lastRateUpdate ? 'Synced' : 'Sync'}
                 </button>
               </div>
               <button
                 onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
-                className="w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[12px] focus:outline-none focus:border-white/40 transition-colors flex items-center gap-2"
+                className="w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[11px] focus:outline-none focus:border-white/40 transition-colors flex items-center gap-2"
               >
                 <img src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
                 <span className="font-medium">{currencyInfo.code}</span>
-                <span className="text-white/50 text-[11px]">{currencyInfo.name}</span>
+                <span className="text-white/50 text-[10px]">{currencyInfo.name}</span>
                 <ChevronRight className={`w-3 h-3 ml-auto text-white/40 transition-transform ${currencyDropdownOpen ? 'rotate-90' : ''}`} />
               </button>
               {currencyDropdownOpen && (
@@ -415,8 +415,8 @@ export default function CalculatorsPage() {
                       className={`w-full px-3 py-2 flex items-center gap-2 hover:bg-white/10 transition-colors text-left ${c.code === inputs.currency ? 'bg-white/10' : ''}`}
                     >
                       <img src={`https://flagcdn.com/w20/${c.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
-                      <span className="text-white text-[12px] font-medium">{c.code}</span>
-                      <span className="text-white/50 text-[11px]">{c.name}</span>
+                      <span className="text-white text-[11px] font-medium">{c.code}</span>
+                      <span className="text-white/50 text-[10px]">{c.name}</span>
                     </button>
                   ))}
                 </div>
@@ -447,15 +447,19 @@ export default function CalculatorsPage() {
               <div className="flex transition-transform duration-500 ease-out h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
                 {/* Slide 1: Profit Analysis */}
                 <div className="w-full flex-shrink-0 pr-6 flex flex-col">
-                  <div className="grid grid-cols-4 gap-3 mb-3">
-                    <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} icon="💰" />
-                    <PremiumMetricCard label="Daily Profit" value={fmt(results.daily.profit)} negative={results.daily.profit < 0} icon="📈" />
-                    <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} icon="🏆" />
-                    <PremiumMetricCard label="Monthly Profit" value={fmt(results.netProfit)} negative={results.netProfit < 0} icon="💎" />
+                  <div className="grid grid-cols-3 gap-3 mb-3">
+                    <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
+                    <PremiumMetricCard label="Daily Profit (AOV)" value={fmt(results.daily.profit)} negative={results.daily.profit < 0} />
+                    <PremiumMetricCard label={`Daily Profit (${results.highestLTV.period} LTV)`} value={fmt(results.futureMonthlyProfit / 30)} negative={results.futureMonthlyProfit < 0} highlight />
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 mb-3">
+                    <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
+                    <PremiumMetricCard label="Monthly Profit (AOV)" value={fmt(results.netProfit)} negative={results.netProfit < 0} />
+                    <PremiumMetricCard label={`Monthly Profit (${results.highestLTV.period} LTV)`} value={fmt(results.futureMonthlyProfit)} negative={results.futureMonthlyProfit < 0} highlight />
                   </div>
                   <div className="flex-1 bg-white rounded-xl border border-neutral-200 p-4 shadow-sm">
-                    <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-3">Cost Breakdown</p>
-                    <div className="flex flex-col justify-center gap-3 h-[calc(100%-2rem)]">
+                    <p className="text-sm font-bold text-neutral-800 uppercase tracking-wide mb-2">Cost Breakdown</p>
+                    <div className="flex flex-col justify-center gap-2 h-[calc(100%-2rem)]">
                       {[
                         { label: 'COGS', value: results.breakdown.cogs, color: '#8b6914' },
                         { label: 'Ad Spend', value: results.breakdown.adSpend, color: '#2c1810' },
@@ -467,13 +471,13 @@ export default function CalculatorsPage() {
                           : 0;
                         return (
                           <div key={i} className="flex items-center gap-3">
-                            <span className="text-xs font-semibold text-neutral-700 w-20">{item.label}</span>
-                            <div className="flex-1 h-6 bg-neutral-100 rounded-lg overflow-hidden relative">
+                            <span className="text-sm font-semibold text-neutral-700 w-20">{item.label}</span>
+                            <div className="flex-1 h-5 bg-neutral-100 rounded-lg overflow-hidden relative">
                               <motion.div initial={{ width: 0 }} animate={{ width: `${safePct}%` }} transition={{ duration: 0.6, ease: 'easeOut' }}
                                 className="h-full rounded-lg" style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}dd)` }} />
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-neutral-700">{fmt(safeValue)}</span>
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-neutral-700">{fmt(safeValue)}</span>
                             </div>
-                            <span className="text-xs font-bold text-neutral-800 w-12 text-right">{safePct}%</span>
+                            <span className="text-sm font-bold text-neutral-800 w-12 text-right">{safePct}%</span>
                           </div>
                         );
                       })}
@@ -489,12 +493,12 @@ export default function CalculatorsPage() {
                         <TrendingUp className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-[11px] text-neutral-500 font-medium">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
-                        <p className="text-xl font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
+                        <p className="text-sm text-neutral-500 font-medium">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
+                        <p className="text-2xl font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-2">LTV Profit Projection</p>
+                  <p className="text-sm font-bold text-neutral-800 uppercase tracking-wide mb-2">LTV Profit Projection</p>
                   <div className="flex-1 grid grid-cols-4 gap-3 content-center">
                     {results.ltvProjections.map((ltv, i) => {
                       const isHighest = ltv.period === results.highestLTV.period;
@@ -502,9 +506,9 @@ export default function CalculatorsPage() {
                       const safeMargin = isFinite(ltv.margin) ? ltv.margin : 0;
                       return (
                         <div key={i} className={`p-4 rounded-xl text-center border-2 transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900 shadow-lg scale-105' : 'border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-md'}`}>
-                          <p className={`text-xs font-bold mb-1 ${isHighest ? 'text-white/70' : 'text-neutral-500'}`}>{ltv.period}</p>
-                          <p className={`text-lg font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
-                          <p className={`text-[10px] font-medium ${isHighest ? 'text-white/50' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}% margin</p>
+                          <p className={`text-sm font-bold mb-1 ${isHighest ? 'text-white/70' : 'text-neutral-500'}`}>{ltv.period}</p>
+                          <p className={`text-xl font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
+                          <p className={`text-xs font-medium ${isHighest ? 'text-white/50' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}% margin</p>
                         </div>
                       );
                     })}
@@ -531,14 +535,14 @@ export default function CalculatorsPage() {
                       const dashOffset = 113 - (safePct / 100) * 113;
                       return (
                         <div key={i} className="p-4 rounded-xl border border-neutral-200 bg-white shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-                          <svg width="48" height="48" className="transform -rotate-90">
-                            <circle cx="24" cy="24" r="18" fill="none" stroke="#e5e5e5" strokeWidth="5" />
-                            <circle cx="24" cy="24" r="18" fill="none" stroke={color} strokeWidth="5" strokeLinecap="round"
-                              strokeDasharray={113} strokeDashoffset={dashOffset} style={{ transition: 'stroke-dashoffset 0.6s ease-out' }} />
+                          <svg width="52" height="52" className="transform -rotate-90">
+                            <circle cx="26" cy="26" r="20" fill="none" stroke="#e5e5e5" strokeWidth="5" />
+                            <circle cx="26" cy="26" r="20" fill="none" stroke={color} strokeWidth="5" strokeLinecap="round"
+                              strokeDasharray={126} strokeDashoffset={126 - (safePct / 100) * 126} style={{ transition: 'stroke-dashoffset 0.6s ease-out' }} />
                           </svg>
-                          <p className="text-[11px] font-bold text-neutral-800 mt-2">{kpi.name}</p>
-                          <p className="text-base font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
-                          <p className="text-[10px] text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
+                          <p className="text-sm font-bold text-neutral-800 mt-2">{kpi.name}</p>
+                          <p className="text-lg font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
+                          <p className="text-xs text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
                         </div>
                       );
                     })}
@@ -589,25 +593,22 @@ export default function CalculatorsPage() {
 function CompactInput({ label, value, onChange, prefix, suffix, step = 1 }: { label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number; }) {
   return (
     <div>
-      <label className="text-[10px] text-white/70 uppercase font-medium block mb-0.5">{label}</label>
+      <label className="text-[9px] text-white/70 uppercase font-medium block">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[13px] text-white/50">{prefix}</span>}
+        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[12px] text-white/50">{prefix}</span>}
         <input type="number" step={step} value={value} onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[14px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-6' : ''}`} />
-        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[13px] text-white/50">{suffix}</span>}
+          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[13px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-5' : ''}`} />
+        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-white/50">{suffix}</span>}
       </div>
     </div>
   );
 }
 
-function PremiumMetricCard({ label, value, negative, icon }: { label: string; value: string; negative?: boolean; icon?: string }) {
+function PremiumMetricCard({ label, value, negative, highlight }: { label: string; value: string; negative?: boolean; highlight?: boolean }) {
   return (
-    <div className="p-3 rounded-xl border border-neutral-200 bg-white shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-1.5 mb-1">
-        {icon && <span className="text-sm">{icon}</span>}
-        <p className="text-[10px] font-semibold text-neutral-500 uppercase">{label}</p>
-      </div>
-      <p className={`text-sm font-bold ${negative ? 'text-red-600' : 'text-neutral-900'}`}>{value}</p>
+    <div className={`p-3 rounded-xl border shadow-sm hover:shadow-md transition-shadow ${highlight ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-200 bg-white'}`}>
+      <p className={`text-[11px] font-semibold uppercase mb-1 ${highlight ? 'text-white/60' : 'text-neutral-500'}`}>{label}</p>
+      <p className={`text-base font-bold ${highlight ? (negative ? 'text-red-400' : 'text-white') : (negative ? 'text-red-600' : 'text-neutral-900')}`}>{value}</p>
     </div>
   );
 }
