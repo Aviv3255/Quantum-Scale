@@ -372,7 +372,10 @@ export default function CalculatorsPage() {
             </div>
             {/* Row 3 - LTV */}
             <div>
-              <p className="text-[9px] text-white/70 uppercase font-medium mb-0.5">Customer LTV by Period</p>
+              <p className="text-[9px] text-white/70 uppercase font-medium mb-0.5">
+                Customer LTV by Period{' '}
+                <a href="https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-white/80 underline normal-case transition-colors">(Check your LTV)</a>
+              </p>
               <div className="grid grid-cols-4 gap-1">
                 {[{ k: 'ltv1m' as const, l: '1M' }, { k: 'ltv3m' as const, l: '3M' }, { k: 'ltv6m' as const, l: '6M' }, { k: 'ltv12m' as const, l: '12M' }].map(({ k, l }) => (
                   <div key={k}>
