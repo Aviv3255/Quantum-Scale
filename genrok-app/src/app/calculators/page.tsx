@@ -277,8 +277,8 @@ export default function CalculatorsPage() {
           minHeight: 'calc(100vh - 64px)'
         }}
       >
-        {/* TOP SECTION - 55% - Video and Metrics */}
-        <div className="flex flex-row" style={{ height: '55%' }}>
+        {/* TOP SECTION - 60% - Video and Metrics */}
+        <div className="flex flex-row" style={{ height: '60%' }}>
           {/* Video Section - Natural aspect ratio, full height */}
           <div className="flex-1 relative flex items-center justify-center bg-white">
             <div className="h-full flex items-center justify-center p-3">
@@ -307,36 +307,36 @@ export default function CalculatorsPage() {
             </div>
           </div>
 
-          {/* Right - Key Metrics */}
-          <div className="w-60 xl:w-72 px-4 py-3 flex flex-col justify-center bg-white border-l border-neutral-100">
+          {/* Right - Key Metrics - No border, slightly more centered */}
+          <div className="w-56 xl:w-64 px-6 py-3 flex flex-col justify-center bg-white">
             <div className="mb-3">
-              <p className="text-[9px] font-semibold text-neutral-600 uppercase tracking-wider">Net Profit / Month</p>
-              <p className="text-lg xl:text-xl font-bold" style={{ color: results.netProfit >= 0 ? '#0a0a0a' : '#dc2626' }}>
+              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Net Profit / Month</p>
+              <p className="text-xl xl:text-2xl font-bold" style={{ color: results.netProfit >= 0 ? '#0a0a0a' : '#dc2626' }}>
                 <AnimatedNumber value={results.netProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[9px] text-neutral-500">Based on AOV, immediate profit</p>
+              <p className="text-[9px] text-neutral-400">Based on AOV, immediate profit</p>
             </div>
             <div className="mb-3">
-              <p className="text-[9px] font-semibold text-neutral-600 uppercase tracking-wider">Profit Margin</p>
-              <p className="text-lg xl:text-xl font-bold" style={{ color: results.profitMargin >= 0 ? '#0a0a0a' : '#dc2626' }}>
+              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Profit Margin</p>
+              <p className="text-xl xl:text-2xl font-bold" style={{ color: results.profitMargin >= 0 ? '#0a0a0a' : '#dc2626' }}>
                 <AnimatedNumber value={results.profitMargin} suffix="%" decimals={1} />
               </p>
-              <p className="text-[9px] text-neutral-500">Target: 20%+</p>
+              <p className="text-[9px] text-neutral-400">Target: 20%+</p>
             </div>
             <div className="mb-3">
-              <p className="text-[9px] font-semibold text-neutral-600 uppercase tracking-wider">Future Monthly Profit</p>
-              <p className="text-lg xl:text-xl font-bold text-neutral-900">
+              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Future Monthly Profit</p>
+              <p className="text-xl xl:text-2xl font-bold text-neutral-900">
                 <AnimatedNumber value={results.futureMonthlyProfit} prefix={currencyInfo.symbol} />
               </p>
-              <p className="text-[9px] text-neutral-500">Based on {results.highestLTV.period} LTV</p>
+              <p className="text-[9px] text-neutral-400">Based on {results.highestLTV.period} LTV</p>
             </div>
             <div>
-              <p className="text-[9px] font-semibold text-neutral-600 uppercase tracking-wider">Business Health</p>
+              <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">Business Health</p>
               <div className="flex items-baseline gap-1">
-                <p className="text-lg xl:text-xl font-bold text-neutral-900"><AnimatedNumber value={results.healthScore} /></p>
+                <p className="text-xl xl:text-2xl font-bold text-neutral-900"><AnimatedNumber value={results.healthScore} /></p>
                 <span className="text-xs text-neutral-400">/100</span>
               </div>
-              <div className="mt-1 h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+              <div className="mt-1 h-1 w-24 bg-neutral-200 rounded-full overflow-hidden">
                 <motion.div animate={{ width: `${results.healthScore}%` }} transition={{ duration: 0.5 }} className="h-full rounded-full"
                   style={{ background: results.healthScore >= 70 ? '#22c55e' : results.healthScore >= 40 ? '#f59e0b' : '#ef4444' }} />
               </div>
@@ -344,10 +344,10 @@ export default function CalculatorsPage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION - 45% - Inputs and Results */}
-        <div className="flex flex-row border-t border-neutral-200" style={{ height: '45%' }}>
+        {/* BOTTOM SECTION - 40% - Inputs and Results */}
+        <div className="flex flex-row border-t border-neutral-200" style={{ height: '40%' }}>
           {/* Left - Data Input Panel */}
-          <div className="w-72 xl:w-80 px-4 py-3 flex flex-col gap-2 bg-neutral-950 overflow-hidden">
+          <div className="w-72 xl:w-80 px-4 py-2.5 flex flex-col gap-1.5 bg-neutral-950 overflow-hidden">
             {/* Row 1 - Basic Inputs */}
             <div className="grid grid-cols-2 gap-2">
               <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
@@ -355,11 +355,11 @@ export default function CalculatorsPage() {
             </div>
             {/* Row 2 - Acquisition Mode */}
             <div>
-              <div className="flex gap-1 mb-1">
+              <div className="flex gap-1.5 mb-1">
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'cpa' }))}
-                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CPA Mode</button>
+                  className={`flex-1 py-1.5 text-[11px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'cpa' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CPA Mode</button>
                 <button onClick={() => setInputs(prev => ({ ...prev, acquisitionMode: 'crcpc' }))}
-                  className={`flex-1 py-1 text-[10px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CR + CPC</button>
+                  className={`flex-1 py-1.5 text-[11px] font-semibold rounded transition-all ${inputs.acquisitionMode === 'crcpc' ? 'bg-white text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}>CR + CPC</button>
               </div>
               {inputs.acquisitionMode === 'cpa' ? (
                 <CompactInput label="Cost Per Acquisition" value={inputs.cpa} onChange={(v) => handleInputChange('cpa', v)} prefix={currencyInfo.symbol} />
@@ -372,13 +372,13 @@ export default function CalculatorsPage() {
             </div>
             {/* Row 3 - LTV */}
             <div>
-              <p className="text-[9px] text-white/60 uppercase font-medium mb-1">Customer LTV by Period</p>
+              <p className="text-[10px] text-white/70 uppercase font-medium mb-1">Customer LTV by Period</p>
               <div className="grid grid-cols-4 gap-1.5">
                 {[{ k: 'ltv1m' as const, l: '1M' }, { k: 'ltv3m' as const, l: '3M' }, { k: 'ltv6m' as const, l: '6M' }, { k: 'ltv12m' as const, l: '12M' }].map(({ k, l }) => (
                   <div key={k}>
-                    <label className="text-[8px] text-white/50 block text-center mb-0.5">{l}</label>
+                    <label className="text-[9px] text-white/50 block text-center mb-0.5">{l}</label>
                     <input type="number" value={inputs[k]} onChange={(e) => handleInputChange(k, e.target.value)}
-                      className="w-full bg-white/10 border border-white/20 rounded px-1 py-1 text-white text-[11px] text-center focus:outline-none focus:border-white/40 transition-colors" />
+                      className="w-full bg-white/10 border border-white/20 rounded px-1 py-1.5 text-white text-[13px] text-center focus:outline-none focus:border-white/40 transition-colors" />
                   </div>
                 ))}
               </div>
@@ -391,19 +391,19 @@ export default function CalculatorsPage() {
             {/* Row 5 - Currency with Custom Dropdown */}
             <div className="relative">
               <div className="flex items-center justify-between mb-1">
-                <label className="text-[9px] text-white/60 uppercase font-medium">Currency</label>
-                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[8px] text-white/50 hover:text-white/80 flex items-center gap-1 transition-colors">
-                  <RefreshCw className={`w-2.5 h-2.5 ${ratesLoading ? 'animate-spin' : ''}`} />
+                <label className="text-[10px] text-white/70 uppercase font-medium">Currency</label>
+                <button onClick={fetchExchangeRates} disabled={ratesLoading} className="text-[9px] text-white/50 hover:text-white/80 flex items-center gap-1 transition-colors">
+                  <RefreshCw className={`w-3 h-3 ${ratesLoading ? 'animate-spin' : ''}`} />
                   {lastRateUpdate ? 'Synced' : 'Sync Rates'}
                 </button>
               </div>
               <button
                 onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
-                className="w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[11px] focus:outline-none focus:border-white/40 transition-colors flex items-center gap-2"
+                className="w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[12px] focus:outline-none focus:border-white/40 transition-colors flex items-center gap-2"
               >
                 <img src={`https://flagcdn.com/w20/${currencyInfo.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
                 <span className="font-medium">{currencyInfo.code}</span>
-                <span className="text-white/50 text-[10px]">{currencyInfo.name}</span>
+                <span className="text-white/50 text-[11px]">{currencyInfo.name}</span>
                 <ChevronRight className={`w-3 h-3 ml-auto text-white/40 transition-transform ${currencyDropdownOpen ? 'rotate-90' : ''}`} />
               </button>
               {currencyDropdownOpen && (
@@ -415,8 +415,8 @@ export default function CalculatorsPage() {
                       className={`w-full px-3 py-2 flex items-center gap-2 hover:bg-white/10 transition-colors text-left ${c.code === inputs.currency ? 'bg-white/10' : ''}`}
                     >
                       <img src={`https://flagcdn.com/w20/${c.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
-                      <span className="text-white text-[11px] font-medium">{c.code}</span>
-                      <span className="text-white/50 text-[10px]">{c.name}</span>
+                      <span className="text-white text-[12px] font-medium">{c.code}</span>
+                      <span className="text-white/50 text-[11px]">{c.name}</span>
                     </button>
                   ))}
                 </div>
@@ -545,34 +545,33 @@ export default function CalculatorsPage() {
                   </div>
                 </div>
 
-                {/* Slide 4: Scale Readiness */}
+                {/* Slide 4: Scale Readiness - Clean Classic Design */}
                 <div className="w-full flex-shrink-0 pl-6 flex flex-col">
-                  <div className={`p-4 rounded-xl border-2 mb-3 ${results.readyToScale ? 'border-green-400 bg-green-50' : 'border-neutral-200 bg-neutral-50'}`}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${results.readyToScale ? 'bg-green-500' : 'bg-neutral-400'}`}>
-                        <Rocket className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-lg font-bold text-neutral-900">{results.readyToScale ? 'Ready to Scale!' : 'Not Ready Yet'}</p>
-                        <p className="text-xs text-neutral-600">{readinessScore}/4 scaling criteria met</p>
-                      </div>
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-sm font-semibold text-neutral-800">{results.readyToScale ? 'Ready to Scale' : 'Not Ready Yet'}</p>
+                      <p className="text-xs text-neutral-500">{readinessScore} of 4 criteria met</p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3, 4].map(n => (
+                        <div key={n} className={`w-3 h-3 rounded-full ${n <= readinessScore ? 'bg-neutral-900' : 'bg-neutral-200'}`} />
+                      ))}
                     </div>
                   </div>
-                  <div className="flex-1 grid grid-cols-2 gap-3 content-center">
+                  {/* Criteria List */}
+                  <div className="flex-1 flex flex-col justify-center gap-2">
                     {[
-                      { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk, desc: 'Healthy profit margins' },
-                      { label: 'LTV:CAC ≥3x', ok: results.scaleReadiness.ltvCacOk, desc: 'Customer value vs cost' },
-                      { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk, desc: 'Product profitability' },
-                      { label: `Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue, desc: 'Revenue threshold' },
+                      { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk },
+                      { label: 'LTV:CAC Ratio ≥3x', ok: results.scaleReadiness.ltvCacOk },
+                      { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk },
+                      { label: `Monthly Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue },
                     ].map((item, i) => (
-                      <div key={i} className={`p-3 rounded-xl border-2 flex items-center gap-3 transition-all ${item.ok ? 'border-green-400 bg-green-50' : 'border-neutral-200 bg-white'}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-green-500' : 'bg-neutral-300'}`}>
-                          {item.ok ? <Check className="w-4 h-4 text-white" /> : <X className="w-4 h-4 text-white" />}
+                      <div key={i} className="flex items-center gap-3 py-2 border-b border-neutral-100 last:border-0">
+                        <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-neutral-900' : 'bg-neutral-200'}`}>
+                          {item.ok ? <Check className="w-3 h-3 text-white" /> : <X className="w-3 h-3 text-neutral-500" />}
                         </div>
-                        <div>
-                          <p className={`text-xs font-bold ${item.ok ? 'text-green-700' : 'text-neutral-600'}`}>{item.label}</p>
-                          <p className="text-[10px] text-neutral-500">{item.desc}</p>
-                        </div>
+                        <span className={`text-sm ${item.ok ? 'text-neutral-900 font-medium' : 'text-neutral-400'}`}>{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -590,12 +589,12 @@ export default function CalculatorsPage() {
 function CompactInput({ label, value, onChange, prefix, suffix, step = 1 }: { label: string; value: number; onChange: (v: string) => void; prefix?: string; suffix?: string; step?: number; }) {
   return (
     <div>
-      <label className="text-[9px] text-white/60 uppercase font-medium block mb-0.5">{label}</label>
+      <label className="text-[10px] text-white/70 uppercase font-medium block mb-0.5">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] text-white/50">{prefix}</span>}
+        {prefix && <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[13px] text-white/50">{prefix}</span>}
         <input type="number" step={step} value={value} onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-[12px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-5' : ''}`} />
-        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-white/50">{suffix}</span>}
+          className={`w-full bg-white/10 border border-white/20 rounded px-2 py-1.5 text-white text-[14px] focus:outline-none focus:border-white/40 transition-colors ${prefix ? 'pl-5' : ''} ${suffix ? 'pr-6' : ''}`} />
+        {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[13px] text-white/50">{suffix}</span>}
       </div>
     </div>
   );
