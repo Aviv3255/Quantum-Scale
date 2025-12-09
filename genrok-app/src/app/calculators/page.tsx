@@ -307,8 +307,8 @@ export default function CalculatorsPage() {
             </div>
           </div>
 
-          {/* Right - Key Metrics - No border, slightly more centered */}
-          <div className="w-56 xl:w-64 px-6 py-3 flex flex-col justify-center bg-white">
+          {/* Right - Key Metrics - Shifted more to center */}
+          <div className="w-56 xl:w-64 px-6 py-3 flex flex-col justify-center bg-white" style={{ marginRight: '25px' }}>
             <div className="mb-3">
               <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Net Profit / Month</p>
               <p className="text-2xl xl:text-3xl font-bold" style={{ color: results.netProfit >= 0 ? '#0a0a0a' : '#dc2626' }}>
@@ -318,7 +318,7 @@ export default function CalculatorsPage() {
             </div>
             <div className="mb-3">
               <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">Profit Margin ({results.highestLTV.period} LTV)</p>
-              <p className="text-2xl xl:text-3xl font-bold" style={{ color: results.ltvProjections.find(l => l.period === results.highestLTV.period)?.margin ?? 0 >= 0 ? '#0a0a0a' : '#dc2626' }}>
+              <p className="text-2xl xl:text-3xl font-bold" style={{ color: (results.ltvProjections.find(l => l.period === results.highestLTV.period)?.margin ?? 0) >= 0 ? '#0a0a0a' : '#dc2626' }}>
                 <AnimatedNumber value={results.ltvProjections.find(l => l.period === results.highestLTV.period)?.margin ?? 0} suffix="%" decimals={1} />
               </p>
               <p className="text-[10px] text-neutral-400">Based on highest LTV period</p>
@@ -344,10 +344,10 @@ export default function CalculatorsPage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION - 40% - Inputs and Results */}
-        <div className="flex flex-row border-t border-neutral-200" style={{ height: '40%' }}>
-          {/* Left - Data Input Panel - with safe padding to prevent cutoff */}
-          <div className="w-72 xl:w-80 px-3 py-2 pb-3 flex flex-col gap-1 bg-neutral-950 overflow-hidden">
+        {/* BOTTOM SECTION - 40% - Inputs and Results with consistent bottom padding */}
+        <div className="flex flex-row border-t border-neutral-200 pb-2" style={{ height: '40%' }}>
+          {/* Left - Data Input Panel */}
+          <div className="w-72 xl:w-80 px-3 py-2 flex flex-col justify-between bg-neutral-950 overflow-hidden">
             {/* Row 1 - Basic Inputs */}
             <div className="grid grid-cols-2 gap-1.5">
               <CompactInput label="AOV" value={inputs.aov} onChange={(v) => handleInputChange('aov', v)} prefix={currencyInfo.symbol} />
@@ -425,9 +425,9 @@ export default function CalculatorsPage() {
           </div>
 
           {/* Right - Premium Results Slider */}
-          <div className="flex-1 bg-gradient-to-br from-neutral-50 to-white px-6 py-4 flex flex-col overflow-hidden">
+          <div className="flex-1 bg-gradient-to-br from-neutral-50 to-white px-6 py-2 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
               <div>
                 <h2 className="text-base font-bold text-neutral-900">{slides[activeSlide]}</h2>
                 <p className="text-[10px] text-neutral-500">Real-time business insights</p>
@@ -447,19 +447,19 @@ export default function CalculatorsPage() {
               <div className="flex transition-transform duration-500 ease-out h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
                 {/* Slide 1: Profit Analysis */}
                 <div className="w-full flex-shrink-0 pr-6 flex flex-col">
-                  <div className="grid grid-cols-3 gap-3 mb-3">
+                  <div className="grid grid-cols-3 gap-2 mb-2">
                     <PremiumMetricCard label="Daily Revenue" value={fmt(results.daily.revenue)} />
                     <PremiumMetricCard label="Daily Profit (AOV)" value={fmt(results.daily.profit)} negative={results.daily.profit < 0} />
                     <PremiumMetricCard label={`Daily Profit (${results.highestLTV.period} LTV)`} value={fmt(results.futureMonthlyProfit / 30)} negative={results.futureMonthlyProfit < 0} highlight />
                   </div>
-                  <div className="grid grid-cols-3 gap-3 mb-3">
+                  <div className="grid grid-cols-3 gap-2 mb-2">
                     <PremiumMetricCard label="Monthly Revenue" value={fmt(results.monthly.revenue)} />
                     <PremiumMetricCard label="Monthly Profit (AOV)" value={fmt(results.netProfit)} negative={results.netProfit < 0} />
                     <PremiumMetricCard label={`Monthly Profit (${results.highestLTV.period} LTV)`} value={fmt(results.futureMonthlyProfit)} negative={results.futureMonthlyProfit < 0} highlight />
                   </div>
-                  <div className="flex-1 bg-white rounded-xl border border-neutral-200 p-4 shadow-sm">
-                    <p className="text-sm font-bold text-neutral-800 uppercase tracking-wide mb-2">Cost Breakdown</p>
-                    <div className="flex flex-col justify-center gap-2 h-[calc(100%-2rem)]">
+                  <div className="flex-1 bg-white rounded-xl border border-neutral-200 p-3 shadow-sm">
+                    <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-1">Cost Breakdown</p>
+                    <div className="flex flex-col justify-center gap-1.5 h-[calc(100%-1.5rem)]">
                       {[
                         { label: 'COGS', value: results.breakdown.cogs, color: '#8b6914' },
                         { label: 'Ad Spend', value: results.breakdown.adSpend, color: '#2c1810' },
@@ -470,14 +470,14 @@ export default function CalculatorsPage() {
                           ? Math.min(100, Math.max(0, Math.round((safeValue / results.totalCosts) * 100)))
                           : 0;
                         return (
-                          <div key={i} className="flex items-center gap-3">
-                            <span className="text-sm font-semibold text-neutral-700 w-20">{item.label}</span>
-                            <div className="flex-1 h-5 bg-neutral-100 rounded-lg overflow-hidden relative">
+                          <div key={i} className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-neutral-700 w-16">{item.label}</span>
+                            <div className="flex-1 h-4 bg-neutral-100 rounded-lg overflow-hidden relative">
                               <motion.div initial={{ width: 0 }} animate={{ width: `${safePct}%` }} transition={{ duration: 0.6, ease: 'easeOut' }}
                                 className="h-full rounded-lg" style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}dd)` }} />
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-neutral-700">{fmt(safeValue)}</span>
+                              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-700">{fmt(safeValue)}</span>
                             </div>
-                            <span className="text-sm font-bold text-neutral-800 w-12 text-right">{safePct}%</span>
+                            <span className="text-xs font-bold text-neutral-800 w-10 text-right">{safePct}%</span>
                           </div>
                         );
                       })}
@@ -487,28 +487,28 @@ export default function CalculatorsPage() {
 
                 {/* Slide 2: Future Projection */}
                 <div className="w-full flex-shrink-0 px-6 flex flex-col">
-                  <div className="p-4 rounded-xl border border-neutral-200 bg-white shadow-sm mb-3">
+                  <div className="p-3 rounded-xl border border-neutral-200 bg-white shadow-sm mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b6914, #2c1810)' }}>
-                        <TrendingUp className="w-6 h-6 text-white" />
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b6914, #2c1810)' }}>
+                        <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm text-neutral-500 font-medium">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
-                        <p className="text-2xl font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
+                        <p className="text-xs text-neutral-500 font-medium">Future Monthly Profit ({results.highestLTV.period} LTV)</p>
+                        <p className="text-xl font-bold text-neutral-900">{fmt(results.futureMonthlyProfit)}</p>
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm font-bold text-neutral-800 uppercase tracking-wide mb-2">LTV Profit Projection</p>
-                  <div className="flex-1 grid grid-cols-4 gap-3 content-center">
+                  <p className="text-xs font-bold text-neutral-800 uppercase tracking-wide mb-1">LTV Profit Projection</p>
+                  <div className="flex-1 grid grid-cols-4 gap-2 content-center">
                     {results.ltvProjections.map((ltv, i) => {
                       const isHighest = ltv.period === results.highestLTV.period;
                       const safeProfit = isFinite(ltv.profit) ? ltv.profit : 0;
                       const safeMargin = isFinite(ltv.margin) ? ltv.margin : 0;
                       return (
-                        <div key={i} className={`p-4 rounded-xl text-center border-2 transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900 shadow-lg scale-105' : 'border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-md'}`}>
-                          <p className={`text-sm font-bold mb-1 ${isHighest ? 'text-white/70' : 'text-neutral-500'}`}>{ltv.period}</p>
-                          <p className={`text-xl font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
-                          <p className={`text-xs font-medium ${isHighest ? 'text-white/50' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}% margin</p>
+                        <div key={i} className={`p-3 rounded-xl text-center border-2 transition-all ${isHighest ? 'border-neutral-900 bg-neutral-900 shadow-lg scale-105' : 'border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-md'}`}>
+                          <p className={`text-xs font-bold mb-0.5 ${isHighest ? 'text-white/70' : 'text-neutral-500'}`}>{ltv.period}</p>
+                          <p className={`text-lg font-bold ${isHighest ? 'text-white' : safeProfit >= 0 ? 'text-neutral-900' : 'text-red-600'}`}>{fmt(safeProfit)}</p>
+                          <p className={`text-[10px] font-medium ${isHighest ? 'text-white/50' : 'text-neutral-400'}`}>{safeMargin.toFixed(1)}% margin</p>
                         </div>
                       );
                     })}
@@ -526,23 +526,22 @@ export default function CalculatorsPage() {
                       </linearGradient>
                     </defs>
                   </svg>
-                  <div className="grid grid-cols-3 gap-4 h-full content-center">
+                  <div className="grid grid-cols-3 gap-3 h-full content-center">
                     {results.kpiAnalysis.map((kpi, i) => {
                       const safePct = isFinite(kpi.value) && isFinite(kpi.target) && kpi.target > 0
                         ? Math.min(100, Math.max(0, (kpi.value / (kpi.target * 1.5)) * 100))
                         : 0;
                       const color = kpi.status === 'green' ? 'url(#kpi-grad)' : kpi.status === 'amber' ? '#f59e0b' : '#ef4444';
-                      const dashOffset = 113 - (safePct / 100) * 113;
                       return (
-                        <div key={i} className="p-4 rounded-xl border border-neutral-200 bg-white shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-                          <svg width="52" height="52" className="transform -rotate-90">
-                            <circle cx="26" cy="26" r="20" fill="none" stroke="#e5e5e5" strokeWidth="5" />
-                            <circle cx="26" cy="26" r="20" fill="none" stroke={color} strokeWidth="5" strokeLinecap="round"
-                              strokeDasharray={126} strokeDashoffset={126 - (safePct / 100) * 126} style={{ transition: 'stroke-dashoffset 0.6s ease-out' }} />
+                        <div key={i} className="p-3 rounded-xl border border-neutral-200 bg-white shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
+                          <svg width="44" height="44" className="transform -rotate-90">
+                            <circle cx="22" cy="22" r="17" fill="none" stroke="#e5e5e5" strokeWidth="4" />
+                            <circle cx="22" cy="22" r="17" fill="none" stroke={color} strokeWidth="4" strokeLinecap="round"
+                              strokeDasharray={107} strokeDashoffset={107 - (safePct / 100) * 107} style={{ transition: 'stroke-dashoffset 0.6s ease-out' }} />
                           </svg>
-                          <p className="text-sm font-bold text-neutral-800 mt-2">{kpi.name}</p>
-                          <p className="text-lg font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
-                          <p className="text-xs text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
+                          <p className="text-xs font-bold text-neutral-800 mt-1">{kpi.name}</p>
+                          <p className="text-base font-bold text-neutral-900">{isFinite(kpi.value) ? kpi.value.toFixed(kpi.unit === '%' || kpi.unit === 'x' ? 1 : 0) : '0'}{kpi.unit}</p>
+                          <p className="text-[10px] text-neutral-500">Target: {kpi.direction === 'higher' ? '≥' : '≤'}{kpi.target.toFixed(0)}{kpi.unit}</p>
                         </div>
                       );
                     })}
@@ -552,30 +551,30 @@ export default function CalculatorsPage() {
                 {/* Slide 4: Scale Readiness - Clean Classic Design */}
                 <div className="w-full flex-shrink-0 pl-6 flex flex-col">
                   {/* Header */}
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-2">
                     <div>
                       <p className="text-sm font-semibold text-neutral-800">{results.readyToScale ? 'Ready to Scale' : 'Not Ready Yet'}</p>
-                      <p className="text-xs text-neutral-500">{readinessScore} of 4 criteria met</p>
+                      <p className="text-[10px] text-neutral-500">{readinessScore} of 4 criteria met</p>
                     </div>
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4].map(n => (
-                        <div key={n} className={`w-3 h-3 rounded-full ${n <= readinessScore ? 'bg-neutral-900' : 'bg-neutral-200'}`} />
+                        <div key={n} className={`w-2.5 h-2.5 rounded-full ${n <= readinessScore ? 'bg-neutral-900' : 'bg-neutral-200'}`} />
                       ))}
                     </div>
                   </div>
                   {/* Criteria List */}
-                  <div className="flex-1 flex flex-col justify-center gap-2">
+                  <div className="flex-1 flex flex-col justify-center gap-1">
                     {[
                       { label: 'Profit Margin ≥15%', ok: results.scaleReadiness.profitMarginOk },
                       { label: 'LTV:CAC Ratio ≥3x', ok: results.scaleReadiness.ltvCacOk },
                       { label: 'Gross Margin ≥50%', ok: results.scaleReadiness.grossMarginOk },
                       { label: `Monthly Revenue ≥${currencyInfo.symbol}10K`, ok: results.scaleReadiness.consistentRevenue },
                     ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 py-2 border-b border-neutral-100 last:border-0">
-                        <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-neutral-900' : 'bg-neutral-200'}`}>
-                          {item.ok ? <Check className="w-3 h-3 text-white" /> : <X className="w-3 h-3 text-neutral-500" />}
+                      <div key={i} className="flex items-center gap-2 py-1.5 border-b border-neutral-100 last:border-0">
+                        <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-neutral-900' : 'bg-neutral-200'}`}>
+                          {item.ok ? <Check className="w-2.5 h-2.5 text-white" /> : <X className="w-2.5 h-2.5 text-neutral-500" />}
                         </div>
-                        <span className={`text-sm ${item.ok ? 'text-neutral-900 font-medium' : 'text-neutral-400'}`}>{item.label}</span>
+                        <span className={`text-xs ${item.ok ? 'text-neutral-900 font-medium' : 'text-neutral-400'}`}>{item.label}</span>
                       </div>
                     ))}
                   </div>
