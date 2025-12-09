@@ -99,32 +99,32 @@ const quickActions = [
     description: 'Pick up where you left off',
     href: '/checklist',
     icon: CheckSquare,
-    color: 'bg-[var(--accent-gold-bg)]',
-    iconColor: 'text-[var(--accent-gold)]',
+    color: 'bg-[var(--primary)]',
+    iconColor: 'text-white',
   },
   {
     title: 'Read Articles',
     description: '38+ in-depth guides',
     href: '/learn',
     icon: BookOpen,
-    color: 'bg-blue-50',
-    iconColor: 'text-blue-600',
+    color: 'bg-[var(--bg-secondary)]',
+    iconColor: 'text-[var(--text-primary)]',
   },
   {
     title: 'Use Calculators',
     description: 'Profit & KPI tools',
     href: '/calculators',
     icon: TrendingUp,
-    color: 'bg-green-50',
-    iconColor: 'text-green-600',
+    color: 'bg-[var(--bg-secondary)]',
+    iconColor: 'text-[var(--text-primary)]',
   },
   {
     title: 'Browse Apps',
     description: 'Curated app directory',
     href: '/apps/shopify',
     icon: Target,
-    color: 'bg-purple-50',
-    iconColor: 'text-purple-600',
+    color: 'bg-[var(--bg-secondary)]',
+    iconColor: 'text-[var(--text-primary)]',
   },
 ];
 
@@ -153,8 +153,8 @@ export default function DashboardPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -175,13 +175,13 @@ export default function DashboardPage() {
             <div>
               <h1 className="flex items-center gap-3">
                 {greeting}
-                <GreetingIcon size={28} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                <GreetingIcon size={28} className="text-[var(--text-tertiary)]" strokeWidth={1.5} />
               </h1>
               <p className="mt-2">{message}</p>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Flame size={16} className="text-[var(--accent-gold)]" />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Day 7 Streak</span>
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]" style={{ color: '#FFFFFF' }}>
+              <Flame size={16} style={{ color: '#FFFFFF' }} />
+              <span className="text-sm font-medium">Day 7 Streak</span>
             </div>
           </div>
         </motion.header>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-[var(--text-muted)] mb-4">
                   {action.description}
                 </p>
-                <div className="flex items-center gap-1 text-sm font-medium text-[var(--accent-gold)] group-hover:gap-2 transition-all">
+                <div className="flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] group-hover:gap-2 transition-all">
                   Get Started
                   <ArrowRight size={14} strokeWidth={1.5} />
                 </div>
@@ -291,24 +291,24 @@ export default function DashboardPage() {
                   <ArrowRight size={16} strokeWidth={1.5} />
                 </Link>
               </div>
-              <div className="w-full md:w-48 h-32 rounded-2xl bg-[var(--accent-gold-bg)] flex items-center justify-center">
+              <div className="w-full md:w-48 h-32 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center">
                 {/* Monkey illustration placeholder */}
                 <svg width="100" height="100" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="90" cy="70" r="35" fill="#C4A574"/>
-                  <ellipse cx="90" cy="78" rx="24" ry="20" fill="#E8D5B7"/>
+                  <circle cx="90" cy="70" r="35" fill="#555"/>
+                  <ellipse cx="90" cy="78" rx="24" ry="20" fill="#888"/>
                   <circle cx="78" cy="68" r="6" fill="white"/>
                   <circle cx="102" cy="68" r="6" fill="white"/>
-                  <circle cx="79" cy="69" r="3" fill="#2D1810"/>
-                  <circle cx="103" cy="69" r="3" fill="#2D1810"/>
-                  <ellipse cx="90" cy="80" rx="5" ry="3" fill="#A67B4C"/>
-                  <path d="M82 86 Q90 92 98 86" stroke="#A67B4C" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                  <circle cx="57" cy="65" r="12" fill="#C4A574"/>
-                  <circle cx="57" cy="65" r="7" fill="#E8D5B7"/>
-                  <circle cx="123" cy="65" r="12" fill="#C4A574"/>
-                  <circle cx="123" cy="65" r="7" fill="#E8D5B7"/>
+                  <circle cx="79" cy="69" r="3" fill="#1a1a1a"/>
+                  <circle cx="103" cy="69" r="3" fill="#1a1a1a"/>
+                  <ellipse cx="90" cy="80" rx="5" ry="3" fill="#444"/>
+                  <path d="M82 86 Q90 92 98 86" stroke="#444" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                  <circle cx="57" cy="65" r="12" fill="#555"/>
+                  <circle cx="57" cy="65" r="7" fill="#888"/>
+                  <circle cx="123" cy="65" r="12" fill="#555"/>
+                  <circle cx="123" cy="65" r="7" fill="#888"/>
                   {/* Thumbs up hand */}
-                  <path d="M60 110 L65 100 L75 100 L75 130 L55 130 L55 115 Z" fill="#C4A574"/>
-                  <ellipse cx="70" cy="95" rx="8" ry="6" fill="#C4A574"/>
+                  <path d="M60 110 L65 100 L75 100 L75 130 L55 130 L55 115 Z" fill="#555"/>
+                  <ellipse cx="70" cy="95" rx="8" ry="6" fill="#555"/>
                 </svg>
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function DashboardPage() {
               <p className="text-sm text-[var(--text-muted)] mb-4">
                 Based on your progress, we recommend reading about customer lifetime value optimization.
               </p>
-              <Link href="/learn" className="text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] inline-flex items-center gap-1">
+              <Link href="/learn" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
                 Read Now <ArrowRight size={14} />
               </Link>
             </div>
@@ -340,7 +340,7 @@ export default function DashboardPage() {
               <p className="text-sm text-[var(--text-muted)] mb-4">
                 Complete 3 more checklist items to maintain your streak and unlock your next milestone.
               </p>
-              <Link href="/checklist" className="text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] inline-flex items-center gap-1">
+              <Link href="/checklist" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
                 View Checklist <ArrowRight size={14} />
               </Link>
             </div>

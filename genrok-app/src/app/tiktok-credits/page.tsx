@@ -125,9 +125,9 @@ export default function TikTokCreditsPage() {
               <h1>Get Up to $6,000 in Free TikTok Ad Credits</h1>
               <p>Scale faster with our exclusive TikTok partnership. Unlock your tier, launch instantly, and get priority support.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Sparkles size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Exclusive Partnership</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Sparkles size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Exclusive Partnership</span>
             </div>
           </div>
         </header>
@@ -151,14 +151,14 @@ export default function TikTokCreditsPage() {
                   className={`relative card text-center ${tier.popular ? 'ring-2 ring-[var(--accent-gold)] scale-105' : ''}`}
                 >
                   {tier.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[var(--accent-gold)]">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[var(--primary)]">
                       <span className="text-xs font-semibold text-white">MOST POPULAR</span>
                     </div>
                   )}
 
-                  <div className="rounded-xl p-6 mb-6 bg-[var(--accent-gold-bg)]">
+                  <div className="rounded-xl p-6 mb-6 bg-[var(--bg-secondary)]">
                     <p className="text-sm font-medium mb-1 text-[var(--text-muted)]">Spend</p>
-                    <p className="text-3xl font-bold text-[var(--accent-gold)]">{tier.spend}</p>
+                    <p className="text-3xl font-bold text-[var(--text-primary)]">{tier.spend}</p>
                   </div>
 
                   <div className="mb-6">
@@ -195,8 +195,8 @@ export default function TikTokCreditsPage() {
             {benefits.map((benefit, index) => (
               <motion.div key={index} variants={itemVariants}>
                 <div className="card card-hover h-full">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-[var(--accent-gold-bg)]">
-                    <benefit.icon size={24} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-[var(--bg-secondary)]">
+                    <benefit.icon size={24} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">{benefit.title}</h3>
                   <p className="text-[var(--text-muted)]">{benefit.description}</p>
@@ -217,9 +217,9 @@ export default function TikTokCreditsPage() {
             {steps.map((step, index) => (
               <div key={index} className="relative">
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-[var(--accent-gold)]/30" />
+                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-[var(--primary)]/30" />
                 )}
-                <div className="text-5xl font-bold mb-4 text-[var(--accent-gold)]/30">{step.number}</div>
+                <div className="text-5xl font-bold mb-4 text-[var(--text-primary)]/30">{step.number}</div>
                 <h3 className="text-lg font-semibold mb-2 text-white">{step.title}</h3>
                 <p className="text-white/60">{step.description}</p>
               </div>
@@ -243,7 +243,7 @@ export default function TikTokCreditsPage() {
                   <span className="font-semibold text-[var(--text-primary)]">{faq.question}</span>
                   <ChevronRight
                     size={20}
-                    className={`text-[var(--accent-gold)] transition-transform ${openFaq === index ? 'rotate-90' : ''}`}
+                    className={`text-[var(--text-primary)] transition-transform ${openFaq === index ? 'rotate-90' : ''}`}
                     strokeWidth={1.5}
                   />
                 </button>
@@ -262,7 +262,7 @@ export default function TikTokCreditsPage() {
         </section>
 
         {/* CTA */}
-        <section className="card p-8 text-center bg-[var(--accent-gold)]">
+        <section className="card p-8 text-center bg-[var(--primary)]">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Ready to Scale with Free Ad Credits?
           </h2>

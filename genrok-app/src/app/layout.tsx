@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   description: "Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond. Follow the Monkey - he knows the path to success.",
   keywords: ["ecommerce", "shopify", "dropshipping", "LTV", "conversion rate", "meta ads", "tiktok ads", "quantum scale"],
   authors: [{ name: "Quantum Scale" }],
+  icons: {
+    icon: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846",
+    apple: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846",
+  },
   openGraph: {
     title: "Quantum Scale | Follow the Monkey",
     description: "Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond.",

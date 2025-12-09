@@ -189,29 +189,33 @@ export default function ShopifyAppsPage() {
               <h1>Discounted Shopify Apps</h1>
               <p>Install via our links to unlock special pricing and extended trials</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">22 Curated Apps</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">22 Curated Apps</span>
             </div>
           </div>
         </header>
 
         {/* Categories Filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
-                activeCategory === category.id
-                  ? 'bg-[var(--accent-gold)] text-white'
-                  : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
-              }`}
-            >
-              <category.icon size={16} strokeWidth={1.5} />
-              <span>{category.name}</span>
-            </button>
-          ))}
+          {categories.map((category) => {
+            const isActive = activeCategory === category.id;
+            return (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
+                  isActive
+                    ? 'bg-[var(--primary)]'
+                    : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                }`}
+                style={isActive ? { color: '#FFFFFF' } : undefined}
+              >
+                <category.icon size={16} strokeWidth={1.5} style={isActive ? { color: '#FFFFFF' } : undefined} />
+                <span>{category.name}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Apps Grid */}
@@ -223,8 +227,8 @@ export default function ShopifyAppsPage() {
             className="grid-3"
           >
             {filteredApps.map((app) => (
-              <motion.div key={app.id} variants={itemVariants}>
-                <div className="card card-hover overflow-hidden" style={{ padding: 0 }}>
+              <motion.div key={app.id} variants={itemVariants} className="h-full">
+                <div className="card card-hover overflow-hidden h-full flex flex-col" style={{ padding: 0 }}>
                   {/* Header */}
                   <div className="p-6 pb-4">
                     <div className="flex items-start gap-4">
@@ -247,37 +251,38 @@ export default function ShopifyAppsPage() {
                     </div>
                   </div>
 
-                  {/* Description */}
-                  <div className="px-6 pb-4">
+                  {/* Description - flex-1 to fill available space */}
+                  <div className="px-6 pb-4 flex-1">
                     <p className="text-sm text-[var(--text-muted)] line-clamp-3">
                       {app.description}
                     </p>
                   </div>
 
-                  {/* Discount Badge */}
-                  {app.discount && (
-                    <div className="px-6 pb-4">
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--accent-gold-bg)] border border-[var(--border-gold)]">
-                        <Gift size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-                        <span className="text-sm font-semibold text-[var(--accent-gold)]">
-                          {app.discount} OFF
-                        </span>
+                  {/* Fixed height section for badges and coupon */}
+                  <div className="px-6 pb-4 min-h-[72px]">
+                    {/* Discount Badge */}
+                    {app.discount && (
+                      <div className="mb-3">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-gold)]">
+                          <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+                          <span className="text-sm font-semibold text-[var(--text-primary)]">
+                            {app.discount} OFF
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Coupon Code */}
-                  {app.couponCode && (
-                    <div className="px-6 pb-4">
+                    {/* Coupon Code */}
+                    {app.couponCode && (
                       <div className="flex items-center gap-2">
                         <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-secondary)] border border-dashed border-[var(--border-gold)]">
-                          <code className="text-sm font-mono font-semibold text-[var(--accent-gold)]">
+                          <code className="text-sm font-mono font-semibold text-[var(--text-primary)]">
                             {app.couponCode}
                           </code>
                         </div>
                         <button
                           onClick={() => copyCode(app.couponCode!)}
-                          className="p-2 text-[var(--text-muted)] hover:text-[var(--accent-gold)] transition-colors"
+                          className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                         >
                           {copiedCode === app.couponCode ? (
                             <Check size={20} className="text-green-500" strokeWidth={1.5} />
@@ -286,11 +291,11 @@ export default function ShopifyAppsPage() {
                           )}
                         </button>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
-                  {/* Action */}
-                  <div className="p-6 pt-0">
+                  {/* Action - mt-auto to push to bottom */}
+                  <div className="p-6 pt-0 mt-auto">
                     <a
                       href={app.url}
                       target="_blank"

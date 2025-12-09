@@ -10,8 +10,8 @@ const getRandomVideo = (videos: string[]) => {
   return videos[randomIndex];
 };
 
-// Video URLs for the right panel (25 videos with equal probability)
-const VIDEOS = [
+// Base videos that work on both mobile and desktop
+const BASE_VIDEOS = [
   'https://cdn.shopify.com/videos/c/o/v/c4d75a58dbd34d33ba8f13202f17053f.mp4', // Waving with sunglasses
   'https://cdn.shopify.com/videos/c/o/v/f3311340d3ab4a9a8c678baf2bede90f.mp4', // Smoking cigar
   'https://cdn.shopify.com/videos/c/o/v/de358ce3176a4b63971c703a11fb617b.mp4', // Printing money
@@ -37,7 +37,25 @@ const VIDEOS = [
   'https://cdn.shopify.com/videos/c/o/v/2953d3b660984d92a55585bb5d3af62c.mp4', // Looking in mirror
   'https://cdn.shopify.com/videos/c/o/v/be2846b30fb24372a5c962cda13d11cd.mp4', // Standing on graph
   'https://cdn.shopify.com/videos/c/o/v/15af124a7d4b46aeab67fa4f3af81aa3.mp4', // Walking on street
+  // New videos for both mobile and desktop
+  'https://cdn.shopify.com/videos/c/o/v/2d2fb8839566486fb5bafebbc934bc4d.mp4', // Conducting money orchestra
+  'https://cdn.shopify.com/videos/c/o/v/dafa3b3772f248069bb87955dbdd0120.mp4', // Sitting on cloud
+  'https://cdn.shopify.com/videos/c/o/v/b5bd4e16b7a548e495c281a4a7449af5.mp4', // In space with money
 ];
+
+// Desktop-only videos (these + BASE_VIDEOS = all desktop videos)
+const DESKTOP_ONLY_VIDEOS = [
+  'https://cdn.shopify.com/videos/c/o/v/311295f838454702b0c81bdf5b55c9fa.mp4', // Walking in New York
+  'https://cdn.shopify.com/videos/c/o/v/883d61a55119475d82b57d2fd4a8ea1f.mp4', // Walking with money briefcase
+  'https://cdn.shopify.com/videos/c/o/v/8c07254e5f4a4361a440573b7d32f93e.mp4', // Exiting limousine
+  'https://cdn.shopify.com/videos/c/o/v/9aab5903f19f4837aaafd0dd4d81acc1.mp4', // Walking on red carpet
+  'https://cdn.shopify.com/videos/c/o/v/726f7661df7e46b9993b1defbc899f3e.mp4', // Smoking cigar holding money
+  'https://cdn.shopify.com/videos/c/o/v/675260f184a5402d992495f261739cba.mp4', // Driving Formula 1
+];
+
+// Combined arrays
+const DESKTOP_VIDEOS = [...BASE_VIDEOS, ...DESKTOP_ONLY_VIDEOS];
+const MOBILE_VIDEOS = BASE_VIDEOS;
 
 export default function AuthLayout({
   children,
@@ -48,8 +66,9 @@ export default function AuthLayout({
   const pathname = usePathname();
   const [showForm, setShowForm] = useState(false);
 
-  // Random video - changes on every refresh/new window
-  const [randomVideo] = useState(() => getRandomVideo(VIDEOS));
+  // Random videos - separate for desktop and mobile
+  const [desktopVideo] = useState(() => getRandomVideo(DESKTOP_VIDEOS));
+  const [mobileVideo] = useState(() => getRandomVideo(MOBILE_VIDEOS));
 
   const handleLogin = () => {
     if (pathname !== '/login') {
@@ -76,17 +95,20 @@ export default function AuthLayout({
           </div>
         </div>
 
-        {/* Right Panel - Video only */}
+        {/* Right Panel - Video */}
         <div className="auth-media-side">
-          <div className="auth-media-wrapper">
-            <video
-              src={randomVideo}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="auth-media"
-            />
+          <div className="auth-media-content" style={{ justifyContent: 'center' }}>
+            <div className="auth-media-wrapper" style={{ borderRadius: '32px', overflow: 'hidden' }}>
+              <video
+                src={desktopVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="auth-media"
+                style={{ borderRadius: '32px' }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -102,14 +124,15 @@ export default function AuthLayout({
         )}
 
         {/* Video Section - Smaller when form is shown */}
-        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`}>
+        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`} style={{ overflow: 'hidden' }}>
           <video
-            src={randomVideo}
+            src={mobileVideo}
             autoPlay
             loop
             muted
             playsInline
             className="auth-mobile-video-player"
+            style={{ borderRadius: '24px' }}
           />
         </div>
 

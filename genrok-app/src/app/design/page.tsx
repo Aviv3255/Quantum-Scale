@@ -77,7 +77,7 @@ export default function DesignPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -92,9 +92,9 @@ export default function DesignPage() {
               <h1>Design That Converts</h1>
               <p>Curated design inspiration from the world&apos;s best eCommerce brands</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Palette size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Design Inspiration</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Palette size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Design Inspiration</span>
             </div>
           </div>
         </header>
@@ -111,9 +111,9 @@ export default function DesignPage() {
               <Link href={category.href}>
                 <div className="card card-hover h-full overflow-hidden" style={{ padding: 0 }}>
                   {/* Header */}
-                  <div className="p-8 bg-[var(--accent-gold-bg)]">
+                  <div className="p-8 bg-[var(--bg-secondary)]">
                     <div className="w-16 h-16 rounded-2xl bg-[var(--accent-gold)]/20 flex items-center justify-center mb-4">
-                      <category.icon size={32} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                      <category.icon size={32} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                     </div>
                     <h2 className="text-xl font-semibold text-[var(--text-primary)]">
                       {category.title}
@@ -135,7 +135,7 @@ export default function DesignPage() {
                       ))}
                     </div>
 
-                    <div className="flex items-center gap-2 font-semibold text-[var(--accent-gold)] group-hover:gap-3 transition-all">
+                    <div className="flex items-center gap-2 font-semibold text-[var(--text-primary)] group-hover:gap-3 transition-all">
                       Explore
                       <ArrowRight size={16} strokeWidth={1.5} />
                     </div>
@@ -156,8 +156,8 @@ export default function DesignPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {tips.map((tip) => (
               <div key={tip.title} className="p-4 rounded-xl bg-[var(--bg-secondary)]">
-                <div className="w-10 h-10 rounded-lg bg-[var(--accent-gold-bg)] flex items-center justify-center mb-4">
-                  <Sparkles size={20} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+                <div className="w-10 h-10 rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center mb-4">
+                  <Sparkles size={20} className="text-[var(--text-primary)]" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-semibold text-[var(--text-primary)] mb-2">{tip.title}</h3>
                 <p className="text-sm text-[var(--text-muted)]">{tip.description}</p>

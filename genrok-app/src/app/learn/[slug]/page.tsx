@@ -46,7 +46,7 @@ export default function ArticlePage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -56,8 +56,8 @@ export default function ArticlePage() {
       <DashboardLayout>
         <div className="page-wrapper">
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-20 h-20 rounded-full bg-[var(--accent-gold-bg)] flex items-center justify-center mb-6">
-              <BookOpen size={40} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
+            <div className="w-20 h-20 rounded-full bg-[var(--bg-secondary)] flex items-center justify-center mb-6">
+              <BookOpen size={40} className="text-[var(--text-primary)]" strokeWidth={1.5} />
             </div>
             <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
               Article Not Found
@@ -81,7 +81,7 @@ export default function ArticlePage() {
         {/* Back Link */}
         <Link
           href="/learn"
-          className="inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--accent-gold)] transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mb-6"
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
           Back to Learning Center
@@ -145,7 +145,7 @@ export default function ArticlePage() {
 
           {/* Action Buttons */}
           {article.buttons && article.buttons.length > 0 && (
-            <div className="mt-12 card bg-[var(--accent-gold-bg)] border-[var(--border-gold)]">
+            <div className="mt-12 card bg-[var(--bg-secondary)] border-[var(--border-gold)]">
               <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
                 Take Action
               </h3>
@@ -195,10 +195,10 @@ export default function ArticlePage() {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-2">
+                    <h3 className="font-semibold text-[var(--text-primary)] group-hover:text-[var(--text-primary)] transition-colors line-clamp-2">
                       {relatedArticle.title}
                     </h3>
-                    <div className="flex items-center gap-1 mt-2 text-sm text-[var(--accent-gold)]">
+                    <div className="flex items-center gap-1 mt-2 text-sm text-[var(--text-primary)]">
                       Read more
                       <ChevronRight size={14} strokeWidth={1.5} />
                     </div>

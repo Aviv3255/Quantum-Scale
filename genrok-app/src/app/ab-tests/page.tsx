@@ -122,7 +122,7 @@ export default function ABTestsPage() {
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -137,9 +137,9 @@ export default function ABTestsPage() {
               <h1>A/B Test Results</h1>
               <p>Real results from real tests. See what actually moves the needle for conversion rates and AOV.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <BarChart3 size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Real Data</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <BarChart3 size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Real Data</span>
             </div>
           </div>
         </header>
@@ -190,8 +190,8 @@ export default function ABTestsPage() {
                     </div>
                   </div>
                   {test.aovLift && (
-                    <div className="text-center p-2 rounded-lg bg-[var(--accent-gold-bg)]">
-                      <span className="text-sm font-medium text-[var(--accent-gold)]">
+                    <div className="text-center p-2 rounded-lg bg-[var(--bg-secondary)]">
+                      <span className="text-sm font-medium text-[var(--text-primary)]">
                         +{test.aovLift}% AOV increase
                       </span>
                     </div>
@@ -204,19 +204,19 @@ export default function ABTestsPage() {
                 {/* Insight */}
                 <div className="p-6">
                   <div className="flex items-start gap-3 mb-4">
-                    <Lightbulb size={20} className="text-[var(--accent-gold)] flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                    <Lightbulb size={20} className="text-[var(--text-primary)] flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                     <div>
                       <p className="font-medium text-[var(--text-primary)] mb-1">Insight</p>
                       <p className="text-sm text-[var(--text-muted)]">{test.insight}</p>
                     </div>
                   </div>
-                  <div className="p-4 rounded-xl bg-[var(--accent-gold-bg)]">
+                  <div className="p-4 rounded-xl bg-[var(--bg-secondary)]">
                     <p className="text-sm text-[var(--text-primary)] mb-2">{test.recommendation}</p>
                     <a
                       href={test.recommendedAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] transition-colors"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent-gold-hover)] transition-colors"
                     >
                       Try {test.recommendedApp}
                       <ExternalLink size={14} strokeWidth={1.5} />

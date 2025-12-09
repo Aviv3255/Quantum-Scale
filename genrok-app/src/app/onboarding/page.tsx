@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Check, Loader2, Globe, Search, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, Loader2, Globe, Search, ChevronDown, X } from 'lucide-react';
 import { getCurrentUser, getUserProfile, createUserProfile, updateUserProfile } from '@/lib/supabase';
 
 // All countries with flags
@@ -529,8 +529,11 @@ function CountryDropdown({
   );
 }
 
-export default function OnboardingPage() {
+function OnboardingContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isPreviewMode = searchParams.get('preview') === 'true';
+
   const [userId, setUserId] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
@@ -553,6 +556,12 @@ export default function OnboardingPage() {
 
       setUserId(user.id);
 
+      // In preview mode, skip all checks and just show the onboarding
+      if (isPreviewMode) {
+        setLoading(false);
+        return;
+      }
+
       // Check if profile exists
       const { data: profile, error } = await getUserProfile(user.id);
 
@@ -573,7 +582,7 @@ export default function OnboardingPage() {
     };
 
     checkAuth();
-  }, [router]);
+  }, [router, isPreviewMode]);
 
   const currentQuestion = activeQuestions[currentStep];
   const isLastStep = currentStep === activeQuestions.length - 1;
@@ -597,7 +606,20 @@ export default function OnboardingPage() {
   };
 
   const handleNext = useCallback(async () => {
-    if (!userId || !canProceed) return;
+    if (!canProceed) return;
+
+    // In preview mode, just navigate without saving
+    if (isPreviewMode) {
+      if (isLastStep) {
+        router.push('/dashboard');
+      } else {
+        setCurrentStep(prev => prev + 1);
+        setTypingComplete(false);
+      }
+      return;
+    }
+
+    if (!userId) return;
 
     setSaving(true);
 
@@ -624,7 +646,7 @@ export default function OnboardingPage() {
     }
 
     setSaving(false);
-  }, [userId, canProceed, currentQuestion, answers, currentStep, isLastStep, router]);
+  }, [userId, canProceed, currentQuestion, answers, currentStep, isLastStep, router, isPreviewMode]);
 
   const handleBack = () => {
     if (currentStep > 0) {
@@ -673,6 +695,19 @@ export default function OnboardingPage() {
 
   return (
     <div className="onboarding-container">
+      {/* Preview Mode Banner */}
+      {isPreviewMode && (
+        <div className="onboarding-preview-banner">
+          <span>Preview Mode - Changes will not be saved</span>
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="onboarding-preview-close"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
       {/* Progress bar */}
       <div className="onboarding-progress">
         <div
@@ -818,5 +853,18 @@ export default function OnboardingPage() {
         </motion.div>
       </AnimatePresence>
     </div>
+  );
+}
+
+// Wrap in Suspense for useSearchParams
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={
+      <div className="onboarding-container">
+        <Loader2 className="w-8 h-8 animate-spin text-black" />
+      </div>
+    }>
+      <OnboardingContent />
+    </Suspense>
   );
 }

@@ -58,7 +58,7 @@ const blueprints = [
     id: 3,
     goal: '$1M/Month',
     color: 'from-[var(--accent-gold)] to-amber-600',
-    bgColor: 'bg-[var(--accent-gold-bg)]',
+    bgColor: 'bg-[var(--bg-secondary)]',
     borderColor: 'border-[var(--border-gold)]',
     featured: true,
     metrics: {
@@ -123,9 +123,9 @@ export default function BlueprintPage() {
               <h1>The Blueprint to Scale</h1>
               <p>Exact metrics and requirements to reach $100K, $300K, and $1M per month. This is your roadmap.</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-gold-bg)]">
-              <Rocket size={16} className="text-[var(--accent-gold)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--accent-gold)]">Scale Roadmap</span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+              <Rocket size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">Scale Roadmap</span>
             </div>
           </div>
         </header>
@@ -144,7 +144,7 @@ export default function BlueprintPage() {
                 style={{ padding: 0 }}
               >
                 {bp.featured && (
-                  <div className="absolute top-0 left-0 right-0 py-2 bg-[var(--accent-gold)] text-center z-10">
+                  <div className="absolute top-0 left-0 right-0 py-2 bg-[var(--primary)] text-center z-10">
                     <span className="text-sm font-semibold text-white">THE ULTIMATE GOAL</span>
                   </div>
                 )}
@@ -185,7 +185,7 @@ export default function BlueprintPage() {
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="text-[var(--text-muted)]">Target LTV</span>
-                      <span className="font-bold text-[var(--accent-gold)]">{bp.metrics.ltv}</span>
+                      <span className="font-bold text-[var(--text-primary)]">{bp.metrics.ltv}</span>
                     </div>
                   </div>
                 </div>

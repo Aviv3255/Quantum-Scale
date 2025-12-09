@@ -25,6 +25,7 @@ import {
   ChevronRight,
   ExternalLink,
   Rocket,
+  UserCircle,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -121,6 +122,11 @@ const navigationItems: NavItem[] = [
     icon: Bell,
   },
   {
+    title: "Preview Onboarding",
+    href: "/onboarding?preview=true",
+    icon: UserCircle,
+  },
+  {
     title: "Build a Bundle & Save 35%",
     href: "https://quantum-scale.co/pages/bundle-builder",
     icon: Package,
@@ -200,7 +206,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
             >
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
             </div>
             {/* Hover dropdown for collapsed state */}
             <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
@@ -216,7 +222,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     key={subIdx}
                     href={subItem.href}
                     className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
-                      isSubItemActive(subItem) ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)]' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                      isSubItemActive(subItem) ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                     }`}
                   >
                     {subItem.title}
@@ -236,12 +242,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               if (isMobile) setSidebarOpen(true);
             }}
             className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
+            style={{ textAlign: 'left' }}
           >
-            <div className="flex items-center gap-3">
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
-              <span>{item.title}</span>
+            <div className="flex items-center gap-3 flex-1">
+              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
+              <span className="text-left">{item.title}</span>
             </div>
-            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {isExpanded ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
           </button>
 
           <AnimatePresence>
@@ -260,8 +267,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       href={subItem.href}
                       className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
-                          ? 'text-[var(--accent-gold)] bg-[var(--accent-gold-bg)] font-medium'
-                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]'
+                          ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
+                          : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                       }`}
                       onClick={() => isMobile && setSidebarOpen(false)}
                     >
@@ -288,7 +295,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           title={sidebarCollapsed && !isMobile ? item.title : undefined}
           onClick={() => isMobile && setSidebarOpen(false)}
         >
-          <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+          <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
           {(!sidebarCollapsed || isMobile) && (
             <>
               <span className="flex-1">{item.title}</span>
@@ -309,7 +316,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         title={sidebarCollapsed && !isMobile ? item.title : undefined}
         onClick={() => isMobile && setSidebarOpen(false)}
       >
-        <Icon size={20} strokeWidth={1.5} className="text-[var(--accent-gold)]" />
+        <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
         {(!sidebarCollapsed || isMobile) && <span>{item.title}</span>}
       </Link>
     );
@@ -333,11 +340,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
-        <div className="sidebar-logo">
-          <div className="w-8 h-8 bg-[var(--accent-gold-bg)] rounded-lg flex items-center justify-center">
-            <Rocket size={18} className="text-[var(--accent-gold)]" />
-          </div>
-          {!sidebarCollapsed && <span>Quantum Scale</span>}
+        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '16px 0' }}>
+          <img
+            src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
+            alt="Quantum Scale"
+            className={sidebarCollapsed ? "w-12 h-12 rounded-xl object-cover" : "w-24 h-24 rounded-xl object-cover"}
+          />
         </div>
 
         {/* Collapse Toggle (Desktop only) */}
@@ -346,9 +354,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
           style={{
             background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            color: 'var(--accent-gold)',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            border: '1px solid var(--border-light)',
+            color: 'var(--text-tertiary)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
           }}
         >
           {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -415,7 +423,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Notifications */}
             <button className="btn-icon relative">
               <Bell size={20} strokeWidth={1.5} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--accent-gold)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 3
               </span>
             </button>
