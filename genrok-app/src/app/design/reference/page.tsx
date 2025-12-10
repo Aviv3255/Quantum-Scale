@@ -171,9 +171,9 @@ export default function ReferenceStorePage() {
     );
   }
 
-  // Mockup dimensions
-  const mockupWidth = device === 'desktop' ? 900 : 375;
-  const mockupHeight = device === 'desktop' ? 560 : 700;
+  // Mockup dimensions - larger for better image quality
+  const mockupWidth = device === 'desktop' ? 1000 : 390;
+  const mockupHeight = device === 'desktop' ? 620 : 750;
 
   return (
     <DashboardLayout>
@@ -305,6 +305,12 @@ export default function ReferenceStorePage() {
                       alt={`${activePage} ${device} view`}
                       className="w-full"
                       draggable={false}
+                      style={{
+                        imageRendering: '-webkit-optimize-contrast' as never,
+                        WebkitFontSmoothing: 'antialiased',
+                        transform: 'translateZ(0) scale(1)',
+                        willChange: 'transform',
+                      }}
                     />
                   ) : (
                     <div
