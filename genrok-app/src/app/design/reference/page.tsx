@@ -36,7 +36,7 @@ const PAGES_DATA: PageData[] = [
     page: 'home',
     label: 'Home Page',
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-17_58_13.png?v=1765382349',
-    mobile_screenshot: '',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
       { id: 1, name: 'Announcement Bar', y_position: 0, side: 'right', install_link: '#', install_text: 'Free Shopify feature', completed: false },
       { id: 2, name: 'Header Navigation', y_position: 45, side: 'left', install_link: '#', install_text: 'Theme default', completed: false },
@@ -260,10 +260,7 @@ export default function ReferenceStorePage() {
 
         {/* MAIN CONTENT */}
         <div className="flex-1 flex overflow-hidden">
-          {/* LEFT SPACER for balance */}
-          <div className="w-64 flex-shrink-0" />
-
-          {/* CENTER - Mockup */}
+          {/* CENTER - Mockup (centered between sidebar and right panel) */}
           <div className="flex-1 flex items-center justify-center p-8 overflow-hidden">
             <div className="relative">
               {/* Device Frame */}
