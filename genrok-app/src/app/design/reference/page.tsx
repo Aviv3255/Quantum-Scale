@@ -13,10 +13,10 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 interface BlockMarker {
   id: number;
   name: string;
+  description: string;
   y_position: number;
   side: 'left' | 'right';
   install_link: string;
-  install_text: string;
   completed: boolean;
 }
 
@@ -38,11 +38,11 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Announcement Bar', y_position: 0, side: 'right', install_link: '#', install_text: 'Free Shopify feature', completed: false },
-      { id: 2, name: 'Header Navigation', y_position: 45, side: 'left', install_link: '#', install_text: 'Theme default', completed: false },
-      { id: 3, name: 'Hero Section', y_position: 120, side: 'right', install_link: '#', install_text: 'Theme section', completed: false },
-      { id: 4, name: 'Featured Products', y_position: 580, side: 'left', install_link: '#', install_text: 'Theme section', completed: false },
-      { id: 5, name: 'Trust Badges', y_position: 900, side: 'right', install_link: '#', install_text: 'Free app', completed: false },
+      { id: 1, name: 'Announcement Bar', description: 'Geo-targeted announcement bar with countdown timer.', y_position: 0, side: 'right', install_link: '#', completed: false },
+      { id: 2, name: 'Header Navigation', description: 'Sticky header with mega menu and cart drawer.', y_position: 45, side: 'left', install_link: '#', completed: false },
+      { id: 3, name: 'Hero Section', description: 'Full-width hero with video background support.', y_position: 120, side: 'right', install_link: '#', completed: false },
+      { id: 4, name: 'Featured Products', description: 'Product grid with quick view and filters.', y_position: 580, side: 'left', install_link: '#', completed: false },
+      { id: 5, name: 'Trust Badges', description: 'Social proof badges and payment icons.', y_position: 900, side: 'right', install_link: '#', completed: false },
     ],
   },
   {
@@ -389,60 +389,47 @@ export default function ReferenceStorePage() {
                 )}
               </div>
 
-              {/* Block Markers - Outside the frame */}
+              {/* Block Markers - Ultra minimal floating labels */}
               {showMarkers && !editMode && blocks.length > 0 && (
                 <>
                   {blocks.map((block) => {
                     const frameTop = device === 'desktop' ? 12 : 12;
                     const markerTop = frameTop + block.y_position - scrollTop;
-                    const isVisible = markerTop > 0 && markerTop < mockupHeight;
+                    const isVisible = markerTop > 20 && markerTop < mockupHeight - 20;
+                    // Calculate opacity for smooth fade at edges
+                    const edgeFade = markerTop < 60 ? markerTop / 60 : markerTop > mockupHeight - 60 ? (mockupHeight - markerTop) / 60 : 1;
 
                     return (
                       <AnimatePresence key={block.id}>
                         {isVisible && (
                           <motion.div
-                            initial={{ opacity: 0, x: block.side === 'left' ? -20 : 20 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: edgeFade }}
                             exit={{ opacity: 0 }}
-                            className={`absolute flex items-center gap-3 ${
-                              block.side === 'left' ? 'right-full mr-6' : 'left-full ml-6'
+                            transition={{ duration: 0.15 }}
+                            className={`absolute ${
+                              block.side === 'left' ? 'right-full mr-10 text-right' : 'left-full ml-10 text-left'
                             }`}
-                            style={{ top: markerTop }}
+                            style={{
+                              top: markerTop,
+                              maxWidth: '170px',
+                            }}
                           >
-                            {block.side === 'left' && (
-                              <>
-                                <div className="flex flex-col items-end">
-                                  <span className="text-sm font-medium text-neutral-800">{block.name}</span>
-                                  <a
-                                    href={block.install_link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-neutral-400 hover:text-neutral-600 flex items-center gap-1 transition-colors"
-                                  >
-                                    {block.install_text}
-                                    <ExternalLink size={10} />
-                                  </a>
-                                </div>
-                                <div className="w-8 h-px bg-neutral-300" />
-                              </>
-                            )}
-                            {block.side === 'right' && (
-                              <>
-                                <div className="w-8 h-px bg-neutral-300" />
-                                <div className="flex flex-col">
-                                  <span className="text-sm font-medium text-neutral-800">{block.name}</span>
-                                  <a
-                                    href={block.install_link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-neutral-400 hover:text-neutral-600 flex items-center gap-1 transition-colors"
-                                  >
-                                    {block.install_text}
-                                    <ExternalLink size={10} />
-                                  </a>
-                                </div>
-                              </>
-                            )}
+                            <p
+                              className="text-[13px] leading-snug text-neutral-500 font-normal"
+                              style={{ color: '#555' }}
+                            >
+                              {block.description}{' '}
+                              <a
+                                href={block.install_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-neutral-400 hover:text-neutral-600 underline underline-offset-2 transition-colors"
+                                style={{ color: '#888' }}
+                              >
+                                Install
+                              </a>
+                            </p>
                           </motion.div>
                         )}
                       </AnimatePresence>
