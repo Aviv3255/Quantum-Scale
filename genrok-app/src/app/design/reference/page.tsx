@@ -171,13 +171,13 @@ export default function ReferenceStorePage() {
     );
   }
 
-  // Mockup dimensions - much larger for crisp image quality
-  const mockupWidth = device === 'desktop' ? 1100 : 375;
-  const mockupHeight = device === 'desktop' ? 680 : 812; // iPhone proportions
+  // Mockup dimensions - smaller, crisp display
+  const mockupWidth = device === 'desktop' ? 900 : 320;
+  const mockupHeight = device === 'desktop' ? 560 : 693; // iPhone proportions
 
   return (
     <DashboardLayout>
-      {/* Global styles for hiding scrollbar */}
+      {/* Global styles for hiding scrollbar and crisp image rendering */}
       <style jsx global>{`
         .mockup-screen::-webkit-scrollbar {
           display: none;
@@ -185,6 +185,11 @@ export default function ReferenceStorePage() {
         .mockup-screen {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        .mockup-screen img {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          image-rendering: -webkit-optimize-contrast;
         }
       `}</style>
       <div
@@ -335,6 +340,11 @@ export default function ReferenceStorePage() {
                       draggable={false}
                       style={{
                         minWidth: mockupWidth,
+                        imageRendering: 'auto',
+                        WebkitBackfaceVisibility: 'hidden',
+                        backfaceVisibility: 'hidden',
+                        transform: 'translateZ(0)',
+                        willChange: 'transform',
                       }}
                     />
                   ) : (
