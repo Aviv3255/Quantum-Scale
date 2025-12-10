@@ -35,7 +35,7 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'home',
     label: 'Home Page',
-    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-17_58_13.png?v=1765382349',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
       { id: 1, name: 'Announcement Bar', y_position: 0, side: 'right', install_link: '#', install_text: 'Free Shopify feature', completed: false },
@@ -171,12 +171,22 @@ export default function ReferenceStorePage() {
     );
   }
 
-  // Mockup dimensions - larger for better image quality
-  const mockupWidth = device === 'desktop' ? 1000 : 390;
-  const mockupHeight = device === 'desktop' ? 620 : 750;
+  // Mockup dimensions - much larger for crisp image quality
+  const mockupWidth = device === 'desktop' ? 1100 : 375;
+  const mockupHeight = device === 'desktop' ? 680 : 812; // iPhone proportions
 
   return (
     <DashboardLayout>
+      {/* Global styles for hiding scrollbar */}
+      <style jsx global>{`
+        .mockup-screen::-webkit-scrollbar {
+          display: none;
+        }
+        .mockup-screen {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
       <div
         className="reference-store-page flex flex-col bg-white overflow-hidden"
         style={{
@@ -265,24 +275,41 @@ export default function ReferenceStorePage() {
             <div className="relative">
               {/* Device Frame */}
               <div
-                className={`relative ${device === 'desktop' ? 'rounded-xl' : 'rounded-[2.5rem]'}`}
+                className="relative"
                 style={{
                   width: device === 'desktop' ? mockupWidth + 24 : mockupWidth + 24,
+                  height: device === 'desktop' ? 'auto' : mockupHeight + 24,
                   background: '#1a1a1a',
-                  padding: device === 'desktop' ? '12px 12px 32px 12px' : '48px 12px',
-                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)'
+                  borderRadius: device === 'desktop' ? '12px' : '54px',
+                  padding: device === 'desktop' ? '12px 12px 32px 12px' : '12px',
+                  boxShadow: device === 'desktop'
+                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.15)'
+                    : '0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 0 0 2px #333'
                 }}
               >
-                {/* Desktop notch/camera */}
+                {/* Desktop Camera */}
                 {device === 'desktop' && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-[#1a1a1a] rounded-b-xl flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-neutral-700" />
                   </div>
                 )}
 
-                {/* Mobile notch */}
+                {/* iPhone Dynamic Island */}
                 {device === 'mobile' && (
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#1a1a1a] rounded-full" />
+                  <div
+                    className="absolute top-4 left-1/2 -translate-x-1/2 bg-black rounded-full z-10"
+                    style={{ width: '120px', height: '34px' }}
+                  />
+                )}
+
+                {/* iPhone Side Buttons */}
+                {device === 'mobile' && (
+                  <>
+                    <div className="absolute -right-0.5 top-32 w-1 h-24 rounded-r-sm" style={{ background: '#2a2a2a' }} />
+                    <div className="absolute -left-0.5 top-28 w-1 h-8 rounded-l-sm" style={{ background: '#2a2a2a' }} />
+                    <div className="absolute -left-0.5 top-40 w-1 h-14 rounded-l-sm" style={{ background: '#2a2a2a' }} />
+                    <div className="absolute -left-0.5 top-56 w-1 h-14 rounded-l-sm" style={{ background: '#2a2a2a' }} />
+                  </>
                 )}
 
                 {/* Screen Container */}
@@ -290,12 +317,13 @@ export default function ReferenceStorePage() {
                   ref={scrollContainerRef}
                   onScroll={handleScroll}
                   onClick={handleMockupClick}
-                  className={`relative bg-white overflow-y-auto overflow-x-hidden ${
-                    device === 'desktop' ? 'rounded-lg' : 'rounded-[1.5rem]'
-                  } ${editMode ? 'cursor-crosshair' : ''}`}
+                  className={`mockup-screen relative bg-white ${editMode ? 'cursor-crosshair' : ''}`}
                   style={{
                     width: mockupWidth,
                     height: mockupHeight,
+                    borderRadius: device === 'desktop' ? '8px' : '44px',
+                    overflow: 'auto',
+                    scrollbarWidth: 'none',
                   }}
                 >
                   {/* Screenshot or Placeholder */}
@@ -303,13 +331,10 @@ export default function ReferenceStorePage() {
                     <img
                       src={screenshot}
                       alt={`${activePage} ${device} view`}
-                      className="w-full"
+                      className="w-full block"
                       draggable={false}
                       style={{
-                        imageRendering: '-webkit-optimize-contrast' as never,
-                        WebkitFontSmoothing: 'antialiased',
-                        transform: 'translateZ(0) scale(1)',
-                        willChange: 'transform',
+                        minWidth: mockupWidth,
                       }}
                     />
                   ) : (
@@ -368,10 +393,9 @@ export default function ReferenceStorePage() {
               {showMarkers && !editMode && blocks.length > 0 && (
                 <>
                   {blocks.map((block) => {
-                    const frameTop = device === 'desktop' ? 12 : 48;
+                    const frameTop = device === 'desktop' ? 12 : 12;
                     const markerTop = frameTop + block.y_position - scrollTop;
                     const isVisible = markerTop > 0 && markerTop < mockupHeight;
-                    const opacity = isVisible ? 1 : 0;
 
                     return (
                       <AnimatePresence key={block.id}>
