@@ -35,7 +35,7 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'home',
     label: 'Home Page',
-    desktop_screenshot: '', // Will be added when screenshot is uploaded
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-17_58_13.png?v=1765382349',
     mobile_screenshot: '',
     blocks: [
       { id: 1, name: 'Announcement Bar', y_position: 0, side: 'right', install_link: '#', install_text: 'Free Shopify feature', completed: false },
