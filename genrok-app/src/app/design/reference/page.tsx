@@ -39,7 +39,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 25, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 5, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 49, mobile_y_position: 85, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 547, mobile_y_position: 740, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -484,7 +484,7 @@ export default function ReferenceStorePage() {
                     const frameTop = device === 'desktop' ? 12 : 12;
                     const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
                     const markerTop = frameTop + yPos - scrollTop;
-                    const isVisible = markerTop > 30 && markerTop < mockupHeight - 30;
+                    const isVisible = markerTop > 10 && markerTop < mockupHeight - 30;
                     // Only fade at bottom edge, not at top
                     const edgeFade = markerTop > mockupHeight - 80 ? (mockupHeight - markerTop) / 80 : 1;
                     const isLeft = block.side === 'left';
