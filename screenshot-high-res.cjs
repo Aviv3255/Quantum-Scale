@@ -100,10 +100,10 @@ async function captureScreenshot(url, device = 'desktop') {
     fs.mkdirSync(CONFIG.outputDir, { recursive: true });
   }
 
-  // Take full page screenshot
+  // Take viewport screenshot (only what's visible - no scrolling issues)
   await page.screenshot({
     path: outputPath,
-    fullPage: true,
+    fullPage: false,
     type: 'png'
   });
 
@@ -139,9 +139,10 @@ async function main() {
     console.log('\nGenerated files:');
     screenshots.forEach(s => console.log(`   - ${s}`));
 
-    console.log('\n💡 Tip: These images are at 3x resolution.');
+    console.log('\n💡 Tip: These images are at 3x resolution (viewport only).');
     console.log('   Desktop: 4320x2700 pixels');
     console.log('   Mobile: 1125x2436 pixels');
+    console.log('   No scrolling = No header issues!');
 
   } catch (error) {
     console.error('\n❌ Error:', error.message);
