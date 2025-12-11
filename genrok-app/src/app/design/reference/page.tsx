@@ -16,6 +16,8 @@ interface BlockMarker {
   description: string;
   y_position: number;
   mobile_y_position: number;
+  x_position?: number; // 0-100% from left edge
+  mobile_x_position?: number;
   side: 'left' | 'right';
   install_link: string;
   completed: boolean;
@@ -110,7 +112,7 @@ export default function ReferenceStorePage() {
   const [activePage, setActivePage] = useState('home');
   const [blocks, setBlocks] = useState<BlockMarker[]>(PAGES_DATA[0].blocks);
   const [editMode, setEditMode] = useState(false);
-  const [markerPoints, setMarkerPoints] = useState<{ id: number; y: number; name: string }[]>([]);
+  const [markerPoints, setMarkerPoints] = useState<{ id: number; x: number; y: number; name: string }[]>([]);
   const [showMarkers, setShowMarkers] = useState(true);
 
   // Get current page data
@@ -162,9 +164,11 @@ export default function ReferenceStorePage() {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
+    const x = e.clientX - rect.left;
     const y = e.clientY - rect.top + scrollContainer.scrollTop;
+    const xPercent = Math.round((x / mockupWidth) * 100);
     const newId = markerPoints.length + 1;
-    setMarkerPoints(prev => [...prev, { id: newId, y: Math.round(y), name: `Point ${newId}` }]);
+    setMarkerPoints(prev => [...prev, { id: newId, x: xPercent, y: Math.round(y), name: `Point ${newId}` }]);
   };
 
   // Edit mode: Remove marker point
@@ -465,12 +469,12 @@ export default function ReferenceStorePage() {
                   {editMode && markerPoints.map(point => (
                     <div
                       key={point.id}
-                      className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 z-20"
-                      style={{ top: point.y }}
+                      className="absolute flex items-center gap-2 z-20"
+                      style={{ top: point.y, left: `${point.x}%`, transform: 'translate(-50%, -50%)' }}
                     >
-                      <div className="w-3 h-3 rounded-full bg-red-500 border-2 border-white shadow-lg" />
-                      <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded font-medium">
-                        {point.name}: {point.y}px
+                      <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-lg" />
+                      <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded font-medium whitespace-nowrap">
+                        X:{point.x}% Y:{point.y}px
                       </span>
                     </div>
                   ))}
@@ -577,7 +581,7 @@ export default function ReferenceStorePage() {
                 </div>
 
                 <p className="text-xs text-neutral-500 mb-4">
-                  Click on the mockup to add marker points. Y positions will be recorded.
+                  Click on the mockup to add marker points. X and Y positions will be recorded.
                 </p>
 
                 <div className="space-y-2 mb-4">
@@ -588,7 +592,9 @@ export default function ReferenceStorePage() {
                     >
                       <div>
                         <span className="text-sm font-medium text-neutral-700">{point.name}</span>
-                        <span className="text-xs text-neutral-400 ml-2">Y: {point.y}px</span>
+                        <div className="text-xs text-neutral-400">
+                          X: {point.x}% | Y: {point.y}px
+                        </div>
                       </div>
                       <button
                         onClick={() => removeMarkerPoint(point.id)}
