@@ -320,10 +320,36 @@ export default function ReferenceStorePage() {
 
                 {/* iPhone Dynamic Island - iPhone 15 style (thinner) */}
                 {device === 'mobile' && (
-                  <div
-                    className="absolute top-4 left-1/2 -translate-x-1/2 bg-black rounded-full z-10"
-                    style={{ width: '90px', height: '26px' }}
-                  />
+                  <>
+                    {/* iOS Status Bar */}
+                    <div
+                      className="absolute top-3 left-0 right-0 z-20 flex items-center justify-between px-6"
+                      style={{ height: '20px' }}
+                    >
+                      <div className="flex items-center gap-1">
+                        <span style={{ fontSize: '12px', fontWeight: 600, color: '#000' }}>11:05</span>
+                      </div>
+                      <div
+                        className="bg-black rounded-full"
+                        style={{ width: '80px', height: '24px' }}
+                      />
+                      <div className="flex items-center gap-1">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                          <path d="M1 4h2v8H1V4zm4-2h2v10H5V2zm4-2h2v12H9V0zm4 4h2v8h-2V4z" fill="#000"/>
+                        </svg>
+                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+                          <path d="M7 2.5C9.5 2.5 11.5 4 12.5 5.5L14 4C12.5 2 10 0 7 0S1.5 2 0 4l1.5 1.5C2.5 4 4.5 2.5 7 2.5z" fill="#000"/>
+                          <path d="M7 6C8.5 6 9.5 7 10 7.5L11.5 6C10.5 5 9 4 7 4S3.5 5 2.5 6L4 7.5C4.5 7 5.5 6 7 6z" fill="#000"/>
+                          <circle cx="7" cy="10" r="2" fill="#000"/>
+                        </svg>
+                        <div className="flex items-center">
+                          <div style={{ width: '22px', height: '10px', border: '1px solid #000', borderRadius: '3px', padding: '1px' }}>
+                            <div style={{ width: '75%', height: '100%', background: '#000', borderRadius: '1px' }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {/* iPhone Side Buttons */}
@@ -350,29 +376,36 @@ export default function ReferenceStorePage() {
                     scrollbarWidth: 'none',
                   }}
                 >
-                  {/* iPhone URL Bar */}
+                  {/* iOS Safari URL Bar */}
                   {device === 'mobile' && (
                     <div
-                      className="sticky top-0 z-20 flex items-center justify-center"
+                      className="sticky top-0 z-20"
                       style={{
-                        height: '44px',
                         background: 'rgba(255, 255, 255, 0.95)',
                         backdropFilter: 'blur(10px)',
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
                       }}
                     >
-                      <div
-                        className="flex items-center justify-center"
-                        style={{
-                          background: '#f2f2f7',
-                          borderRadius: '10px',
-                          padding: '6px 12px',
-                          minWidth: '200px',
-                        }}
-                      >
-                        <span style={{ color: '#8e8e93', fontSize: '14px', fontWeight: 500 }}>
-                          Brand.com
-                        </span>
+                      {/* URL Bar */}
+                      <div className="flex items-center justify-center px-4 py-2">
+                        <div
+                          className="flex items-center justify-center gap-2 w-full"
+                          style={{
+                            background: '#e5e5ea',
+                            borderRadius: '12px',
+                            padding: '8px 16px',
+                          }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M7 1L1 7l6 6m0-12v12" stroke="#8e8e93" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" transform="rotate(-90 7 7)"/>
+                          </svg>
+                          <span style={{ color: '#000', fontSize: '15px', fontWeight: 400 }}>
+                            Brand.com
+                          </span>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <circle cx="7" cy="7" r="6" stroke="#8e8e93" strokeWidth="1.5"/>
+                            <path d="M7 4v6M4 7h6" stroke="#8e8e93" strokeWidth="1.5" strokeLinecap="round" transform="rotate(45 7 7)"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -452,7 +485,6 @@ export default function ReferenceStorePage() {
                     const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
                     const markerTop = frameTop + yPos - scrollTop;
                     const isVisible = markerTop > 20 && markerTop < mockupHeight - 20;
-                    // Calculate opacity for smooth fade at edges
                     const edgeFade = markerTop < 60 ? markerTop / 60 : markerTop > mockupHeight - 60 ? (mockupHeight - markerTop) / 60 : 1;
                     const isLeft = block.side === 'left';
 
@@ -469,42 +501,42 @@ export default function ReferenceStorePage() {
                             }`}
                             style={{
                               top: markerTop,
-                              [isLeft ? 'marginRight' : 'marginLeft']: '-20px',
+                              [isLeft ? 'marginRight' : 'marginLeft']: '-40px',
                             }}
                           >
-                            {/* Connecting line - starts inside mockup */}
+                            {/* Connecting line - starts more inside mockup */}
                             <div
                               style={{
-                                width: '50px',
-                                height: '2px',
-                                background: '#1a1a1a',
+                                width: '60px',
+                                height: '1px',
+                                background: '#374151',
                               }}
                             />
                             {/* Small dot at connection */}
                             <div
                               style={{
-                                width: '8px',
-                                height: '8px',
+                                width: '6px',
+                                height: '6px',
                                 borderRadius: '50%',
-                                background: '#1a1a1a',
+                                background: '#374151',
                                 flexShrink: 0,
                               }}
                             />
-                            {/* Card - closer to screen */}
+                            {/* Card - uniform dark gray */}
                             <div
                               style={{
-                                width: '220px',
-                                background: '#1a1a1a',
-                                borderRadius: '8px',
-                                padding: '12px 14px',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-                                marginLeft: isLeft ? '0' : '4px',
-                                marginRight: isLeft ? '4px' : '0',
+                                width: '180px',
+                                background: '#374151',
+                                borderRadius: '6px',
+                                padding: '10px 12px',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                marginLeft: isLeft ? '0' : '2px',
+                                marginRight: isLeft ? '2px' : '0',
                               }}
                             >
                               <p
-                                className="text-[13px] leading-snug font-normal"
-                                style={{ color: '#f5f5f0' }}
+                                className="text-[12px] leading-snug font-normal"
+                                style={{ color: '#ffffff' }}
                               >
                                 {block.description}{' '}
                                 <a
@@ -512,7 +544,7 @@ export default function ReferenceStorePage() {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="underline underline-offset-2 transition-colors hover:opacity-80"
-                                  style={{ color: '#ffffff' }}
+                                  style={{ color: '#60a5fa' }}
                                 >
                                   Install
                                 </a>
