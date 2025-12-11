@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
-import { Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Zap, Target, TrendingUp, Crown } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -18,6 +18,7 @@ interface TierData {
   id: string;
   title: string;
   tier: string;
+  tagline: string;
   dailyBudget: number;
   customersPerDay: number;
   customersPerMonth: number;
@@ -25,21 +26,18 @@ interface TierData {
   metrics: MetricRow[];
   requirements: string[];
   featured?: boolean;
-  accentColor: string;
-  accentBg: string;
 }
 
 const tiersData: TierData[] = [
   {
     id: '100k',
-    title: '$100,000',
-    tier: 'FOUNDATION',
+    title: '$100K',
+    tier: 'LAUNCHPAD',
+    tagline: 'Your first six figures',
     dailyBudget: 240,
     customersPerDay: 8,
     customersPerMonth: 240,
-    maxProfit: '$239,000',
-    accentColor: 'text-neutral-300',
-    accentBg: 'from-neutral-600 to-neutral-700',
+    maxProfit: '$239K',
     metrics: [
       { name: 'CAC (Cost per Customer)', min: '$30', aim: '$20' },
       { name: 'Conversion Rate (Cold Traffic)', min: '5%', aim: '7%+' },
@@ -56,14 +54,13 @@ const tiersData: TierData[] = [
   },
   {
     id: '300k',
-    title: '$300,000',
-    tier: 'GROWTH',
+    title: '$300K',
+    tier: 'MOMENTUM',
+    tagline: 'Scale with confidence',
     dailyBudget: 470,
     customersPerDay: 19,
     customersPerMonth: 570,
-    maxProfit: '$640,000',
-    accentColor: 'text-slate-300',
-    accentBg: 'from-slate-600 to-slate-700',
+    maxProfit: '$640K',
     metrics: [
       { name: 'CAC (Cost per Customer)', min: '$25', aim: '$18' },
       { name: 'Conversion Rate (Cold Traffic)', min: '6%', aim: '8%+' },
@@ -81,15 +78,14 @@ const tiersData: TierData[] = [
   },
   {
     id: '1m',
-    title: '$1,000,000',
-    tier: 'SCALE',
+    title: '$1M',
+    tier: 'EMPIRE',
+    tagline: 'Join the 1% club',
     dailyBudget: 1265,
     customersPerDay: 51,
     customersPerMonth: 1530,
-    maxProfit: '$2,000,000',
+    maxProfit: '$2M',
     featured: true,
-    accentColor: 'text-amber-300',
-    accentBg: 'from-amber-700 to-amber-800',
     metrics: [
       { name: 'CAC (Cost per Customer)', min: '$25', aim: '$18' },
       { name: 'Conversion Rate (Cold Traffic)', min: '7%', aim: '9%+' },
@@ -114,16 +110,16 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.15 },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5 }
+    transition: { duration: 0.4 }
   },
 };
 
@@ -142,278 +138,313 @@ export default function BlueprintPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-neutral-800 border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[#030303]">
+        <div className="animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full" />
       </div>
     );
   }
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="min-h-screen bg-[#030303]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
-          {/* Header Section */}
+          {/* Hero Header */}
           <motion.header
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            transition={{ duration: 0.7 }}
+            className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 mb-6">
-              <Sparkles size={14} className="text-neutral-700" />
-              <span className="text-sm font-medium text-neutral-700 tracking-wide">PROFIT BLUEPRINT</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4 tracking-tight">
-              The $100K-$1M Blueprint
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8"
+            >
+              <Zap size={16} className="text-amber-400" />
+              <span className="text-sm font-semibold text-amber-400 tracking-wide">THE PROFIT BLUEPRINT</span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+              Stop Guessing.<br />
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
+                Start Printing.
+              </span>
             </h1>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              The exact metrics that turn potential into unstoppable scale.
+
+            <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto leading-relaxed">
+              The exact numbers that separate <span className="text-white font-semibold">struggling stores</span> from{' '}
+              <span className="text-amber-400 font-semibold">money-printing machines</span>.
+              <br className="hidden md:block" />
+              No fluff. No theory. Just the metrics that matter.
             </p>
           </motion.header>
 
-          {/* Metrics Table Card */}
+          {/* Metrics Table Section */}
           <motion.section
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="mb-16"
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mb-24"
           >
             <div
-              className="rounded-2xl bg-[#0f0f0f] p-8 md:p-10 border border-neutral-800/50"
-              style={{ boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}
+              className="rounded-3xl bg-gradient-to-b from-neutral-900 to-neutral-950 p-8 md:p-12 border border-neutral-800"
+              style={{ boxShadow: '0 0 80px rgba(251,191,36,0.08)' }}
             >
-              {/* Card Header */}
-              <div className="text-center mb-8">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Your Ideal Metrics Table</h2>
-                <p className="text-neutral-400">Know your targets. Hit them. Scale relentlessly.</p>
+              {/* Section Header */}
+              <div className="text-center mb-10">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Target size={24} className="text-amber-400" />
+                  <h2 className="text-3xl md:text-4xl font-bold text-white">Your Target Numbers</h2>
+                </div>
+                <p className="text-lg text-neutral-300">
+                  Hit these metrics consistently, and watch your bank account explode.
+                </p>
               </div>
 
               {/* Tier Selector */}
-              <div className="flex justify-center gap-2 mb-10">
+              <div className="flex justify-center gap-3 mb-12">
                 {tiersData.map((tier) => (
                   <button
                     key={tier.id}
                     onClick={() => setSelectedTier(tier.id)}
                     className={`
-                      px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200
+                      relative px-8 py-4 rounded-2xl font-bold text-base transition-all duration-300
                       ${selectedTier === tier.id
                         ? tier.featured
-                          ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg shadow-amber-900/30'
-                          : 'bg-white text-neutral-900 shadow-lg'
-                        : 'bg-neutral-800/50 text-neutral-300 hover:bg-neutral-700/50 hover:text-white'
+                          ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/30 scale-105'
+                          : 'bg-white text-black shadow-lg shadow-white/20 scale-105'
+                        : 'bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700 hover:text-white'
                       }
                     `}
                   >
-                    {tier.id === '100k' ? '$100K' : tier.id === '300k' ? '$300K' : '$1M'}
+                    {tier.title}
+                    {tier.featured && selectedTier === tier.id && (
+                      <Crown size={14} className="absolute -top-2 -right-2 text-amber-300" />
+                    )}
                   </button>
                 ))}
               </div>
 
               {/* Metrics Table */}
-              <div className="mb-8">
-                <div className="grid grid-cols-2 gap-4 pb-4 border-b border-neutral-700/50 mb-4">
-                  <span className="text-sm font-semibold text-neutral-300 uppercase tracking-wider">Metric</span>
-                  <span className="text-sm font-semibold text-neutral-300 uppercase tracking-wider text-right">Minimum Target to Hit Goal</span>
+              <div className="mb-10 overflow-hidden rounded-2xl border border-neutral-700/50">
+                <div className="grid grid-cols-2 gap-4 p-5 bg-neutral-800/50 border-b border-neutral-700/50">
+                  <span className="text-sm font-bold text-neutral-200 uppercase tracking-wider">Metric</span>
+                  <span className="text-sm font-bold text-neutral-200 uppercase tracking-wider text-right">Target to Hit Goal</span>
                 </div>
 
-                <div className="space-y-0">
+                <div className="divide-y divide-neutral-800/50">
                   {currentTier.metrics.map((metric, idx) => (
-                    <div
+                    <motion.div
                       key={idx}
-                      className={`
-                        grid grid-cols-2 gap-4 py-4
-                        ${idx !== currentTier.metrics.length - 1 ? 'border-b border-neutral-800/50' : ''}
-                      `}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="grid grid-cols-2 gap-4 p-5 hover:bg-neutral-800/30 transition-colors"
                     >
                       <span className="text-white font-medium">{metric.name}</span>
                       <div className="text-right">
-                        <span className="text-white font-semibold">{metric.min}</span>
-                        <span className="text-emerald-400 ml-2 font-medium">(aim for {metric.aim})</span>
+                        <span className="text-white font-bold text-lg">{metric.min}</span>
+                        <span className="text-emerald-400 ml-2 font-semibold">(aim for {metric.aim})</span>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
 
               {/* Budget & Profit Cards */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-6">
                 {/* Daily Budget Card */}
-                <div className="rounded-xl bg-neutral-800/40 border border-neutral-700/30 p-6">
-                  <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
-                    YOUR DAILY BUDGET FOR {currentTier.title} PROFIT
+                <div className="rounded-2xl bg-gradient-to-br from-neutral-800 to-neutral-900 border border-neutral-700/50 p-8">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp size={18} className="text-amber-400" />
+                    <span className="text-sm font-bold text-amber-400 uppercase tracking-wider">
+                      Daily Ad Spend for {currentTier.title}
+                    </span>
                   </div>
-                  <p className="text-neutral-400 text-sm mb-3">Based on realistic benchmarks</p>
-                  <div className="text-4xl font-bold text-white mb-2">${currentTier.dailyBudget}</div>
-                  <p className="text-neutral-400 text-sm">
-                    ~{currentTier.customersPerDay} customers/day • {currentTier.customersPerMonth} customers/month
+                  <p className="text-neutral-400 text-sm mb-4">Based on realistic benchmarks</p>
+                  <div className="text-5xl font-black text-white mb-3">${currentTier.dailyBudget}</div>
+                  <p className="text-neutral-300">
+                    <span className="text-white font-semibold">~{currentTier.customersPerDay}</span> customers/day •{' '}
+                    <span className="text-white font-semibold">{currentTier.customersPerMonth}</span> customers/month
                   </p>
                 </div>
 
                 {/* Max Profit Card */}
-                <div className="rounded-xl bg-gradient-to-br from-emerald-900/30 to-emerald-800/20 border border-emerald-700/30 p-6">
-                  <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
-                    IF YOU HIT ALL TARGETS
+                <div className="rounded-2xl bg-gradient-to-br from-emerald-900/40 to-emerald-950/40 border border-emerald-500/30 p-8">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap size={18} className="text-emerald-400" />
+                    <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">
+                      When You Hit All Targets
+                    </span>
                   </div>
-                  <p className="text-neutral-400 text-sm mb-3">Your potential monthly profit with the same budget</p>
-                  <div className="text-4xl font-bold text-white">{currentTier.maxProfit}</div>
+                  <p className="text-neutral-400 text-sm mb-4">Your potential monthly profit</p>
+                  <div className="text-5xl font-black text-white mb-3">{currentTier.maxProfit}</div>
+                  <p className="text-emerald-300 font-medium">
+                    Same budget. Different results. That&apos;s optimization.
+                  </p>
                 </div>
               </div>
             </div>
           </motion.section>
 
-          {/* Blueprint Cards */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid lg:grid-cols-3 gap-6 lg:gap-8 mb-20"
+          {/* Blueprint Cards Section */}
+          <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mb-24"
           >
-            {tiersData.map((tier) => (
-              <motion.div
-                key={tier.id}
-                variants={itemVariants}
-                className={`relative ${tier.featured ? 'lg:-mt-4 lg:mb-4' : ''}`}
-              >
-                <div
-                  className={`
-                    relative overflow-hidden rounded-2xl
-                    bg-[#0f0f0f]
-                    border border-neutral-800/50
-                    ${tier.featured ? 'ring-1 ring-amber-600/40' : ''}
-                  `}
-                  style={{
-                    boxShadow: tier.featured
-                      ? '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 30px rgba(180,140,80,0.1)'
-                      : '0 20px 40px -12px rgba(0,0,0,0.2)',
-                  }}
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Choose Your <span className="text-amber-400">Destination</span>
+              </h2>
+              <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
+                Every empire starts somewhere. Pick your first milestone and reverse-engineer your way there.
+              </p>
+            </div>
+
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid lg:grid-cols-3 gap-6"
+            >
+              {tiersData.map((tier) => (
+                <motion.div
+                  key={tier.id}
+                  variants={itemVariants}
+                  className="h-full"
                 >
-                  {/* Featured Badge */}
-                  {tier.featured && (
-                    <div className="absolute top-0 left-0 right-0 py-2.5 bg-gradient-to-r from-amber-800 to-amber-700 text-center z-10">
-                      <span className="text-xs font-bold text-amber-100 tracking-widest">THE ULTIMATE GOAL</span>
-                    </div>
-                  )}
-
-                  {/* Card Header */}
-                  <div className={`relative px-8 pt-8 pb-6 ${tier.featured ? 'mt-9' : ''}`}>
-                    {/* Accent line */}
-                    <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tier.accentBg}`} />
-
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-bold text-neutral-400 tracking-[0.2em]">{tier.tier}</span>
-                      {tier.featured && (
-                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-800/40 border border-amber-600/30">
-                          <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                          <span className="text-[10px] font-bold text-amber-300">RECOMMENDED</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <h2 className="text-4xl font-bold text-white mb-1 tracking-tight">{tier.title}</h2>
-                    <p className="text-sm text-neutral-400">Monthly Profit Target</p>
-                  </div>
-
-                  {/* Key Stats */}
-                  <div className="px-8 pb-6">
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="rounded-lg bg-neutral-800/40 p-4">
-                        <div className="text-xs text-neutral-400 mb-1">Daily Budget</div>
-                        <div className="text-xl font-bold text-white">${tier.dailyBudget}</div>
+                  <div
+                    className={`
+                      relative h-full flex flex-col rounded-3xl
+                      bg-gradient-to-b from-neutral-900 to-neutral-950
+                      border ${tier.featured ? 'border-amber-500/50' : 'border-neutral-800'}
+                      overflow-hidden
+                    `}
+                    style={{
+                      boxShadow: tier.featured
+                        ? '0 0 60px rgba(251,191,36,0.15)'
+                        : '0 20px 40px rgba(0,0,0,0.3)',
+                    }}
+                  >
+                    {/* Featured Badge */}
+                    {tier.featured && (
+                      <div className="bg-gradient-to-r from-amber-500 to-orange-500 py-3 text-center">
+                        <span className="text-sm font-black text-black tracking-wider">THE ULTIMATE GOAL</span>
                       </div>
-                      <div className="rounded-lg bg-neutral-800/40 p-4">
-                        <div className="text-xs text-neutral-400 mb-1">Max Profit</div>
-                        <div className={`text-xl font-bold ${tier.featured ? 'text-amber-300' : 'text-emerald-400'}`}>{tier.maxProfit}</div>
-                      </div>
-                    </div>
+                    )}
 
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="h-px flex-1 bg-neutral-700/50" />
-                      <span className="text-[10px] font-bold text-neutral-500 tracking-[0.15em]">REQUIREMENTS</span>
-                      <div className="h-px flex-1 bg-neutral-700/50" />
-                    </div>
-
-                    <ul className="space-y-3">
-                      {tier.requirements.map((req, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <div className={`
-                            flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5
-                            ${tier.featured
-                              ? 'bg-amber-800/50 text-amber-400'
-                              : 'bg-neutral-700/50 text-neutral-400'
-                            }
-                          `}>
-                            <Check size={12} strokeWidth={2.5} />
+                    {/* Card Header */}
+                    <div className={`px-8 pt-8 pb-6 ${!tier.featured ? 'border-t-4 border-neutral-700' : ''}`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-bold text-neutral-400 tracking-[0.25em]">{tier.tier}</span>
+                        {tier.featured && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/30">
+                            <Crown size={12} className="text-amber-400" />
+                            <span className="text-[10px] font-bold text-amber-300 tracking-wide">TOP 1%</span>
                           </div>
-                          <span className="text-sm text-neutral-300 leading-relaxed">{req}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                        )}
+                      </div>
 
-          {/* Revenue Comparison */}
+                      <h3 className="text-5xl font-black text-white mb-2">{tier.title}</h3>
+                      <p className="text-neutral-400 font-medium">{tier.tagline}</p>
+                    </div>
+
+                    {/* Stats Grid */}
+                    <div className="px-8 pb-6">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="rounded-xl bg-neutral-800/50 p-4">
+                          <div className="text-xs text-neutral-400 mb-1 font-medium">Daily Budget</div>
+                          <div className="text-2xl font-bold text-white">${tier.dailyBudget}</div>
+                        </div>
+                        <div className="rounded-xl bg-neutral-800/50 p-4">
+                          <div className="text-xs text-neutral-400 mb-1 font-medium">Max Profit</div>
+                          <div className={`text-2xl font-bold ${tier.featured ? 'text-amber-400' : 'text-emerald-400'}`}>
+                            {tier.maxProfit}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Requirements */}
+                    <div className="flex-1 px-8 pb-8">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="h-px flex-1 bg-neutral-800" />
+                        <span className="text-[10px] font-bold text-neutral-500 tracking-[0.2em]">WHAT YOU NEED</span>
+                        <div className="h-px flex-1 bg-neutral-800" />
+                      </div>
+
+                      <ul className="space-y-3">
+                        {tier.requirements.map((req, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <div className={`
+                              flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5
+                              ${tier.featured
+                                ? 'bg-amber-500/20 text-amber-400'
+                                : 'bg-neutral-800 text-emerald-400'
+                              }
+                            `}>
+                              <Check size={12} strokeWidth={3} />
+                            </div>
+                            <span className="text-sm text-neutral-200 leading-relaxed">{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
+
+          {/* Profit Comparison */}
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="mb-20"
+            transition={{ delay: 0.7, duration: 0.5 }}
+            className="mb-24"
           >
             <div
-              className="rounded-2xl bg-[#0f0f0f] p-8 md:p-10 border border-neutral-800/50"
-              style={{ boxShadow: '0 20px 40px -12px rgba(0,0,0,0.2)' }}
+              className="rounded-3xl bg-gradient-to-b from-neutral-900 to-neutral-950 p-8 md:p-12 border border-neutral-800"
             >
-              <div className="flex items-center gap-2 mb-8">
-                <div className="h-px flex-1 bg-neutral-700/50" />
-                <span className="text-xs font-bold text-neutral-400 tracking-[0.15em]">PROFIT COMPARISON</span>
-                <div className="h-px flex-1 bg-neutral-700/50" />
+              <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                  See The <span className="text-amber-400">Gap</span>
+                </h2>
+                <p className="text-lg text-neutral-300">
+                  Same effort. Different systems. Massive difference in results.
+                </p>
               </div>
 
               <div className="space-y-6">
-                {/* $100K Bar */}
-                <div className="flex items-center gap-4">
-                  <span className="w-20 text-sm font-semibold text-neutral-300">$100K</span>
-                  <div className="flex-1 h-10 bg-neutral-800/50 rounded-lg overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: '12%' }}
-                      transition={{ delay: 0.8, duration: 0.8 }}
-                      className="h-full bg-gradient-to-r from-neutral-600 to-neutral-500 rounded-lg"
-                    />
+                {tiersData.map((tier, idx) => (
+                  <div key={tier.id} className="flex items-center gap-4 md:gap-6">
+                    <span className={`w-20 md:w-24 text-base font-bold ${tier.featured ? 'text-amber-400' : 'text-neutral-200'}`}>
+                      {tier.title}
+                    </span>
+                    <div className="flex-1 h-12 bg-neutral-800/50 rounded-xl overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: tier.id === '100k' ? '12%' : tier.id === '300k' ? '32%' : '100%' }}
+                        transition={{ delay: 0.9 + idx * 0.2, duration: 0.8 }}
+                        className={`h-full rounded-xl ${
+                          tier.featured
+                            ? 'bg-gradient-to-r from-amber-600 to-orange-500'
+                            : tier.id === '300k'
+                              ? 'bg-gradient-to-r from-slate-600 to-slate-500'
+                              : 'bg-gradient-to-r from-neutral-600 to-neutral-500'
+                        }`}
+                      />
+                    </div>
+                    <span className={`w-24 md:w-32 text-right text-base font-bold ${tier.featured ? 'text-amber-400' : 'text-white'}`}>
+                      {tier.maxProfit}/mo
+                    </span>
                   </div>
-                  <span className="w-28 text-right text-sm font-bold text-white">$239K/mo</span>
-                </div>
-
-                {/* $300K Bar */}
-                <div className="flex items-center gap-4">
-                  <span className="w-20 text-sm font-semibold text-neutral-300">$300K</span>
-                  <div className="flex-1 h-10 bg-neutral-800/50 rounded-lg overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: '32%' }}
-                      transition={{ delay: 1, duration: 0.8 }}
-                      className="h-full bg-gradient-to-r from-slate-600 to-slate-500 rounded-lg"
-                    />
-                  </div>
-                  <span className="w-28 text-right text-sm font-bold text-white">$640K/mo</span>
-                </div>
-
-                {/* $1M Bar */}
-                <div className="flex items-center gap-4">
-                  <span className="w-20 text-sm font-semibold text-amber-300">$1M</span>
-                  <div className="flex-1 h-10 bg-neutral-800/50 rounded-lg overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: '100%' }}
-                      transition={{ delay: 1.2, duration: 0.8 }}
-                      className="h-full bg-gradient-to-r from-amber-700 to-amber-600 rounded-lg"
-                    />
-                  </div>
-                  <span className="w-28 text-right text-sm font-bold text-amber-300">$2M/mo</span>
-                </div>
+                ))}
               </div>
             </div>
           </motion.section>
@@ -422,39 +453,52 @@ export default function BlueprintPage() {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
+            transition={{ delay: 0.9, duration: 0.5 }}
             className="text-center"
           >
             <div
-              className="rounded-2xl bg-[#0f0f0f] p-10 md:p-14 border border-neutral-800/50"
-              style={{ boxShadow: '0 20px 40px -12px rgba(0,0,0,0.2)' }}
+              className="rounded-3xl bg-gradient-to-b from-neutral-900 to-neutral-950 p-12 md:p-16 border border-neutral-800"
+              style={{ boxShadow: '0 0 100px rgba(251,191,36,0.1)' }}
             >
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
-                Ready to Build Your $1M Machine?
-              </h2>
-              <p className="text-neutral-400 mb-8 max-w-lg mx-auto">
-                Learn the exact systems and strategies to hit these numbers consistently.
-              </p>
-              <Link
-                href="/learn"
-                className="
-                  group relative inline-flex items-center gap-2 px-8 py-4
-                  bg-white text-neutral-900
-                  rounded-xl font-semibold text-sm
-                  transition-all duration-300
-                  hover:scale-[1.02]
-                  active:scale-[0.98]
-                  overflow-hidden
-                "
-                style={{
-                  boxShadow: '0 4px 20px rgba(255,255,255,0.15), 0 0 40px rgba(255,255,255,0.05)'
-                }}
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1.1 }}
               >
-                {/* Shine effect */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <span className="relative">Start Learning</span>
-                <ArrowRight size={16} strokeWidth={2} className="relative" />
-              </Link>
+                <h2 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
+                  These Numbers Don&apos;t Lie.<br />
+                  <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+                    Neither Should Your Strategy.
+                  </span>
+                </h2>
+                <p className="text-lg md:text-xl text-neutral-300 mb-10 max-w-2xl mx-auto">
+                  Every $1M brand started by mastering these fundamentals. The difference?
+                  <span className="text-white font-semibold"> They stopped winging it.</span>
+                </p>
+
+                <Link
+                  href="/learn"
+                  className="
+                    group relative inline-flex items-center gap-3 px-10 py-5
+                    bg-gradient-to-r from-amber-500 to-orange-500
+                    text-black font-bold text-lg
+                    rounded-2xl
+                    transition-all duration-300
+                    hover:scale-105 hover:shadow-xl hover:shadow-amber-500/30
+                    active:scale-100
+                    overflow-hidden
+                  "
+                >
+                  {/* Shine effect */}
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  <span className="relative">Start Building Your Machine</span>
+                  <ArrowRight size={20} strokeWidth={2.5} className="relative group-hover:translate-x-1 transition-transform" />
+                </Link>
+
+                <p className="mt-6 text-sm text-neutral-500">
+                  Join 2,847+ founders who stopped hoping and started scaling.
+                </p>
+              </motion.div>
             </div>
           </motion.section>
 
