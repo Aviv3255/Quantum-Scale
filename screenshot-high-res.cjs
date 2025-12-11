@@ -10,8 +10,8 @@
  *   3. node screenshot-high-res.cjs [URL]
  *
  * Examples:
- *   node screenshot-high-res.cjs http://localhost:5173/web-ui-inspiration
- *   node screenshot-high-res.cjs https://your-site.com/page
+ *   node screenshot-high-res.cjs https://quantum-scale.co/web-ui-inspiration
+ *   node screenshot-high-res.cjs https://quantum-scale.co/
  */
 
 const puppeteer = require('puppeteer');
@@ -115,7 +115,7 @@ async function captureScreenshot(url, device = 'desktop') {
 }
 
 async function main() {
-  const url = process.argv[2] || 'http://localhost:5173/web-ui-inspiration';
+  const url = process.argv[2] || 'https://quantum-scale.co/web-ui-inspiration';
 
   console.log('🚀 High-Resolution Screenshot Tool');
   console.log('================================');
