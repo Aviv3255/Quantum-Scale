@@ -164,7 +164,7 @@ export default function BlueprintPage() {
               <div className="text-center mb-10">
                 <div className="inline-flex items-center gap-2 mb-4">
                   <Target size={20} className="text-emerald-400" />
-                  <h2 className="text-3xl md:text-4xl font-bold text-white">
+                  <h2 className="text-3xl md:text-4xl font-bold" style={{ color: '#ffffff' }}>
                     Your Ideal Metrics Table
                   </h2>
                 </div>
@@ -265,56 +265,6 @@ export default function BlueprintPage() {
             </div>
           </motion.div>
 
-          {/* Visual Comparison Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="mt-12 rounded-3xl bg-[#0a0a0a] p-8 md:p-10 overflow-hidden"
-            style={{
-              boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
-            }}
-          >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              <span className="text-sm font-bold text-gray-400 tracking-wider">PROFIT POTENTIAL</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            </div>
-
-            <div className="space-y-5">
-              {tiersData.map((tier, idx) => {
-                const widths = { '100k': '12%', '300k': '32%', '1m': '100%' };
-                const colors = {
-                  '100k': 'from-gray-600 to-gray-500',
-                  '300k': 'from-blue-600 to-indigo-500',
-                  '1m': 'from-emerald-500 to-teal-400'
-                };
-                return (
-                  <div key={tier.id} className="flex items-center gap-4">
-                    <span className={`w-16 text-sm font-bold ${tier.id === '1m' ? 'text-emerald-400' : 'text-gray-300'}`}>
-                      {tier.title}
-                    </span>
-                    <div className="flex-1 h-10 bg-white/5 rounded-xl overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: widths[tier.id as keyof typeof widths] }}
-                        transition={{ delay: 0.6 + idx * 0.15, duration: 0.8 }}
-                        className={`h-full bg-gradient-to-r ${colors[tier.id as keyof typeof colors]} rounded-xl relative`}
-                      >
-                        {tier.id === '1m' && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
-                        )}
-                      </motion.div>
-                    </div>
-                    <span className={`w-28 text-right text-sm font-bold ${tier.id === '1m' ? 'text-emerald-400' : 'text-white'}`}>
-                      {tier.maxProfit}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </motion.div>
-
           {/* CTA Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -332,7 +282,7 @@ export default function BlueprintPage() {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
 
               <div className="relative">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>
                   Ready to Hit These Numbers?
                 </h2>
                 <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
