@@ -55,8 +55,8 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'product',
     label: 'Product Page',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-16_00_45.png?v=1765461667',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-15_59_06.png?v=1765461561',
     blocks: [],
   },
   {
@@ -76,8 +76,8 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'contact',
     label: 'Contact',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-pages-new-test-2025-12-11-15_55_51.png?v=1765461368',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-pages-new-test-2025-12-11-15_57_05.png?v=1765461438',
     blocks: [],
   },
   {
@@ -248,7 +248,7 @@ export default function ReferenceStorePage() {
           {/* Center - Page Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-neutral-100">
             {PAGES_DATA.map(page => {
-              const isEnabled = page.page === 'home' || page.page === 'entry-exit';
+              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact';
               return (
                 <button
                   key={page.page}
