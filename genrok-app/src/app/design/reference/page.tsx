@@ -225,11 +225,11 @@ export default function ReferenceStorePage() {
   }, []);
 
   const mockupWidth = device === 'desktop'
-    ? (isSmallScreen ? 650 : 900)
-    : (isSmallScreen ? 280 : 320);
+    ? (isSmallScreen ? 580 : 780)
+    : (isSmallScreen ? 260 : 300);
   const mockupHeight = device === 'desktop'
-    ? (isSmallScreen ? 400 : 560)
-    : (isSmallScreen ? 580 : 693); // iPhone proportions
+    ? (isSmallScreen ? 360 : 480)
+    : (isSmallScreen ? 540 : 650); // iPhone proportions
 
   return (
     <DashboardLayout>
@@ -542,13 +542,13 @@ export default function ReferenceStorePage() {
                             }`}
                             style={{
                               top: markerTop,
-                              [isLeft ? 'marginRight' : 'marginLeft']: '-80px',
+                              [isLeft ? 'marginRight' : 'marginLeft']: '-40px',
                             }}
                           >
-                            {/* Connecting line - deeper inside mockup */}
+                            {/* Connecting line */}
                             <div
                               style={{
-                                width: '100px',
+                                width: '60px',
                                 height: '1px',
                                 background: '#374151',
                               }}
