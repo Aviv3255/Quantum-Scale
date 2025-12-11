@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
-import { ArrowRight, TrendingUp, Lightbulb } from 'lucide-react';
+import { ArrowRight, TrendingUp, Zap, Target, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -86,10 +86,10 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, x: -10 },
   visible: {
     opacity: 1,
-    y: 0,
+    x: 0,
     transition: { duration: 0.3 }
   },
 };
@@ -109,7 +109,7 @@ export default function BlueprintPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="animate-spin w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
       </div>
     );
@@ -117,126 +117,201 @@ export default function BlueprintPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
           {/* Header */}
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 mb-6">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white mb-8 shadow-lg shadow-emerald-500/25">
               <TrendingUp size={16} />
-              <Lightbulb size={16} />
-              <span className="text-sm font-semibold tracking-wide">YOUR ROADMAP TO 6-7 FIGURES</span>
+              <Sparkles size={16} />
+              <span className="text-sm font-bold tracking-wide">YOUR ROADMAP TO 6-7 FIGURES</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-5 tracking-tight">
               The $100K-$1M Profit Blueprint
             </h1>
 
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
               The exact metrics that turn potential into unstoppable scale.
             </p>
           </motion.header>
 
-          {/* Main Card */}
+          {/* Main Dark Card */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-10"
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="relative rounded-3xl bg-[#0a0a0a] p-8 md:p-12 overflow-hidden"
+            style={{
+              boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+            }}
           >
-            {/* Section Title */}
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                Your Ideal Metrics Table
-              </h2>
-              <p className="text-gray-500">
-                Know your targets. Hit them. Scale relentlessly.
-              </p>
-            </div>
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5 pointer-events-none" />
 
-            {/* Tier Selector */}
-            <div className="flex justify-center gap-3 mb-10">
-              {tiersData.map((tier) => (
-                <button
-                  key={tier.id}
-                  onClick={() => setSelectedTier(tier.id)}
-                  className={`
-                    px-8 py-3.5 rounded-full font-semibold text-base transition-all duration-200
-                    ${selectedTier === tier.id
-                      ? tier.id === '1m'
-                        ? 'bg-emerald-500 text-white shadow-lg'
-                        : 'bg-blue-500 text-white shadow-lg'
-                      : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-300'
-                    }
-                  `}
-                >
-                  {tier.title}
-                </button>
-              ))}
-            </div>
+            {/* Glow effect */}
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Metrics Table */}
-            <div className="mb-8">
-              {/* Table Header */}
-              <div className="grid grid-cols-2 gap-4 pb-4 border-b border-gray-200">
-                <span className="text-sm font-semibold text-gray-500 italic">Metric</span>
-                <span className="text-sm font-semibold text-gray-500 italic text-right">Minimum Target to Hit Goal</span>
-              </div>
-
-              {/* Table Rows */}
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                key={selectedTier}
-              >
-                {currentTier.metrics.map((metric, idx) => (
-                  <motion.div
-                    key={`${selectedTier}-${idx}`}
-                    variants={itemVariants}
-                    className={`
-                      grid grid-cols-2 gap-4 py-4
-                      ${idx !== currentTier.metrics.length - 1 ? 'border-b border-gray-100' : ''}
-                      ${idx % 2 === 1 ? 'bg-gray-50/50' : ''}
-                    `}
-                  >
-                    <span className="text-gray-900 font-medium">{metric.name}</span>
-                    <div className="text-right">
-                      <span className="text-gray-900 font-semibold">{metric.min}</span>
-                      <span className="text-emerald-500 ml-2 font-medium">(aim for {metric.aim})</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Budget & Profit Cards */}
-            <div className="grid md:grid-cols-2 gap-4">
-              {/* Daily Budget Card */}
-              <div className="rounded-xl bg-amber-50 border-2 border-amber-200 p-6">
-                <div className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">
-                  YOUR DAILY BUDGET FOR {currentTier.displayTitle} PROFIT
+            <div className="relative z-10">
+              {/* Section Title */}
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <Target size={20} className="text-emerald-400" />
+                  <h2 className="text-3xl md:text-4xl font-bold text-white">
+                    Your Ideal Metrics Table
+                  </h2>
                 </div>
-                <p className="text-gray-500 text-sm mb-3">Based on realistic benchmarks</p>
-                <div className="text-4xl font-black text-gray-900 mb-2">${currentTier.dailyBudget}</div>
-                <p className="text-gray-600 text-sm">
-                  ~{currentTier.customersPerDay} customers/day • {currentTier.customersPerMonth} customers/month
+                <p className="text-gray-400 text-lg">
+                  Know your targets. Hit them. Scale relentlessly.
                 </p>
               </div>
 
-              {/* Max Profit Card */}
-              <div className="rounded-xl bg-emerald-50 border-2 border-emerald-200 p-6">
-                <div className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">
-                  IF YOU HIT ALL TARGETS
-                </div>
-                <p className="text-gray-500 text-sm mb-3">Your potential monthly profit with the same budget</p>
-                <div className="text-4xl font-black text-gray-900">{currentTier.maxProfit}</div>
+              {/* Tier Selector */}
+              <div className="flex justify-center gap-3 mb-12">
+                {tiersData.map((tier) => (
+                  <button
+                    key={tier.id}
+                    onClick={() => setSelectedTier(tier.id)}
+                    className={`
+                      relative px-8 py-4 rounded-2xl font-bold text-base transition-all duration-300
+                      ${selectedTier === tier.id
+                        ? tier.id === '1m'
+                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30 scale-105'
+                          : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30 scale-105'
+                        : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:text-white'
+                      }
+                    `}
+                  >
+                    {tier.title}
+                  </button>
+                ))}
               </div>
+
+              {/* Metrics Table */}
+              <div className="mb-10 rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden backdrop-blur-sm">
+                {/* Table Header */}
+                <div className="grid grid-cols-2 gap-4 px-6 py-4 bg-white/[0.03] border-b border-white/10">
+                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Metric</span>
+                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider text-right">Minimum Target to Hit Goal</span>
+                </div>
+
+                {/* Table Rows */}
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  key={selectedTier}
+                  className="divide-y divide-white/5"
+                >
+                  {currentTier.metrics.map((metric, idx) => (
+                    <motion.div
+                      key={`${selectedTier}-${idx}`}
+                      variants={itemVariants}
+                      className="grid grid-cols-2 gap-4 px-6 py-5 hover:bg-white/[0.02] transition-colors"
+                    >
+                      <span className="text-white font-medium">{metric.name}</span>
+                      <div className="text-right">
+                        <span className="text-white font-bold text-lg">{metric.min}</span>
+                        <span className="text-emerald-400 ml-2 font-semibold">(aim for {metric.aim})</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Budget & Profit Cards */}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Daily Budget Card */}
+                <div className="relative rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 p-8 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl" />
+                  <div className="relative">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap size={16} className="text-amber-400" />
+                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                        YOUR DAILY BUDGET FOR {currentTier.displayTitle} PROFIT
+                      </span>
+                    </div>
+                    <p className="text-gray-400 text-sm mb-4">Based on realistic benchmarks</p>
+                    <div className="text-5xl font-black text-white mb-3">${currentTier.dailyBudget}</div>
+                    <p className="text-gray-300">
+                      <span className="text-white font-semibold">~{currentTier.customersPerDay}</span> customers/day •{' '}
+                      <span className="text-white font-semibold">{currentTier.customersPerMonth}</span> customers/month
+                    </p>
+                  </div>
+                </div>
+
+                {/* Max Profit Card */}
+                <div className="relative rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/20 p-8 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
+                  <div className="relative">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp size={16} className="text-emerald-400" />
+                      <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                        IF YOU HIT ALL TARGETS
+                      </span>
+                    </div>
+                    <p className="text-gray-400 text-sm mb-4">Your potential monthly profit with the same budget</p>
+                    <div className="text-5xl font-black text-white">{currentTier.maxProfit}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Visual Comparison Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="mt-12 rounded-3xl bg-[#0a0a0a] p-8 md:p-10 overflow-hidden"
+            style={{
+              boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+            }}
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <span className="text-sm font-bold text-gray-400 tracking-wider">PROFIT POTENTIAL</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            </div>
+
+            <div className="space-y-5">
+              {tiersData.map((tier, idx) => {
+                const widths = { '100k': '12%', '300k': '32%', '1m': '100%' };
+                const colors = {
+                  '100k': 'from-gray-600 to-gray-500',
+                  '300k': 'from-blue-600 to-indigo-500',
+                  '1m': 'from-emerald-500 to-teal-400'
+                };
+                return (
+                  <div key={tier.id} className="flex items-center gap-4">
+                    <span className={`w-16 text-sm font-bold ${tier.id === '1m' ? 'text-emerald-400' : 'text-gray-300'}`}>
+                      {tier.title}
+                    </span>
+                    <div className="flex-1 h-10 bg-white/5 rounded-xl overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: widths[tier.id as keyof typeof widths] }}
+                        transition={{ delay: 0.6 + idx * 0.15, duration: 0.8 }}
+                        className={`h-full bg-gradient-to-r ${colors[tier.id as keyof typeof colors]} rounded-xl relative`}
+                      >
+                        {tier.id === '1m' && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                        )}
+                      </motion.div>
+                    </div>
+                    <span className={`w-28 text-right text-sm font-bold ${tier.id === '1m' ? 'text-emerald-400' : 'text-white'}`}>
+                      {tier.maxProfit}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -244,31 +319,45 @@ export default function BlueprintPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
             className="mt-12 text-center"
           >
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-                Ready to Hit These Numbers?
-              </h2>
-              <p className="text-gray-600 mb-8 max-w-lg mx-auto">
-                Learn the exact systems and strategies to make these metrics your reality.
-              </p>
+            <div
+              className="rounded-3xl bg-[#0a0a0a] p-12 md:p-16 overflow-hidden relative"
+              style={{
+                boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+              }}
+            >
+              {/* Glow */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
 
-              <Link
-                href="/learn"
-                className="
-                  group inline-flex items-center gap-2 px-8 py-4
-                  bg-gray-900 text-white
-                  rounded-xl font-semibold
-                  transition-all duration-200
-                  hover:bg-gray-800 hover:scale-[1.02]
-                  active:scale-[0.98]
-                "
-              >
-                Start Learning
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="relative">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  Ready to Hit These Numbers?
+                </h2>
+                <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
+                  Learn the exact systems and strategies to make these metrics your reality.
+                </p>
+
+                <Link
+                  href="/learn"
+                  className="
+                    group relative inline-flex items-center gap-3 px-10 py-5
+                    bg-gradient-to-r from-emerald-500 to-teal-500
+                    text-white font-bold text-lg
+                    rounded-2xl
+                    transition-all duration-300
+                    hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/30
+                    active:scale-100
+                    overflow-hidden
+                  "
+                >
+                  {/* Shine effect */}
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  <span className="relative">Start Learning</span>
+                  <ArrowRight size={20} className="relative group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </motion.div>
 
