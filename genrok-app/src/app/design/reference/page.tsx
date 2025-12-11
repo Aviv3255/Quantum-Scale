@@ -83,9 +83,11 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'entry-exit',
     label: 'Entry/Exit',
-    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_09.59.46_330c7aea.jpg?v=1765440124',
-    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_10.01.16_e640828f.jpg?v=1765440124',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_10.32.26_1f3e6185.jpg?v=1765442006',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co__pb_0_iPhone_14_Pro_Max.png?v=1765442196',
+    blocks: [
+      { id: 1, name: 'Entry/Exit Popup', description: 'Geo-targeted popup with personalized offer. Captures visitors and increases conversion.', y_position: 250, mobile_y_position: 250, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+    ],
   },
 ];
 
@@ -348,6 +350,32 @@ export default function ReferenceStorePage() {
                     scrollbarWidth: 'none',
                   }}
                 >
+                  {/* iPhone URL Bar */}
+                  {device === 'mobile' && (
+                    <div
+                      className="sticky top-0 z-20 flex items-center justify-center"
+                      style={{
+                        height: '44px',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+                      }}
+                    >
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          background: '#f2f2f7',
+                          borderRadius: '10px',
+                          padding: '6px 12px',
+                          minWidth: '200px',
+                        }}
+                      >
+                        <span style={{ color: '#8e8e93', fontSize: '14px', fontWeight: 500 }}>
+                          Brand.com
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {/* Screenshot or Placeholder */}
                   {screenshot ? (
                     <img
@@ -441,36 +469,37 @@ export default function ReferenceStorePage() {
                             }`}
                             style={{
                               top: markerTop,
-                              [isLeft ? 'marginRight' : 'marginLeft']: '8px',
+                              [isLeft ? 'marginRight' : 'marginLeft']: '-20px',
                             }}
                           >
-                            {/* Connecting line */}
+                            {/* Connecting line - starts inside mockup */}
                             <div
                               style={{
-                                width: '40px',
-                                height: '1px',
+                                width: '50px',
+                                height: '2px',
                                 background: '#1a1a1a',
                               }}
                             />
-                            {/* Small dot at the end */}
+                            {/* Small dot at connection */}
                             <div
                               style={{
-                                width: '6px',
-                                height: '6px',
+                                width: '8px',
+                                height: '8px',
                                 borderRadius: '50%',
                                 background: '#1a1a1a',
                                 flexShrink: 0,
                               }}
                             />
-                            {/* Card */}
+                            {/* Card - closer to screen */}
                             <div
                               style={{
-                                width: '260px',
+                                width: '220px',
                                 background: '#1a1a1a',
                                 borderRadius: '8px',
-                                padding: '14px 16px',
+                                padding: '12px 14px',
                                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-                                [isLeft ? 'marginRight' : 'marginLeft']: '0px',
+                                marginLeft: isLeft ? '0' : '4px',
+                                marginRight: isLeft ? '4px' : '0',
                               }}
                             >
                               <p
