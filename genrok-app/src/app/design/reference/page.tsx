@@ -76,8 +76,8 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'entry-exit',
     label: 'Entry/Exit',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_09.59.46_330c7aea.jpg?v=1765440124',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_10.01.16_e640828f.jpg?v=1765440124',
     blocks: [],
   },
 ];
@@ -238,22 +238,25 @@ export default function ReferenceStorePage() {
 
           {/* Center - Page Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-neutral-100">
-            {PAGES_DATA.map(page => (
-              <button
-                key={page.page}
-                onClick={() => setActivePage(page.page)}
-                disabled={page.page !== 'home'}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  activePage === page.page
-                    ? 'bg-white text-neutral-900 shadow-sm'
-                    : page.page === 'home'
-                    ? 'text-neutral-500 hover:text-neutral-700'
-                    : 'text-neutral-300 cursor-not-allowed'
-                }`}
-              >
-                {page.label}
-              </button>
-            ))}
+            {PAGES_DATA.map(page => {
+              const isEnabled = page.page === 'home' || page.page === 'entry-exit';
+              return (
+                <button
+                  key={page.page}
+                  onClick={() => setActivePage(page.page)}
+                  disabled={!isEnabled}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    activePage === page.page
+                      ? 'bg-white text-neutral-900 shadow-sm'
+                      : isEnabled
+                      ? 'text-neutral-500 hover:text-neutral-700'
+                      : 'text-neutral-300 cursor-not-allowed'
+                  }`}
+                >
+                  {page.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Right - Edit Mode Toggle (Temporary) */}
