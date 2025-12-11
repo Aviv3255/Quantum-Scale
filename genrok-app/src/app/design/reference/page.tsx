@@ -211,9 +211,25 @@ export default function ReferenceStorePage() {
     );
   }
 
-  // Mockup dimensions - smaller, crisp display
-  const mockupWidth = device === 'desktop' ? 900 : 320;
-  const mockupHeight = device === 'desktop' ? 560 : 693; // iPhone proportions
+  // Mockup dimensions - responsive for different screen sizes
+  // Use smaller dimensions for screens under 1600px (like 16" laptops)
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerHeight < 900 || window.innerWidth < 1600);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  const mockupWidth = device === 'desktop'
+    ? (isSmallScreen ? 650 : 900)
+    : (isSmallScreen ? 280 : 320);
+  const mockupHeight = device === 'desktop'
+    ? (isSmallScreen ? 400 : 560)
+    : (isSmallScreen ? 580 : 693); // iPhone proportions
 
   return (
     <DashboardLayout>
@@ -272,7 +288,7 @@ export default function ReferenceStorePage() {
           {/* Center - Page Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-neutral-100">
             {PAGES_DATA.map(page => {
-              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact';
+              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact' || page.page === 'search';
               return (
                 <button
                   key={page.page}

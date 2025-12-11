@@ -118,7 +118,7 @@ export default function BlueprintPage() {
   return (
     <DashboardLayout>
       <div className="min-h-screen bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="w-full px-6 lg:px-12 py-8">
 
           {/* Header */}
           <motion.header
@@ -127,13 +127,7 @@ export default function BlueprintPage() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white mb-8 shadow-lg shadow-emerald-500/25">
-              <TrendingUp size={16} />
-              <Sparkles size={16} />
-              <span className="text-sm font-bold tracking-wide">YOUR ROADMAP TO 6-7 FIGURES</span>
-            </div>
-
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-5 tracking-tight">
+<h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-5 tracking-tight">
               The $100K-$1M Profit Blueprint
             </h1>
 
