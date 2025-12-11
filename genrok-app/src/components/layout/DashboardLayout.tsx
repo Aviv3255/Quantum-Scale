@@ -103,6 +103,7 @@ const navigationItems: NavItem[] = [
     icon: Palette,
     isCategory: true,
     subItems: [
+      { title: "Reference Store", href: "/design/reference" },
       { title: "Web UI Inspiration", href: "/design/web" },
       { title: "Sections Inspiration", href: "/design/sections" },
       { title: "Image Inspiration", href: "/design/images" },
