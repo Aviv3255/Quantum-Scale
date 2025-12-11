@@ -94,10 +94,10 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-pages-new-test-2025-12-11-15_55_51.png?v=1765461368',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co_pages_new-test_view_contact-design_iPhone_XR.png?v=1765463477',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 9, mobile_y_position: 94, side: 'right', install_link: 'https://geo-convert.com', completed: false },
-      { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 36, mobile_y_position: 162, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 3, name: 'Contact Form', description: 'Section name: Contact form #5', y_position: 171, mobile_y_position: 554, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 4, name: 'Footer', description: 'Section name: Footer #7', y_position: 426, mobile_y_position: 1496, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: -31, mobile_y_position: 54, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 16, mobile_y_position: 142, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'Contact Form', description: 'Section name: Contact form #5', y_position: 151, mobile_y_position: 534, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 4, name: 'Footer', description: 'Section name: Footer #7', y_position: 406, mobile_y_position: 1476, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
   },
   {
