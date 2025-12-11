@@ -84,7 +84,7 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'search',
     label: 'Search',
-    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_22.44.37_2b4024d7.jpg?v=1765485965',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_22.44.37_2b4024d7.jpg?v=1765487757',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-test-store-1100000000000000000000000000000002250-myshopify-search-2025-12-11-22_45_25.png?v=1765485965',
     blocks: [
       { id: 1, name: 'Smart search bar & filter', description: 'AI-powered search with smart filters for better product discovery.', y_position: 120, mobile_y_position: 145, side: 'right', install_link: 'https://platform.shoffi.app/r/rl_Q4E8XoJz', completed: false },
