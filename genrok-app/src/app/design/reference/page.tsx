@@ -15,6 +15,7 @@ interface BlockMarker {
   name: string;
   description: string;
   y_position: number;
+  mobile_y_position: number;
   side: 'left' | 'right';
   install_link: string;
   completed: boolean;
@@ -38,17 +39,17 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 11, side: 'right', install_link: 'https://geo-convert.com', completed: false },
-      { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 49, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 547, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 5, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 777, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 6, name: 'Featured Collection Tabs', description: 'Section name: Featured collection (tabs) #5', y_position: 1245, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 7, name: 'All Collections View', description: 'Section name: Collection #5', y_position: 1665, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 8, name: 'Slider/Banner', description: 'Section name: Slideshow #4', y_position: 1969, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 2346, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2737, side: 'left', install_link: 'https://geo-convert.com', completed: false },
-      { id: 11, name: 'Footer', description: 'Section name: Footer #7', y_position: 3024, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 11, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 49, mobile_y_position: 85, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 547, mobile_y_position: 740, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 5, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 777, mobile_y_position: 1120, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 6, name: 'Featured Collection Tabs', description: 'Section name: Featured collection (tabs) #5', y_position: 1245, mobile_y_position: 1770, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 7, name: 'All Collections View', description: 'Section name: Collection #5', y_position: 1665, mobile_y_position: 2311, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 8, name: 'Slider/Banner', description: 'Section name: Slideshow #4', y_position: 1969, mobile_y_position: 2724, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 2346, mobile_y_position: 3273, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2737, mobile_y_position: 3815, side: 'left', install_link: 'https://geo-convert.com', completed: false },
+      { id: 11, name: 'Footer', description: 'Section name: Footer #7', y_position: 3024, mobile_y_position: 4082, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
   },
   {
@@ -415,15 +416,17 @@ export default function ReferenceStorePage() {
                 )}
               </div>
 
-              {/* Block Markers - Ultra minimal floating labels */}
+              {/* Block Markers - Cards with connecting line */}
               {showMarkers && !editMode && blocks.length > 0 && (
                 <>
                   {blocks.map((block) => {
                     const frameTop = device === 'desktop' ? 12 : 12;
-                    const markerTop = frameTop + block.y_position - scrollTop;
+                    const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
+                    const markerTop = frameTop + yPos - scrollTop;
                     const isVisible = markerTop > 20 && markerTop < mockupHeight - 20;
                     // Calculate opacity for smooth fade at edges
                     const edgeFade = markerTop < 60 ? markerTop / 60 : markerTop > mockupHeight - 60 ? (mockupHeight - markerTop) / 60 : 1;
+                    const isLeft = block.side === 'left';
 
                     return (
                       <AnimatePresence key={block.id}>
@@ -433,33 +436,59 @@ export default function ReferenceStorePage() {
                             animate={{ opacity: edgeFade }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
-                            className={`absolute ${
-                              block.side === 'left' ? 'right-full mr-10' : 'left-full ml-10'
+                            className={`absolute flex items-center ${
+                              isLeft ? 'right-full flex-row-reverse' : 'left-full flex-row'
                             }`}
                             style={{
                               top: markerTop,
-                              maxWidth: '200px',
-                              background: '#1a1a1a',
-                              borderRadius: '8px',
-                              padding: '14px 16px',
-                              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+                              [isLeft ? 'marginRight' : 'marginLeft']: '8px',
                             }}
                           >
-                            <p
-                              className="text-[13px] leading-snug font-normal"
-                              style={{ color: '#f5f5f0' }}
+                            {/* Connecting line */}
+                            <div
+                              style={{
+                                width: '40px',
+                                height: '1px',
+                                background: '#1a1a1a',
+                              }}
+                            />
+                            {/* Small dot at the end */}
+                            <div
+                              style={{
+                                width: '6px',
+                                height: '6px',
+                                borderRadius: '50%',
+                                background: '#1a1a1a',
+                                flexShrink: 0,
+                              }}
+                            />
+                            {/* Card */}
+                            <div
+                              style={{
+                                width: '260px',
+                                background: '#1a1a1a',
+                                borderRadius: '8px',
+                                padding: '14px 16px',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+                                [isLeft ? 'marginRight' : 'marginLeft']: '0px',
+                              }}
                             >
-                              {block.description}{' '}
-                              <a
-                                href={block.install_link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline underline-offset-2 transition-colors hover:opacity-80"
-                                style={{ color: '#ffffff' }}
+                              <p
+                                className="text-[13px] leading-snug font-normal"
+                                style={{ color: '#f5f5f0' }}
                               >
-                                Install
-                              </a>
-                            </p>
+                                {block.description}{' '}
+                                <a
+                                  href={block.install_link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline underline-offset-2 transition-colors hover:opacity-80"
+                                  style={{ color: '#ffffff' }}
+                                >
+                                  Install
+                                </a>
+                              </p>
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
