@@ -73,6 +73,13 @@ const PAGES_DATA: PageData[] = [
     mobile_screenshot: '',
     blocks: [],
   },
+  {
+    page: 'entry-exit',
+    label: 'Entry/Exit',
+    desktop_screenshot: '',
+    mobile_screenshot: '',
+    blocks: [],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -299,11 +306,11 @@ export default function ReferenceStorePage() {
                   </div>
                 )}
 
-                {/* iPhone Dynamic Island */}
+                {/* iPhone Dynamic Island - iPhone 15 style (thinner) */}
                 {device === 'mobile' && (
                   <div
                     className="absolute top-4 left-1/2 -translate-x-1/2 bg-black rounded-full z-10"
-                    style={{ width: '120px', height: '34px' }}
+                    style={{ width: '90px', height: '26px' }}
                   />
                 )}
 
@@ -418,24 +425,28 @@ export default function ReferenceStorePage() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
                             className={`absolute ${
-                              block.side === 'left' ? 'right-full mr-10 text-right' : 'left-full ml-10 text-left'
+                              block.side === 'left' ? 'right-full mr-10' : 'left-full ml-10'
                             }`}
                             style={{
                               top: markerTop,
-                              maxWidth: '170px',
+                              maxWidth: '200px',
+                              background: '#1a1a1a',
+                              borderRadius: '8px',
+                              padding: '14px 16px',
+                              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
                             }}
                           >
                             <p
-                              className="text-[13px] leading-snug text-neutral-500 font-normal"
-                              style={{ color: '#555' }}
+                              className="text-[13px] leading-snug font-normal"
+                              style={{ color: '#f5f5f0' }}
                             >
                               {block.description}{' '}
                               <a
                                 href={block.install_link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-neutral-400 hover:text-neutral-600 underline underline-offset-2 transition-colors"
-                                style={{ color: '#888' }}
+                                className="underline underline-offset-2 transition-colors hover:opacity-80"
+                                style={{ color: '#ffffff' }}
                               >
                                 Install
                               </a>
