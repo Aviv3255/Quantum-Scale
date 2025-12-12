@@ -41,7 +41,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 76, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 105, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 500, mobile_y_position: 746, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -50,7 +50,7 @@ const PAGES_DATA: PageData[] = [
       { id: 7, name: 'All Collections View', description: 'Section name: Collection #5', y_position: 1460, mobile_y_position: 2311, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 8, name: 'Slider/Banner', description: 'Section name: Slideshow #4', y_position: 1755, mobile_y_position: 2724, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 2050, mobile_y_position: 3273, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2400, mobile_y_position: 3740, side: 'left', install_link: 'https://geo-convert.com', completed: false },
+      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2400, mobile_y_position: 3720, side: 'left', install_link: 'https://geo-convert.com', completed: false },
       { id: 11, name: 'Footer', description: 'Section name: Footer #7', y_position: 2600, mobile_y_position: 4082, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
   },
@@ -60,7 +60,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-16_00_45.png?v=1765461667',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-15_59_06.png?v=1765461561',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 93, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 521, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
       { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 150, mobile_y_position: 625, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
@@ -639,7 +639,9 @@ export default function ReferenceStorePage() {
                             {/* Connecting line */}
                             <div
                               style={{
-                                width: hasXPosition ? `${lineWidth}px` : '60px',
+                                width: hasXPosition
+                                  ? `${isSmallScreen ? lineWidth * 0.7 : lineWidth}px`
+                                  : (isSmallScreen ? '40px' : '60px'),
                                 height: '1px',
                                 background: '#374151',
                               }}
@@ -657,10 +659,10 @@ export default function ReferenceStorePage() {
                             {/* Card - uniform dark gray, with edit mode styling */}
                             <div
                               style={{
-                                width: '220px',
+                                width: isSmallScreen ? '160px' : '220px',
                                 background: isDragging ? '#1f2937' : '#374151',
                                 borderRadius: '6px',
-                                padding: '10px 12px',
+                                padding: isSmallScreen ? '8px 10px' : '10px 12px',
                                 boxShadow: isDragging
                                   ? '0 8px 25px rgba(0, 0, 0, 0.3)'
                                   : '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -677,7 +679,7 @@ export default function ReferenceStorePage() {
                                 </p>
                               )}
                               <p
-                                className="text-[12px] leading-snug font-normal"
+                                className={`${isSmallScreen ? 'text-[10px]' : 'text-[12px]'} leading-snug font-normal`}
                                 style={{ color: '#ffffff' }}
                               >
                                 {editMode ? (
