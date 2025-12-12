@@ -623,7 +623,9 @@ export default function ReferenceStorePage() {
                             animate={{ opacity: edgeFade }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
-                            className={`absolute flex items-center ${
+                            className={`absolute flex ${
+                              isAnnouncementBar ? 'items-start pt-2' : 'items-center'
+                            } ${
                               isLeft ? 'right-full flex-row-reverse' : 'left-full flex-row'
                             } ${editMode ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing z-50' : ''}`}
                             style={{
