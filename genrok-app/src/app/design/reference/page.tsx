@@ -41,7 +41,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: -1, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 12, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 105, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 500, mobile_y_position: 746, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -60,7 +60,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-16_00_45.png?v=1765461667',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-15_59_06.png?v=1765461561',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: -1, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 12, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 541, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
       { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 165, mobile_y_position: 675, x_position: 33, mobile_x_position: 33, side: 'left', install_link: '#', completed: false },
@@ -530,11 +530,15 @@ export default function ReferenceStorePage() {
                     const isVisible = markerTop > -10 && markerTop < mockupHeight - 30;
                     // Only fade at bottom edge, not at top
                     const edgeFade = markerTop > mockupHeight - 80 ? (mockupHeight - markerTop) / 80 : 1;
-                    const isLeft = block.side === 'left';
 
                     // Get x_position for desktop product page
-                    const xPos = device === 'desktop' ? (block.x_position || (isLeft ? 10 : 90)) : (block.mobile_x_position || (isLeft ? 10 : 90));
+                    const xPos = device === 'desktop' ? (block.x_position || 50) : (block.mobile_x_position || 50);
                     const hasXPosition = device === 'desktop' && activePage === 'product' && block.x_position !== undefined;
+
+                    // For Product Page Desktop: determine side based on x_position (closer side)
+                    // If x > 50, block is on right side of mockup, so card goes to right
+                    // If x < 50, block is on left side of mockup, so card goes to left
+                    const isLeft = hasXPosition ? (xPos < 50) : (block.side === 'left');
 
                     // Calculate line width based on x position (only for product page desktop)
                     const lineWidth = hasXPosition
