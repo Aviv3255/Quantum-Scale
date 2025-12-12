@@ -579,17 +579,22 @@ export default function ReferenceStorePage() {
                     const frameTop = device === 'desktop' ? 12 : 12;
                     const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
 
+                    // Scale y_position based on mockup size ratio
+                    // Positions are defined for base sizes: 780px (desktop) and 300px (mobile)
+                    const baseWidth = device === 'desktop' ? 780 : 300;
+                    const scaleFactor = mockupWidth / baseWidth;
+                    const scaledYPos = yPos * scaleFactor;
+                    // scrollTop is already in current mockup coordinates, no scaling needed
+
                     // Special handling for announcement bars - position at the very top of the mockup screen
                     const isAnnouncementBar = block.name.toLowerCase().includes('announcement');
                     let markerTop: number;
 
                     if (isAnnouncementBar) {
                       // Announcement bar should be at the very top of the screen content
-                      // Use 0 as base to position at the absolute top of the device frame
-                      // Only subtract scrollTop so it scrolls away when user scrolls
                       markerTop = 0 - scrollTop;
                     } else {
-                      markerTop = frameTop + yPos - scrollTop;
+                      markerTop = frameTop + scaledYPos - scrollTop;
                     }
 
                     // Apply drag offset if this block is being dragged
@@ -611,9 +616,10 @@ export default function ReferenceStorePage() {
                     const isLeft = block.side === 'left';
 
                     // Calculate line width based on x position (only for product page desktop)
+                    // Scale line width proportionally
                     const lineWidth = hasXPosition
-                      ? (xPos > 50 ? (100 - xPos) * (mockupWidth / 100) + 60 : xPos * (mockupWidth / 100) + 60)
-                      : 60;
+                      ? (xPos > 50 ? (100 - xPos) * (mockupWidth / 100) + 60 * scaleFactor : xPos * (mockupWidth / 100) + 60 * scaleFactor)
+                      : 60 * scaleFactor;
 
                     return (
                       <AnimatePresence key={block.id}>
@@ -632,16 +638,14 @@ export default function ReferenceStorePage() {
                               top: markerTop,
                               [isLeft ? 'marginRight' : 'marginLeft']: hasXPosition
                                 ? `-${isLeft ? xPos * (mockupWidth / 100) : (100 - xPos) * (mockupWidth / 100)}px`
-                                : '-40px',
+                                : `-${40 * scaleFactor}px`,
                             }}
                             onMouseDown={(e) => editMode && handleDragStart(block.id, e)}
                           >
                             {/* Connecting line */}
                             <div
                               style={{
-                                width: hasXPosition
-                                  ? `${isSmallScreen ? lineWidth * 0.7 : lineWidth}px`
-                                  : (isSmallScreen ? '40px' : '60px'),
+                                width: `${lineWidth}px`,
                                 height: '1px',
                                 background: '#374151',
                               }}
@@ -659,10 +663,10 @@ export default function ReferenceStorePage() {
                             {/* Card - uniform dark gray, with edit mode styling */}
                             <div
                               style={{
-                                width: isSmallScreen ? '160px' : '220px',
+                                width: `${180 * scaleFactor}px`,
                                 background: isDragging ? '#1f2937' : '#374151',
                                 borderRadius: '6px',
-                                padding: isSmallScreen ? '8px 10px' : '10px 12px',
+                                padding: `${8 * scaleFactor}px ${10 * scaleFactor}px`,
                                 boxShadow: isDragging
                                   ? '0 8px 25px rgba(0, 0, 0, 0.3)'
                                   : '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -679,7 +683,7 @@ export default function ReferenceStorePage() {
                                 </p>
                               )}
                               <p
-                                className={`${isSmallScreen ? 'text-[10px]' : 'text-[12px]'} leading-snug font-normal`}
+                                className="text-[11px] leading-snug font-normal"
                                 style={{ color: '#ffffff' }}
                               >
                                 {editMode ? (
