@@ -131,6 +131,7 @@ export default function ReferenceStorePage() {
   const [editMode, setEditMode] = useState(false);
   const [markerPoints, setMarkerPoints] = useState<{ id: number; x: number; y: number; name: string }[]>([]);
   const [showMarkers, setShowMarkers] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   // Drag state for block markers
   const [draggingBlock, setDraggingBlock] = useState<number | null>(null);
@@ -159,6 +160,16 @@ export default function ReferenceStorePage() {
       setBlocks(pageData.blocks);
     }
   }, [activePage]);
+
+  // Screen size detection for responsive mockup
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerHeight < 900 || window.innerWidth < 1600);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Handle scroll
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -267,18 +278,6 @@ export default function ReferenceStorePage() {
   }
 
   // Mockup dimensions - responsive for different screen sizes
-  // Use smaller dimensions for screens under 1600px (like 16" laptops)
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerHeight < 900 || window.innerWidth < 1600);
-    };
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-
   const mockupWidth = device === 'desktop'
     ? (isSmallScreen ? 580 : 780)
     : (isSmallScreen ? 260 : 300);
@@ -586,14 +585,15 @@ export default function ReferenceStorePage() {
                     const scaledYPos = yPos * scaleFactor;
                     // scrollTop is already in current mockup coordinates, no scaling needed
 
-                    // Special handling for announcement bars - position at the very top of the mockup screen
+                    // Special handling for announcement bars on DESKTOP ONLY
                     const isAnnouncementBar = block.name.toLowerCase().includes('announcement');
                     let markerTop: number;
 
-                    if (isAnnouncementBar) {
-                      // Announcement bar should be at the very top of the screen content
+                    if (isAnnouncementBar && device === 'desktop') {
+                      // Desktop: Announcement bar at the very top of the screen content
                       markerTop = 0 - scrollTop;
                     } else {
+                      // Mobile and all other blocks: use regular positioning with y_position
                       markerTop = frameTop + scaledYPos - scrollTop;
                     }
 
