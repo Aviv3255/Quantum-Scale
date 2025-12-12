@@ -41,7 +41,7 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: -5, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 2, mobile_y_position: 26, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 105, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 500, mobile_y_position: 746, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -60,10 +60,10 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-16_00_45.png?v=1765461667',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-15_59_06.png?v=1765461561',
     blocks: [
-      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: -5, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 2, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 541, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
-      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 192, mobile_y_position: 675, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
+      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 165, mobile_y_position: 675, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
       { id: 5, name: 'Wishlist', description: 'Save products to wishlist functionality.', y_position: 195, mobile_y_position: 727, x_position: 86, mobile_x_position: 86, side: 'right', install_link: 'https://vitals.app/shopify/12548540', completed: false },
       { id: 6, name: 'Product Videos', description: 'Section name: Product videos', y_position: 358, mobile_y_position: 973, x_position: 94, mobile_x_position: 24, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 7, name: 'Product Description Tabs', description: 'Section name: Product tabs #5 pro', y_position: 478, mobile_y_position: 1211, x_position: 98, mobile_x_position: 98, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -525,7 +525,20 @@ export default function ReferenceStorePage() {
                   {blocks.map((block) => {
                     const frameTop = device === 'desktop' ? 12 : 12;
                     const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
-                    const markerTop = frameTop + yPos - scrollTop;
+
+                    // Special handling for announcement bars - position at the very top of the mockup screen
+                    const isAnnouncementBar = block.name.toLowerCase().includes('announcement');
+                    let markerTop: number;
+
+                    if (isAnnouncementBar) {
+                      // Announcement bar should be at the very top of the screen content
+                      // Use frameTop (12) as the base - this is where the screen starts
+                      // Only subtract scrollTop so it scrolls away when user scrolls
+                      markerTop = frameTop - scrollTop;
+                    } else {
+                      markerTop = frameTop + yPos - scrollTop;
+                    }
+
                     // Allow markers to show even if slightly above viewport (for announcement bars)
                     const isVisible = markerTop > -10 && markerTop < mockupHeight - 30;
                     // Only fade at bottom edge, not at top
