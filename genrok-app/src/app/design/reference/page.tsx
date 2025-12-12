@@ -63,7 +63,7 @@ const PAGES_DATA: PageData[] = [
       { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 2, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 541, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
-      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 165, mobile_y_position: 675, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
+      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 150, mobile_y_position: 675, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
       { id: 5, name: 'Wishlist', description: 'Save products to wishlist functionality.', y_position: 195, mobile_y_position: 727, x_position: 86, mobile_x_position: 86, side: 'right', install_link: 'https://vitals.app/shopify/12548540', completed: false },
       { id: 6, name: 'Product Videos', description: 'Section name: Product videos', y_position: 358, mobile_y_position: 973, x_position: 94, mobile_x_position: 24, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 7, name: 'Product Description Tabs', description: 'Section name: Product tabs #5 pro', y_position: 478, mobile_y_position: 1211, x_position: 98, mobile_x_position: 98, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
@@ -131,6 +131,12 @@ export default function ReferenceStorePage() {
   const [editMode, setEditMode] = useState(false);
   const [markerPoints, setMarkerPoints] = useState<{ id: number; x: number; y: number; name: string }[]>([]);
   const [showMarkers, setShowMarkers] = useState(true);
+
+  // Drag state for block markers
+  const [draggingBlock, setDraggingBlock] = useState<number | null>(null);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const deviceFrameRef = useRef<HTMLDivElement>(null);
 
   // Get current page data
   const currentPageData = PAGES_DATA.find(p => p.page === activePage) || PAGES_DATA[0];
@@ -204,6 +210,53 @@ export default function ReferenceStorePage() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  // Drag handlers for block markers
+  const handleDragStart = useCallback((blockId: number, e: React.MouseEvent) => {
+    if (!editMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setDraggingBlock(blockId);
+    setDragStartY(e.clientY);
+    setDragOffset(0);
+  }, [editMode]);
+
+  const handleDragMove = useCallback((e: MouseEvent) => {
+    if (draggingBlock === null) return;
+    const deltaY = e.clientY - dragStartY;
+    setDragOffset(deltaY);
+  }, [draggingBlock, dragStartY]);
+
+  const handleDragEnd = useCallback(() => {
+    if (draggingBlock === null) return;
+
+    // Update the block's y_position based on drag offset
+    setBlocks(prev => prev.map(block => {
+      if (block.id === draggingBlock) {
+        const currentY = device === 'desktop' ? block.y_position : block.mobile_y_position;
+        const newY = Math.max(0, currentY + dragOffset);
+        return device === 'desktop'
+          ? { ...block, y_position: newY }
+          : { ...block, mobile_y_position: newY };
+      }
+      return block;
+    }));
+
+    setDraggingBlock(null);
+    setDragOffset(0);
+  }, [draggingBlock, dragOffset, device]);
+
+  // Add global mouse event listeners for drag
+  useEffect(() => {
+    if (draggingBlock !== null) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [draggingBlock, handleDragMove, handleDragEnd]);
 
   if (isLoading || !user) {
     return (
@@ -520,7 +573,7 @@ export default function ReferenceStorePage() {
               </div>
 
               {/* Block Markers - Cards with connecting line */}
-              {showMarkers && !editMode && blocks.length > 0 && (
+              {showMarkers && blocks.length > 0 && (
                 <>
                   {blocks.map((block) => {
                     const frameTop = device === 'desktop' ? 12 : 12;
@@ -537,6 +590,12 @@ export default function ReferenceStorePage() {
                       markerTop = frameTop - scrollTop;
                     } else {
                       markerTop = frameTop + yPos - scrollTop;
+                    }
+
+                    // Apply drag offset if this block is being dragged
+                    const isDragging = draggingBlock === block.id;
+                    if (isDragging) {
+                      markerTop += dragOffset;
                     }
 
                     // Allow markers to show even if slightly above viewport (for announcement bars)
@@ -566,13 +625,14 @@ export default function ReferenceStorePage() {
                             transition={{ duration: 0.15 }}
                             className={`absolute flex items-center ${
                               isLeft ? 'right-full flex-row-reverse' : 'left-full flex-row'
-                            }`}
+                            } ${editMode ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing z-50' : ''}`}
                             style={{
                               top: markerTop,
                               [isLeft ? 'marginRight' : 'marginLeft']: hasXPosition
                                 ? `-${isLeft ? xPos * (mockupWidth / 100) : (100 - xPos) * (mockupWidth / 100)}px`
                                 : '-40px',
                             }}
+                            onMouseDown={(e) => editMode && handleDragStart(block.id, e)}
                           >
                             {/* Connecting line */}
                             <div
@@ -592,32 +652,51 @@ export default function ReferenceStorePage() {
                                 flexShrink: 0,
                               }}
                             />
-                            {/* Card - uniform dark gray */}
+                            {/* Card - uniform dark gray, with edit mode styling */}
                             <div
                               style={{
                                 width: '180px',
-                                background: '#374151',
+                                background: isDragging ? '#1f2937' : '#374151',
                                 borderRadius: '6px',
                                 padding: '10px 12px',
-                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                boxShadow: isDragging
+                                  ? '0 8px 25px rgba(0, 0, 0, 0.3)'
+                                  : '0 2px 8px rgba(0, 0, 0, 0.1)',
                                 marginLeft: isLeft ? '0' : '2px',
                                 marginRight: isLeft ? '2px' : '0',
+                                border: editMode ? '2px dashed #60a5fa' : 'none',
+                                transition: isDragging ? 'none' : 'all 0.15s ease',
                               }}
                             >
+                              {/* Block name in edit mode */}
+                              {editMode && (
+                                <p className="text-[10px] font-bold text-blue-400 mb-1 uppercase tracking-wide">
+                                  {block.name}
+                                </p>
+                              )}
                               <p
                                 className="text-[12px] leading-snug font-normal"
                                 style={{ color: '#ffffff' }}
                               >
-                                {block.description}{' '}
-                                <a
-                                  href={block.install_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="underline underline-offset-2 transition-colors hover:opacity-80"
-                                  style={{ color: '#60a5fa' }}
-                                >
-                                  Install
-                                </a>
+                                {editMode ? (
+                                  <span className="text-gray-300">
+                                    Y: {device === 'desktop' ? block.y_position : block.mobile_y_position}px
+                                    {isDragging && ` → ${Math.round((device === 'desktop' ? block.y_position : block.mobile_y_position) + dragOffset)}px`}
+                                  </span>
+                                ) : (
+                                  <>
+                                    {block.description}{' '}
+                                    <a
+                                      href={block.install_link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="underline underline-offset-2 transition-colors hover:opacity-80"
+                                      style={{ color: '#60a5fa' }}
+                                    >
+                                      Install
+                                    </a>
+                                  </>
+                                )}
                               </p>
                             </div>
                           </motion.div>
