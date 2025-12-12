@@ -117,7 +117,14 @@ export default function BlueprintPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-white">
+      <div
+        className="min-h-screen bg-white"
+        style={{
+          margin: '-40px -48px -40px -48px',
+          width: 'calc(100% + 96px)',
+          minHeight: 'calc(100vh - 64px)',
+        }}
+      >
         <div className="w-full px-6 lg:px-12 py-8">
 
           {/* Header */}
