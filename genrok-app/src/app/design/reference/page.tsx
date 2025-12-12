@@ -77,9 +77,11 @@ const PAGES_DATA: PageData[] = [
   {
     page: 'cart',
     label: 'Cart',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-12_at_09.57.01_c1afb926.jpg?v=1765526237',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co_products_men-loafers-3__pos_1__sid_1b6697588__ss_r_iPhone_XR.png?v=1765526042',
+    blocks: [
+      { id: 1, name: 'Cart Upsell', description: 'Upsell in cart increases AOV by $6-8 on average. Add up to 20 products priced under $50.', y_position: 190, mobile_y_position: 325, side: 'right', install_link: 'https://platform.shoffi.app/r/rl_cm697iNI', completed: false },
+    ],
   },
   {
     page: 'search',
@@ -288,7 +290,7 @@ export default function ReferenceStorePage() {
           {/* Center - Page Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-neutral-100">
             {PAGES_DATA.map(page => {
-              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact' || page.page === 'search';
+              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact' || page.page === 'search' || page.page === 'cart';
               return (
                 <button
                   key={page.page}
