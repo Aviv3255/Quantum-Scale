@@ -50,7 +50,7 @@ const PAGES_DATA: PageData[] = [
       { id: 7, name: 'All Collections View', description: 'Section name: Collection #5', y_position: 1460, mobile_y_position: 2311, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 8, name: 'Slider/Banner', description: 'Section name: Slideshow #4', y_position: 1755, mobile_y_position: 2724, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 2050, mobile_y_position: 3273, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2400, mobile_y_position: 3765, side: 'left', install_link: 'https://geo-convert.com', completed: false },
+      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2400, mobile_y_position: 3740, side: 'left', install_link: 'https://geo-convert.com', completed: false },
       { id: 11, name: 'Footer', description: 'Section name: Footer #7', y_position: 2600, mobile_y_position: 4082, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
   },
@@ -62,14 +62,14 @@ const PAGES_DATA: PageData[] = [
     blocks: [
       { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 43, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
       { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 541, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
-      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 150, mobile_y_position: 675, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
-      { id: 5, name: 'Wishlist', description: 'Save products to wishlist functionality.', y_position: 195, mobile_y_position: 727, x_position: 86, mobile_x_position: 86, side: 'right', install_link: 'https://vitals.app/shopify/12548540', completed: false },
-      { id: 6, name: 'Product Videos', description: 'Section name: Product videos', y_position: 358, mobile_y_position: 973, x_position: 94, mobile_x_position: 24, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 7, name: 'Product Description Tabs', description: 'Section name: Product tabs #5 pro', y_position: 478, mobile_y_position: 1211, x_position: 98, mobile_x_position: 98, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 521, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
+      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 150, mobile_y_position: 625, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
+      { id: 5, name: 'Wishlist', description: 'Save products to wishlist functionality.', y_position: 195, mobile_y_position: 707, x_position: 86, mobile_x_position: 86, side: 'right', install_link: 'https://vitals.app/shopify/12548540', completed: false },
+      { id: 6, name: 'Product Videos', description: 'Section name: Product videos', y_position: 358, mobile_y_position: 943, x_position: 94, mobile_x_position: 24, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 7, name: 'Product Description Tabs', description: 'Section name: Product tabs #5 pro', y_position: 478, mobile_y_position: 1181, x_position: 98, mobile_x_position: 98, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 8, name: 'Product Highlight Block', description: 'Section name: Feature #19', y_position: 700, mobile_y_position: 1623, x_position: 82, mobile_x_position: 82, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 961, mobile_y_position: 2261, x_position: 44, mobile_x_position: 44, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
-      { id: 10, name: 'Collections Grid', description: 'Section name: Collections #5', y_position: 1200, mobile_y_position: 2770, x_position: 97, mobile_x_position: 97, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 10, name: 'Collections Grid', description: 'Section name: Collections #5', y_position: 1200, mobile_y_position: 2740, x_position: 97, mobile_x_position: 97, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
       { id: 11, name: 'Product Reviews Section', description: 'Full product reviews section.', y_position: 1500, mobile_y_position: 3078, x_position: 44, mobile_x_position: 44, side: 'left', install_link: 'https://loox.io/app/LASERCRO', completed: false },
       { id: 12, name: 'Footer', description: 'Section name: Footer #7', y_position: 1850, mobile_y_position: 4226, x_position: 68, mobile_x_position: 68, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
@@ -624,7 +624,7 @@ export default function ReferenceStorePage() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
                             className={`absolute flex ${
-                              isAnnouncementBar ? 'items-start pt-2' : 'items-center'
+                              isAnnouncementBar && device === 'desktop' ? 'items-start pt-2' : 'items-center'
                             } ${
                               isLeft ? 'right-full flex-row-reverse' : 'left-full flex-row'
                             } ${editMode ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing z-50' : ''}`}
