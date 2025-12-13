@@ -171,10 +171,10 @@ function PagesContent() {
                 
                 <Route path="/DataCenter" element={<DataCenter />} />
 
-                <Route path="/CoursePage" element={<CoursePage />} />
-                <Route path="/CoursePage/:slug" element={<CoursePage />} />
+                <Route path="/coursepage" element={<CoursePage />} />
+                <Route path="/coursepage/:slug" element={<CoursePage />} />
 
-                <Route path="/Courses" element={<Courses />} />
+                <Route path="/courses" element={<Courses />} />
 
             </Routes>
         </Layout>

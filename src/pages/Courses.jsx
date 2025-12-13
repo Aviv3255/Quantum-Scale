@@ -28,7 +28,7 @@ export default function Courses() {
           {courses.map((course) => (
             <Link
               key={course.slug}
-              to={`/CoursePage/${course.slug}`}
+              to={`/coursepage/${course.slug}`}
               className="group block"
             >
               <div
