@@ -44,6 +44,8 @@ import LearningCenter from "./LearningCenter";
 
 import DataCenter from "./DataCenter";
 
+import CoursePage from "./CoursePage";
+
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -91,7 +93,9 @@ const PAGES = {
     LearningCenter: LearningCenter,
     
     DataCenter: DataCenter,
-    
+
+    CoursePage: CoursePage,
+
 }
 
 function _getCurrentPage(url) {
@@ -162,7 +166,10 @@ function PagesContent() {
                 <Route path="/LearningCenter" element={<LearningCenter />} />
                 
                 <Route path="/DataCenter" element={<DataCenter />} />
-                
+
+                <Route path="/CoursePage" element={<CoursePage />} />
+                <Route path="/CoursePage/:slug" element={<CoursePage />} />
+
             </Routes>
         </Layout>
     );
