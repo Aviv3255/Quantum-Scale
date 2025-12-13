@@ -15,6 +15,9 @@ interface BlockMarker {
   name: string;
   description: string;
   y_position: number;
+  mobile_y_position: number;
+  x_position?: number; // 0-100% from left edge
+  mobile_x_position?: number;
   side: 'left' | 'right';
   install_link: string;
   completed: boolean;
@@ -38,40 +41,77 @@ const PAGES_DATA: PageData[] = [
     desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_15_33.png?v=1765383376',
     mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-2025-12-10-18_07_47.png?v=1765382888',
     blocks: [
-      { id: 1, name: 'Announcement Bar', description: 'Geo-targeted announcement bar with countdown timer.', y_position: 0, side: 'right', install_link: '#', completed: false },
-      { id: 2, name: 'Header Navigation', description: 'Sticky header with mega menu and cart drawer.', y_position: 45, side: 'left', install_link: '#', completed: false },
-      { id: 3, name: 'Hero Section', description: 'Full-width hero with video background support.', y_position: 120, side: 'right', install_link: '#', completed: false },
-      { id: 4, name: 'Featured Products', description: 'Product grid with quick view and filters.', y_position: 580, side: 'left', install_link: '#', completed: false },
-      { id: 5, name: 'Trust Badges', description: 'Social proof badges and payment icons.', y_position: 900, side: 'right', install_link: '#', completed: false },
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 70, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 2, name: 'Transparent Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 105, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'HD Hero Banner', description: 'Section name: Hero #1', y_position: 251, mobile_y_position: 395, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 4, name: 'Collection Grid/Slider', description: 'Section name: Slider #7', y_position: 500, mobile_y_position: 746, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 5, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 777, mobile_y_position: 1120, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 6, name: 'Featured Collection Tabs', description: 'Section name: Featured collection (tabs) #5', y_position: 1120, mobile_y_position: 1770, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 7, name: 'All Collections View', description: 'Section name: Collection #5', y_position: 1460, mobile_y_position: 2311, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 8, name: 'Slider/Banner', description: 'Section name: Slideshow #4', y_position: 1755, mobile_y_position: 2724, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 2050, mobile_y_position: 3273, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 10, name: 'Geo Location Banner', description: 'Section name: Square banner', y_position: 2400, mobile_y_position: 3720, side: 'left', install_link: 'https://geo-convert.com', completed: false },
+      { id: 11, name: 'Footer', description: 'Section name: Footer #7', y_position: 2600, mobile_y_position: 4082, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
     ],
   },
   {
     page: 'product',
     label: 'Product Page',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-16_00_45.png?v=1765461667',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-products-men-loafers-3-2025-12-11-15_59_06.png?v=1765461561',
+    blocks: [
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted discount by country + holiday. +60-70% CVR.', y_position: 2, mobile_y_position: 70, x_position: 100, mobile_x_position: 100, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 19, mobile_y_position: 132, x_position: 9, mobile_x_position: 9, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'Product Reviews', description: 'Customer reviews and ratings display.', y_position: 90, mobile_y_position: 521, x_position: 85, mobile_x_position: 85, side: 'right', install_link: 'https://loox.io/app/LASERCRO', completed: false },
+      { id: 4, name: 'Low Stock Alert', description: 'Fake "low stock available" for specific variants. Use for best sellers. Increases CVR by 25-45%.', y_position: 150, mobile_y_position: 625, x_position: 76, mobile_x_position: 33, side: 'right', install_link: '#', completed: false },
+      { id: 5, name: 'Wishlist', description: 'Save products to wishlist functionality.', y_position: 195, mobile_y_position: 707, x_position: 86, mobile_x_position: 86, side: 'right', install_link: 'https://vitals.app/shopify/12548540', completed: false },
+      { id: 6, name: 'Product Videos', description: 'Section name: Product videos', y_position: 358, mobile_y_position: 943, x_position: 94, mobile_x_position: 24, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 7, name: 'Product Description Tabs', description: 'Section name: Product tabs #5 pro', y_position: 478, mobile_y_position: 1181, x_position: 98, mobile_x_position: 98, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 8, name: 'Product Highlight Block', description: 'Section name: Feature #19', y_position: 700, mobile_y_position: 1623, x_position: 82, mobile_x_position: 82, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 9, name: 'Featured Collection', description: 'Section name: Featured collection #18', y_position: 961, mobile_y_position: 2261, x_position: 44, mobile_x_position: 44, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 10, name: 'Collections Grid', description: 'Section name: Collections #5', y_position: 1200, mobile_y_position: 2740, x_position: 97, mobile_x_position: 97, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 11, name: 'Product Reviews Section', description: 'Full product reviews section.', y_position: 1500, mobile_y_position: 3078, x_position: 44, mobile_x_position: 44, side: 'left', install_link: 'https://loox.io/app/LASERCRO', completed: false },
+      { id: 12, name: 'Footer', description: 'Section name: Footer #7', y_position: 1850, mobile_y_position: 4226, x_position: 68, mobile_x_position: 68, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+    ],
   },
   {
     page: 'cart',
     label: 'Cart',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-12_at_09.57.01_c1afb926.jpg?v=1765526237',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co_products_men-loafers-3__pos_1__sid_1b6697588__ss_r_iPhone_XR.png?v=1765526042',
+    blocks: [
+      { id: 1, name: 'Cart Upsell', description: 'Upsell in cart increases AOV by $6-8 on average. Add up to 20 products priced under $50.', y_position: 190, mobile_y_position: 325, side: 'right', install_link: 'https://platform.shoffi.app/r/rl_cm697iNI', completed: false },
+    ],
   },
   {
     page: 'search',
     label: 'Search',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_22.44.37_2b4024d7.jpg?v=1765487757',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-test-store-1100000000000000000000000000000002250-myshopify-search-2025-12-11-22_45_25.png?v=1765485965',
+    blocks: [
+      { id: 1, name: 'Smart search bar & filter', description: 'AI-powered search with smart filters for better product discovery.', y_position: 120, mobile_y_position: 145, side: 'right', install_link: 'https://platform.shoffi.app/r/rl_Q4E8XoJz', completed: false },
+    ],
   },
   {
     page: 'contact',
     label: 'Contact',
-    desktop_screenshot: '',
-    mobile_screenshot: '',
-    blocks: [],
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/screencapture-quantum-scale-co-pages-new-test-2025-12-11-15_55_51.png?v=1765461368',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co_pages_new-test_view_contact-design_iPhone_XR.png?v=1765463477',
+    blocks: [
+      { id: 1, name: 'Geo Announcement Bar', description: 'Geo-targeted announcement with personalized discount based on visitor\'s country + local holiday. Increases conversion by 60-70%.', y_position: 12, mobile_y_position: 39, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+      { id: 2, name: 'Header', description: 'Section name: Header #11', y_position: 16, mobile_y_position: 127, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 3, name: 'Contact Form', description: 'Section name: Contact form #5', y_position: 151, mobile_y_position: 519, side: 'right', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+      { id: 4, name: 'Footer', description: 'Section name: Footer #7', y_position: 406, mobile_y_position: 1326, side: 'left', install_link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', completed: false },
+    ],
+  },
+  {
+    page: 'entry-exit',
+    label: 'Entry/Exit',
+    desktop_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-12-11_at_10.32.26_1f3e6185.jpg?v=1765442006',
+    mobile_screenshot: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/quantum-scale.co__pb_0_iPhone_14_Pro_Max.png?v=1765442196',
+    blocks: [
+      { id: 1, name: 'Entry/Exit Popup', description: 'Geo-targeted popup with personalized offer. Captures visitors and increases conversion.', y_position: 250, mobile_y_position: 250, side: 'right', install_link: 'https://geo-convert.com', completed: false },
+    ],
   },
 ];
 
@@ -89,8 +129,15 @@ export default function ReferenceStorePage() {
   const [activePage, setActivePage] = useState('home');
   const [blocks, setBlocks] = useState<BlockMarker[]>(PAGES_DATA[0].blocks);
   const [editMode, setEditMode] = useState(false);
-  const [markerPoints, setMarkerPoints] = useState<{ id: number; y: number; name: string }[]>([]);
+  const [markerPoints, setMarkerPoints] = useState<{ id: number; x: number; y: number; name: string }[]>([]);
   const [showMarkers, setShowMarkers] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  // Drag state for block markers
+  const [draggingBlock, setDraggingBlock] = useState<number | null>(null);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const deviceFrameRef = useRef<HTMLDivElement>(null);
 
   // Get current page data
   const currentPageData = PAGES_DATA.find(p => p.page === activePage) || PAGES_DATA[0];
@@ -113,6 +160,16 @@ export default function ReferenceStorePage() {
       setBlocks(pageData.blocks);
     }
   }, [activePage]);
+
+  // Screen size detection for responsive mockup
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerHeight < 900 || window.innerWidth < 1600);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Handle scroll
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -141,9 +198,11 @@ export default function ReferenceStorePage() {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
+    const x = e.clientX - rect.left;
     const y = e.clientY - rect.top + scrollContainer.scrollTop;
+    const xPercent = Math.round((x / mockupWidth) * 100);
     const newId = markerPoints.length + 1;
-    setMarkerPoints(prev => [...prev, { id: newId, y: Math.round(y), name: `Point ${newId}` }]);
+    setMarkerPoints(prev => [...prev, { id: newId, x: xPercent, y: Math.round(y), name: `Point ${newId}` }]);
   };
 
   // Edit mode: Remove marker point
@@ -163,6 +222,53 @@ export default function ReferenceStorePage() {
     URL.revokeObjectURL(url);
   };
 
+  // Drag handlers for block markers
+  const handleDragStart = useCallback((blockId: number, e: React.MouseEvent) => {
+    if (!editMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setDraggingBlock(blockId);
+    setDragStartY(e.clientY);
+    setDragOffset(0);
+  }, [editMode]);
+
+  const handleDragMove = useCallback((e: MouseEvent) => {
+    if (draggingBlock === null) return;
+    const deltaY = e.clientY - dragStartY;
+    setDragOffset(deltaY);
+  }, [draggingBlock, dragStartY]);
+
+  const handleDragEnd = useCallback(() => {
+    if (draggingBlock === null) return;
+
+    // Update the block's y_position based on drag offset
+    setBlocks(prev => prev.map(block => {
+      if (block.id === draggingBlock) {
+        const currentY = device === 'desktop' ? block.y_position : block.mobile_y_position;
+        const newY = Math.max(0, currentY + dragOffset);
+        return device === 'desktop'
+          ? { ...block, y_position: newY }
+          : { ...block, mobile_y_position: newY };
+      }
+      return block;
+    }));
+
+    setDraggingBlock(null);
+    setDragOffset(0);
+  }, [draggingBlock, dragOffset, device]);
+
+  // Add global mouse event listeners for drag
+  useEffect(() => {
+    if (draggingBlock !== null) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [draggingBlock, handleDragMove, handleDragEnd]);
+
   if (isLoading || !user) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-white">
@@ -171,9 +277,13 @@ export default function ReferenceStorePage() {
     );
   }
 
-  // Mockup dimensions - smaller, crisp display
-  const mockupWidth = device === 'desktop' ? 900 : 320;
-  const mockupHeight = device === 'desktop' ? 560 : 693; // iPhone proportions
+  // Mockup dimensions - responsive for different screen sizes
+  const mockupWidth = device === 'desktop'
+    ? (isSmallScreen ? 580 : 780)
+    : (isSmallScreen ? 260 : 300);
+  const mockupHeight = device === 'desktop'
+    ? (isSmallScreen ? 360 : 480)
+    : (isSmallScreen ? 540 : 650); // iPhone proportions
 
   return (
     <DashboardLayout>
@@ -231,22 +341,25 @@ export default function ReferenceStorePage() {
 
           {/* Center - Page Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-neutral-100">
-            {PAGES_DATA.map(page => (
-              <button
-                key={page.page}
-                onClick={() => setActivePage(page.page)}
-                disabled={page.page !== 'home'}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  activePage === page.page
-                    ? 'bg-white text-neutral-900 shadow-sm'
-                    : page.page === 'home'
-                    ? 'text-neutral-500 hover:text-neutral-700'
-                    : 'text-neutral-300 cursor-not-allowed'
-                }`}
-              >
-                {page.label}
-              </button>
-            ))}
+            {PAGES_DATA.map(page => {
+              const isEnabled = page.page === 'home' || page.page === 'entry-exit' || page.page === 'product' || page.page === 'contact' || page.page === 'search' || page.page === 'cart';
+              return (
+                <button
+                  key={page.page}
+                  onClick={() => setActivePage(page.page)}
+                  disabled={!isEnabled}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    activePage === page.page
+                      ? 'bg-white text-neutral-900 shadow-sm'
+                      : isEnabled
+                      ? 'text-neutral-500 hover:text-neutral-700'
+                      : 'text-neutral-300 cursor-not-allowed'
+                  }`}
+                >
+                  {page.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Right - Edit Mode Toggle (Temporary) */}
@@ -299,12 +412,38 @@ export default function ReferenceStorePage() {
                   </div>
                 )}
 
-                {/* iPhone Dynamic Island */}
+                {/* iPhone Dynamic Island - iPhone 15 style (thinner) */}
                 {device === 'mobile' && (
-                  <div
-                    className="absolute top-4 left-1/2 -translate-x-1/2 bg-black rounded-full z-10"
-                    style={{ width: '120px', height: '34px' }}
-                  />
+                  <>
+                    {/* iOS Status Bar */}
+                    <div
+                      className="absolute top-3 left-0 right-0 z-20 flex items-center justify-between px-6"
+                      style={{ height: '20px' }}
+                    >
+                      <div className="flex items-center gap-1">
+                        <span style={{ fontSize: '12px', fontWeight: 600, color: '#000' }}>11:05</span>
+                      </div>
+                      <div
+                        className="bg-black rounded-full"
+                        style={{ width: '80px', height: '24px' }}
+                      />
+                      <div className="flex items-center gap-1">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                          <path d="M1 4h2v8H1V4zm4-2h2v10H5V2zm4-2h2v12H9V0zm4 4h2v8h-2V4z" fill="#000"/>
+                        </svg>
+                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+                          <path d="M7 2.5C9.5 2.5 11.5 4 12.5 5.5L14 4C12.5 2 10 0 7 0S1.5 2 0 4l1.5 1.5C2.5 4 4.5 2.5 7 2.5z" fill="#000"/>
+                          <path d="M7 6C8.5 6 9.5 7 10 7.5L11.5 6C10.5 5 9 4 7 4S3.5 5 2.5 6L4 7.5C4.5 7 5.5 6 7 6z" fill="#000"/>
+                          <circle cx="7" cy="10" r="2" fill="#000"/>
+                        </svg>
+                        <div className="flex items-center">
+                          <div style={{ width: '22px', height: '10px', border: '1px solid #000', borderRadius: '3px', padding: '1px' }}>
+                            <div style={{ width: '75%', height: '100%', background: '#000', borderRadius: '1px' }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {/* iPhone Side Buttons */}
@@ -331,6 +470,39 @@ export default function ReferenceStorePage() {
                     scrollbarWidth: 'none',
                   }}
                 >
+                  {/* iOS Safari URL Bar */}
+                  {device === 'mobile' && (
+                    <div
+                      className="sticky top-0 z-20"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      {/* URL Bar */}
+                      <div className="flex items-center justify-center px-4 py-2">
+                        <div
+                          className="flex items-center justify-center gap-2 w-full"
+                          style={{
+                            background: '#e5e5ea',
+                            borderRadius: '12px',
+                            padding: '8px 16px',
+                          }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M7 1L1 7l6 6m0-12v12" stroke="#8e8e93" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" transform="rotate(-90 7 7)"/>
+                          </svg>
+                          <span style={{ color: '#000', fontSize: '15px', fontWeight: 400 }}>
+                            Brand.com
+                          </span>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <circle cx="7" cy="7" r="6" stroke="#8e8e93" strokeWidth="1.5"/>
+                            <path d="M7 4v6M4 7h6" stroke="#8e8e93" strokeWidth="1.5" strokeLinecap="round" transform="rotate(45 7 7)"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {/* Screenshot or Placeholder */}
                   {screenshot ? (
                     <img
@@ -382,12 +554,12 @@ export default function ReferenceStorePage() {
                   {editMode && markerPoints.map(point => (
                     <div
                       key={point.id}
-                      className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 z-20"
-                      style={{ top: point.y }}
+                      className="absolute flex items-center gap-2 z-20"
+                      style={{ top: point.y, left: `${point.x}%`, transform: 'translate(-50%, -50%)' }}
                     >
-                      <div className="w-3 h-3 rounded-full bg-red-500 border-2 border-white shadow-lg" />
-                      <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded font-medium">
-                        {point.name}: {point.y}px
+                      <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-lg" />
+                      <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded font-medium whitespace-nowrap">
+                        X:{point.x}% Y:{point.y}px
                       </span>
                     </div>
                   ))}
@@ -399,15 +571,55 @@ export default function ReferenceStorePage() {
                 )}
               </div>
 
-              {/* Block Markers - Ultra minimal floating labels */}
-              {showMarkers && !editMode && blocks.length > 0 && (
+              {/* Block Markers - Cards with connecting line */}
+              {showMarkers && blocks.length > 0 && (
                 <>
                   {blocks.map((block) => {
                     const frameTop = device === 'desktop' ? 12 : 12;
-                    const markerTop = frameTop + block.y_position - scrollTop;
-                    const isVisible = markerTop > 20 && markerTop < mockupHeight - 20;
-                    // Calculate opacity for smooth fade at edges
-                    const edgeFade = markerTop < 60 ? markerTop / 60 : markerTop > mockupHeight - 60 ? (mockupHeight - markerTop) / 60 : 1;
+                    const yPos = device === 'desktop' ? block.y_position : block.mobile_y_position;
+
+                    // Scale y_position based on mockup size ratio
+                    // Positions are defined for base sizes: 780px (desktop) and 300px (mobile)
+                    const baseWidth = device === 'desktop' ? 780 : 300;
+                    const scaleFactor = mockupWidth / baseWidth;
+                    const scaledYPos = yPos * scaleFactor;
+                    // scrollTop is already in current mockup coordinates, no scaling needed
+
+                    // Special handling for announcement bars on DESKTOP ONLY
+                    const isAnnouncementBar = block.name.toLowerCase().includes('announcement');
+                    let markerTop: number;
+
+                    if (isAnnouncementBar && device === 'desktop') {
+                      // Desktop: Announcement bar at the very top of the screen content
+                      markerTop = 0 - scrollTop;
+                    } else {
+                      // Mobile and all other blocks: use regular positioning with y_position
+                      markerTop = frameTop + scaledYPos - scrollTop;
+                    }
+
+                    // Apply drag offset if this block is being dragged
+                    const isDragging = draggingBlock === block.id;
+                    if (isDragging) {
+                      markerTop += dragOffset;
+                    }
+
+                    // Allow markers to show even if slightly above viewport (for announcement bars)
+                    const isVisible = markerTop > -10 && markerTop < mockupHeight - 30;
+                    // Only fade at bottom edge, not at top
+                    const edgeFade = markerTop > mockupHeight - 80 ? (mockupHeight - markerTop) / 80 : 1;
+
+                    // Get x_position for desktop product page
+                    const xPos = device === 'desktop' ? (block.x_position || 50) : (block.mobile_x_position || 50);
+                    const hasXPosition = device === 'desktop' && activePage === 'product' && block.x_position !== undefined;
+
+                    // Use block.side to determine which side the card appears on
+                    const isLeft = block.side === 'left';
+
+                    // Calculate line width based on x position (only for product page desktop)
+                    // Scale line width proportionally
+                    const lineWidth = hasXPosition
+                      ? (xPos > 50 ? (100 - xPos) * (mockupWidth / 100) + 60 * scaleFactor : xPos * (mockupWidth / 100) + 60 * scaleFactor)
+                      : 60 * scaleFactor;
 
                     return (
                       <AnimatePresence key={block.id}>
@@ -417,29 +629,84 @@ export default function ReferenceStorePage() {
                             animate={{ opacity: edgeFade }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
-                            className={`absolute ${
-                              block.side === 'left' ? 'right-full mr-10 text-right' : 'left-full ml-10 text-left'
-                            }`}
+                            className={`absolute flex ${
+                              isAnnouncementBar && device === 'desktop' ? 'items-start pt-2' : 'items-center'
+                            } ${
+                              isLeft ? 'right-full flex-row-reverse' : 'left-full flex-row'
+                            } ${editMode ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing z-50' : ''}`}
                             style={{
                               top: markerTop,
-                              maxWidth: '170px',
+                              [isLeft ? 'marginRight' : 'marginLeft']: hasXPosition
+                                ? `-${isLeft ? xPos * (mockupWidth / 100) : (100 - xPos) * (mockupWidth / 100)}px`
+                                : `-${40 * scaleFactor}px`,
                             }}
+                            onMouseDown={(e) => editMode && handleDragStart(block.id, e)}
                           >
-                            <p
-                              className="text-[13px] leading-snug text-neutral-500 font-normal"
-                              style={{ color: '#555' }}
+                            {/* Connecting line */}
+                            <div
+                              style={{
+                                width: `${lineWidth}px`,
+                                height: '1px',
+                                background: '#374151',
+                              }}
+                            />
+                            {/* Small dot at connection */}
+                            <div
+                              style={{
+                                width: '6px',
+                                height: '6px',
+                                borderRadius: '50%',
+                                background: '#374151',
+                                flexShrink: 0,
+                              }}
+                            />
+                            {/* Card - uniform dark gray, with edit mode styling */}
+                            <div
+                              style={{
+                                width: `${180 * scaleFactor}px`,
+                                background: isDragging ? '#1f2937' : '#374151',
+                                borderRadius: '6px',
+                                padding: `${8 * scaleFactor}px ${10 * scaleFactor}px`,
+                                boxShadow: isDragging
+                                  ? '0 8px 25px rgba(0, 0, 0, 0.3)'
+                                  : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                marginLeft: isLeft ? '0' : '2px',
+                                marginRight: isLeft ? '2px' : '0',
+                                border: editMode ? '2px dashed #60a5fa' : 'none',
+                                transition: isDragging ? 'none' : 'all 0.15s ease',
+                              }}
                             >
-                              {block.description}{' '}
-                              <a
-                                href={block.install_link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-neutral-400 hover:text-neutral-600 underline underline-offset-2 transition-colors"
-                                style={{ color: '#888' }}
+                              {/* Block name in edit mode */}
+                              {editMode && (
+                                <p className="text-[10px] font-bold text-blue-400 mb-1 uppercase tracking-wide">
+                                  {block.name}
+                                </p>
+                              )}
+                              <p
+                                className="text-[11px] leading-snug font-normal"
+                                style={{ color: '#ffffff' }}
                               >
-                                Install
-                              </a>
-                            </p>
+                                {editMode ? (
+                                  <span className="text-gray-300">
+                                    Y: {device === 'desktop' ? block.y_position : block.mobile_y_position}px
+                                    {isDragging && ` → ${Math.round((device === 'desktop' ? block.y_position : block.mobile_y_position) + dragOffset)}px`}
+                                  </span>
+                                ) : (
+                                  <>
+                                    {block.description}{' '}
+                                    <a
+                                      href={block.install_link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="underline underline-offset-2 transition-colors hover:opacity-80"
+                                      style={{ color: '#60a5fa' }}
+                                    >
+                                      Install
+                                    </a>
+                                  </>
+                                )}
+                              </p>
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -461,7 +728,7 @@ export default function ReferenceStorePage() {
                 </div>
 
                 <p className="text-xs text-neutral-500 mb-4">
-                  Click on the mockup to add marker points. Y positions will be recorded.
+                  Click on the mockup to add marker points. X and Y positions will be recorded.
                 </p>
 
                 <div className="space-y-2 mb-4">
@@ -472,7 +739,9 @@ export default function ReferenceStorePage() {
                     >
                       <div>
                         <span className="text-sm font-medium text-neutral-700">{point.name}</span>
-                        <span className="text-xs text-neutral-400 ml-2">Y: {point.y}px</span>
+                        <div className="text-xs text-neutral-400">
+                          X: {point.x}% | Y: {point.y}px
+                        </div>
                       </div>
                       <button
                         onClick={() => removeMarkerPoint(point.id)}
