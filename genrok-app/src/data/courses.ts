@@ -9,13 +9,6 @@ export interface CourseBonus {
   value: number;
 }
 
-export interface CourseReview {
-  name: string;
-  rating: number;
-  text: string;
-  date: string;
-}
-
 export interface CourseFAQ {
   question: string;
   answer: string;
@@ -37,9 +30,9 @@ export interface Course {
   badge?: string;
   stats: CourseStat[];
   longDescription: string;
+  highlights?: string[];
   modules: CourseModule[];
   bonuses: CourseBonus[];
-  reviews: CourseReview[];
   faq: CourseFAQ[];
 }
 
@@ -48,7 +41,7 @@ export const coursesData: Record<string, Course> = {
     slug: "subconscious-trap",
     title: "The Subconscious Trap",
     subtitle: "How to Bypass Buying Resistance Using Subconscious Influence",
-    description: "The Subconscious Trap is a psychology-driven framework designed for eCommerce store owners who want to increase conversions, boost average order value (AOV), and drive repeat purchases — without spending more on ads.",
+    description: "A psychology-driven framework to increase conversions, boost AOV, and drive repeat purchases — without spending more on ads.",
     price: 29,
     originalPrice: 197,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
@@ -58,124 +51,120 @@ export const coursesData: Record<string, Course> = {
       { value: "47", label: "lessons" },
       { value: "6h+", label: "content" }
     ],
-    longDescription: `The Subconscious Trap is a psychology-driven framework designed for eCommerce store owners who want to increase conversions, boost average order value (AOV), and drive repeat purchases — without spending more on ads.
+    highlights: [
+      "Master the psychology behind every buying decision",
+      "Create irresistible offers that sell themselves",
+      "Build trust instantly with proven frameworks",
+      "Increase AOV without discounting your brand",
+      "Turn one-time buyers into repeat customers",
+      "Optimize every touchpoint for maximum conversion"
+    ],
+    longDescription: `Your customers don't buy logically. They buy emotionally — then justify it later.
 
-This course teaches you how to ethically tap into the psychological triggers that influence buying behavior — so your store does the selling for you. From crafting irresistible offers to designing high-converting product pages, every module is built to help you turn visitors into loyal customers.`,
+The Subconscious Trap is a psychology-driven framework designed for eCommerce store owners who want to increase conversions, boost average order value (AOV), and drive repeat purchases — without spending more on ads.
+
+This isn't about manipulative tactics. It's about understanding how the human brain actually makes purchasing decisions, then ethically aligning your store to work with those natural patterns.
+
+Every element of your store — from your headline to your checkout button — either builds buying momentum or kills it. Most stores are unknowingly sabotaging themselves at every step.
+
+In this course, you'll learn exactly how to identify and fix these conversion killers, then install proven psychological triggers that turn browsers into buyers, and buyers into loyal customers.
+
+The same frameworks in this course have been used to optimize 7-figure stores and generate millions in additional revenue. Now they're yours.`,
     modules: [
       {
         title: "Module 1: The Psychology of Buying",
-        description: "Understand the subconscious triggers that make people buy — and how to ethically apply them to your store."
+        description: "Understand why people really buy. Learn the cognitive biases and emotional triggers that drive purchasing decisions — and how to ethically leverage them."
       },
       {
-        title: "Module 2: Offer Engineering",
-        description: "Learn how to craft offers that feel irresistible without discounting your brand."
+        title: "Module 2: Offer Architecture",
+        description: "Craft offers so compelling they feel like a no-brainer. Learn the psychology of pricing, bundling, and value perception that makes customers say yes."
       },
       {
         title: "Module 3: Product Page Mastery",
-        description: "Design product pages that convert browsers into buyers using proven psychological frameworks."
+        description: "Transform your product pages into conversion machines. Every element optimized using behavioral psychology principles that have been tested on millions of visitors."
       },
       {
-        title: "Module 4: Cart & Checkout Optimization",
-        description: "Reduce abandonment and increase AOV with strategic cart and checkout improvements."
+        title: "Module 4: Cart & Checkout Psychology",
+        description: "Stop losing sales at the finish line. Learn the psychological triggers that reduce abandonment and increase order values at the most critical moment."
       },
       {
         title: "Module 5: Trust Architecture",
-        description: "Build instant credibility with social proof, guarantees, and trust signals that eliminate buying resistance."
+        description: "Build instant credibility that eliminates buying resistance. Learn the exact trust signals, social proof placement, and guarantee frameworks that convert skeptics."
       },
       {
         title: "Module 6: Urgency & Scarcity",
-        description: "Implement authentic urgency that drives action without feeling manipulative."
+        description: "Create authentic urgency that drives immediate action. Learn ethical scarcity tactics that increase conversions without damaging your brand reputation."
       },
       {
         title: "Module 7: Email Psychology",
-        description: "Write emails that get opened, read, and clicked using behavioral psychology principles."
+        description: "Write emails that get opened, read, and clicked. Master the psychological principles behind high-converting email sequences that drive repeat purchases."
       },
       {
         title: "Module 8: Advanced Persuasion Patterns",
-        description: "Master advanced techniques for repeat purchases and customer lifetime value maximization."
+        description: "Go beyond basics with advanced techniques used by top 1% stores. Master the subtle patterns that compound into massive revenue gains over time."
       }
     ],
     bonuses: [
       {
         title: "High-Converting Swipe File",
-        description: "50+ proven headlines, CTAs, and copy templates you can use immediately.",
+        description: "50+ proven headlines, CTAs, and copy templates from 7-figure stores. Just copy, paste, and customize.",
         value: 197
       },
       {
         title: "Product Page Audit Checklist",
-        description: "The exact 47-point checklist we use to optimize 7-figure stores.",
+        description: "The exact 47-point checklist we use to audit stores generating $10M+. Find and fix your conversion killers.",
         value: 97
       },
       {
         title: "Psychology Trigger Cards",
-        description: "Quick-reference cards for the 23 most powerful buying triggers.",
+        description: "Quick-reference cards for the 23 most powerful buying triggers. Keep them handy when optimizing any page.",
         value: 47
       },
       {
         title: "Email Sequence Templates",
-        description: "5 complete email sequences for abandoned cart, post-purchase, and win-back.",
+        description: "5 complete email sequences: abandoned cart, post-purchase, win-back, welcome, and VIP. Ready to deploy.",
         value: 197
       },
       {
-        title: "A/B Test Playbook",
-        description: "The testing framework that generated $2.3M in additional revenue.",
+        title: "A/B Testing Playbook",
+        description: "The systematic testing framework that generated $2.3M in additional revenue for our clients. Know exactly what to test and when.",
         value: 147
       },
       {
-        title: "Conversion Rate Calculator",
-        description: "Spreadsheet tool to track and project your optimization ROI.",
+        title: "Conversion Calculator",
+        description: "Spreadsheet tool to project your ROI from implementing these strategies. See your potential gains before you start.",
         value: 47
       },
       {
         title: "Private Community Access",
-        description: "Join other store owners implementing these strategies.",
+        description: "Connect with other store owners implementing these strategies. Share wins, get feedback, and stay accountable.",
         value: 197
-      }
-    ],
-    reviews: [
-      {
-        name: "Sarah M.",
-        rating: 5,
-        text: "Implemented the trust architecture module and saw a 34% increase in conversions within 2 weeks. This stuff actually works.",
-        date: "2024-12-01"
-      },
-      {
-        name: "James K.",
-        rating: 5,
-        text: "The psychology triggers completely changed how I think about my product pages. AOV went from $47 to $73.",
-        date: "2024-11-28"
-      },
-      {
-        name: "Michelle R.",
-        rating: 5,
-        text: "Worth every penny. The swipe file alone has saved me countless hours. Already seeing results.",
-        date: "2024-11-15"
       }
     ],
     faq: [
       {
         question: "Who is this course for?",
-        answer: "This course is designed for eCommerce store owners, marketers, and entrepreneurs who want to increase conversions and sales without spending more on advertising. Whether you're just starting out or running a 7-figure store, these principles apply."
+        answer: "This course is for eCommerce store owners, marketers, and entrepreneurs who want to increase conversions and sales without spending more on advertising. Whether you're doing $1K/month or $1M/month, these psychology principles apply at every scale."
       },
       {
         question: "How long do I have access?",
-        answer: "You get lifetime access to all course materials, including any future updates. Once you purchase, it's yours forever."
+        answer: "Lifetime access. Once you purchase, it's yours forever — including all future updates and additions to the course material."
       },
       {
         question: "Is there a money-back guarantee?",
-        answer: "Yes! We offer a 30-day money-back guarantee. If you implement the strategies and don't see results, we'll refund your purchase. No questions asked."
-      },
-      {
-        question: "How is the content delivered?",
-        answer: "The course is delivered through our members' area with video lessons, downloadable resources, and templates. You can access everything immediately after purchase."
-      },
-      {
-        question: "Do I need any special tools or software?",
-        answer: "No special tools required. The strategies work with any eCommerce platform (Shopify, WooCommerce, etc.). Some bonuses include spreadsheet templates that work with Google Sheets or Excel."
+        answer: "Yes. 30-day money-back guarantee, no questions asked. If you implement the strategies and don't see value, we'll refund your purchase completely."
       },
       {
         question: "How quickly can I expect results?",
-        answer: "Many students see improvements within the first week of implementation. However, the best results come from systematically applying all modules over 30-60 days."
+        answer: "Many students see measurable improvements within the first week of implementation. However, the best results come from systematically applying all modules over 30-60 days."
+      },
+      {
+        question: "What platform does this work with?",
+        answer: "These strategies work with any eCommerce platform — Shopify, WooCommerce, BigCommerce, custom builds, anything. The psychology principles are universal."
+      },
+      {
+        question: "Do I need any special tools?",
+        answer: "No special tools required. Everything can be implemented with what you already have. Some bonuses include spreadsheet templates that work with Google Sheets or Excel."
       }
     ]
   }
