@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Calculator, CheckSquare, ShoppingBag, Sparkles, Package, Truck, Home, TrendingUp, BarChart3, Bell, Target, Menu, X, Lock, ExternalLink, Palette, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Briefcase, LogOut, BookOpen, Database } from "lucide-react";
+import { Calculator, CheckSquare, ShoppingBag, Sparkles, Package, Truck, Home, TrendingUp, BarChart3, Bell, Target, Menu, X, Lock, ExternalLink, Palette, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Briefcase, LogOut, BookOpen, Database, GraduationCap } from "lucide-react";
 
 const navigationItems = [
   {
@@ -34,6 +34,11 @@ const navigationItems = [
     title: "Learning Center",
     url: createPageUrl("LearningCenter"),
     icon: BookOpen,
+  },
+  {
+    title: "Courses",
+    url: createPageUrl("Courses"),
+    icon: GraduationCap,
   },
   {
     title: "Data Center",

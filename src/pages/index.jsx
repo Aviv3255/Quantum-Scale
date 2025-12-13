@@ -46,6 +46,8 @@ import DataCenter from "./DataCenter";
 
 import CoursePage from "./CoursePage";
 
+import Courses from "./Courses";
+
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -95,6 +97,8 @@ const PAGES = {
     DataCenter: DataCenter,
 
     CoursePage: CoursePage,
+
+    Courses: Courses,
 
 }
 
@@ -169,6 +173,8 @@ function PagesContent() {
 
                 <Route path="/CoursePage" element={<CoursePage />} />
                 <Route path="/CoursePage/:slug" element={<CoursePage />} />
+
+                <Route path="/Courses" element={<Courses />} />
 
             </Routes>
         </Layout>

@@ -18,7 +18,14 @@ import {
   Clock,
   Users,
   BookOpen,
-  ChevronRight,
+  Brain,
+  Palette,
+  Code,
+  Layout,
+  Type,
+  Target,
+  ListChecks,
+  Gift,
 } from "lucide-react";
 
 // Icon mapping for modules
@@ -28,103 +35,144 @@ const iconMap = {
   download: Download,
   play: Play,
   book: BookOpen,
+  brain: Brain,
+  palette: Palette,
+  code: Code,
+  layout: Layout,
+  type: Type,
+  target: Target,
+  list: ListChecks,
+  gift: Gift,
 };
 
-// Sample course data - this would come from props or API
-const sampleCourseData = {
-  slug: "email-marketing-course",
-  title: "Turn Email Marketing Into a Revenue Engine",
-  description:
-    "Learn how to build automated email flows that convert subscribers into loyal customers. Master the strategies that generate $1,000+ per customer.",
-  badge: "BEST SELLER",
-  price: 47,
-  originalPrice: 500,
-  image: "/courses/email-marketing-thumb.jpg",
-  stats: [
-    { value: "7", label: "Templates" },
-    { value: "2.5h", label: "Content" },
-    { value: "156", label: "Students" },
-  ],
-  modules: [
-    {
-      icon: "video",
-      title: "Introduction to Email Revenue",
-      duration: "12 min",
-      description: "Understanding the email marketing landscape",
-    },
-    {
-      icon: "video",
-      title: "Building Your Email List",
-      duration: "18 min",
-      description: "Proven strategies to grow subscribers fast",
-    },
-    {
-      icon: "file",
-      title: "Email Templates Pack",
-      duration: "7 files",
-      description: "Ready-to-use email templates",
-    },
-    {
-      icon: "video",
-      title: "Automated Flow Setup",
-      duration: "25 min",
-      description: "Set up your welcome and abandoned cart flows",
-    },
-    {
-      icon: "video",
-      title: "Segmentation Strategies",
-      duration: "20 min",
-      description: "Target the right customers at the right time",
-    },
-    {
-      icon: "download",
-      title: "Swipe File Collection",
-      duration: "15 files",
-      description: "High-converting email examples",
-    },
-  ],
-  reviews: [
-    {
-      name: "Sarah M.",
-      avatar: null,
-      text: "This course completely transformed how I approach email marketing. My open rates went from 15% to 45% in just two weeks!",
-      rating: 5,
-    },
-    {
-      name: "James K.",
-      avatar: null,
-      text: "The templates alone are worth 10x the price. I've made back my investment within the first month.",
-      rating: 5,
-    },
-    {
-      name: "Emily R.",
-      avatar: null,
-      text: "Finally, a course that doesn't waste time. Everything is actionable and easy to implement.",
-      rating: 5,
-    },
-  ],
-  faq: [
-    {
-      question: "What's included in this course?",
-      answer:
-        "You get lifetime access to all video lessons, downloadable templates, swipe files, and any future updates we add to the course.",
-    },
-    {
-      question: "Is this suitable for beginners?",
-      answer:
-        "Absolutely! We start from the basics and build up. Whether you're just starting out or looking to improve your existing email strategy, this course has something for you.",
-    },
-    {
-      question: "How long do I have access?",
-      answer:
-        "You get lifetime access. Once you purchase, the course is yours forever including all future updates.",
-    },
-    {
-      question: "Do you offer refunds?",
-      answer:
-        "Yes, we offer a 30-day money-back guarantee. If you're not satisfied, just reach out and we'll refund your purchase.",
-    },
-  ],
+// Course data store
+export const coursesData = {
+  "subconscious-trap": {
+    slug: "subconscious-trap",
+    title: "The Subconscious Trap",
+    description:
+      "Learn how to convert 4-6%+ of your eCommerce store visitors using extreme design manipulations that bypass logic and trigger impulse purchases.",
+    badge: "FLAGSHIP COURSE",
+    price: 29,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
+    stats: [
+      { value: "8", label: "Modules" },
+      { value: "70+", label: "Tasks" },
+      { value: "$929", label: "in Bonuses" },
+    ],
+    modules: [
+      {
+        icon: "brain",
+        title: "The Brain, Unlocked",
+        duration: "Core Module",
+        description: "What triggers the brain to buy and how to activate those triggers on demand",
+      },
+      {
+        icon: "type",
+        title: "The Copywriting Secrets",
+        duration: "+39% CVR",
+        description: "The exact button text that boosted our conversions by 39%",
+      },
+      {
+        icon: "file",
+        title: "The Power of Fonts",
+        duration: "Typography",
+        description: "Which fonts increase trust and perceived brand value",
+      },
+      {
+        icon: "layout",
+        title: "Winning Layouts",
+        duration: "Data-Backed",
+        description: "Page structures that psychologically convert visitors",
+      },
+      {
+        icon: "code",
+        title: "Code-Based Conversion Hacks",
+        duration: "+21% CVR",
+        description: "CSS tweaks that increased our purchase rate by 21%",
+      },
+      {
+        icon: "palette",
+        title: "Color Manipulations",
+        duration: "Psychology",
+        description: "The exact color tactics that knock out the subconscious",
+      },
+      {
+        icon: "target",
+        title: "Psychological Positioning",
+        duration: "Pricing",
+        description: "How to charge double your competitors and still convert at 6%+",
+      },
+      {
+        icon: "list",
+        title: "The Subconscious Switch",
+        duration: "70+ Steps",
+        description: "Step-by-step implementation tasks for your store",
+      },
+    ],
+    bonuses: [
+      { title: "The $10,000 AI Photographer", value: 297, description: "Create studio-grade product photos using AI" },
+      { title: "Secret Tools Vault", value: 97, description: "Tools that give you a brutal advantage over competitors" },
+      { title: "Lifetime Discount Vault", value: 97, description: "Save $40-$60/month on active subscriptions" },
+      { title: "The Intelligence Agent", value: 97, description: "AI agent trained to mimic billion-dollar brand tactics" },
+      { title: "Einstein on Steroids", value: 97, description: "180 IQ AI brain for strategic business decisions" },
+      { title: "Your Personal Conversion Map", value: 147, description: "Guided tracking system to 6%+ conversions" },
+      { title: "Secret Newsletter Access", value: 97, description: "Weekly breakdowns from 7-8 figure brands" },
+    ],
+    reviews: [
+      {
+        name: "Marcus T.",
+        avatar: null,
+        text: "Went from 2.1% to 5.8% conversion rate in just 2 weeks. This framework is insane. The psychology behind it actually works.",
+        rating: 5,
+      },
+      {
+        name: "Jessica L.",
+        avatar: null,
+        text: "I was skeptical at first - my site already looked professional. But after implementing the color manipulations, my add-to-cart rate jumped 44%.",
+        rating: 5,
+      },
+      {
+        name: "David K.",
+        avatar: null,
+        text: "The bonuses alone are worth 10x the price. The AI photographer course saved me thousands in product photography.",
+        rating: 5,
+      },
+    ],
+    faq: [
+      {
+        question: "Will this really work if my site already looks professional?",
+        answer:
+          "Absolutely. 'Looking professional' and 'converting visitors' are two completely different things. Your site might look like a million-dollar brand, but if it's not using psychological triggers, you're leaving massive money on the table. This framework shows you exactly what's missing - the subconscious manipulations that drive purchases.",
+      },
+      {
+        question: "I'm already converting at 3%. Is this still worth it?",
+        answer:
+          "Let me put it this way: if you're converting 3% now, this framework could take you to 5-6%+. That means nearly DOUBLING your revenue from the exact same traffic. Same ad spend, double the sales.",
+      },
+      {
+        question: "Do I need to know how to code?",
+        answer:
+          "Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users.",
+      },
+      {
+        question: "Will this work for my specific product/niche?",
+        answer:
+          "Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers.",
+      },
+      {
+        question: "What if I implement everything and it doesn't work?",
+        answer:
+          "Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back.",
+      },
+      {
+        question: "Why is it only $29?",
+        answer:
+          "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $29. One-time payment, lifetime access.",
+      },
+    ],
+  },
 };
 
 // Star rating component
@@ -162,12 +210,12 @@ function Avatar({ name }) {
   );
 }
 
-export default function CoursePage({ courseData = sampleCourseData }) {
+export default function CoursePage() {
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState("modules");
 
-  // In a real app, you'd fetch course data based on slug
-  const course = courseData;
+  // Get course data based on slug, default to subconscious-trap
+  const course = coursesData[slug] || coursesData["subconscious-trap"];
 
   return (
     <div className="min-h-screen w-full" style={{ backgroundColor: "#f8f9fa" }}>
@@ -184,17 +232,20 @@ export default function CoursePage({ courseData = sampleCourseData }) {
           <div className="flex flex-col md:flex-row">
             {/* Left - Image Area */}
             <div
-              className="w-full md:w-[35%] flex items-center justify-center p-8"
+              className="w-full md:w-[40%] flex items-center justify-center p-6"
               style={{
                 background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
-                minHeight: "280px",
+                minHeight: "320px",
               }}
             >
               {course.image ? (
                 <img
                   src={course.image}
                   alt={course.title}
-                  className="max-w-full max-h-48 object-contain rounded-lg shadow-lg"
+                  className="max-w-full max-h-64 object-contain rounded-lg"
+                  style={{
+                    filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.4))",
+                  }}
                 />
               ) : (
                 <div className="w-32 h-40 bg-white/10 rounded-lg flex items-center justify-center">
@@ -204,7 +255,7 @@ export default function CoursePage({ courseData = sampleCourseData }) {
             </div>
 
             {/* Right - Product Info */}
-            <div className="w-full md:w-[65%] p-8 md:p-10">
+            <div className="w-full md:w-[60%] p-8 md:p-10">
               {/* Badge */}
               {course.badge && (
                 <Badge
@@ -235,9 +286,9 @@ export default function CoursePage({ courseData = sampleCourseData }) {
               <div className="flex flex-wrap gap-6 mb-6">
                 {course.stats.map((stat, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    {index === 0 && <FileText className="w-4 h-4" style={{ color: "#22c55e" }} />}
-                    {index === 1 && <Clock className="w-4 h-4" style={{ color: "#22c55e" }} />}
-                    {index === 2 && <Users className="w-4 h-4" style={{ color: "#22c55e" }} />}
+                    {index === 0 && <BookOpen className="w-4 h-4" style={{ color: "#22c55e" }} />}
+                    {index === 1 && <ListChecks className="w-4 h-4" style={{ color: "#22c55e" }} />}
+                    {index === 2 && <Gift className="w-4 h-4" style={{ color: "#22c55e" }} />}
                     <span className="font-semibold" style={{ color: "#1a1a1a" }}>
                       {stat.value}
                     </span>
@@ -272,8 +323,8 @@ export default function CoursePage({ courseData = sampleCourseData }) {
                   className="px-8 py-3 rounded-xl font-semibold text-white transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
                   style={{ backgroundColor: "#22c55e" }}
                   onClick={() => {
-                    // Handle purchase flow
-                    console.log("Purchase clicked");
+                    // Handle purchase flow - redirect to external checkout
+                    window.open("https://quantum-scale.co/products/the-subconscious-trap", "_blank");
                   }}
                 >
                   Get Instant Access
@@ -299,6 +350,20 @@ export default function CoursePage({ courseData = sampleCourseData }) {
                   }}
                 >
                   What's Inside
+                </TabsTrigger>
+                <TabsTrigger
+                  value="bonuses"
+                  className={cn(
+                    "rounded-none border-b-2 border-transparent px-6 py-4 text-sm font-medium transition-all",
+                    "data-[state=active]:border-b-2 data-[state=active]:shadow-none"
+                  )}
+                  style={{
+                    color: activeTab === "bonuses" ? "#1a1a1a" : "#9ca3af",
+                    borderBottomColor: activeTab === "bonuses" ? "#1a1a1a" : "transparent",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  Bonuses
                 </TabsTrigger>
                 <TabsTrigger
                   value="reviews"
@@ -355,7 +420,7 @@ export default function CoursePage({ courseData = sampleCourseData }) {
                             {module.title}
                           </h4>
                           <p
-                            className="text-xs mb-1 line-clamp-1"
+                            className="text-xs mb-1 line-clamp-2"
                             style={{ color: "#6b7280" }}
                           >
                             {module.description}
@@ -370,6 +435,56 @@ export default function CoursePage({ courseData = sampleCourseData }) {
                       </div>
                     );
                   })}
+                </div>
+              </TabsContent>
+
+              {/* Bonuses Tab */}
+              <TabsContent value="bonuses" className="mt-0 p-6 md:p-8">
+                <div className="space-y-3">
+                  {course.bonuses?.map((bonus, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 p-4 rounded-xl"
+                      style={{ backgroundColor: "#f9fafb", border: "1px solid #e5e7eb" }}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: "#1a1a1a" }}
+                      >
+                        <Gift className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold text-sm" style={{ color: "#1a1a1a" }}>
+                            {bonus.title}
+                          </h4>
+                          <span
+                            className="text-xs px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: "rgba(34, 197, 94, 0.1)", color: "#22c55e" }}
+                          >
+                            ${bonus.value} value
+                          </span>
+                        </div>
+                        <p className="text-xs" style={{ color: "#6b7280" }}>
+                          {bonus.description}
+                        </p>
+                      </div>
+                      <div
+                        className="px-3 py-1 rounded-full text-xs font-semibold"
+                        style={{ backgroundColor: "#22c55e", color: "white" }}
+                      >
+                        FREE
+                      </div>
+                    </div>
+                  ))}
+                  <div
+                    className="mt-4 p-4 rounded-xl text-center"
+                    style={{ backgroundColor: "#1a1a1a" }}
+                  >
+                    <p className="text-sm text-white">
+                      Total Bonus Value: <span className="font-bold text-lg">${course.bonuses?.reduce((sum, b) => sum + b.value, 0)}</span>
+                    </p>
+                  </div>
                 </div>
               </TabsContent>
 
