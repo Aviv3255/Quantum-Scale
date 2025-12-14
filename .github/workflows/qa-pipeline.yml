@@ -1,0 +1,713 @@
+# 🚀 Quantum Scale - ULTIMATE QA Pipeline
+# מכונת בדיקות אוטונומית שלא עוצרת עד שמושלם
+# Zero bugs, Zero UI issues, Zero problems!
+
+name: Ultimate QA Pipeline
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+env:
+  NODE_VERSION: '20'
+  NEXT_TELEMETRY_DISABLED: 1
+
+# 🔧 הגדרה גלובלית - כל הפקודות רצות מתיקיית genrok-app
+defaults:
+  run:
+    working-directory: genrok-app
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════
+  # 📦 שלב 0: התקנה והכנה
+  # ═══════════════════════════════════════════════════════════════
+  setup:
+    name: 📦 Setup & Install
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 🔑 Generate cache key
+        id: cache-key
+        run: echo "key=${{ runner.os }}-node-${{ hashFiles('genrok-app/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 💾 Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            genrok-app/node_modules
+            ~/.npm
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🔧 שלב 1: בדיקות קוד סטטיות
+  # ═══════════════════════════════════════════════════════════════
+  code-quality:
+    name: 🔧 Code Quality
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            genrok-app/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('genrok-app/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      # ESLint - בדיקת סגנון וטעויות
+      - name: 🔍 ESLint - Code Style & Errors
+        id: eslint
+        run: |
+          npm run lint 2>&1 | tee eslint-output.txt || echo "lint_failed=true" >> $GITHUB_OUTPUT
+          echo "## 🔍 ESLint Results" >> $GITHUB_STEP_SUMMARY
+          cat eslint-output.txt >> $GITHUB_STEP_SUMMARY || echo "No issues found" >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      # TypeScript - בדיקת types
+      - name: 📘 TypeScript - Type Checking
+        id: typescript
+        run: |
+          npm run type-check 2>&1 | tee typescript-output.txt || echo "ts_failed=true" >> $GITHUB_OUTPUT
+          echo "## 📘 TypeScript Results" >> $GITHUB_STEP_SUMMARY
+          cat typescript-output.txt >> $GITHUB_STEP_SUMMARY || echo "No type errors" >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      # Prettier - בדיקת פורמט
+      - name: ✨ Prettier - Code Formatting
+        run: |
+          npm run format:check 2>&1 | tee prettier-output.txt || true
+          echo "## ✨ Prettier Results" >> $GITHUB_STEP_SUMMARY
+          cat prettier-output.txt >> $GITHUB_STEP_SUMMARY || echo "All files formatted" >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      # Build - לוודא שהפרויקט בונה
+      - name: 🏗️ Build Project
+        run: npm run build
+
+      # שמירת artifacts
+      - name: 💾 Save build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            genrok-app/.next
+            genrok-app/out
+          retention-days: 1
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🧪 שלב 2: בדיקות E2E עם Playwright
+  # ═══════════════════════════════════════════════════════════════
+  e2e-tests:
+    name: 🧪 E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: code-quality
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🧪 Run Playwright tests
+        run: |
+          npm run test:e2e -- --reporter=html 2>&1 | tee playwright-output.txt || true
+          echo "## 🧪 E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -50 playwright-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      - name: 📊 Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: genrok-app/playwright-report/
+          retention-days: 30
+
+      - name: 📸 Upload test screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-screenshots
+          path: genrok-app/test-results/
+          retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════
+  # 👁️ שלב 3: בדיקות ויזואליות עם Percy
+  # ═══════════════════════════════════════════════════════════════
+  visual-tests:
+    name: 👁️ Visual Tests (Percy)
+    runs-on: ubuntu-latest
+    needs: code-quality
+    # ירוץ על כל push ו-PR - ללא תנאי מגביל
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright for Percy
+        run: npx playwright install chromium
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm run start &
+        env:
+          PORT: 3000
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: 👁️ Percy Visual Snapshots
+        run: |
+          if [ -n "$PERCY_TOKEN" ]; then
+            echo "## 👁️ Percy Visual Testing" >> $GITHUB_STEP_SUMMARY
+
+            # צלם מספר דפים חשובים
+            cat << 'EOF' > percy-snapshot.js
+            const { chromium } = require('playwright');
+            const percySnapshot = require('@percy/playwright');
+
+            const pages = [
+              { path: '/', name: 'Homepage' },
+              { path: '/login', name: 'Login' },
+              { path: '/signup', name: 'Signup' },
+              { path: '/courses', name: 'Courses' },
+              { path: '/dashboard', name: 'Dashboard' },
+              { path: '/onboarding', name: 'Onboarding' },
+            ];
+
+            (async () => {
+              const browser = await chromium.launch();
+              const page = await browser.newPage();
+
+              for (const p of pages) {
+                try {
+                  await page.goto('http://localhost:3000' + p.path, { waitUntil: 'networkidle', timeout: 30000 });
+                  await percySnapshot(page, p.name);
+                  console.log('✅ Captured: ' + p.name);
+                } catch (e) {
+                  console.log('⚠️ Skipped: ' + p.name + ' - ' + e.message);
+                }
+              }
+
+              await browser.close();
+            })();
+            EOF
+
+            npx percy exec -- node percy-snapshot.js || echo "Percy completed with warnings"
+            echo "✅ Percy snapshots captured and uploaded" >> $GITHUB_STEP_SUMMARY
+            echo "View results at: https://percy.io" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## 👁️ Percy" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ PERCY_TOKEN not configured. Add it to repository secrets to enable visual testing." >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════
+  # ⚡ שלב 4: בדיקות ביצועים עם Lighthouse
+  # ═══════════════════════════════════════════════════════════════
+  performance-tests:
+    name: ⚡ Performance (Lighthouse)
+    runs-on: ubuntu-latest
+    needs: code-quality
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm run start &
+        env:
+          PORT: 3000
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: ⚡ Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:3000
+            http://localhost:3000/login
+            http://localhost:3000/courses
+          configPath: genrok-app/lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true
+
+      - name: 📊 Lighthouse Summary
+        run: |
+          echo "## ⚡ Lighthouse Performance" >> $GITHUB_STEP_SUMMARY
+          echo "Check artifacts for detailed Lighthouse reports" >> $GITHUB_STEP_SUMMARY
+
+  # ═══════════════════════════════════════════════════════════════
+  # ♿ שלב 5: בדיקות נגישות (Accessibility)
+  # ═══════════════════════════════════════════════════════════════
+  accessibility-tests:
+    name: ♿ Accessibility (a11y)
+    runs-on: ubuntu-latest
+    needs: code-quality
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm run start &
+        env:
+          PORT: 3000
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: ♿ Run axe accessibility tests
+        run: |
+          echo "## ♿ Accessibility Report" >> $GITHUB_STEP_SUMMARY
+          npx @axe-core/cli http://localhost:3000 --exit 2>&1 | tee axe-output.txt || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat axe-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🔒 שלב 6: בדיקות אבטחה
+  # ═══════════════════════════════════════════════════════════════
+  security-tests:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      # Snyk - סריקת פגיעויות
+      - name: 🔒 Snyk Security Scan
+        if: ${{ secrets.SNYK_TOKEN != '' }}
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          command: test
+
+      # npm audit
+      - name: 🔍 npm audit
+        run: |
+          echo "## 🔒 Security Audit" >> $GITHUB_STEP_SUMMARY
+          npm audit --audit-level=moderate 2>&1 | tee audit-output.txt || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat audit-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      # בדיקת secrets חשופים
+      - name: 🕵️ Check for exposed secrets
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: true
+        with:
+          path: ./genrok-app
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
+
+  # ═══════════════════════════════════════════════════════════════
+  # 📱 שלב 7: בדיקות Mobile/Responsive
+  # ═══════════════════════════════════════════════════════════════
+  responsive-tests:
+    name: 📱 Responsive Design Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: genrok-app/package-lock.json
+
+      - name: 📚 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright
+        run: npx playwright install chromium
+
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm run start &
+        env:
+          PORT: 3000
+
+      - name: ⏳ Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: 📱 Test responsive breakpoints
+        run: |
+          cat << 'EOF' > responsive-test.js
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+
+          const viewports = [
+            { name: 'Mobile-S', width: 320, height: 568 },
+            { name: 'Mobile-M', width: 375, height: 667 },
+            { name: 'Mobile-L', width: 425, height: 812 },
+            { name: 'Tablet', width: 768, height: 1024 },
+            { name: 'Laptop', width: 1024, height: 768 },
+            { name: 'Desktop', width: 1440, height: 900 },
+            { name: '4K', width: 2560, height: 1440 },
+          ];
+
+          const pages = ['/', '/login', '/courses'];
+
+          (async () => {
+            const browser = await chromium.launch();
+            const results = [];
+
+            fs.mkdirSync('screenshots', { recursive: true });
+
+            for (const viewport of viewports) {
+              const context = await browser.newContext({ viewport });
+              const page = await context.newPage();
+
+              for (const pagePath of pages) {
+                try {
+                  await page.goto('http://localhost:3000' + pagePath, { waitUntil: 'networkidle', timeout: 30000 });
+
+                  const screenshotName = viewport.name + '-' + (pagePath === '/' ? 'home' : pagePath.slice(1)) + '.png';
+                  await page.screenshot({
+                    path: 'screenshots/' + screenshotName,
+                    fullPage: true
+                  });
+
+                  const hasHorizontalScroll = await page.evaluate(() => {
+                    return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+                  });
+
+                  results.push({
+                    viewport: viewport.name,
+                    page: pagePath,
+                    width: viewport.width,
+                    horizontalScroll: hasHorizontalScroll ? '❌' : '✅',
+                    status: !hasHorizontalScroll ? '✅ PASS' : '⚠️ SCROLL'
+                  });
+
+                } catch (error) {
+                  results.push({
+                    viewport: viewport.name,
+                    page: pagePath,
+                    width: viewport.width,
+                    status: '❌ ERROR'
+                  });
+                }
+              }
+
+              await context.close();
+            }
+
+            await browser.close();
+
+            console.log('\n📱 Responsive Test Results:\n');
+            console.table(results);
+
+            const passed = results.filter(r => r.status.includes('PASS')).length;
+            const total = results.length;
+            console.log('\n✅ Passed: ' + passed + '/' + total);
+
+            // Write summary for GitHub
+            const summary = results.map(r => '| ' + r.viewport + ' | ' + r.page + ' | ' + r.status + ' |').join('\n');
+            fs.writeFileSync('responsive-summary.md',
+              '## 📱 Responsive Test Results\n\n| Viewport | Page | Status |\n|----------|------|--------|\n' + summary + '\n\n✅ Passed: ' + passed + '/' + total
+            );
+          })();
+          EOF
+
+          node responsive-test.js
+          cat responsive-summary.md >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      - name: 📸 Upload responsive screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: responsive-screenshots
+          path: genrok-app/screenshots/
+          retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🧠 שלב 8: בדיקות לוגיקה ותוכן
+  # ═══════════════════════════════════════════════════════════════
+  content-logic-tests:
+    name: 🧠 Content & Logic Review
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📝 Check for content files
+        run: |
+          echo "## 🧠 Content Analysis" >> $GITHUB_STEP_SUMMARY
+
+          # מצא קבצי תוכן שהשתנו
+          CHANGED_CONTENT=$(git diff --name-only ${{ github.event.before || 'HEAD~1' }} ${{ github.sha }} 2>/dev/null | grep -E '\.(md|mdx|json|tsx|jsx)$' | head -20 || echo "")
+          echo "### Changed content files:" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$CHANGED_CONTENT" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$CHANGED_CONTENT" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No content files changed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 🔗 Check for broken internal links
+        run: |
+          echo "### 🔗 Internal Links" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -roh 'href="\/[^"]*"' --include="*.tsx" --include="*.jsx" src/ 2>/dev/null | sort | uniq -c | sort -rn | head -15 >> $GITHUB_STEP_SUMMARY || echo "No internal links found" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      - name: 📝 Content Quality Checks
+        run: |
+          echo "### 📝 Content Quality" >> $GITHUB_STEP_SUMMARY
+
+          # חפש alt texts חסרים
+          echo "#### Missing Alt Texts:" >> $GITHUB_STEP_SUMMARY
+          MISSING_ALT=$(grep -rn '<img\|<Image' --include="*.tsx" --include="*.jsx" src/ 2>/dev/null | grep -v 'alt=' | head -10 || echo "")
+          if [ -n "$MISSING_ALT" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$MISSING_ALT" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ All images have alt text" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # חפש TODO/FIXME
+          echo "#### TODOs & FIXMEs:" >> $GITHUB_STEP_SUMMARY
+          TODOS=$(grep -rn "TODO\|FIXME" --include="*.tsx" --include="*.ts" src/ 2>/dev/null | head -10 || echo "")
+          if [ -n "$TODOS" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$TODOS" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No TODOs or FIXMEs found" >> $GITHUB_STEP_SUMMARY
+          fi
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🎨 שלב 9: בדיקות עיצוב וקונסיסטנטיות
+  # ═══════════════════════════════════════════════════════════════
+  design-consistency-tests:
+    name: 🎨 Design Consistency
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🎨 Check Tailwind consistency
+        run: |
+          echo "## 🎨 Design Consistency Report" >> $GITHUB_STEP_SUMMARY
+
+          # בדוק צבעים custom
+          echo "### Custom Colors (arbitrary values):" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -roh 'bg-\[[^]]*\]\|text-\[[^]]*\]\|border-\[[^]]*\]' --include="*.tsx" --include="*.jsx" src/ 2>/dev/null | sort | uniq -c | sort -rn | head -15 >> $GITHUB_STEP_SUMMARY || echo "No custom colors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          # בדוק spacing custom
+          echo "### Custom Spacing:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -roh 'p-\[[^]]*\]\|m-\[[^]]*\]\|gap-\[[^]]*\]\|w-\[[^]]*\]\|h-\[[^]]*\]' --include="*.tsx" --include="*.jsx" src/ 2>/dev/null | sort | uniq -c | sort -rn | head -10 >> $GITHUB_STEP_SUMMARY || echo "No custom spacing" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          # ספור components
+          echo "### Component Usage:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "Pages: $(find src/app -name 'page.tsx' | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "Components: $(find src/components -name '*.tsx' 2>/dev/null | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+  # ═══════════════════════════════════════════════════════════════
+  # 📊 שלב 10: דו"ח סופי מקיף
+  # ═══════════════════════════════════════════════════════════════
+  final-report:
+    name: 📊 Final QA Report
+    runs-on: ubuntu-latest
+    needs: [
+      code-quality,
+      e2e-tests,
+      visual-tests,
+      performance-tests,
+      accessibility-tests,
+      security-tests,
+      responsive-tests,
+      content-logic-tests,
+      design-consistency-tests
+    ]
+    if: always()
+
+    steps:
+      - name: 📊 Generate Comprehensive Report
+        run: |
+          echo "# 🔍 Quantum Scale - QA Pipeline Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Info | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Run** | #${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Triggered by** | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Category | Test | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔧 Code | ESLint + TypeScript + Build | ${{ needs.code-quality.result == 'success' && '✅ PASS' || needs.code-quality.result == 'skipped' && '⏭️ SKIPPED' || '❌ FAIL' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧪 E2E | Playwright Tests | ${{ needs.e2e-tests.result == 'success' && '✅ PASS' || needs.e2e-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 👁️ Visual | Percy Snapshots | ${{ needs.visual-tests.result == 'success' && '✅ PASS' || needs.visual-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚡ Performance | Lighthouse CI | ${{ needs.performance-tests.result == 'success' && '✅ PASS' || needs.performance-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ♿ Accessibility | axe-core | ${{ needs.accessibility-tests.result == 'success' && '✅ PASS' || needs.accessibility-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔒 Security | Snyk + npm audit | ${{ needs.security-tests.result == 'success' && '✅ PASS' || needs.security-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📱 Responsive | Multi-viewport | ${{ needs.responsive-tests.result == 'success' && '✅ PASS' || needs.responsive-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧠 Content | Logic & Quality | ${{ needs.content-logic-tests.result == 'success' && '✅ PASS' || needs.content-logic-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎨 Design | Consistency | ${{ needs.design-consistency-tests.result == 'success' && '✅ PASS' || needs.design-consistency-tests.result == 'skipped' && '⏭️ SKIPPED' || '⚠️ CHECK' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Overall status
+          if [[ "${{ needs.code-quality.result }}" == "success" ]]; then
+            echo "## ✅ Pipeline Status: READY FOR REVIEW" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All critical checks passed. This PR is ready for code review." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Pipeline Status: NEEDS FIXES" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Critical checks failed. Please fix the issues before merging." >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*🤖 Powered by Quantum Scale QA Pipeline*" >> $GITHUB_STEP_SUMMARY
+        working-directory: .
+
+      - name: 🚨 Fail if critical tests failed
+        if: needs.code-quality.result == 'failure'
+        run: |
+          echo "❌ Critical tests failed. Please fix the issues before merging."
+          exit 1

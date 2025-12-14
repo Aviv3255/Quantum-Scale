@@ -26,6 +26,7 @@ import {
   ExternalLink,
   Rocket,
   UserCircle,
+  GraduationCap,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -73,6 +74,11 @@ const navigationItems: NavItem[] = [
     title: "Learning Center",
     href: "/learn",
     icon: BookOpen,
+  },
+  {
+    title: "Courses",
+    href: "/courses",
+    icon: GraduationCap,
   },
   {
     title: "Data Center",
