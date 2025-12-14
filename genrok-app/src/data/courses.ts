@@ -454,56 +454,19 @@ Most stores chase more traffic. But if checkout is broken, you'll keep losing sa
 This system stops the leak. It brings money back into your store. Every day. On autopilot.`,
     modules: [
       {
-        title: "Email 1: The Instant Reminder",
-        description: "Sent within 1 hour of abandonment. Catches customers while your store is still fresh in their mind. Highest open rates of the entire sequence."
+        title: "Strategic Timing",
+        description: "Each email goes out at the exact right time. When people are most likely to come back and buy."
       },
       {
-        title: "Email 2: The Trust Builder",
-        description: "Addresses the #1 reason people abandon — trust concerns. Uses social proof and guarantees to eliminate buying resistance."
+        title: "Proven Psychology",
+        description: "These emails were tested on hundreds of thousands of sends. Every word handles objections. Every line rebuilds trust. Every message pushes people to act."
       },
       {
-        title: "Email 3: The Objection Handler",
-        description: "Systematically destroys every common objection. Shipping concerns, product questions, comparison shopping — all handled."
-      },
-      {
-        title: "Email 4: The Scarcity Trigger",
-        description: "Creates authentic urgency without being pushy. Strategic timing makes customers feel they might miss out."
-      },
-      {
-        title: "Email 5: The Value Stack",
-        description: "Reminds customers of everything they're getting. Re-frames the purchase as an investment, not an expense."
-      },
-      {
-        title: "Email 6: The Personal Touch",
-        description: "Feels like a 1-on-1 message from a real person. Builds emotional connection that drives action."
-      },
-      {
-        title: "Email 7: The Final Push",
-        description: "Last chance messaging that converts the holdouts. Strategic incentive timing that protects your margins while closing sales."
+        title: "Ready to Deploy",
+        description: "The full 7-email sequence is ready. Copy, paste, done. No testing. No guessing. Just proven templates."
       }
     ],
-    bonuses: [
-      {
-        title: "Platform Integration Guides",
-        description: "Step-by-step setup instructions for Shopify, WooCommerce, BigCommerce, Klaviyo, and all major platforms. Copy-paste implementation.",
-        value: 97
-      },
-      {
-        title: "Subject Line Swipe File",
-        description: "47 proven subject lines with open rates above 45%. Organized by email position in sequence for maximum impact.",
-        value: 67
-      },
-      {
-        title: "Timing Optimization Guide",
-        description: "The exact send times that maximize opens and conversions. Based on analysis of millions of abandoned checkout emails.",
-        value: 47
-      },
-      {
-        title: "A/B Testing Framework",
-        description: "Know exactly what to test and when. Systematic approach to improving your recovery rate over time.",
-        value: 77
-      }
-    ],
+    bonuses: [],
     faq: [
       {
         question: "Will this work for my platform (Shopify, WooCommerce, etc.)?",
