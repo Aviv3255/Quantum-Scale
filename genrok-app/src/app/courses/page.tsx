@@ -14,25 +14,29 @@ import {
   Plus,
   ChevronDown,
   ChevronUp,
-  Save,
   Trash2,
   FileCode,
   Link as LinkIcon,
   Type,
-  Eye,
   X,
   Check,
+  Copy,
+  ExternalLink,
+  Github,
+  AlertCircle,
+  CheckCircle,
+  Loader2,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
 
-// Course Content Input Interface
+// Course Content Input Interface (URL-based for token efficiency)
 interface CourseContentInput {
   id: string;
   courseName: string;
   mockupUrl: string;
-  htmlBlocks: string;
+  htmlSourceUrl: string; // URL to fetch HTML from (GitHub Gist, etc.)
   createdAt: string;
 }
 
@@ -49,101 +53,133 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// Course Content Input Form Component
+// Course Content Input Form Component - URL-based approach for token efficiency
 const CourseContentInputForm = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [courseName, setCourseName] = useState('');
   const [mockupUrl, setMockupUrl] = useState('');
-  const [htmlBlocks, setHtmlBlocks] = useState('');
-  const [savedContents, setSavedContents] = useState<CourseContentInput[]>([]);
+  const [htmlSourceUrl, setHtmlSourceUrl] = useState('');
+  const [savedCourses, setSavedCourses] = useState<CourseContentInput[]>([]);
   const [showSavedList, setShowSavedList] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [urlValidation, setUrlValidation] = useState<{
+    mockup: 'idle' | 'checking' | 'valid' | 'invalid';
+    html: 'idle' | 'checking' | 'valid' | 'invalid';
+  }>({ mockup: 'idle', html: 'idle' });
 
-  // Load saved contents from API on mount
+  // Load saved courses from localStorage on mount
   useEffect(() => {
-    const fetchCourseInputs = async () => {
-      setIsLoading(true);
+    const saved = localStorage.getItem('courseInputsUrlBased');
+    if (saved) {
       try {
-        const response = await fetch('/api/course-inputs');
-        if (response.ok) {
-          const data = await response.json();
-          // Filter out the example course
-          const realCourses = (data.courses || []).filter(
-            (c: CourseContentInput) => c.id !== 'example'
-          );
-          setSavedContents(realCourses);
-        }
-      } catch (error) {
-        console.error('Failed to fetch course inputs:', error);
-      } finally {
-        setIsLoading(false);
+        setSavedCourses(JSON.parse(saved));
+      } catch {
+        console.error('Failed to parse saved courses');
       }
-    };
-    fetchCourseInputs();
+    }
   }, []);
 
-  const handleSave = async () => {
-    if (!courseName.trim()) {
-      alert('Please enter a course name');
+  // Save to localStorage whenever savedCourses changes
+  const saveCourses = (courses: CourseContentInput[]) => {
+    setSavedCourses(courses);
+    localStorage.setItem('courseInputsUrlBased', JSON.stringify(courses));
+  };
+
+  // Validate URL is accessible
+  const validateUrl = async (url: string, type: 'mockup' | 'html') => {
+    if (!url.trim()) {
+      setUrlValidation(prev => ({ ...prev, [type]: 'idle' }));
       return;
     }
 
-    setIsSaving(true);
-    try {
-      const response = await fetch('/api/course-inputs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          courseName: courseName.trim(),
-          mockupUrl: mockupUrl.trim(),
-          htmlBlocks: htmlBlocks.trim(),
-        }),
-      });
+    setUrlValidation(prev => ({ ...prev, [type]: 'checking' }));
 
-      if (response.ok) {
-        const data = await response.json();
-        setSavedContents([...savedContents, data.course]);
-        // Reset form
-        setCourseName('');
-        setMockupUrl('');
-        setHtmlBlocks('');
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
-      } else {
-        const error = await response.json();
-        alert(error.error || 'Failed to save course');
+    try {
+      // For GitHub Gist raw URLs, we just check the format
+      if (url.includes('gist.githubusercontent.com') || url.includes('raw.githubusercontent.com')) {
+        setUrlValidation(prev => ({ ...prev, [type]: 'valid' }));
+        return;
       }
-    } catch (error) {
-      console.error('Save error:', error);
-      alert('Failed to save course. Please try again.');
-    } finally {
-      setIsSaving(false);
+
+      // For other URLs, check if they look valid
+      const urlObj = new URL(url);
+      if (urlObj.protocol === 'https:' || urlObj.protocol === 'http:') {
+        setUrlValidation(prev => ({ ...prev, [type]: 'valid' }));
+      } else {
+        setUrlValidation(prev => ({ ...prev, [type]: 'invalid' }));
+      }
+    } catch {
+      setUrlValidation(prev => ({ ...prev, [type]: 'invalid' }));
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      const response = await fetch(`/api/course-inputs?id=${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        setSavedContents(savedContents.filter(c => c.id !== id));
-      } else {
-        alert('Failed to delete course');
-      }
-    } catch (error) {
-      console.error('Delete error:', error);
-      alert('Failed to delete course');
+  // Generate message for Claude
+  const generateClaudeMessage = () => {
+    if (!courseName.trim()) {
+      alert('Please enter a course name');
+      return '';
+    }
+
+    const lines = [
+      `Course: ${courseName.trim()}`,
+    ];
+
+    if (mockupUrl.trim()) {
+      lines.push(`Mockup: ${mockupUrl.trim()}`);
+    }
+
+    if (htmlSourceUrl.trim()) {
+      lines.push(`HTML: ${htmlSourceUrl.trim()}`);
+    }
+
+    return lines.join('\n');
+  };
+
+  // Copy message for Claude
+  const handleCopyForClaude = () => {
+    const message = generateClaudeMessage();
+    if (message) {
+      navigator.clipboard.writeText(message);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+
+      // Also save to local list
+      const newCourse: CourseContentInput = {
+        id: Date.now().toString(),
+        courseName: courseName.trim(),
+        mockupUrl: mockupUrl.trim(),
+        htmlSourceUrl: htmlSourceUrl.trim(),
+        createdAt: new Date().toISOString().split('T')[0],
+      };
+      saveCourses([...savedCourses, newCourse]);
     }
   };
 
-  const handleLoadContent = (content: CourseContentInput) => {
-    setCourseName(content.courseName);
-    setMockupUrl(content.mockupUrl);
-    setHtmlBlocks(content.htmlBlocks);
+  // Load a saved course
+  const handleLoadCourse = (course: CourseContentInput) => {
+    setCourseName(course.courseName);
+    setMockupUrl(course.mockupUrl);
+    setHtmlSourceUrl(course.htmlSourceUrl);
     setShowSavedList(false);
+  };
+
+  // Delete a saved course
+  const handleDeleteCourse = (id: string) => {
+    saveCourses(savedCourses.filter(c => c.id !== id));
+  };
+
+  // Get validation icon
+  const getValidationIcon = (status: 'idle' | 'checking' | 'valid' | 'invalid') => {
+    switch (status) {
+      case 'checking':
+        return <Loader2 size={14} className="animate-spin text-[#888]" />;
+      case 'valid':
+        return <CheckCircle size={14} className="text-green-500" />;
+      case 'invalid':
+        return <AlertCircle size={14} className="text-red-500" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -158,7 +194,7 @@ const CourseContentInputForm = () => {
         }}
       >
         <Plus size={16} className={`transition-transform ${isExpanded ? 'rotate-45' : ''}`} />
-        Course Content Input (Dev Tool)
+        Add New Course (Token-Efficient)
         {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
 
@@ -172,58 +208,55 @@ const CourseContentInputForm = () => {
             className="overflow-hidden"
           >
             <div className="mt-4 p-6 rounded-2xl border border-[#eee] bg-white">
+              {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-lg font-semibold text-[#111]">Add Course Content</h3>
-                  <p className="text-sm text-[#666]">Enter course details and HTML blocks for building landing pages</p>
+                  <p className="text-sm text-[#666]">Upload HTML to GitHub Gist, then paste the URL here</p>
                 </div>
 
-                {/* Saved Contents Toggle */}
-                <button
-                  onClick={() => setShowSavedList(!showSavedList)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-[#f5f5f5] text-[#666] hover:bg-[#eee] transition-colors"
-                >
-                  {isLoading ? (
-                    <div className="w-3.5 h-3.5 border-2 border-[#666] border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Eye size={14} />
-                  )}
-                  Saved ({savedContents.length})
-                </button>
+                {/* Saved Courses Toggle */}
+                {savedCourses.length > 0 && (
+                  <button
+                    onClick={() => setShowSavedList(!showSavedList)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-[#f5f5f5] text-[#666] hover:bg-[#eee] transition-colors"
+                  >
+                    <FileCode size={14} />
+                    History ({savedCourses.length})
+                  </button>
+                )}
               </div>
 
-              {/* Saved Contents List */}
+              {/* Saved Courses List */}
               <AnimatePresence>
-                {showSavedList && savedContents.length > 0 && (
+                {showSavedList && savedCourses.length > 0 && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     className="mb-6 p-4 rounded-xl bg-[#fafafa] border border-[#eee]"
                   >
-                    <h4 className="text-sm font-semibold text-[#111] mb-3">Saved Course Contents</h4>
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {savedContents.map(content => (
+                    <h4 className="text-sm font-semibold text-[#111] mb-3">Previous Courses</h4>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {savedCourses.map(course => (
                         <div
-                          key={content.id}
+                          key={course.id}
                           className="flex items-center justify-between p-3 rounded-lg bg-white border border-[#eee]"
                         >
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-[#111] truncate">{content.courseName}</p>
-                            <p className="text-xs text-[#888]">
-                              {new Date(content.createdAt).toLocaleDateString()} • {content.htmlBlocks.length} chars
-                            </p>
+                            <p className="font-medium text-[#111] truncate">{course.courseName}</p>
+                            <p className="text-xs text-[#888]">{course.createdAt}</p>
                           </div>
                           <div className="flex items-center gap-2 ml-4">
                             <button
-                              onClick={() => handleLoadContent(content)}
+                              onClick={() => handleLoadCourse(course)}
                               className="p-2 rounded-lg hover:bg-[#f5f5f5] text-[#666]"
                               title="Load"
                             >
                               <FileCode size={16} />
                             </button>
                             <button
-                              onClick={() => handleDelete(content.id)}
+                              onClick={() => handleDeleteCourse(course.id)}
                               className="p-2 rounded-lg hover:bg-red-50 text-red-500"
                               title="Delete"
                             >
@@ -237,19 +270,37 @@ const CourseContentInputForm = () => {
                 )}
               </AnimatePresence>
 
-              {/* Form Fields */}
+              {/* Step 1: GitHub Gist Instructions */}
+              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-[#f6f8fa] to-[#f0f3f6] border border-[#d0d7de]">
+                <div className="flex items-start gap-3">
+                  <Github size={20} className="text-[#24292f] mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-[#24292f] mb-2">Step 1: Upload HTML to GitHub Gist</h4>
+                    <ol className="text-sm text-[#57606a] space-y-1.5">
+                      <li>1. Go to <a href="https://gist.github.com" target="_blank" rel="noopener noreferrer" className="text-[#0969da] hover:underline inline-flex items-center gap-1">gist.github.com <ExternalLink size={12} /></a></li>
+                      <li>2. Paste your HTML content</li>
+                      <li>3. Click <strong>"Create secret gist"</strong> (or public)</li>
+                      <li>4. Click <strong>"Raw"</strong> button and copy the URL</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2: Form Fields */}
               <div className="space-y-4">
+                <h4 className="font-semibold text-[#111]">Step 2: Fill in the details</h4>
+
                 {/* Course Name */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
                     <Type size={14} />
-                    Course Name
+                    Course Name *
                   </label>
                   <input
                     type="text"
                     value={courseName}
                     onChange={(e) => setCourseName(e.target.value)}
-                    placeholder="e.g., The Social Proof"
+                    placeholder="e.g., Product Mapping Manipulation"
                     className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
                   />
                 </div>
@@ -258,42 +309,51 @@ const CourseContentInputForm = () => {
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
                     <LinkIcon size={14} />
-                    Mockup URL
+                    Mockup Image URL
+                    {getValidationIcon(urlValidation.mockup)}
                   </label>
                   <input
                     type="url"
                     value={mockupUrl}
                     onChange={(e) => setMockupUrl(e.target.value)}
-                    placeholder="https://cdn.shopify.com/..."
+                    onBlur={() => validateUrl(mockupUrl, 'mockup')}
+                    placeholder="https://cdn.shopify.com/... or https://quantum-scale.co/..."
                     className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
                   />
                 </div>
 
-                {/* HTML Blocks */}
+                {/* HTML Source URL */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
                     <FileCode size={14} />
-                    HTML Blocks (paste all your landing page HTML here)
+                    HTML Source URL (GitHub Gist Raw) *
+                    {getValidationIcon(urlValidation.html)}
                   </label>
-                  <textarea
-                    value={htmlBlocks}
-                    onChange={(e) => setHtmlBlocks(e.target.value)}
-                    placeholder="Paste all HTML blocks here... This will be stored and accessible for building the course layout."
-                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm font-mono resize-y"
-                    rows={12}
+                  <input
+                    type="url"
+                    value={htmlSourceUrl}
+                    onChange={(e) => setHtmlSourceUrl(e.target.value)}
+                    onBlur={() => validateUrl(htmlSourceUrl, 'html')}
+                    placeholder="https://gist.githubusercontent.com/username/..."
+                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm font-mono"
                   />
                   <p className="text-xs text-[#888] mt-2">
-                    {htmlBlocks.length.toLocaleString()} characters
+                    Paste the <strong>Raw</strong> URL from your GitHub Gist
                   </p>
                 </div>
+              </div>
 
-                {/* Actions */}
-                <div className="flex items-center justify-between pt-4">
+              {/* Step 3: Actions */}
+              <div className="mt-6 pt-4 border-t border-[#eee]">
+                <h4 className="font-semibold text-[#111] mb-4">Step 3: Copy and send to Claude</h4>
+
+                <div className="flex items-center justify-between">
                   <button
                     onClick={() => {
                       setCourseName('');
                       setMockupUrl('');
-                      setHtmlBlocks('');
+                      setHtmlSourceUrl('');
+                      setUrlValidation({ mockup: 'idle', html: 'idle' });
                     }}
                     className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[#666] hover:bg-[#f5f5f5] transition-colors"
                   >
@@ -301,66 +361,49 @@ const CourseContentInputForm = () => {
                     Clear
                   </button>
 
-                  <div className="flex items-center gap-3">
-                    {/* Export JSON Button */}
-                    <button
-                      onClick={() => {
-                        const jsonData = {
-                          id: Date.now().toString(),
-                          courseName: courseName.trim(),
-                          mockupUrl: mockupUrl.trim(),
-                          htmlBlocks: htmlBlocks.trim(),
-                          createdAt: new Date().toISOString().split('T')[0]
-                        };
-                        const jsonString = JSON.stringify(jsonData, null, 2);
-                        navigator.clipboard.writeText(jsonString);
-                        alert('JSON copied to clipboard! Paste it in src/data/course-inputs.json');
-                      }}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-[#111] text-white hover:bg-[#333] transition-colors"
-                    >
-                      <FileCode size={16} />
-                      Copy JSON
-                    </button>
-
-                    <button
-                      onClick={handleSave}
-                      disabled={isSaving}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                      style={{ backgroundColor: '#7700fd' }}
-                    >
-                      {saveSuccess ? (
-                        <>
-                          <Check size={16} />
-                          Saved to File!
-                        </>
-                      ) : isSaving ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <Save size={16} />
-                          Save to File
-                        </>
-                      )}
-                    </button>
-                  </div>
+                  <button
+                    onClick={handleCopyForClaude}
+                    disabled={!courseName.trim()}
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: copied ? '#22c55e' : '#7700fd' }}
+                  >
+                    {copied ? (
+                      <>
+                        <Check size={16} />
+                        Copied! Paste to Claude
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} />
+                        Copy for Claude
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
 
-              {/* Info Box */}
-              <div className="mt-6 p-4 rounded-xl bg-[#f5f5f5] border border-[#eee]">
-                <p className="text-sm text-[#666]">
-                  <strong className="text-[#111]">How to use:</strong><br/>
-                  1. Fill in course name, mockup URL, and paste all HTML blocks<br/>
-                  2. Click <strong>"Save to File"</strong> - data is saved directly to the server<br/>
-                  3. Ask Claude: <em>"Create a landing page for [course name]"</em><br/>
-                  4. Claude will read the saved data and build the page automatically
-                </p>
-                <p className="text-xs text-[#888] mt-3">
-                  Data is saved to <code className="bg-white px-1 rounded">src/data/course-inputs.json</code> and persists across sessions.
-                </p>
+              {/* Preview of what will be copied */}
+              {courseName.trim() && (
+                <div className="mt-4 p-4 rounded-xl bg-[#111] text-white font-mono text-sm">
+                  <p className="text-[#888] text-xs mb-2">Preview (what Claude will receive):</p>
+                  <pre className="whitespace-pre-wrap text-green-400">
+{generateClaudeMessage()}
+                  </pre>
+                </div>
+              )}
+
+              {/* Token Savings Info */}
+              <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+                <div className="flex items-start gap-3">
+                  <CheckCircle size={20} className="text-green-600 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-green-800 mb-1">Token Savings: ~99%</h4>
+                    <p className="text-sm text-green-700">
+                      Instead of pasting 50,000+ characters of HTML, you send ~200 characters.
+                      Claude fetches the HTML directly from the URL when building your landing page.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
