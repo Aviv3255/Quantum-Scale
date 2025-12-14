@@ -500,8 +500,8 @@ This system stops the leak. It brings money back into your store. Every day. On 
       "Turn every ad into a money-printing machine with social proof"
     ],
     visuals: [
-      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802", caption: "Stop fighting algorithm chaos" },
-      { url: "https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif", caption: "Make them buy impulsively" }
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328", caption: "Before: ROAS 3.16 (Feb 2024)" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467", caption: "After: ROAS 27.13 (Mar 2024)" }
     ],
     longDescription: `In a world where algorithms change overnight...
 

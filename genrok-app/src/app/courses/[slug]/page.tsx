@@ -710,9 +710,11 @@ export default function CourseDetailPage() {
     );
   }
 
+  // Only show bonuses tab if there are bonuses
+  const hasBonuses = course.bonuses.length > 0;
   const tabs = [
     { id: 'content' as TabType, label: "What's Inside", icon: BookOpen },
-    { id: 'bonuses' as TabType, label: `Bonuses (${course.bonuses.length})`, icon: Gift },
+    ...(hasBonuses ? [{ id: 'bonuses' as TabType, label: `Bonuses (${course.bonuses.length})`, icon: Gift }] : []),
     { id: 'faq' as TabType, label: 'FAQ', icon: HelpCircle },
   ];
 
@@ -883,10 +885,12 @@ export default function CourseDetailPage() {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 p-4 rounded-xl bg-[#f5f5f5] mb-6">
-                <Gift className="w-5 h-5 text-[#666]" />
-                <span className="text-sm"><strong className="text-[#111]">{course.bonuses.length} bonuses</strong><span className="text-[#666]"> worth ${totalBonusValue} included</span></span>
-              </div>
+              {hasBonuses && (
+                <div className="flex items-center gap-2 p-4 rounded-xl bg-[#f5f5f5] mb-6">
+                  <Gift className="w-5 h-5 text-[#666]" />
+                  <span className="text-sm"><strong className="text-[#111]">{course.bonuses.length} bonuses</strong><span className="text-[#666]"> worth ${totalBonusValue} included</span></span>
+                </div>
+              )}
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-4xl font-bold text-[#111]">${course.price}</span>
@@ -915,11 +919,12 @@ export default function CourseDetailPage() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">See It In Action</h2>
               <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Real results from stores using these strategies</p>
-              <div className="grid md:grid-cols-2 gap-6">
-                {course.visuals.slice(0, 2).map((visual, index) => (
+              {/* Stack vertically for Social Proof course (before/after with arrow) */}
+              <div className={`${slug === 'the-social-proof' ? 'flex flex-col gap-2 max-w-2xl mx-auto' : 'grid md:grid-cols-2 gap-6'}`}>
+                {course.visuals.slice(0, slug === 'the-social-proof' ? course.visuals.length : 2).map((visual, index) => (
                   <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="rounded-2xl overflow-hidden bg-white border border-[#eee]">
-                    <div className="relative aspect-video">
-                      <Image src={visual.url} alt={visual.caption || 'Course visual'} fill unoptimized className="object-cover" />
+                    <div className={`relative ${slug === 'the-social-proof' ? 'w-full' : 'aspect-video'}`}>
+                      <Image src={visual.url} alt={visual.caption || 'Course visual'} width={800} height={slug === 'the-social-proof' ? 600 : 450} unoptimized className="w-full h-auto object-contain" />
                     </div>
                     {visual.caption && (<div className="p-4 text-center"><p className="text-sm text-[#666]">{visual.caption}</p></div>)}
                   </motion.div>
@@ -1052,7 +1057,9 @@ export default function CourseDetailPage() {
         <div className="w-full py-16 px-6 lg:px-10 bg-black">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-            <p className="text-white/70 mb-8 text-lg">Get instant access to {course.modules.length} modules, {course.bonuses.length} bonuses worth ${totalBonusValue}, and start implementing today.</p>
+            <p className="text-white/70 mb-8 text-lg">
+              Get instant access to {course.modules.length} modules{hasBonuses ? `, ${course.bonuses.length} bonuses worth $${totalBonusValue},` : ''} and start implementing today.
+            </p>
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-4xl font-bold text-white">${course.price}</span>
               {course.originalPrice && (<span className="text-xl line-through text-white/40">${course.originalPrice}</span>)}
