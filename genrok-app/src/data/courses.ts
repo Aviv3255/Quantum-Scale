@@ -341,33 +341,7 @@ Inside this course, you'll get the exact systems that billion-dollar brands use 
         description: "Emails designed to strike the exact psychological trigger in each customer's mind — at the perfect moment — to convert them individually. No generic templates. Just proven frameworks that turn readers into buyers."
       }
     ],
-    bonuses: [
-      {
-        title: "High-Converting Email Templates",
-        description: "25+ battle-tested email templates that generated millions in revenue. Welcome sequences, flash sales, abandoned cart, win-back campaigns — all ready to deploy.",
-        value: 197
-      },
-      {
-        title: "Automation Flow Blueprints",
-        description: "Visual diagrams of the exact automation flows used by 8-figure brands. See exactly how to connect triggers, delays, and conditions for maximum impact.",
-        value: 147
-      },
-      {
-        title: "Subject Line Swipe File",
-        description: "200+ proven subject lines with open rates above 40%. Organized by category: urgency, curiosity, personal, benefit-driven, and more.",
-        value: 97
-      },
-      {
-        title: "Segmentation Masterclass",
-        description: "Advanced segmentation strategies that let you send the right message to the right person at the right time. Includes RFM analysis templates.",
-        value: 127
-      },
-      {
-        title: "Deliverability Checklist",
-        description: "The complete checklist to ensure your emails land in the inbox, not spam. Domain authentication, warm-up strategies, and reputation management.",
-        value: 67
-      }
-    ],
+    bonuses: [],
     faq: [
       {
         question: "I already know email marketing. Why do I need this?",
