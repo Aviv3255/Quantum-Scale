@@ -1182,6 +1182,655 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
   );
 };
 
+// ========== AI PHOTOGRAPHER ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface AIPhotographerAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+    faq: { question: string; answer: string }[];
+  };
+  onCheckout: () => void;
+}
+
+const AIPhotographerAlternativeLayout = ({ course, onCheckout }: AIPhotographerAlternativeProps) => {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [sliderPositions, setSliderPositions] = useState<{ [key: number]: number }>({});
+
+  const handleSliderChange = (index: number, value: number) => {
+    setSliderPositions(prev => ({ ...prev, [index]: value }));
+  };
+
+  const beforeAfterPairs = [
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/31.jpg?v=1749393421", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192050.456.png?v=1749393420" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192202.722.png?v=1749393643", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192152.447.png?v=1749393643" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/33.jpg?v=1749393780", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/32.jpg?v=1749393780" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/37.jpg?v=1749393780" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/38.jpg?v=1749393780" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/41.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/40.jpg?v=1749393781" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/42.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/50.jpg?v=1749394200" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/47.jpg?v=1749394200", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1749394200" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/48.jpg?v=1749394200", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/49.jpg?v=1749394200" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/52.jpg?v=1749394380", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/51.jpg?v=1749394380" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192217.700.png?v=1749394380", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1749394380" },
+  ];
+
+  const faqItems = [
+    { question: "Is there a refund policy?", answer: "Yes! We offer a 30-day money-back guarantee. If you're not completely satisfied, just let us know and we'll refund your purchase - no questions asked." },
+    { question: "Do I need design experience?", answer: "Not at all! Our prompts are designed for complete beginners. If you can copy and paste, you can create stunning product photography." },
+    { question: "Which AI tools does this work with?", answer: "Our prompts work with all major AI image generators including Midjourney, DALL-E, Stable Diffusion, and Leonardo AI." },
+    { question: "How many prompts are included?", answer: "You get access to 50+ carefully crafted prompts covering various styles, backgrounds, lighting setups, and product types." },
+    { question: "Will this work for my product type?", answer: "Yes! Our prompts are versatile and work for any physical product - from jewelry to electronics, fashion to food products." },
+    { question: "How quickly can I create images?", answer: "Once you have the prompts, you can generate professional product images in minutes. Most users create their first stunning image within 10 minutes." },
+    { question: "Is this a one-time purchase?", answer: "Yes! Pay once and get lifetime access to all prompts, including any future updates we release." },
+    { question: "Can I use these images commercially?", answer: "Absolutely! All images you create using our prompts are yours to use for your business, ads, website, and social media." },
+    { question: "Do you offer support?", answer: "Yes! We provide email support and access to our community where you can get help and share your creations." },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10" style={{ backgroundColor: '#9ba4a6' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-block px-4 py-2 rounded-full mb-6 bg-white/20"
+          >
+            <span className="text-sm font-semibold text-white">AI-POWERED PHOTOGRAPHY</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-6xl font-bold mb-6 text-white"
+          >
+            THE $10,000 AI PHOTOGRAPHER
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto text-white/90"
+          >
+            Professional Product Photography Without the Professional Price Tag
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-5xl lg:text-6xl font-bold text-white">${course.price}</span>
+            {course.originalPrice && (
+              <span className="text-2xl line-through text-white/50">${course.originalPrice}</span>
+            )}
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl bg-white"
+            style={{ color: '#9ba4a6' }}
+          >
+            <ShoppingCart size={24} />
+            GET INSTANT ACCESS
+          </motion.button>
+
+          <p className="text-sm mt-6 text-white/60">
+            30-day money-back guarantee • Instant access • Lifetime updates
+          </p>
+        </div>
+      </div>
+
+      {/* Before/After Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              See the Transformation
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              Drag the slider to see how AI transforms ordinary product photos into professional-grade imagery
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {beforeAfterPairs.map((pair, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative rounded-2xl overflow-hidden shadow-xl"
+                style={{ aspectRatio: '4/3' }}
+              >
+                {/* Before Image (full) */}
+                <img
+                  src={pair.before}
+                  alt="Before"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                {/* After Image (clipped) */}
+                <div
+                  className="absolute inset-0 overflow-hidden"
+                  style={{ width: `${sliderPositions[index] ?? 50}%` }}
+                >
+                  <img
+                    src={pair.after}
+                    alt="After"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ width: `${100 / ((sliderPositions[index] ?? 50) / 100)}%`, maxWidth: 'none' }}
+                  />
+                </div>
+                {/* Slider Line */}
+                <div
+                  className="absolute top-0 bottom-0 w-1 bg-white shadow-lg"
+                  style={{ left: `${sliderPositions[index] ?? 50}%`, transform: 'translateX(-50%)' }}
+                >
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
+                    <ChevronLeft size={16} className="text-[#666] -mr-1" />
+                    <ChevronRight size={16} className="text-[#666] -ml-1" />
+                  </div>
+                </div>
+                {/* Slider Input */}
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={sliderPositions[index] ?? 50}
+                  onChange={(e) => handleSliderChange(index, Number(e.target.value))}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize"
+                />
+                {/* Labels */}
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold bg-black/70 text-white">
+                  BEFORE
+                </div>
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold text-white" style={{ backgroundColor: '#9ba4a6' }}>
+                  AFTER
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Comparison Table */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              Why AI Photography?
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              Compare the old way vs the new AI-powered approach
+            </p>
+          </motion.div>
+
+          <div className="overflow-hidden rounded-2xl border border-[#eee]">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="p-5 text-left text-lg font-bold bg-[#f5f5f5] text-[#666]">
+                    OLD WAY
+                  </th>
+                  <th className="p-5 text-left text-lg font-bold text-white" style={{ backgroundColor: '#9ba4a6' }}>
+                    AI WAY
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { old: 'Hire expensive photographers ($500-$2000/session)', ai: 'Generate unlimited photos for $19 one-time' },
+                  { old: 'Wait days or weeks for edited photos', ai: 'Get professional results in minutes' },
+                  { old: 'Pay for studio rentals and equipment', ai: 'Create studio-quality images from anywhere' },
+                  { old: 'Limited to photographer\'s availability', ai: 'Create content 24/7 on your schedule' },
+                  { old: 'Re-shoots cost extra money and time', ai: 'Unlimited revisions at no extra cost' },
+                ].map((row, index) => (
+                  <tr key={index} className="border-t border-[#eee]">
+                    <td className="p-5 text-[#666] bg-[#fafafa]">{row.old}</td>
+                    <td className="p-5 text-[#111] font-medium bg-white">{row.ai}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-[#666] text-center mb-12">
+            Everything you need to know before you start
+          </p>
+
+          <div className="space-y-3">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden bg-[#fafafa] border border-[#eee]"
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#f0f0f0] transition-colors"
+                >
+                  <span className="font-semibold text-[#111] pr-4">{item.question}</span>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} className="text-[#666] flex-shrink-0" />
+                  ) : (
+                    <ChevronDown size={20} className="text-[#666] flex-shrink-0" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="px-5 pb-5"
+                    >
+                      <p className="text-[#666]">{item.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#9ba4a6' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            Ready to Transform Your Product Photos?
+          </h2>
+          <p className="text-xl mb-4 text-white/80">
+            Join thousands of entrepreneurs who are saving money and creating stunning visuals with AI
+          </p>
+
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className="text-5xl lg:text-6xl font-bold text-white">${course.price}</span>
+            {course.originalPrice && (
+              <span className="text-2xl line-through text-white/50">${course.originalPrice}</span>
+            )}
+          </div>
+
+          <button
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl bg-white"
+            style={{ color: '#9ba4a6' }}
+          >
+            <ShoppingCart size={24} />
+            GET INSTANT ACCESS NOW
+            <ArrowRight size={20} />
+          </button>
+
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/60">
+            <div className="flex items-center gap-2">
+              <Shield size={18} />
+              <span>30-Day Guarantee</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock size={18} />
+              <span>Instant Access</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award size={18} />
+              <span>Lifetime Updates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== AD COPY TEMPLATES ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface AdCopyTemplatesAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const AdCopyTemplatesAlternativeLayout = ({ course, onCheckout }: AdCopyTemplatesAlternativeProps) => {
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10" style={{ backgroundColor: '#D4B160' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-block px-4 py-2 rounded-full mb-6 bg-white/20"
+          >
+            <span className="text-sm font-semibold text-white">PROVEN AD TEMPLATES</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-6xl font-bold mb-6 text-white"
+          >
+            50+ AD COPY TEMPLATES
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto text-white/90"
+          >
+            Fill-in-the-Blank Templates That Turn Strangers Into Buyers
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-5xl lg:text-6xl font-bold text-white">${course.price}</span>
+            {course.originalPrice && (
+              <span className="text-2xl line-through text-white/50">${course.originalPrice}</span>
+            )}
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl bg-white"
+            style={{ color: '#D4B160' }}
+          >
+            <ShoppingCart size={24} />
+            GET INSTANT ACCESS
+          </motion.button>
+
+          <p className="text-sm mt-6 text-white/60">
+            30-day money-back guarantee • Instant access • Lifetime updates
+          </p>
+        </div>
+      </div>
+
+      {/* Problem Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-6">
+              The World's Best Copywriters Charge...
+            </h2>
+            <p className="text-xl text-[#666] mb-12 max-w-2xl mx-auto">
+              What would it cost to hire them?
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl bg-[#fafafa] border border-[#eee]"
+            >
+              <div className="text-4xl font-bold text-[#111] mb-2">$50,000</div>
+              <div className="text-lg font-medium text-[#666] mb-1">Stefan Georgi</div>
+              <div className="text-sm text-[#888]">per sales letter</div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="p-8 rounded-2xl bg-[#fafafa] border border-[#eee]"
+            >
+              <div className="text-4xl font-bold text-[#111] mb-2">$15,000</div>
+              <div className="text-lg font-medium text-[#666] mb-1">Gary Halbert</div>
+              <div className="text-sm text-[#888]">per page</div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-8 rounded-2xl"
+            style={{ backgroundColor: '#D4B160' }}
+          >
+            <p className="text-2xl lg:text-3xl font-bold text-white">
+              Now you can get their proven formulas for just ${course.price}
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Results Proof Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              These Templates Actually Work
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              Real results from real businesses using our ad copy templates
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden shadow-xl"
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/GQk7K0x.png?v=1749398780"
+              alt="Results proof"
+              className="w-full h-auto"
+            />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              What You'll Get
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              "50+ proven ad copy templates that convert",
+              "Fill-in-the-blank format - just add your product",
+              "Templates for Facebook, Instagram, TikTok & more",
+              "Hooks, body copy, and CTAs that actually work",
+              "Emotional triggers that drive purchases",
+              "Instant access - start using them today",
+            ].map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-4 p-4"
+              >
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#D4B160' }}>
+                  <Check size={18} className="text-white" />
+                </div>
+                <span className="text-lg text-[#333]">{benefit}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Speed Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#111]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-white">
+              Create Winning Ads in Minutes
+            </h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              No more staring at a blank screen. Just fill in the blanks and launch.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden shadow-2xl border-4"
+            style={{ borderColor: '#D4B160' }}
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/ad-template-preview.jpg?v=1749398780"
+              alt="Template preview"
+              className="w-full h-auto"
+            />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* What's Inside Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              What's Inside The Pack
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              { title: "Hook Templates", desc: "15+ attention-grabbing hooks that stop the scroll" },
+              { title: "Story Templates", desc: "10+ storytelling frameworks that build connection" },
+              { title: "Offer Templates", desc: "12+ offer structures that drive urgency" },
+              { title: "CTA Templates", desc: "15+ calls-to-action that get clicks" },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-8 rounded-2xl bg-[#fafafa] border border-[#eee]"
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: '#D4B160' }}>
+                  <Trophy size={24} className="text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#111] mb-2">{item.title}</h3>
+                <p className="text-[#666]">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#D4B160' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            Ready to Write Ads That Sell?
+          </h2>
+          <p className="text-xl mb-4 text-white/80">
+            Stop struggling with ad copy. Use the same templates that generate millions in revenue.
+          </p>
+
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className="text-5xl lg:text-6xl font-bold text-white">${course.price}</span>
+            {course.originalPrice && (
+              <span className="text-2xl line-through text-white/50">${course.originalPrice}</span>
+            )}
+          </div>
+
+          <button
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl bg-white"
+            style={{ color: '#D4B160' }}
+          >
+            <ShoppingCart size={24} />
+            GET INSTANT ACCESS NOW
+            <ArrowRight size={20} />
+          </button>
+
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/60">
+            <div className="flex items-center gap-2">
+              <Shield size={18} />
+              <span>30-Day Guarantee</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock size={18} />
+              <span>Instant Access</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award size={18} />
+              <span>Lifetime Updates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ========== PRODUCT MAPPING VISUALIZATIONS ==========
 
 const ProductMappingVisuals = () => (
@@ -2260,13 +2909,15 @@ export default function CourseDetailPage() {
         <div className="w-full px-6 lg:px-10 pt-6 flex items-center justify-between">
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
-          {/* Layout Toggle - Only for Social Proof */}
-          {slug === 'the-social-proof' && (
+          {/* Layout Toggle - For Social Proof, AI Photographer, and Ad Copy Templates */}
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
-                backgroundColor: useAlternativeLayout ? '#7700fd' : '#f5f5f5',
+                backgroundColor: useAlternativeLayout
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : '#D4B160')
+                  : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
             >
@@ -2276,9 +2927,13 @@ export default function CourseDetailPage() {
           )}
         </div>
 
-        {/* Alternative Layout for Social Proof */}
+        {/* Alternative Layouts */}
         {slug === 'the-social-proof' && useAlternativeLayout ? (
           <SocialProofAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'ai-photographer' && useAlternativeLayout ? (
+          <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
+          <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : (
           <>
         {/* Hero Section */}
