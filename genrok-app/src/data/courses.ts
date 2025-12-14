@@ -591,6 +591,107 @@ We promise you: In a few days you will send us a message that you have no way of
         answer: "That's exactly why you need this. Social proof is a skill that transcends platforms. Whether you're on Facebook, TikTok, Google, or selling in person — human psychology doesn't change. You'll own a skill that can't be taken away."
       }
     ]
+  },
+  "product-mapping": {
+    slug: "product-mapping",
+    title: "Product Mapping Manipulation",
+    subtitle: "The Data-Driven System That Creates Money-Printing Product Pages",
+    description: "Master the strategic product mapping framework used by billion-dollar brands to turn every product page into a high-converting sales machine.",
+    price: 39,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_44.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_6.jpg",
+    badge: "Strategy",
+    stats: [
+      { value: "5", label: "weapons" },
+      { value: "4+", label: "hours" },
+      { value: "∞", label: "ROI potential" }
+    ],
+    highlights: [
+      "Master the billion-dollar mapping system used by top brands",
+      "Create strategic product ecosystems that maximize AOV",
+      "Use the anchor product effect to boost perceived value",
+      "Build hidden funnels that convert visitors automatically",
+      "Apply the law of multiple options to increase sales",
+      "Turn every product page into a money-printing machine"
+    ],
+    visuals: [],
+    longDescription: `The Biggest Brands Are Investing Billions Into Understanding How You Think...
+
+They're not just selling products — they're engineering decisions.
+
+It All Started Four Years Ago...
+
+We discovered that the most successful eCommerce brands weren't winning because of better products or bigger ad budgets. They were winning because they understood something most store owners completely miss:
+
+Strategic Product Mapping.
+
+The way you position, present, and connect your products determines whether visitors buy — or bounce.
+
+While most stores throw products on a page and hope for the best, billion-dollar brands use precise psychological frameworks to guide customers toward purchasing decisions they feel good about.
+
+This isn't manipulation. It's strategic alignment between what customers want and how you present your solutions.
+
+Inside this course, you'll discover the exact data-driven system that transforms chaotic product catalogs into strategic sales machines. You'll learn how to map your products in ways that naturally increase average order value, boost conversion rates, and create customers who buy more — without feeling sold to.
+
+The same framework inside has been used to optimize stores generating 7-8 figures. Now it's yours.`,
+    modules: [
+      {
+        title: "The Law of Multiple Options",
+        description: "Discover why giving customers the right number of choices dramatically increases conversions — and how to structure your offerings for maximum psychological impact."
+      },
+      {
+        title: "The Billion-Dollar Mapping System",
+        description: "The exact framework used by world-class brands to position products strategically. Learn how to create product ecosystems that naturally guide customers toward higher-value purchases."
+      },
+      {
+        title: "The Strategic Product Mapping Framework",
+        description: "A step-by-step system for analyzing, organizing, and presenting your products in ways that maximize perceived value and minimize decision friction."
+      },
+      {
+        title: "The Anchor Product Effect",
+        description: "Master the psychology of anchoring to make your core offerings feel like incredible deals — without discounting or cheapening your brand."
+      },
+      {
+        title: "The Hidden Funnel Strategy",
+        description: "Build invisible conversion paths that guide customers from browse to buy without aggressive selling. Turn your product catalog into an automated sales machine."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Will this work if I only have a few products?",
+        answer: "Absolutely. The strategic mapping framework works whether you have 5 products or 500. In fact, smaller catalogs often see even bigger improvements because each product placement decision has more impact. You'll learn how to maximize every position in your store."
+      },
+      {
+        question: "I'm already getting sales. Do I really need this?",
+        answer: "If you're getting sales without strategic product mapping, imagine what happens when you add it. Most stores see 30-50% increases in average order value alone. You're leaving significant money on the table if your products aren't strategically positioned."
+      },
+      {
+        question: "Is this different from just organizing my store?",
+        answer: "Completely different. Organization is about making products easy to find. Strategic mapping is about engineering purchase decisions. It's the difference between a grocery store and Apple's product lineup — both sell things, but one prints money."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug-and-play templates that you can implement immediately."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "Why is this only $39?",
+        answer: "We want every serious eCommerce entrepreneur to have access to billion-dollar strategies — not just those with big budgets. At $39, this pays for itself with a single additional sale. Important: This price won't last forever. We reserve the right to increase it at any time."
+      }
+    ]
   }
 };
 
