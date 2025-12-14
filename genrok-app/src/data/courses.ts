@@ -85,99 +85,99 @@ In this course, you'll learn exactly how to identify and fix these conversion ki
 The same frameworks in this course have been used to optimize 7-figure stores and generate millions in additional revenue. Now they're yours.`,
     modules: [
       {
-        title: "Module 1: The Psychology of Buying",
-        description: "Understand why people really buy. Learn the cognitive biases and emotional triggers that drive purchasing decisions — and how to ethically leverage them."
+        title: "The Brain, Unlocked",
+        description: "What triggers the brain to buy and how to activate those triggers on demand."
       },
       {
-        title: "Module 2: Offer Architecture",
-        description: "Craft offers so compelling they feel like a no-brainer. Learn the psychology of pricing, bundling, and value perception that makes customers say yes."
+        title: "The Copywriting Secrets",
+        description: "The exact button text that boosted our conversions by 39%."
       },
       {
-        title: "Module 3: Product Page Mastery",
-        description: "Transform your product pages into conversion machines. Every element optimized using behavioral psychology principles that have been tested on millions of visitors."
+        title: "The Power of Fonts",
+        description: "Which fonts increase trust and perceived brand value."
       },
       {
-        title: "Module 4: Cart & Checkout Psychology",
-        description: "Stop losing sales at the finish line. Learn the psychological triggers that reduce abandonment and increase order values at the most critical moment."
+        title: "Winning Layouts",
+        description: "Data-backed page structures that psychologically convert."
       },
       {
-        title: "Module 5: Trust Architecture",
-        description: "Build instant credibility that eliminates buying resistance. Learn the exact trust signals, social proof placement, and guarantee frameworks that convert skeptics."
+        title: "Code-Based Conversion Hacks",
+        description: "CSS tweaks that increased our purchase rate by 21%."
       },
       {
-        title: "Module 6: Urgency & Scarcity",
-        description: "Create authentic urgency that drives immediate action. Learn ethical scarcity tactics that increase conversions without damaging your brand reputation."
+        title: "Color Manipulations",
+        description: "The exact color tactics that knock out the subconscious."
       },
       {
-        title: "Module 7: Email Psychology",
-        description: "Write emails that get opened, read, and clicked. Master the psychological principles behind high-converting email sequences that drive repeat purchases."
+        title: "Psychological Positioning",
+        description: "How to charge double your competitors and still convert at 6%+."
       },
       {
-        title: "Module 8: Advanced Persuasion Patterns",
-        description: "Go beyond basics with advanced techniques used by top 1% stores. Master the subtle patterns that compound into massive revenue gains over time."
+        title: "The Subconscious Switch",
+        description: "70+ step-by-step implementation tasks."
       }
     ],
     bonuses: [
       {
-        title: "High-Converting Swipe File",
-        description: "50+ proven headlines, CTAs, and copy templates from 7-figure stores. Just copy, paste, and customize.",
-        value: 197
+        title: "The $10,000 AI Photographer",
+        description: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE. You'll get full access to the complete course that teaches you how to create jaw-dropping product photos using AI.",
+        value: 297
       },
       {
-        title: "Product Page Audit Checklist",
-        description: "The exact 47-point checklist we use to audit stores generating $10M+. Find and fix your conversion killers.",
+        title: "Secret Tools Vault",
+        description: "We've already done the heavy lifting for you. We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.",
         value: 97
       },
       {
-        title: "Psychology Trigger Cards",
-        description: "Quick-reference cards for the 23 most powerful buying triggers. Keep them handy when optimizing any page.",
-        value: 47
+        title: "Lifetime Discount Vault",
+        description: "And we didn't stop there... We partnered with dozens of eCommerce tools and top Shopify apps - the ones you already use - to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions. Yes, really.",
+        value: 97
       },
       {
-        title: "Email Sequence Templates",
-        description: "5 complete email sequences: abandoned cart, post-purchase, win-back, welcome, and VIP. Ready to deploy.",
-        value: 197
+        title: "The Intelligence Agent",
+        description: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.",
+        value: 97
       },
       {
-        title: "A/B Testing Playbook",
-        description: "The systematic testing framework that generated $2.3M in additional revenue for our clients. Know exactly what to test and when.",
+        title: "Einstein on Steroids",
+        description: "And here it is - one of the most essential tools. To give you the ultimate edge, we trained Einstein on Steroids for you. An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.",
+        value: 97
+      },
+      {
+        title: "Your Personal Conversion Map",
+        description: "Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).",
         value: 147
       },
       {
-        title: "Conversion Calculator",
-        description: "Spreadsheet tool to project your ROI from implementing these strategies. See your potential gains before you start.",
-        value: 47
-      },
-      {
-        title: "Private Community Access",
-        description: "Connect with other store owners implementing these strategies. Share wins, get feedback, and stay accountable.",
-        value: 197
+        title: "Access to Our Secret Newsletter",
+        description: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.",
+        value: 97
       }
     ],
     faq: [
       {
-        question: "Who is this course for?",
-        answer: "This course is for eCommerce store owners, marketers, and entrepreneurs who want to increase conversions and sales without spending more on advertising. Whether you're doing $1K/month or $1M/month, these psychology principles apply at every scale."
+        question: "Will this really work if my site already looks professional?",
+        answer: "Absolutely. \"Looking professional\" and \"converting visitors\" are two completely different things. Your site might look like a million-dollar brand, but if it's not using psychological triggers, you're leaving massive money on the table. This framework shows you exactly what's missing - the subconscious manipulations that drive purchases."
       },
       {
-        question: "How long do I have access?",
-        answer: "Lifetime access. Once you purchase, it's yours forever — including all future updates and additions to the course material."
+        question: "I'm already converting at 3%. Is this still worth it?",
+        answer: "Let me put it this way: if you're converting 3% now, this framework could take you to 5-6%+. That means nearly DOUBLING your revenue from the exact same traffic. Same ad spend, double the sales. How much is that worth to you?"
       },
       {
-        question: "Is there a money-back guarantee?",
-        answer: "Yes. 30-day money-back guarantee, no questions asked. If you implement the strategies and don't see value, we'll refund your purchase completely."
+        question: "Do I need to know how to code?",
+        answer: "Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users."
       },
       {
-        question: "How quickly can I expect results?",
-        answer: "Many students see measurable improvements within the first week of implementation. However, the best results come from systematically applying all modules over 30-60 days."
+        question: "Will this work for my specific product/niche?",
+        answer: "Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers."
       },
       {
-        question: "What platform does this work with?",
-        answer: "These strategies work with any eCommerce platform — Shopify, WooCommerce, BigCommerce, custom builds, anything. The psychology principles are universal."
+        question: "What if I implement everything and it doesn't work?",
+        answer: "Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back."
       },
       {
-        question: "Do I need any special tools?",
-        answer: "No special tools required. Everything can be implemented with what you already have. Some bonuses include spreadsheet templates that work with Google Sheets or Excel."
+        question: "Why is it only $29?",
+        answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $29. One-time payment, lifetime access. Important: This price won't last forever. We reserve the right to increase it at any time. If you're seeing $29 now, consider yourself lucky - this discount is temporary."
       }
     ]
   },
