@@ -665,6 +665,7 @@ interface SocialProofAlternativeProps {
     subtitle: string;
     price: number;
     originalPrice?: number;
+    heroImage?: string;
     modules: { title: string; description: string }[];
     faq: { question: string; answer: string }[];
   };
@@ -675,251 +676,340 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <div className="w-full py-16 px-6 lg:px-10 text-center" style={{ background: 'linear-gradient(180deg, #000 0%, #0a0a0a 100%)' }}>
-        <div className="max-w-4xl mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-6xl font-bold mb-6"
-            style={{ color: '#ffffff' }}
-          >
-            THE SOCIAL PROOF
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto"
-            style={{ color: 'rgba(255,255,255,0.8)' }}
-          >
-            How to Force Anyone to Buy From You Using One Psychological Law
-          </motion.p>
+    <div className="min-h-screen">
+      {/* Hero Section with Background Image */}
+      <div className="w-full relative">
+        {/* Hero Background */}
+        <div className="absolute inset-0 z-0">
+          {course.heroImage && (
+            <img
+              src={course.heroImage}
+              alt="Hero background"
+              className="w-full h-full object-cover"
+            />
+          )}
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center justify-center gap-4 mb-8"
-          >
-            <span className="text-5xl lg:text-6xl font-bold" style={{ color: '#ffffff' }}>${course.price}</span>
-            {course.originalPrice && (
-              <span className="text-2xl line-through" style={{ color: 'rgba(255,255,255,0.4)' }}>${course.originalPrice}</span>
-            )}
-          </motion.div>
+        {/* Hero Content */}
+        <div className="relative z-10 py-20 px-6 lg:px-10 text-center">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block px-4 py-2 rounded-full mb-6"
+              style={{ backgroundColor: '#7700fd' }}
+            >
+              <span className="text-sm font-semibold" style={{ color: '#ffffff' }}>PSYCHOLOGY-BASED COURSE</span>
+            </motion.div>
 
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            onClick={onCheckout}
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)', color: '#ffffff' }}
-          >
-            <ShoppingCart size={24} />
-            GET INSTANT ACCESS
-          </motion.button>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl lg:text-6xl font-bold mb-6"
+              style={{ color: '#ffffff' }}
+            >
+              THE SOCIAL PROOF
+            </motion.h1>
 
-          <p className="text-sm mt-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            30-day money-back guarantee • Instant access • Lifetime updates
-          </p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto"
+              style={{ color: 'rgba(255,255,255,0.9)' }}
+            >
+              How to Force Anyone to Buy From You Using One Psychological Law
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center justify-center gap-4 mb-8"
+            >
+              <span className="text-5xl lg:text-6xl font-bold" style={{ color: '#ffffff' }}>${course.price}</span>
+              {course.originalPrice && (
+                <span className="text-2xl line-through" style={{ color: 'rgba(255,255,255,0.5)' }}>${course.originalPrice}</span>
+              )}
+            </motion.div>
+
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              onClick={onCheckout}
+              className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl"
+              style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)', color: '#ffffff' }}
+            >
+              <ShoppingCart size={24} />
+              GET INSTANT ACCESS
+            </motion.button>
+
+            <p className="text-sm mt-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              30-day money-back guarantee • Instant access • Lifetime updates
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* The Story / Why Social Proof */}
+      {/* The Story Section */}
       <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-6">
               In a world where algorithms change overnight...
             </h2>
-            <p className="text-xl text-[#666] leading-relaxed">
+            <p className="text-xl text-[#666] leading-relaxed max-w-2xl mx-auto">
               We turn every ad into a money-printing machine (for 3 years straight) using The Social Proof Tactic.
             </p>
-          </div>
+          </motion.div>
 
           {/* Chaos Image */}
-          <div className="rounded-2xl overflow-hidden mb-12">
-            <Image
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden mb-12 shadow-xl"
+          >
+            <img
               src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/kXAXRrJ.jpg?v=1742900959"
               alt="Marketing chaos"
-              width={900}
-              height={500}
-              unoptimized
               className="w-full h-auto"
             />
-          </div>
+          </motion.div>
 
-          <div className="prose prose-lg max-w-none text-[#333]">
-            <p className="text-xl mb-6">
+          <div className="space-y-6 text-[#333]">
+            <p className="text-xl">
               If you're in eCommerce, selling a service or product... <strong>The page you're about to read is worth more than any video you've seen in the past year.</strong>
             </p>
 
-            <div className="p-6 rounded-2xl my-8" style={{ backgroundColor: '#7700fd' }}>
-              <p className="text-2xl font-bold text-center m-0" style={{ color: '#ffffff' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl my-10"
+              style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)' }}
+            >
+              <p className="text-2xl lg:text-3xl font-bold text-center m-0" style={{ color: '#ffffff' }}>
                 Straight to the point: Social Proof = Money
               </p>
-            </div>
+            </motion.div>
 
-            <p className="text-lg mb-6">
+            <p className="text-lg">
               And here's the proof... On <strong>27.02.2024</strong>, we started using the Social Proof Tactic on one of our brands.
             </p>
 
-            <p className="text-lg mb-6">
-              Before that, we had a lame ROAS of <strong className="text-red-500">3.16</strong>...
+            <p className="text-lg">
+              Before that, we had a lame ROAS of <strong className="text-red-500 text-2xl">3.16</strong>...
             </p>
           </div>
 
           {/* Before Screenshot */}
-          <div className="rounded-2xl overflow-hidden border-4 border-red-500 mb-8">
-            <Image
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden border-4 border-red-500 my-10 shadow-xl"
+          >
+            <img
               src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328"
               alt="Before: ROAS 3.16"
-              width={900}
-              height={600}
-              unoptimized
               className="w-full h-auto"
             />
-            <div className="bg-red-500 p-3 text-center">
-              <p className="text-white font-bold m-0">BEFORE: ROAS 3.16 (February 2024)</p>
+            <div className="bg-red-500 p-4 text-center">
+              <p className="text-white font-bold text-lg m-0">BEFORE: ROAS 3.16 (February 2024)</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="prose prose-lg max-w-none text-[#333]">
-            <p className="text-xl mb-6 text-center">
-              And just a few days later... <strong>the ROAS skyrocketed to 27.13.</strong>
-            </p>
-          </div>
+          <p className="text-2xl text-center font-semibold text-[#111] my-10">
+            And just a few days later... <span style={{ color: '#7700fd' }}>the ROAS skyrocketed to 27.13.</span>
+          </p>
 
           {/* After Screenshot */}
-          <div className="rounded-2xl overflow-hidden border-4 mb-8" style={{ borderColor: '#7700fd' }}>
-            <Image
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden border-4 mb-10 shadow-xl"
+            style={{ borderColor: '#7700fd' }}
+          >
+            <img
               src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467"
               alt="After: ROAS 27.13"
-              width={900}
-              height={600}
-              unoptimized
               className="w-full h-auto"
             />
-            <div className="p-3 text-center" style={{ backgroundColor: '#7700fd' }}>
-              <p className="text-white font-bold m-0">AFTER: ROAS 27.13 (March 2024)</p>
+            <div className="p-4 text-center" style={{ backgroundColor: '#7700fd' }}>
+              <p className="text-white font-bold text-lg m-0">AFTER: ROAS 27.13 (March 2024)</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Key Quote */}
-          <div className="p-8 rounded-2xl bg-[#111] my-12 text-center">
-            <p className="text-2xl font-bold italic m-0" style={{ color: '#ffffff' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="p-10 rounded-2xl bg-[#111] my-12 text-center"
+          >
+            <p className="text-2xl lg:text-3xl font-bold italic m-0" style={{ color: '#ffffff' }}>
               "Ads give you exposure, social proof makes sure they pull out their credit card."
             </p>
-          </div>
+          </motion.div>
+        </div>
+      </div>
 
-          {/* Zuckerberg GIF Section */}
-          <div className="text-center my-12">
-            <h3 className="text-2xl font-bold text-[#111] mb-6">Pay attention...</h3>
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <div className="text-left space-y-4">
-                <div className="flex items-start gap-3">
-                  <X size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-lg text-[#333]">No reliance on Facebook algorithms</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <X size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-lg text-[#333]">No endless product testing</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <X size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-lg text-[#333]">No product page reviews</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <X size={24} className="text-red-500 flex-shrink-0 mt-1" />
-                  <p className="text-lg text-[#333]">No creatives that competitors can copy</p>
-                </div>
-              </div>
-              <div className="rounded-2xl overflow-hidden">
-                <Image
-                  src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/giphy_2.gif?v=1742901424"
-                  alt="Zuckerberg"
-                  width={400}
-                  height={300}
-                  unoptimized
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-          </div>
+      {/* Pay Attention Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-5xl mx-auto">
+          <h3 className="text-3xl font-bold text-[#111] mb-10 text-center">Pay attention...</h3>
 
-          {/* Money Printing Section */}
-          <div className="p-8 rounded-2xl my-12" style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)' }}>
-            <p className="text-xl lg:text-2xl text-center m-0" style={{ color: '#ffffff' }}>
-              <strong>Creating social proof is a skill</strong> that can print you money in every ad, every hour — without relying on Zuckerberg's mercy.
-            </p>
-          </div>
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-5"
+            >
+              {[
+                'No reliance on Facebook algorithms',
+                'No endless product testing',
+                'No product page reviews',
+                'No creatives that competitors can copy'
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-4 p-4 rounded-xl bg-white border border-[#eee]">
+                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <X size={20} className="text-red-500" />
+                  </div>
+                  <p className="text-lg text-[#333] font-medium">{item}</p>
+                </div>
+              ))}
+            </motion.div>
 
-          {/* Cat GIF */}
-          <div className="text-center my-12">
-            <div className="max-w-md mx-auto rounded-2xl overflow-hidden">
-              <Image
-                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/giphy.gif?v=1742901525"
-                alt="Money cat"
-                width={400}
-                height={300}
-                unoptimized
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl overflow-hidden shadow-xl"
+            >
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/giphy_2.gif?v=1742901424"
+                alt="Zuckerberg"
                 className="w-full h-auto"
               />
-            </div>
-            <p className="text-lg text-[#666] mt-4">Properly built social proof can turn every ad into a money-printing machine at scale</p>
+            </motion.div>
           </div>
+        </div>
+      </div>
 
-          {/* Results Section */}
-          <div className="bg-[#fafafa] p-8 rounded-2xl my-12">
-            <h3 className="text-2xl font-bold text-[#111] mb-6 text-center">
-              Over the course of 3 years, we applied the social proof tactic in over 300 ads.
-            </h3>
-            <p className="text-lg text-[#666] text-center mb-8">
-              We studied and mastered the most powerful triggers found in psychology influence books.
-            </p>
-            <div className="p-6 rounded-xl bg-[#111] text-center">
-              <p className="text-xl font-bold m-0" style={{ color: '#ffffff' }}>
-                The method reduces advertising costs by up to <span style={{ color: '#4ade80' }}>1,500%</span> (CTR, CPM, CPC, CPA)
+      {/* Money Printing Skill Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ background: 'linear-gradient(135deg, #7700fd 0%, #5500cc 100%)' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl lg:text-3xl m-0"
+            style={{ color: '#ffffff' }}
+          >
+            <strong>Creating social proof is a skill</strong> that can print you money in every ad, every hour — without relying on Zuckerberg's mercy.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Cat GIF + Results */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-10 items-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="rounded-2xl overflow-hidden shadow-xl"
+            >
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/giphy.gif?v=1742901525"
+                alt="Money cat"
+                className="w-full h-auto"
+              />
+            </motion.div>
+
+            <div>
+              <p className="text-xl text-[#333] mb-6">
+                Properly built social proof can turn every ad into a <strong>money-printing machine at scale</strong>, with no limit and without the need for endless testing.
+              </p>
+              <p className="text-lg text-[#666]">
+                Over the course of 3 years, we applied the social proof tactic in over <strong className="text-[#111]">300 ads</strong>. We studied and mastered the most powerful triggers found in psychology influence books.
               </p>
             </div>
           </div>
 
-          {/* Business Security */}
-          <div className="text-center my-12">
-            <h3 className="text-2xl font-bold text-[#111] mb-6">
-              But the most important thing we've gained... <span style={{ color: '#7700fd' }}>Business Security.</span>
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <div className="rounded-2xl overflow-hidden">
-                <Image
-                  src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/5ef2c3b42a0fad9b0b33d29f71fb2e88.gif?v=1742901690"
-                  alt="Star Wars Power"
-                  width={400}
-                  height={300}
-                  unoptimized
-                  className="w-full h-auto"
-                />
-              </div>
-              <div className="text-left">
-                <p className="text-lg text-[#333] mb-4">
-                  It doesn't matter if Facebook is messing with your ad account.
-                </p>
-                <p className="text-lg text-[#333] mb-4">
-                  It doesn't matter if competitors are copying your creatives.
-                </p>
-                <p className="text-xl font-bold" style={{ color: '#7700fd' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-8 rounded-2xl bg-[#111] text-center"
+          >
+            <p className="text-xl lg:text-2xl font-bold m-0" style={{ color: '#ffffff' }}>
+              The method reduces advertising costs by up to <span style={{ color: '#4ade80' }}>1,500%</span> (CTR, CPM, CPC, CPA)
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Business Security Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-5xl mx-auto">
+          <h3 className="text-3xl font-bold text-[#111] mb-4 text-center">
+            But the most important thing we've gained...
+          </h3>
+          <h2 className="text-4xl font-bold text-center mb-12" style={{ color: '#7700fd' }}>
+            Business Security.
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl overflow-hidden shadow-xl"
+            >
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/5ef2c3b42a0fad9b0b33d29f71fb2e88.gif?v=1742901690"
+                alt="Star Wars Power"
+                className="w-full h-auto"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <p className="text-lg text-[#333]">
+                It doesn't matter if Facebook is messing with your ad account.
+              </p>
+              <p className="text-lg text-[#333]">
+                It doesn't matter if competitors are copying your creatives.
+              </p>
+              <div className="p-6 rounded-xl" style={{ backgroundColor: 'rgba(119, 0, 253, 0.1)' }}>
+                <p className="text-xl font-bold m-0" style={{ color: '#7700fd' }}>
                   As long as you have the ability to generate social proof from scratch — the control is in your hands and no one can take it away from you.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
       {/* What's Included Section */}
-      <div className="w-full py-20 px-6 lg:px-10" style={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #111 100%)' }}>
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#111]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl lg:text-4xl font-bold text-center mb-4" style={{ color: '#ffffff' }}>
             What's Included
@@ -937,7 +1027,7 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className="p-6 rounded-xl border"
-                style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' }}
+                style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#7700fd' }}>
@@ -964,15 +1054,15 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
             Most people think they understand social proof. They're wrong.
           </p>
 
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse rounded-2xl overflow-hidden">
+          <div className="overflow-hidden rounded-2xl border border-[#eee]">
+            <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="p-5 text-left text-lg font-bold bg-[#f5f5f5] border-b border-[#eee] text-[#666]">
-                    ❌ THEM (Traditional)
+                  <th className="p-5 text-left text-lg font-bold bg-[#f5f5f5] text-[#666]">
+                    THEM (Traditional)
                   </th>
-                  <th className="p-5 text-left text-lg font-bold border-b border-[#eee] text-white" style={{ backgroundColor: '#7700fd' }}>
-                    ✅ US (Social Proof System)
+                  <th className="p-5 text-left text-lg font-bold text-white" style={{ backgroundColor: '#7700fd' }}>
+                    US (Social Proof System)
                   </th>
                 </tr>
               </thead>
@@ -984,9 +1074,9 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
                   { them: 'Focus on features and logic', us: 'Trigger subconscious buying response' },
                   { them: 'Pray the algorithm doesn\'t kill you', us: 'Own a skill no platform can take away' },
                 ].map((row, index) => (
-                  <tr key={index}>
-                    <td className="p-5 text-[#666] bg-[#fafafa] border-b border-[#eee]">{row.them}</td>
-                    <td className="p-5 text-[#111] font-medium bg-white border-b border-[#eee]">{row.us}</td>
+                  <tr key={index} className="border-t border-[#eee]">
+                    <td className="p-5 text-[#666] bg-[#fafafa]">{row.them}</td>
+                    <td className="p-5 text-[#111] font-medium bg-white">{row.us}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1007,10 +1097,17 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
 
           <div className="space-y-3">
             {course.faq.map((item, index) => (
-              <div key={index} className="rounded-xl overflow-hidden bg-white border border-[#eee]">
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden bg-white border border-[#eee]"
+              >
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full p-5 flex items-center justify-between text-left"
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#fafafa] transition-colors"
                 >
                   <span className="font-semibold text-[#111] pr-4">{item.question}</span>
                   {expandedFaq === index ? (
@@ -1032,19 +1129,19 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
 
       {/* Final CTA Section */}
-      <div className="w-full py-20 px-6 lg:px-10" style={{ background: 'linear-gradient(180deg, #000 0%, #0a0a0a 100%)' }}>
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#111]">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6" style={{ color: '#ffffff' }}>
             Ready to Master Social Proof?
           </h2>
-          <p className="text-xl mb-8" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <p className="text-xl mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>
             We promise you: In a few days you will send us a message that you have no way of thanking us, and that we have changed your life.
           </p>
 
@@ -1057,7 +1154,7 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
 
           <button
             onClick={onCheckout}
-            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105"
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-2xl"
             style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)', color: '#ffffff' }}
           >
             <ShoppingCart size={24} />
@@ -1065,7 +1162,7 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
             <ArrowRight size={20} />
           </button>
 
-          <div className="flex flex-wrap items-center justify-center gap-8 mt-8 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
             <div className="flex items-center gap-2">
               <Shield size={18} />
               <span>30-Day Guarantee</span>

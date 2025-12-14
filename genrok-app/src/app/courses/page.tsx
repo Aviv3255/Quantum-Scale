@@ -1,20 +1,40 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
   BookOpen,
   ArrowRight,
   Gift,
   Clock,
+  Plus,
+  ChevronDown,
+  ChevronUp,
+  Save,
+  Trash2,
+  FileCode,
+  Link as LinkIcon,
+  Type,
+  Eye,
+  X,
+  Check,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
+
+// Course Content Input Interface
+interface CourseContentInput {
+  id: string;
+  courseName: string;
+  mockupUrl: string;
+  htmlBlocks: string;
+  createdAt: string;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,6 +47,250 @@ const containerVariants = {
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
+};
+
+// Course Content Input Form Component
+const CourseContentInputForm = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [courseName, setCourseName] = useState('');
+  const [mockupUrl, setMockupUrl] = useState('');
+  const [htmlBlocks, setHtmlBlocks] = useState('');
+  const [savedContents, setSavedContents] = useState<CourseContentInput[]>([]);
+  const [showSavedList, setShowSavedList] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Load saved contents from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('courseContentInputs');
+    if (saved) {
+      setSavedContents(JSON.parse(saved));
+    }
+  }, []);
+
+  const handleSave = () => {
+    if (!courseName.trim()) {
+      alert('Please enter a course name');
+      return;
+    }
+
+    const newContent: CourseContentInput = {
+      id: Date.now().toString(),
+      courseName: courseName.trim(),
+      mockupUrl: mockupUrl.trim(),
+      htmlBlocks: htmlBlocks.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    const updated = [...savedContents, newContent];
+    setSavedContents(updated);
+    localStorage.setItem('courseContentInputs', JSON.stringify(updated));
+
+    // Reset form
+    setCourseName('');
+    setMockupUrl('');
+    setHtmlBlocks('');
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+  };
+
+  const handleDelete = (id: string) => {
+    const updated = savedContents.filter(c => c.id !== id);
+    setSavedContents(updated);
+    localStorage.setItem('courseContentInputs', JSON.stringify(updated));
+  };
+
+  const handleLoadContent = (content: CourseContentInput) => {
+    setCourseName(content.courseName);
+    setMockupUrl(content.mockupUrl);
+    setHtmlBlocks(content.htmlBlocks);
+    setShowSavedList(false);
+  };
+
+  return (
+    <div className="w-full mb-8">
+      {/* Toggle Button */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+        style={{
+          backgroundColor: isExpanded ? '#7700fd' : '#f5f5f5',
+          color: isExpanded ? '#ffffff' : '#666',
+        }}
+      >
+        <Plus size={16} className={`transition-transform ${isExpanded ? 'rotate-45' : ''}`} />
+        Course Content Input (Dev Tool)
+        {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </button>
+
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 p-6 rounded-2xl border border-[#eee] bg-white">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-[#111]">Add Course Content</h3>
+                  <p className="text-sm text-[#666]">Enter course details and HTML blocks for building landing pages</p>
+                </div>
+
+                {/* Saved Contents Toggle */}
+                <button
+                  onClick={() => setShowSavedList(!showSavedList)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-[#f5f5f5] text-[#666] hover:bg-[#eee] transition-colors"
+                >
+                  <Eye size={14} />
+                  Saved ({savedContents.length})
+                </button>
+              </div>
+
+              {/* Saved Contents List */}
+              <AnimatePresence>
+                {showSavedList && savedContents.length > 0 && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="mb-6 p-4 rounded-xl bg-[#fafafa] border border-[#eee]"
+                  >
+                    <h4 className="text-sm font-semibold text-[#111] mb-3">Saved Course Contents</h4>
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {savedContents.map(content => (
+                        <div
+                          key={content.id}
+                          className="flex items-center justify-between p-3 rounded-lg bg-white border border-[#eee]"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-[#111] truncate">{content.courseName}</p>
+                            <p className="text-xs text-[#888]">
+                              {new Date(content.createdAt).toLocaleDateString()} • {content.htmlBlocks.length} chars
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <button
+                              onClick={() => handleLoadContent(content)}
+                              className="p-2 rounded-lg hover:bg-[#f5f5f5] text-[#666]"
+                              title="Load"
+                            >
+                              <FileCode size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(content.id)}
+                              className="p-2 rounded-lg hover:bg-red-50 text-red-500"
+                              title="Delete"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Form Fields */}
+              <div className="space-y-4">
+                {/* Course Name */}
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                    <Type size={14} />
+                    Course Name
+                  </label>
+                  <input
+                    type="text"
+                    value={courseName}
+                    onChange={(e) => setCourseName(e.target.value)}
+                    placeholder="e.g., The Social Proof"
+                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
+                  />
+                </div>
+
+                {/* Mockup URL */}
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                    <LinkIcon size={14} />
+                    Mockup URL
+                  </label>
+                  <input
+                    type="url"
+                    value={mockupUrl}
+                    onChange={(e) => setMockupUrl(e.target.value)}
+                    placeholder="https://cdn.shopify.com/..."
+                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
+                  />
+                </div>
+
+                {/* HTML Blocks */}
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                    <FileCode size={14} />
+                    HTML Blocks (paste all your landing page HTML here)
+                  </label>
+                  <textarea
+                    value={htmlBlocks}
+                    onChange={(e) => setHtmlBlocks(e.target.value)}
+                    placeholder="Paste all HTML blocks here... This will be stored and accessible for building the course layout."
+                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm font-mono resize-y"
+                    rows={12}
+                  />
+                  <p className="text-xs text-[#888] mt-2">
+                    {htmlBlocks.length.toLocaleString()} characters
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-4">
+                  <button
+                    onClick={() => {
+                      setCourseName('');
+                      setMockupUrl('');
+                      setHtmlBlocks('');
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[#666] hover:bg-[#f5f5f5] transition-colors"
+                  >
+                    <X size={16} />
+                    Clear
+                  </button>
+
+                  <button
+                    onClick={handleSave}
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105"
+                    style={{ backgroundColor: '#7700fd' }}
+                  >
+                    {saveSuccess ? (
+                      <>
+                        <Check size={16} />
+                        Saved!
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} />
+                        Save Content
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Info Box */}
+              <div className="mt-6 p-4 rounded-xl bg-[#f5f5f5] border border-[#eee]">
+                <p className="text-sm text-[#666]">
+                  <strong className="text-[#111]">How to use:</strong> Paste your course HTML blocks here and save.
+                  The content will be stored in localStorage and accessible when building course layouts.
+                  This saves Claude usage by keeping materials readily available.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default function CoursesPage() {
@@ -63,6 +327,11 @@ export default function CoursesPage() {
         <div className="w-full px-6 lg:px-10 pt-8 pb-6">
           <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
           <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+        </div>
+
+        {/* Course Content Input Form (Dev Tool) */}
+        <div className="w-full px-6 lg:px-10">
+          <CourseContentInputForm />
         </div>
 
         {/* Course Grid - Full Width */}
