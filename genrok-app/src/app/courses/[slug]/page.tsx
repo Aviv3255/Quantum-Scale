@@ -1182,6 +1182,350 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
   );
 };
 
+// ========== PRODUCT MAPPING VISUALIZATIONS ==========
+
+const ProductMappingVisuals = () => (
+  <>
+    {/* AOV Transformation */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Product Mapping Effect</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Strategic positioning drives higher average order values</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: '$47', label: 'Random Layout', desc: 'Without strategy', color: '#ddd', textColor: '#666666' },
+            { value: '$89', label: 'Basic Mapping', desc: 'Entry-level structure', color: '#888', textColor: '#ffffff' },
+            { value: '$156', label: 'Strategic Mapping', desc: 'Billion-dollar framework', color: '#111', textColor: '#ffffff' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl text-center" style={{ backgroundColor: item.color }}>
+              <div className="text-4xl font-bold mb-2" style={{ color: item.textColor }}>{item.value}</div>
+              <div className="font-medium mb-1" style={{ color: item.textColor }}>{item.label}</div>
+              <div className="text-sm opacity-70" style={{ color: item.textColor }}>{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* The 5 Weapons */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">5 Strategic Weapons You'll Master</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Each weapon targets a different part of the purchase decision</p>
+        <div className="grid md:grid-cols-5 gap-4">
+          {[
+            { icon: Target, label: 'Multiple Options', desc: 'Choice architecture' },
+            { icon: BarChart2, label: 'Mapping System', desc: 'Billion-dollar framework' },
+            { icon: Zap, label: 'Strategic Framework', desc: 'Data-driven placement' },
+            { icon: DollarSign, label: 'Anchor Effect', desc: 'Value perception' },
+            { icon: TrendingUp, label: 'Hidden Funnels', desc: 'Invisible conversion' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-5 rounded-xl bg-[#fafafa] border border-[#eee] text-center">
+              <div className="w-14 h-14 rounded-xl bg-[#111] flex items-center justify-center mx-auto mb-3">
+                <item.icon size={26} className="text-white" />
+              </div>
+              <div className="text-sm font-semibold text-[#111] mb-1">{item.label}</div>
+              <div className="text-xs text-[#888]">{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Value Perception Flow */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>The Anchor Product Effect</h2>
+        <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>How strategic positioning changes perceived value</p>
+        <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
+          <div className="flex items-center justify-between gap-4">
+            {[
+              { label: 'Premium', price: '$299', role: 'Anchor', highlight: false },
+              { label: 'Standard', price: '$149', role: 'Target', highlight: true },
+              { label: 'Basic', price: '$49', role: 'Decoy', highlight: false },
+            ].map((item, index) => (
+              <motion.div key={index} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className={`flex-1 p-6 rounded-xl text-center ${item.highlight ? 'bg-white' : 'bg-white/10'}`}>
+                <div className={`text-xs font-medium mb-2 ${item.highlight ? 'text-green-600' : 'text-white/60'}`}>{item.role}</div>
+                <div className={`text-2xl font-bold mb-1 ${item.highlight ? 'text-[#111]' : 'text-white'}`}>{item.price}</div>
+                <div className={`text-sm ${item.highlight ? 'text-[#666]' : 'text-white/60'}`}>{item.label}</div>
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-center text-sm mt-6" style={{ color: 'rgba(255,255,255,0.5)' }}>73% of customers choose the middle option when presented strategically</p>
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// ========== A/B TEST RESULTS VISUALIZATIONS ==========
+
+const ABTestResultsVisuals = () => (
+  <>
+    {/* Test Results Overview */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">37 Tests. Millions of Visitors. Proven Results.</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Years of testing data compiled into one actionable resource</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: '37', label: 'Proven Tests', desc: 'Battle-tested results' },
+            { value: '6-44%', label: 'Improvement Range', desc: 'Conversion lift' },
+            { value: '100K+', label: 'Visitors Tested', desc: 'Per test minimum' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white border border-[#eee] text-center">
+              <div className="text-4xl font-bold text-[#111] mb-2">{item.value}</div>
+              <div className="font-medium text-[#111] mb-1">{item.label}</div>
+              <div className="text-sm text-[#888]">{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Test Categories */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">What's Inside the Data</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Three categories of high-impact tests</p>
+        <div className="space-y-4">
+          {[
+            { category: 'Button Text Changes', tests: 12, avgLift: '18%', icon: MousePointer, desc: 'Simple copy tweaks with massive impact' },
+            { category: 'Page Structure', tests: 14, avgLift: '24%', icon: BarChart2, desc: 'Layout and element positioning' },
+            { category: 'Messaging & Copy', tests: 11, avgLift: '31%', icon: Edit3, desc: 'Headlines and value propositions' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-[#fafafa] border border-[#eee]">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-[#111] flex items-center justify-center flex-shrink-0">
+                  <item.icon size={26} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-semibold text-[#111]">{item.category}</h3>
+                    <span className="text-green-600 font-bold">+{item.avgLift} avg</span>
+                  </div>
+                  <p className="text-sm text-[#666]">{item.desc}</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-[#111]">{item.tests}</div>
+                  <div className="text-xs text-[#888]">tests</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Sample Results */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>Sample Test Results</h2>
+        <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>Real data from real tests</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            { test: 'Button: "Buy Now" → "Add to Cart"', lift: '+18%' },
+            { test: 'Moving reviews above fold', lift: '+31%' },
+            { test: 'Urgency messaging in header', lift: '+44%' },
+            { test: 'Trust badges near CTA', lift: '+12%' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.1 }} viewport={{ once: true }} className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+              <span style={{ color: 'rgba(255,255,255,0.8)' }}>{item.test}</span>
+              <span className="font-bold text-green-400">{item.lift}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// ========== QUIZ TACTIC VISUALIZATIONS ==========
+
+const QuizTacticVisuals = () => (
+  <>
+    {/* Conversion Transformation */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Quiz Tactic Transformation</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">From struggling conversions to money machine</p>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Conversion Rate: Before vs After Quiz</h3>
+          <div className="flex items-end justify-center gap-12">
+            <div className="text-center">
+              <div className="relative w-20 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '100px' }} />
+                <div className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ height: '15px', backgroundColor: '#ddd' }} />
+              </div>
+              <div className="text-2xl font-bold text-[#999]">1-3%</div>
+              <div className="text-sm text-[#888] mt-1">Without Quiz</div>
+            </div>
+            <div className="pb-16"><ArrowRight size={32} className="text-[#111]" /></div>
+            <div className="text-center">
+              <div className="relative w-20 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '100px' }} />
+                <motion.div initial={{ height: 0 }} whileInView={{ height: '100px' }} transition={{ duration: 1, delay: 0.3 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ backgroundColor: '#111' }} />
+              </div>
+              <div className="text-2xl font-bold text-[#111]">8-10%</div>
+              <div className="text-sm text-[#888] mt-1">With Quiz Tactic</div>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-600 font-semibold"><ArrowUp size={16} />300-400% Improvement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Quiz Funnel Flow */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-8 text-center">The Quiz Funnel Magic</h2>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <div className="relative">
+            <div className="absolute top-6 left-8 right-8 h-0.5 bg-[#eee]" />
+            <motion.div initial={{ width: '0%' }} whileInView={{ width: '100%' }} transition={{ duration: 1.5 }} viewport={{ once: true }} className="absolute top-6 left-8 h-0.5 bg-[#111]" style={{ maxWidth: 'calc(100% - 64px)' }} />
+            <div className="flex justify-between relative">
+              {[
+                { step: 1, title: 'Engage', desc: 'Quiz starts', icon: Brain },
+                { step: 2, title: 'Qualify', desc: 'Build profile', icon: UserCheck },
+                { step: 3, title: 'Personalize', desc: 'Custom results', icon: Target },
+                { step: 4, title: 'Convert', desc: '8-10% CR', icon: ShoppingCart },
+              ].map((item, index) => (
+                <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center mb-3 relative z-10">
+                    <item.icon size={20} className="text-white" />
+                  </div>
+                  <div className="text-sm font-semibold text-[#111]">{item.title}</div>
+                  <div className="text-xs text-[#888] text-center max-w-[80px]">{item.desc}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* 6 Modules Preview */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>6 Modules to Quiz Mastery</h2>
+        <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>Everything you need to build conversion machines</p>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { num: '01', title: 'Psychology Framework', desc: 'Why quizzes bypass resistance' },
+            { num: '02', title: 'Quiz Architecture', desc: 'Proven question structures' },
+            { num: '03', title: 'Personalization Engine', desc: 'Make visitors feel understood' },
+            { num: '04', title: 'Implementation Templates', desc: 'Plug-and-play for any niche' },
+            { num: '05', title: 'Data Collection', desc: 'Turn answers into gold' },
+            { num: '06', title: 'Conversion Secrets', desc: 'The micro-optimizations that matter' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.08 }} viewport={{ once: true }} className="p-5 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-xs font-bold text-green-400 mb-2">{item.num}</div>
+              <h3 className="font-semibold mb-1" style={{ color: '#ffffff' }}>{item.title}</h3>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// ========== LASER TARGETING VISUALIZATIONS ==========
+
+const LaserTargetingVisuals = () => (
+  <>
+    {/* ROAS Transformation */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Laser Targeting Effect</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Stop spraying bullets. Start targeting like a laser.</p>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">ROAS: Broad vs Laser Targeting</h3>
+          <div className="flex items-end justify-center gap-12">
+            <div className="text-center">
+              <div className="relative w-24 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '120px' }} />
+                <div className="absolute bottom-0 left-0 right-0 rounded-t-lg flex items-end justify-center pb-2" style={{ height: '25px', backgroundColor: '#ddd' }}>
+                  <span className="text-xs font-bold text-[#666]">1.5x</span>
+                </div>
+              </div>
+              <div className="text-2xl font-bold text-[#999]">1.5x</div>
+              <div className="text-sm text-[#888] mt-1">Broad Targeting</div>
+            </div>
+            <div className="pb-16"><ArrowRight size={32} className="text-red-500" /></div>
+            <div className="text-center">
+              <div className="relative w-24 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '120px' }} />
+                <motion.div initial={{ height: 0 }} whileInView={{ height: '120px' }} transition={{ duration: 1, delay: 0.3 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg flex items-end justify-center pb-2 bg-gradient-to-t from-red-600 to-red-500">
+                  <span className="text-sm font-bold text-white">14.84x</span>
+                </motion.div>
+              </div>
+              <div className="text-2xl font-bold text-red-600">14.84x</div>
+              <div className="text-sm text-[#888] mt-1">Laser Targeting</div>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 font-semibold"><ArrowUp size={16} />+889% ROAS Improvement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Targeting Precision */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The 0.001% Targeting Method</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Reach only people who will crave your product</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: '52K', label: 'Data Points', desc: 'Meta collects per user' },
+            { value: '23M+', label: 'Impressions', desc: 'Tested over 5 months' },
+            { value: '0.001%', label: 'Precision', desc: 'Ready-to-buy audience' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 text-center">
+              <div className="text-4xl font-bold text-white mb-2">{item.value}</div>
+              <div className="font-medium text-white mb-1">{item.label}</div>
+              <div className="text-sm text-white/70">{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* 6 Modules */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>6 Modules to Targeting Mastery</h2>
+        <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>Train Meta's AI to work like a bloodhound</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            { num: '01', title: 'The 0.001% Method', desc: 'Identify your perfect buyer' },
+            { num: '02', title: 'Meta AI Injection', desc: 'Make the algorithm obsessed' },
+            { num: '03', title: 'Multi-Angle Attack', desc: 'Surround your audience' },
+            { num: '04', title: 'Avatar Mapping', desc: 'Target by psychology' },
+            { num: '05', title: 'Remarketing Mastery', desc: 'Psychological compulsion' },
+            { num: '06', title: 'The Bloodhound System', desc: '24/7 automated hunting' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="p-5 rounded-xl bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/20">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-red-500 flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-sm">{item.num}</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: '#ffffff' }}>{item.title}</h3>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+);
+
 // ========== MAIN COMPONENT ==========
 
 export default function CourseDetailPage() {
@@ -1301,8 +1645,16 @@ export default function CourseDetailPage() {
         return <AbandonedCheckoutVisuals />;
       case 'the-social-proof':
         return <SocialProofVisuals />;
+      case 'product-mapping':
+        return <ProductMappingVisuals />;
+      case 'ab-test-results':
+        return <ABTestResultsVisuals />;
+      case 'quiz-tactic':
+        return <QuizTacticVisuals />;
+      case 'laser-targeting':
+        return <LaserTargetingVisuals />;
       default:
-        return <SubconsciousTrapVisuals />;
+        return null;
     }
   };
 
