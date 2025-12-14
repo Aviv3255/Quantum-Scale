@@ -1526,6 +1526,387 @@ const LaserTargetingVisuals = () => (
   </>
 );
 
+// ========== AI PHOTOGRAPHER VISUALIZATIONS ==========
+
+const AIPhotographerVisuals = () => {
+  const [activeSlider, setActiveSlider] = useState(0);
+  const [sliderPosition, setSliderPosition] = useState(50);
+
+  const beforeAfterPairs = [
+    {
+      before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/before1.jpg?v=1760000001",
+      after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/after1.jpg?v=1760000001",
+      label: "Product Photography"
+    },
+    {
+      before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/before2.jpg?v=1760000002",
+      after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/after2.jpg?v=1760000002",
+      label: "Model Shots"
+    },
+    {
+      before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/before3.jpg?v=1760000003",
+      after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/after3.jpg?v=1760000003",
+      label: "Lifestyle Scenes"
+    }
+  ];
+
+  return (
+    <>
+      {/* Cost Comparison */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Old Way vs The AI Way</h2>
+          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Traditional photography costs are insane</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Old Way */}
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-white border-2 border-red-200">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <X size={20} className="text-red-500" />
+                </div>
+                <h3 className="font-bold text-[#111]">The Old Way</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { item: "Photographer", cost: "$2,000 - $10,000" },
+                  { item: "Models", cost: "$500 - $2,000/day" },
+                  { item: "Studio Rental", cost: "$200 - $500/hour" },
+                  { item: "Props & Styling", cost: "$500+" },
+                  { item: "Post-Production", cost: "$50 - $200/image" },
+                ].map((row, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b border-[#eee] last:border-0">
+                    <span className="text-[#666]">{row.item}</span>
+                    <span className="font-semibold text-red-500">{row.cost}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 rounded-xl bg-red-50">
+                <div className="text-center">
+                  <p className="text-sm text-red-600 mb-1">Total Per Shoot</p>
+                  <p className="text-2xl font-bold text-red-600">$5,000 - $15,000</p>
+                  <p className="text-xs text-red-500 mt-1">+ 2-4 weeks wait time</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* AI Way */}
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-[#111] border-2 border-[#333]">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                  <Check size={20} className="text-white" />
+                </div>
+                <h3 className="font-bold text-white">The AI Way</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { item: "AI Image Generation", cost: "FREE" },
+                  { item: "AI Models", cost: "FREE" },
+                  { item: "Any Background", cost: "FREE" },
+                  { item: "Unlimited Variations", cost: "FREE" },
+                  { item: "Instant Results", cost: "FREE" },
+                ].map((row, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b border-white/10 last:border-0">
+                    <span className="text-white/70">{row.item}</span>
+                    <span className="font-semibold text-green-400">{row.cost}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 rounded-xl bg-green-500/20">
+                <div className="text-center">
+                  <p className="text-sm text-green-400 mb-1">Total Cost</p>
+                  <p className="text-2xl font-bold text-green-400">$0</p>
+                  <p className="text-xs text-green-300 mt-1">Ready in seconds</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Before/After Showcase */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">AI-Generated Results</h2>
+          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">See the transformation from basic to billion-dollar brand</p>
+
+          <div className="p-8 rounded-2xl bg-[#111]">
+            {/* Category Tabs */}
+            <div className="flex justify-center gap-2 mb-8">
+              {beforeAfterPairs.map((pair, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveSlider(index)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    activeSlider === index
+                      ? 'bg-white text-[#111]'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                  }`}
+                >
+                  {pair.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Slider */}
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-[#222]">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <Sparkles size={48} className="text-white/20 mx-auto mb-4" />
+                  <p className="text-white/40 text-sm">Before → After Comparison</p>
+                  <p className="text-white/60 text-lg font-semibold mt-2">AI Photography Magic</p>
+                </div>
+              </div>
+
+              {/* Slider Control */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm">
+                <span className="text-white/70 text-xs">Before</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={sliderPosition}
+                  onChange={(e) => setSliderPosition(Number(e.target.value))}
+                  className="w-32 h-1 bg-white/30 rounded-full appearance-none cursor-pointer"
+                />
+                <span className="text-white/70 text-xs">After</span>
+              </div>
+            </div>
+
+            <p className="text-center text-white/50 text-sm mt-4">
+              Drag slider to compare before and after
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* What You'll Create */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">What You'll Create</h2>
+          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Professional imagery for every use case</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { icon: ShoppingBag, title: "Product Shots", desc: "Clean, professional product photos on any background", examples: ["White background", "Lifestyle scenes", "360° views"] },
+              { icon: Users, title: "Model Photography", desc: "AI-generated models wearing your products", examples: ["Diverse models", "Any pose", "Any setting"] },
+              { icon: Sparkles, title: "Lifestyle Scenes", desc: "Products in context that tell a story", examples: ["Home settings", "Outdoor scenes", "Urban vibes"] },
+            ].map((category, index) => (
+              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-white border border-[#eee]">
+                <div className="w-12 h-12 rounded-xl bg-[#111] flex items-center justify-center mb-4">
+                  <category.icon size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-[#111] mb-2">{category.title}</h3>
+                <p className="text-sm text-[#666] mb-4">{category.desc}</p>
+                <ul className="space-y-2">
+                  {category.examples.map((example, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-[#888]">
+                      <Check size={14} className="text-green-500" />
+                      {example}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Time Savings */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>Time Is Money</h2>
+          <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>Traditional vs AI photography timeline</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>Traditional Photography</h3>
+              <div className="space-y-3">
+                {[
+                  { step: "Find & book photographer", time: "1-2 weeks" },
+                  { step: "Schedule models & studio", time: "1 week" },
+                  { step: "Photo shoot day", time: "1 day" },
+                  { step: "Post-production editing", time: "1-2 weeks" },
+                  { step: "Revisions & final delivery", time: "1 week" },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b border-white/10 last:border-0">
+                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{item.step}</span>
+                    <span className="font-medium text-red-400">{item.time}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 rounded-xl bg-red-500/20 text-center">
+                <p className="text-red-400 font-bold">Total: 4-6 weeks</p>
+              </div>
+            </div>
+            <div className="p-6 rounded-2xl bg-white/5 border border-green-500/30">
+              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>AI Photography</h3>
+              <div className="space-y-3">
+                {[
+                  { step: "Write your prompt", time: "30 seconds" },
+                  { step: "Generate image", time: "10 seconds" },
+                  { step: "Refine if needed", time: "1 minute" },
+                  { step: "Download & use", time: "5 seconds" },
+                  { step: "Create variations", time: "Instant" },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b border-white/10 last:border-0">
+                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{item.step}</span>
+                    <span className="font-medium text-green-400">{item.time}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 rounded-xl bg-green-500/20 text-center">
+                <p className="text-green-400 font-bold">Total: Under 2 minutes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+// ========== AD COPY TEMPLATES VISUALIZATIONS ==========
+
+const AdCopyTemplatesVisuals = () => (
+  <>
+    {/* The Copywriter Problem */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-2xl font-bold text-[#111] mb-4">The World's Best Copywriters Charge...</h2>
+        <p className="text-[#666] mb-10">What would it cost to hire them?</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { name: "Stefan Georgi", rate: "$50,000", desc: "per sales letter" },
+            { name: "Gary Halbert", rate: "$15,000", desc: "per page" },
+            { name: "David Ogilvy", rate: "Billions", desc: "in campaign value" },
+          ].map((copywriter, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-[#111] text-center">
+              <p className="text-white/60 text-sm mb-2">{copywriter.name}</p>
+              <p className="text-3xl font-bold text-white mb-1">{copywriter.rate}</p>
+              <p className="text-white/40 text-xs">{copywriter.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mt-10 p-6 rounded-2xl bg-[#fafafa] border-2 border-dashed border-[#ddd]">
+          <p className="text-[#666] mb-2">Now you can steal their exact frameworks for just</p>
+          <p className="text-4xl font-bold text-[#111]">$19</p>
+        </motion.div>
+      </div>
+    </div>
+
+    {/* What's Inside */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">What's Inside The Templates</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">50+ fill-in-the-blank templates</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[
+            { icon: Target, title: "15+ Headline Formulas", desc: "Stop-scroll headlines that demand attention. Each formula is proven to increase CTR.", items: ["Curiosity triggers", "Benefit-driven hooks", "Emotional headlines"] },
+            { icon: Edit3, title: "Opening Hooks", desc: "First 3 seconds matter most. These hooks grab attention instantly.", items: ["Story openers", "Question hooks", "Shocking stats"] },
+            { icon: Heart, title: "Story Frameworks", desc: "Narrative structures that build connection and desire.", items: ["Hero's journey", "Problem-agitate-solve", "Before/after"] },
+            { icon: Zap, title: "CTA Templates", desc: "Calls-to-action that compel immediate clicks.", items: ["Urgency creators", "Value stackers", "Risk reversers"] },
+          ].map((category, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-white border border-[#eee]">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#111] flex items-center justify-center flex-shrink-0">
+                  <category.icon size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#111] mb-1">{category.title}</h3>
+                  <p className="text-sm text-[#666] mb-3">{category.desc}</p>
+                  <ul className="space-y-1">
+                    {category.items.map((item, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#888]">
+                        <Check size={12} className="text-green-500" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Battle-Tested Stats */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>Battle-Tested Results</h2>
+        <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>These templates have been proven on real ad spend</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: "$10M+", label: "Ad Spend Tested", desc: "Real money, real results" },
+            { value: "50+", label: "Templates", desc: "Fill-in-the-blank ready" },
+            { value: "∞", label: "Niches", desc: "Works for any product" },
+          ].map((stat, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white/5 border border-white/10 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: '#4ade80' }}>{stat.value}</div>
+              <div className="font-medium mb-1" style={{ color: '#ffffff' }}>{stat.label}</div>
+              <div className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* How It Works */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">How To Use The Templates</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">3 simple steps to winning ad copy</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { num: "1", title: "Choose Template", desc: "Pick the template that fits your goal — headline, hook, story, or CTA" },
+            { num: "2", title: "Fill In Blanks", desc: "Insert your product details, benefits, and brand voice into the framework" },
+            { num: "3", title: "Launch & Win", desc: "Copy to your ad manager and watch your conversions climb" },
+          ].map((step, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="text-center">
+              <div className="w-16 h-16 rounded-full bg-[#111] flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-white">{step.num}</span>
+              </div>
+              <h3 className="font-bold text-[#111] mb-2">{step.title}</h3>
+              <p className="text-sm text-[#666]">{step.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Example Template Preview */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Template Preview</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Here's what a template looks like</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white border border-[#eee] shadow-lg">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="px-3 py-1 rounded-full bg-[#111] text-white text-xs font-medium">HEADLINE TEMPLATE #7</span>
+            <span className="px-3 py-1 rounded-full bg-green-100 text-green-600 text-xs font-medium">High Converting</span>
+          </div>
+          <div className="p-6 rounded-xl bg-[#f5f5f5] font-mono text-sm">
+            <p className="text-[#666]">
+              <span className="text-[#111]">"I was [</span>
+              <span className="text-blue-500">PROBLEM/PAIN POINT</span>
+              <span className="text-[#111]">] until I discovered [</span>
+              <span className="text-blue-500">YOUR PRODUCT</span>
+              <span className="text-[#111]">]. Now I [</span>
+              <span className="text-blue-500">AMAZING RESULT</span>
+              <span className="text-[#111]">] in just [</span>
+              <span className="text-blue-500">TIMEFRAME</span>
+              <span className="text-[#111]">]."</span>
+            </p>
+          </div>
+          <div className="mt-6 p-4 rounded-xl bg-green-50 border border-green-200">
+            <p className="text-sm text-green-700 font-medium mb-2">Example:</p>
+            <p className="text-sm text-green-600 italic">
+              "I was spending 6 hours on ad creative until I discovered these templates. Now I create winning ads in just 10 minutes."
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  </>
+);
+
 // ========== META AD TEMPLATES VISUALIZATIONS ==========
 
 const MetaAdTemplatesVisuals = () => {
@@ -1792,6 +2173,10 @@ export default function CourseDetailPage() {
         return <LaserTargetingVisuals />;
       case 'meta-ad-templates':
         return <MetaAdTemplatesVisuals />;
+      case 'ai-photographer':
+        return <AIPhotographerVisuals />;
+      case 'ad-copy-templates':
+        return <AdCopyTemplatesVisuals />;
       default:
         return null;
     }

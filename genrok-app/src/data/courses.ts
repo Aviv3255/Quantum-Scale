@@ -991,6 +991,110 @@ Train Meta's AI To Work Like a Bloodhound — hunting down only the people who m
       }
     ]
   },
+  "ai-photographer": {
+    slug: "ai-photographer",
+    title: "The $10,000 AI Photographer",
+    subtitle: "Create Billion-Dollar Brand Images in Seconds",
+    description: "Stop paying $10,000 for product photography. Generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots — completely free with AI.",
+    price: 19,
+    originalPrice: 49,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_54.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7c40abec-7cfc-4805-9c1d-5290a3fd3afa.png",
+    badge: "AI Tool",
+    stats: [
+      { value: "$10K", label: "saved per shoot" },
+      { value: "10 sec", label: "per image" },
+      { value: "∞", label: "possibilities" }
+    ],
+    highlights: [
+      "Generate studio-quality product photos without a camera",
+      "Create lifestyle shots with AI models that convert better than real photos",
+      "Replace $10,000 photography budgets with free AI tools",
+      "Get consistent brand imagery across all products",
+      "Create unlimited variations for A/B testing",
+      "No photography skills or equipment needed"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7c40abec-7cfc-4805-9c1d-5290a3fd3afa.png", caption: "AI-generated product photography" }
+    ],
+    longDescription: `The Old Way of Product Photography Is Dead.
+
+Hiring a photographer: $2,000-$10,000 per shoot. Models: $500-$2,000 per day. Studio rental: $200-$500 per hour. Props and styling: $500+. Post-production editing: $50-$200 per image.
+
+Total cost for one product line? $5,000-$15,000. Time to get final images? 2-4 weeks.
+
+The New Way Takes 10 Seconds.
+
+We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots — and it's completely FREE.
+
+The images you'll create will make people think you spent $10,000 on a professional shoot. Billion-dollar brands are already using this exact method.
+
+You'll learn exactly how to:
+• Generate photorealistic product images that convert
+• Create model shots without hiring models
+• Build lifestyle scenes that tell your brand story
+• Produce consistent imagery across your entire catalog
+• A/B test unlimited creative variations
+
+The same AI photography techniques in this course are being used by brands generating 8-figures. Now they're yours.`,
+    modules: [
+      {
+        title: "AI Photography Fundamentals",
+        description: "Master the core concepts of AI image generation. Learn which tools to use, how to write prompts that produce professional results, and the secrets to consistent brand imagery."
+      },
+      {
+        title: "Product Photography Mastery",
+        description: "Generate stunning product shots on any background. Learn lighting techniques, composition rules, and post-processing workflows that make AI images indistinguishable from professional photography."
+      },
+      {
+        title: "Model & Lifestyle Shots",
+        description: "Create photorealistic model shots and lifestyle scenes without hiring anyone. Master the art of generating humans, poses, and environments that sell your products."
+      },
+      {
+        title: "Brand Consistency System",
+        description: "Build a system for producing consistent imagery across your entire product catalog. Create style guides, prompt templates, and workflows that scale."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need any design or photography experience?",
+        answer: "Not at all. This course is designed for complete beginners. If you can type, you can create professional product images. We provide exact prompts and step-by-step instructions that anyone can follow."
+      },
+      {
+        question: "What AI tools do I need?",
+        answer: "We show you how to use free AI tools that produce professional results. No expensive software subscriptions required. Everything you need is either free or has a free tier that's more than enough for most stores."
+      },
+      {
+        question: "Will AI images look fake or obvious?",
+        answer: "When done correctly, AI images are indistinguishable from professional photography. In fact, many AI-generated images now outperform real photos in conversion tests. We teach you the techniques that make images look 100% real."
+      },
+      {
+        question: "Can I use these images commercially?",
+        answer: "Yes. The images you generate are yours to use however you want — on your website, in ads, on social media, anywhere. We also cover the legal aspects and best practices for commercial AI image use."
+      },
+      {
+        question: "How long does it take to create an image?",
+        answer: "Once you know the techniques, you can generate a professional product image in under 10 seconds. Creating a full product line with multiple angles and lifestyle shots takes minutes, not days."
+      },
+      {
+        question: "Will this work for my specific product type?",
+        answer: "Yes. Whether you're selling fashion, electronics, home goods, beauty products, or anything else — the AI techniques work universally. We include examples and prompts for all major product categories."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the eCommerce equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive all future updates as AI technology evolves."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in this course, just reach out and we'll refund you — no questions asked."
+      }
+    ]
+  },
   "meta-ad-templates": {
     slug: "meta-ad-templates",
     title: "1,000+ Meta Ad Templates",
@@ -1075,6 +1179,108 @@ In one simple file, over 1,000 Canva templates for Meta ads that are proven to w
       {
         question: "How quickly can I start using the templates?",
         answer: "Instantly. After purchase, you'll get immediate access to the entire library. You can have your first ad creative ready in under 60 seconds."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these templates, just reach out and we'll refund you — no questions asked."
+      }
+    ]
+  },
+  "ad-copy-templates": {
+    slug: "ad-copy-templates",
+    title: "50+ Ad Copy Templates",
+    subtitle: "From The World's Greatest Copywriters",
+    description: "Steal the exact ad copy frameworks from copywriters who charge $50,000 per sales letter. Templates tested on over $10 million in ad spend.",
+    price: 19,
+    originalPrice: 47,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_47.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg",
+    badge: "Copy Templates",
+    stats: [
+      { value: "50+", label: "templates" },
+      { value: "$10M+", label: "ad spend tested" },
+      { value: "$50K", label: "copywriter rate" }
+    ],
+    highlights: [
+      "Copy frameworks from Stefan Georgi ($50K per sales letter)",
+      "Templates inspired by Gary Halbert ($15K per page)",
+      "Battle-tested on over $10 million in Meta ad spend",
+      "Plug-and-play headlines, hooks, and CTAs",
+      "Works for any niche or product type",
+      "No copywriting experience needed"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg", caption: "Ad copy that converts" }
+    ],
+    longDescription: `The World's Greatest Copywriters Charge $15,000-$50,000 Per Letter...
+
+Stefan Georgi charges $50,000 for a single sales letter. Gary Halbert charged $15,000 per page. David Ogilvy's campaigns generated billions. Eugene Schwartz wrote ads that ran profitably for decades.
+
+What do they know that you don't?
+
+They've spent lifetimes discovering the exact psychological triggers, headline formulas, and story structures that make people pull out their credit cards.
+
+Now You Can Steal Their Secrets.
+
+We've compiled 50+ ad copy templates directly inspired by the frameworks these legendary copywriters used. Every headline formula. Every hook structure. Every call-to-action that converts.
+
+These aren't generic templates you find online. These are battle-tested frameworks proven on over $10 million in real ad spend.
+
+You'll get:
+• Headline formulas that stop the scroll instantly
+• Opening hooks that create irresistible curiosity
+• Story structures that build emotional connection
+• Objection handlers that eliminate doubt
+• CTAs that compel immediate action
+
+Simply fill in the blanks with your product details and launch. No copywriting experience required.`,
+    modules: [
+      {
+        title: "Headline Formulas",
+        description: "15+ proven headline templates that stop the scroll. Each formula is designed to trigger curiosity and demand attention in a crowded newsfeed."
+      },
+      {
+        title: "Hook Structures",
+        description: "Opening lines that grab attention in the first 3 seconds. These hooks are engineered to make people stop scrolling and start reading."
+      },
+      {
+        title: "Story Frameworks",
+        description: "Narrative structures that build emotional connection and desire. Turn features into feelings that drive purchases."
+      },
+      {
+        title: "CTA Templates",
+        description: "Call-to-action formulas that compel immediate action. Remove friction and make clicking feel like the obvious next step."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need copywriting experience to use these?",
+        answer: "Not at all. Every template is fill-in-the-blank simple. Just insert your product details, benefits, and brand voice. The psychological structure is already built in — you just add your specifics."
+      },
+      {
+        question: "Will these work for my specific product/niche?",
+        answer: "Yes. These are universal frameworks based on human psychology — not niche-specific tricks. Whether you sell fashion, supplements, electronics, or services, these templates work because they tap into fundamental buying triggers."
+      },
+      {
+        question: "How are these different from free templates online?",
+        answer: "Free templates online are generic and untested. These templates are directly inspired by copywriters who charge $15,000-$50,000 per letter and have been tested on over $10 million in real ad spend. The difference shows in your results."
+      },
+      {
+        question: "Can I use these for Facebook, Instagram, and TikTok ads?",
+        answer: "Absolutely. These copy frameworks work across all platforms. We include variations optimized for different placements — feed ads, stories, reels, and more."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the advertising equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive any future template additions at no extra cost."
+      },
+      {
+        question: "How quickly can I start using these templates?",
+        answer: "Immediately. After purchase, you get instant access to all 50+ templates. You can have your first ad copy ready in minutes."
       },
       {
         question: "What if I'm not satisfied?",
