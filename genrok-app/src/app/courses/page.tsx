@@ -11,7 +11,6 @@ import {
   ArrowRight,
   Gift,
   Clock,
-  Users,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -52,20 +51,20 @@ export default function CoursesPage() {
   return (
     <DashboardLayout>
       <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          {/* Page Header */}
-          <header className="mb-10">
-            <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
-            <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
-          </header>
+        {/* Full Width Header */}
+        <div className="w-full px-6 lg:px-10 pt-8 pb-6">
+          <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
+          <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+        </div>
 
-          {/* Course Grid */}
+        {/* Course Grid - Full Width */}
+        <div className="w-full px-6 lg:px-10 pb-10">
           {courses.length > 0 ? (
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
             >
               {courses.map((course) => (
                 <motion.div key={course.slug} variants={itemVariants}>
@@ -77,22 +76,22 @@ export default function CoursesPage() {
                       border: '1px solid #e5e5e5',
                     }}
                   >
-                    {/* Image Section - Clean white/light gray background */}
+                    {/* Image Section */}
                     <div
                       className="relative w-full flex items-center justify-center p-10"
                       style={{
                         backgroundColor: '#f8f8f8',
-                        minHeight: '240px',
+                        minHeight: '220px',
                       }}
                     >
                       {course.image ? (
                         <Image
                           src={course.image}
                           alt={course.title}
-                          width={220}
-                          height={180}
+                          width={200}
+                          height={160}
                           unoptimized
-                          className="max-h-44 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                          className="max-h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                           style={{
                             filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))',
                           }}
@@ -132,7 +131,7 @@ export default function CoursesPage() {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Clock size={14} />
-                          <span>{course.stats[2]?.value} {course.stats[2]?.label}</span>
+                          <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
                         </div>
                       </div>
 

@@ -19,6 +19,11 @@ export interface CourseStat {
   label: string;
 }
 
+export interface CourseVisual {
+  url: string;
+  caption?: string;
+}
+
 export interface Course {
   slug: string;
   title: string;
@@ -27,10 +32,12 @@ export interface Course {
   price: number;
   originalPrice: number;
   image: string;
+  heroImage?: string;
   badge?: string;
   stats: CourseStat[];
   longDescription: string;
   highlights?: string[];
+  visuals?: CourseVisual[];
   modules: CourseModule[];
   bonuses: CourseBonus[];
   faq: CourseFAQ[];
@@ -45,11 +52,12 @@ export const coursesData: Record<string, Course> = {
     price: 29,
     originalPrice: 197,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
+    // heroImage will be set from the HTML content you provide
     badge: "Most Popular",
     stats: [
       { value: "8", label: "modules" },
-      { value: "47", label: "lessons" },
-      { value: "6h+", label: "content" }
+      { value: "6+", label: "hours" },
+      { value: "50+", label: "templates" }
     ],
     highlights: [
       "Master the psychology behind every buying decision",
@@ -59,6 +67,10 @@ export const coursesData: Record<string, Course> = {
       "Turn one-time buyers into repeat customers",
       "Optimize every touchpoint for maximum conversion"
     ],
+    // visuals array will hold GIFs and images from your HTML content
+    // visuals: [
+    //   { url: "...", caption: "..." }
+    // ],
     longDescription: `Your customers don't buy logically. They buy emotionally — then justify it later.
 
 The Subconscious Trap is a psychology-driven framework designed for eCommerce store owners who want to increase conversions, boost average order value (AOV), and drive repeat purchases — without spending more on ads.
