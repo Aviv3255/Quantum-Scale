@@ -72,7 +72,7 @@ const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; su
 // Conversion Rate Comparison Visual
 const ConversionComparison = () => (
   <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-    <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Average Conversion Rate Improvement</h3>
+    <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Conversion Rate: Before vs After</h3>
     <div className="flex items-end justify-center gap-12">
       {/* Before */}
       <div className="text-center">
@@ -197,7 +197,7 @@ const ProgressPathVisual = () => (
 const ResultsStatsVisual = () => (
   <div className="grid md:grid-cols-3 gap-6">
     {[
-      { value: 158, suffix: '%', label: 'Avg. Conversion Lift', desc: 'Across all students' },
+      { value: 158, suffix: '%', label: 'Conversion Lift', desc: 'Illustrative example' },
       { value: 2.4, suffix: 'x', label: 'Revenue Increase', desc: 'Within 90 days' },
       { value: 50, prefix: '$', suffix: 'M+', label: 'Revenue Generated', desc: 'By our students' },
     ].map((stat, index) => (
@@ -558,10 +558,47 @@ export default function CourseDetailPage() {
         <div className="w-full py-16 px-6 lg:px-10 bg-white">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Key Metrics Improvement</h2>
-            <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Average improvements our students achieve</p>
+            <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Illustrative improvements you can achieve</p>
             <KeyMetricsVisual />
           </div>
         </div>
+
+        {/* Real Results GIF Section */}
+        {course.visuals && course.visuals.length > 0 && (
+          <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">See It In Action</h2>
+              <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Real results from stores using these strategies</p>
+              <div className="grid md:grid-cols-2 gap-6">
+                {course.visuals.slice(0, 2).map((visual, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-2xl overflow-hidden bg-white border border-[#eee]"
+                  >
+                    <div className="relative aspect-video">
+                      <Image
+                        src={visual.url}
+                        alt={visual.caption || 'Course visual'}
+                        fill
+                        unoptimized
+                        className="object-cover"
+                      />
+                    </div>
+                    {visual.caption && (
+                      <div className="p-4 text-center">
+                        <p className="text-sm text-[#666]">{visual.caption}</p>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* What You'll Learn */}
         <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">

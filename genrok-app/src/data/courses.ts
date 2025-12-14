@@ -180,6 +180,122 @@ The same frameworks in this course have been used to optimize 7-figure stores an
         answer: "No special tools required. Everything can be implemented with what you already have. Some bonuses include spreadsheet templates that work with Google Sheets or Excel."
       }
     ]
+  },
+  "ltv-system": {
+    slug: "ltv-system",
+    title: "The LTV System",
+    subtitle: "The Automatic System That Earns $1,000 Per Customer",
+    description: "Transform one-time buyers into lifetime customers with automated systems that maximize customer lifetime value.",
+    price: 47,
+    originalPrice: 500,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg",
+    badge: "New",
+    stats: [
+      { value: "5", label: "weapons" },
+      { value: "4+", label: "hours" },
+      { value: "30+", label: "automations" }
+    ],
+    highlights: [
+      "Build automated email flows that generate revenue 24/7",
+      "Master the psychology of repeat purchases",
+      "Create loyalty systems that customers love",
+      "Increase customer lifetime value by 3-5x",
+      "Set up 'set and forget' automation sequences",
+      "Turn every customer into a brand advocate"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5__gm_optimized.gif", caption: "High-AOV orders flowing in automatically" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/HOW_TO.gif", caption: "The system working in real-time" }
+    ],
+    longDescription: `Most eCommerce brands are leaving 80% of their revenue on the table.
+
+They spend thousands on ads to acquire customers, make one sale, and then... nothing. The customer disappears forever.
+
+The LTV System changes everything.
+
+This is the exact framework used by 8-figure brands to transform one-time buyers into lifetime customers who spend 5-10x their initial purchase — automatically.
+
+You'll learn how to build "set and forget" systems that nurture, engage, and re-activate customers without you lifting a finger. Email flows that generate revenue at 3AM. SMS sequences that feel personal but run on autopilot. Loyalty programs that actually work.
+
+The difference between a struggling store and a thriving brand isn't more traffic — it's maximizing the value of every customer you already have.
+
+Inside, you'll get the exact blueprints, templates, and automation recipes that took us years to perfect. Install them once, profit forever.`,
+    modules: [
+      {
+        title: "Weapon 1: The LTV Engine Blueprint",
+        description: "The complete framework for understanding and maximizing customer lifetime value. Map your customer journey and identify every revenue opportunity."
+      },
+      {
+        title: "Weapon 2: Laws of Human Persuasion",
+        description: "Master the psychological principles that drive repeat purchases. Learn why customers come back (or don't) and how to engineer loyalty."
+      },
+      {
+        title: "Weapon 3: Automation Loop Protocols",
+        description: "Build automated email and SMS sequences that nurture customers from first purchase to brand advocate. Set up once, profit forever."
+      },
+      {
+        title: "Weapon 4: Rebuy Technology System",
+        description: "Advanced retargeting and repurchase systems that bring customers back at the perfect moment. Predict and trigger repeat purchases on autopilot."
+      },
+      {
+        title: "Weapon 5: Empire Growth Formula",
+        description: "Scale your LTV systems to 7 and 8 figures. Advanced strategies for building a customer-centric brand that compounds growth over time."
+      }
+    ],
+    bonuses: [
+      {
+        title: "Email Flow Templates Pack",
+        description: "15 ready-to-deploy email sequences: welcome series, post-purchase, win-back, VIP, birthday, and more. Just customize and launch.",
+        value: 297
+      },
+      {
+        title: "SMS Automation Playbook",
+        description: "Complete SMS marketing system with templates, timing strategies, and compliance guidelines. The highest-ROI channel most brands ignore.",
+        value: 197
+      },
+      {
+        title: "Customer Segmentation Guide",
+        description: "Learn to segment your customers like the top 1% of brands. Target the right message to the right person at the right time.",
+        value: 97
+      },
+      {
+        title: "Loyalty Program Blueprint",
+        description: "Design and launch a loyalty program that actually drives repeat purchases. Includes point structures, reward tiers, and gamification tactics.",
+        value: 147
+      },
+      {
+        title: "LTV Calculator Spreadsheet",
+        description: "Track and forecast customer lifetime value with this advanced spreadsheet. Know exactly how much each customer segment is worth.",
+        value: 47
+      }
+    ],
+    faq: [
+      {
+        question: "What makes this different from other marketing courses?",
+        answer: "This isn't about getting more traffic — it's about maximizing the customers you already have. While everyone else fights for attention, you'll be building automated systems that generate revenue from your existing customer base 24/7."
+      },
+      {
+        question: "I'm just starting out. Is this for me?",
+        answer: "If you have at least some customers, yes. The sooner you implement these systems, the more revenue you'll capture. Every day without proper LTV systems is money left on the table."
+      },
+      {
+        question: "How long until I see results?",
+        answer: "Most students see their first automated revenue within 7-14 days of implementing the core email flows. Full system implementation takes 30-60 days, after which you'll have a complete customer retention machine."
+      },
+      {
+        question: "What platforms does this work with?",
+        answer: "The strategies work with any eCommerce platform (Shopify, WooCommerce, etc.) and integrate with popular email/SMS tools like Klaviyo, Mailchimp, Postscript, and more."
+      },
+      {
+        question: "Is there ongoing support?",
+        answer: "You get lifetime access to the course and all future updates. Plus, bonus community access where you can ask questions and get feedback from other store owners."
+      },
+      {
+        question: "What if it doesn't work for me?",
+        answer: "30-day money-back guarantee, no questions asked. If you implement the systems and don't see value, we'll refund your purchase completely."
+      }
+    ]
   }
 };
 
