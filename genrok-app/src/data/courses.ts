@@ -720,7 +720,7 @@ The same framework inside has been used to optimize stores generating 7-8 figure
       { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1751796400", caption: "Years of testing data" },
       { url: "https://media.tenor.com/IQ6Z-aPhr1wAAAAM/date-everywhere-data.gif", caption: "Data worth millions" }
     ],
-    longDescription: \`If you're tired of guessing, or wasting money... Here's the shortcut that will save you months of testing and thousands of dollars in wasted ad spend.
+    longDescription: `If you're tired of guessing, or wasting money... Here's the shortcut that will save you months of testing and thousands of dollars in wasted ad spend.
 
 Data = Money. And here's the proof...
 
@@ -736,7 +736,7 @@ Instead of spending years testing every possible change... You can skip the gues
 
 From minor tweaks like button text to deeper changes in page structure and messaging. These results reveal what actually moves the needle - not what "sounds good."
 
-Backed by pure, indisputable data about how humans actually make decisions.\`,
+Backed by pure, indisputable data about how humans actually make decisions.`,
     modules: [
       {
         title: "Button Text Changes",
@@ -814,7 +814,7 @@ Backed by pure, indisputable data about how humans actually make decisions.\`,
       { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/9708718a5263943a338e9072eec122d5.gif?v=1742999762", caption: "Stop the frustration of low conversions" },
       { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/3be5a1c2fd9a8bd284bfabb6506ed8ce.gif?v=1742999766", caption: "Watch your conversion rate go to the moon" }
     ],
-    longDescription: \`In a world where Zuck rules us... Millions of eCom store owners believe their creative is what sets them apart, blindly testing creatives hoping to find a "winner" and barely hitting 1% conversion rate. And they think it's called 'strategy'...
+    longDescription: `In a world where Zuck rules us... Millions of eCom store owners believe their creative is what sets them apart, blindly testing creatives hoping to find a "winner" and barely hitting 1% conversion rate. And they think it's called 'strategy'...
 
 We build a conversion machine for every brand that keeps generating for us over 2 years 8–10% conversion Rate. That's a "Cha-ching!" for every 10-12 visitors.
 
@@ -826,7 +826,7 @@ From that moment – everything inside me changed completely. Like a good source
 
 The Quiz tactic is like a money machine. Put in $1 – get back $10.
 
-A properly built quiz tactic changes the game forever. We're not talking about tweaks – but about jumps of 300–400% in conversion rate that actually happen when done right.\`,
+A properly built quiz tactic changes the game forever. We're not talking about tweaks – but about jumps of 300–400% in conversion rate that actually happen when done right.`,
     modules: [
       {
         title: "The Psychology Framework",
@@ -916,7 +916,7 @@ A properly built quiz tactic changes the game forever. We're not talking about t
       { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/rambo-shooting.gif?v=1743008740", caption: "Precision targeting that hits every time" },
       { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742", caption: "Real results: 14.84 ROAS over 5 months" }
     ],
-    longDescription: \`While Everyone's Playing Russian Roulette With Their Ad Budget...
+    longDescription: `While Everyone's Playing Russian Roulette With Their Ad Budget...
 
 Cold audiences... Warm audiences... Interest-based targeting... Lookalikes... All of them acting like it's the Wild West, relying on Zuckerberg and praying the algorithm will bless them...
 
@@ -932,7 +932,7 @@ While everyone's spraying bullets hoping to hit something... We target like a la
 
 Train Meta's AI To Work Like a Bloodhound — hunting down only the people who match your product 100%.
 
-14.84 ROAS Over 5 Months With 23+ Million Impressions. Real results. Not cold traffic gambling. Not algorithm prayers. Surgical precision targeting that prints money.\`,
+14.84 ROAS Over 5 Months With 23+ Million Impressions. Real results. Not cold traffic gambling. Not algorithm prayers. Surgical precision targeting that prints money.`,
     modules: [
       {
         title: "The 0.001% Targeting Method",
