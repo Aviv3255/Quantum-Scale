@@ -296,6 +296,130 @@ Inside, you'll get the exact blueprints, templates, and automation recipes that 
         answer: "30-day money-back guarantee, no questions asked. If you implement the systems and don't see value, we'll refund your purchase completely."
       }
     ]
+  },
+  "email-marketing": {
+    slug: "email-marketing",
+    title: "Email Marketing Revenue Engine",
+    subtitle: "Turn Email Marketing Into a Revenue Engine",
+    description: "Steal the full billion-dollar email system that generates 20X more revenue than any social platform — without spending another dollar on ads.",
+    price: 29,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_40.jpg?v=1757233368",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_3.jpg?v=1760516155",
+    badge: "Bestseller",
+    stats: [
+      { value: "3", label: "systems" },
+      { value: "5+", label: "hours" },
+      { value: "25+", label: "templates" }
+    ],
+    highlights: [
+      "Build an email list that generates 20X more than social media",
+      "Set up predictive BI systems that know when customers are ready to buy",
+      "Create AI-powered personalization that runs on autopilot",
+      "Write emails that strike exact psychological triggers",
+      "Own the only digital asset Zuckerberg can't take from you",
+      "Generate revenue 24/7 without spending on ads"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Satoshi_5.jpg?v=1762111646", caption: "Email generates 20X more than social platforms" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/crazy.png?v=1762107479", caption: "Stop fighting the algorithm" }
+    ],
+    longDescription: `In a world where millions of brands fight for attention on social networks to "stay relevant" and get crumbs of views because "the algorithm went crazy again"…
+
+Top brands generate $1M-$10M every year (for 5+ consecutive years) through their email list.
+
+According to research published in January 2025: An email list generates 20X more money than any social platform.
+
+It happened in March 2020… COVID hit. The ground beneath our feet shook.
+
+We had an eCommerce store doing $200,000-$300,000 monthly. Then Zuckerberg panicked. Like a villain, he shut down ad accounts, closed Facebook and Instagram pages and struck terror into helpless marketers.
+
+Without warning, on a bright day with no advance notice, Zuckerberg stepped on the oxygen tube of our business and shut down all our ad accounts.
+
+So we wrote an email to our list. A few minutes after the email was sent, the first sale came in. Within an hour, 1 sale became 30 sales. When the campaign ended… we had 764 sales total.
+
+That one email campaign generated $92,462! Without spending a single dollar on ads.
+
+An email list is like an ATM, emails are like a black card with unlimited credit. Not Facebook that can shut you down, not Instagram that can get hacked, not WhatsApp that can ban you, not YouTube that can close your channel…
+
+An email list is the only digital asset you truly own.
+
+Inside this course, you'll get the exact systems that billion-dollar brands use — predictive intelligence, AI personalization, and precision-engineered copy that turns readers into buyers.`,
+    modules: [
+      {
+        title: "System 1: Business Intelligence + World-Class Setup",
+        description: "The most advanced BI configuration on the planet — optimizing send times, frequency, and content delivery on a per-customer basis. No more batch-and-blast. Every email hits when that specific person is most likely to convert."
+      },
+      {
+        title: "System 2: Smart Automation Powered by AI + Data",
+        description: "Automated systems that send hyper-personalized messages based on a fusion of massive behavioral data and AI-driven predictions. Each customer gets a tailored experience that feels handcrafted — but runs 100% on autopilot."
+      },
+      {
+        title: "System 3: Precision-Engineered Email Copy",
+        description: "Emails designed to strike the exact psychological trigger in each customer's mind — at the perfect moment — to convert them individually. No generic templates. Just proven frameworks that turn readers into buyers."
+      }
+    ],
+    bonuses: [
+      {
+        title: "High-Converting Email Templates",
+        description: "25+ battle-tested email templates that generated millions in revenue. Welcome sequences, flash sales, abandoned cart, win-back campaigns — all ready to deploy.",
+        value: 197
+      },
+      {
+        title: "Automation Flow Blueprints",
+        description: "Visual diagrams of the exact automation flows used by 8-figure brands. See exactly how to connect triggers, delays, and conditions for maximum impact.",
+        value: 147
+      },
+      {
+        title: "Subject Line Swipe File",
+        description: "200+ proven subject lines with open rates above 40%. Organized by category: urgency, curiosity, personal, benefit-driven, and more.",
+        value: 97
+      },
+      {
+        title: "Segmentation Masterclass",
+        description: "Advanced segmentation strategies that let you send the right message to the right person at the right time. Includes RFM analysis templates.",
+        value: 127
+      },
+      {
+        title: "Deliverability Checklist",
+        description: "The complete checklist to ensure your emails land in the inbox, not spam. Domain authentication, warm-up strategies, and reputation management.",
+        value: 67
+      }
+    ],
+    faq: [
+      {
+        question: "I already know email marketing. Why do I need this?",
+        answer: "You might know the basics — but this isn't about basics. This is about highly advanced tactics that take email marketing from 'nice to have' to 'impossible to compete with.' These are the systems that give billion-dollar brands a 10-step technological advantage over everyone else. If you're not using predictive BI, AI-powered personalization, and strategic automation, you're leaving 30X more value on the table."
+      },
+      {
+        question: "I don't think I need email marketing for my business.",
+        answer: "Here's the reality: a properly built email automation system places you in an entirely different game. You'll harness technology correctly and deliver a ruthless, data-driven knockout to your competitors — without them even understanding why. Email isn't optional when you're competing against brands that generate billions. It's the most profitable channel most stores completely underutilize."
+      },
+      {
+        question: "What if I buy multiple courses - do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug-and-play templates that you can implement immediately."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "What if this doesn't work for my business?",
+        answer: "These systems are being used by businesses across every major industry — eCommerce, SaaS, services, digital products. If you have customers and email addresses, this works. And if for any reason you're not satisfied, you're protected by our 30-day money-back guarantee."
+      },
+      {
+        question: "How is this different from other email marketing courses?",
+        answer: "Most courses teach you how to write emails and set up basic automations. This teaches you the enterprise-level systems that billion-dollar brands use — predictive intelligence, AI personalization, advanced segmentation, and behavioral triggers. It's not about doing more email marketing. It's about doing it at a world-class level."
+      }
+    ]
   }
 };
 
