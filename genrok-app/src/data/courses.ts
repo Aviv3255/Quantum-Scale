@@ -990,6 +990,97 @@ Train Meta's AI To Work Like a Bloodhound — hunting down only the people who m
         answer: "Most people see improvements within the first week of implementation. Some see dramatic results within 48-72 hours. The tactics are designed for fast implementation and quick wins."
       }
     ]
+  },
+  "meta-ad-templates": {
+    slug: "meta-ad-templates",
+    title: "1,000+ Meta Ad Templates",
+    subtitle: "Generate Winning Ad Creatives In 10 Seconds",
+    description: "Stop wasting 6 hours to find one winning creative. Get instant access to 1,000+ proven Meta ad templates that are battle-tested on massive budgets.",
+    price: 19,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_59.jpg?v=1757325725",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6574469f-6304-4b63-a8a5-9d260fc2739a.png?v=1760535779",
+    badge: "Templates",
+    stats: [
+      { value: "1,000+", label: "templates" },
+      { value: "10 sec", label: "to generate" },
+      { value: "$0.02", label: "per template" }
+    ],
+    highlights: [
+      "No more creative block - every template ready to customize in seconds",
+      "30 seconds from choosing to downloading your ad creative",
+      "Zero financial investment - works with Canva's free version",
+      "Battle-tested on massive ad budgets in Meta ads",
+      "Instant creative variety - test multiple angles without designing from scratch",
+      "Scale faster than competitors while they waste time in design tools"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif1.webp?v=1752485872", caption: "Step 1: Choose your template" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif2.gif?v=1752485913", caption: "Step 2: Customize in Canva" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif3.gif?v=1752485958", caption: "Step 3: Launch & Scale" }
+    ],
+    longDescription: `Why struggle for hours thinking... Staring at a blank screen. Wondering what creative will work. Trying to come up with something "different"...
+
+When you can generate a proven creative in 10 seconds?
+
+On average, it takes a marketer about 35 minutes to create a single creative. That's 15 minutes brainstorming + 20 minutes actually creating it. And to find a winning creative? You need to test about 10 different variations.
+
+Which means it takes you almost 6 HOURS to create just ONE winning creative!
+
+And even after all that time... You're still not sure if it will work. You're burning money on tests. You're losing time. Your competitors are scaling while you're stuck in Canva...
+
+There's a better way.
+
+In one simple file, over 1,000 Canva templates for Meta ads that are proven to work! No thinking required. No design skills needed. Just pick, customize, and launch.`,
+    modules: [
+      {
+        title: "Choose Your Template",
+        description: "Pick from 1,000+ expertly designed static ad templates in Canva. Every template is battle-tested and proven to convert."
+      },
+      {
+        title: "Customize in Canva",
+        description: "Edit your template in seconds with your logo, colors, and copy. Simple drag-and-drop. No design experience needed."
+      },
+      {
+        title: "Launch & Scale",
+        description: "Download your ad from Canva and launch it in Ads Manager. Watch your ROAS climb while your competitors struggle with creative testing."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need design skills to use these templates?",
+        answer: "Absolutely not. Every template is designed for drag-and-drop editing in Canva. If you can click and type, you can create stunning ad creatives. No design experience required."
+      },
+      {
+        question: "Will these templates work for my niche/product?",
+        answer: "Yes. The templates cover a wide variety of styles, layouts, and formats that work across virtually every niche. From fashion to electronics, supplements to home goods - you'll find templates that fit your brand."
+      },
+      {
+        question: "Do I need to pay for Canva Pro?",
+        answer: "No. All templates work perfectly with Canva's free version. Zero additional software costs. You can start using them immediately without any subscriptions."
+      },
+      {
+        question: "How are these different from free templates online?",
+        answer: "These templates are battle-tested on real ad campaigns with massive budgets. They're not generic designs - they're proven winners that have generated real results. Free templates online are untested guesses. These are data-backed performers."
+      },
+      {
+        question: "What if I buy multiple courses - do they overlap?",
+        answer: "Every course and tool is designed to solve a specific part of the advertising equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive any future template additions at no extra cost."
+      },
+      {
+        question: "How quickly can I start using the templates?",
+        answer: "Instantly. After purchase, you'll get immediate access to the entire library. You can have your first ad creative ready in under 60 seconds."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these templates, just reach out and we'll refund you — no questions asked."
+      }
+    ]
   }
 };
 

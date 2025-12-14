@@ -1526,6 +1526,143 @@ const LaserTargetingVisuals = () => (
   </>
 );
 
+// ========== META AD TEMPLATES VISUALIZATIONS ==========
+
+const MetaAdTemplatesVisuals = () => {
+  const creativeExamples = [
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_09.52.10-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_12.46.26-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-18_at_09.00.13-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-28_at_17.18.04-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/AAAAAAAAAAART52.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-18_at_09.01.34-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_14.56.55-min.avif?v=1752488312",
+    "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-03_at_17.03.08-min.avif?v=1752488312",
+  ];
+
+  return (
+    <>
+      {/* The Problem */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl font-bold text-[#111] mb-4">The Creative Struggle Is Real</h2>
+          <p className="text-[#666] mb-8">On average, it takes 35 minutes to create ONE creative. To find a winner? Test 10 variations.</p>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-[#111] text-center">
+            <p className="text-xl lg:text-2xl font-bold text-white mb-2">Which means it takes almost</p>
+            <p className="text-4xl lg:text-5xl font-bold text-[#EFBF04] mb-2">6 HOURS</p>
+            <p className="text-xl lg:text-2xl font-bold text-white">to create just ONE winning creative!</p>
+            <p className="text-sm text-white/60 mt-4 italic">(10 creatives × 35 minutes = 350 minutes = 5.8 hours)</p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* The 3-Step Solution */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The 3-Step Solution</h2>
+          <p className="text-[#666] text-center mb-10">Pick, customize, launch. That's it.</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { num: '1', title: 'Choose Template', desc: 'Pick from 1,000+ proven designs', icon: Target },
+              { num: '2', title: 'Customize', desc: 'Add your logo & colors in seconds', icon: Edit3 },
+              { num: '3', title: 'Launch & Scale', desc: 'Download and dominate', icon: TrendingUp },
+            ].map((step, index) => (
+              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-6 rounded-2xl bg-white border-2 border-[#EFBF04] text-center">
+                <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center mx-auto mb-4">
+                  <span className="text-[#EFBF04] font-bold text-lg">{step.num}</span>
+                </div>
+                <h3 className="font-bold text-[#111] mb-2">{step.title}</h3>
+                <p className="text-sm text-[#666]">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Time Comparison */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Time Savings</h2>
+          <p className="text-[#666] text-center mb-10">From hours to seconds</p>
+          <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+            <div className="flex items-end justify-center gap-12">
+              <div className="text-center">
+                <div className="relative w-24 mx-auto mb-4">
+                  <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '150px' }} />
+                  <motion.div initial={{ height: 0 }} whileInView={{ height: '150px' }} transition={{ duration: 1 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg bg-red-400" />
+                </div>
+                <div className="text-2xl font-bold text-red-500">6 hours</div>
+                <div className="text-sm text-[#888] mt-1">Traditional Way</div>
+              </div>
+              <div className="pb-20"><ArrowRight size={32} className="text-[#EFBF04]" /></div>
+              <div className="text-center">
+                <div className="relative w-24 mx-auto mb-4">
+                  <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '150px' }} />
+                  <motion.div initial={{ height: 0 }} whileInView={{ height: '8px' }} transition={{ duration: 0.5, delay: 0.5 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg bg-[#EFBF04]" />
+                </div>
+                <div className="text-2xl font-bold text-[#EFBF04]">10 seconds</div>
+                <div className="text-sm text-[#888] mt-1">With Templates</div>
+              </div>
+            </div>
+            <div className="mt-8 text-center">
+              <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111] text-white font-semibold">
+                <Zap size={20} className="text-[#EFBF04]" />
+                2,160x Faster
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Creative Examples Carousel */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#111] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>Examples Of Winning Creatives</h2>
+          <p className="text-center mb-10" style={{ color: 'rgba(255,255,255,0.6)' }}>Real templates from the library</p>
+          <div className="relative overflow-hidden">
+            <motion.div
+              className="flex gap-4"
+              animate={{ x: [0, -1600] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              {[...creativeExamples, ...creativeExamples].map((src, index) => (
+                <div key={index} className="flex-shrink-0 w-64 h-72 rounded-xl overflow-hidden shadow-lg">
+                  <img src={src} alt={`Creative example ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-10 text-center">What You Get</h2>
+          <div className="space-y-4">
+            {[
+              { text: 'No more creative block', desc: 'Stop staring at blank screens' },
+              { text: '30 seconds and it\'s ready', desc: 'From template to download' },
+              { text: 'Zero software costs', desc: 'Works with free Canva' },
+              { text: 'Battle-tested designs', desc: 'Proven on massive ad budgets' },
+              { text: 'Instant variety', desc: 'Test multiple angles without designing' },
+              { text: 'Scale faster', desc: 'While competitors waste time' },
+            ].map((item, index) => (
+              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} viewport={{ once: true }} className="flex items-start gap-4 p-4 rounded-xl bg-[#fafafa] border-l-4 border-[#EFBF04]">
+                <CheckCircle size={24} className="text-[#EFBF04] flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-[#111]">{item.text}</h3>
+                  <p className="text-sm text-[#666]">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 // ========== MAIN COMPONENT ==========
 
 export default function CourseDetailPage() {
@@ -1653,6 +1790,8 @@ export default function CourseDetailPage() {
         return <QuizTacticVisuals />;
       case 'laser-targeting':
         return <LaserTargetingVisuals />;
+      case 'meta-ad-templates':
+        return <MetaAdTemplatesVisuals />;
       default:
         return null;
     }
