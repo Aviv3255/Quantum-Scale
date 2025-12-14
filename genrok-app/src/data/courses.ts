@@ -786,6 +786,210 @@ Backed by pure, indisputable data about how humans actually make decisions.\`,
         answer: "Yes. These are proven changes you can implement immediately. Some take minutes to apply. The moment you make the change, you start benefiting from years of testing that's already been done for you."
       }
     ]
+  },
+  "quiz-tactic": {
+    slug: "quiz-tactic",
+    title: "The Quiz Tactic",
+    subtitle: "The Secret Weapon That Took Brands From 3% to 10% Conversion",
+    description: "Steal the billion-dollar tactic that makes visitors 10X more likely to buy. Build conversion machines that generate 8-10% conversion rates consistently.",
+    price: 39,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_46.jpg?v=1757233317",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_8.jpg?v=1760529285",
+    badge: "Conversion",
+    stats: [
+      { value: "6", label: "modules" },
+      { value: "8-10%", label: "conversion" },
+      { value: "300-400%", label: "lift" }
+    ],
+    highlights: [
+      "Build conversion machines that generate 8-10% conversion rates",
+      "Bypass logical resistance and tap into emotional decision-making",
+      "Get plug-and-play templates for any eCommerce niche",
+      "Master personalization that makes visitors feel understood",
+      "Collect valuable customer data while delivering massive value",
+      "Turn browsers into buyers with psychological precision"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/9708718a5263943a338e9072eec122d5.gif?v=1742999762", caption: "Stop the frustration of low conversions" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/3be5a1c2fd9a8bd284bfabb6506ed8ce.gif?v=1742999766", caption: "Watch your conversion rate go to the moon" }
+    ],
+    longDescription: \`In a world where Zuck rules us... Millions of eCom store owners believe their creative is what sets them apart, blindly testing creatives hoping to find a "winner" and barely hitting 1% conversion rate. And they think it's called 'strategy'...
+
+We build a conversion machine for every brand that keeps generating for us over 2 years 8–10% conversion Rate. That's a "Cha-ching!" for every 10-12 visitors.
+
+It all started two years ago... when a friendly guy sitting with me at the office complex, turned out to be the lead developer at one of the biggest skincare companies in the world...
+
+"What's your conversion rate?" I asked him. And he gave an answer I didn't believe was real… "8%–12%, depends on the period"
+
+From that moment – everything inside me changed completely. Like a good source of truth, he just spilled everything… The entire method that took them from losing money to a company generating hundreds of millions a year.
+
+The Quiz tactic is like a money machine. Put in $1 – get back $10.
+
+A properly built quiz tactic changes the game forever. We're not talking about tweaks – but about jumps of 300–400% in conversion rate that actually happen when done right.\`,
+    modules: [
+      {
+        title: "The Psychology Framework",
+        description: "Discover why quizzes bypass logical resistance and tap directly into the buyer's emotional decision-making process. Learn the exact psychological triggers that make visitors 10X more likely to purchase."
+      },
+      {
+        title: "Quiz Architecture Blueprint",
+        description: "Get the proven question structure that elite brands use. Learn which questions to ask, in what order, and why each one builds unstoppable momentum toward the purchase."
+      },
+      {
+        title: "Personalization Engine",
+        description: "Master the art of making every visitor feel like you're speaking directly to them. Learn how to segment and recommend products with laser precision, dramatically increasing perceived value."
+      },
+      {
+        title: "Implementation Templates",
+        description: "No need to start from scratch. Get plug-and-play templates for fashion, beauty, supplements, and general eCommerce. Simply customize for your brand and deploy within hours."
+      },
+      {
+        title: "Data Collection Strategy",
+        description: "Learn how to ethically collect valuable customer data while delivering massive value. This data becomes pure gold for your email marketing, retargeting, and product development."
+      },
+      {
+        title: "Conversion Optimization Secrets",
+        description: "Discover the micro-optimizations that separate 3% conversion rates from 10%+ conversion rates. Every button placement, color choice, and word matters — and you'll know exactly what works."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "I don't need this. Why should I care about quiz tactics?",
+        answer: "You think you don't need it only because you haven't known it yet. There's a reason why the world's leading brands invest billions in this tactic. They don't do it for fun — they do it because it multiplies revenue. While you're stuck at 1-3% conversion, they're cruising at 8-12%. The gap isn't talent or budget — it's knowing what they know."
+      },
+      {
+        question: "Will this work for my specific type of eCommerce store?",
+        answer: "The Quiz Tactic works for any eCommerce brand that sells to humans. Fashion, beauty, supplements, home goods, electronics — it doesn't matter. The psychology is universal. We've seen it transform conversion rates across dozens of niches."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. You buy it once and own it forever, including all future updates."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug & play templates that you can implement immediately. No fluff, no filler — just actionable strategies."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer. No developers required."
+      },
+      {
+        question: "How long will it take to see results?",
+        answer: "Most brands see measurable improvements within days of implementing the Quiz Tactic. The case study in this page? That brand saw results in less than a week. This isn't a slow-burn strategy — it's a rapid transformation tool."
+      },
+      {
+        question: "What if I'm not tech-savvy?",
+        answer: "The templates are designed to be plug-and-play. If you can copy and paste, you can implement this. We've removed all technical barriers so you can focus on results, not code."
+      }
+    ]
+  },
+  "laser-targeting": {
+    slug: "laser-targeting",
+    title: "Laser Targeting",
+    subtitle: "Reach Only The 0.001% Ready to Buy",
+    description: "Inject steroids into Meta's AI and reach only people who match your product 100%. Stop burning money on audiences that will never buy.",
+    price: 39,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_45.jpg?v=1757233284",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742",
+    badge: "Meta Ads",
+    stats: [
+      { value: "14.84", label: "ROAS" },
+      { value: "23M+", label: "impressions" },
+      { value: "52K", label: "data points" }
+    ],
+    highlights: [
+      "Target the 0.001% who will crave your product the second they see the ad",
+      "Train Meta's AI to work like a bloodhound hunting your perfect customer",
+      "Leverage 52,000 data points Meta collects on every user",
+      "Build remarketing sequences that generate 30-50% of your revenue",
+      "Master the Avatar Mapping Protocol for subconscious targeting",
+      "Achieve 10+ ROAS consistently with surgical precision"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/rambo-shooting.gif?v=1743008740", caption: "Precision targeting that hits every time" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742", caption: "Real results: 14.84 ROAS over 5 months" }
+    ],
+    longDescription: \`While Everyone's Playing Russian Roulette With Their Ad Budget...
+
+Cold audiences... Warm audiences... Interest-based targeting... Lookalikes... All of them acting like it's the Wild West, relying on Zuckerberg and praying the algorithm will bless them...
+
+You're burning $50, $100, $500 a day on Meta ads. That's 5,000 to 50,000 impressions daily. Enough audience to turn you into a millionaire if everyone bought.
+
+But 99.7% of your audience isn't relevant. Only 1 in 3,000 to 7,000 people will actually buy.
+
+The problem isn't your product. The problem isn't your creative. The problem is who's seeing it.
+
+Meta Collects 52,000 Data Points On Every Single User. 80% of your screen time belongs to Meta. That means Facebook knows exactly what you want, what you love, what you're struggling with... What you'll buy – and exactly when you're most likely to buy it.
+
+While everyone's spraying bullets hoping to hit something... We target like a laser and reach only the 0.001% who are ready to pull out the credit card.
+
+Train Meta's AI To Work Like a Bloodhound — hunting down only the people who match your product 100%.
+
+14.84 ROAS Over 5 Months With 23+ Million Impressions. Real results. Not cold traffic gambling. Not algorithm prayers. Surgical precision targeting that prints money.\`,
+    modules: [
+      {
+        title: "The 0.001% Targeting Method",
+        description: "Learn how to identify and reach the tiny fraction of people who will crave your product the second they see the ad. Stop wasting money on irrelevant impressions."
+      },
+      {
+        title: "Meta AI Injection System",
+        description: "Discover the exact data inputs that make Meta's algorithm obsessed with finding your perfect buyer. Train the AI to work for you 24/7."
+      },
+      {
+        title: "Multi-Angle Attack Strategy",
+        description: "Learn how to attack your audience from so many angles, it's nearly impossible for them to ignore you. Combine AI to pay less for better traffic."
+      },
+      {
+        title: "The Avatar Mapping Protocol",
+        description: "Target not by demographics, but by subconscious fears and desires. Go beyond surface-level targeting to psychological precision."
+      },
+      {
+        title: "Remarketing Mastery",
+        description: "Build remarketing sequences that feel like psychological compulsion. Generate 30-50% of your revenue from people who already showed interest."
+      },
+      {
+        title: "The Bloodhound System",
+        description: "Make Meta's AI work 24/7 like a bloodhound, hunting down ready-to-buy customers while you sleep. Set it and let it print money."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "I already know all the targeting secrets...",
+        answer: "No, you don't. What you know is the 3% that everyone teaches — the surface-level tactics. What we're revealing are secret, precise methods that tap into the remaining 97% of Meta's AI capabilities. If you already knew them, you'd already be running 10+ ROAS consistently."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact. Laser Targeting focuses exclusively on reaching the right audience with surgical precision."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Access it whenever you want, as many times as you want."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug & play templates that you can implement immediately. No fluff, no theory for theory's sake."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "What if this doesn't work for my product/niche?",
+        answer: "Every product has an audience. There are 8 billion people on this planet. Even if your product is 'weird' or 'niche,' there are thousands who want it. The Laser Targeting method works for any product because it's about finding YOUR specific buyers."
+      },
+      {
+        question: "How long does it take to see results?",
+        answer: "Most people see improvements within the first week of implementation. Some see dramatic results within 48-72 hours. The tactics are designed for fast implementation and quick wins."
+      }
+    ]
   }
 };
 
