@@ -257,32 +257,56 @@ const CourseContentInputForm = () => {
                     Clear
                   </button>
 
-                  <button
-                    onClick={handleSave}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105"
-                    style={{ backgroundColor: '#7700fd' }}
-                  >
-                    {saveSuccess ? (
-                      <>
-                        <Check size={16} />
-                        Saved!
-                      </>
-                    ) : (
-                      <>
-                        <Save size={16} />
-                        Save Content
-                      </>
-                    )}
-                  </button>
+                  <div className="flex items-center gap-3">
+                    {/* Export JSON Button */}
+                    <button
+                      onClick={() => {
+                        const jsonData = {
+                          id: Date.now().toString(),
+                          courseName: courseName.trim(),
+                          mockupUrl: mockupUrl.trim(),
+                          htmlBlocks: htmlBlocks.trim(),
+                          createdAt: new Date().toISOString().split('T')[0]
+                        };
+                        const jsonString = JSON.stringify(jsonData, null, 2);
+                        navigator.clipboard.writeText(jsonString);
+                        alert('JSON copied to clipboard! Paste it in src/data/course-inputs.json');
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-[#111] text-white hover:bg-[#333] transition-colors"
+                    >
+                      <FileCode size={16} />
+                      Copy JSON
+                    </button>
+
+                    <button
+                      onClick={handleSave}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105"
+                      style={{ backgroundColor: '#7700fd' }}
+                    >
+                      {saveSuccess ? (
+                        <>
+                          <Check size={16} />
+                          Saved!
+                        </>
+                      ) : (
+                        <>
+                          <Save size={16} />
+                          Save Local
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
 
               {/* Info Box */}
               <div className="mt-6 p-4 rounded-xl bg-[#f5f5f5] border border-[#eee]">
                 <p className="text-sm text-[#666]">
-                  <strong className="text-[#111]">How to use:</strong> Paste your course HTML blocks here and save.
-                  The content will be stored in localStorage and accessible when building course layouts.
-                  This saves Claude usage by keeping materials readily available.
+                  <strong className="text-[#111]">How to use:</strong><br/>
+                  1. Fill in course details and HTML blocks<br/>
+                  2. Click <strong>"Copy JSON"</strong> to copy the data<br/>
+                  3. Paste into <code className="bg-white px-1 rounded">src/data/course-inputs.json</code><br/>
+                  4. Claude can then read and implement the course
                 </p>
               </div>
             </div>
