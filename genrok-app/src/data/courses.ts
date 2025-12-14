@@ -7,6 +7,7 @@ export interface CourseBonus {
   title: string;
   description: string;
   value: number;
+  image?: string;
 }
 
 export interface CourseFAQ {
@@ -121,37 +122,44 @@ The same frameworks in this course have been used to optimize 7-figure stores an
       {
         title: "The $10,000 AI Photographer",
         description: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE. You'll get full access to the complete course that teaches you how to create jaw-dropping product photos using AI.",
-        value: 297
+        value: 297,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261"
       },
       {
         title: "Secret Tools Vault",
         description: "We've already done the heavy lifting for you. We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.",
-        value: 97
+        value: 97,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570"
       },
       {
         title: "Lifetime Discount Vault",
         description: "And we didn't stop there... We partnered with dozens of eCommerce tools and top Shopify apps - the ones you already use - to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions. Yes, really.",
-        value: 97
+        value: 97,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375"
       },
       {
         title: "The Intelligence Agent",
         description: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.",
-        value: 97
+        value: 97,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697"
       },
       {
         title: "Einstein on Steroids",
         description: "And here it is - one of the most essential tools. To give you the ultimate edge, we trained Einstein on Steroids for you. An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.",
-        value: 97
+        value: 97,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300"
       },
       {
         title: "Your Personal Conversion Map",
         description: "Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).",
-        value: 147
+        value: 147,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730"
       },
       {
         title: "Access to Our Secret Newsletter",
         description: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.",
-        value: 97
+        value: 97,
+        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015"
       }
     ],
     faq: [
@@ -223,77 +231,51 @@ The difference between a struggling store and a thriving brand isn't more traffi
 Inside, you'll get the exact blueprints, templates, and automation recipes that took us years to perfect. Install them once, profit forever.`,
     modules: [
       {
-        title: "Weapon 1: The LTV Engine Blueprint",
-        description: "The complete framework for understanding and maximizing customer lifetime value. Map your customer journey and identify every revenue opportunity."
+        title: "The LTV Engine Blueprint",
+        description: "Discover the psychological and technical system that makes every customer worth $1,000+. A backend architecture built to multiply profits automatically."
       },
       {
-        title: "Weapon 2: Laws of Human Persuasion",
-        description: "Master the psychological principles that drive repeat purchases. Learn why customers come back (or don't) and how to engineer loyalty."
+        title: "The Laws of Human Persuasion",
+        description: "Harness the secret laws of human psychology that steer attention, trigger craving, and make customers load massive carts - again and again."
       },
       {
-        title: "Weapon 3: Automation Loop Protocols",
-        description: "Build automated email and SMS sequences that nurture customers from first purchase to brand advocate. Set up once, profit forever."
+        title: "The Automation Loop Protocols",
+        description: "Build the self-sustaining system that runs your business 24/7 — loyalty, upsells, emails, all working together to generate infinite LTV."
       },
       {
-        title: "Weapon 4: Rebuy Technology System",
-        description: "Advanced retargeting and repurchase systems that bring customers back at the perfect moment. Predict and trigger repeat purchases on autopilot."
+        title: "The Rebuy Technology System",
+        description: "Master the brain loops that trigger automatic repeat purchases and oversized carts - used by luxury brands to multiply LTV effortlessly."
       },
       {
-        title: "Weapon 5: Empire Growth Formula",
-        description: "Scale your LTV systems to 7 and 8 figures. Advanced strategies for building a customer-centric brand that compounds growth over time."
+        title: "The Empire Growth Formula",
+        description: "The scaling logic that lets you outspend competitors fearlessly - using psychology, math, and automation instead of luck."
       }
     ],
-    bonuses: [
-      {
-        title: "Email Flow Templates Pack",
-        description: "15 ready-to-deploy email sequences: welcome series, post-purchase, win-back, VIP, birthday, and more. Just customize and launch.",
-        value: 297
-      },
-      {
-        title: "SMS Automation Playbook",
-        description: "Complete SMS marketing system with templates, timing strategies, and compliance guidelines. The highest-ROI channel most brands ignore.",
-        value: 197
-      },
-      {
-        title: "Customer Segmentation Guide",
-        description: "Learn to segment your customers like the top 1% of brands. Target the right message to the right person at the right time.",
-        value: 97
-      },
-      {
-        title: "Loyalty Program Blueprint",
-        description: "Design and launch a loyalty program that actually drives repeat purchases. Includes point structures, reward tiers, and gamification tactics.",
-        value: 147
-      },
-      {
-        title: "LTV Calculator Spreadsheet",
-        description: "Track and forecast customer lifetime value with this advanced spreadsheet. Know exactly how much each customer segment is worth.",
-        value: 47
-      }
-    ],
+    bonuses: [],
     faq: [
       {
-        question: "What makes this different from other marketing courses?",
-        answer: "This isn't about getting more traffic — it's about maximizing the customers you already have. While everyone else fights for attention, you'll be building automated systems that generate revenue from your existing customer base 24/7."
+        question: "Is this really possible? Can I actually get $1,000 from each customer?",
+        answer: "Yes, absolutely. This isn't theory - it's a proven system we use in our own stores and have taught to thousands of students. The screenshots and results you see are real. When you build a proper LTV system with the right psychology triggers, email sequences, and product ecosystem, customers naturally spend $1,000+ over their lifetime. And with our system, around $600 of that is pure profit going into your pocket."
       },
       {
-        question: "I'm just starting out. Is this for me?",
-        answer: "If you have at least some customers, yes. The sooner you implement these systems, the more revenue you'll capture. Every day without proper LTV systems is money left on the table."
+        question: "Don't I need a huge brand or massive inventory to do this?",
+        answer: "Not at all. This is one of the biggest myths. The LTV system is built on psychology and automation, not on having 10,000 SKUs. You can start with as few as 10-20 products and build a money-printing machine. The key is understanding how to make customers come back automatically, which has nothing to do with inventory size and everything to do with the right triggers and sequences."
+      },
+      {
+        question: "What if I have no prior experience, and my website is not live yet?",
+        answer: "Perfect. Do not begin before joining us. Most entrepreneurs with prior experience quickly realize that they must rebuild everything from the ground up, and in the right way. Joining us will save you a great deal of time and money, even as a beginner. We'll show you exactly how to set up your entire system correctly from day one."
+      },
+      {
+        question: "Will this work in my niche or market?",
+        answer: "Yes, absolutely. The system is designed for every niche and every market. Whether you're selling in a small town or globally, whether you're offering beauty products, home goods, fitness equipment, or anything else - the psychology of high LTV works universally. We have students succeeding in dozens of different niches."
       },
       {
         question: "How long until I see results?",
-        answer: "Most students see their first automated revenue within 7-14 days of implementing the core email flows. Full system implementation takes 30-60 days, after which you'll have a complete customer retention machine."
+        answer: "LTV is a long-term game, but you'll start seeing the foundation working within 30-60 days. The beauty of this system is that once it's set up, it compounds. Month 1 might bring in $500 per customer, month 3 might be $700, and by month 12 you're hitting $1,000+ per customer. This isn't a \"get rich quick\" scheme - it's a \"get rich for sure\" system."
       },
       {
-        question: "What platforms does this work with?",
-        answer: "The strategies work with any eCommerce platform (Shopify, WooCommerce, etc.) and integrate with popular email/SMS tools like Klaviyo, Mailchimp, Postscript, and more."
-      },
-      {
-        question: "Is there ongoing support?",
-        answer: "You get lifetime access to the course and all future updates. Plus, bonus community access where you can ask questions and get feedback from other store owners."
-      },
-      {
-        question: "What if it doesn't work for me?",
-        answer: "30-day money-back guarantee, no questions asked. If you implement the systems and don't see value, we'll refund your purchase completely."
+        question: "Why $47?",
+        answer: "An excellent question. This course contains the exact system we use to generate $180,000+ in monthly net profit. The information inside is worth tens of thousands of dollars in real-world value. When creating the course, we could have easily priced it at $2,000 or more - and it would still be worth it. However, we want this to be accessible to serious entrepreneurs who are ready to invest in a proven system. At $47, you're getting a complete blueprint that will transform every customer into a $1,000 money tree. This is a one-time payment with lifetime access and no hidden fees. Important: The price of $47 is already heavily discounted from the original $500. Quantum Scale reserves the right to increase the price at any time."
       }
     ]
   },
