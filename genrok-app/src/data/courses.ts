@@ -420,6 +420,142 @@ Inside this course, you'll get the exact systems that billion-dollar brands use 
         answer: "Most courses teach you how to write emails and set up basic automations. This teaches you the enterprise-level systems that billion-dollar brands use — predictive intelligence, AI personalization, advanced segmentation, and behavioral triggers. It's not about doing more email marketing. It's about doing it at a world-class level."
       }
     ]
+  },
+  "abandoned-checkout": {
+    slug: "abandoned-checkout",
+    title: "Abandoned Checkout Finisher",
+    subtitle: "How to Convert 82% of Your Lost Customers",
+    description: "The system that recovers 82% of abandoned checkouts — automatically. Stop losing 75% of your potential revenue.",
+    price: 29,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_76.png?v=1757233333",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_1.jpg?v=1760514814",
+    badge: "Revenue Saver",
+    stats: [
+      { value: "7", label: "emails" },
+      { value: "82%", label: "recovery" },
+      { value: "2hrs", label: "setup" }
+    ],
+    highlights: [
+      "Recover up to 82% of abandoned checkouts automatically",
+      "7-email sequence ready to deploy in under 2 hours",
+      "Battle-tested templates from 100,000+ successful sends",
+      "Works with Shopify, WooCommerce, and all major platforms",
+      "Generate extra $7,800+/month from existing traffic",
+      "Strategic timing that hits when customers are ready to buy"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_1.jpg?v=1760514814", caption: "Revenue recovery dashboard" }
+    ],
+    longDescription: `Your Store Is Bleeding Money...
+
+Every day, stores lose sales. They don't even know it's happening. The problem isn't your ads. It's not your product. It's not your website.
+
+It's the checkout.
+
+Here's the truth: For every 10 people who buy from you, 7 more start checkout. They add items. They enter their card details. Then they leave.
+
+That's 41% of people who were ready to buy. They just didn't finish.
+
+Let's do the math: 6,800 monthly visitors → 3.4% reach checkout = 231 people enter payment details → 136 complete purchase + 95 abandon with details entered.
+
+Without a recovery system, those 95 people are lost. They wanted to buy. They entered their card details. Then they left.
+
+With a 7-email sequence, you can get 78 of them back. That's 82% recovery rate.
+
+If your average order is $100, you gain $7,800 per month. That's $93,600 per year. All from fixing what's already broken.
+
+That's a 58% Revenue Increase — extra $7,800 per month starting immediately.
+
+Most stores chase more traffic. But if checkout is broken, you'll keep losing sales. No matter how much you spend on ads.
+
+This system stops the leak. It brings money back into your store. Every day. On autopilot.`,
+    modules: [
+      {
+        title: "Email 1: The Instant Reminder",
+        description: "Sent within 1 hour of abandonment. Catches customers while your store is still fresh in their mind. Highest open rates of the entire sequence."
+      },
+      {
+        title: "Email 2: The Trust Builder",
+        description: "Addresses the #1 reason people abandon — trust concerns. Uses social proof and guarantees to eliminate buying resistance."
+      },
+      {
+        title: "Email 3: The Objection Handler",
+        description: "Systematically destroys every common objection. Shipping concerns, product questions, comparison shopping — all handled."
+      },
+      {
+        title: "Email 4: The Scarcity Trigger",
+        description: "Creates authentic urgency without being pushy. Strategic timing makes customers feel they might miss out."
+      },
+      {
+        title: "Email 5: The Value Stack",
+        description: "Reminds customers of everything they're getting. Re-frames the purchase as an investment, not an expense."
+      },
+      {
+        title: "Email 6: The Personal Touch",
+        description: "Feels like a 1-on-1 message from a real person. Builds emotional connection that drives action."
+      },
+      {
+        title: "Email 7: The Final Push",
+        description: "Last chance messaging that converts the holdouts. Strategic incentive timing that protects your margins while closing sales."
+      }
+    ],
+    bonuses: [
+      {
+        title: "Platform Integration Guides",
+        description: "Step-by-step setup instructions for Shopify, WooCommerce, BigCommerce, Klaviyo, and all major platforms. Copy-paste implementation.",
+        value: 97
+      },
+      {
+        title: "Subject Line Swipe File",
+        description: "47 proven subject lines with open rates above 45%. Organized by email position in sequence for maximum impact.",
+        value: 67
+      },
+      {
+        title: "Timing Optimization Guide",
+        description: "The exact send times that maximize opens and conversions. Based on analysis of millions of abandoned checkout emails.",
+        value: 47
+      },
+      {
+        title: "A/B Testing Framework",
+        description: "Know exactly what to test and when. Systematic approach to improving your recovery rate over time.",
+        value: 77
+      }
+    ],
+    faq: [
+      {
+        question: "Will this work for my platform (Shopify, WooCommerce, etc.)?",
+        answer: "Yes. The email sequence and strategy work universally across all e-commerce platforms. We provide specific integration guides for Shopify, WooCommerce, BigCommerce, and other major platforms to ensure seamless setup regardless of your tech stack."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug & play templates that you can implement immediately."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "I don't have many abandoned checkouts. Will this still work?",
+        answer: "If you're getting any traffic and making sales, you have abandoned checkouts — the data shows that for every completed purchase, there's typically at least one abandoned checkout. Even recovering just a few can significantly boost your profit margins. Plus, as you scale, this system becomes even more valuable."
+      },
+      {
+        question: "Can't I just build this myself?",
+        answer: "You could try, but this system is built from analyzing hundreds of thousands of email sends and years of testing different approaches, timings, and messaging. The templates are proven to work. Building from scratch means months of testing, countless variations, and lost revenue while you figure it out. This gives you the shortcut to what already works."
+      },
+      {
+        question: "How quickly will I see results?",
+        answer: "Once deployed, the system starts working immediately. You'll begin seeing recovered sales within 24-48 hours of your first abandoned checkout. The full impact compounds over time as the sequence continues running automatically for every abandoned cart."
+      },
+      {
+        question: "Why is this priced so low?",
+        answer: "We've seen too many store owners struggle with abandoned checkouts simply because they don't have access to proven systems. Our mission is to make this accessible to every serious e-commerce entrepreneur, regardless of budget. The low price removes all barriers to implementation — and honestly, this system can pay for itself with just one recovered sale."
+      }
+    ]
   }
 };
 
