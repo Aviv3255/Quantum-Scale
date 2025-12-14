@@ -188,7 +188,7 @@ The same frameworks in this course have been used to optimize 7-figure stores an
     description: "Transform one-time buyers into lifetime customers with automated systems that maximize customer lifetime value.",
     price: 47,
     originalPrice: 500,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_58_efa8c3cd-aa72-4542-a933-0f433d8c01a1.jpg?v=1757325732",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg",
     badge: "New",
     stats: [

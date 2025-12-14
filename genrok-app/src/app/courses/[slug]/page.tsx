@@ -29,11 +29,17 @@ import {
   ArrowUp,
   DollarSign,
   Users,
-  BarChart3,
-  Percent,
   MousePointer,
-  Eye,
   ShoppingBag,
+  RefreshCw,
+  Repeat,
+  Calculator,
+  AlertTriangle,
+  CheckCircle,
+  Send,
+  BarChart2,
+  Inbox,
+  UserCheck,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -41,9 +47,8 @@ import { getCourseBySlug } from '@/data/courses';
 
 type TabType = 'content' | 'bonuses' | 'faq';
 
-// ========== CLEAN CODE-GENERATED VISUALIZATIONS ==========
+// ========== SHARED COMPONENTS ==========
 
-// Animated Counter Component
 const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; suffix?: string; prefix?: string }) => {
   const [count, setCount] = useState(0);
 
@@ -69,197 +74,409 @@ const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; su
   return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
 };
 
-// Conversion Rate Comparison Visual
-const ConversionComparison = () => (
-  <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-    <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Conversion Rate: Before vs After</h3>
-    <div className="flex items-end justify-center gap-12">
-      {/* Before */}
-      <div className="text-center">
-        <div className="relative w-20 mx-auto mb-4">
-          <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
-          <div
-            className="absolute bottom-0 left-0 right-0 rounded-t-lg transition-all duration-1000"
-            style={{ height: '28px', backgroundColor: '#ddd' }}
-          />
-        </div>
-        <div className="text-2xl font-bold text-[#999]">0.89%</div>
-        <div className="text-sm text-[#888] mt-1">Before</div>
-      </div>
+// ========== SUBCONSCIOUS TRAP VISUALIZATIONS ==========
 
-      {/* Arrow */}
-      <div className="pb-16">
-        <ArrowRight size={32} className="text-[#111]" />
-      </div>
-
-      {/* After */}
-      <div className="text-center">
-        <div className="relative w-20 mx-auto mb-4">
-          <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
-          <motion.div
-            initial={{ height: 0 }}
-            whileInView={{ height: '80px' }}
-            transition={{ duration: 1, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="absolute bottom-0 left-0 right-0 rounded-t-lg"
-            style={{ backgroundColor: '#111' }}
-          />
-        </div>
-        <div className="text-2xl font-bold text-[#111]">6.54%</div>
-        <div className="text-sm text-[#888] mt-1">After</div>
-      </div>
-    </div>
-    <div className="mt-6 text-center">
-      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-600 font-semibold">
-        <ArrowUp size={16} />
-        +635% Increase
-      </span>
-    </div>
-  </div>
-);
-
-// Key Metrics Visual
-const KeyMetricsVisual = () => (
-  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    {[
-      { icon: MousePointer, label: 'Click Rate', before: '2.1%', after: '8.7%', increase: '+314%' },
-      { icon: ShoppingBag, label: 'Add to Cart', before: '3.2%', after: '12.4%', increase: '+288%' },
-      { icon: DollarSign, label: 'AOV', before: '$47', after: '$89', increase: '+89%' },
-      { icon: Users, label: 'Repeat Rate', before: '12%', after: '34%', increase: '+183%' },
-    ].map((metric, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-        viewport={{ once: true }}
-        className="p-6 rounded-xl bg-white border border-[#eee] text-center"
-      >
-        <div className="w-12 h-12 rounded-xl bg-[#f5f5f5] flex items-center justify-center mx-auto mb-4">
-          <metric.icon size={24} className="text-[#111]" />
-        </div>
-        <div className="text-sm text-[#888] mb-2">{metric.label}</div>
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
-          <ArrowRight size={14} className="text-[#ccc]" />
-          <span className="text-lg font-bold text-[#111]">{metric.after}</span>
-        </div>
-        <span className="text-xs font-medium text-green-500">{metric.increase}</span>
-      </motion.div>
-    ))}
-  </div>
-);
-
-// Progress Path Visual
-const ProgressPathVisual = () => (
-  <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-    <h3 className="text-lg font-semibold text-[#111] mb-8 text-center">Your Transformation Journey</h3>
-    <div className="relative">
-      {/* Connection Line */}
-      <div className="absolute top-6 left-8 right-8 h-0.5 bg-[#eee]" />
-      <motion.div
-        initial={{ width: '0%' }}
-        whileInView={{ width: '100%' }}
-        transition={{ duration: 1.5 }}
-        viewport={{ once: true }}
-        className="absolute top-6 left-8 h-0.5 bg-[#111]"
-        style={{ maxWidth: 'calc(100% - 64px)' }}
-      />
-
-      <div className="flex justify-between relative">
-        {[
-          { step: 1, title: 'Learn', desc: 'Psychology frameworks' },
-          { step: 2, title: 'Apply', desc: 'Implement strategies' },
-          { step: 3, title: 'Optimize', desc: 'Test & refine' },
-          { step: 4, title: 'Scale', desc: 'Grow revenue' },
-        ].map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            className="flex flex-col items-center"
-          >
-            <div className="w-12 h-12 rounded-full bg-[#111] text-white flex items-center justify-center font-bold mb-3 relative z-10">
-              {item.step}
+const SubconsciousTrapVisuals = () => (
+  <>
+    {/* Conversion Comparison */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Psychology Advantage</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What happens when you apply subconscious triggers</p>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Conversion Rate: Before vs After</h3>
+          <div className="flex items-end justify-center gap-12">
+            <div className="text-center">
+              <div className="relative w-20 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
+                <div className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ height: '28px', backgroundColor: '#ddd' }} />
+              </div>
+              <div className="text-2xl font-bold text-[#999]">0.89%</div>
+              <div className="text-sm text-[#888] mt-1">Before</div>
             </div>
-            <div className="text-sm font-semibold text-[#111]">{item.title}</div>
-            <div className="text-xs text-[#888] text-center max-w-[80px]">{item.desc}</div>
-          </motion.div>
-        ))}
+            <div className="pb-16"><ArrowRight size={32} className="text-[#111]" /></div>
+            <div className="text-center">
+              <div className="relative w-20 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
+                <motion.div initial={{ height: 0 }} whileInView={{ height: '80px' }} transition={{ duration: 1, delay: 0.3 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ backgroundColor: '#111' }} />
+              </div>
+              <div className="text-2xl font-bold text-[#111]">6.54%</div>
+              <div className="text-sm text-[#888] mt-1">After</div>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-600 font-semibold"><ArrowUp size={16} />+635% Increase</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-);
 
-// Results Stats Visual
-const ResultsStatsVisual = () => (
-  <div className="grid md:grid-cols-3 gap-6">
-    {[
-      { value: 158, suffix: '%', label: 'Conversion Lift', desc: 'Illustrative example' },
-      { value: 2.4, suffix: 'x', label: 'Revenue Increase', desc: 'Within 90 days' },
-      { value: 50, prefix: '$', suffix: 'M+', label: 'Revenue Generated', desc: 'By our students' },
-    ].map((stat, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.15 }}
-        viewport={{ once: true }}
-        className="p-8 rounded-2xl bg-[#111] text-center"
-      >
-        <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-          <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-        </div>
-        <div className="text-white font-medium mb-1">{stat.label}</div>
-        <div className="text-white/50 text-sm">{stat.desc}</div>
-      </motion.div>
-    ))}
-  </div>
-);
-
-// Funnel Comparison Visual
-const FunnelVisual = () => (
-  <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-    <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Optimized Conversion Funnel</h3>
-    <div className="max-w-md mx-auto space-y-2">
-      {[
-        { label: 'Visitors', width: '100%', value: '100%', color: '#f5f5f5' },
-        { label: 'Engaged', width: '75%', value: '75%', color: '#e5e5e5' },
-        { label: 'Add to Cart', width: '45%', value: '45%', color: '#d5d5d5' },
-        { label: 'Checkout', width: '30%', value: '30%', color: '#333' },
-        { label: 'Purchase', width: '22%', value: '22%', color: '#111' },
-      ].map((step, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: index * 0.1 }}
-          viewport={{ once: true }}
-          className="flex items-center gap-4"
-        >
-          <div className="w-20 text-right text-sm text-[#888]">{step.label}</div>
-          <div className="flex-1 h-10 bg-[#fafafa] rounded-lg overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: step.width }}
-              transition={{ duration: 0.8, delay: index * 0.15 }}
-              viewport={{ once: true }}
-              className="h-full rounded-lg flex items-center justify-end pr-3"
-              style={{ backgroundColor: step.color }}
-            >
-              <span className={`text-sm font-medium ${index >= 3 ? 'text-white' : 'text-[#666]'}`}>
-                {step.value}
-              </span>
+    {/* Key Metrics */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Psychology-Driven Metrics</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What stores achieve with subconscious influence</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { icon: MousePointer, label: 'Click Rate', before: '2.1%', after: '8.7%', increase: '+314%' },
+            { icon: ShoppingBag, label: 'Add to Cart', before: '3.2%', after: '12.4%', increase: '+288%' },
+            { icon: DollarSign, label: 'AOV', before: '$47', after: '$89', increase: '+89%' },
+            { icon: Users, label: 'Trust Score', before: '42%', after: '91%', increase: '+117%' },
+          ].map((metric, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white border border-[#eee] text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#f5f5f5] flex items-center justify-center mx-auto mb-4"><metric.icon size={24} className="text-[#111]" /></div>
+              <div className="text-sm text-[#888] mb-2">{metric.label}</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
+                <ArrowRight size={14} className="text-[#ccc]" />
+                <span className="text-lg font-bold text-[#111]">{metric.after}</span>
+              </div>
+              <span className="text-xs font-medium text-green-500">{metric.increase}</span>
             </motion.div>
-          </div>
-        </motion.div>
-      ))}
+          ))}
+        </div>
+      </div>
     </div>
-    <p className="text-center text-sm text-[#888] mt-6">Industry average: 1-3% • With our methods: 15-25%</p>
-  </div>
+
+    {/* Funnel */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-3xl mx-auto">
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Optimized Conversion Funnel</h3>
+          <div className="max-w-md mx-auto space-y-2">
+            {[
+              { label: 'Visitors', width: '100%', value: '100%', color: '#f5f5f5' },
+              { label: 'Engaged', width: '75%', value: '75%', color: '#e5e5e5' },
+              { label: 'Add to Cart', width: '45%', value: '45%', color: '#d5d5d5' },
+              { label: 'Checkout', width: '30%', value: '30%', color: '#333' },
+              { label: 'Purchase', width: '22%', value: '22%', color: '#111' },
+            ].map((step, index) => (
+              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="flex items-center gap-4">
+                <div className="w-20 text-right text-sm text-[#888]">{step.label}</div>
+                <div className="flex-1 h-10 bg-[#fafafa] rounded-lg overflow-hidden">
+                  <motion.div initial={{ width: 0 }} whileInView={{ width: step.width }} transition={{ duration: 0.8, delay: index * 0.15 }} viewport={{ once: true }} className="h-full rounded-lg flex items-center justify-end pr-3" style={{ backgroundColor: step.color }}>
+                    <span className={`text-sm font-medium ${index >= 3 ? 'text-white' : 'text-[#666]'}`}>{step.value}</span>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-center text-sm text-[#888] mt-6">Industry average: 1-3% • With psychology triggers: 15-25%</p>
+        </div>
+      </div>
+    </div>
+  </>
 );
+
+// ========== LTV SYSTEM VISUALIZATIONS ==========
+
+const LTVSystemVisuals = () => (
+  <>
+    {/* LTV Multiplier */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The LTV Multiplier Effect</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Transform one-time buyers into lifetime customers</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: '$47', label: 'First Purchase', desc: 'Average initial order', color: '#ddd' },
+            { value: '$470', label: 'After 12 Months', desc: 'With LTV system', color: '#666' },
+            { value: '$1,000+', label: 'Lifetime Value', desc: 'Customer potential', color: '#111' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl text-center" style={{ backgroundColor: item.color }}>
+              <div className={`text-4xl font-bold mb-2 ${index === 0 ? 'text-[#666]' : 'text-white'}`}>{item.value}</div>
+              <div className={`font-medium mb-1 ${index === 0 ? 'text-[#444]' : 'text-white'}`}>{item.label}</div>
+              <div className={`text-sm ${index === 0 ? 'text-[#888]' : 'text-white/70'}`}>{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Customer Journey */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-8 text-center">The Automated Revenue Loop</h2>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <div className="relative">
+            <div className="absolute top-6 left-8 right-8 h-0.5 bg-[#eee]" />
+            <motion.div initial={{ width: '0%' }} whileInView={{ width: '100%' }} transition={{ duration: 1.5 }} viewport={{ once: true }} className="absolute top-6 left-8 h-0.5 bg-[#111]" style={{ maxWidth: 'calc(100% - 64px)' }} />
+            <div className="flex justify-between relative">
+              {[
+                { step: 1, title: 'Purchase', desc: 'First sale', icon: ShoppingCart },
+                { step: 2, title: 'Nurture', desc: 'Email flows', icon: Mail },
+                { step: 3, title: 'Re-engage', desc: 'Smart triggers', icon: RefreshCw },
+                { step: 4, title: 'Repeat', desc: 'Lifetime value', icon: Repeat },
+              ].map((item, index) => (
+                <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-[#111] text-white flex items-center justify-center mb-3 relative z-10">
+                    <item.icon size={20} />
+                  </div>
+                  <div className="text-sm font-semibold text-[#111]">{item.title}</div>
+                  <div className="text-xs text-[#888] text-center max-w-[80px]">{item.desc}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Repeat Purchase Stats */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Customer Retention Metrics</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What the automation system achieves</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { icon: Repeat, label: 'Repeat Rate', before: '12%', after: '47%', increase: '+292%' },
+            { icon: DollarSign, label: 'LTV', before: '$89', after: '$340', increase: '+282%' },
+            { icon: Users, label: 'Retention', before: '23%', after: '68%', increase: '+196%' },
+            { icon: Mail, label: 'Email Revenue', before: '8%', after: '35%', increase: '+338%' },
+          ].map((metric, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white border border-[#eee] text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#f5f5f5] flex items-center justify-center mx-auto mb-4"><metric.icon size={24} className="text-[#111]" /></div>
+              <div className="text-sm text-[#888] mb-2">{metric.label}</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
+                <ArrowRight size={14} className="text-[#ccc]" />
+                <span className="text-lg font-bold text-[#111]">{metric.after}</span>
+              </div>
+              <span className="text-xs font-medium text-green-500">{metric.increase}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// ========== EMAIL MARKETING VISUALIZATIONS ==========
+
+const EmailMarketingVisuals = () => (
+  <>
+    {/* Email vs Social ROI */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Email vs Social Media ROI</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Research from January 2025 - EmailToolTester</p>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="text-center">
+              <h4 className="font-semibold text-[#888] mb-4">Social Media ROI</h4>
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="w-full h-full rounded-full bg-[#f0f0f0] flex items-center justify-center">
+                  <span className="text-3xl font-bold text-[#999]">$2</span>
+                </div>
+              </div>
+              <p className="text-sm text-[#666]">Per $1 spent</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-semibold text-[#111] mb-4">Email Marketing ROI</h4>
+              <motion.div initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="relative w-32 h-32 mx-auto mb-4">
+                <div className="w-full h-full rounded-full bg-[#111] flex items-center justify-center">
+                  <span className="text-3xl font-bold text-white">$42</span>
+                </div>
+              </motion.div>
+              <p className="text-sm text-[#666]">Per $1 spent</p>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111] text-white font-semibold text-lg">
+              Email generates 20X more revenue
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* The 3 Systems */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-white mb-4 text-center">The 3-Part System</h2>
+        <p className="text-white/70 text-center mb-10 max-w-xl mx-auto">Three layers of technology that create an unfair advantage</p>
+        <div className="space-y-4">
+          {[
+            { num: '1', title: 'Business Intelligence + World-Class Setup', desc: 'The most advanced BI configuration — optimizing send times, frequency, and content delivery on a per-customer basis.' },
+            { num: '2', title: 'Smart Automation Powered by AI + Data', desc: 'Automated systems that send hyper-personalized messages based on behavioral data and AI-driven predictions.' },
+            { num: '3', title: 'Precision-Engineered Email Copy', desc: 'Emails designed to strike the exact psychological trigger in each customer\'s mind — at the perfect moment.' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white/5 border border-white/10">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white text-[#111] font-bold text-xl">{item.num}</div>
+                <div>
+                  <h3 className="font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-sm text-white/60">{item.desc}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Email Stats */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">What Top Brands Achieve</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">From our COVID story: 764 sales = $92,462 from one email</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: 45, suffix: '%', label: 'Open Rate', desc: 'vs 20% industry average' },
+            { value: 12, suffix: '%', label: 'Click Rate', desc: 'vs 2.6% industry average' },
+            { value: 92462, prefix: '$', suffix: '', label: 'Single Campaign', desc: 'From one email blast' },
+          ].map((stat, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-[#111] text-center">
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
+                <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+              </div>
+              <div className="text-white font-medium mb-1">{stat.label}</div>
+              <div className="text-white/50 text-sm">{stat.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+// ========== ABANDONED CHECKOUT VISUALIZATIONS + CALCULATOR ==========
+
+const AbandonedCheckoutVisuals = () => {
+  const [monthlyRevenue, setMonthlyRevenue] = useState(10000);
+  const [aov, setAov] = useState(100);
+
+  // Calculations based on the HTML content
+  const monthlyOrders = Math.round(monthlyRevenue / aov);
+  const checkoutStarts = Math.round(monthlyOrders * 1.7); // 70% more start checkout than complete
+  const abandonedCheckouts = checkoutStarts - monthlyOrders;
+  const recoveredOrders = Math.round(abandonedCheckouts * 0.82); // 82% recovery rate
+  const recoveredRevenue = recoveredOrders * aov;
+  const yearlyRecovered = recoveredRevenue * 12;
+
+  return (
+    <>
+      {/* Revenue Calculator */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Calculate Your Lost Revenue</h2>
+          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">See how much money you're leaving on the table</p>
+
+          <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div>
+                <label className="block text-sm font-medium text-[#333] mb-2">Monthly Revenue ($)</label>
+                <input
+                  type="number"
+                  value={monthlyRevenue}
+                  onChange={(e) => setMonthlyRevenue(Number(e.target.value) || 0)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#111] focus:outline-none text-lg font-semibold"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#333] mb-2">Average Order Value ($)</label>
+                <input
+                  type="number"
+                  value={aov}
+                  onChange={(e) => setAov(Number(e.target.value) || 1)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#111] focus:outline-none text-lg font-semibold"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-[#f5f5f5]">
+                <span className="text-[#666]">Monthly completed orders</span>
+                <span className="font-bold text-[#111]">{monthlyOrders.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between p-4 rounded-xl bg-[#f5f5f5]">
+                <span className="text-[#666]">Checkout starts (estimated)</span>
+                <span className="font-bold text-[#111]">{checkoutStarts.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between p-4 rounded-xl bg-red-50 border border-red-200">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle size={18} className="text-red-500" />
+                  <span className="text-red-700 font-medium">Abandoned checkouts</span>
+                </div>
+                <span className="font-bold text-red-600">{abandonedCheckouts.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-[#111] text-center">
+              <p className="text-white/70 mb-2">With 82% recovery rate, you could recover:</p>
+              <div className="text-4xl font-bold text-green-400 mb-2">
+                ${recoveredRevenue.toLocaleString()}/month
+              </div>
+              <div className="text-2xl font-semibold text-white mb-4">
+                ${yearlyRecovered.toLocaleString()}/year
+              </div>
+              <div className="flex items-center justify-center gap-2 text-green-400">
+                <CheckCircle size={20} />
+                <span className="font-medium">{recoveredOrders} orders recovered monthly</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The 7-Email Sequence */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The 7-Email Recovery Sequence</h2>
+          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Strategic timing that converts 82% of abandoned checkouts</p>
+
+          <div className="space-y-3">
+            {[
+              { time: '1 hour', title: 'Instant Reminder', desc: 'Catches them while you\'re fresh in their mind', color: '#111' },
+              { time: '4 hours', title: 'Trust Builder', desc: 'Social proof + guarantees', color: '#333' },
+              { time: '24 hours', title: 'Objection Handler', desc: 'Addresses shipping, returns, questions', color: '#444' },
+              { time: '48 hours', title: 'Scarcity Trigger', desc: 'Creates authentic urgency', color: '#555' },
+              { time: '72 hours', title: 'Value Stack', desc: 'Re-frames as investment', color: '#666' },
+              { time: '5 days', title: 'Personal Touch', desc: 'Feels 1-on-1', color: '#777' },
+              { time: '7 days', title: 'Final Push', desc: 'Last chance + incentive', color: '#888' },
+            ].map((email, index) => (
+              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} viewport={{ once: true }} className="flex items-center gap-4 p-4 rounded-xl border border-[#eee] hover:border-green-300 hover:bg-green-50/30 transition-all">
+                <div className="w-20 text-center flex-shrink-0">
+                  <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#f5f5f5] text-[#666]">{email.time}</span>
+                </div>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: email.color }}>
+                  <Send size={16} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-[#111]">{email.title}</h4>
+                  <p className="text-sm text-[#666]">{email.desc}</p>
+                </div>
+                <CheckCircle size={20} className="text-green-500 flex-shrink-0" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-10 text-center">Proven Results</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { value: 82, suffix: '%', label: 'Recovery Rate', desc: 'Of abandoned checkouts' },
+              { value: 58, suffix: '%', label: 'Revenue Increase', desc: 'From recovered sales' },
+              { value: 2, suffix: 'hrs', label: 'Setup Time', desc: 'Plug and play' },
+            ].map((stat, index) => (
+              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white/5 border border-white/10 text-center">
+                <div className="text-4xl lg:text-5xl font-bold text-green-400 mb-2">
+                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-white font-medium mb-1">{stat.label}</div>
+                <div className="text-white/50 text-sm">{stat.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 // ========== MAIN COMPONENT ==========
 
@@ -307,13 +524,7 @@ export default function CourseDetailPage() {
           <div className="text-center">
             <h3 className="text-xl font-medium text-[#111] mb-2">Course not found</h3>
             <p className="text-[#666] mb-6">The course you're looking for doesn't exist.</p>
-            <Link
-              href="/courses"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white"
-              style={{ background: 'linear-gradient(150deg, #000 0%, #222 50%, #000 100%)' }}
-            >
-              Back to Courses
-            </Link>
+            <Link href="/courses" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white" style={{ background: 'linear-gradient(150deg, #000 0%, #222 50%, #000 100%)' }}>Back to Courses</Link>
           </div>
         </div>
       </DashboardLayout>
@@ -328,41 +539,72 @@ export default function CourseDetailPage() {
 
   const totalBonusValue = course.bonuses.reduce((sum, b) => sum + b.value, 0);
 
+  // Course-specific "Who This Is For" content
+  const getCourseTargetAudience = () => {
+    switch (slug) {
+      case 'subconscious-trap':
+        return [
+          { icon: Target, title: 'Boost Conversions', desc: 'You want to increase conversions without spending more on ads' },
+          { icon: TrendingUp, title: 'Ready to Scale', desc: "You're ready to scale but need a proven system to follow" },
+          { icon: Zap, title: 'Fast Results', desc: 'You want results fast without years of trial and error' },
+        ];
+      case 'ltv-system':
+        return [
+          { icon: Repeat, title: 'Build Repeat Revenue', desc: 'You want customers to buy again and again automatically' },
+          { icon: DollarSign, title: 'Maximize Value', desc: "You're leaving money on the table with one-time buyers" },
+          { icon: Mail, title: 'Automate Growth', desc: 'You want revenue while you sleep' },
+        ];
+      case 'email-marketing':
+        return [
+          { icon: Inbox, title: 'Own Your Audience', desc: "You're tired of algorithm changes destroying your reach" },
+          { icon: BarChart2, title: 'Maximize ROI', desc: 'You want 20X+ returns on your marketing' },
+          { icon: UserCheck, title: 'Build Independence', desc: 'You want an asset Zuckerberg can\'t take away' },
+        ];
+      case 'abandoned-checkout':
+        return [
+          { icon: AlertTriangle, title: 'Stop The Leak', desc: 'You\'re losing 75% of ready-to-buy customers' },
+          { icon: Calculator, title: 'Easy ROI', desc: 'You want a system that pays for itself with 1 sale' },
+          { icon: Clock, title: 'Quick Setup', desc: 'You need results fast - deploy in under 2 hours' },
+        ];
+      default:
+        return [
+          { icon: Target, title: 'Boost Results', desc: 'You want to improve your metrics' },
+          { icon: TrendingUp, title: 'Scale Up', desc: "You're ready for the next level" },
+          { icon: Zap, title: 'Act Fast', desc: 'You want results now' },
+        ];
+    }
+  };
+
+  // Render course-specific visualizations
+  const renderCourseVisuals = () => {
+    switch (slug) {
+      case 'subconscious-trap':
+        return <SubconsciousTrapVisuals />;
+      case 'ltv-system':
+        return <LTVSystemVisuals />;
+      case 'email-marketing':
+        return <EmailMarketingVisuals />;
+      case 'abandoned-checkout':
+        return <AbandonedCheckoutVisuals />;
+      default:
+        return <SubconsciousTrapVisuals />;
+    }
+  };
+
   return (
     <DashboardLayout>
       {/* Checkout Modal */}
       <AnimatePresence>
         {showCheckout && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
-            onClick={() => !isProcessing && setShowCheckout(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl overflow-hidden bg-white"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => !isProcessing && setShowCheckout(false)}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md rounded-2xl overflow-hidden bg-white" onClick={(e) => e.stopPropagation()}>
               <div className="p-6 border-b border-[#eee]">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold text-[#111]">Quick Checkout</h2>
-                  {!isProcessing && (
-                    <button onClick={() => setShowCheckout(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]">
-                      <X size={20} className="text-[#666]" />
-                    </button>
-                  )}
+                  {!isProcessing && (<button onClick={() => setShowCheckout(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]"><X size={20} className="text-[#666]" /></button>)}
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[#666]">
-                  <Lock size={14} />
-                  <span>Secure checkout powered by Stripe</span>
-                </div>
+                <div className="flex items-center gap-2 text-sm text-[#666]"><Lock size={14} /><span>Secure checkout powered by Stripe</span></div>
               </div>
-
               <div className="p-6 border-b border-[#eee]">
                 <div className="flex gap-4">
                   <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-[#f5f5f5]">
@@ -378,36 +620,24 @@ export default function CourseDetailPage() {
                   </div>
                 </div>
               </div>
-
               <div className="p-6 border-b border-[#eee]">
                 {!showEmailChange ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">
-                        {(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}
-                      </div>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">{(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}</div>
                       <div>
                         <p className="font-medium text-[#111] text-sm">{customEmail || user?.email}</p>
                         <p className="text-xs text-[#666]">Course will be sent to this email</p>
                       </div>
                     </div>
-                    <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]">
-                      <Edit3 size={12} />
-                      Change
-                    </button>
+                    <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]"><Edit3 size={12} />Change</button>
                   </div>
                 ) : (
                   <div className="space-y-3">
                     <p className="text-sm font-medium text-[#111]">Send to a different email</p>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888]" size={16} />
-                      <input
-                        type="email"
-                        value={customEmail}
-                        onChange={(e) => setCustomEmail(e.target.value)}
-                        placeholder="Enter email address"
-                        className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none"
-                      />
+                      <input type="email" value={customEmail} onChange={(e) => setCustomEmail(e.target.value)} placeholder="Enter email address" className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none" />
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => setShowEmailChange(false)} className="flex-1 py-2 text-sm font-medium rounded-lg bg-[#111] text-white">Confirm</button>
@@ -416,23 +646,13 @@ export default function CourseDetailPage() {
                   </div>
                 )}
               </div>
-
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-[#666]">Total</span>
                   <span className="text-2xl font-bold text-[#111]">${course.price}</span>
                 </div>
-                <button
-                  onClick={handlePurchase}
-                  disabled={isProcessing}
-                  className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
-                  style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}
-                >
-                  {isProcessing ? (
-                    <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>
-                  ) : (
-                    <><Lock size={18} />Complete Purchase</>
-                  )}
+                <button onClick={handlePurchase} disabled={isProcessing} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}>
+                  {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase</>)}
                 </button>
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#888]">
                   <span>30-day guarantee</span><span>•</span><span>Instant access</span><span>•</span><span>Lifetime updates</span>
@@ -444,124 +664,63 @@ export default function CourseDetailPage() {
       </AnimatePresence>
 
       {/* Full-width wrapper */}
-      <div
-        className="min-h-screen bg-white"
-        style={{ margin: '-40px -48px', width: 'calc(100% + 96px)' }}
-      >
+      <div className="min-h-screen bg-white" style={{ margin: '-40px -48px', width: 'calc(100% + 96px)' }}>
         {/* Back Button */}
         <div className="w-full px-6 lg:px-10 pt-6">
-          <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors">
-            <ChevronLeft size={16} />
-            Back to Courses
-          </Link>
+          <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
         </div>
 
         {/* Hero Section */}
         <div className="w-full mt-6">
           <div className="grid lg:grid-cols-2 gap-0">
-            {/* Image Side - Full Width */}
             <div className="relative min-h-[400px] lg:min-h-[500px]">
-              <Image
-                src={course.heroImage || course.image}
-                alt={course.title}
-                fill
-                unoptimized
-                className="object-cover"
-                priority
-              />
+              <Image src={course.heroImage || course.image} alt={course.title} fill unoptimized className="object-cover" priority />
             </div>
-
-            {/* Info Side */}
             <div className="p-8 lg:p-12 flex flex-col justify-center bg-white">
               <div className="flex items-start justify-between mb-4">
-                {course.badge && (
-                  <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] text-white">
-                    {course.badge}
-                  </span>
-                )}
-                <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className="p-2 rounded-full hover:bg-[#f5f5f5] transition-colors"
-                >
+                {course.badge && (<span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] text-white">{course.badge}</span>)}
+                <button onClick={() => setIsWishlisted(!isWishlisted)} className="p-2 rounded-full hover:bg-[#f5f5f5] transition-colors">
                   <Heart size={22} className={isWishlisted ? 'text-red-500' : 'text-[#ccc]'} fill={isWishlisted ? 'currentColor' : 'none'} />
                 </button>
               </div>
-
               <h1 className="text-2xl lg:text-4xl font-bold text-[#111] mb-3">{course.title}</h1>
               <p className="text-[#666] mb-6 leading-relaxed text-lg">{course.subtitle}</p>
 
-              {/* Stats */}
+              {/* Dynamic Stats from course data */}
               <div className="flex flex-wrap gap-3 mb-6">
-                <div className="px-4 py-2 rounded-xl bg-[#f5f5f5]">
-                  <span className="text-lg font-bold text-[#111]">8</span>{' '}
-                  <span className="text-sm text-[#666]">modules</span>
-                </div>
-                <div className="px-4 py-2 rounded-xl bg-[#f5f5f5]">
-                  <span className="text-lg font-bold text-[#111]">6+</span>{' '}
-                  <span className="text-sm text-[#666]">hours</span>
-                </div>
-                <div className="px-4 py-2 rounded-xl bg-[#f5f5f5]">
-                  <span className="text-lg font-bold text-[#111]">50+</span>{' '}
-                  <span className="text-sm text-[#666]">templates</span>
-                </div>
+                {course.stats.map((stat, index) => (
+                  <div key={index} className="px-4 py-2 rounded-xl bg-[#f5f5f5]">
+                    <span className="text-lg font-bold text-[#111]">{stat.value}</span>{' '}
+                    <span className="text-sm text-[#666]">{stat.label}</span>
+                  </div>
+                ))}
               </div>
 
-              {/* Bonuses Value */}
               <div className="flex items-center gap-2 p-4 rounded-xl bg-[#f5f5f5] mb-6">
                 <Gift className="w-5 h-5 text-[#666]" />
-                <span className="text-sm">
-                  <strong className="text-[#111]">{course.bonuses.length} bonuses</strong>
-                  <span className="text-[#666]"> worth ${totalBonusValue} included</span>
-                </span>
+                <span className="text-sm"><strong className="text-[#111]">{course.bonuses.length} bonuses</strong><span className="text-[#666]"> worth ${totalBonusValue} included</span></span>
               </div>
 
-              {/* Price */}
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-4xl font-bold text-[#111]">${course.price}</span>
                 {course.originalPrice && (
                   <>
                     <span className="text-xl line-through text-[#999]">${course.originalPrice}</span>
-                    <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#111] text-white">
-                      Save {Math.round((1 - course.price / course.originalPrice) * 100)}%
-                    </span>
+                    <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#111] text-white">Save {Math.round((1 - course.price / course.originalPrice) * 100)}%</span>
                   </>
                 )}
               </div>
 
-              {/* CTA Button */}
-              <button
-                onClick={() => setShowCheckout(true)}
-                className="flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]"
-                style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}
-              >
-                <ShoppingCart size={20} />
-                Get Instant Access
+              <button onClick={() => setShowCheckout(true)} className="flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]" style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}>
+                <ShoppingCart size={20} />Get Instant Access
               </button>
-
-              <p className="text-xs text-center text-[#888] mt-3">
-                30-day money-back guarantee • Instant access • Lifetime updates
-              </p>
+              <p className="text-xs text-center text-[#888] mt-3">30-day money-back guarantee • Instant access • Lifetime updates</p>
             </div>
           </div>
         </div>
 
-        {/* Visual: Conversion Comparison */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">See The Difference</h2>
-            <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Real results from stores implementing these psychological frameworks</p>
-            <ConversionComparison />
-          </div>
-        </div>
-
-        {/* Visual: Key Metrics */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Key Metrics Improvement</h2>
-            <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Illustrative improvements you can achieve</p>
-            <KeyMetricsVisual />
-          </div>
-        </div>
+        {/* Course-Specific Visualizations */}
+        {renderCourseVisuals()}
 
         {/* Real Results GIF Section */}
         {course.visuals && course.visuals.length > 0 && (
@@ -571,28 +730,11 @@ export default function CourseDetailPage() {
               <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Real results from stores using these strategies</p>
               <div className="grid md:grid-cols-2 gap-6">
                 {course.visuals.slice(0, 2).map((visual, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="rounded-2xl overflow-hidden bg-white border border-[#eee]"
-                  >
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="rounded-2xl overflow-hidden bg-white border border-[#eee]">
                     <div className="relative aspect-video">
-                      <Image
-                        src={visual.url}
-                        alt={visual.caption || 'Course visual'}
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
+                      <Image src={visual.url} alt={visual.caption || 'Course visual'} fill unoptimized className="object-cover" />
                     </div>
-                    {visual.caption && (
-                      <div className="p-4 text-center">
-                        <p className="text-sm text-[#666]">{visual.caption}</p>
-                      </div>
-                    )}
+                    {visual.caption && (<div className="p-4 text-center"><p className="text-sm text-[#666]">{visual.caption}</p></div>)}
                   </motion.div>
                 ))}
               </div>
@@ -601,22 +743,13 @@ export default function CourseDetailPage() {
         )}
 
         {/* What You'll Learn */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="w-full py-16 px-6 lg:px-10 bg-white">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111] mb-8 text-center">What You'll Learn</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {(course.highlights || []).map((highlight, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-3 p-5 rounded-xl bg-white border border-[#eee]"
-                >
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center bg-[#111] flex-shrink-0 mt-0.5">
-                    <Check size={14} className="text-white" />
-                  </div>
+                <motion.div key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} viewport={{ once: true }} className="flex items-start gap-3 p-5 rounded-xl bg-[#fafafa] border border-[#eee]">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center bg-[#111] flex-shrink-0 mt-0.5"><Check size={14} className="text-white" /></div>
                   <span className="text-[#333]">{highlight}</span>
                 </motion.div>
               ))}
@@ -625,48 +758,19 @@ export default function CourseDetailPage() {
         </div>
 
         {/* About This Course */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-white">
+        <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111] mb-6">About This Course</h2>
-            <div className="text-[#444] whitespace-pre-line leading-relaxed text-lg">
-              {course.longDescription}
-            </div>
+            <div className="text-[#444] whitespace-pre-line leading-relaxed text-lg">{course.longDescription}</div>
           </div>
         </div>
 
-        {/* Visual: Progress Path */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-          <div className="max-w-4xl mx-auto">
-            <ProgressPathVisual />
-          </div>
-        </div>
-
-        {/* Visual: Results Stats */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Proven Results</h2>
-            <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Numbers that speak for themselves</p>
-            <ResultsStatsVisual />
-          </div>
-        </div>
-
-        {/* Visual: Funnel */}
-        <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-          <div className="max-w-3xl mx-auto">
-            <FunnelVisual />
-          </div>
-        </div>
-
-        {/* Who This Is For */}
+        {/* Who This Is For - Course Specific */}
         <div className="w-full py-16 px-6 lg:px-10 bg-white">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111] mb-8 text-center">This Course Is Perfect For You If...</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { icon: Target, title: 'Boost Conversions', desc: 'You want to increase conversions without spending more on ads' },
-                { icon: TrendingUp, title: 'Ready to Scale', desc: "You're ready to scale but need a proven system to follow" },
-                { icon: Zap, title: 'Fast Results', desc: 'You want results fast without years of trial and error' },
-              ].map((item, index) => (
+              {getCourseTargetAudience().map((item, index) => (
                 <div key={index} className="p-6 rounded-xl text-center bg-[#fafafa] border border-[#eee]">
                   <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center bg-[#111]">
                     <item.icon size={28} className="text-white" />
@@ -679,7 +783,7 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* Tabs Section - Dark Background with White Text */}
+        {/* Tabs Section */}
         <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
           <div className="max-w-5xl mx-auto">
             <div className="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
@@ -687,15 +791,8 @@ export default function CourseDetailPage() {
                 const isActive = activeTab === tab.id;
                 const Icon = tab.icon;
                 return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
-                      isActive ? 'bg-white text-[#111]' : 'text-white/70 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <Icon size={16} />
-                    <span>{tab.label}</span>
+                  <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${isActive ? 'bg-white text-[#111]' : 'text-white/70 hover:text-white hover:bg-white/10'}`}>
+                    <Icon size={16} /><span>{tab.label}</span>
                   </button>
                 );
               })}
@@ -707,9 +804,7 @@ export default function CourseDetailPage() {
                   {course.modules.map((module, index) => (
                     <div key={index} className="rounded-xl p-5 bg-white/5 border border-white/10">
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white text-[#111] font-bold">
-                          {index + 1}
-                        </div>
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white text-[#111] font-bold">{index + 1}</div>
                         <div>
                           <h3 className="font-semibold text-white mb-1">{module.title}</h3>
                           <p className="text-sm text-white/60">{module.description}</p>
@@ -726,17 +821,13 @@ export default function CourseDetailPage() {
                     <div key={index} className="rounded-xl p-5 bg-white/5 border border-white/10">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-4">
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white">
-                            <Gift size={18} className="text-[#111]" />
-                          </div>
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white"><Gift size={18} className="text-[#111]" /></div>
                           <div>
                             <h3 className="font-semibold text-white mb-1">{bonus.title}</h3>
                             <p className="text-sm text-white/60">{bonus.description}</p>
                           </div>
                         </div>
-                        <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white">
-                          ${bonus.value} value
-                        </div>
+                        <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white">${bonus.value} value</div>
                       </div>
                     </div>
                   ))}
@@ -751,26 +842,13 @@ export default function CourseDetailPage() {
                 <div className="space-y-3">
                   {course.faq.map((item, index) => (
                     <div key={index} className="rounded-xl overflow-hidden bg-white/5 border border-white/10">
-                      <button
-                        onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                        className="w-full p-5 flex items-center justify-between text-left"
-                      >
+                      <button onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} className="w-full p-5 flex items-center justify-between text-left">
                         <span className="font-semibold text-white pr-4">{item.question}</span>
-                        {expandedFaq === index ? (
-                          <ChevronUp size={20} className="text-white/60 flex-shrink-0" />
-                        ) : (
-                          <ChevronDown size={20} className="text-white/60 flex-shrink-0" />
-                        )}
+                        {expandedFaq === index ? (<ChevronUp size={20} className="text-white/60 flex-shrink-0" />) : (<ChevronDown size={20} className="text-white/60 flex-shrink-0" />)}
                       </button>
                       <AnimatePresence>
                         {expandedFaq === index && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="px-5 pb-5"
-                          >
+                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="px-5 pb-5">
                             <p className="text-white/70">{item.answer}</p>
                           </motion.div>
                         )}
@@ -783,26 +861,17 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* Final CTA Section - White Text */}
+        {/* Final CTA */}
         <div className="w-full py-16 px-6 lg:px-10 bg-black">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Transform Your Store?</h2>
-            <p className="text-white/70 mb-8 text-lg">
-              Get instant access to {course.modules.length} modules, {course.bonuses.length} bonuses worth ${totalBonusValue}, and start implementing today.
-            </p>
+            <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <p className="text-white/70 mb-8 text-lg">Get instant access to {course.modules.length} modules, {course.bonuses.length} bonuses worth ${totalBonusValue}, and start implementing today.</p>
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-4xl font-bold text-white">${course.price}</span>
-              {course.originalPrice && (
-                <span className="text-xl line-through text-white/40">${course.originalPrice}</span>
-              )}
+              {course.originalPrice && (<span className="text-xl line-through text-white/40">${course.originalPrice}</span>)}
             </div>
-            <button
-              onClick={() => setShowCheckout(true)}
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-medium transition-all hover:opacity-90 hover:scale-[1.02] bg-white text-[#111]"
-            >
-              <ShoppingCart size={20} />
-              Get Instant Access
-              <ArrowRight size={18} />
+            <button onClick={() => setShowCheckout(true)} className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-medium transition-all hover:opacity-90 hover:scale-[1.02] bg-white text-[#111]">
+              <ShoppingCart size={20} />Get Instant Access<ArrowRight size={18} />
             </button>
             <p className="text-sm text-white/50 mt-4">30-day money-back guarantee • No questions asked</p>
           </div>
