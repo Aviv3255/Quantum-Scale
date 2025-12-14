@@ -50,7 +50,15 @@ export default function CoursesPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+      {/* Full-width wrapper - counteracts parent padding */}
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundColor: '#ffffff',
+          margin: '-40px -48px',
+          width: 'calc(100% + 96px)',
+        }}
+      >
         {/* Full Width Header */}
         <div className="w-full px-6 lg:px-10 pt-8 pb-6">
           <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>

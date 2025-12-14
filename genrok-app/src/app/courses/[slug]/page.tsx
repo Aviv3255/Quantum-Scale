@@ -27,6 +27,8 @@ import {
   Award,
   Play,
   FileText,
+  Mail,
+  Edit3,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -43,6 +45,8 @@ export default function CourseDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showEmailChange, setShowEmailChange] = useState(false);
+  const [customEmail, setCustomEmail] = useState('');
 
   const slug = params.slug as string;
   const course = getCourseBySlug(slug);
@@ -167,15 +171,62 @@ export default function CourseDetailPage() {
 
               {/* User Info (Already logged in) */}
               <div className="p-6 border-b border-[#eeeeee]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white" style={{ backgroundColor: '#111111' }}>
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
+                {!showEmailChange ? (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white" style={{ backgroundColor: '#111111' }}>
+                        {(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                      <div>
+                        <p className="font-medium text-[#111111] text-sm">{customEmail || user?.email}</p>
+                        <p className="text-xs text-[#666666]">Course will be sent to this email</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowEmailChange(true)}
+                      className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors hover:bg-[#f5f5f5]"
+                      style={{ color: '#666666' }}
+                    >
+                      <Edit3 size={12} />
+                      Change
+                    </button>
                   </div>
-                  <div>
-                    <p className="font-medium text-[#111111] text-sm">{user?.email}</p>
-                    <p className="text-xs text-[#666666]">Course will be added to your account</p>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm font-medium text-[#111111]">Send to a different email</p>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888888]" size={16} />
+                      <input
+                        type="email"
+                        value={customEmail}
+                        onChange={(e) => setCustomEmail(e.target.value)}
+                        placeholder="Enter email address"
+                        className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111111] focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setShowEmailChange(false);
+                        }}
+                        className="flex-1 py-2 text-sm font-medium rounded-lg transition-colors"
+                        style={{ backgroundColor: '#111111', color: '#ffffff' }}
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        onClick={() => {
+                          setCustomEmail('');
+                          setShowEmailChange(false);
+                        }}
+                        className="px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-[#f5f5f5]"
+                        style={{ color: '#666666' }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Total & Purchase Button */}
@@ -221,7 +272,15 @@ export default function CourseDetailPage() {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+      {/* Full-width wrapper - counteracts parent padding */}
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundColor: '#ffffff',
+          margin: '-40px -48px',
+          width: 'calc(100% + 96px)',
+        }}
+      >
         {/* Back Button - Full width container */}
         <div className="w-full px-6 lg:px-10 pt-6">
           <Link
@@ -418,40 +477,92 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
-        {/* About This Course */}
+        {/* About This Course - Left Aligned */}
         <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#fafafa' }}>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#111111] mb-6 text-center">
+            <h2 className="text-2xl font-bold text-[#111111] mb-6">
               About This Course
             </h2>
-            <div className="text-[#444444] whitespace-pre-line leading-relaxed text-center text-lg">
+            <div className="text-[#444444] whitespace-pre-line leading-relaxed text-lg">
               {course.longDescription}
             </div>
           </div>
         </div>
 
-        {/* Who This Is For */}
+        {/* Real Results Section */}
         <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#ffffff' }}>
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-[#111111] mb-4 text-center">
+              Real Results From Real Students
+            </h2>
+            <p className="text-[#666666] text-center mb-10 max-w-2xl mx-auto">
+              See what store owners are achieving after implementing these psychological frameworks
+            </p>
+
+            {/* Testimonial Images */}
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #eeeeee' }}>
+                <Image
+                  src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments_1.jpg?v=1760351539"
+                  alt="Student testimonials"
+                  width={600}
+                  height={400}
+                  unoptimized
+                  className="w-full h-auto"
+                />
+              </div>
+              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #eeeeee' }}>
+                <Image
+                  src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments.jpg?v=1760351539"
+                  alt="More student testimonials"
+                  width={600}
+                  height={400}
+                  unoptimized
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+
+            {/* A/B Test Results */}
+            <div className="rounded-xl overflow-hidden max-w-3xl mx-auto" style={{ border: '1px solid #eeeeee', backgroundColor: '#fafafa' }}>
+              <div className="p-6 text-center border-b border-[#eeeeee]">
+                <h3 className="font-semibold text-[#111111] mb-2">Proven A/B Test Results</h3>
+                <p className="text-sm text-[#666666]">Real data from stores implementing these strategies</p>
+              </div>
+              <Image
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep_6.png?v=1760351539"
+                alt="A/B test results showing conversion improvements"
+                width={800}
+                height={500}
+                unoptimized
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Who This Is For */}
+        <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#fafafa' }}>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111111] mb-8 text-center">
               This Course Is Perfect For You If...
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#fafafa', border: '1px solid #eeeeee' }}>
+              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#ffffff', border: '1px solid #eeeeee' }}>
                 <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#111111' }}>
                   <Target size={28} className="text-white" />
                 </div>
                 <h3 className="font-semibold text-[#111111] mb-2">Boost Conversions</h3>
                 <p className="text-sm text-[#666666]">You want to increase conversions without spending more on ads</p>
               </div>
-              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#fafafa', border: '1px solid #eeeeee' }}>
+              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#ffffff', border: '1px solid #eeeeee' }}>
                 <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#111111' }}>
                   <TrendingUp size={28} className="text-white" />
                 </div>
                 <h3 className="font-semibold text-[#111111] mb-2">Ready to Scale</h3>
                 <p className="text-sm text-[#666666]">You're ready to scale but need a proven system to follow</p>
               </div>
-              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#fafafa', border: '1px solid #eeeeee' }}>
+              <div className="p-6 rounded-xl text-center" style={{ backgroundColor: '#ffffff', border: '1px solid #eeeeee' }}>
                 <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#111111' }}>
                   <Zap size={28} className="text-white" />
                 </div>
@@ -463,7 +574,7 @@ export default function CourseDetailPage() {
         </div>
 
         {/* Tabs Section - Full Width */}
-        <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#fafafa' }}>
+        <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#ffffff' }}>
           <div className="max-w-5xl mx-auto">
             {/* Tabs */}
             <div className="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">

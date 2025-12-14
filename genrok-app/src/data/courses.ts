@@ -52,7 +52,7 @@ export const coursesData: Record<string, Course> = {
     price: 29,
     originalPrice: 197,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
-    // heroImage will be set from the HTML content you provide
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539",
     badge: "Most Popular",
     stats: [
       { value: "8", label: "modules" },
@@ -67,10 +67,11 @@ export const coursesData: Record<string, Course> = {
       "Turn one-time buyers into repeat customers",
       "Optimize every touchpoint for maximum conversion"
     ],
-    // visuals array will hold GIFs and images from your HTML content
-    // visuals: [
-    //   { url: "...", caption: "..." }
-    // ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/facepalm-stress.gif?v=1760351539", caption: "Stop losing money on ineffective strategies" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/HOW_TO.gif?v=1760351539", caption: "Learn proven psychological triggers" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1760351539", caption: "Watch your conversions skyrocket" }
+    ],
     longDescription: `Your customers don't buy logically. They buy emotionally — then justify it later.
 
 The Subconscious Trap is a psychology-driven framework designed for eCommerce store owners who want to increase conversions, boost average order value (AOV), and drive repeat purchases — without spending more on ads.
