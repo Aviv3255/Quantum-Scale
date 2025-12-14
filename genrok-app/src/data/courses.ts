@@ -692,6 +692,100 @@ The same framework inside has been used to optimize stores generating 7-8 figure
         answer: "We want every serious eCommerce entrepreneur to have access to billion-dollar strategies — not just those with big budgets. At $39, this pays for itself with a single additional sale. Important: This price won't last forever. We reserve the right to increase it at any time."
       }
     ]
+  },
+  "ab-test-results": {
+    slug: "ab-test-results",
+    title: "37 Proven A/B Test Results",
+    subtitle: "Years of Data, Delivered in Hours",
+    description: "Skip the guesswork. Apply what already works. Get instant access to 37 proven A/B tests that delivered 6% to 44% conversion improvements.",
+    price: 29,
+    originalPrice: 70,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_42_9dbe83ef-43df-40d5-88eb-3cd7f29d394a.jpg?v=1757233262",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_7.jpg?v=1760524354",
+    badge: "Data-Driven",
+    stats: [
+      { value: "37", label: "tests" },
+      { value: "6-44%", label: "improvement" },
+      { value: "XLS", label: "format" }
+    ],
+    highlights: [
+      "Get 37 proven A/B test results in one actionable XLS file",
+      "Skip months of testing and thousands in wasted ad spend",
+      "Each test delivered 6% to 44% conversion improvement",
+      "Data from millions of real visitors with statistical significance",
+      "Apply proven changes to your site in hours, not years",
+      "Stop guessing — implement what already works"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1751796400", caption: "Years of testing data" },
+      { url: "https://media.tenor.com/IQ6Z-aPhr1wAAAAM/date-everywhere-data.gif", caption: "Data worth millions" }
+    ],
+    longDescription: \`If you're tired of guessing, or wasting money... Here's the shortcut that will save you months of testing and thousands of dollars in wasted ad spend.
+
+Data = Money. And here's the proof...
+
+For years, we've been running A/B tests across multiple websites - testing everything from simple button text to complex page structures. Every website we managed had at least one live A/B test at all times. Every change - no matter how small - was tested, measured, and optimized.
+
+Some tests improved conversions by 6%, others by as much as 44%. Together, they created powerful insights that drove consistent growth.
+
+Each test was run on real websites with tens of thousands (sometimes hundreds of thousands) of real visitors. This is data that cost millions of dollars and years of testing to obtain.
+
+Now, for the first time, we've compiled the results of 37 proven A/B tests into a clear, actionable XLS file...
+
+Instead of spending years testing every possible change... You can skip the guesswork and implement what's already proven to work. In just a few hours.
+
+From minor tweaks like button text to deeper changes in page structure and messaging. These results reveal what actually moves the needle - not what "sounds good."
+
+Backed by pure, indisputable data about how humans actually make decisions.\`,
+    modules: [
+      {
+        title: "Button Text Changes",
+        description: "Simple tweaks to button copy delivered measurable lift — some as high as 18% improvement in click-through rates."
+      },
+      {
+        title: "Page Structure Optimization",
+        description: "Rearranging elements and adjusting layouts led to conversion improvements between 12% and 31% across different page types."
+      },
+      {
+        title: "Messaging & Copy Tests",
+        description: "Changes to headlines, value propositions, and messaging boosted conversions by up to 44% — the highest result in the collection."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Will these tests work for my website?",
+        answer: "Yes. These are 37 fundamental tests relevant to virtually any website. Each one has been proven to increase conversions between 6% and 44%. Whether you're running e-commerce, SaaS, or lead generation — these principles apply universally because they're based on how humans make decisions."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear XLS file with real test results and actionable insights that you can implement immediately. No fluff, no theory — just what worked, what didn't, and by how much."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every insight was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer. Most changes take minutes, not hours."
+      },
+      {
+        question: "How is this different from generic 'best practices' advice?",
+        answer: "This isn't generic advice. This is real data from real tests run on high-traffic websites with tens (sometimes hundreds) of thousands of visitors per test. Every result is backed by statistical significance — not opinion or guesswork."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these insights, just reach out and we'll refund you — no questions asked."
+      },
+      {
+        question: "Can I really see results 'starting today'?",
+        answer: "Yes. These are proven changes you can implement immediately. Some take minutes to apply. The moment you make the change, you start benefiting from years of testing that's already been done for you."
+      }
+    ]
   }
 };
 
