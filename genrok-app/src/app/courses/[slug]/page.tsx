@@ -40,6 +40,12 @@ import {
   BarChart2,
   Inbox,
   UserCheck,
+  Brain,
+  Eye,
+  Sparkles,
+  ThumbsUp,
+  Star,
+  MessageCircle,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -478,6 +484,179 @@ const AbandonedCheckoutVisuals = () => {
   );
 };
 
+// ========== SOCIAL PROOF VISUALIZATIONS ==========
+
+const SocialProofVisuals = () => (
+  <>
+    {/* ROAS Transformation */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Social Proof Transformation</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Real results from applying the Social Proof Tactic</p>
+        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">ROAS: Before vs After Social Proof</h3>
+          <div className="flex items-end justify-center gap-12">
+            <div className="text-center">
+              <div className="relative w-24 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '120px' }} />
+                <div className="absolute bottom-0 left-0 right-0 rounded-t-lg flex items-end justify-center pb-2" style={{ height: '35px', backgroundColor: '#ddd' }}>
+                  <span className="text-sm font-bold text-[#666]">3.16x</span>
+                </div>
+              </div>
+              <div className="text-2xl font-bold text-[#999]">3.16x</div>
+              <div className="text-sm text-[#888] mt-1">Before</div>
+            </div>
+            <div className="pb-16"><ArrowRight size={32} className="text-[#7700fd]" /></div>
+            <div className="text-center">
+              <div className="relative w-24 mx-auto mb-4">
+                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '120px' }} />
+                <motion.div initial={{ height: 0 }} whileInView={{ height: '120px' }} transition={{ duration: 1, delay: 0.3 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg flex items-end justify-center pb-2" style={{ background: 'linear-gradient(180deg, #9d00ff 0%, #7700fd 100%)' }}>
+                  <span className="text-sm font-bold text-white">27.13x</span>
+                </motion.div>
+              </div>
+              <div className="text-2xl font-bold" style={{ color: '#7700fd' }}>27.13x</div>
+              <div className="text-sm text-[#888] mt-1">After</div>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-white" style={{ backgroundColor: '#7700fd' }}><ArrowUp size={16} />+758% ROAS Increase</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Social Proof Network Animation */}
+    <div className="w-full py-16 px-6 lg:px-10" style={{ background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }}>
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-white mb-4 text-center">The Psychology of Influence</h2>
+        <p className="text-white/70 text-center mb-10 max-w-xl mx-auto">When one person buys, others follow — automatically</p>
+
+        {/* Network Visualization */}
+        <div className="relative p-8 rounded-2xl bg-white/5 border border-white/10 overflow-hidden" style={{ minHeight: '300px' }}>
+          <div className="absolute inset-0 flex items-center justify-center">
+            {/* Central Node */}
+            <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="relative z-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)' }}>
+                <ShoppingCart size={32} className="text-white" />
+              </div>
+              <motion.div initial={{ scale: 1, opacity: 0.5 }} animate={{ scale: 1.5, opacity: 0 }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full" style={{ border: '2px solid #7700fd' }} />
+            </motion.div>
+
+            {/* Orbiting Nodes */}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.3 + i * 0.15 }} viewport={{ once: true }} className="absolute" style={{ transform: `rotate(${i * 60}deg) translateX(100px) rotate(-${i * 60}deg)` }}>
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                  <Users size={20} className="text-white/80" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Connection Lines */}
+          <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <motion.line key={i} x1="50%" y1="50%" x2={`${50 + 30 * Math.cos((i * 60 * Math.PI) / 180)}%`} y2={`${50 + 30 * Math.sin((i * 60 * Math.PI) / 180)}%`} stroke="#7700fd" strokeWidth="1" strokeOpacity="0.3" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.5 + i * 0.1 }} viewport={{ once: true }} />
+            ))}
+          </svg>
+
+          <div className="relative z-10 text-center mt-48">
+            <p className="text-white/60 text-sm">One purchase triggers a cascade of conversions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Social Proof Elements */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">5 Psychological Weapons You'll Master</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Each weapon targets a different part of the human decision-making process</p>
+        <div className="grid md:grid-cols-5 gap-4">
+          {[
+            { icon: Brain, label: 'Hidden Laws', desc: 'Psychology triggers', color: '#7700fd' },
+            { icon: Eye, label: 'Perception', desc: 'Control beliefs', color: '#8800ff' },
+            { icon: Sparkles, label: 'Conversion', desc: 'Bypass logic', color: '#9900ff' },
+            { icon: ThumbsUp, label: 'Certainty', desc: 'Remove doubt', color: '#aa00ff' },
+            { icon: Star, label: 'Dark Protocol', desc: 'Deep influence', color: '#bb00ff' },
+          ].map((item, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-5 rounded-xl bg-[#fafafa] border border-[#eee] text-center">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: item.color }}>
+                <item.icon size={26} className="text-white" />
+              </div>
+              <div className="text-sm font-semibold text-[#111] mb-1">{item.label}</div>
+              <div className="text-xs text-[#888]">{item.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Cost Reduction Stats */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Advertising Cost Reduction</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What happens when social proof is applied correctly</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { metric: 'CTR', before: '0.8%', after: '4.2%', increase: '+425%' },
+            { metric: 'CPM', before: '$18', after: '$6', increase: '-67%' },
+            { metric: 'CPC', before: '$2.40', after: '$0.45', increase: '-81%' },
+            { metric: 'CPA', before: '$48', after: '$8', increase: '-83%' },
+          ].map((stat, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white border border-[#eee] text-center">
+              <div className="text-sm font-semibold text-[#888] mb-3">{stat.metric}</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-sm text-[#bbb] line-through">{stat.before}</span>
+                <ArrowRight size={14} className="text-[#ccc]" />
+                <span className="text-lg font-bold" style={{ color: '#7700fd' }}>{stat.after}</span>
+              </div>
+              <span className="text-xs font-medium text-green-500">{stat.increase}</span>
+            </motion.div>
+          ))}
+        </div>
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111] text-white font-semibold">
+            <TrendingUp size={20} />
+            Up to 1,500% reduction in ad costs
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Us vs Them Comparison */}
+    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">We Do It Different</h2>
+        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Most people think they understand social proof. They're wrong.</p>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="p-4 text-left text-sm font-bold bg-[#f5f5f5] border border-[#eee] text-[#666]">THEM (Traditional)</th>
+                <th className="p-4 text-left text-sm font-bold border border-[#eee] text-white" style={{ backgroundColor: '#7700fd' }}>US (Social Proof System)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { them: 'Add reviews to product page and hope', us: 'Engineer proof into every ad, page, and funnel' },
+                { them: 'Wait months for testimonials', us: 'Build authentic proof from day one' },
+                { them: 'Rely on algorithms and luck', us: 'Use psychology that works anywhere' },
+                { them: 'Focus on features and logic', us: 'Trigger subconscious buying response' },
+                { them: 'Pray the algorithm doesn\'t kill you', us: 'Own a skill no platform can take away' },
+              ].map((row, index) => (
+                <tr key={index}>
+                  <td className="p-4 text-sm text-[#666] bg-[#fafafa] border border-[#eee]">{row.them}</td>
+                  <td className="p-4 text-sm text-[#111] font-medium bg-white border border-[#eee]">{row.us}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </>
+);
+
 // ========== MAIN COMPONENT ==========
 
 export default function CourseDetailPage() {
@@ -566,6 +745,12 @@ export default function CourseDetailPage() {
           { icon: Calculator, title: 'Easy ROI', desc: 'You want a system that pays for itself with 1 sale' },
           { icon: Clock, title: 'Quick Setup', desc: 'You need results fast - deploy in under 2 hours' },
         ];
+      case 'the-social-proof':
+        return [
+          { icon: Brain, title: 'Master Psychology', desc: 'You want to understand why people really buy' },
+          { icon: MessageCircle, title: 'Build Trust Fast', desc: 'You need social proof without waiting months' },
+          { icon: TrendingUp, title: 'Scale Without Limits', desc: 'You want ads that work regardless of algorithms' },
+        ];
       default:
         return [
           { icon: Target, title: 'Boost Results', desc: 'You want to improve your metrics' },
@@ -586,6 +771,8 @@ export default function CourseDetailPage() {
         return <EmailMarketingVisuals />;
       case 'abandoned-checkout':
         return <AbandonedCheckoutVisuals />;
+      case 'the-social-proof':
+        return <SocialProofVisuals />;
       default:
         return <SubconsciousTrapVisuals />;
     }

@@ -556,6 +556,148 @@ This system stops the leak. It brings money back into your store. Every day. On 
         answer: "We've seen too many store owners struggle with abandoned checkouts simply because they don't have access to proven systems. Our mission is to make this accessible to every serious e-commerce entrepreneur, regardless of budget. The low price removes all barriers to implementation — and honestly, this system can pay for itself with just one recovered sale."
       }
     ]
+  },
+  "the-social-proof": {
+    slug: "the-social-proof",
+    title: "The Social Proof",
+    subtitle: "How to Force Anyone to Buy From You Using One Psychological Law",
+    description: "Turn every visitor into a buyer by triggering the most powerful force in human psychology — the Social Proof Effect.",
+    price: 39,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_43.jpg?v=1757233352",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5.jpg?v=1760517983",
+    badge: "Psychology",
+    stats: [
+      { value: "5", label: "modules" },
+      { value: "4+", label: "hours" },
+      { value: "1,500%", label: "ROI boost" }
+    ],
+    highlights: [
+      "Master the hidden laws of human psychology that drive purchases",
+      "Build authentic social proof from day one without waiting months",
+      "Engineer psychological proof directly into every ad and funnel",
+      "Trigger the 'everyone's buying this' response that bypasses logic",
+      "Own a skill that works regardless of platform or algorithm",
+      "Turn every ad into a money-printing machine with social proof"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802", caption: "Stop fighting algorithm chaos" },
+      { url: "https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif", caption: "Make them buy impulsively" }
+    ],
+    longDescription: `In a world where algorithms change overnight...
+
+We turn every ad into a money-printing machine (for 3 years straight) using The Social Proof Tactic.
+
+If you're in eCommerce, selling a service or product... The page you're about to read is worth more than any video you've seen in the past year.
+
+Straight to the point: Social Proof = Money
+
+And here's the proof... On 27.02.2024, we started using the Social Proof Tactic on one of our brands. Before that, we had a lame ROAS of 3.16...
+
+And just a few days later... the ROAS skyrocketed to 27.13.
+
+"Ads give you exposure, social proof makes sure they pull out their credit card."
+
+Pay attention... No reliance on Facebook algorithms. No endless product testing. No product page reviews. No creatives that competitors can copy.
+
+Creating social proof is a skill that can print you money in every ad, every hour — without relying on Zuckerberg's mercy.
+
+Properly built social proof can turn every ad into a money-printing machine at scale, with no limit and without the need for endless testing.
+
+Over the course of 3 years, we applied the social proof tactic in over 300 ads. We studied and mastered the most powerful triggers found in psychology influence books.
+
+Until we reached a point where every time... the method reduces advertising costs by up to 1,500% (CTR, CPM, CPC, CPA).
+
+But the most important thing we've gained... Business Security.
+
+It doesn't matter if Facebook is messing with your ad account. It doesn't matter if competitors are copying your creatives.
+
+As long as you have the ability to generate social proof from scratch — the control is in your hands and no one can take it away from you.
+
+We promise you: In a few days you will send us a message that you have no way of thanking us, and that we have changed your life.`,
+    modules: [
+      {
+        title: "The Hidden Laws of Human Psychology",
+        description: "You'll be exposed to every hidden psychological law that makes a random stranger buy simply because someone else did. Understand exactly how the brain works and what drives the subconscious to make a purchasing decision behind the scenes."
+      },
+      {
+        title: "The Social Perception Engine",
+        description: "The complete system for controlling the human brain's perception of your potential customer. Together, from zero, we'll build an entire framework that causes the customer to purchase in an impossible way, devoid of any ability to resist, due to the magical power called The Social Proof Effect."
+      },
+      {
+        title: "The Subconscious Conversion Machine",
+        description: "Discover how to transform doubt into belief, and belief into emotion. Learn how to trigger emotional responses in the customer that bypass logic — excitement so powerful it leads them to buy without thinking twice."
+      },
+      {
+        title: "The Psychology of Certainty",
+        description: "Here you learn how to make the customer's brain perceive reality exactly as you want. How to make them see your brand as the leader, your product as the only solution, and their purchase as the smartest decision they've ever made."
+      },
+      {
+        title: "The Complete Dark Proof Protocol",
+        description: "This is no longer persuasion — it's consciousness programming. Understand how to change the customer's deep beliefs about what 'works,' who's 'worthy,' and why you automatically become their safe and preferred choice again and again."
+      }
+    ],
+    bonuses: [
+      {
+        title: "Social Proof Templates Library",
+        description: "50+ ready-to-use social proof elements: testimonial layouts, trust badges, review displays, and UGC frameworks. Just copy and deploy.",
+        value: 197
+      },
+      {
+        title: "Ad Social Proof Swipe File",
+        description: "100+ proven ad formats that leverage social proof psychology. Screenshots from campaigns with 10X+ ROAS.",
+        value: 147
+      },
+      {
+        title: "Psychological Trigger Cheat Sheet",
+        description: "Quick-reference guide to the 15 most powerful social proof triggers. Know exactly when and how to use each one.",
+        value: 67
+      },
+      {
+        title: "Review Generation System",
+        description: "The exact system to generate authentic reviews and testimonials fast — even if you're starting from zero.",
+        value: 127
+      },
+      {
+        title: "Landing Page Social Proof Blueprint",
+        description: "Complete blueprints showing exactly where to place social proof elements for maximum conversion impact.",
+        value: 97
+      }
+    ],
+    faq: [
+      {
+        question: "I already use reviews on my product pages. Isn't that enough?",
+        answer: "Product page reviews are just the tip of the iceberg. This is a comprehensive psychological system that makes customers believe everything you say — across your ads, landing pages, emails, and entire funnel. It goes far beyond simple testimonials. You'll learn how to engineer belief at the subconscious level."
+      },
+      {
+        question: "This probably doesn't apply to my niche/business.",
+        answer: "Wrong. This is relevant to everyone. Social proof is the fundamental law of human psychology. Any business applying it can skyrocket conversion rates overnight. Billion-dollar brands have built empires on this principle alone. If you're selling to humans, this applies to you."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug and play templates that you can implement immediately."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "How long does it take to see results?",
+        answer: "Most people see an immediate impact on their ad performance within 24-72 hours of implementation. Social proof works instantly because it taps into hardwired human psychology."
+      },
+      {
+        question: "What if Facebook shuts down my ad account?",
+        answer: "That's exactly why you need this. Social proof is a skill that transcends platforms. Whether you're on Facebook, TikTok, Google, or selling in person — human psychology doesn't change. You'll own a skill that can't be taken away."
+      }
+    ]
   }
 };
 
