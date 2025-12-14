@@ -58,45 +58,85 @@ const CourseContentInputForm = () => {
   const [savedContents, setSavedContents] = useState<CourseContentInput[]>([]);
   const [showSavedList, setShowSavedList] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Load saved contents from localStorage on mount
+  // Load saved contents from API on mount
   useEffect(() => {
-    const saved = localStorage.getItem('courseContentInputs');
-    if (saved) {
-      setSavedContents(JSON.parse(saved));
-    }
+    const fetchCourseInputs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/course-inputs');
+        if (response.ok) {
+          const data = await response.json();
+          // Filter out the example course
+          const realCourses = (data.courses || []).filter(
+            (c: CourseContentInput) => c.id !== 'example'
+          );
+          setSavedContents(realCourses);
+        }
+      } catch (error) {
+        console.error('Failed to fetch course inputs:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCourseInputs();
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!courseName.trim()) {
       alert('Please enter a course name');
       return;
     }
 
-    const newContent: CourseContentInput = {
-      id: Date.now().toString(),
-      courseName: courseName.trim(),
-      mockupUrl: mockupUrl.trim(),
-      htmlBlocks: htmlBlocks.trim(),
-      createdAt: new Date().toISOString(),
-    };
+    setIsSaving(true);
+    try {
+      const response = await fetch('/api/course-inputs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          courseName: courseName.trim(),
+          mockupUrl: mockupUrl.trim(),
+          htmlBlocks: htmlBlocks.trim(),
+        }),
+      });
 
-    const updated = [...savedContents, newContent];
-    setSavedContents(updated);
-    localStorage.setItem('courseContentInputs', JSON.stringify(updated));
-
-    // Reset form
-    setCourseName('');
-    setMockupUrl('');
-    setHtmlBlocks('');
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 3000);
+      if (response.ok) {
+        const data = await response.json();
+        setSavedContents([...savedContents, data.course]);
+        // Reset form
+        setCourseName('');
+        setMockupUrl('');
+        setHtmlBlocks('');
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to save course');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('Failed to save course. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    const updated = savedContents.filter(c => c.id !== id);
-    setSavedContents(updated);
-    localStorage.setItem('courseContentInputs', JSON.stringify(updated));
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/course-inputs?id=${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setSavedContents(savedContents.filter(c => c.id !== id));
+      } else {
+        alert('Failed to delete course');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Failed to delete course');
+    }
   };
 
   const handleLoadContent = (content: CourseContentInput) => {
@@ -143,7 +183,11 @@ const CourseContentInputForm = () => {
                   onClick={() => setShowSavedList(!showSavedList)}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-[#f5f5f5] text-[#666] hover:bg-[#eee] transition-colors"
                 >
-                  <Eye size={14} />
+                  {isLoading ? (
+                    <div className="w-3.5 h-3.5 border-2 border-[#666] border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Eye size={14} />
+                  )}
                   Saved ({savedContents.length})
                 </button>
               </div>
@@ -280,18 +324,24 @@ const CourseContentInputForm = () => {
 
                     <button
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105"
+                      disabled={isSaving}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{ backgroundColor: '#7700fd' }}
                     >
                       {saveSuccess ? (
                         <>
                           <Check size={16} />
-                          Saved!
+                          Saved to File!
+                        </>
+                      ) : isSaving ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Saving...
                         </>
                       ) : (
                         <>
                           <Save size={16} />
-                          Save Local
+                          Save to File
                         </>
                       )}
                     </button>
@@ -303,10 +353,13 @@ const CourseContentInputForm = () => {
               <div className="mt-6 p-4 rounded-xl bg-[#f5f5f5] border border-[#eee]">
                 <p className="text-sm text-[#666]">
                   <strong className="text-[#111]">How to use:</strong><br/>
-                  1. Fill in course details and HTML blocks<br/>
-                  2. Click <strong>"Copy JSON"</strong> to copy the data<br/>
-                  3. Paste into <code className="bg-white px-1 rounded">src/data/course-inputs.json</code><br/>
-                  4. Claude can then read and implement the course
+                  1. Fill in course name, mockup URL, and paste all HTML blocks<br/>
+                  2. Click <strong>"Save to File"</strong> - data is saved directly to the server<br/>
+                  3. Ask Claude: <em>"Create a landing page for [course name]"</em><br/>
+                  4. Claude will read the saved data and build the page automatically
+                </p>
+                <p className="text-xs text-[#888] mt-3">
+                  Data is saved to <code className="bg-white px-1 rounded">src/data/course-inputs.json</code> and persists across sessions.
                 </p>
               </div>
             </div>
