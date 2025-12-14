@@ -637,33 +637,7 @@ We promise you: In a few days you will send us a message that you have no way of
         description: "This is no longer persuasion — it's consciousness programming. Understand how to change the customer's deep beliefs about what 'works,' who's 'worthy,' and why you automatically become their safe and preferred choice again and again."
       }
     ],
-    bonuses: [
-      {
-        title: "Social Proof Templates Library",
-        description: "50+ ready-to-use social proof elements: testimonial layouts, trust badges, review displays, and UGC frameworks. Just copy and deploy.",
-        value: 197
-      },
-      {
-        title: "Ad Social Proof Swipe File",
-        description: "100+ proven ad formats that leverage social proof psychology. Screenshots from campaigns with 10X+ ROAS.",
-        value: 147
-      },
-      {
-        title: "Psychological Trigger Cheat Sheet",
-        description: "Quick-reference guide to the 15 most powerful social proof triggers. Know exactly when and how to use each one.",
-        value: 67
-      },
-      {
-        title: "Review Generation System",
-        description: "The exact system to generate authentic reviews and testimonials fast — even if you're starting from zero.",
-        value: 127
-      },
-      {
-        title: "Landing Page Social Proof Blueprint",
-        description: "Complete blueprints showing exactly where to place social proof elements for maximum conversion impact.",
-        value: 97
-      }
-    ],
+    bonuses: [],
     faq: [
       {
         question: "I already use reviews on my product pages. Isn't that enough?",
