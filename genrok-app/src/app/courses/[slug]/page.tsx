@@ -151,17 +151,17 @@ const SubconsciousTrapVisuals = () => (
           <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Optimized Conversion Funnel</h3>
           <div className="max-w-md mx-auto space-y-2">
             {[
-              { label: 'Visitors', width: '100%', value: '100%', color: '#f5f5f5' },
-              { label: 'Engaged', width: '75%', value: '75%', color: '#e5e5e5' },
-              { label: 'Add to Cart', width: '45%', value: '45%', color: '#d5d5d5' },
-              { label: 'Checkout', width: '30%', value: '30%', color: '#333' },
-              { label: 'Purchase', width: '22%', value: '22%', color: '#111' },
+              { label: 'Visitors', width: '100%', value: '100%', color: '#f5f5f5', textColor: '#666666' },
+              { label: 'Engaged', width: '75%', value: '75%', color: '#e5e5e5', textColor: '#666666' },
+              { label: 'Add to Cart', width: '45%', value: '45%', color: '#d5d5d5', textColor: '#666666' },
+              { label: 'Checkout', width: '30%', value: '30%', color: '#333', textColor: '#ffffff' },
+              { label: 'Purchase', width: '22%', value: '22%', color: '#111', textColor: '#ffffff' },
             ].map((step, index) => (
               <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="flex items-center gap-4">
                 <div className="w-20 text-right text-sm text-[#888]">{step.label}</div>
                 <div className="flex-1 h-10 bg-[#fafafa] rounded-lg overflow-hidden">
                   <motion.div initial={{ width: 0 }} whileInView={{ width: step.width }} transition={{ duration: 0.8, delay: index * 0.15 }} viewport={{ once: true }} className="h-full rounded-lg flex items-center justify-end pr-3" style={{ backgroundColor: step.color }}>
-                    <span className={`text-sm font-medium ${index >= 3 ? 'text-white' : 'text-[#666]'}`}>{step.value}</span>
+                    <span className="text-sm font-medium" style={{ color: step.textColor }}>{step.value}</span>
                   </motion.div>
                 </div>
               </motion.div>
@@ -185,14 +185,14 @@ const LTVSystemVisuals = () => (
         <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Transform one-time buyers into lifetime customers</p>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { value: '$47', label: 'First Purchase', desc: 'Average initial order', color: '#ddd' },
-            { value: '$470', label: 'After 12 Months', desc: 'With LTV system', color: '#666' },
-            { value: '$1,000+', label: 'Lifetime Value', desc: 'Customer potential', color: '#111' },
+            { value: '$47', label: 'First Purchase', desc: 'Average initial order', color: '#ddd', textColor: '#666666', labelColor: '#444444', descColor: '#888888' },
+            { value: '$470', label: 'After 12 Months', desc: 'With LTV system', color: '#666', textColor: '#ffffff', labelColor: '#ffffff', descColor: 'rgba(255,255,255,0.7)' },
+            { value: '$1,000+', label: 'Lifetime Value', desc: 'Customer potential', color: '#111', textColor: '#ffffff', labelColor: '#ffffff', descColor: 'rgba(255,255,255,0.7)' },
           ].map((item, index) => (
             <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl text-center" style={{ backgroundColor: item.color }}>
-              <div className={`text-4xl font-bold mb-2 ${index === 0 ? 'text-[#666]' : 'text-white'}`}>{item.value}</div>
-              <div className={`font-medium mb-1 ${index === 0 ? 'text-[#444]' : 'text-white'}`}>{item.label}</div>
-              <div className={`text-sm ${index === 0 ? 'text-[#888]' : 'text-white/70'}`}>{item.desc}</div>
+              <div className="text-4xl font-bold mb-2" style={{ color: item.textColor }}>{item.value}</div>
+              <div className="font-medium mb-1" style={{ color: item.labelColor }}>{item.label}</div>
+              <div className="text-sm" style={{ color: item.descColor }}>{item.desc}</div>
             </motion.div>
           ))}
         </div>
@@ -215,8 +215,8 @@ const LTVSystemVisuals = () => (
                 { step: 4, title: 'Repeat', desc: 'Lifetime value', icon: Repeat },
               ].map((item, index) => (
                 <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-[#111] text-white flex items-center justify-center mb-3 relative z-10">
-                    <item.icon size={20} />
+                  <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center mb-3 relative z-10">
+                    <item.icon size={20} style={{ color: '#ffffff' }} />
                   </div>
                   <div className="text-sm font-semibold text-[#111]">{item.title}</div>
                   <div className="text-xs text-[#888] text-center max-w-[80px]">{item.desc}</div>
@@ -299,8 +299,8 @@ const EmailMarketingVisuals = () => (
     {/* The 3 Systems */}
     <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-white mb-4 text-center">The 3-Part System</h2>
-        <p className="text-white/70 text-center mb-10 max-w-xl mx-auto">Three layers of technology that create an unfair advantage</p>
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>The 3-Part System</h2>
+        <p className="text-center mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>Three layers of technology that create an unfair advantage</p>
         <div className="space-y-4">
           {[
             { num: '1', title: 'Business Intelligence + World-Class Setup', desc: 'The most advanced BI configuration — optimizing send times, frequency, and content delivery on a per-customer basis.' },
@@ -309,10 +309,10 @@ const EmailMarketingVisuals = () => (
           ].map((item, index) => (
             <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white/5 border border-white/10">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white text-[#111] font-bold text-xl">{item.num}</div>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white font-bold text-xl" style={{ color: '#111111' }}>{item.num}</div>
                 <div>
-                  <h3 className="font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-sm text-white/60">{item.desc}</p>
+                  <h3 className="font-semibold mb-2" style={{ color: '#ffffff' }}>{item.title}</h3>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
                 </div>
               </div>
             </motion.div>
@@ -333,11 +333,11 @@ const EmailMarketingVisuals = () => (
             { value: 92462, prefix: '$', suffix: '', label: 'Single Campaign', desc: 'From one email blast' },
           ].map((stat, index) => (
             <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-[#111] text-center">
-              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
+              <div className="text-4xl lg:text-5xl font-bold mb-2" style={{ color: '#ffffff' }}>
                 <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
               </div>
-              <div className="text-white font-medium mb-1">{stat.label}</div>
-              <div className="text-white/50 text-sm">{stat.desc}</div>
+              <div className="font-medium mb-1" style={{ color: '#ffffff' }}>{stat.label}</div>
+              <div className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
             </motion.div>
           ))}
         </div>
@@ -462,7 +462,7 @@ const AbandonedCheckoutVisuals = () => {
       {/* Stats */}
       <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-10 text-center">Proven Results</h2>
+          <h2 className="text-2xl font-bold mb-10 text-center" style={{ color: '#ffffff' }}>Proven Results</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { value: 82, suffix: '%', label: 'Recovery Rate', desc: 'Of abandoned checkouts' },
@@ -470,11 +470,11 @@ const AbandonedCheckoutVisuals = () => {
               { value: 2, suffix: 'hrs', label: 'Setup Time', desc: 'Plug and play' },
             ].map((stat, index) => (
               <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white/5 border border-white/10 text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-green-400 mb-2">
+                <div className="text-4xl lg:text-5xl font-bold mb-2" style={{ color: '#4ade80' }}>
                   <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-white font-medium mb-1">{stat.label}</div>
-                <div className="text-white/50 text-sm">{stat.desc}</div>
+                <div className="font-medium mb-1" style={{ color: '#ffffff' }}>{stat.label}</div>
+                <div className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
               </motion.div>
             ))}
           </div>
@@ -528,8 +528,8 @@ const SocialProofVisuals = () => (
     {/* Social Proof Network Animation */}
     <div className="w-full py-16 px-6 lg:px-10" style={{ background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }}>
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-white mb-4 text-center">The Psychology of Influence</h2>
-        <p className="text-white/70 text-center mb-10 max-w-xl mx-auto">When one person buys, others follow — automatically</p>
+        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>The Psychology of Influence</h2>
+        <p className="text-center mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>When one person buys, others follow — automatically</p>
 
         {/* Network Visualization */}
         <div className="relative p-8 rounded-2xl bg-white/5 border border-white/10 overflow-hidden" style={{ minHeight: '300px' }}>
@@ -537,7 +537,7 @@ const SocialProofVisuals = () => (
             {/* Central Node */}
             <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="relative z-10">
               <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)' }}>
-                <ShoppingCart size={32} className="text-white" />
+                <ShoppingCart size={32} style={{ color: '#ffffff' }} />
               </div>
               <motion.div initial={{ scale: 1, opacity: 0.5 }} animate={{ scale: 1.5, opacity: 0 }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full" style={{ border: '2px solid #7700fd' }} />
             </motion.div>
@@ -546,7 +546,7 @@ const SocialProofVisuals = () => (
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.3 + i * 0.15 }} viewport={{ once: true }} className="absolute" style={{ transform: `rotate(${i * 60}deg) translateX(100px) rotate(-${i * 60}deg)` }}>
                 <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                  <Users size={20} className="text-white/80" />
+                  <Users size={20} style={{ color: 'rgba(255,255,255,0.8)' }} />
                 </div>
               </motion.div>
             ))}
@@ -560,7 +560,7 @@ const SocialProofVisuals = () => (
           </svg>
 
           <div className="relative z-10 text-center mt-48">
-            <p className="text-white/60 text-sm">One purchase triggers a cascade of conversions</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>One purchase triggers a cascade of conversions</p>
           </div>
         </div>
       </div>
@@ -953,7 +953,38 @@ export default function CourseDetailPage() {
         <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-[#111] mb-6">About This Course</h2>
-            <div className="text-[#444] whitespace-pre-line leading-relaxed text-lg">{course.longDescription}</div>
+            <div className="text-[#444] whitespace-pre-line leading-relaxed text-lg mb-8">{course.longDescription}</div>
+
+            {/* Embedded Visuals */}
+            {course.visuals && course.visuals.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-4 mt-8">
+                {course.visuals.map((visual, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-xl overflow-hidden bg-white border border-[#eee]"
+                  >
+                    <div className="relative aspect-video">
+                      <Image
+                        src={visual.url}
+                        alt={visual.caption || 'Course visual'}
+                        fill
+                        unoptimized
+                        className="object-cover"
+                      />
+                    </div>
+                    {visual.caption && (
+                      <div className="p-3 text-center">
+                        <p className="text-sm text-[#666]">{visual.caption}</p>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -965,7 +996,7 @@ export default function CourseDetailPage() {
               {getCourseTargetAudience().map((item, index) => (
                 <div key={index} className="p-6 rounded-xl text-center bg-[#fafafa] border border-[#eee]">
                   <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center bg-[#111]">
-                    <item.icon size={28} className="text-white" />
+                    <item.icon size={28} style={{ color: '#ffffff' }} />
                   </div>
                   <h3 className="font-semibold text-[#111] mb-2">{item.title}</h3>
                   <p className="text-sm text-[#666]">{item.desc}</p>
@@ -983,7 +1014,7 @@ export default function CourseDetailPage() {
                 const isActive = activeTab === tab.id;
                 const Icon = tab.icon;
                 return (
-                  <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${isActive ? 'bg-white text-[#111]' : 'text-white/70 hover:text-white hover:bg-white/10'}`}>
+                  <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${isActive ? 'bg-white' : 'hover:bg-white/10'}`} style={{ color: isActive ? '#111111' : 'rgba(255,255,255,0.7)' }}>
                     <Icon size={16} /><span>{tab.label}</span>
                   </button>
                 );
@@ -996,10 +1027,10 @@ export default function CourseDetailPage() {
                   {course.modules.map((module, index) => (
                     <div key={index} className="rounded-xl p-5 bg-white/5 border border-white/10">
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white text-[#111] font-bold">{index + 1}</div>
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white font-bold" style={{ color: '#111111' }}>{index + 1}</div>
                         <div>
-                          <h3 className="font-semibold text-white mb-1">{module.title}</h3>
-                          <p className="text-sm text-white/60">{module.description}</p>
+                          <h3 className="font-semibold mb-1" style={{ color: '#ffffff' }}>{module.title}</h3>
+                          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{module.description}</p>
                         </div>
                       </div>
                     </div>
@@ -1013,19 +1044,19 @@ export default function CourseDetailPage() {
                     <div key={index} className="rounded-xl p-5 bg-white/5 border border-white/10">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-4">
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white"><Gift size={18} className="text-[#111]" /></div>
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white"><Gift size={18} style={{ color: '#111111' }} /></div>
                           <div>
-                            <h3 className="font-semibold text-white mb-1">{bonus.title}</h3>
-                            <p className="text-sm text-white/60">{bonus.description}</p>
+                            <h3 className="font-semibold mb-1" style={{ color: '#ffffff' }}>{bonus.title}</h3>
+                            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{bonus.description}</p>
                           </div>
                         </div>
-                        <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white">${bonus.value} value</div>
+                        <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10" style={{ color: '#ffffff' }}>${bonus.value} value</div>
                       </div>
                     </div>
                   ))}
                   <div className="rounded-xl p-6 text-center mt-6 bg-white">
-                    <p className="text-lg font-semibold text-[#111] mb-1">Total Bonus Value: ${totalBonusValue}</p>
-                    <p className="text-sm text-[#666]">All included free with your purchase</p>
+                    <p className="text-lg font-semibold mb-1" style={{ color: '#111111' }}>Total Bonus Value: ${totalBonusValue}</p>
+                    <p className="text-sm" style={{ color: '#666666' }}>All included free with your purchase</p>
                   </div>
                 </div>
               )}
@@ -1035,13 +1066,13 @@ export default function CourseDetailPage() {
                   {course.faq.map((item, index) => (
                     <div key={index} className="rounded-xl overflow-hidden bg-white/5 border border-white/10">
                       <button onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} className="w-full p-5 flex items-center justify-between text-left">
-                        <span className="font-semibold text-white pr-4">{item.question}</span>
-                        {expandedFaq === index ? (<ChevronUp size={20} className="text-white/60 flex-shrink-0" />) : (<ChevronDown size={20} className="text-white/60 flex-shrink-0" />)}
+                        <span className="font-semibold pr-4" style={{ color: '#ffffff' }}>{item.question}</span>
+                        {expandedFaq === index ? (<ChevronUp size={20} style={{ color: 'rgba(255,255,255,0.6)' }} className="flex-shrink-0" />) : (<ChevronDown size={20} style={{ color: 'rgba(255,255,255,0.6)' }} className="flex-shrink-0" />)}
                       </button>
                       <AnimatePresence>
                         {expandedFaq === index && (
                           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="px-5 pb-5">
-                            <p className="text-white/70">{item.answer}</p>
+                            <p style={{ color: 'rgba(255,255,255,0.7)' }}>{item.answer}</p>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -1056,18 +1087,18 @@ export default function CourseDetailPage() {
         {/* Final CTA */}
         <div className="w-full py-16 px-6 lg:px-10 bg-black">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-            <p className="text-white/70 mb-8 text-lg">
+            <h2 className="text-3xl font-bold mb-4" style={{ color: '#ffffff' }}>Ready to Get Started?</h2>
+            <p className="mb-8 text-lg" style={{ color: 'rgba(255,255,255,0.7)' }}>
               Get instant access to {course.modules.length} modules{hasBonuses ? `, ${course.bonuses.length} bonuses worth $${totalBonusValue},` : ''} and start implementing today.
             </p>
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-4xl font-bold text-white">${course.price}</span>
-              {course.originalPrice && (<span className="text-xl line-through text-white/40">${course.originalPrice}</span>)}
+              <span className="text-4xl font-bold" style={{ color: '#ffffff' }}>${course.price}</span>
+              {course.originalPrice && (<span className="text-xl line-through" style={{ color: 'rgba(255,255,255,0.4)' }}>${course.originalPrice}</span>)}
             </div>
-            <button onClick={() => setShowCheckout(true)} className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-medium transition-all hover:opacity-90 hover:scale-[1.02] bg-white text-[#111]">
+            <button onClick={() => setShowCheckout(true)} className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-medium transition-all hover:opacity-90 hover:scale-[1.02] bg-white" style={{ color: '#111111' }}>
               <ShoppingCart size={20} />Get Instant Access<ArrowRight size={18} />
             </button>
-            <p className="text-sm text-white/50 mt-4">30-day money-back guarantee • No questions asked</p>
+            <p className="text-sm mt-4" style={{ color: 'rgba(255,255,255,0.5)' }}>30-day money-back guarantee • No questions asked</p>
           </div>
         </div>
 
