@@ -1831,6 +1831,408 @@ const AdCopyTemplatesAlternativeLayout = ({ course, onCheckout }: AdCopyTemplate
   );
 };
 
+// ========== META AD TEMPLATES ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface MetaAdTemplatesAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const MetaAdTemplatesAlternativeLayout = ({ course, onCheckout }: MetaAdTemplatesAlternativeProps) => {
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section - Black with Gold */}
+      <div className="w-full py-12 lg:py-16 px-6 lg:px-10 bg-black">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 border"
+            style={{ backgroundColor: 'rgba(239, 191, 4, 0.1)', borderColor: '#EFBF04' }}
+          >
+            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#EFBF04' }} />
+            <span className="text-sm font-semibold" style={{ color: '#EFBF04' }}>The creative library billion-dollar brands use</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-5xl font-extrabold mb-4 text-white"
+          >
+            Generate Winning Ad Creatives In <span style={{ color: '#EFBF04' }}>10 Seconds</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl mb-10 max-w-2xl mx-auto text-white/80"
+          >
+            Stop wasting 6 hours to find one winning creative. Get instant access to 1,000+ proven Meta ad templates.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="max-w-2xl mx-auto mb-10"
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6574469f-6304-4b63-a8a5-9d260fc2739a.png?v=1760535779"
+              alt="1000 Meta Ad Templates"
+              className="w-full h-auto rounded-xl"
+              style={{
+                boxShadow: '0 0 30px rgba(239, 191, 4, 0.6), 0 0 60px rgba(239, 191, 4, 0.4), 0 20px 60px rgba(239, 191, 4, 0.3)'
+              }}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-6"
+          >
+            <span className="text-2xl line-through text-white/50 mr-3">${course.originalPrice}</span>
+            <span className="text-3xl font-bold" style={{ color: '#EFBF04' }}>Only ${course.price}</span>
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-full font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+            style={{
+              background: 'radial-gradient(ellipse at bottom, #FFF4CC 0%, #EFBF04 40%)',
+              boxShadow: '0 10px 30px rgba(239, 191, 4, 0.4)'
+            }}
+          >
+            <ShoppingCart size={24} />
+            Get Instant Access Now
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Problem Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-black mb-6"
+          >
+            Why struggle for hours thinking...
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-black mb-10"
+          >
+            Staring at a blank screen. Wondering what creative will work. Trying to come up with something "different"...
+          </motion.p>
+
+          <motion.img
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            src="https://media.tenor.com/4eF0XKHqDB4AAAAM/meeting-bored.gif"
+            alt="Bored meeting"
+            className="w-full max-w-lg mx-auto rounded-lg mb-12"
+          />
+
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-black mb-10"
+          >
+            When you can generate a proven creative in <span style={{ color: '#EFBF04' }}>10 seconds?</span>
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-black mb-6"
+          >
+            On average, it takes a marketer about <strong>35 minutes</strong> to create a single creative...
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-black/70 italic mb-12"
+          >
+            That's 15 minutes brainstorming + 20 minutes actually creating it...
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-black mb-12"
+          >
+            And to find a winning creative? You need to test about <strong>10 different variations</strong>.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-8 rounded-xl bg-black"
+          >
+            <p className="text-2xl font-bold text-white italic mb-4">
+              Which means it takes you almost <span style={{ color: '#EFBF04' }}>6 HOURS</span> to create just ONE winning creative!
+            </p>
+            <p className="text-sm text-white/70 italic">
+              (10 creatives × 35 minutes each = 350 minutes = 5.8 hours)
+            </p>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-black mt-16"
+          >
+            There's a better way.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Solution - 3 Steps */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#f9f9f9]">
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold text-center text-black mb-6"
+          >
+            Here's Your <span style={{ color: '#EFBF04' }}>New Solution</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-center text-[#333] mb-16"
+          >
+            In one simple file, over <strong>1,000</strong> Canva templates for Meta ads that are <strong>proven</strong> to work! No thinking required. No design skills needed. Just pick, customize, and launch.
+          </motion.p>
+
+          <div className="space-y-8">
+            {[
+              {
+                step: "Step 1",
+                title: "Choose Your Template",
+                desc: "Pick from 1,000+ expertly designed static ad templates in Canva. Every template is battle-tested and proven to convert. 🎯",
+                image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif1.webp?v=1752485872"
+              },
+              {
+                step: "Step 2",
+                title: "Customize in Canva",
+                desc: "Edit your template in seconds 🎨 with your logo, colors, and copy. Simple drag-and-drop. No design experience needed.",
+                image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif2.gif?v=1752485913"
+              },
+              {
+                step: "Step 3",
+                title: "Launch & Scale",
+                desc: "Download your ad from Canva and plant this 💥 bomb in Ads Manager. Watch your ROAS climb while your competitors struggle with creative testing.",
+                image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif3.gif?v=1752485958"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="max-w-lg mx-auto p-8 rounded-2xl bg-white border-2 text-center"
+                style={{ borderColor: '#EFBF04', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+              >
+                <h3 className="text-lg font-black text-black mb-2">{item.step}</h3>
+                <h4 className="text-xl font-black mb-4" style={{ color: '#EFBF04' }}>{item.title}</h4>
+                <p className="text-[#333] mb-6">{item.desc}</p>
+                <img src={item.image} alt={item.title} className="w-full max-w-sm mx-auto rounded-lg" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold text-center text-black mb-6"
+          >
+            What You Get With <span style={{ color: '#EFBF04' }}>1,000 Templates</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-center text-[#333] mb-16"
+          >
+            Everything you need to dominate Meta advertising with proven creative assets
+          </motion.p>
+
+          <div className="space-y-6">
+            {[
+              { bold: "No more creative block.", text: "Stop staring at blank screens wondering what to create. Every template is ready to customize in seconds." },
+              { bold: "30 seconds and it's ready.", text: "From choosing a template to having your creative downloaded - in less time than it takes to make coffee." },
+              { bold: "Zero financial investment in software.", text: "All templates work in Canva's free version. No expensive subscriptions. No hidden costs." },
+              { bold: "Battle-tested on massive budgets.", text: "All creatives are proven to work. Tested on huge ad spends in Meta ads. No need to run dozens of blind tests!" },
+              { bold: "Instant creative variety.", text: "Test multiple angles, hooks, and formats without spending hours designing each one from scratch." },
+              { bold: "Scale faster than competitors.", text: "While they waste time in design tools, you're launching new campaigns and finding winners." }
+            ].map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-5 p-6 rounded-xl border-l-4"
+                style={{ backgroundColor: 'rgba(239, 191, 4, 0.05)', borderLeftColor: '#EFBF04' }}
+              >
+                <span className="text-2xl font-black" style={{ color: '#EFBF04' }}>✓</span>
+                <p className="text-lg text-black">
+                  <strong>{benefit.bold}</strong> {benefit.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 p-10 rounded-xl text-center border-2"
+            style={{ background: 'linear-gradient(135deg, rgba(239, 191, 4, 0.1), rgba(239, 191, 4, 0.05))', borderColor: '#EFBF04' }}
+          >
+            <p className="text-xl font-semibold italic text-black mb-4">
+              "According to Meta experts, there's a direct correlation between creative volume and a brand's ability to scale - massive budgets reward output, not just quality."
+            </p>
+            <p className="text-[#666] font-medium">- Meta Advertising Research</p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Examples Carousel */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#f9f9f9] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold text-center text-black mb-16"
+          >
+            Examples Of <span style={{ color: '#EFBF04' }}>Winning Creatives</span>
+          </motion.h2>
+
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+            {[
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_09.52.10-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_12.46.26-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-18_at_09.00.13-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-28_at_17.18.04-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/AAAAAAAAAAART52.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-18_at_09.01.34-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-21_at_14.56.55-min.avif?v=1752488312",
+              "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2024-10-03_at_17.03.08-min.avif?v=1752488312"
+            ].map((src, index) => (
+              <motion.img
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                src={src}
+                alt={`Creative Example ${index + 1}`}
+                className="h-80 w-72 object-cover rounded-xl flex-shrink-0"
+                style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-black">
+        <div className="max-w-2xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold text-white mb-6"
+          >
+            Stop Wasting Time.<br />Start <span style={{ color: '#EFBF04' }}>Winning</span> Today.
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl text-white/80 mb-12"
+          >
+            Get instant access to 1,000+ battle-tested creative templates and transform your Meta advertising in minutes, not months.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-10 rounded-2xl mb-10 border-2"
+            style={{ backgroundColor: 'rgba(239, 191, 4, 0.1)', borderColor: '#EFBF04' }}
+          >
+            <p className="text-lg text-white/70 mb-2">One-Time Payment • Lifetime Access</p>
+            <p className="text-4xl font-extrabold text-white mb-4">
+              <span className="line-through text-white/50 text-3xl mr-3">${course.originalPrice}</span>
+              <span style={{ color: '#EFBF04' }}>Only ${course.price}</span>
+            </p>
+            <p className="text-white/70 italic">
+              That's less than $0.02 per template. A single winning creative pays for this 50x over.
+            </p>
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-full font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+            style={{
+              background: 'radial-gradient(ellipse at bottom, #FFF4CC 0%, #EFBF04 40%)',
+              boxShadow: '0 10px 30px rgba(239, 191, 4, 0.4)'
+            }}
+          >
+            <ShoppingCart size={24} />
+            Get Instant Access Now
+          </motion.button>
+
+          <p className="text-white/60 mt-8 text-sm">
+            ✓ Instant delivery • ✓ Works with free Canva • ✓ No subscriptions
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ========== PRODUCT MAPPING VISUALIZATIONS ==========
 
 const ProductMappingVisuals = () => (
@@ -2909,14 +3311,14 @@ export default function CourseDetailPage() {
         <div className="w-full px-6 lg:px-10 pt-6 flex items-center justify-between">
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
-          {/* Layout Toggle - For Social Proof, AI Photographer, and Ad Copy Templates */}
-          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates') && (
+          {/* Layout Toggle - For Social Proof, AI Photographer, Ad Copy Templates, and Meta Ad Templates */}
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 backgroundColor: useAlternativeLayout
-                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : '#D4B160')
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : '#EFBF04')
                   : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
@@ -2934,6 +3336,8 @@ export default function CourseDetailPage() {
           <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
           <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
+          <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : (
           <>
         {/* Hero Section */}
