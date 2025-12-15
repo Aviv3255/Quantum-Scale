@@ -7671,6 +7671,13 @@ export default function CourseDetailPage() {
     }
   }, [user, isLoading, router]);
 
+  // Auto-enable alternative layout if HTML block exists
+  useEffect(() => {
+    if (slug && getCourseHTML(slug)) {
+      setUseAlternativeLayout(true);
+    }
+  }, [slug]);
+
   const handlePurchase = async () => {
     setIsProcessing(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
