@@ -53,6 +53,8 @@ import {
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getCourseBySlug } from '@/data/courses';
+import RawHTMLRenderer from '@/components/RawHTMLRenderer';
+import { getCourseHTML } from '@/data/course-html-blocks';
 
 type TabType = 'content' | 'bonuses' | 'faq';
 
@@ -5677,18 +5679,18 @@ export default function CourseDetailPage() {
           )}
         </div>
 
-        {/* Alternative Layouts */}
-        {slug === 'the-social-proof' && useAlternativeLayout ? (
-          <SocialProofAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        {/* Alternative Layouts - Prioritize HTML blocks if available */}
+        {useAlternativeLayout && getCourseHTML(slug) ? (
+          <RawHTMLRenderer html={getCourseHTML(slug)!} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
           <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
           <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
+        ) : slug === 'subconscious-trap' && useAlternativeLayout && !getCourseHTML('subconscious-trap') ? (
           <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'ltv-system' && useAlternativeLayout ? (
+        ) : slug === 'ltv-system' && useAlternativeLayout && !getCourseHTML('ltv-system') ? (
           <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
           <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
