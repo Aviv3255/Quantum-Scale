@@ -4,14 +4,27 @@
 
 The system is ready to go! You have:
 - ✅ `/home/user/Quantum-Scale/course-template.txt` - Template file
-- ✅ `/home/user/Quantum-Scale/add-course.sh` - Interactive menu script
+- ✅ `/home/user/Quantum-Scale/add-course.sh` - Interactive menu script (Linux/Mac)
+- ✅ `/home/user/Quantum-Scale/add-course.ps1` - Interactive menu script (Windows)
 - ✅ Claude Code slash command: `/process-course {slug}`
 
 ## Workflow
 
 ### Step 1: Select Course
+
+**On Linux/Mac:**
 ```bash
 bash /home/user/Quantum-Scale/add-course.sh
+```
+
+**On Windows (PowerShell):**
+```powershell
+powershell -ExecutionPolicy Bypass -File "C:\Users\[YourUser]\Quantum-Scale\add-course.ps1"
+```
+
+Or simply:
+```powershell
+.\add-course.ps1
 ```
 
 This shows you:
@@ -98,12 +111,22 @@ Always use this same file - just clear it and add new content each time.
 
 ## Quick Reference
 
-| Action | Command |
-|--------|---------|
-| Start menu | `bash add-course.sh` |
-| Template file | `/home/user/Quantum-Scale/course-template.txt` |
-| Process course | `/process-course {slug}` |
+| Action | Command (Linux/Mac) | Command (Windows) |
+|--------|---------|---------|
+| Start menu | `bash add-course.sh` | `.\add-course.ps1` |
+| Template file | `/home/user/Quantum-Scale/course-template.txt` | `course-template.txt` |
+| Process course | `/process-course {slug}` | `/process-course {slug}` |
 
 ---
 
-Ready? Run: `bash /home/user/Quantum-Scale/add-course.sh`
+## Ready?
+
+**Windows:**
+```powershell
+.\add-course.ps1
+```
+
+**Linux/Mac:**
+```bash
+bash /home/user/Quantum-Scale/add-course.sh
+```
