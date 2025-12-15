@@ -2147,17 +2147,9 @@ Apply 37 proven optimizations instantly
     </div>
 </div>
   `,
-};
 
-// Helper function to get HTML for a course
-export const getCourseHTML = (slug: string): string | null => {
-  const html = courseHTMLBlocks[slug];
-  if (!html || html.includes('PASTE YOUR') || html.trim().length < 100) {
-    return null;
-  }
-  return html;
 
-  // ==================== PRODUCT MAPPING ====================
+// ==================== PRODUCT MAPPING ====================
   'product-mapping': `
 <style>
 
@@ -10168,4 +10160,14 @@ $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="final-b
 </div>
 </div>
   `,
+
+};
+
+// Helper function to get HTML for a course
+export const getCourseHTML = (slug: string): string | null => {
+  const html = courseHTMLBlocks[slug];
+  if (!html || html.includes('PASTE YOUR') || html.trim().length < 100) {
+    return null;
+  }
+  return html;
 };
