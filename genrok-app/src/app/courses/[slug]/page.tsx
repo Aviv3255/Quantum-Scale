@@ -818,611 +818,629 @@ interface SocialProofAlternativeProps {
 }
 
 const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlternativeProps) => {
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>The Social Proof - Transform Every Ad Into Money</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,800;1,400&display=swap');
 
-  // 5 Psychological Weapons - What's Included
-  const psychWeapons = [
-    { title: 'The Hidden Laws of Human Psychology', desc: 'You\'ll be exposed to every hidden psychological law that makes a random stranger buy simply because someone else did. Understand exactly how the brain works and what drives the subconscious to make a purchasing decision behind the scenes.' },
-    { title: 'The Social Perception Engine', desc: 'The complete system for controlling the human brain\'s perception of your potential customer. Together, from zero, we\'ll build an entire framework that causes the customer to purchase in an impossible way, devoid of any ability to resist, due to the magical power called The Social Proof Effect.' },
-    { title: 'The Subconscious Conversion Machine', desc: 'Discover how to transform doubt into belief, and belief into emotion. Learn how to trigger emotional responses in the customer that bypass logic – excitement so powerful it leads them to buy without thinking twice.' },
-    { title: 'The Psychology of Certainty', desc: 'Here you learn how to make the customer\'s brain perceive reality exactly as you want. How to make them see your brand as the leader, your product as the only solution, and their purchase as the smartest decision they\'ve ever made.' },
-    { title: 'The Complete Dark Proof Protocol', desc: 'This is no longer persuasion – it\'s consciousness programming. Understand how to change the customer\'s deep beliefs about what "works," who\'s "worthy," and why you automatically become their safe and preferred choice again and again.' },
-  ];
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-  // Comparison table rows
-  const comparisonRows = [
-    { them: 'Add some reviews to the product page and hope people buy', us: 'Engineer psychological proof directly into every ad, landing page, and funnel – creating an unstoppable buying environment' },
-    { them: 'Wait months to collect real customer testimonials', us: 'Build authentic-looking social proof from day one using proven psychological frameworks' },
-    { them: 'Rely on expensive products, perfect creatives, and algorithm luck', us: 'Use human psychology to sell any product, in any niche, regardless of creative quality' },
-    { them: 'Focus on features, benefits, and logical selling', us: 'Trigger the subconscious "everyone\'s buying this" response that bypasses logic entirely' },
-    { them: 'Pray the algorithm doesn\'t kill your account', us: 'Own a skill that works regardless of platform, algorithm, or market conditions' },
-  ];
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Open Sans', sans-serif;
+            }
 
-  // FAQ items from HTML
-  const faqItems = [
-    { question: 'Q: "I already use reviews on my product pages. Isn\'t that enough?"', answer: 'Product page reviews are just the tip of the iceberg. This is a comprehensive psychological system that makes customers believe everything you say - across your ads, landing pages, emails, and entire funnel. It goes far beyond simple testimonials. You\'ll learn how to engineer belief at the subconscious level.' },
-    { question: 'Q: "This probably doesn\'t apply to my niche/business."', answer: 'Wrong. This is relevant to everyone. Social proof is the fundamental law of human psychology. Any business applying it can skyrocket conversion rates overnight. Billion-dollar brands have built empires on this principle alone. If you\'re selling to humans, this applies to you.' },
-    { question: 'Q: What if I buy multiple courses - do they overlap?', answer: 'Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact.' },
-    { question: 'Q: Will I get lifetime access?', answer: 'Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.' },
-    { question: 'Q: Is this just theory or can I apply it right away?', answer: 'This is 100% practical. You\'ll get a clear framework + real examples + plug and play templates that you can implement immediately.' },
-    { question: 'Q: Do I need a team to apply this?', answer: 'Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.' },
-    { question: 'Q: "How long does it take to see results?"', answer: 'Most people see an immediate impact on their ad performance within 24-72 hours of implementation. Social proof works instantly because it taps into hardwired human psychology.' },
-    { question: 'Q: "What if Facebook shuts down my ad account?"', answer: 'That\'s exactly why you need this. Social proof is a skill that transcends platforms. Whether you\'re on Facebook, TikTok, Google, or selling in person - human psychology doesn\'t change. You\'ll own a skill that can\'t be taken away.' },
-  ];
+            .landing-section {
+                background: #000;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding-top: 16px;
+                padding-bottom: 20px;
+                position: relative;
+                z-index: auto;
+                box-sizing: border-box;
+                overflow: hidden;
+                min-height: 0;
+                flex-shrink: 1;
+                color: white;
+            }
+
+            .intro-text {
+                background: #252525;
+                border-radius: 25px;
+                padding: 12px 30px;
+                font-size: 14px;
+                line-height: 1.4;
+                margin: 18px auto 2px auto;
+                max-width: 500px;
+                opacity: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .main-headline {
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 800;
+                font-size: 41.16px;
+                line-height: 1.3;
+                margin: 10px 16px 0 16px;
+                padding: 0;
+                color: white;
+                text-align: center;
+            }
+
+            .above-image-text {
+                font-size: 16px;
+                line-height: 1.4;
+                margin: 0 16px 10px 16px;
+                padding: 0;
+                font-weight: 400;
+                color: white;
+                text-align: center;
+            }
+
+            .hero-image {
+                width: 86%;
+                max-width: 516px;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+                border-radius: 15px;
+                filter: drop-shadow(0 0 18px rgba(119, 0, 253, 0.6)) drop-shadow(0 0 35px rgba(119, 0, 253, 0.4));
+            }
+
+            .price-section {
+                margin: 30px auto 0 auto;
+                text-align: center;
+            }
+
+            .price-text {
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 800;
+                font-size: 46.256px;
+                color: white;
+                margin: 0 0 8px 0;
+            }
+
+            .old-price {
+                text-decoration: line-through;
+                color: #999;
+            }
+
+            .new-price {
+                color: #7700fd;
+            }
+
+            .bundle-price-container {
+                margin: 16px auto 0 auto;
+                color: #ffffff !important;
+            }
+
+            .bundle-price-text {
+                font-size: 14px !important;
+                color: #ffffff !important;
+                line-height: 1.4 !important;
+            }
+
+            .bundle-price-text * {
+                color: #ffffff !important;
+            }
+
+            .bundle-link {
+                color: #ffffff !important;
+                text-decoration: underline !important;
+            }
+
+            .bundle-link:hover {
+                text-decoration: none !important;
+                color: #ffffff !important;
+            }
+
+            .cta-button {
+                background: radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%) !important;
+                border: none;
+                border-radius: 35px;
+                padding: 21px 76px;
+                font-size: 19.55px;
+                font-weight: 700;
+                color: white !important;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 25px auto 0 auto;
+                width: auto;
+                min-width: 380px;
+                height: 81px;
+                font-family: 'Open Sans', sans-serif;
+                animation: pulse-button 2s infinite;
+                box-shadow: 0 10px 40px rgba(119, 0, 253, 0.5);
+            }
+
+            @keyframes pulse-button {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+
+            .cta-button:hover {
+                transform: scale(1.08) !important;
+                box-shadow: 0 15px 50px rgba(119, 0, 253, 0.7);
+                background: linear-gradient(135deg, #8800ff 0%, #b000ff 100%) !important;
+            }
+
+            .cta-button.loading {
+                pointer-events: none;
+                opacity: 0.7;
+            }
+
+            .cta-button .button-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                line-height: 1.3;
+            }
+
+            .cta-button .small-text {
+                font-size: 12px !important;
+                font-weight: 400 !important;
+                text-transform: none !important;
+                margin-top: 3px;
+                letter-spacing: 0;
+                color: #ffffff !important;
+            }
+
+            .secure-payment {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                margin: 16px auto 0 auto;
+                font-size: 13.24px;
+                color: #aaa;
+            }
+
+            .secure-payment-icon {
+                width: 40px;
+                height: 25px;
+                background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            @media (max-width: 768px) {
+                .landing-section {
+                    padding: 3px 3px 20px 3px;
+                }
+
+                .main-headline {
+                    font-size: 28.7232px;
+                }
+
+                .price-text {
+                    font-size: 32.368px;
+                }
+
+                .cta-button {
+                    font-size: 21px;
+                    padding: 18px 35px;
+                    min-width: 450px;
+                    letter-spacing: 0px;
+                }
+
+                .cta-button .small-text {
+                    font-size: 12px !important;
+                }
+
+                .above-image-text {
+                    font-size: 14px;
+                }
+
+                .intro-text {
+                    font-size: 12px;
+                    padding: 10px 15px;
+                    max-width: 320px;
+                }
+
+                .secure-payment {
+                    font-size: 13.24px;
+                }
+
+                .secure-payment-icon {
+                    width: 23.59px;
+                    height: 23.59px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .landing-section {
+                    padding: 2px 2px 20px 2px;
+                }
+
+                .main-headline {
+                    font-size: 23px;
+                }
+
+                .above-image-text {
+                    font-size: 13px;
+                }
+
+                .price-text {
+                    font-size: 24px;
+                }
+
+                .cta-button {
+                    min-width: 350px;
+                    font-size: 18px;
+                    padding: 16px 25px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="landing-section">
+            <div class="intro-text">
+                In a world where algorithms change overnight...
+            </div>
+
+            <h1 class="main-headline">
+                How to Force Anyone to Buy From You Using One Psychological Law
+            </h1>
+
+            <div class="above-image-text">
+                (Turn every visitor into a buyer by triggering the most powerful force in human psychology)
+            </div>
+
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5.jpg?v=1760517983" alt="Social Proof Power" class="hero-image">
+
+            <div class="price-section">
+                <div class="price-text">
+                    <span class="old-price">$197</span> <span class="new-price">$39</span>
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="handleCheckout(event)">
+                <div class="button-text">
+                    <span>ADD TO MY SYSTEM!</span>
+                    <span class="small-text">(One-time payment • Instant access)</span>
+                </div>
+            </button>
+
+            <div class="bundle-price-container" style="color: #ffffff !important;">
+                <div class="bundle-price-text" style="color: #ffffff !important;">
+                    <span style="color: #ffffff !important;">$25.35 if <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link" style="color: #ffffff !important;">building a bundle</a></span>
+                </div>
+            </div>
+
+            <div class="secure-payment">
+                <div class="secure-payment-icon"></div>
+                <span>Secure 256-bit SSL encrypted payment</span>
+            </div>
+        </div>
+
+        <div style="background: white; color: black; padding: 40px 20px; text-align: center; font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2 style="font-size: 24px; font-weight: bold; margin: 20px 0;">In a world of Chaos...</h2>
+            <p style="max-width: 800px; margin: 0 auto 15px; font-size: 16px;">Millions of marketers are fighting to break the creative that sinks money, just to be profitable - and finally see some sales...</p>
+            <p style="max-width: 800px; margin: 0 auto 20px; font-size: 16px; font-weight: bold;">Because their algorithm 'went crazy'...</p>
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802" alt="Marketer struggling" style="max-width: 310px; margin: 30px auto; display: block;">
+            <h2 style="font-size: 24px; font-weight: bold; margin: 30px 0;">We turn every ad into a money-printing machine<br/>(For 3 years straight)<br/>using The Social Proof Tactic</h2>
+            <p style="max-width: 800px; margin: 30px auto 10px; font-size: 16px; font-weight: bold;">If you're in eCommerce, selling a service or product...</p>
+            <p style="max-width: 800px; margin: 0 auto 30px; font-size: 16px;">The page you're about to read until the end<br/>is <strong>worth more than any video</strong> you've seen in the past year</p>
+            <p style="max-width: 800px; margin: 30px auto 10px; font-size: 16px;"><u><strong>Straight to the point:</strong></u></p>
+            <h2 style="font-size: 36px; font-weight: bold; margin: 20px 0; color: #7e42f4;">Social Proof = Money</h2>
+            <h3 style="font-size: 26px; font-weight: bold; margin: 20px 0;">And here's the proof...</h3>
+            <p style="max-width: 800px; margin: 15px auto; font-size: 16px;">On 27.02.2024, we started using the Social Proof Tactic on one of our brands, Before that, we had a <strong>lame ROAS of 3.16</strong>...</p>
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328" alt="Before: ROAS 3.16" style="max-width: 578px; margin: 20px auto; display: block;">
+            <p style="max-width: 800px; margin: 30px auto 15px; font-size: 16px;">And just a few days later... the <strong>ROAS skyrocketed to 27.13...</strong></p>
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467" alt="After: ROAS 27.13" style="max-width: 578px; margin: 20px auto; display: block;">
+            <h2 style="font-size: 24px; font-weight: bold; margin: 30px 0;">Ads give you exposure, social proof makes sure they pull out their <u>credit card</u>.</h2>
+            <p style="font-size: 14px; font-style: italic; margin: 10px 0 30px; color: #666;">(and make them buy impulsively and extremely)</p>
+            <img src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif" alt="Fifth Brother" style="max-width: 400px; margin: 30px auto; display: block; border-radius: 15px;">
+            <div style="max-width: 800px; margin: 30px auto; font-size: 16px; line-height: 2;">
+                <p style="font-weight: bold;">Pay attention...</p>
+                <p>No reliance on Facebook algorithms,</p>
+                <p>No endless product testing...</p>
+                <p>No product page reviews,</p>
+                <p>No creatives that competitors can copy...</p>
+            </div>
+            <div style="max-width: 800px; margin: 30px auto; font-size: 18px; font-weight: bold;">Creating social proof is a skill that can <strong>print you money</strong> In every ad, every hour</div>
+            <p style="font-size: 14px; font-style: italic; margin: 10px 0 30px; color: #666;">(Without relying on Zuckerberg's mercy)</p>
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888" alt="Zuckerberg" style="max-width: 300px; margin: 20px auto; display: block;">
+            <p style="max-width: 800px; margin: 30px auto; font-size: 16px;">Properly built social proof can turn every ad into a money-printing machine In scale, with no limit and without the need for endless testings.</p>
+            <p style="max-width: 800px; margin: 60px auto 20px; font-size: 24px; font-weight: bold;">It all started 3 years ago, when we discovered the power of social proof...</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 16px;">At that moment...</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 16px; font-weight: bold;">Our lives changed.</p>
+            <p style="max-width: 800px; margin: 40px auto; font-size: 16px; font-style: italic;">We implemented the tactic in every ad...</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 20px;">Over the course of 3 years, we applied the social proof tactic in <strong>over 300 ads</strong>.</p>
+            <p style="max-width: 800px; margin: 40px auto; font-size: 16px;">We studied and mastered the most powerful triggers found in psychology influence books</p>
+            <p style="max-width: 800px; margin: 10px auto 20px; font-size: 16px;">Until we reached a point where every time…</p>
+            <h2 style="font-size: 26px; font-weight: bold; margin: 20px 0;"><span style="background-color: rgb(252, 237, 169); padding: 5px 10px;">the method reduces advertising costs by up</span></h2>
+            <h2 style="font-size: 26px; font-weight: bold; margin: 10px 0;"><span style="background-color: rgb(252, 237, 169); padding: 5px 10px;">to 1,500%</span></h2>
+            <h3 style="font-size: 20px; margin: 10px 0; font-style: italic;">(CTR, CPM, CPC, CPA)</h3>
+            <img src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif" alt="Cat Buy More" style="max-width: 400px; margin: 30px auto; display: block; border-radius: 15px;">
+            <p style="max-width: 800px; margin: 60px auto 20px; font-size: 16px; font-style: italic;">But the most important thing we've gained...</p>
+            <p style="max-width: 800px; margin: 40px auto; font-size: 28px; font-weight: bold;">Business Security</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 16px;">It can change everything.</p>
+            <p style="max-width: 800px; margin: 10px auto; font-size: 16px;">It doesn't matter if Facebook is messing with your ad account...</p>
+            <p style="max-width: 800px; margin: 10px auto 20px; font-size: 16px;">It doesn't matter if competitors are copying your creatives...</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 16px;">As long as you have the ability to generate social proof from scratch – the control is in your hands and <strong><span style="background-color: rgb(255, 239, 166);">no one can take it away from you</span>…</strong></p>
+            <p style="max-width: 800px; margin: 40px auto; font-size: 16px;">Once you have this knowledge,<br/>replicate it on every possible ad to get…</p>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 28px; font-weight: bold;">Money in the Bank</p>
+            <p style="max-width: 800px; margin: 15px auto; font-size: 16px;">So here... We've decided to share all the knowledge we've gained,</p>
+            <p style="max-width: 800px; margin: 15px auto 40px; font-size: 16px;">So you can turn ads into social proof machines, One that prints money on autopilot</p>
+            <h3 style="font-size: 16px; font-weight: bold; margin: 30px 0;"><u>We promise you:</u></h3>
+            <p style="max-width: 800px; margin: 15px auto; font-size: 16px;">In a few days you will send us a message that you have no way of thanking us, and that we have changed your life.</p>
+        </div>
+
+        <div style="background: #000; color: white; padding: 60px 20px; text-align: center; font-family: Arial, sans-serif;">
+            <h2 style="font-size: 42px; font-weight: 800; margin: 0 0 50px 0;">What's Included:</h2>
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 40px; margin: 0 auto 30px auto;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; flex-shrink: 0;">
+                        <span style="color: #000; font-weight: bold;">✓</span>
+                    </div>
+                    <h3 style="font-size: 28px; font-weight: 800; color: white; margin: 0 0 15px 0;">The Hidden Laws of Human Psychology</h3>
+                    <p style="color: #aaa; font-size: 16px; margin: 0; line-height: 1.6;">You'll be exposed to every hidden psychological law that makes a random stranger buy simply because someone else did. Understand exactly how the brain works and what drives the subconscious to make a purchasing decision behind the scenes.</p>
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 40px; margin: 0 auto 30px auto;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; flex-shrink: 0;">
+                        <span style="color: #000; font-weight: bold;">✓</span>
+                    </div>
+                    <h3 style="font-size: 28px; font-weight: 800; color: white; margin: 0 0 15px 0;">The Social Perception Engine</h3>
+                    <p style="color: #aaa; font-size: 16px; margin: 0; line-height: 1.6;">The complete system for controlling the human brain's perception of your potential customer. Together, from zero, we'll build an entire framework that causes the customer to purchase in an impossible way, devoid of any ability to resist, due to the magical power called The Social Proof Effect.</p>
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 40px; margin: 0 auto 30px auto;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; flex-shrink: 0;">
+                        <span style="color: #000; font-weight: bold;">✓</span>
+                    </div>
+                    <h3 style="font-size: 28px; font-weight: 800; color: white; margin: 0 0 15px 0;">The Subconscious Conversion Machine</h3>
+                    <p style="color: #aaa; font-size: 16px; margin: 0; line-height: 1.6;">Discover how to transform doubt into belief, and belief into emotion. Learn how to trigger emotional responses in the customer that bypass logic – excitement so powerful it leads them to buy without thinking twice.</p>
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 40px; margin: 0 auto 30px auto;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; flex-shrink: 0;">
+                        <span style="color: #000; font-weight: bold;">✓</span>
+                    </div>
+                    <h3 style="font-size: 28px; font-weight: 800; color: white; margin: 0 0 15px 0;">The Psychology of Certainty</h3>
+                    <p style="color: #aaa; font-size: 16px; margin: 0; line-height: 1.6;">Here you learn how to make the customer's brain perceive reality exactly as you want. How to make them see your brand as the leader, your product as the only solution, and their purchase as the smartest decision they've ever made.</p>
+                </div>
+                <div style="background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 40px; margin: 0 auto;">
+                    <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; flex-shrink: 0;">
+                        <span style="color: #000; font-weight: bold;">✓</span>
+                    </div>
+                    <h3 style="font-size: 28px; font-weight: 800; color: white; margin: 0 0 15px 0;">The Complete Dark Proof Protocol</h3>
+                    <p style="color: #aaa; font-size: 16px; margin: 0; line-height: 1.6;">This is no longer persuasion – it's consciousness programming. Understand how to change the customer's deep beliefs about what "works," who's "worthy," and why you automatically become their safe and preferred choice again and again.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; color: black; padding: 60px 20px; text-align: center; font-family: Arial, sans-serif;">
+            <h1 style="font-size: 49px; font-weight: 800; margin: 0 0 20px 0;">We Do it Different</h1>
+            <p style="font-size: 18px; margin: 0 0 40px 0;">Most people think they understand social proof.<br/>They're wrong.</p>
+            <p style="font-size: 16px; margin: 0 0 40px 0;">Here's what separates us from everyone else:</p>
+            <table style="max-width: 900px; margin: 40px auto 0; border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="font-size: 24px; font-weight: 800; text-align: center; padding: 20px; background-color: #d0d0d0; border: 1px solid #ccc; width: 50%;">THEM<br/>(Traditional Approach)</th>
+                        <th style="font-size: 24px; font-weight: 800; text-align: center; padding: 20px; background-color: #d0d0d0; border: 1px solid #ccc; width: 50%;">US<br/>(The Social Proof System)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Add some reviews to the product page and hope people buy</td>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Engineer psychological proof directly into every ad, landing page, and funnel – creating an unstoppable buying environment</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Wait months to collect real customer testimonials</td>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Build authentic-looking social proof from day one using proven psychological frameworks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Rely on expensive products, perfect creatives, and algorithm luck</td>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Use human psychology to sell any product, in any niche, regardless of creative quality</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Focus on features, benefits, and logical selling</td>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Trigger the subconscious "everyone's buying this" response that bypasses logic entirely</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Pray the algorithm doesn't kill your account</td>
+                        <td style="padding: 20px; font-size: 16px; background-color: #f8f8f8; border: 1px solid #ccc; vertical-align: top;">Own a skill that works regardless of platform, algorithm, or market conditions</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 14px; font-style: italic; margin: 30px 0 0 0; max-width: 900px; margin-left: auto; margin-right: auto; text-align: left;">P.S. – This isn't about adding a few star ratings. This is about understanding the deep psychological mechanisms that make people incapable of saying no when they see others have already said yes.</p>
+            <button class="cta-button" onclick="handleCheckout(event)" style="margin-top: 50px; background: radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%) !important; cursor: pointer; border-radius: 35px; padding: 21px 76px; font-size: 20px; font-weight: 700; color: white; border: none; min-width: 380px; height: 81px; text-transform: uppercase; letter-spacing: 1px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                    <span>GIVE ME THE SOCIAL PROOF SYSTEM</span>
+                    <span style="font-size: 12px; font-weight: 400; text-transform: none;">(One-time payment • Instant access)</span>
+                </div>
+            </button>
+            <div style="margin: 15px auto 0; text-align: center;">
+                <div style="font-size: 14px; color: #666;">$25.35 if <a href="https://quantum-scale.co/pages/bundle-builder" style="color: #7700fd; text-decoration: underline;">building a bundle</a></div>
+            </div>
+        </div>
+
+        <div style="background: white; color: black; padding: 60px 20px; text-align: center; font-family: Arial, sans-serif;">
+            <h1 style="font-size: 49px; font-weight: 800; margin: 0 0 50px 0;">Frequently Asked Questions</h1>
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: "I already use reviews on my product pages. Isn't that enough?"</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Product page reviews are just the tip of the iceberg. This is a comprehensive psychological system that makes customers believe everything you say - across your ads, landing pages, emails, and entire funnel. It goes far beyond simple testimonials. You'll learn how to engineer belief at the subconscious level.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: "This probably doesn't apply to my niche/business."</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Wrong. This is relevant to everyone. Social proof is the fundamental law of human psychology. Any business applying it can skyrocket conversion rates overnight. Billion-dollar brands have built empires on this principle alone. If you're selling to humans, this applies to you.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: What if I buy multiple courses - do they overlap?</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: Will I get lifetime access?</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: Is this just theory or can I apply it right away?</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> This is 100% practical. You'll get a clear framework + real examples + plug and play templates that you can implement immediately.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: Do I need a team to apply this?</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: "How long does it take to see results?"</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> Most people see an immediate impact on their ad performance within 24-72 hours of implementation. Social proof works instantly because it taps into hardwired human psychology.
+                    </div>
+                </div>
+                <div style="margin: 15px 0; border-radius: 12px; background: black; overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; padding: 25px; background: black; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: opacity 0.3s;">
+                        <span>Q: "What if Facebook shuts down my ad account?"</span>
+                        <span>▼</span>
+                    </button>
+                    <div style="display: none; padding: 20px; background: black; color: #ccc; font-size: 16px; line-height: 1.7; border-top: 1px solid #333;">
+                        <strong>A:</strong> That's exactly why you need this. Social proof is a skill that transcends platforms. Whether you're on Facebook, TikTok, Google, or selling in person - human psychology doesn't change. You'll own a skill that can't be taken away.
+                    </div>
+                </div>
+            </div>
+            <button class="cta-button" onclick="handleCheckout(event)" style="margin-top: 50px; background: radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%) !important; cursor: pointer; border-radius: 35px; padding: 21px 76px; font-size: 30px; font-weight: 700; color: white; border: none; min-width: 650px; min-height: 120px; text-transform: uppercase; letter-spacing: 1px;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span>ADD TO MY SYSTEM!</span>
+                    <span style="font-size: 16px; font-weight: 400; text-transform: none;">(One-time payment • Instant access)</span>
+                </div>
+            </button>
+            <div style="margin: 15px auto 0; text-align: center;">
+                <div style="font-size: 14px; color: #666;">$25.35 if <a href="https://quantum-scale.co/pages/bundle-builder" style="color: #7700fd; text-decoration: underline;">building a bundle</a></div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); color: white; padding: 80px 20px; text-align: center; font-family: Arial, sans-serif;">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 style="font-size: 38px; font-weight: 800; margin: 0 0 25px 0;">The Choice Is Simple</h2>
+                <p style="font-size: 20px; color: #aaa; margin: 0 0 40px 0; line-height: 1.6;">Keep burning money on ads that rely on luck...<br/>Or master the psychology that guarantees results.</p>
+                <div style="background: rgba(119, 0, 253, 0.15); border: 2px solid #7700fd; border-radius: 15px; padding: 30px; margin: 0 0 40px 0;">
+                    <p style="font-size: 24px; font-weight: 700; color: white; line-height: 1.5; margin: 0;">Every day you don't use social proof is a day you're leaving thousands on the table.<br/><br/>Your competitors are already using these tactics.<br/>Don't let them win.</p>
+                </div>
+                <p style="font-size: 18px; font-weight: 700; color: #ff6b6b; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 1px;">Limited Time Offer</p>
+                <div style="margin: 0 0 25px 0;">
+                    <p style="font-size: 42px; font-weight: 800; color: white; margin: 0;">
+                        <span style="text-decoration: line-through; opacity: 0.6;">$197</span> <span style="color: #7700fd;">$39</span>
+                    </p>
+                </div>
+                <div style="margin: 0 0 30px 0;">
+                    <div style="font-size: 14px; color: white;">$25.35 if <a href="https://quantum-scale.co/pages/bundle-builder" style="color: white; text-decoration: underline;">building a bundle</a></div>
+                </div>
+                <button class="cta-button" onclick="handleCheckout(event)" style="background: linear-gradient(135deg, #7700fd 0%, #9d00ff 100%) !important; cursor: pointer; border-radius: 35px; padding: 21px 35px; font-size: 17px; font-weight: 700; color: white; border: none; max-width: 480px; height: auto; min-height: 81px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; margin: 0 auto !important;">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <span>YES, I WANT THE SOCIAL PROOF SYSTEM</span>
+                        <span style="font-size: 10px; font-weight: 400; text-transform: none; margin-top: 3px;">(One-time payment • Instant access)</span>
+                    </div>
+                </button>
+                <p style="font-size: 16px; color: #aaa; margin: 25px 0 0 0; line-height: 1.6;">🔒 Secure 256-bit SSL encrypted payment<br/>✓ Instant access after purchase<br/>✓ Lifetime access, no subscriptions</p>
+                <p style="font-size: 18px; color: white; margin: 50px 0 0 0; font-style: italic; line-height: 1.6;">P.S. – Remember: Ads get you exposure. Social proof gets you the sale.<br/>Stop gambling with your ad budget. Start engineering conversions.</p>
+            </div>
+        </div>
+
+        <script>
+            window.toggleFaq = function(button) {
+                const answer = button.nextElementSibling;
+                const isOpen = answer.style.display === 'block';
+
+                document.querySelectorAll('[onclick*="toggleFaq"]').forEach(b => {
+                    b.nextElementSibling.style.display = 'none';
+                    b.style.opacity = '1';
+                });
+
+                if (!isOpen) {
+                    answer.style.display = 'block';
+                    button.style.opacity = '0.9';
+                }
+            };
+
+            window.handleCheckout = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Try to find onCheckout callback
+                if (typeof window.__socialProofOnCheckout === 'function') {
+                    window.__socialProofOnCheckout();
+                } else if (window.parent && typeof window.parent.__socialProofOnCheckout === 'function') {
+                    window.parent.__socialProofOnCheckout();
+                } else if (window.parent && window.parent.onCheckout) {
+                    window.parent.onCheckout();
+                }
+            };
+        </script>
+    </body>
+    </html>
+  `;
+
+  // Set up the checkout handler for the HTML
+  useEffect(() => {
+    window.__socialProofOnCheckout = onCheckout;
+    return () => {
+      delete window.__socialProofOnCheckout;
+    };
+  }, [onCheckout]);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section - Black Background */}
-      <div className="w-full py-16 lg:py-20 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Intro Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-block px-8 py-3 rounded-full mb-6"
-            style={{ backgroundColor: '#252525' }}
-          >
-            <span className="text-sm text-white">In a world where algorithms change overnight...</span>
-          </motion.div>
-
-          {/* Main Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white leading-tight"
-          >
-            How to Force Anyone to Buy From You Using One Psychological Law
-          </motion.h1>
-
-          {/* Sub Headline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg lg:text-xl mb-8 text-white/80"
-          >
-            (Turn every visitor into a buyer by triggering the most powerful force in human psychology)
-          </motion.p>
-
-          {/* Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-10"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5.jpg?v=1760517983"
-              alt="Social Proof Power"
-              className="max-w-full md:max-w-2xl mx-auto rounded-2xl"
-              style={{
-                boxShadow: '0 0 18px rgba(119, 0, 253, 0.6), 0 0 35px rgba(119, 0, 253, 0.4)',
-              }}
-            />
-          </motion.div>
-
-          {/* Pricing */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="mb-8"
-          >
-            <p className="text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              <span className="line-through opacity-60 mr-4">${course.originalPrice || 197}</span>
-              <span style={{ color: '#7700fd' }}>${course.price}</span>
-            </p>
-
-            {/* CTA Button */}
-            <button
-              onClick={onCheckout}
-              className="inline-flex flex-col items-center justify-center px-16 lg:px-20 py-4 lg:py-5 rounded-full font-bold text-lg lg:text-xl text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl"
-              style={{
-                background: 'radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%)',
-                boxShadow: '0 10px 40px rgba(119, 0, 253, 0.5)',
-                minHeight: '81px',
-                minWidth: '380px'
-              }}
-            >
-              <span>ADD TO MY SYSTEM!</span>
-              <span className="text-xs lg:text-sm font-normal normal-case tracking-normal mt-1">
-                (One-time payment • Instant access)
-              </span>
-            </button>
-          </motion.div>
-
-          {/* Secure Payment */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex items-center justify-center gap-2 text-white/60 text-sm"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867"
-              alt="Secure"
-              className="w-10 h-6 object-contain"
-            />
-            <span>Secure 256-bit SSL encrypted payment</span>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Story Section - White Background */}
-      <div className="w-full py-20 px-6 lg:px-10 bg-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl lg:text-4xl font-bold text-black mb-6"
-          >
-            In a world of Chaos...
-          </motion.h2>
-
-          <p className="text-lg text-black mb-4">
-            Millions of marketers are fighting to break the creative that sinks money, just to be profitable - and finally see some sales...
-          </p>
-
-          <p className="text-lg text-black font-bold mb-8">
-            Because their algorithm &apos;went crazy&apos;...
-          </p>
-
-          {/* Marketer Struggling Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802"
-              alt="Marketer struggling"
-              className="max-w-xs mx-auto"
-            />
-          </motion.div>
-
-          {/* Highlight Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <div className="inline-block px-6 py-3 rounded-lg font-bold text-black text-xl lg:text-2xl" style={{ backgroundColor: 'rgb(252, 237, 169)' }}>
-              We turn every ad into a money-printing machine
-            </div>
-            <div className="inline-block px-6 py-3 rounded-lg font-bold text-black text-xl lg:text-2xl mt-2" style={{ backgroundColor: 'rgb(252, 237, 169)' }}>
-              (For 3 years straight)
-            </div>
-            <div className="inline-block px-6 py-3 rounded-lg font-bold text-black text-xl lg:text-2xl mt-2" style={{ backgroundColor: 'rgb(252, 237, 169)' }}>
-              using The Social Proof Tactic
-            </div>
-          </motion.div>
-
-          <p className="text-lg text-black mt-10 font-bold">If you&apos;re in eCommerce, selling a service or product...</p>
-          <p className="text-lg text-black">
-            The page you&apos;re about to read until the end<br />
-            is <strong>worth more than any video</strong> you&apos;ve seen in the past year
-          </p>
-
-          <p className="text-lg text-black mt-10 mb-1"><u><strong>Straight to the point:</strong></u></p>
-          <h2 className="text-4xl lg:text-5xl font-bold mt-10 mb-10" style={{ color: '#7e42f4' }}>
-            Social Proof = Money
-          </h2>
-
-          <h3 className="text-2xl lg:text-3xl font-bold text-black mb-4">And here&apos;s the proof...</h3>
-          <p className="text-lg text-black">
-            On 27.02.2024, we started using the Social Proof Tactic on one of our brands, Before that, we had a <strong>lame ROAS of 3.16</strong>...
-          </p>
-
-          {/* Before Screenshot */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="my-10"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328"
-              alt="Before: ROAS 3.16"
-              className="w-full max-w-xl mx-auto rounded-lg"
-            />
-          </motion.div>
-
-          <p className="text-lg text-black mt-10">
-            And just a few days later... the <strong>ROAS skyrocketed to 27.13...</strong>
-          </p>
-
-          {/* After Screenshot */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="my-10"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467"
-              alt="After: ROAS 27.13"
-              className="w-full max-w-xl mx-auto rounded-lg"
-            />
-          </motion.div>
-
-          {/* Key Quote */}
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="text-2xl lg:text-3xl font-bold text-black mt-10 mb-4"
-          >
-            &quot;Ads give you exposure, social proof makes sure they pull out their <u>credit card</u>.&quot;
-          </motion.h2>
-
-          <p className="text-sm italic text-black mb-8">
-            (and make them buy impulsively and extremely)
-          </p>
-
-          {/* Fifth Brother GIF */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <img
-              src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif"
-              alt="Fifth Brother"
-              className="max-w-xs md:max-w-sm mx-auto rounded-2xl"
-            />
-          </motion.div>
-
-          {/* Pay Attention Section */}
-          <div className="text-lg text-black leading-loose mb-16">
-            <p className="font-bold">Pay attention...</p>
-            <p>No reliance on Facebook algorithms,</p>
-            <p>No endless product testing...</p>
-            <p>No product page reviews,</p>
-            <p>No creatives that competitors can copy...</p>
-          </div>
-
-          {/* Money Printing Skill */}
-          <div className="text-2xl lg:text-3xl text-black mb-4">
-            Creating social proof is a skill that can <span className="font-bold">print you money</span> In every ad, every hour
-          </div>
-
-          <p className="text-sm italic text-gray-600 mb-4">(Without relying on Zuckerberg&apos;s mercy)</p>
-
-          {/* Zuckerberg GIF */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
-            <img
-              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888"
-              alt="Zuckerberg"
-              className="max-w-xs mx-auto rounded-lg"
-            />
-          </motion.div>
-
-          <p className="text-base text-black mt-6">
-            Properly built social proof can turn every ad into a money-printing machine In scale, with no limit and without the need for endless testings.
-          </p>
-
-          {/* The Story */}
-          <p className="text-2xl font-bold text-black mt-24">
-            It all started 3 years ago, when we discovered the power of social proof...
-          </p>
-          <p className="text-lg text-black mt-6">At that moment...</p>
-          <p className="text-lg font-bold text-black mt-6">Our lives changed.</p>
-
-          <p className="text-lg italic text-black mt-20">We implemented the tactic in every ad...</p>
-
-          <p className="text-xl lg:text-2xl text-black mt-10">
-            Over the course of 3 years, we applied the social proof tactic in <strong>over 300 ads</strong>.
-          </p>
-
-          <p className="text-lg text-black mt-20">We studied and mastered the most powerful triggers found in psychology influence books</p>
-          <p className="text-lg text-black">Until we reached a point where every time…</p>
-
-          {/* Results Highlight */}
-          <div className="my-10">
-            <h2 className="text-2xl lg:text-3xl font-bold text-black leading-tight">
-              <span className="inline-block px-4 py-2" style={{ backgroundColor: 'rgb(252, 237, 169)' }}>
-                the method reduces advertising costs by up
-              </span>
-            </h2>
-            <h2 className="text-2xl lg:text-3xl font-bold text-black leading-tight mt-2">
-              <span className="inline-block px-4 py-2" style={{ backgroundColor: 'rgb(252, 237, 169)' }}>
-                to 1,500%
-              </span>
-            </h2>
-            <h3 className="text-xl lg:text-2xl italic text-black mt-2">
-              (CTR, CPM, CPC, CPA)
-            </h3>
-          </div>
-
-          {/* Cat Buy More GIF */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <img
-              src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif"
-              alt="Cat Buy More"
-              className="max-w-xs md:max-w-sm mx-auto rounded-2xl"
-            />
-          </motion.div>
-
-          {/* Business Security */}
-          <p className="text-lg italic text-black mt-40">But the most important thing we&apos;ve gained...</p>
-          <p className="text-3xl font-bold text-black mt-16 mb-16">Business Security</p>
-          <p className="text-lg text-black mt-10">It can change everything.</p>
-          <p className="text-lg text-black">It doesn&apos;t matter if Facebook is messing with your ad account...</p>
-          <p className="text-lg text-black">It doesn&apos;t matter if competitors are copying your creatives...</p>
-          <p className="text-lg text-black mt-10">
-            As long as you have the ability to generate social proof from scratch – the control is in your hands and <strong><span style={{ backgroundColor: 'rgb(255, 239, 166)' }}>no one can take it away from you</span>…</strong>
-          </p>
-
-          <p className="text-lg text-black mt-20">
-            Once you have this knowledge,<br />
-            replicate it on every possible ad to get…
-          </p>
-          <p className="text-3xl font-bold text-black mt-8 mb-6">Money in the Bank</p>
-          <p className="text-lg text-black">So here... We&apos;ve decided to share all the knowledge we&apos;ve gained,</p>
-          <p className="text-lg text-black">So you can turn ads into social proof machines, One that prints money on autopilot</p>
-
-          <h3 className="text-lg font-bold text-black mt-16"><u>We promise you:</u></h3>
-          <p className="text-lg text-black">
-            <strong>I</strong>n a few days you will send us a message that you have no way of thanking us, and that we have changed your life.
-          </p>
-        </div>
-      </div>
-
-      {/* What's Included Section - Black Background */}
-      <div className="w-full py-16 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-white text-center mb-12">
-            What&apos;s Included:
-          </h2>
-
-          <div className="space-y-6">
-            {psychWeapons.map((weapon, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 rounded-2xl border-2"
-                style={{ backgroundColor: '#1a1a1a', borderColor: '#333' }}
-              >
-                {/* Check Icon */}
-                <div className="w-9 h-9 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #00ff88 0%, #00cc66 100%)' }}>
-                  <Check size={22} className="text-black" strokeWidth={3} />
-                </div>
-                <h3 className="text-2xl lg:text-3xl font-extrabold text-white text-center mb-4">{weapon.title}</h3>
-                <p className="text-base text-gray-400 text-center leading-relaxed">{weapon.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* We Do It Different - Comparison Section */}
-      <div className="w-full py-16 px-6 lg:px-10 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl lg:text-5xl font-extrabold text-black mb-6 text-center"
-          >
-            We Do it Different
-          </motion.h2>
-
-          <p className="text-lg text-black text-center mb-4">
-            Most people think they understand social proof.<br />They&apos;re wrong.
-          </p>
-
-          <p className="text-base text-black text-center mb-10">
-            Here&apos;s what separates us from everyone else:
-          </p>
-
-          {/* Comparison Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 text-left">
-              <thead>
-                <tr>
-                  <th className="text-xl lg:text-2xl font-extrabold text-center p-5 bg-gray-300 border border-gray-300 w-1/2">
-                    THEM<br />(Traditional Approach)
-                  </th>
-                  <th className="text-xl lg:text-2xl font-extrabold text-center p-5 bg-gray-300 border border-gray-300 w-1/2">
-                    US<br />(The Social Proof System)
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonRows.map((row, index) => (
-                  <tr key={index}>
-                    <td className="p-5 text-base text-black bg-gray-50 border border-gray-300 align-top">{row.them}</td>
-                    <td className="p-5 text-base text-black bg-gray-50 border border-gray-300 align-top">{row.us}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <p className="text-sm text-black italic mt-6 text-left">
-            P.S. – This isn&apos;t about adding a few star ratings. This is about understanding the deep psychological mechanisms that make people incapable of saying no when they see others have already said yes.
-          </p>
-
-          {/* CTA Button */}
-          <div className="text-center mt-10">
-            <button
-              onClick={onCheckout}
-              className="inline-flex items-center justify-center gap-3 px-16 py-5 rounded-full font-bold text-xl text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl"
-              style={{
-                background: 'radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%)',
-                boxShadow: '0 10px 40px rgba(119, 0, 253, 0.5)',
-                minWidth: '380px',
-                minHeight: '81px'
-              }}
-            >
-              <Lock size={20} />
-              <div className="flex flex-col items-center">
-                <span>GIVE ME THE SOCIAL PROOF SYSTEM</span>
-                <span className="text-xs font-normal normal-case tracking-normal mt-1">(One-time payment • Instant access)</span>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="w-full py-16 px-6 lg:px-10 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl lg:text-5xl font-extrabold text-black mb-12 text-center"
-          >
-            Frequently Asked Questions
-          </motion.h2>
-
-          <div className="space-y-4">
-            {faqItems.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="rounded-2xl overflow-hidden bg-black"
-              >
-                <button
-                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full p-6 flex items-center justify-between text-left hover:bg-[#1a1a1a] transition-colors"
-                >
-                  <span className="font-bold text-white pr-4 text-lg">{item.question}</span>
-                  {expandedFaq === index ? (
-                    <ChevronUp size={20} className="text-white flex-shrink-0" />
-                  ) : (
-                    <ChevronDown size={20} className="text-white flex-shrink-0" />
-                  )}
-                </button>
-                <AnimatePresence>
-                  {expandedFaq === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="px-6 pb-6"
-                    >
-                      <p className="text-white/80 text-base"><strong>A:</strong> {item.answer}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* CTA Section */}
-          <div className="text-center mt-12">
-            <button
-              onClick={onCheckout}
-              className="inline-flex flex-col items-center justify-center px-20 py-6 rounded-full font-bold text-2xl lg:text-3xl text-white uppercase tracking-wide transition-all hover:shadow-2xl"
-              style={{
-                background: 'radial-gradient(ellipse at bottom, #b87dfe 0%, #7700fd 40%)',
-                boxShadow: '0 10px 40px rgba(119, 0, 253, 0.5)',
-                minWidth: '650px',
-                minHeight: '120px'
-              }}
-            >
-              <span>ADD TO MY SYSTEM!</span>
-              <span className="text-base font-normal normal-case tracking-normal mt-1">(One-time payment • Instant access)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Final CTA Section - Black Gradient */}
-      <div className="w-full py-20 px-6 lg:px-10" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-white mb-6">
-              The Choice Is Simple
-            </h2>
-
-            <p className="text-xl text-gray-400 mb-10">
-              Keep burning money on ads that rely on luck...<br />
-              Or master the psychology that guarantees results.
-            </p>
-
-            {/* Highlight Box */}
-            <div className="p-8 rounded-2xl mb-10" style={{ backgroundColor: 'rgba(119, 0, 253, 0.15)', border: '2px solid #7700fd' }}>
-              <p className="text-xl lg:text-2xl font-bold text-white leading-relaxed">
-                Every day you don&apos;t use social proof is a day you&apos;re leaving thousands on the table.<br /><br />
-                Your competitors are already using these tactics.<br />
-                Don&apos;t let them win.
-              </p>
-            </div>
-
-            <p className="text-lg font-bold uppercase tracking-wide mb-8" style={{ color: '#ff6b6b' }}>
-              Limited Time Offer
-            </p>
-
-            {/* Price */}
-            <div className="mb-6">
-              <p className="text-4xl lg:text-5xl font-extrabold text-white">
-                <span className="line-through opacity-60 mr-4">${course.originalPrice || 197}</span>
-                <span style={{ color: '#7700fd' }}>${course.price}</span>
-              </p>
-            </div>
-
-            {/* CTA Button */}
-            <button
-              onClick={onCheckout}
-              className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl"
-              style={{
-                background: 'linear-gradient(135deg, #7700fd 0%, #9d00ff 100%)',
-                boxShadow: '0 10px 40px rgba(119, 0, 253, 0.5)',
-                minHeight: '81px',
-                maxWidth: '480px'
-              }}
-            >
-              <Lock size={20} />
-              <div className="flex flex-col items-center">
-                <span>YES, I WANT THE SOCIAL PROOF SYSTEM</span>
-                <span className="text-xs font-normal normal-case tracking-normal mt-1">(One-time payment • Instant access)</span>
-              </div>
-            </button>
-
-            {/* Guarantee Text */}
-            <p className="text-base text-gray-500 mt-6 leading-relaxed">
-              🔒 Secure 256-bit SSL encrypted payment<br />
-              ✓ Instant access after purchase<br />
-              ✓ Lifetime access, no subscriptions
-            </p>
-
-            {/* PS Note */}
-            <p className="text-lg font-semibold italic text-white mt-12">
-              P.S. – Remember: Ads get you exposure. Social proof gets you the sale.<br />
-              Stop gambling with your ad budget. Start engineering conversions.
-            </p>
-          </motion.div>
-        </div>
-      </div>
+    <div className="w-full">
+      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </div>
   );
 };
