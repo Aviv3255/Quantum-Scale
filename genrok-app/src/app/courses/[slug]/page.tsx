@@ -5690,6 +5690,18 @@ export default function CourseDetailPage() {
 
               {/* Cart Items */}
               <div className="flex-1 overflow-y-auto">
+                {/* Add More Courses Link - At top */}
+                {availableToAdd.length > 0 && (
+                  <div className="px-6 pt-4">
+                    <button
+                      onClick={() => setShowAddCourses(true)}
+                      className="text-sm text-[#666] underline underline-offset-2 hover:text-[#111] transition-colors"
+                    >
+                      + Add more courses to your order
+                    </button>
+                  </div>
+                )}
+
                 <div className="p-6 border-b border-[#eee] space-y-4">
                   {cartItems.map((item) => (
                     <div key={item.slug} className="flex gap-4">
@@ -5709,65 +5721,6 @@ export default function CourseDetailPage() {
                       </button>
                     </div>
                   ))}
-                </div>
-
-                {/* Add More Courses Section */}
-                <div className="p-4 mx-4 my-4 rounded-xl border border-[#111] bg-white">
-                  <button
-                    onClick={() => setShowAddCourses(!showAddCourses)}
-                    className="w-full flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2">
-                      <ShoppingBag size={18} className="text-[#111]" />
-                      <span className="font-medium text-[#111]">Add more courses to your order</span>
-                    </div>
-                    {showAddCourses ? <ChevronUp size={18} className="text-[#666]" /> : <ChevronDown size={18} className="text-[#666]" />}
-                  </button>
-
-                  <AnimatePresence>
-                    {showAddCourses && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-4 space-y-3 max-h-[300px] overflow-y-auto">
-                          {availableToAdd.length === 0 ? (
-                            <p className="text-sm text-[#666] text-center py-4">All courses are in your cart!</p>
-                          ) : (
-                            availableToAdd.map((c) => (
-                              <div key={c.slug} className="flex items-center gap-3 p-3 rounded-xl border border-[#eee] hover:border-[#111] transition-colors">
-                                <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
-                                  <Image src={c.image} alt={c.title} width={56} height={56} unoptimized className="w-full h-full object-contain" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h4 className="font-medium text-[#111] text-sm truncate">{c.title}</h4>
-                                  <p className="text-xs text-[#666] truncate">{c.description}</p>
-                                  <div className="flex items-baseline gap-2 mt-1">
-                                    <span className="font-bold text-[#111] text-sm">${c.price}</span>
-                                    {c.originalPrice && <span className="text-xs line-through text-[#999]">${c.originalPrice}</span>}
-                                  </div>
-                                </div>
-                                <button
-                                  onClick={() => addItem({
-                                    slug: c.slug,
-                                    title: c.title,
-                                    price: c.price,
-                                    originalPrice: c.originalPrice,
-                                    image: c.image,
-                                  })}
-                                  className="px-3 py-1.5 rounded-lg bg-[#111] text-white text-xs font-medium hover:bg-[#333] transition-colors flex-shrink-0"
-                                >
-                                  Add
-                                </button>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
 
                 {/* Email Section */}
@@ -5821,6 +5774,56 @@ export default function CourseDetailPage() {
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#888]">
                   <span>30-day guarantee</span><span>•</span><span>Instant access</span><span>•</span><span>Lifetime updates</span>
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add More Courses Modal */}
+      <AnimatePresence>
+        {showAddCourses && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => setShowAddCourses(false)}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg rounded-2xl overflow-hidden bg-white max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="p-6 border-b border-[#eee]">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-[#111]">Add Courses</h2>
+                  <button onClick={() => setShowAddCourses(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]"><X size={20} className="text-[#666]" /></button>
+                </div>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 space-y-3">
+                {availableToAdd.length === 0 ? (
+                  <p className="text-sm text-[#666] text-center py-8">All courses are already in your cart!</p>
+                ) : (
+                  availableToAdd.map((c) => (
+                    <div key={c.slug} className="flex items-center gap-4 p-4 rounded-xl border border-[#eee] hover:border-[#ccc] transition-colors">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
+                        <Image src={c.image} alt={c.title} width={64} height={64} unoptimized className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-[#111] text-sm">{c.title}</h4>
+                        <p className="text-xs text-[#666] mt-1 line-clamp-2">{c.description}</p>
+                        <div className="flex items-baseline gap-2 mt-2">
+                          <span className="font-bold text-[#111]">${c.price}</span>
+                          {c.originalPrice && <span className="text-xs line-through text-[#999]">${c.originalPrice}</span>}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          addItem({ slug: c.slug, title: c.title, price: c.price, originalPrice: c.originalPrice, image: c.image });
+                        }}
+                        className="px-4 py-2 rounded-lg bg-[#111] text-white text-sm font-medium hover:bg-[#333] transition-colors flex-shrink-0"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                <button onClick={() => setShowAddCourses(false)} className="w-full py-3 rounded-xl font-medium text-white" style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
+                  Done
+                </button>
               </div>
             </motion.div>
           </motion.div>
