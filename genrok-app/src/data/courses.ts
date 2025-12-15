@@ -1435,7 +1435,7 @@ This course gives you everything you need to start seeing results immediately. N
     slug: "ugly-ads",
     title: "How to Build Simple & Ugly Meta Ads That Work",
     subtitle: "Stop Overthinking, Start Converting",
-    description: "Discover why simple, "ugly" ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.",
+    description: "Discover why simple, 'ugly' ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.",
     price: 10,
     originalPrice: 97,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_51.jpg?v=1757233270",
@@ -1444,7 +1444,7 @@ This course gives you everything you need to start seeing results immediately. N
       { value: "2+", label: "hours" },
       { value: "20+", label: "templates" }
     ],
-    longDescription: `Discover why simple, "ugly" ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.
+    longDescription: `Discover why simple, 'ugly' ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.
 
 This course gives you everything you need to start seeing results immediately. No fluff, no theory - just actionable strategies that work.`,
     modules: [
