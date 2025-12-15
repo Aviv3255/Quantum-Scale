@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
+  ChevronRight,
   BookOpen,
   Gift,
   HelpCircle,
@@ -1205,14 +1206,14 @@ const AIPhotographerAlternativeLayout = ({ course, onCheckout }: AIPhotographerA
     { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/31.jpg?v=1749393421", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192050.456.png?v=1749393420" },
     { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192202.722.png?v=1749393643", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192152.447.png?v=1749393643" },
     { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/33.jpg?v=1749393780", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/32.jpg?v=1749393780" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/37.jpg?v=1749393780" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/38.jpg?v=1749393780" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/41.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/40.jpg?v=1749393781" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/42.jpg?v=1749393781", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/50.jpg?v=1749394200" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/47.jpg?v=1749394200", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1749394200" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/48.jpg?v=1749394200", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/49.jpg?v=1749394200" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/52.jpg?v=1749394380", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/51.jpg?v=1749394380" },
-    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192217.700.png?v=1749394380", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1749394380" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192619.581.png?v=1749393900", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T192603.190.png?v=1749393900" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T193820.014.png?v=1749394000", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/34.jpg?v=1749394000" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/35.jpg?v=1749394100", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T193918.015.png?v=1749394100" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194025.303.png?v=1749394200", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194017.196.png?v=1749394200" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194107.241.png?v=1749394300", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194057.893.png?v=1749394300" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194154.154.png?v=1749394400", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194141.878.png?v=1749394400" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194238.151.png?v=1749394500", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194225.898.png?v=1749394500" },
+    { before: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194334.177.png?v=1749394600", after: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-09-02T194328.748.png?v=1749394600" },
   ];
 
   const faqItems = [
@@ -1316,27 +1317,22 @@ const AIPhotographerAlternativeLayout = ({ course, onCheckout }: AIPhotographerA
                 className="relative rounded-2xl overflow-hidden shadow-xl"
                 style={{ aspectRatio: '4/3' }}
               >
-                {/* Before Image (full) */}
+                {/* Before Image (base layer - shown on right side) */}
                 <img
                   src={pair.before}
                   alt="Before"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                {/* After Image (clipped) */}
-                <div
-                  className="absolute inset-0 overflow-hidden"
-                  style={{ width: `${sliderPositions[index] ?? 50}%` }}
-                >
-                  <img
-                    src={pair.after}
-                    alt="After"
-                    className="absolute inset-0 w-full h-full object-cover"
-                    style={{ width: `${100 / ((sliderPositions[index] ?? 50) / 100)}%`, maxWidth: 'none' }}
-                  />
-                </div>
+                {/* After Image (clipped - shown on left side) */}
+                <img
+                  src={pair.after}
+                  alt="After"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ clipPath: `inset(0 ${100 - (sliderPositions[index] ?? 50)}% 0 0)` }}
+                />
                 {/* Slider Line */}
                 <div
-                  className="absolute top-0 bottom-0 w-1 bg-white shadow-lg"
+                  className="absolute top-0 bottom-0 w-1 bg-white shadow-lg pointer-events-none"
                   style={{ left: `${sliderPositions[index] ?? 50}%`, transform: 'translateX(-50%)' }}
                 >
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
@@ -1351,14 +1347,14 @@ const AIPhotographerAlternativeLayout = ({ course, onCheckout }: AIPhotographerA
                   max="100"
                   value={sliderPositions[index] ?? 50}
                   onChange={(e) => handleSliderChange(index, Number(e.target.value))}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
                 />
                 {/* Labels */}
-                <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold bg-black/70 text-white">
-                  BEFORE
-                </div>
-                <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold text-white" style={{ backgroundColor: '#9ba4a6' }}>
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold text-white pointer-events-none" style={{ backgroundColor: '#9ba4a6' }}>
                   AFTER
+                </div>
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold bg-black/70 text-white pointer-events-none">
+                  BEFORE
                 </div>
               </motion.div>
             ))}
@@ -2227,6 +2223,883 @@ const MetaAdTemplatesAlternativeLayout = ({ course, onCheckout }: MetaAdTemplate
           <p className="text-white/60 mt-8 text-sm">
             ✓ Instant delivery • ✓ Works with free Canva • ✓ No subscriptions
           </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== THE SUBCONSCIOUS TRAP ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface SubconsciousTrapAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousTrapAlternativeProps) => {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const bonuses = [
+    { title: 'The Secret A/B Tests', value: 147, desc: 'Raw data from 127 split tests across 23 niches' },
+    { title: 'Psychology Swipe File', value: 97, desc: '50+ proven psychological triggers with examples' },
+    { title: 'Conversion Audit Checklist', value: 127, desc: 'Step-by-step checklist to audit any store' },
+    { title: 'The Subconscious Scripts', value: 197, desc: 'Copy templates that bypass logical resistance' },
+    { title: 'Visual Hierarchy Blueprint', value: 147, desc: 'Design layouts that guide the eye to buy' },
+    { title: 'Urgency Engine Templates', value: 97, desc: 'Ethical urgency systems that work 24/7' },
+    { title: 'Private Community Access', value: 117, desc: 'Network with 500+ conversion-focused sellers' },
+  ];
+
+  const faqItems = [
+    { question: 'How is this different from other CRO courses?', answer: 'This isn\'t theory. Every tactic comes from real A/B tests with documented results. You\'re getting the exact psychological triggers that produced a 44% conversion lift in our tests - not generic advice.' },
+    { question: 'Will this work for my niche?', answer: 'These psychological principles work across all niches because they target how the human brain makes buying decisions. We\'ve tested across 23 different niches with consistent results.' },
+    { question: 'How long until I see results?', answer: 'Most students see measurable improvements within 7-14 days of implementing the core tactics. Some have seen conversion lifts within 48 hours on their first changes.' },
+    { question: 'Do I need technical skills?', answer: 'No coding required. Everything can be implemented with standard Shopify settings, or simple copy-paste for any platform. We focus on psychology, not technology.' },
+    { question: 'What if it doesn\'t work for me?', answer: 'You\'re protected by our 30-day money-back guarantee. If you implement the tactics and don\'t see improvement, we\'ll refund every penny - no questions asked.' },
+    { question: 'Is this a one-time payment?', answer: 'Yes! Pay once, access forever. Plus you get all future updates and bonus content we release at no extra cost.' },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-block px-5 py-2 rounded-full mb-8"
+            style={{ backgroundColor: 'rgba(255, 79, 3, 0.2)', border: '1px solid rgba(255, 79, 3, 0.3)' }}
+          >
+            <span className="text-sm font-bold tracking-wide" style={{ color: '#ff4f03' }}>PSYCHOLOGY-BASED CONVERSION</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+          >
+            THE <span style={{ color: '#ff4f03' }}>SUBCONSCIOUS</span> TRAP
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl lg:text-2xl mb-4 max-w-2xl mx-auto text-white/80"
+          >
+            The Hidden Psychology Behind <span style={{ color: '#ff4f03' }}>44% Higher Conversions</span>
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-lg mb-10 max-w-xl mx-auto text-white/60"
+          >
+            Discover the A/B tested psychological triggers that make visitors buy without knowing why
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#ff4f03' }}>${course.price}</span>
+            {course.originalPrice && (
+              <div className="flex flex-col items-start">
+                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+                <span className="text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#ff4f03', color: '#fff' }}>
+                  SAVE {Math.round((1 - course.price / course.originalPrice) * 100)}%
+                </span>
+              </div>
+            )}
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+            style={{
+              background: 'linear-gradient(135deg, #ff4f03 0%, #ff7a3d 50%, #ff4f03 100%)',
+              boxShadow: '0 10px 40px rgba(255, 79, 3, 0.4)'
+            }}
+          >
+            <ShoppingCart size={24} />
+            UNLOCK THE PSYCHOLOGY
+          </motion.button>
+
+          <p className="text-sm mt-8 text-white/40">
+            30-day money-back guarantee • Instant access • 7 bonuses worth $929 included
+          </p>
+        </div>
+      </div>
+
+      {/* The Discovery Story Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              The Discovery That Changed Everything
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              How one A/B test revealed the psychology gap most stores are missing
+            </p>
+          </motion.div>
+
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl bg-[#fafafa] border border-[#eee]"
+            >
+              <h3 className="text-xl font-bold text-[#111] mb-4">We ran 127 split tests across 23 niches...</h3>
+              <p className="text-[#666] leading-relaxed">
+                And discovered something shocking: The difference between a 1% conversion rate and a 3% conversion rate wasn't the product, the price, or even the traffic source. It was how the store <em>felt</em> to visitors on a subconscious level.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl border-2"
+              style={{ borderColor: '#ff4f03', backgroundColor: 'rgba(255, 79, 3, 0.05)' }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#ff4f03' }}>
+                  <TrendingUp size={32} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-4xl font-bold" style={{ color: '#ff4f03' }}>44%</div>
+                  <div className="text-sm text-[#666]">Average Conversion Lift</div>
+                </div>
+              </div>
+              <p className="text-[#444] leading-relaxed">
+                When we applied specific psychological triggers - the exact ones you'll learn in this course - conversion rates increased by an average of 44%. Not through manipulation, but by aligning with how the brain naturally makes buying decisions.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* What You'll Learn Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+              Inside The Subconscious Trap
+            </h2>
+            <p className="text-xl text-white/60 max-w-2xl mx-auto">
+              Every psychological principle is backed by real A/B test data
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { icon: Brain, title: 'Cognitive Load Reduction', desc: 'Remove decision friction that kills conversions' },
+              { icon: Eye, title: 'Visual Anchoring', desc: 'Guide attention to your highest-converting elements' },
+              { icon: Zap, title: 'Urgency Psychology', desc: 'Create real urgency without feeling pushy' },
+              { icon: Shield, title: 'Trust Architecture', desc: 'Build instant credibility that converts skeptics' },
+              { icon: Target, title: 'Choice Architecture', desc: 'Present options that naturally lead to purchase' },
+              { icon: Award, title: 'Social Proof Optimization', desc: 'Position reviews and testimonials for maximum impact' },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-4 p-6 rounded-xl bg-white/5 border border-white/10"
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#ff4f03' }}>
+                  <item.icon size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white mb-1">{item.title}</h3>
+                  <p className="text-white/60 text-sm">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bonuses Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)' }}>
+              <span className="text-sm font-bold" style={{ color: '#ff4f03' }}>VALUED AT $929</span>
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              7 Exclusive Bonuses Included
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              Everything you need to implement these tactics immediately
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {bonuses.map((bonus, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-4 p-5 rounded-xl bg-[#fafafa] border border-[#eee]"
+              >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#ff4f03' }}>
+                  <Gift size={20} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-bold text-[#111]">{bonus.title}</h3>
+                    <span className="text-sm font-medium" style={{ color: '#ff4f03' }}>${bonus.value} Value</span>
+                  </div>
+                  <p className="text-sm text-[#666]">{bonus.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-8 p-6 rounded-xl text-center"
+            style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)', border: '2px dashed #ff4f03' }}
+          >
+            <p className="text-lg">
+              <span className="font-bold text-[#111]">Total Bonus Value:</span>{' '}
+              <span className="text-xl font-bold" style={{ color: '#ff4f03' }}>$929</span>{' '}
+              <span className="text-[#666]">— Yours FREE when you join today</span>
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Two Paths Comparison */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              Two Paths. One Choice.
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              Where will you be 30 days from now?
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl bg-white border border-[#eee]"
+            >
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 rounded-full bg-[#eee] flex items-center justify-center mx-auto mb-4">
+                  <X size={32} className="text-[#999]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#666]">Stay the Same</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  'Keep guessing why visitors leave',
+                  'Watch competitors convert better',
+                  'Leave money on the table daily',
+                  'Wonder what you\'re missing',
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3 text-[#666]">
+                    <X size={16} className="flex-shrink-0 text-[#ccc]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl border-2"
+              style={{ borderColor: '#ff4f03', backgroundColor: 'rgba(255, 79, 3, 0.05)' }}
+            >
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#ff4f03' }}>
+                  <Check size={32} className="text-white" />
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: '#ff4f03' }}>Take Action Today</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  'Understand exactly why visitors buy',
+                  'Convert up to 44% more visitors',
+                  'Implement proven psychological triggers',
+                  'Build a store that sells on autopilot',
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3 text-[#444]">
+                    <Check size={16} className="flex-shrink-0" style={{ color: '#ff4f03' }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-[#666] text-center mb-12">
+            Everything you need to know before you start
+          </p>
+
+          <div className="space-y-3">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden bg-[#fafafa] border border-[#eee]"
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#f0f0f0] transition-colors"
+                >
+                  <span className="font-semibold text-[#111] pr-4">{item.question}</span>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} className="text-[#666] flex-shrink-0" />
+                  ) : (
+                    <ChevronDown size={20} className="text-[#666] flex-shrink-0" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="px-5 pb-5"
+                    >
+                      <p className="text-[#666]">{item.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+              Ready to Unlock the <span style={{ color: '#ff4f03' }}>Psychology</span> of Conversions?
+            </h2>
+            <p className="text-xl mb-4 text-white/70">
+              Join 2,000+ store owners who've already discovered the subconscious triggers
+            </p>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#ff4f03' }}>${course.price}</span>
+              {course.originalPrice && (
+                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+              )}
+            </div>
+
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+              style={{
+                background: 'linear-gradient(135deg, #ff4f03 0%, #ff7a3d 50%, #ff4f03 100%)',
+                boxShadow: '0 10px 40px rgba(255, 79, 3, 0.4)'
+              }}
+            >
+              <ShoppingCart size={24} />
+              GET INSTANT ACCESS
+              <ArrowRight size={20} />
+            </button>
+
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={18} />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={18} />
+                <span>Instant Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Gift size={18} />
+                <span>$929 in Bonuses</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== THE LTV SYSTEM ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface LTVSystemAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternativeProps) => {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const trainingModules = [
+    { icon: Users, title: 'Customer Retention Engine', desc: 'Turn one-time buyers into repeat customers automatically' },
+    { icon: Mail, title: 'Email Revenue System', desc: 'Generate 30-40% of revenue from email alone' },
+    { icon: Repeat, title: 'Subscription Architecture', desc: 'Build recurring revenue into any product' },
+    { icon: Gift, title: 'Loyalty & Rewards Framework', desc: 'Create programs that customers actually use' },
+    { icon: TrendingUp, title: 'Upsell & Cross-sell Mastery', desc: 'Increase AOV without feeling salesy' },
+  ];
+
+  const faqItems = [
+    { question: 'How is this different from other LTV courses?', answer: 'Most courses focus on acquisition. This focuses on what happens AFTER someone buys. You\'ll learn the exact systems that turn $80 customers into $1,000+ lifetime customers - with real numbers and case studies.' },
+    { question: 'I\'m just starting out. Is this for me?', answer: 'If you have ANY sales coming in, yes. The best time to build LTV systems is early - before you\'ve trained customers to expect discounts and one-time purchases.' },
+    { question: 'What if I sell low-ticket products?', answer: 'LTV is even MORE important for low-ticket sellers. One customer buying 10x is worth more than 10 customers buying once. We\'ll show you how to make this happen.' },
+    { question: 'How long until I see results?', answer: 'Most students see measurable LTV improvements within 30 days. Some see results in the first week when they implement our quick-win email sequences.' },
+    { question: 'Do I need special software?', answer: 'No. Everything works with standard email providers (Klaviyo, Mailchimp, etc.) and your existing store. We\'ll show you how to maximize what you already have.' },
+    { question: 'Is there a guarantee?', answer: 'Yes! 30-day money-back guarantee. If you implement the systems and don\'t see improvement in your customer lifetime value, we\'ll refund every penny.' },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-block px-5 py-2 rounded-full mb-8"
+            style={{ backgroundColor: 'rgba(0, 188, 13, 0.2)', border: '1px solid rgba(0, 188, 13, 0.3)' }}
+          >
+            <span className="text-sm font-bold tracking-wide" style={{ color: '#00bc0d' }}>CUSTOMER LIFETIME VALUE</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+          >
+            THE <span style={{ color: '#00bc0d' }}>LTV</span> SYSTEM
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl lg:text-2xl mb-4 max-w-2xl mx-auto text-white/80"
+          >
+            Turn <span style={{ color: '#00bc0d' }}>$80 Customers</span> Into <span style={{ color: '#00bc0d' }}>$1,000+ Lifetime Value</span>
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-lg mb-10 max-w-xl mx-auto text-white/60"
+          >
+            The complete system for maximizing every customer you've already paid to acquire
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#00bc0d' }}>${course.price}</span>
+            {course.originalPrice && (
+              <div className="flex flex-col items-start">
+                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+                <span className="text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#00bc0d', color: '#fff' }}>
+                  SAVE {Math.round((1 - course.price / course.originalPrice) * 100)}%
+                </span>
+              </div>
+            )}
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+            style={{
+              background: 'linear-gradient(135deg, #00bc0d 0%, #00e610 50%, #00bc0d 100%)',
+              boxShadow: '0 10px 40px rgba(0, 188, 13, 0.4)'
+            }}
+          >
+            <ShoppingCart size={24} />
+            UNLOCK THE LTV SYSTEM
+          </motion.button>
+
+          <p className="text-sm mt-8 text-white/40">
+            30-day money-back guarantee • Instant access • Lifetime updates
+          </p>
+        </div>
+      </div>
+
+      {/* Problem Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              Why Most Stores Fail (And How To Win)
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              The math doesn't lie - acquisition alone isn't sustainable
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl bg-red-50 border border-red-200"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-red-500">
+                  <X size={32} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm text-red-600 font-medium">AVERAGE STORE</div>
+                  <div className="text-3xl font-bold text-red-700">$80 LTV</div>
+                </div>
+              </div>
+              <ul className="space-y-3 text-[#666]">
+                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> One-time purchases only</li>
+                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> No email strategy</li>
+                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> Constantly chasing new traffic</li>
+                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> Razor-thin margins</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl border-2"
+              style={{ borderColor: '#00bc0d', backgroundColor: 'rgba(0, 188, 13, 0.05)' }}
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#00bc0d' }}>
+                  <TrendingUp size={32} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium" style={{ color: '#00bc0d' }}>WITH LTV SYSTEM</div>
+                  <div className="text-3xl font-bold" style={{ color: '#00bc0d' }}>$1,000+ LTV</div>
+                </div>
+              </div>
+              <ul className="space-y-3 text-[#444]">
+                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Repeat purchases on autopilot</li>
+                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> 30-40% revenue from email</li>
+                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Customers that come back</li>
+                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Sustainable profit margins</li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-10 text-lg text-[#666]"
+          >
+            <strong className="text-[#111]">The difference?</strong> One store keeps paying for customers. The other maximizes every customer they've already paid to acquire.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Revenue Impact Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              The Revenue Impact
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              See how LTV compounds over time
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse rounded-xl overflow-hidden">
+              <thead>
+                <tr>
+                  <th className="p-4 text-left bg-[#111] text-white font-bold">Metric</th>
+                  <th className="p-4 text-center bg-[#111] text-white font-bold">Without LTV System</th>
+                  <th className="p-4 text-center text-white font-bold" style={{ backgroundColor: '#00bc0d' }}>With LTV System</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { metric: 'Customer Lifetime Value', without: '$80', with: '$1,000+' },
+                  { metric: 'Repeat Purchase Rate', without: '5%', with: '35%+' },
+                  { metric: 'Email Revenue %', without: '5%', with: '35%+' },
+                  { metric: 'Customer Acquisition Cost Tolerance', without: 'Low', with: '10x Higher' },
+                  { metric: 'Annual Revenue (1,000 customers)', without: '$80,000', with: '$350,000+' },
+                ].map((row, index) => (
+                  <tr key={index} className="border-b border-[#eee]">
+                    <td className="p-4 font-medium text-[#111] bg-white">{row.metric}</td>
+                    <td className="p-4 text-center text-[#666] bg-white">{row.without}</td>
+                    <td className="p-4 text-center font-bold bg-white" style={{ color: '#00bc0d' }}>{row.with}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Training Modules Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+              5 Weapons in Your Arsenal
+            </h2>
+            <p className="text-xl text-white/60 max-w-2xl mx-auto">
+              Complete training modules to maximize customer lifetime value
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trainingModules.map((module, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 rounded-xl bg-white/5 border border-white/10 text-center"
+              >
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#00bc0d' }}>
+                  <module.icon size={32} className="text-white" />
+                </div>
+                <h3 className="font-bold text-white mb-2">{module.title}</h3>
+                <p className="text-white/60 text-sm">{module.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* We Do It Different Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              We Do It Different
+            </h2>
+            <p className="text-xl text-[#666] max-w-2xl mx-auto">
+              What sets The LTV System apart
+            </p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              { old: 'Generic retention advice', new: 'Specific, tested playbooks with exact sequences' },
+              { old: 'Theory without numbers', new: 'Real case studies with documented results' },
+              { old: 'One-size-fits-all approach', new: 'Customizable systems for any product type' },
+              { old: 'Complicated tech requirements', new: 'Works with tools you already have' },
+              { old: 'Focus on acquisition only', new: 'Complete post-purchase optimization system' },
+            ].map((row, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="grid md:grid-cols-2 gap-4"
+              >
+                <div className="p-4 rounded-xl bg-[#fafafa] border border-[#eee] flex items-center gap-3">
+                  <X size={20} className="text-red-400 flex-shrink-0" />
+                  <span className="text-[#666]">{row.old}</span>
+                </div>
+                <div className="p-4 rounded-xl flex items-center gap-3" style={{ backgroundColor: 'rgba(0, 188, 13, 0.1)', border: '1px solid rgba(0, 188, 13, 0.2)' }}>
+                  <Check size={20} style={{ color: '#00bc0d' }} className="flex-shrink-0" />
+                  <span className="text-[#111] font-medium">{row.new}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-[#666] text-center mb-12">
+            Everything you need to know before you start
+          </p>
+
+          <div className="space-y-3">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden bg-white border border-[#eee]"
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#f5f5f5] transition-colors"
+                >
+                  <span className="font-semibold text-[#111] pr-4">{item.question}</span>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} className="text-[#666] flex-shrink-0" />
+                  ) : (
+                    <ChevronDown size={20} className="text-[#666] flex-shrink-0" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="px-5 pb-5"
+                    >
+                      <p className="text-[#666]">{item.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+              Ready to <span style={{ color: '#00bc0d' }}>Maximize</span> Your Customers?
+            </h2>
+            <p className="text-xl mb-4 text-white/70">
+              Stop leaving money on the table. Start building real customer lifetime value.
+            </p>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#00bc0d' }}>${course.price}</span>
+              {course.originalPrice && (
+                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+              )}
+            </div>
+
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+              style={{
+                background: 'linear-gradient(135deg, #00bc0d 0%, #00e610 50%, #00bc0d 100%)',
+                boxShadow: '0 10px 40px rgba(0, 188, 13, 0.4)'
+              }}
+            >
+              <ShoppingCart size={24} />
+              GET INSTANT ACCESS
+              <ArrowRight size={20} />
+            </button>
+
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={18} />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={18} />
+                <span>Instant Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award size={18} />
+                <span>Lifetime Updates</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -3311,14 +4184,14 @@ export default function CourseDetailPage() {
         <div className="w-full px-6 lg:px-10 pt-6 flex items-center justify-between">
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
-          {/* Layout Toggle - For Social Proof, AI Photographer, Ad Copy Templates, and Meta Ad Templates */}
-          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates') && (
+          {/* Layout Toggle - For courses with VIEW 2 */}
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'the-subconscious-trap' || slug === 'the-ltv-system') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 backgroundColor: useAlternativeLayout
-                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : '#EFBF04')
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'the-subconscious-trap' ? '#ff4f03' : '#00bc0d')
                   : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
@@ -3338,6 +4211,10 @@ export default function CourseDetailPage() {
           <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'the-subconscious-trap' && useAlternativeLayout ? (
+          <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'the-ltv-system' && useAlternativeLayout ? (
+          <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : (
           <>
         {/* Hero Section */}
