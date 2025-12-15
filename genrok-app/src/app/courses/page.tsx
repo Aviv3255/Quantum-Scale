@@ -596,6 +596,26 @@ const FloatingCartButton = () => {
   );
 };
 
+// Cart Header Button - Clean button at top of page
+const CartHeaderButton = () => {
+  const { openCart, getItemCount, getTotal } = useCartStore();
+  const itemCount = getItemCount();
+  const total = getTotal();
+
+  if (itemCount === 0) return null;
+
+  return (
+    <button
+      onClick={openCart}
+      className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-[#e5e5e5] bg-white hover:border-[#111] transition-colors"
+    >
+      <ShoppingCart size={18} className="text-[#111]" />
+      <span className="text-sm font-medium text-[#111]">{itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
+      <span className="text-sm font-bold text-[#111]">${total}</span>
+    </button>
+  );
+};
+
 export default function CoursesPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
@@ -653,8 +673,14 @@ export default function CoursesPage() {
       >
         {/* Full Width Header */}
         <div className="w-full px-6 lg:px-10 pt-8 pb-6">
-          <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
-          <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
+              <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+            </div>
+            {/* Cart Button */}
+            <CartHeaderButton />
+          </div>
         </div>
 
         {/* Course Content Input Form (Dev Tool) */}
