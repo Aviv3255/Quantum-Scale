@@ -760,7 +760,772 @@ export const courseHTMLBlocks: Record<string, string> = {
 
   // ==================== SUBCONSCIOUS TRAP ====================
   'subconscious-trap': `
-    <!-- PASTE YOUR SUBCONSCIOUS TRAP HTML HERE -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;0,800;0,900;1,400&display=swap');
+
+/* COMPLETE ISOLATION - No inheritance from page */
+.landing-section-isolated {
+all: initial;
+display: block;
+background: #000;
+padding: 40px 20px;
+text-align: center;
+color: white;
+width: 100%;
+max-width: 100%;
+overflow-x: hidden;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+font-size: 16px;
+line-height: 1.5;
+position: relative;
+z-index: 1;
+box-sizing: border-box;
+}
+
+/* Reset all children to prevent any external styling */
+.landing-section-isolated * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.landing-section-isolated .intro-text {
+background: #252525;
+border-radius: 25px;
+padding: 12px 30px;
+font-size: 14px;
+line-height: 1.4;
+margin: 0 auto 20px auto;
+max-width: 600px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+color: white;
+}
+
+.landing-section-isolated .pulse-dot {
+width: 12px;
+height: 12px;
+background: #ff4f03;
+border-radius: 50%;
+animation: pulse-animation 1.6s infinite;
+flex-shrink: 0;
+display: block;
+}
+
+@keyframes pulse-animation {
+0% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(255, 79, 3, 0.7);
+}
+70% {
+transform: scale(1);
+box-shadow: 0 0 0 10px rgba(255, 79, 3, 0);
+}
+100% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(255, 79, 3, 0);
+}
+}
+
+.landing-section-isolated .main-headline {
+font-size: 46.2px;
+font-weight: 900;
+line-height: 1.2;
+margin: 20px auto;
+max-width: 900px;
+color: white;
+text-align: center;
+padding: 0 20px;
+display: block;
+}
+
+.landing-section-isolated .main-headline .highlight {
+color: #ff4f03;
+font-weight: 900;
+}
+
+.landing-section-isolated .sub-headline {
+font-size: 22px;
+font-style: italic;
+margin: 0 auto 30px auto;
+opacity: 0.8;
+color: white;
+text-align: center;
+max-width: 800px;
+display: block;
+}
+
+.landing-section-isolated .screenshot-container {
+margin: 30px auto;
+text-align: center;
+max-width: 900px;
+display: block;
+}
+
+.landing-section-isolated .screenshot {
+max-width: 90%;
+height: auto;
+border-radius: 8px;
+box-shadow: 0 0 16px rgba(255, 79, 3, 0.9), 0 0 28px rgba(255, 79, 3, 0.6), 0 0 40px rgba(255, 79, 3, 0.3);
+border: 2px solid rgba(255, 79, 3, 0.7);
+display: block;
+margin: 0 auto;
+}
+
+.landing-section-isolated .pricing-section {
+margin: 30px auto 0;
+text-align: center;
+max-width: 600px;
+display: block;
+}
+
+.landing-section-isolated .price-text {
+font-size: 26px;
+font-weight: 600;
+margin-bottom: 20px;
+color: white;
+display: block;
+}
+
+.landing-section-isolated .original-price {
+text-decoration: line-through;
+opacity: 0.6;
+margin-right: 15px;
+}
+
+.landing-section-isolated .cta-button {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%) !important;
+border: none !important;
+border-radius: 50px !important;
+padding: 20px 40px !important;
+font-size: 17.3052px !important;
+font-weight: 700 !important;
+color: white !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+display: inline-block !important;
+margin: 20px auto !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.3 !important;
+width: 90% !important;
+max-width: 810px !important;
+box-sizing: border-box !important;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4) !important;
+}
+
+.landing-section-isolated .cta-button:hover {
+transform: translateY(-2px);
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6);
+}
+
+.landing-section-isolated .cta-button:active {
+transform: translateY(0px);
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4);
+}
+
+.landing-section-isolated .cta-button.loading {
+opacity: 0.8;
+pointer-events: none;
+}
+
+.landing-section-isolated .cta-button small {
+font-size: 11.04px;
+font-weight: 400;
+text-transform: none;
+letter-spacing: 0;
+display: block;
+margin-top: 5px;
+}
+
+.landing-section-isolated .secure-payment {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+font-size: 14px;
+color: #e8e8e8;
+font-weight: 500;
+margin: 15px auto 0;
+}
+
+.landing-section-isolated .secure-payment-icon {
+width: 32px;
+height: 20px;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+display: block;
+}
+
+.landing-section-isolated .lock-icon {
+width: 22px;
+height: 22px;
+background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/></svg>');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+display: inline-block;
+vertical-align: middle;
+margin-right: 10px;
+}
+
+.landing-section-isolated .bundle-info {
+font-size: 13px;
+color: #e8e8e8;
+margin-top: 12px;
+display: block;
+}
+
+.landing-section-isolated .bundle-link {
+color: #ff4f03 !important;
+text-decoration: underline !important;
+font-weight: 600 !important;
+cursor: pointer !important;
+border-bottom: 1px solid #ff4f03 !important;
+}
+
+.landing-section-isolated .bundle-link:hover {
+text-decoration: underline !important;
+opacity: 0.8;
+border-bottom: 1px solid #ff4f03 !important;
+}
+
+.landing-section-isolated .bonus-section {
+margin-top: 40px;
+text-align: center;
+max-width: 800px;
+margin-left: auto;
+margin-right: auto;
+display: block;
+}
+
+.landing-section-isolated .bonus-text {
+font-size: 15.3px;
+font-weight: 400;
+text-align: center;
+line-height: 1.6;
+color: white;
+display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.landing-section-isolated {
+padding: 30px 15px;
+}
+.landing-section-isolated .main-headline {
+font-size: 29.4px;
+}
+.landing-section-isolated .cta-button {
+font-size: 18px;
+padding: 18px 40px;
+}
+.landing-section-isolated .sub-headline {
+font-size: 18px;
+}
+.landing-section-isolated .intro-text {
+font-size: 12px;
+padding: 10px 20px;
+}
+.landing-section-isolated .bonus-text {
+font-size: 13.77px;
+}
+}
+
+@media (max-width: 480px) {
+.landing-section-isolated {
+padding: 20px 10px;
+}
+.landing-section-isolated .main-headline {
+font-size: 25.2px;
+}
+.landing-section-isolated .cta-button {
+font-size: 16px;
+padding: 16px 30px;
+}
+.landing-section-isolated .bonus-text {
+font-size: 12.24px;
+}
+}
+
+/* PROFIT ENGINES SECTION STYLES */
+.profit-engines-mega-section {
+all: initial;
+display: block;
+}
+
+.profit-engines-mega-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.profit-engines-mega-section {
+position: relative !important;
+margin: 0 !important;
+padding: 40px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+width: 100% !important;
+clear: both !important;
+}
+
+.profit-engines-mega-section .mega-content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+background: transparent !important;
+}
+
+.profit-engines-mega-section .ultra-bold-title-block {
+margin: 0 0 25px 0 !important;
+padding: 0 !important;
+text-align: center !important;
+background: transparent !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line {
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+font-size: 24.288px !important;
+font-weight: 900 !important;
+font-style: normal !important;
+text-align: center !important;
+color: #000000 !important;
+margin: 0 !important;
+padding: 0 !important;
+line-height: 0.95 !important;
+display: block !important;
+text-rendering: optimizeLegibility !important;
+-webkit-font-smoothing: antialiased !important;
+-moz-osx-font-smoothing: grayscale !important;
+font-stretch: normal !important;
+letter-spacing: -0.02em !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line:first-child {
+margin-bottom: 8px !important;
+}
+
+.profit-engines-mega-section .mega-subtitle {
+font-size: 23px !important;
+font-weight: 700 !important;
+text-align: center !important;
+margin: 40px 0 !important;
+color: #000000 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.profit-engines-mega-section .mega-red-text {
+color: #ff4f03 !important;
+font-weight: 700 !important;
+}
+
+.profit-engines-mega-section .mega-paragraph {
+font-size: 18px !important;
+color: #000000 !important;
+margin-bottom: 20px !important;
+text-align: left !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.6 !important;
+}
+
+.profit-engines-mega-section .mega-center-text {
+text-align: center !important;
+}
+
+.profit-engines-mega-section .mega-meme-container {
+text-align: center !important;
+margin: 40px 0 !important;
+padding: 0 !important;
+}
+
+.profit-engines-mega-section .mega-meme-gif {
+max-width: 90% !important;
+height: auto !important;
+border-radius: 12px !important;
+display: block !important;
+margin: 0 auto !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif {
+max-width: 600px !important;
+width: 600px !important;
+}
+.profit-engines-mega-section .ultra-bold-line {
+font-size: 26.7168px !important;
+}
+.profit-engines-mega-section .ultra-bold-line[style*="font-size: 28.704px"] {
+font-size: 31.5744px !important;
+}
+.profit-engines-mega-section .mega-subtitle {
+font-size: 25.3px !important;
+}
+.profit-engines-mega-section .mega-paragraph {
+font-size: 19.8px !important;
+margin-bottom: 22px !important;
+}
+.profit-engines-mega-section .mega-quote {
+font-size: 35.2px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="font-size: 24px"] {
+font-size: 26.4px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 76px"] {
+margin-bottom: 83.6px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 26px"] {
+margin-bottom: 28.6px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 52px"] {
+margin-bottom: 57.2px !important;
+}
+.profit-engines-mega-section .mega-meme-container {
+margin: 44px 0 !important;
+}
+.profit-engines-mega-section .mega-quote {
+margin: 44px 0 !important;
+}
+.profit-engines-mega-section h2 {
+font-size: 35.2px !important;
+margin: 0 0 22px 0 !important;
+}
+}
+
+.profit-engines-mega-section .mega-quote {
+font-size: 32px !important;
+color: #ff4f03 !important;
+font-weight: 700 !important;
+text-align: center !important;
+margin: 40px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line {
+font-display: block !important;
+}
+
+.profit-engines-mega-section .mega-meme-gif.smaller-centered {
+max-width: 500px !important;
+width: 90% !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif.smaller-centered {
+max-width: 500px !important;
+width: 500px !important;
+}
+}
+
+.profit-engines-mega-section .mega-meme-gif.larger-image {
+max-width: 100% !important;
+width: 100% !important;
+transform: scale(1.05) !important;
+border-radius: 12px !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif.larger-image {
+max-width: 770px !important;
+width: 770px !important;
+}
+}
+
+/* COURSE MEGA SECTION STYLES */
+.course-mega-section {
+all: initial;
+display: block;
+}
+
+.course-mega-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.course-mega-section {
+position: relative !important;
+margin: 0 !important;
+padding: 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+width: 100% !important;
+clear: both !important;
+}
+
+.course-mega-section .mega-content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+background: #ffffff !important;
+}
+
+.course-mega-section .mega-paragraph {
+font-size: 18px !important;
+color: #000000 !important;
+margin-bottom: 20px !important;
+text-align: left !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.6 !important;
+}
+
+.course-mega-section .testimonial-images {
+text-align: center !important;
+margin: 40px 0 !important;
+}
+
+.course-mega-section .testimonial-images img {
+max-width: 100% !important;
+height: auto !important;
+display: block !important;
+margin: 0 auto 1px auto !important;
+border-radius: 8px !important;
+}
+
+.course-mega-section .free-text {
+font-size: 22px !important;
+font-weight: 400 !important;
+margin-bottom: 40px !important;
+text-align: left !important;
+color: #000000 !important;
+font-family: 'Open Sans', sans-serif !important;
+background: transparent !important;
+background-color: transparent !important;
+}
+
+.course-mega-section .free-text .underline {
+text-decoration: underline !important;
+font-weight: 400 !important;
+background: transparent !important;
+background-color: transparent !important;
+}
+
+.course-mega-section .main-title {
+font-size: 26px !important;
+font-weight: 900 !important;
+color: #1a1a1a !important;
+margin: 15px 0 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+text-align: center !important;
+}
+</style>
+
+<!-- SECTION 1: HERO -->
+<div class="landing-section-isolated">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>For the first time ever, in a step-by-step framework</span>
+</div>
+
+<h1 class="main-headline">
+How to <span class="highlight">Convert 4-6%+</span> of Your eCommerce Store Visitors Using Extreme Design Manipulations
+</h1>
+
+<p class="sub-headline">
+(Even if your site is already beautiful at a billion-dollar brand level…)
+</p>
+
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539" alt="Results Dashboard" class="screenshot">
+</div>
+
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$197</span> Only $10 Today
+</p>
+
+<button class="cta-button" onclick="window.handleCheckoutClick && window.handleCheckoutClick()">
+<span class="lock-icon"></span>ADD THE PACKAGE FOR $10!<br><small>one time payment, lifetime access</small>
+</button>
+
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+
+<div class="bundle-info">
+$6.50 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+</div>
+</div>
+
+<div class="bonus-section">
+<div class="bonus-text">
+* You will also get 3 Bonuses<br>
+Worth $341 for FREE
+</div>
+</div>
+</div>
+
+<!-- SECTION 2: THE STORY -->
+<div class="profit-engines-mega-section">
+<div class="mega-content-wrapper">
+<div class="ultra-bold-title-block">
+<div class="ultra-bold-line" style="font-size: 28.704px !important;"><strong>While 30 Million+ eCommerce Stores Are Stuck at 2% Conversions...</strong></div>
+</div>
+<p class="mega-paragraph" style="margin-bottom: 52px !important; text-align: center; font-size: 20px !important;">chasing products, testing endless creatives, and praying to the algorithm gods for mercy...</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/facepalm-stress.gif?v=1747737705" alt="Facepalm stress" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 24px !important; margin-bottom: 40px !important; text-align: center; font-weight: bold;">A small group discovered something else entirely.</p>
+
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin: 60px auto !important; font-style: italic; max-width: 700px; line-height: 1.5;">"Subconscious design is like a <strong>passcode to the customer's brain</strong> - change the code, change the decision, and multiply the revenue."</p>
+
+<p class="mega-paragraph" style="margin-bottom: 52px !important; text-align: center;">The short page you're about to read is <span style="background-color: #fceda9;">worth more than every YouTube video</span> you watched this past year.</p>
+<br>
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-weight: bold; font-size: 20px !important;">Pay attention…</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more "nice design"...</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more Shopify templates…</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more lookalike websites to your competitors…</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important;">No more burning money on ads…</p>
+<br>
+<br>
+<p class="mega-paragraph" style="font-size: 21px !important; text-align: center;">Our framework bypasses the customer's logic and <strong>sells directly to their subconscious</strong> - through pure impulse.</p>
+<p class="mega-paragraph" style="font-size: 15px !important; text-align: center; font-style: italic;">(Yes, with micro-design elements, <strong>we make people buy.</strong>)</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/HOW_TO.gif?v=1753716540" alt="How it works" class="mega-meme-gif">
+</div>
+<br>
+<p class="mega-paragraph" style="font-size: 25.3px !important; font-weight: bold !important; margin: 60px 0 30px 0 !important; text-align: center;">It all started in 2019…</p>
+<p class="mega-paragraph" style="font-size: 13px !important; color: gray; text-align: center; margin-bottom: 30px !important;">(20/01/2019 – The A/B test that changed everything we thought about design)</p>
+
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We had a struggling fashion store, <strong>barely breaking even</strong> - fully dependent on Meta's algorithm.</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">Every day felt like a gamble. Profitability was pure luck.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-07-23T120253.204.png?v=1753261389" alt="Struggling store" class="mega-meme-gif smaller-centered">
+</div>
+<br>
+<p class="mega-paragraph" style="font-size: 20px !important; font-weight: bold !important; margin: 40px 0 20px 0 !important;">But then...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We decided to run, for the first time ever, <strong>an A/B test on the "ADD TO CART" button color...</strong></p>
+<p class="mega-paragraph" style="font-size: 14px !important; font-style: italic; margin-bottom: 40px !important;">(In short - you launch two versions of the product page: one with the change, one without. You split the traffic 50/50 and measure the numbers on each version.)</p>
+<br>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We let the test run for a few solid days…</p>
+<p class="mega-paragraph" style="font-size: 24px !important; font-weight: bold !important; text-align: center; margin: 40px 0 !important;">And here's what happened...</p>
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep_6.png?v=1747745602" alt="A/B Test Results" class="mega-meme-gif">
+</div>
+
+<p class="mega-paragraph" style="font-size: 22px !important; font-weight: bold !important; text-align: center; margin: 40px 0 !important;">Conversion rate increased by <span style="color: #ff4f03;">44%</span>,<br>from a single small design change!</p>
+
+<p class="mega-paragraph" style="margin-bottom: 60px !important; text-align: center;">And the truth?<br>We actually thought the new version would perform worse… <strong>We were wrong.</strong></p>
+<br>
+<h2 style="font-size: 28px !important; font-weight: 900 !important; text-align: center; text-decoration: underline; margin: 80px 0 40px 0 !important;">That was the moment we realized...</h2>
+
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin-bottom: 30px !important;">The brain doesn't buy through reason. It buys through manipulated perception.</p>
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin-bottom: 30px !important;">And if we could control what it sees, feels, and expects...</p>
+<p class="mega-paragraph" style="font-size: 20px !important; font-weight: bold; text-align: center; margin-bottom: 60px !important;">We could also control the <span style="color: #ff4f03;">wallet</span>.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-11-02_at_09.16.46_e6ae7b68.jpg?v=1762067876" alt="Wallet control" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 14px !important; font-style: italic; text-align: center; margin-bottom: 60px !important;">*Subconscious design is the use of strategic manipulations - layouts, copywriting, and color combinations - that convert customers without any logical reason.</p>
+<br>
+<p class="mega-paragraph" style="font-size: 22px !important; font-weight: bold !important; text-align: center; margin: 80px 0 40px 0 !important;">So, We ran A/B tests on every possible element…</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important; text-align: center;">We tested every possible element - every color, every word, every pixel.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1751796400" alt="Testing process" class="mega-meme-gif">
+</div>
+
+<p class="mega-paragraph" style="font-size: 19px !important; margin: 60px 0 !important; text-align: center;">Until we created a step-by-step psychological design protocol that influences the subconscious and makes the customer activate <strong>impulse buying triggers.</strong></p>
+
+<p class="mega-paragraph" style="font-size: 19px !important; margin: 60px 0 !important; text-align: center;">And now, we decided to distill everything into one single Framework that within 24 hours will transform your site <strong>into a sales machine</strong>.</p>
+
+<div class="mega-meme-container">
+<img src="https://media.tenor.com/xZF5yaaqT7kAAAAM/jul-juld.gif" alt="Sales machine" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 13px !important; font-style: italic; text-align: center; margin-bottom: 60px !important;">*Yes - even if you're dropshipping from AliExpress and have no ability to shoot studio-grade photos.</p>
+
+<p class="mega-paragraph" style="font-size: 21px !important; font-weight: bold !important; text-align: center; margin: 60px 0 30px 0 !important;">All laid out step by step,<br>with full implementation <span style="color: #ff4f03;">in just 24 hours</span>.</p>
+
+<p class="mega-paragraph" style="text-align: center; margin-bottom: 20px !important;">*And yes - everything is backed by proof. It doesn't matter who you are, or how beautiful your site looks, <strong>we guarantee…</strong></p>
+<p class="mega-paragraph" style="font-size: 19px !important; font-weight: bold !important; text-align: center; margin-bottom: 80px !important;">If you implement everything - your conversion rate will climb.</p>
+</div>
+</div>
+
+<!-- SECTION 3: COURSE INTRO -->
+<div class="course-mega-section">
+<div class="mega-content-wrapper">
+<h2 style="color: #888888 !important; font-weight: 400 !important; letter-spacing: 0.45em !important; font-size: 16.2px !important; margin: 20px 0 15px 0 !important; font-family: 'Open Sans', sans-serif !important; text-align: center !important;">INTRODUCING</h2>
+<h1 class="main-title">THE SUBCONSCIOUS TRAP</h1>
+
+<p class="mega-paragraph" style="margin-bottom: 20px !important; font-size: 19px !important;">In this framework, you're about to discover the <strong>exact step-by-step system to convert 4-6%+</strong> of your store visitors using extreme design manipulations that bypass logic and trigger impulse purchases.</p>
+<p class="mega-paragraph" style="font-style: italic !important; font-size: 15.2px !important; margin-bottom: 40px !important;">(Some of our students consistently reach 8-10%+ conversion rates)</p>
+
+<div class="testimonial-images">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments_1.jpg?v=1752231195" alt="Testimonial 1">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments.jpg?v=1752231158" alt="Testimonial 2">
+</div>
+
+<h2 style="font-size: 28px !important; font-weight: 900 !important; color: #000000 !important; margin: 120px 0 40px 0 !important; font-family: 'Open Sans', sans-serif !important;">You're about to unlock 4-6%+ conversion rates...</h2>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">This is a <strong>battle-tested framework</strong> built on thousands of A/B tests - NOT guesswork or theory.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 60px !important;">This isn't about one lucky campaign or temporary results. This framework ensures your conversion rate stays consistently high, month after month.</p>
+<br />
+<br />
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 26px !important; font-size: 19px !important;">Imagine this...</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important; font-size: 19px !important;">What if you had a <strong>proven design system</strong> that automatically converts 4-6% of every visitor who lands on your store?</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 20px !important; font-size: 19px !important;">A system that works <strong>24/7, automatically...</strong></p>
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 40px !important; font-size: 15px !important; margin-top: -10px !important;">(No matter what time zone, no matter what device!)</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">A system you can replicate on any store, any product, any niche?</p>
+<p class="mega-paragraph" style="margin-bottom: 35px !important; margin-top: 10px !important;">How would your business look?</p>
+<br />
+<p class="mega-paragraph" style="text-align: center !important; font-size: 27px !important; margin-bottom: 90px !important; font-weight: bold;"><span style="color: #ff4f03;">This is your reality starting today.</span></p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-size: 19px !important;">Listen...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">I know how frustrating it is to see traffic come in but no sales.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">I know the pain of spending money on ads with barely any ROI...</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 80px !important;">But I also know <strong>you're 100% capable of reaching 4-6%+ conversions</strong> - starting right now.</p>
+<br />
+<br />
+<p class="mega-paragraph" style="margin-bottom: 5px !important; font-size: 25.2px !important; font-weight: bold;">Here's our personal guarantee...</p>
+<p class="mega-paragraph" style="margin-bottom: 46px !important; font-size: 18px !important;">If you implement this framework step by step, <strong>your conversion rate WILL increase</strong>. Period.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 46px !important; font-size: 18px !important;">I'm excited for you... because you're minutes away from discovering what truly drives conversions.</p>
+<p class="mega-paragraph" style="margin-bottom: 60px !important; font-size: 18px !important;">And if you're serious about maximizing every visitor... if you want to stop leaving money on the table... <strong>then from this moment on, you're on the path to 4-6%+ conversions.</strong></p>
+<h2 style="font-size: 26px !important; font-weight: 700 !important; color: #000000 !important; margin: 120px 0 30px 0 !important; font-family: 'Open Sans', sans-serif !important;">A glimpse at what's inside...</h2>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Brain, Unlocked</strong> - What triggers the brain to buy and how to activate those triggers on demand</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Copywriting Secrets</strong> - The exact button text that boosted our conversions by 39%</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Power of Fonts</strong> - Which fonts increase trust and perceived brand value</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Winning Layouts</strong> - Data-backed page structures that psychologically convert</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Code-Based Conversion Hacks</strong> - CSS tweaks that increased our purchase rate by 21%</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Color Manipulations</strong> - The exact color tactics that knock out the subconscious</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Psychological Positioning</strong> - How to charge double your competitors and still convert at 6%+</p>
+<p class="mega-paragraph" style="margin-bottom: 60px !important; font-size: 16.1px !important;">🎯 <strong>The Subconscious Switch</strong> - 70+ step-by-step implementation tasks</p>
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 26px !important; margin-top: 120px !important;">And that's just the framework itself...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-size: 19px !important;">We're also giving you <strong>3 exclusive bonuses worth</strong>…</p>
+<div style="text-align: left !important; margin: 40px 0 !important;">
+<div id="price-counter" style="font-size: 72px !important; font-weight: 900 !important; color: #000000 !important; font-family: 'Open Sans', sans-serif !important; margin-bottom: 20px !important;">$341</div>
+</div>
+<div class="free-text">absolutely <span class="underline">FREE</span> when you get the framework today!</div>
+</div>
+</div>
   `,
 
   // ==================== LTV SYSTEM ====================
