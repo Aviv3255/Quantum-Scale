@@ -1526,6 +1526,910 @@ Worth $341 for FREE
 <div class="free-text">absolutely <span class="underline">FREE</span> when you get the framework today!</div>
 </div>
 </div>
+
+<!-- SECTION 4: BONUSES -->
+<style>
+/* CRITICAL ISOLATION */
+.bonus-main-container {
+all: initial;
+display: block;
+}
+
+.bonus-main-container * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.bonus-main-container * {
+margin: 0 !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+}
+
+.bonus-main-container {
+max-width: 1200px !important;
+margin: 60px auto !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 30px !important;
+font-family: Arial, sans-serif !important;
+background-color: transparent !important;
+padding: 20px !important;
+width: 100% !important;
+clear: both !important;
+overflow-x: hidden !important;
+}
+.bonus-card {
+background: white !important;
+border-radius: 15px !important;
+padding: 30px 40px !important;
+text-align: center !important;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+position: relative !important;
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+margin: 0 !important;
+transform: translateY(0) !important;
+transition: all 0.3s ease !important;
+width: 100% !important;
+max-width: 100% !important;
+overflow: hidden !important;
+}
+.bonus-card:hover {
+transform: translateY(-5px) !important;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+.bonus-badge {
+background: #000 !important;
+color: white !important;
+padding: 8px 20px !important;
+border-radius: 20px !important;
+font-size: 14px !important;
+font-weight: bold !important;
+display: inline-block !important;
+margin-bottom: 20px !important;
+align-self: center !important;
+font-family: Arial, sans-serif !important;
+}
+.bonus-badge::before {
+content: "⭐ " !important;
+}
+.card-content {
+display: flex !important;
+align-items: flex-start !important;
+gap: 30px !important;
+width: 100% !important;
+max-width: 1000px !important;
+flex-direction: row-reverse !important;
+min-height: 250px !important;
+}
+.product-container {
+flex: 0 0 350px !important;
+display: flex !important;
+justify-content: center !important;
+align-items: flex-start !important;
+padding-top: 20px !important;
+}
+.bonus-product-image {
+width: 100% !important;
+max-width: 350px !important;
+height: auto !important;
+border-radius: 10px !important;
+display: block !important;
+}
+.content-container {
+flex: 1 !important;
+text-align: left !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 20px !important;
+}
+.bonus-title {
+font-size: 35.2px !important;
+font-weight: 900 !important;
+color: #ff4f03 !important;
+margin: 0 !important;
+text-transform: none !important;
+letter-spacing: 1px !important;
+line-height: 1.2 !important;
+font-family: Arial, sans-serif !important;
+min-height: auto !important;
+word-break: keep-all !important;
+overflow-wrap: break-word !important;
+hyphens: none !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+color: #333 !important;
+line-height: 1.6 !important;
+margin: 0 !important;
+text-align: left !important;
+font-family: Arial, sans-serif !important;
+word-break: keep-all !important;
+overflow-wrap: break-word !important;
+hyphens: none !important;
+}
+.value-section {
+background: #000 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+gap: 15px !important;
+min-width: 300px !important;
+margin-left: 0 !important;
+}
+.value-text {
+color: white !important;
+font-size: 18px !important;
+font-weight: bold !important;
+font-family: Arial, sans-serif !important;
+white-space: nowrap !important;
+}
+.value-text span {
+text-decoration: line-through !important;
+opacity: 0.8 !important;
+}
+.free-text-bonus {
+background: #ff4f03 !important;
+color: white !important;
+padding: 8px 20px !important;
+border-radius: 20px !important;
+font-weight: bold !important;
+font-size: 16px !important;
+font-family: Arial, sans-serif !important;
+white-space: nowrap !important;
+}
+@media (max-width: 1024px) {
+.card-content {
+flex-direction: column !important;
+gap: 20px !important;
+text-align: center !important;
+}
+.content-container {
+text-align: center !important;
+}
+.bonus-description {
+text-align: center !important;
+}
+.value-section {
+margin: 0 auto !important;
+}
+.product-container {
+flex: none !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+width: 100% !important;
+}
+}
+@media (max-width: 768px) {
+.bonus-main-container {
+padding: 15px !important;
+margin: 30px auto !important;
+width: 90% !important;
+max-width: 90% !important;
+}
+.bonus-card {
+padding: 20px 15px !important;
+width: 100% !important;
+}
+.bonus-title {
+font-size: 26.4px !important;
+padding: 0 !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+padding: 0 !important;
+}
+.value-section {
+display: flex !important;
+flex-direction: column !important;
+gap: 8px !important;
+text-align: center !important;
+padding: 10px 15px !important;
+min-width: auto !important;
+max-width: 100% !important;
+width: auto !important;
+margin: 0 auto !important;
+}
+.value-text {
+font-size: 18px !important;
+}
+.free-text-bonus {
+font-size: 16px !important;
+padding: 6px 15px !important;
+}
+.product-container {
+flex: none !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+width: 100% !important;
+padding: 0 !important;
+}
+.bonus-product-image {
+max-width: 100% !important;
+width: 100% !important;
+height: auto !important;
+}
+}
+@media (max-width: 480px) {
+.bonus-main-container {
+padding: 10px !important;
+margin: 20px auto !important;
+width: 85% !important;
+max-width: 85% !important;
+gap: 20px !important;
+}
+.bonus-card {
+padding: 15px 10px !important;
+border-radius: 10px !important;
+margin: 0 !important;
+}
+.bonus-badge {
+padding: 6px 15px !important;
+font-size: 12px !important;
+margin-bottom: 15px !important;
+}
+.bonus-title {
+font-size: 26.4px !important;
+padding: 0 !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+padding: 0 !important;
+line-height: 1.6 !important;
+}
+.value-section {
+flex-direction: column !important;
+gap: 6px !important;
+padding: 8px 12px !important;
+min-width: auto !important;
+width: auto !important;
+max-width: 100% !important;
+}
+.value-text {
+font-size: 18px !important;
+}
+.free-text-bonus {
+font-size: 16px !important;
+padding: 5px 12px !important;
+}
+.card-content {
+gap: 15px !important;
+min-height: auto !important;
+}
+}
+</style>
+
+<div class="bonus-main-container">
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 1</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="The Intelligence Agent" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">The Intelligence Agent</h1>
+<p class="bonus-description">For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.</p>
+<div class="value-section">
+<div class="value-text">Value <span>$97</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 2</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="Einstein on Steroids" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">Einstein on Steroids</h1>
+<p class="bonus-description">And here it is - one of the most essential tools. To give you the ultimate edge, we trained *Einstein on Steroids* for you. An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.</p>
+<div class="value-section">
+<div class="value-text">Value <span>$97</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 3</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="Your Personal Conversion Map" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">Your Personal Conversion Map</h1>
+<p class="bonus-description">Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).</p>
+<div class="value-section">
+<div class="value-text">Value <span>$147</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 5: TWO PATHS -->
+<style>
+/* ULTRA ISOLATION */
+.quantum-section-wrapper-2024 {
+all: initial !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+background-color: #ffffff !important;
+color: #000000 !important;
+width: 100% !important;
+max-width: 800px !important;
+margin: 60px auto !important;
+padding: 60px 20px !important;
+box-sizing: border-box !important;
+line-height: 1.6 !important;
+position: relative !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+
+.quantum-section-wrapper-2024 *:not(script) {
+all: unset !important;
+display: revert !important;
+box-sizing: border-box !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.quantum-section-wrapper-2024 table {
+border-collapse: collapse !important;
+width: 100% !important;
+}
+
+.quantum-section-wrapper-2024 th,
+.quantum-section-wrapper-2024 td {
+display: table-cell !important;
+}
+
+.quantum-section-wrapper-2024 tr {
+display: table-row !important;
+}
+
+.quantum-section-wrapper-2024 thead {
+display: table-header-group !important;
+}
+
+.quantum-section-wrapper-2024 tbody {
+display: table-row-group !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-container-2024 {
+max-width: 100% !important;
+margin: 0 !important;
+text-align: center !important;
+position: relative !important;
+z-index: 1 !important;
+display: block !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-title-2024 {
+font-family: 'Open Sans', sans-serif !important;
+font-weight: 800 !important;
+font-size: 42.34015px !important;
+margin: 0 0 20px 0 !important;
+color: #000000 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-subtitle-2024 {
+font-size: 18px !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+font-weight: 400 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-options-text-2024 {
+font-size: 16px !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+font-weight: 400 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-table-2024 {
+border-collapse: collapse !important;
+width: 100% !important;
+max-width: 100% !important;
+margin: 40px auto 0 auto !important;
+border: 1px solid #ccc !important;
+table-layout: fixed !important;
+display: table !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-column-header-2024 {
+font-size: 24px !important;
+font-weight: 800 !important;
+text-align: center !important;
+padding: 20px !important;
+color: #000000 !important;
+background-color: #d0d0d0 !important;
+border: 1px solid #ccc !important;
+width: 50% !important;
+display: table-cell !important;
+vertical-align: middle !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-item-2024 {
+display: table-cell !important;
+padding: 20px !important;
+font-size: 16px !important;
+color: #000000 !important;
+font-weight: 400 !important;
+background-color: #f8f8f8 !important;
+border: 1px solid #ccc !important;
+vertical-align: top !important;
+width: 50% !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-ps-note-2024 {
+font-size: 14px !important;
+color: #000000 !important;
+font-style: italic !important;
+margin: 30px 0 40px 0 !important;
+text-align: left !important;
+display: block !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%) !important;
+border: none !important;
+border-radius: 35px !important;
+padding: 0 !important;
+font-size: 19.551px !important;
+font-weight: 700 !important;
+color: white !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+position: relative !important;
+overflow: hidden !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+text-align: center !important;
+margin: 50px auto 0 auto !important;
+width: fit-content !important;
+min-width: 380px !important;
+max-width: 95% !important;
+height: 81px !important;
+font-family: 'Open Sans', sans-serif !important;
+animation: quantum-pulse-2024 2s infinite !important;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4) !important;
+white-space: nowrap !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 > *:not(:first-child) {
+display: none !important;
+visibility: hidden !important;
+opacity: 0 !important;
+position: absolute !important;
+width: 0 !important;
+height: 0 !important;
+overflow: hidden !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024::after,
+.quantum-section-wrapper-2024 .quantum-cta-button-2024::before {
+display: none !important;
+content: none !important;
+}
+
+@keyframes quantum-pulse-2024 {
+0% {
+transform: scale(1);
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+50% {
+transform: scale(1.05);
+box-shadow: 0 12px 35px rgba(255, 79, 3, 0.6);
+}
+100% {
+transform: scale(1);
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6) !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024:active {
+transform: translateY(0px) !important;
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4) !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+.quantum-section-wrapper-2024 .quantum-title-2024 {
+font-size: 28.58372px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-subtitle-2024 {
+font-size: 16.2px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-options-text-2024 {
+font-size: 14.4px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-column-header-2024 {
+font-size: 18.52px !important;
+padding: 15px 10px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-item-2024 {
+font-size: 14.4px !important;
+padding: 15px 10px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 {
+font-size: 14.63px !important;
+min-width: 300px !important;
+height: 69px !important;
+}
+}
+</style>
+
+<div class="quantum-section-wrapper-2024">
+<div class="quantum-container-2024">
+<h1 class="quantum-title-2024">Two Paths. One Choice.</h1>
+<p class="quantum-subtitle-2024">
+For less than the cost of lunch, you're looking at a framework that could multiply your revenue. Or... you can keep doing what you're doing and hope something changes.
+</p>
+<p class="quantum-options-text-2024">
+Which path makes more sense to you?
+</p>
+<table class="quantum-comparison-table-2024">
+<thead>
+<tr>
+<th class="quantum-column-header-2024">❌ Keep Guessing</th>
+<th class="quantum-column-header-2024">✅ Use Proven Psychology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="quantum-comparison-item-2024">Pretty design with 2-3% conversions</td>
+<td class="quantum-comparison-item-2024">Psychological framework driving 4-6%+ conversions</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Hoping visitors will buy</td>
+<td class="quantum-comparison-item-2024">Triggering subconscious impulse purchases</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Wasting 97% of your traffic</td>
+<td class="quantum-comparison-item-2024">Converting double or triple the visitors</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Copying competitor templates</td>
+<td class="quantum-comparison-item-2024">Using A/B tested manipulations that actually work</td>
+</tr>
+</tbody>
+</table>
+<p class="quantum-ps-note-2024">* Your $10 investment is 100% tax-deductible as a business expense. Plus, if it doesn't increase your conversions, you get every penny back.</p>
+<button class="quantum-cta-button-2024 get-access-btn">ADD THIS TO MY SYSTEM!</button>
+</div>
+</div>
+
+<!-- SECTION 6: FAQ -->
+<style>
+/* CRITICAL ISOLATION */
+.faq-section {
+all: initial;
+display: block;
+}
+
+.faq-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.faq-section {
+width: 100%;
+max-width: 800px;
+margin: 60px auto;
+padding: 20px 20px 40px 20px;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+clear: both;
+}
+.faq-section h1 {
+font-family: 'Open Sans', sans-serif;
+font-weight: 800;
+font-size: 1.9rem;
+text-align: center;
+margin: 0 0 40px 0;
+padding: 0;
+color: black;
+display: block;
+position: relative;
+z-index: 1;
+}
+.faq-section .faq-item {
+margin-bottom: 15px;
+}
+.faq-section .question {
+background-color: black;
+border-radius: 12px;
+padding: 25px;
+color: white;
+font-weight: bold;
+font-size: 18px;
+cursor: pointer;
+transition: opacity 0.3s ease;
+user-select: none;
+margin: 0;
+box-sizing: border-box;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.faq-section .question:hover {
+opacity: 0.9;
+}
+.faq-section .question .arrow {
+font-size: 14px;
+transition: transform 0.3s ease;
+margin-left: 15px;
+flex-shrink: 0;
+}
+.faq-section .question.active .arrow {
+transform: rotate(180deg);
+}
+.faq-section .answer {
+background-color: white;
+border: 1px solid black;
+border-radius: 8px;
+padding: 20px;
+margin-top: 10px;
+font-size: 16px;
+line-height: 1.7;
+color: black;
+display: none;
+box-sizing: border-box;
+}
+.faq-section .answer.active {
+display: block;
+}
+.faq-section .cta-section {
+text-align: center;
+margin: 50px auto 30px auto;
+padding: 20px 0;
+max-width: 100%;
+}
+.faq-section .cta-button-faq {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%);
+border: none;
+border-radius: 35px;
+padding: 15px 40px;
+font-size: 24px;
+font-weight: 700;
+color: white !important;
+cursor: pointer;
+transition: all 0.3s ease;
+text-transform: uppercase;
+letter-spacing: 1px;
+position: relative;
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 15px;
+margin: 0 auto 12px auto;
+width: auto;
+min-width: 500px;
+max-width: 90%;
+height: auto;
+min-height: 75px;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+.faq-section .cta-button-faq span .small-text {
+font-size: 15px;
+font-weight: 400;
+text-transform: none;
+letter-spacing: 0;
+display: block;
+margin-top: 3px;
+}
+.faq-section .cta-button-faq span {
+font-weight: 700 !important;
+line-height: 1.3;
+}
+.faq-section .cta-button-faq:hover {
+transform: translateY(-2px);
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6);
+}
+.faq-section .cta-button-faq:active {
+transform: translateY(0px);
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4);
+}
+.faq-section .cta-button-faq.loading {
+opacity: 0.8;
+pointer-events: none;
+}
+.faq-section .cta-button-faq.loading span {
+text-decoration: none !important;
+background: none !important;
+background-image: none !important;
+border: none !important;
+outline: none !important;
+box-shadow: none !important;
+position: relative;
+z-index: 999;
+font-size: 24px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+}
+.faq-section .cta-button-faq.loading span::before,
+.faq-section .cta-button-faq.loading span::after {
+display: none !important;
+}
+.faq-section .secure-payment {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+font-size: 15.44px;
+color: #666;
+margin-top: 10px;
+margin-bottom: 8px;
+}
+.faq-section .secure-payment-icon {
+width: 28.31px;
+height: 28.31px;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+.faq-section .bundle-price {
+font-size: 13px;
+color: #666;
+margin-top: 8px;
+}
+.faq-section .bundle-link {
+color: #666;
+text-decoration: underline;
+}
+.faq-section .bundle-link:hover {
+text-decoration: none;
+}
+@media (max-width: 768px) {
+.faq-section .question {
+font-size: 17px;
+padding: 24px;
+}
+.faq-section .cta-button-faq {
+font-size: 19px;
+padding: 14px 30px;
+min-width: 350px;
+}
+.faq-section .cta-button-faq .small-text {
+font-size: 13px !important;
+}
+.faq-section .secure-payment {
+font-size: 13.24px;
+}
+.faq-section .secure-payment-icon {
+width: 23.59px;
+height: 23.59px;
+}
+}
+@media (max-width: 480px) {
+.faq-section .cta-button-faq {
+min-width: 280px;
+font-size: 16px;
+padding: 12px 25px;
+}
+.faq-section .cta-button-faq .small-text {
+font-size: 11px !important;
+}
+.faq-section .secure-payment {
+font-size: 12.14px;
+}
+.faq-section .secure-payment-icon {
+width: 21.23px;
+height: 21.23px;
+}
+}
+</style>
+
+<div class="faq-section">
+<h1>Frequently Asked Questions</h1>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will this really work if my site already looks professional?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Absolutely. "Looking professional" and "converting visitors" are two completely different things. Your site might look like a million-dollar brand, but if it's not using psychological triggers, you're leaving massive money on the table. This framework shows you exactly what's missing - the subconscious manipulations that drive purchases.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>I'm already converting at 3%. Is this still worth it?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Let me put it this way: if you're converting 3% now, this framework could take you to 5-6%+. That means nearly DOUBLING your revenue from the exact same traffic. Same ad spend, double the sales. How much is that worth to you?</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Do I need to know how to code?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will this work for my specific product/niche?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if I implement everything and it doesn't work?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Why is it only $10?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets.<br><br>The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access.<br><br><strong>⚠️ Important:</strong> This price won't last forever. We reserve the right to increase it at any time. If you're seeing $10 now, consider yourself lucky - this discount is temporary.</div>
+</div>
+<div class="cta-section">
+<button class="cta-button-faq get-access-btn">
+<span>Add This to my System!<br><small class="small-text">Delivered to your email in under 30 seconds</small></span>
+</button>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+
+<script>
+function toggleAnswer(questionElement) {
+const answer = questionElement.nextElementSibling;
+const isActive = answer.classList.contains('active');
+document.querySelectorAll('.faq-section .answer').forEach(ans => {
+ans.classList.remove('active');
+});
+document.querySelectorAll('.faq-section .question').forEach(q => {
+q.classList.remove('active');
+});
+if (!isActive) {
+answer.classList.add('active');
+questionElement.classList.add('active');
+}
+}
+</script>
   `,
 
   // ==================== LTV SYSTEM ====================

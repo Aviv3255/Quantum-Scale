@@ -42,6 +42,7 @@ export interface Course {
   modules: CourseModule[];
   bonuses: CourseBonus[];
   faq: CourseFAQ[];
+  hidden?: boolean;
 }
 
 export const coursesData: Record<string, Course> = {
@@ -671,6 +672,7 @@ The same framework inside has been used to optimize stores generating 7-8 figure
   },
   "ab-test-results": {
     slug: "ab-test-results",
+    hidden: true,
     title: "37 Proven A/B Test Results",
     subtitle: "Years of Data, Delivered in Hours",
     description: "Skip the guesswork. Apply what already works. Get instant access to 37 proven A/B tests that delivered 6% to 44% conversion improvements.",
@@ -1459,5 +1461,9 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
 };
 
 export const getAllCourses = (): Course[] => {
+  return Object.values(coursesData).filter(course => !course.hidden);
+};
+
+export const getAllCoursesIncludingHidden = (): Course[] => {
   return Object.values(coursesData);
 };
