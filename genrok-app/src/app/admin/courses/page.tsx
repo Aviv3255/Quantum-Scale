@@ -177,19 +177,17 @@ export default function AdminCoursesPage() {
       updateUploadingFile(index, { progress: 100 });
 
       // Refresh course files
-      setTimeout(() => {
+      setTimeout(async () => {
         removeUploadingFile(index);
-        const { data } = supabase
+        const { data } = await supabase
           .from('course_files')
           .select('*')
           .eq('course_id', selectedCourse.id)
           .order('order_index', { ascending: true });
 
-        data.then((result) => {
-          if (result.data) {
-            setCourseFiles(result.data);
-          }
-        });
+        if (data) {
+          setCourseFiles(data);
+        }
       }, 1000);
 
       setMessage({ type: 'success', text: `${uploadingFile.title} uploaded successfully!` });
