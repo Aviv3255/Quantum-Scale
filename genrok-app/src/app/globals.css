@@ -872,6 +872,7 @@ h4, .text-h4 {
 /* Main Area with collapsed sidebar */
 .main-area.sidebar-collapsed {
   margin-left: 80px;
+  --sidebar-width: 80px;
 }
 
 /* Main Area */
@@ -882,6 +883,46 @@ h4, .text-h4 {
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-primary);
+  --sidebar-width: 260px;
+}
+
+/* Landing page full-width sections - sidebar aware */
+.raw-html-container {
+  --content-width: calc(100vw - var(--sidebar-width, 260px));
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.raw-html-container .landing-section,
+.raw-html-container .profit-engines-mega-section,
+.raw-html-container .section-wrapper-isolated,
+.raw-html-container .isolated-section,
+.raw-html-container .faq-section,
+.raw-html-container .final-cta-section,
+.raw-html-container [class*="root-isolator"],
+.raw-html-container [id*="root-isolator"],
+.raw-html-container .origin-story-section,
+.raw-html-container .whats-inside-section,
+.raw-html-container .features-mega-section,
+.raw-html-container .features-mega-section-wrapper,
+.raw-html-container .origin-mega-section,
+.raw-html-container .story-mega-section,
+.raw-html-container .ai-photographer-hero-section,
+.raw-html-container .ai-results-mega-section,
+.raw-html-container .comparison-section-wrapper-isolated,
+.raw-html-container .faq-section-ai-photo,
+.raw-html-container .final-cta-isolated-section,
+.raw-html-container .hero-pricing-section,
+.raw-html-container .results-slider-section,
+.raw-html-container .solution-section-wrapper-isolated,
+.raw-html-container [class*="section-wrapper-isolated"],
+.raw-html-container [class*="mega-section"] {
+  width: var(--content-width, calc(100vw - 260px)) !important;
+  min-width: var(--content-width, calc(100vw - 260px)) !important;
+  margin-left: calc(-50vw + var(--sidebar-width, 260px) / 2 + 50%) !important;
+  margin-right: calc(-50vw + var(--sidebar-width, 260px) / 2 + 50%) !important;
+  left: auto !important;
+  right: auto !important;
 }
 
 /* Top Bar - Glass Effect */
@@ -1907,6 +1948,42 @@ h4, .text-h4 {
 
   .main-area {
     margin-left: 0;
+    --sidebar-width: 0px;
+  }
+
+  /* Mobile: landing pages use full viewport width */
+  .raw-html-container {
+    --content-width: 100vw;
+  }
+
+  .raw-html-container .landing-section,
+  .raw-html-container .profit-engines-mega-section,
+  .raw-html-container .section-wrapper-isolated,
+  .raw-html-container .isolated-section,
+  .raw-html-container .faq-section,
+  .raw-html-container .final-cta-section,
+  .raw-html-container [class*="root-isolator"],
+  .raw-html-container [id*="root-isolator"],
+  .raw-html-container .origin-story-section,
+  .raw-html-container .whats-inside-section,
+  .raw-html-container .features-mega-section,
+  .raw-html-container .features-mega-section-wrapper,
+  .raw-html-container .origin-mega-section,
+  .raw-html-container .story-mega-section,
+  .raw-html-container .ai-photographer-hero-section,
+  .raw-html-container .ai-results-mega-section,
+  .raw-html-container .comparison-section-wrapper-isolated,
+  .raw-html-container .faq-section-ai-photo,
+  .raw-html-container .final-cta-isolated-section,
+  .raw-html-container .hero-pricing-section,
+  .raw-html-container .results-slider-section,
+  .raw-html-container .solution-section-wrapper-isolated,
+  .raw-html-container [class*="section-wrapper-isolated"],
+  .raw-html-container [class*="mega-section"] {
+    width: 100vw !important;
+    min-width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
   }
 
   /* Hide desktop layout on mobile */
