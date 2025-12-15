@@ -3106,6 +3106,853 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
   );
 };
 
+// ========== EMAIL MARKETING ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface EmailMarketingAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingAlternativeProps) => {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const systemParts = [
+    { number: '1', title: 'Business Intelligence + World-Class Setup', desc: 'The most advanced BI configuration on the planet—optimizing send times, frequency, and content delivery on a per-customer basis. No more batch-and-blast. Every email hits when that specific person is most likely to convert.' },
+    { number: '2', title: 'Smart Automation Powered by AI + Data', desc: 'Automated systems that send hyper-personalized messages based on a fusion of massive behavioral data and AI-driven predictions. Each customer gets a tailored experience that feels handcrafted—but runs 100% on autopilot.' },
+    { number: '3', title: 'Precision-Engineered Email Copy', desc: 'Emails designed to strike the exact psychological trigger in each customer\'s mind—at the perfect moment—to convert them individually. No generic templates. Just proven frameworks that turn readers into buyers.' },
+  ];
+
+  const comparisonRows = [
+    { old: 'Guessing what to send and when to send it, hoping something sticks', new: 'Using predictive BI systems that tell you exactly when each customer is ready to buy' },
+    { old: 'Sending the same generic emails to everyone on your list', new: 'AI-powered personalization that adapts every message based on behavior and patterns' },
+    { old: 'Treating email as just another marketing channel', new: 'Building email into a ruthless revenue engine that operates 24/7' },
+    { old: 'Relying on constant discounts just to get opens', new: 'Using psychological triggers and strategic timing to create desire without slashing margins' },
+    { old: 'Watching competitors get better results with less effort', new: 'Operating with the same technological advantage that billion-dollar brands use' },
+  ];
+
+  const faqItems = [
+    { question: 'I already know email marketing. Why do I need this?', answer: 'This isn\'t about basics. This is about highly advanced tactics that take email marketing from "nice to have" to "impossible to compete with." These are the systems that give billion-dollar brands a technological advantage over everyone else.' },
+    { question: 'I don\'t think I need email marketing for my business.', answer: 'A properly built email automation system places you in an entirely different game. You\'ll harness technology correctly and deliver a ruthless, data-driven advantage to your competitors—without them even understanding why.' },
+    { question: 'What if I buy multiple courses - do they overlap?', answer: 'Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact.' },
+    { question: 'Will I get lifetime access?', answer: 'Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.' },
+    { question: 'Is this just theory or can I apply it right away?', answer: 'This is 100% practical. You\'ll get a clear framework + real examples + plug-and-play templates that you can implement immediately.' },
+    { question: 'Do I need a team to apply this?', answer: 'Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.' },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full mb-8"
+            style={{ backgroundColor: 'rgba(212, 177, 96, 0.15)', border: '1px solid rgba(212, 177, 96, 0.3)' }}
+          >
+            <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ backgroundColor: '#D4B160', boxShadow: '0 0 10px #D4B160' }} />
+            <span className="text-sm font-medium text-white">The same systems billion-dollar brands use</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+          >
+            Turn Email Marketing Into a <span style={{ color: '#D4B160', textShadow: '0 0 15px rgba(212, 177, 96, 0.5)' }}>Revenue Engine</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg mb-10 text-white/70 italic"
+          >
+            (Steal the full billion-dollar system)
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="max-w-3xl mx-auto mb-10"
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_3.jpg?v=1760516155"
+              alt="Email Marketing Dashboard"
+              className="w-full rounded-xl"
+              style={{ boxShadow: '0 15px 45px rgba(212, 177, 96, 0.5), 0 0 50px rgba(212, 177, 96, 0.45)', border: '2px solid rgba(212, 177, 96, 0.5)' }}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+            <span className="text-4xl lg:text-5xl font-bold" style={{ color: '#D4B160', textShadow: '0 0 20px rgba(212, 177, 96, 0.6)' }}>Only ${course.price} Today</span>
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            onClick={onCheckout}
+            className="inline-flex items-center gap-3 px-14 py-5 rounded-full font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+            style={{
+              background: 'radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%)',
+              boxShadow: '0 10px 30px rgba(212, 177, 96, 0.4)'
+            }}
+          >
+            <ShoppingCart size={24} />
+            UNLOCK THE SYSTEM NOW!
+          </motion.button>
+
+          <p className="text-sm mt-6 text-white/50">
+            Secure 256-bit SSL encrypted payment
+          </p>
+        </div>
+      </div>
+
+      {/* Story Section - "In a world where..." */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl lg:text-4xl font-bold text-[#111] mb-8 text-center italic"
+          >
+            In a world where...
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center space-y-6 text-lg text-[#444]"
+          >
+            <p>
+              Millions of brands fight for attention on social networks to "stay relevant" and get crumbs of views because <span className="font-semibold" style={{ color: '#BD9B5E' }}>"the algorithm went crazy again"</span>…
+            </p>
+
+            <div className="py-6">
+              <div className="inline-block px-6 py-3 rounded-lg text-[#111] font-semibold" style={{ backgroundColor: '#FCEDA9' }}>
+                Top brands generate $1M-$10M every year
+              </div>
+              <div className="inline-block px-6 py-3 rounded-lg text-[#111] font-semibold mt-2" style={{ backgroundColor: '#FCEDA9' }}>
+                (for 5+ consecutive years) through their email list
+              </div>
+            </div>
+
+            <p className="text-xl font-semibold text-[#111]">
+              According to research: An email list generates <span style={{ color: '#BD9B5E' }}>20X more money</span> than any social platform.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Emails = Money Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-5xl font-bold mb-8"
+            style={{ color: '#BD9B5E' }}
+          >
+            Emails = Money.
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-[#444] mb-8"
+          >
+            On March 29, 2024, our eCommerce brand sent two short emails to a list of less than 15,000 subscribers… And we received over <span className="font-bold text-[#111]">921 hot orders</span> that brought in <span className="font-bold text-2xl text-[#111]">$238,250 in revenue</span>
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-8 rounded-2xl border-2"
+            style={{ borderColor: '#BD9B5E', backgroundColor: 'rgba(189, 155, 94, 0.05)' }}
+          >
+            <p className="text-xl lg:text-2xl font-bold text-[#111] leading-relaxed">
+              An email list is like an ATM, emails are like a <span style={{ color: '#BD9B5E' }}>black card with unlimited credit</span>
+            </p>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-[#444] mt-8"
+          >
+            Not Facebook that can shut you down, Not Instagram that can get hacked… <span className="font-bold" style={{ color: '#BD9B5E' }}>An email list is the only digital asset you truly own</span>
+          </motion.p>
+        </div>
+      </div>
+
+      {/* 3-Part System Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+              Here's What We're <span style={{ color: '#BD9B5E', textShadow: '0 0 20px rgba(189, 155, 94, 0.6)' }}>Combining</span>
+            </h2>
+            <p className="text-lg text-white/60">
+              Three layers of technology that create an unfair advantage
+            </p>
+          </motion.div>
+
+          <div className="space-y-5">
+            {systemParts.map((part, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15 }}
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#BD9B5E] transition-all hover:bg-white/10"
+              >
+                <div className="text-4xl font-bold mb-4" style={{ color: '#BD9B5E', textShadow: '0 0 20px rgba(189, 155, 94, 0.5)' }}>
+                  {part.number}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{part.title}</h3>
+                <p className="text-white/70 leading-relaxed">{part.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 p-8 rounded-2xl text-center"
+            style={{ backgroundColor: 'rgba(189, 155, 94, 0.1)', border: '2px solid rgba(189, 155, 94, 0.3)' }}
+          >
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#BD9B5E', textShadow: '0 0 20px rgba(189, 155, 94, 0.5)' }}>
+              You'll Stop Playing Small
+            </h3>
+            <p className="text-white/80">
+              No more relying on discounts, desperate promotions, or random guesswork. Instead, you'll operate in the same arena as the billion-dollar brands—with the tools and systems that transformed them into sales empires.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Why This Is Different - Comparison Table */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              Why This Is <span style={{ color: '#BD9B5E' }}>Completely Different</span>
+            </h2>
+            <p className="text-lg text-[#666]">
+              Most email marketing courses teach you the basics. This teaches you the system.
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto rounded-xl border border-[#ccc]">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="p-5 text-left text-lg font-bold bg-[#d0d0d0] text-[#111] w-1/2">
+                    The Old Way
+                  </th>
+                  <th className="p-5 text-left text-lg font-bold text-[#111] w-1/2" style={{ background: 'linear-gradient(135deg, rgba(189, 155, 94, 0.2), rgba(189, 155, 94, 0.3))' }}>
+                    Our System
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, index) => (
+                  <tr key={index} className="border-t border-[#ccc]">
+                    <td className="p-5 text-[#666] bg-[#f8f8f8]">{row.old}</td>
+                    <td className="p-5 text-[#111] font-medium" style={{ background: 'linear-gradient(135deg, rgba(189, 155, 94, 0.05), rgba(189, 155, 94, 0.08))' }}>{row.new}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[#666] italic mt-8"
+          >
+            <strong className="text-[#111]">P.S.</strong> - The brands crushing it with email aren't smarter than you. They're just using systems you haven't been shown yet. Systems that turn email from "nice to have" into "impossible to compete with."
+          </motion.p>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-12 text-center">
+            Common Questions
+          </h2>
+
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  className="w-full p-6 flex items-center justify-between text-left transition-colors text-white"
+                  style={{ backgroundColor: '#111' }}
+                >
+                  <span className="font-bold pr-4">"{item.question}"</span>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} className="flex-shrink-0" />
+                  ) : (
+                    <ChevronDown size={20} className="flex-shrink-0" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="bg-white border border-[#111] border-t-0 p-5"
+                    >
+                      <p className="text-[#444]">{item.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+              Ready to Build Your <span style={{ color: '#D4B160' }}>Revenue Engine</span>?
+            </h2>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
+              <span className="text-5xl lg:text-6xl font-bold" style={{ color: '#D4B160' }}>${course.price}</span>
+            </div>
+
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center gap-3 px-14 py-5 rounded-full font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+              style={{
+                background: 'radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%)',
+                boxShadow: '0 10px 30px rgba(212, 177, 96, 0.4)'
+              }}
+            >
+              <ShoppingCart size={24} />
+              GET INSTANT ACCESS
+              <ArrowRight size={20} />
+            </button>
+
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={18} />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={18} />
+                <span>Instant Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award size={18} />
+                <span>Lifetime Updates</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ========== ABANDONED CHECKOUT ALTERNATIVE LAYOUT (VIEW 2) ==========
+
+interface AbandonedCheckoutAlternativeProps {
+  course: {
+    price: number;
+    originalPrice?: number;
+  };
+  onCheckout: () => void;
+}
+
+const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedCheckoutAlternativeProps) => {
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  const features = [
+    { title: 'Strategic Timing', desc: 'Each email goes out at the exact right time. When people are most likely to come back and buy.' },
+    { title: 'Proven Psychology', desc: 'These emails were tested on hundreds of thousands of sends. Every word handles objections. Every line rebuilds trust.' },
+    { title: 'Ready to Deploy', desc: 'The full 7-email sequence is ready. Copy, paste, done. No testing. No guessing. Just proven templates.' },
+  ];
+
+  const comparisonRows = [
+    { ignore: 'Watch 75% of ready-to-buy customers disappear forever', deploy: 'Automatically recover up to 82% of abandoned checkouts' },
+    { ignore: 'Lose $16,400+ monthly in revenue you already earned', deploy: 'Generate an extra $200K+ annually from existing traffic' },
+    { ignore: 'Rely on expensive ads to replace lost customers', deploy: 'Maximize every visitor with proven email automation' },
+    { ignore: 'Keep guessing what might work to bring them back', deploy: 'Use battle-tested templates from 100,000+ successful sends' },
+    { ignore: 'Spend months testing and losing more revenue', deploy: 'Plug-and-play system ready to deploy in under 2 hours' },
+  ];
+
+  const faqItems = [
+    { question: 'Will this work for my platform (Shopify, WooCommerce, etc.)?', answer: 'Yes. The email sequence and strategy work universally across all e-commerce platforms. We provide specific integration guides for Shopify, WooCommerce, BigCommerce, and other major platforms.' },
+    { question: 'Will I get lifetime access?', answer: 'Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.' },
+    { question: 'Is this just theory or can I apply it right away?', answer: 'This is 100% practical. You\'ll get a clear framework + real examples + plug & play templates that you can implement immediately.' },
+    { question: 'I don\'t have many abandoned checkouts. Will this still work?', answer: 'If you\'re getting any traffic and making sales, you have abandoned checkouts. Even recovering just a few can significantly boost your profit margins. Plus, as you scale, this system becomes even more valuable.' },
+    { question: 'Can\'t I just build this myself?', answer: 'You could try, but this system is built from analyzing hundreds of thousands of email sends. Building from scratch means months of testing and lost revenue. This gives you the shortcut to what already works.' },
+    { question: 'How quickly will I see results?', answer: 'Once deployed, the system starts working immediately. You\'ll begin seeing recovered sales within 24-48 hours of your first abandoned checkout.' },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full mb-8"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
+          >
+            <div className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ backgroundColor: '#00ff88', boxShadow: '0 0 10px #00ff88' }} />
+            <span className="text-sm font-medium text-white">Stop losing 75% of your potential revenue</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl lg:text-5xl font-bold mb-4 text-white leading-tight"
+          >
+            How to Convert <span style={{ color: '#00ff88' }}>82%</span> of Your Lost Customers
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-sm mb-8 text-white/70 italic"
+          >
+            (The system that recovers 82% of abandoned checkouts - automatically)
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="max-w-2xl mx-auto mb-10"
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_1.jpg?v=1760514814"
+              alt="Revenue Recovery Dashboard"
+              className="w-full"
+              style={{ border: '2px solid #00ff88', boxShadow: '0 0 30px rgba(0, 255, 136, 0.6), 0 0 60px rgba(0, 255, 136, 0.3)' }}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="text-xl line-through text-white/40">${course.originalPrice}</span>
+            <span className="text-3xl lg:text-4xl font-bold text-white">Only ${course.price} Today</span>
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            onClick={onCheckout}
+            className="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 uppercase tracking-wide"
+            style={{
+              background: 'radial-gradient(ellipse at bottom, #7DFEA9 0%, #00CC6E 40%)',
+              boxShadow: '0 6px 16px rgba(0, 255, 136, 0.4)',
+              color: '#000'
+            }}
+          >
+            ADD TO MY SYSTEM!
+          </motion.button>
+
+          <p className="text-xs mt-4 text-white/50">
+            Secure 256-bit SSL encrypted payment
+          </p>
+        </div>
+      </div>
+
+      {/* Your Store Is Bleeding Money Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl lg:text-4xl font-bold text-[#111] mb-8"
+          >
+            Your Store Is Bleeding Money...
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-6 text-lg text-[#444]"
+          >
+            <p>Every day, stores lose sales. They don't even know it's happening. The problem isn't your ads. It's not your product. It's not your website.</p>
+            <p className="font-semibold text-[#111]">It's the checkout.</p>
+            <p>Here's the truth: For every 10 people who buy from you, <strong>7 more start checkout</strong>. They add items. They enter their card details. Then they leave.</p>
+            <p>That's <strong>41% of people who were ready to buy</strong>. They just didn't finish.</p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* How Much Money Are You Losing Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-3xl mx-auto">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl font-bold text-[#111] mb-8"
+          >
+            So, How Much Money Are You Actually Losing?
+          </motion.h3>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="pl-6 border-l-4 space-y-4 mb-8"
+            style={{ borderColor: '#00cc6e' }}
+          >
+            <p className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#00cc6e' }} />
+              <span><strong className="text-[#111]">6,800</strong> monthly visitors</span>
+            </p>
+            <p className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#00cc6e' }} />
+              <span><strong className="text-[#111]">3.4%</strong> reach checkout = <strong className="text-[#111]">231</strong> people enter payment details</span>
+            </p>
+            <p className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#00cc6e' }} />
+              <span><strong className="text-[#111]">136</strong> complete purchase + <strong className="text-[#111]">95</strong> abandon with details entered</span>
+            </p>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-[#444] mb-8"
+          >
+            Without a recovery system, those 95 people are lost. They wanted to buy. They entered their card details. <strong>Then they left.</strong>
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-[#444] mb-8"
+          >
+            With a 7-email sequence, you can get 78 of them back. That's <strong>82% recovery rate</strong>.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xl font-bold text-[#111] mb-4"
+          >
+            Here's what that means in dollars:
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg text-[#444] mb-8"
+          >
+            If your average order is <strong>$100</strong>, you gain <strong>$7,800 per month</strong>. That's <strong>$93,600 per year</strong>. All from fixing what's already broken.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="p-8 rounded-2xl text-center text-white"
+            style={{ backgroundColor: '#000', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)' }}
+          >
+            <h3 className="text-3xl font-bold mb-3" style={{ color: '#00ff88' }}>
+              That's a 58% Revenue Increase
+            </h3>
+            <p className="text-white/70 italic">
+              Extra $7,800 per month - starting immediately
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Why This Sequence Works */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl lg:text-4xl font-bold text-[#111] mb-12 text-center underline decoration-4 underline-offset-8"
+          >
+            Why This Sequence Works
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15 }}
+                className="p-7 rounded-2xl bg-white border-2 border-[#e8e8e8] hover:border-[#00cc6e] transition-all group relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-full h-1 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ background: 'linear-gradient(90deg, #00cc6e 0%, #00ff88 100%)' }} />
+                <h3 className="text-xl font-bold text-[#111] mb-3">{feature.title}</h3>
+                <p className="text-[#666]">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <p className="text-lg text-[#444]">
+              Most stores chase more traffic. But if checkout is broken, you'll keep losing sales. No matter how much you spend on ads.
+            </p>
+            <p className="text-lg text-[#111] font-semibold mt-4">
+              This system stops the leak. It brings money back into your store. Every day. On autopilot.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* The Decision Is Simple - Comparison */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
+              The Decision Is Simple
+            </h2>
+            <p className="text-lg text-[#666]">
+              For less than a dinner out, you're about to recover thousands in lost revenue.
+            </p>
+            <p className="text-lg text-[#111] font-semibold mt-4">
+              You have 2 paths forward. Choose wisely.
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto rounded-xl border border-[#ccc]">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="p-5 text-lg font-bold bg-[#d0d0d0] text-[#111] w-1/2 text-center">
+                    ❌ Ignore This System
+                  </th>
+                  <th className="p-5 text-lg font-bold text-[#111] w-1/2 text-center" style={{ background: 'linear-gradient(135deg, rgba(0, 204, 110, 0.15), rgba(0, 255, 136, 0.2))' }}>
+                    ✅ Deploy Recovery Flow
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, index) => (
+                  <tr key={index} className="border-t border-[#ccc]">
+                    <td className="p-5 text-[#666] bg-[#f8f8f8]">{row.ignore}</td>
+                    <td className="p-5 text-[#111] font-medium" style={{ background: 'linear-gradient(135deg, rgba(0, 204, 110, 0.05), rgba(0, 255, 136, 0.08))' }}>{row.deploy}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[#666] italic mt-6 text-sm"
+          >
+            * The entire ${course.price} investment is tax-deductible as a business expense. This system can pay for itself with just 1 recovered sale.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-10"
+          >
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 uppercase tracking-wide"
+              style={{
+                background: 'radial-gradient(ellipse at bottom, #7DFEA9 0%, #00CC6E 40%)',
+                boxShadow: '0 6px 16px rgba(0, 255, 136, 0.4)',
+                color: '#000'
+              }}
+            >
+              STOP THE REVENUE LEAK!
+            </button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  className="w-full p-6 flex items-center justify-between text-left transition-colors text-white"
+                  style={{ backgroundColor: '#111' }}
+                >
+                  <span className="font-bold pr-4">{item.question}</span>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} className="flex-shrink-0" />
+                  ) : (
+                    <ChevronDown size={20} className="flex-shrink-0" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="bg-white border border-[#111] border-t-0 p-5"
+                    >
+                      <p className="text-[#444]">{item.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+              Start <span style={{ color: '#00ff88' }}>Recovering Sales</span> Today
+            </h2>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-xl line-through text-white/40">${course.originalPrice}</span>
+              <span className="text-5xl lg:text-6xl font-bold text-white">${course.price}</span>
+            </div>
+
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center justify-center gap-3 px-12 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 uppercase tracking-wide animate-pulse"
+              style={{
+                background: 'linear-gradient(135deg, #00ff88 0%, #00cc6e 100%)',
+                boxShadow: '0 10px 40px rgba(0, 255, 136, 0.2)',
+                color: '#000'
+              }}
+            >
+              <ShoppingCart size={24} />
+              START RECOVERING SALES NOW!
+            </button>
+
+            <p className="text-xs mt-4 text-white/50">
+              Instant access • One-time payment
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={18} />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={18} />
+                <span>Instant Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award size={18} />
+                <span>Lifetime Updates</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ========== PRODUCT MAPPING VISUALIZATIONS ==========
 
 const ProductMappingVisuals = () => (
@@ -4185,13 +5032,13 @@ export default function CourseDetailPage() {
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
           {/* Layout Toggle - For courses with VIEW 2 */}
-          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'the-subconscious-trap' || slug === 'the-ltv-system') && (
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'the-subconscious-trap' || slug === 'the-ltv-system' || slug === 'email-marketing' || slug === 'abandoned-checkout') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 backgroundColor: useAlternativeLayout
-                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'the-subconscious-trap' ? '#ff4f03' : '#00bc0d')
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'the-subconscious-trap' ? '#ff4f03' : slug === 'the-ltv-system' ? '#00bc0d' : slug === 'email-marketing' ? '#D4B160' : slug === 'abandoned-checkout' ? '#00cc6e' : '#111')
                   : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
@@ -4215,6 +5062,10 @@ export default function CourseDetailPage() {
           <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'the-ltv-system' && useAlternativeLayout ? (
           <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'email-marketing' && useAlternativeLayout ? (
+          <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+        ) : slug === 'abandoned-checkout' && useAlternativeLayout ? (
+          <AbandonedCheckoutAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : (
           <>
         {/* Hero Section */}
