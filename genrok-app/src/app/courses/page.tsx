@@ -28,8 +28,10 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useCartStore } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
+import { ShoppingCart, Trash2 as TrashIcon, X as CloseIcon, Lock } from 'lucide-react';
 
 // Course Content Input Interface (URL-based for token efficiency)
 interface CourseContentInput {
@@ -413,9 +415,191 @@ const CourseContentInputForm = () => {
   );
 };
 
+// Cart Sidebar Component
+const CartSidebar = () => {
+  const { items, isOpen, closeCart, removeItem, getTotal, getOriginalTotal, clearCart } = useCartStore();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const handleCheckout = async () => {
+    setIsCheckingOut(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsCheckingOut(false);
+    clearCart();
+    closeCart();
+    alert('Purchase successful! You now have access to all courses in your cart.');
+  };
+
+  const savings = getOriginalTotal() - getTotal();
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeCart}
+            className="fixed inset-0 z-50 bg-black/50"
+          />
+
+          {/* Sidebar */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-[#eee]">
+              <div className="flex items-center gap-3">
+                <ShoppingCart size={24} className="text-[#111]" />
+                <h2 className="text-xl font-bold text-[#111]">Your Cart</h2>
+                <span className="px-2 py-1 rounded-full bg-[#111] text-white text-xs font-medium">
+                  {items.length}
+                </span>
+              </div>
+              <button
+                onClick={closeCart}
+                className="p-2 rounded-full hover:bg-[#f5f5f5] transition-colors"
+              >
+                <CloseIcon size={20} className="text-[#666]" />
+              </button>
+            </div>
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {items.length === 0 ? (
+                <div className="text-center py-12">
+                  <ShoppingCart size={48} className="text-[#ddd] mx-auto mb-4" />
+                  <p className="text-[#666]">Your cart is empty</p>
+                  <button
+                    onClick={closeCart}
+                    className="mt-4 text-sm font-medium text-[#111] underline"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div
+                      key={item.slug}
+                      className="flex gap-4 p-4 rounded-xl bg-[#fafafa] border border-[#eee]"
+                    >
+                      <div className="w-20 h-20 rounded-lg overflow-hidden bg-white flex-shrink-0 flex items-center justify-center">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={80}
+                          height={80}
+                          unoptimized
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-[#111] text-sm truncate">{item.title}</h3>
+                        <div className="flex items-baseline gap-2 mt-1">
+                          <span className="font-bold text-[#111]">${item.price}</span>
+                          {item.originalPrice && (
+                            <span className="text-xs line-through text-[#999]">${item.originalPrice}</span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => removeItem(item.slug)}
+                        className="p-2 rounded-lg hover:bg-red-50 text-red-500 self-start"
+                      >
+                        <TrashIcon size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                {savings > 0 && (
+                  <div className="flex items-center justify-between mb-3 text-sm">
+                    <span className="text-[#666]">You're saving</span>
+                    <span className="font-semibold text-green-600">${savings}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[#666]">Total</span>
+                  <div className="text-right">
+                    <span className="text-2xl font-bold text-[#111]">${getTotal()}</span>
+                    {savings > 0 && (
+                      <span className="block text-xs line-through text-[#999]">${getOriginalTotal()}</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isCheckingOut}
+                  className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    background: isCheckingOut
+                      ? '#666'
+                      : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)',
+                  }}
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Lock size={18} />
+                      Checkout - ${getTotal()}
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center justify-center gap-4 mt-3 text-xs text-[#888]">
+                  <span>30-day guarantee</span>
+                  <span>•</span>
+                  <span>Instant access</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Floating Cart Button
+const FloatingCartButton = () => {
+  const { openCart, getItemCount } = useCartStore();
+  const itemCount = getItemCount();
+
+  if (itemCount === 0) return null;
+
+  return (
+    <motion.button
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0, opacity: 0 }}
+      onClick={openCart}
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-5 py-3 rounded-full text-white font-medium shadow-lg hover:scale-105 transition-transform"
+      style={{ background: 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)' }}
+    >
+      <ShoppingCart size={20} />
+      <span>Cart ({itemCount})</span>
+    </motion.button>
+  );
+};
+
 export default function CoursesPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { addItem, isInCart, openCart } = useCartStore();
   const courses = getAllCourses();
 
   useEffect(() => {
@@ -423,6 +607,24 @@ export default function CoursesPage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  const handleAddToCart = (e: React.MouseEvent, course: typeof courses[0]) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isInCart(course.slug)) {
+      openCart();
+    } else {
+      addItem({
+        slug: course.slug,
+        title: course.title,
+        price: course.price,
+        originalPrice: course.originalPrice,
+        image: course.image,
+      });
+      openCart();
+    }
+  };
 
   if (isLoading || !user) {
     return (
@@ -434,6 +636,12 @@ export default function CoursesPage() {
 
   return (
     <DashboardLayout>
+      {/* Cart Sidebar */}
+      <CartSidebar />
+
+      {/* Floating Cart Button */}
+      <FloatingCartButton />
+
       {/* Full-width wrapper - counteracts parent padding */}
       <div
         className="min-h-screen"
@@ -465,55 +673,54 @@ export default function CoursesPage() {
             >
               {courses.map((course) => (
                 <motion.div key={course.slug} variants={itemVariants}>
-                  <Link
-                    href={`/courses/${course.slug}`}
+                  <div
                     className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl"
                     style={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e5e5e5',
                     }}
                   >
-                    {/* Image Section */}
-                    <div
-                      className="relative w-full flex items-center justify-center p-10"
-                      style={{
-                        backgroundColor: '#f8f8f8',
-                        minHeight: '220px',
-                      }}
-                    >
-                      {course.image ? (
-                        <Image
-                          src={course.image}
-                          alt={course.title}
-                          width={200}
-                          height={160}
-                          unoptimized
-                          className="max-h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                          style={{
-                            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))',
-                          }}
-                        />
-                      ) : (
-                        <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
-                          <BookOpen className="w-10 h-10 text-[#999999]" />
-                        </div>
-                      )}
-                      {course.badge && (
-                        <div
-                          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
-                          style={{ backgroundColor: '#111111', color: '#ffffff' }}
-                        >
-                          {course.badge}
-                        </div>
-                      )}
-                    </div>
+                    {/* Image Section - Link to course */}
+                    <Link href={`/courses/${course.slug}`}>
+                      <div
+                        className="relative w-full flex items-center justify-center"
+                        style={{
+                          backgroundColor: '#ffffff',
+                          height: '280px',
+                        }}
+                      >
+                        {course.image ? (
+                          <Image
+                            src={course.image}
+                            alt={course.title}
+                            fill
+                            unoptimized
+                            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
+                            <BookOpen className="w-10 h-10 text-[#999999]" />
+                          </div>
+                        )}
+                        {course.badge && (
+                          <div
+                            className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
+                            style={{ backgroundColor: '#111111', color: '#ffffff' }}
+                          >
+                            {course.badge}
+                          </div>
+                        )}
+                      </div>
+                    </Link>
 
                     {/* Content Section */}
                     <div className="p-6">
-                      {/* Title */}
-                      <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
-                        {course.title}
-                      </h2>
+                      {/* Title - Link to course */}
+                      <Link href={`/courses/${course.slug}`}>
+                        <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
+                          {course.title}
+                        </h2>
+                      </Link>
 
                       {/* Subtitle */}
                       <p className="text-sm text-[#666666] mb-4 line-clamp-2">
@@ -558,16 +765,32 @@ export default function CoursesPage() {
                           )}
                         </div>
 
-                        <div
-                          className="flex items-center gap-1 text-sm font-medium transition-all duration-200 group-hover:gap-2"
-                          style={{ color: '#111111' }}
+                        {/* Add to Cart Button */}
+                        <button
+                          onClick={(e) => handleAddToCart(e, course)}
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                          style={{
+                            background: isInCart(course.slug)
+                              ? '#22c55e'
+                              : 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
+                            color: '#ffffff',
+                          }}
                         >
-                          View Course
-                          <ArrowRight className="w-4 h-4" />
-                        </div>
+                          {isInCart(course.slug) ? (
+                            <>
+                              <Check size={16} />
+                              In Cart
+                            </>
+                          ) : (
+                            <>
+                              <Plus size={16} />
+                              Add to Cart
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
