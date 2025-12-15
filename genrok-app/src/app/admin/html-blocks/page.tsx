@@ -18,6 +18,10 @@ const COURSES = [
   { slug: 'product-mapping', name: 'Product Mapping', color: '#B33B28' },
   { slug: 'quiz-tactic', name: 'Quiz Tactic', color: '#00CFFF' },
   { slug: 'laser-targeting', name: 'Laser Targeting', color: '#ff0017' },
+  { slug: 'meta-headlines', name: '85 Meta Ad Headlines & Hooks', color: '#FF7A00' },
+  { slug: 'offer-workshop', name: 'Offer Workshop', color: '#1e9413' },
+  { slug: '20-laws', name: 'The 20 Laws', color: '#4A86C5' },
+  { slug: 'ugly-ads', name: 'Ugly Ads That Work', color: '#7F8FA6' },
 ];
 
 const STORAGE_KEY = 'quantum-scale-html-blocks';

@@ -1288,7 +1288,195 @@ Simply fill in the blanks with your product details and launch. No copywriting e
       }
     ]
   }
-};
+,
+
+  "meta-headlines": {
+    slug: "meta-headlines",
+    title: "85 Meta Ad Headlines & Hooks",
+    subtitle: "Proven Headlines That Stop The Scroll",
+    description: "Get 85 battle-tested headlines and hooks that have generated millions in ad revenue. Copy, paste, and watch your CTR skyrocket.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_48.jpg?v=1757233247",
+    stats: [
+      { value: "5", label: "modules" },
+      { value: "2+", label: "hours" },
+      { value: "20+", label: "templates" }
+    ],
+    longDescription: `Get 85 battle-tested headlines and hooks that have generated millions in ad revenue. Copy, paste, and watch your CTR skyrocket.
+
+This course gives you everything you need to start seeing results immediately. No fluff, no theory - just actionable strategies that work.`,
+    modules: [
+      {
+        title: "Core Framework",
+        description: "Learn the foundational principles that make this system work."
+      },
+      {
+        title: "Implementation Guide",
+        description: "Step-by-step instructions to apply what you've learned."
+      },
+      {
+        title: "Advanced Strategies",
+        description: "Take your results to the next level with advanced techniques."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "How quickly can I start using this?",
+        answer: "Immediately. After purchase, you get instant access to everything. You can start implementing within minutes."
+      },
+      {
+        question: "Will this work for my niche?",
+        answer: "Yes. These are universal frameworks based on proven principles that work across all niches and markets."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value, just reach out and we'll refund you - no questions asked."
+      }
+    ]
+  },
+
+  "offer-workshop": {
+    slug: "offer-workshop",
+    title: "Offer Workshop: Irresistible Ecom Offer",
+    subtitle: "Create Offers Your Customers Cannot Refuse",
+    description: "Learn the exact framework to craft irresistible eCommerce offers that convert browsers into buyers and maximize your average order value.",
+    price: 10,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_50.jpg?v=1757233399",
+    stats: [
+      { value: "5", label: "modules" },
+      { value: "2+", label: "hours" },
+      { value: "20+", label: "templates" }
+    ],
+    longDescription: `Learn the exact framework to craft irresistible eCommerce offers that convert browsers into buyers and maximize your average order value.
+
+This course gives you everything you need to start seeing results immediately. No fluff, no theory - just actionable strategies that work.`,
+    modules: [
+      {
+        title: "Core Framework",
+        description: "Learn the foundational principles that make this system work."
+      },
+      {
+        title: "Implementation Guide",
+        description: "Step-by-step instructions to apply what you've learned."
+      },
+      {
+        title: "Advanced Strategies",
+        description: "Take your results to the next level with advanced techniques."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "How quickly can I start using this?",
+        answer: "Immediately. After purchase, you get instant access to everything. You can start implementing within minutes."
+      },
+      {
+        question: "Will this work for my niche?",
+        answer: "Yes. These are universal frameworks based on proven principles that work across all niches and markets."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value, just reach out and we'll refund you - no questions asked."
+      }
+    ]
+  },
+
+  "20-laws": {
+    slug: "20-laws",
+    title: "The 20 Laws to Sell Anything to Anyone",
+    subtitle: "Timeless Principles of Persuasion",
+    description: "Master the 20 fundamental laws of selling that have stood the test of time. Apply these principles to any product, any market, any audience.",
+    price: 10,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_64.jpg?v=1760881483",
+    stats: [
+      { value: "5", label: "modules" },
+      { value: "2+", label: "hours" },
+      { value: "20+", label: "templates" }
+    ],
+    longDescription: `Master the 20 fundamental laws of selling that have stood the test of time. Apply these principles to any product, any market, any audience.
+
+This course gives you everything you need to start seeing results immediately. No fluff, no theory - just actionable strategies that work.`,
+    modules: [
+      {
+        title: "Core Framework",
+        description: "Learn the foundational principles that make this system work."
+      },
+      {
+        title: "Implementation Guide",
+        description: "Step-by-step instructions to apply what you've learned."
+      },
+      {
+        title: "Advanced Strategies",
+        description: "Take your results to the next level with advanced techniques."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "How quickly can I start using this?",
+        answer: "Immediately. After purchase, you get instant access to everything. You can start implementing within minutes."
+      },
+      {
+        question: "Will this work for my niche?",
+        answer: "Yes. These are universal frameworks based on proven principles that work across all niches and markets."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value, just reach out and we'll refund you - no questions asked."
+      }
+    ]
+  },
+
+  "ugly-ads": {
+    slug: "ugly-ads",
+    title: "How to Build Simple & Ugly Meta Ads That Work",
+    subtitle: "Stop Overthinking, Start Converting",
+    description: "Discover why simple, "ugly" ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_51.jpg?v=1757233270",
+    stats: [
+      { value: "5", label: "modules" },
+      { value: "2+", label: "hours" },
+      { value: "20+", label: "templates" }
+    ],
+    longDescription: `Discover why simple, "ugly" ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.
+
+This course gives you everything you need to start seeing results immediately. No fluff, no theory - just actionable strategies that work.`,
+    modules: [
+      {
+        title: "Core Framework",
+        description: "Learn the foundational principles that make this system work."
+      },
+      {
+        title: "Implementation Guide",
+        description: "Step-by-step instructions to apply what you've learned."
+      },
+      {
+        title: "Advanced Strategies",
+        description: "Take your results to the next level with advanced techniques."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "How quickly can I start using this?",
+        answer: "Immediately. After purchase, you get instant access to everything. You can start implementing within minutes."
+      },
+      {
+        question: "Will this work for my niche?",
+        answer: "Yes. These are universal frameworks based on proven principles that work across all niches and markets."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value, just reach out and we'll refund you - no questions asked."
+      }
+    ]
+  }};
 
 export const getCourseBySlug = (slug: string): Course | undefined => {
   return coursesData[slug];

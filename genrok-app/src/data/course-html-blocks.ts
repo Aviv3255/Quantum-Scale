@@ -10161,6 +10161,6859 @@ $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="final-b
 </div>
   `,
 
+
+
+  // ==================== META HEADLINES ====================
+  'meta-headlines': `
+<style>
+
+body {
+margin: 0;
+padding: 0;
+background: #ffffff;
+}
+.landing-section {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 25px 5px 28px 5px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.landing-section::before,
+.landing-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.landing-section::before {
+left: -100vw !important;
+}
+.landing-section::after {
+right: -100vw !important;
+}
+.content-container {
+max-width: 1000px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.intro-text {
+background: rgba(255, 122, 0, 0.1) !important;
+border: 1.5px solid #FF7A00 !important;
+border-radius: 30px !important;
+padding: 11px 18px !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 10px !important;
+margin-bottom: 25px !important;
+font-size: 13px !important;
+color: #ffffff !important;
+font-weight: 500 !important;
+position: relative !important;
+}
+.pulse-dot {
+width: 10px !important;
+height: 10px !important;
+background: #FF7A00 !important;
+border-radius: 50% !important;
+position: relative !important;
+animation: pulse 2s ease-in-out infinite !important;
+}
+@keyframes pulse {
+0%, 100% { transform: scale(1); opacity: 1; }
+50% { transform: scale(1.3); opacity: 0.7; }
+}
+.main-headline {
+font-size: 52px !important;
+font-weight: 900 !important;
+color: #ffffff !important;
+margin: 20px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.highlight {
+color: #FF7A00 !important;
+}
+.sub-headline {
+font-size: 23px !important;
+font-weight: 400 !important;
+color: #cccccc !important;
+margin: 15px 0 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.4 !important;
+}
+.screenshot-container {
+margin: 40px 0 !important;
+border-radius: 15px !important;
+overflow: hidden !important;
+box-shadow: 0 20px 60px rgba(255, 122, 0, 0.3) !important;
+}
+.screenshot {
+width: 100% !important;
+height: auto !important;
+display: block !important;
+}
+.pricing-section {
+margin: 35px 0 0 0 !important;
+display: block !important;
+}
+.price-text {
+font-weight: 800 !important;
+color: #ffffff !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.original-price {
+text-decoration: line-through !important;
+color: #888888 !important;
+font-size: 24px !important;
+margin-right: 15px !important;
+}
+.current-price {
+color: #FF7A00 !important;
+font-size: 21.56px !important;
+}
+.cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #FFB366 0%, #FF7A00 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 14.72px !important;
+font-weight: 700 !important;
+padding: 21px 76px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 400px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(255, 122, 0, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 0 auto 10px auto !important;
+gap: 15px !important;
+}
+.cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(255, 122, 0, 0.6) !important;
+}
+.cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.cta-button span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 14.72px !important;
+font-weight: 700 !important;
+color: white !important;
+display: block !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.small-text {
+font-size: 9.84px !important;
+display: block !important;
+font-weight: 400 !important;
+text-transform: none !important;
+letter-spacing: 0.5px !important;
+margin-top: 3px !important;
+}
+.lock-icon {
+width: 38px !important;
+height: 38px !important;
+background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>') center no-repeat !important;
+background-size: contain !important;
+flex-shrink: 0 !important;
+}
+.bundle-wrapper {
+margin: 15px 0 0 0 !important;
+text-align: center !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+color: #ffffff !important;
+font-size: 14px !important;
+}
+.bundle-link {
+color: #FF7A00 !important;
+text-decoration: underline !important;
+font-size: 14px !important;
+transition: all 0.3s ease !important;
+cursor: pointer !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.bundle-link:hover {
+color: #e66d00 !important;
+text-decoration: none !important;
+}
+.secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+margin-top: 20px !important;
+color: #888888 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.secure-payment-icon {
+width: 30px !important;
+height: 30px !important;
+background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23888888"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>') center no-repeat !important;
+background-size: contain !important;
+}
+@media (max-width: 768px) {
+.main-headline {
+font-size: 36px !important;
+}
+.sub-headline {
+font-size: 18px !important;
+}
+.cta-button {
+min-width: 320px !important;
+font-size: 13.8px !important;
+padding: 18px 35px !important;
+}
+.cta-button span {
+font-size: 13.8px !important;
+}
+.intro-text {
+font-size: 12px !important;
+padding: 10px 15px !important;
+max-width: 320px !important;
+}
+}
+@media (max-width: 480px) {
+.landing-section {
+padding: 2px 2px 20px 2px !important;
+}
+.main-headline {
+font-size: 26.45px !important;
+}
+.sub-headline {
+font-size: 17px !important;
+}
+.cta-button {
+min-width: 340px !important;
+font-size: 17.48px !important;
+padding: 16px 30px !important;
+}
+.cta-button span {
+font-size: 17.48px !important;
+}
+}
+
+
+.problem-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #ffffff !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+}
+.problem-section-isolated::before,
+.problem-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+}
+.problem-section-isolated::before {
+left: -100vw !important;
+}
+.problem-section-isolated::after {
+right: -100vw !important;
+}
+.problem-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.problem-text-isolated {
+font-size: 24px !important;
+color: #333333 !important;
+line-height: 1.7 !important;
+margin: 0 0 30px 0 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.problem-text-isolated strong {
+font-weight: 900 !important;
+color: #000000 !important;
+}
+.problem-gif-isolated {
+margin: 50px 0 !important;
+border-radius: 15px !important;
+overflow: hidden !important;
+display: block !important;
+}
+.problem-gif-isolated img {
+max-width: 435px !important;
+width: 100% !important;
+height: auto !important;
+display: block !important;
+margin: 0 auto !important;
+}
+.problem-question-isolated {
+font-size: 26px !important;
+color: #000000 !important;
+font-weight: 600 !important;
+line-height: 1.6 !important;
+margin: 50px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.problem-question-isolated strong {
+font-weight: 900 !important;
+color: #FF7A00 !important;
+}
+@media (max-width: 768px) {
+.problem-section-isolated {
+padding: 60px 20px !important;
+}
+.problem-text-isolated {
+font-size: 20px !important;
+}
+.problem-question-isolated {
+font-size: 22px !important;
+}
+}
+@media (max-width: 480px) {
+.problem-section-isolated {
+padding: 40px 15px !important;
+}
+.problem-text-isolated {
+font-size: 18px !important;
+}
+.problem-question-isolated {
+font-size: 20px !important;
+}
+}
+
+
+.quote-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+border-top: 3px solid #FF7A00 !important;
+border-bottom: 3px solid #FF7A00 !important;
+}
+.quote-section-isolated::before,
+.quote-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.quote-section-isolated::before {
+left: -100vw !important;
+}
+.quote-section-isolated::after {
+right: -100vw !important;
+}
+.quote-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.quote-intro-isolated {
+font-size: 20px !important;
+color: #cccccc !important;
+margin-bottom: 30px !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-style: italic !important;
+}
+.quote-text-isolated {
+font-size: 32px !important;
+color: #ffffff !important;
+font-weight: 700 !important;
+line-height: 1.5 !important;
+margin: 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-style: italic !important;
+position: relative !important;
+padding: 0 40px !important;
+}
+.quote-text-isolated::before,
+.quote-text-isolated::after {
+content: '"' !important;
+font-size: 80px !important;
+color: #FF7A00 !important;
+position: absolute !important;
+font-family: Georgia, serif !important;
+opacity: 0.3 !important;
+}
+.quote-text-isolated::before {
+top: -20px !important;
+left: 0 !important;
+}
+.quote-text-isolated::after {
+content: '"' !important;
+bottom: -40px !important;
+right: 0 !important;
+}
+.quote-author-isolated {
+font-size: 18px !important;
+color: #FF7A00 !important;
+font-weight: 700 !important;
+margin-top: 20px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.quote-explanation-isolated {
+font-size: 22px !important;
+color: #cccccc !important;
+margin-top: 50px !important;
+font-weight: 600 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.quote-punchline-isolated {
+font-size: 24px !important;
+color: #ffffff !important;
+font-weight: 800 !important;
+margin-top: 25px !important;
+line-height: 1.5 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+@media (max-width: 768px) {
+.quote-section-isolated {
+padding: 60px 20px !important;
+}
+.quote-text-isolated {
+font-size: 24px !important;
+padding: 0 30px !important;
+}
+.quote-explanation-isolated {
+font-size: 20px !important;
+}
+.quote-punchline-isolated {
+font-size: 22px !important;
+}
+}
+@media (max-width: 480px) {
+.quote-section-isolated {
+padding: 40px 15px !important;
+}
+.quote-text-isolated {
+font-size: 20px !important;
+padding: 0 25px !important;
+}
+.quote-text-isolated::before,
+.quote-text-isolated::after {
+font-size: 60px !important;
+}
+.quote-explanation-isolated {
+font-size: 18px !important;
+}
+.quote-punchline-isolated {
+font-size: 20px !important;
+}
+}
+
+
+.solution-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #ffffff !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+}
+.solution-section-isolated::before,
+.solution-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+}
+.solution-section-isolated::before {
+left: -100vw !important;
+}
+.solution-section-isolated::after {
+right: -100vw !important;
+}
+.solution-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.solution-headline-isolated {
+font-size: 42px !important;
+color: #000000 !important;
+font-weight: 800 !important;
+line-height: 1.3 !important;
+margin: 0 0 60px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.solution-product-title-isolated {
+font-size: 48px !important;
+color: #FF7A00 !important;
+font-weight: 900 !important;
+margin: 0 0 30px 0 !important;
+text-decoration: underline !important;
+text-decoration-color: #FF7A00 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.solution-description-isolated {
+font-size: 22px !important;
+color: #333333 !important;
+line-height: 1.7 !important;
+margin: 30px 0 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.solution-description-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.solution-section-isolated {
+padding: 60px 20px !important;
+}
+.solution-headline-isolated {
+font-size: 32px !important;
+}
+.solution-product-title-isolated {
+font-size: 36px !important;
+}
+.solution-description-isolated {
+font-size: 20px !important;
+}
+}
+@media (max-width: 480px) {
+.solution-section-isolated {
+padding: 40px 15px !important;
+}
+.solution-headline-isolated {
+font-size: 28px !important;
+}
+.solution-product-title-isolated {
+font-size: 32px !important;
+}
+.solution-description-isolated {
+font-size: 18px !important;
+}
+}
+
+
+.proof-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #f9f9f9 !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+}
+.proof-section-isolated::before,
+.proof-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #f9f9f9 !important;
+z-index: -1 !important;
+}
+.proof-section-isolated::before {
+left: -100vw !important;
+}
+.proof-section-isolated::after {
+right: -100vw !important;
+}
+.proof-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.proof-headline-isolated {
+font-size: 38px !important;
+color: #000000 !important;
+font-weight: 900 !important;
+margin: 0 0 50px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.proof-image-isolated {
+margin: 40px 0 !important;
+border-radius: 15px !important;
+overflow: hidden !important;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
+}
+.proof-image-isolated img {
+max-width: 422px !important;
+width: 100% !important;
+height: auto !important;
+display: block !important;
+margin: 0 auto !important;
+}
+.proof-description-isolated {
+font-size: 22px !important;
+color: #333333 !important;
+line-height: 1.7 !important;
+margin: 40px 0 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.proof-description-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.proof-section-isolated {
+padding: 60px 20px !important;
+}
+.proof-headline-isolated {
+font-size: 30px !important;
+}
+.proof-description-isolated {
+font-size: 20px !important;
+}
+}
+@media (max-width: 480px) {
+.proof-section-isolated {
+padding: 40px 15px !important;
+}
+.proof-headline-isolated {
+font-size: 26px !important;
+}
+.proof-description-isolated {
+font-size: 18px !important;
+}
+}
+
+
+.hopkins-quote-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+border-top: 3px solid #FF7A00 !important;
+border-bottom: 3px solid #FF7A00 !important;
+}
+.hopkins-quote-section-isolated::before,
+.hopkins-quote-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.hopkins-quote-section-isolated::before {
+left: -100vw !important;
+}
+.hopkins-quote-section-isolated::after {
+right: -100vw !important;
+}
+.hopkins-quote-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.hopkins-quote-intro-isolated {
+font-size: 20px !important;
+color: #cccccc !important;
+margin-bottom: 30px !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-style: italic !important;
+}
+.hopkins-quote-text-isolated {
+font-size: 36px !important;
+color: #ffffff !important;
+font-weight: 700 !important;
+line-height: 1.5 !important;
+margin: 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-style: italic !important;
+}
+.hopkins-quote-author-isolated {
+font-size: 18px !important;
+color: #FF7A00 !important;
+font-weight: 700 !important;
+margin-top: 20px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+@media (max-width: 768px) {
+.hopkins-quote-section-isolated {
+padding: 60px 20px !important;
+}
+.hopkins-quote-text-isolated {
+font-size: 28px !important;
+}
+}
+@media (max-width: 480px) {
+.hopkins-quote-section-isolated {
+padding: 40px 15px !important;
+}
+.hopkins-quote-text-isolated {
+font-size: 24px !important;
+}
+}
+
+
+.faq-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #f9f9f9 !important;
+padding: 80px 20px !important;
+text-align: left !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+}
+.faq-section-isolated::before,
+.faq-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #f9f9f9 !important;
+z-index: -1 !important;
+}
+.faq-section-isolated::before {
+left: -100vw !important;
+}
+.faq-section-isolated::after {
+right: -100vw !important;
+}
+.faq-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.faq-title-isolated {
+font-size: 42px !important;
+color: #000000 !important;
+font-weight: 900 !important;
+text-align: center !important;
+margin: 0 0 60px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.faq-item-isolated {
+background: #ffffff !important;
+border-radius: 12px !important;
+padding: 30px !important;
+margin-bottom: 20px !important;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+border-left: 4px solid #FF7A00 !important;
+}
+.faq-question-isolated {
+font-size: 22px !important;
+color: #000000 !important;
+font-weight: 700 !important;
+margin: 0 0 15px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.faq-answer-isolated {
+font-size: 18px !important;
+color: #333333 !important;
+line-height: 1.7 !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.faq-answer-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.faq-section-isolated {
+padding: 60px 20px !important;
+}
+.faq-title-isolated {
+font-size: 32px !important;
+}
+.faq-question-isolated {
+font-size: 20px !important;
+}
+.faq-answer-isolated {
+font-size: 16px !important;
+}
+.faq-item-isolated {
+padding: 25px !important;
+}
+}
+@media (max-width: 480px) {
+.faq-section-isolated {
+padding: 40px 15px !important;
+}
+.faq-title-isolated {
+font-size: 28px !important;
+}
+.faq-question-isolated {
+font-size: 18px !important;
+}
+.faq-answer-isolated {
+font-size: 15px !important;
+}
+.faq-item-isolated {
+padding: 20px !important;
+}
+}
+
+
+.cta-final-section-isolated {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 80px 20px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.cta-final-section-isolated::before,
+.cta-final-section-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.cta-final-section-isolated::before {
+left: -100vw !important;
+}
+.cta-final-section-isolated::after {
+right: -100vw !important;
+}
+.cta-final-content-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.cta-final-headline-isolated {
+font-size: 42px !important;
+color: #ffffff !important;
+font-weight: 800 !important;
+line-height: 1.3 !important;
+margin: 0 0 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-final-highlight-isolated {
+color: #FF7A00 !important;
+}
+.cta-final-subtext-isolated {
+font-size: 20px !important;
+color: #cccccc !important;
+margin: 0 0 50px 0 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-final-price-isolated {
+font-size: 29.57px !important;
+font-weight: 800 !important;
+color: #ffffff !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.cta-final-original-price-isolated {
+text-decoration: line-through !important;
+color: #888888 !important;
+font-size: 22.53px !important;
+margin-right: 15px !important;
+}
+.cta-final-current-price-isolated {
+color: #FF7A00 !important;
+text-shadow: 0 0 20px rgba(255, 122, 0, 0.6) !important;
+}
+.cta-final-button-isolated {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #FFB366 0%, #FF7A00 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 14.88px !important;
+font-weight: 700 !important;
+padding: 21px 76px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 400px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(255, 122, 0, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 0 auto 10px auto !important;
+gap: 15px !important;
+}
+.cta-final-button-isolated:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(255, 122, 0, 0.6) !important;
+}
+.cta-final-button-isolated.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.cta-final-button-isolated span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 14.88px !important;
+font-weight: 700 !important;
+color: white !important;
+display: block !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.small-text-isolated {
+font-size: 10.7px !important;
+display: block !important;
+font-weight: 400 !important;
+text-transform: none !important;
+letter-spacing: 0.5px !important;
+margin-top: 3px !important;
+}
+.cta-final-lock-icon-isolated {
+width: 38px !important;
+height: 38px !important;
+background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>') center no-repeat !important;
+background-size: contain !important;
+flex-shrink: 0 !important;
+}
+.cta-final-bundle-isolated {
+margin: 15px 0 0 0 !important;
+text-align: center !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+color: #ffffff !important;
+font-size: 14px !important;
+}
+.cta-final-bundle-link-isolated {
+color: #FF7A00 !important;
+text-decoration: underline !important;
+font-size: 14px !important;
+transition: all 0.3s ease !important;
+cursor: pointer !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-final-bundle-link-isolated:hover {
+color: #e66d00 !important;
+text-decoration: none !important;
+}
+.cta-final-secure-isolated {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+margin-top: 20px !important;
+color: #888888 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-final-secure-icon-isolated {
+width: 30px !important;
+height: 30px !important;
+background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23888888"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>') center no-repeat !important;
+background-size: contain !important;
+}
+@media (max-width: 768px) {
+.cta-final-section-isolated {
+padding: 60px 20px !important;
+}
+.cta-final-headline-isolated {
+font-size: 32px !important;
+}
+.cta-final-subtext-isolated {
+font-size: 18px !important;
+}
+.cta-final-button-isolated {
+min-width: 320px !important;
+font-size: 13.95px !important;
+padding: 18px 35px !important;
+}
+.cta-final-button-isolated span {
+font-size: 13.95px !important;
+}
+}
+@media (max-width: 480px) {
+.cta-final-section-isolated {
+padding: 40px 15px !important;
+}
+.cta-final-headline-isolated {
+font-size: 28px !important;
+}
+.cta-final-button-isolated {
+min-width: 340px !important;
+font-size: 17.67px !important;
+padding: 16px 30px !important;
+}
+.cta-final-button-isolated span {
+font-size: 17.67px !important;
+}
+}
+
+</style>
+
+<div class="landing-section">
+<div class="content-container">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>The weapon that 7-figure brands use to stop the scroll</span>
+</div>
+<h1 class="main-headline">
+Stop the Scroll with <span class="highlight">Hooks That Convert</span>
+</h1>
+<p class="sub-headline">
+85 proven fill-in-the-blank headline & hook templates that grab attention instantly
+</p>
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_11.jpg?v=1760538210" alt="85 Meta Ad Headlines & Hooks" class="screenshot">
+</div>
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$37</span> <span class="current-price">Only $19</span>
+</p>
+<button class="cta-button" id="meta-hooks-hero-btn" data-variant-id="43539671711837">
+<div class="lock-icon"></div>
+<span>GET INSTANT ACCESS<br><small class="small-text">one time payment of $19, lifetime access.</small></span>
+</button>
+<div class="bundle-wrapper">
+<span>
+$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+</span>
+</div>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="problem-section-isolated">
+<div class="problem-content-isolated">
+<p class="problem-text-isolated">
+In a world where the average person is exposed to more than <strong>8,000 ads a day</strong>...<br>
+the battle for their attention is only getting more intense…
+</p>
+<p class="problem-text-isolated">
+and the chance that they'll notice and buy from your ad is <strong>nearly zero.</strong>
+</p>
+<div class="problem-gif-isolated">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/5.gif?v=1753076532" alt="Infinite Scroll">
+</div>
+<p class="problem-question-isolated">
+How do you capture the customer's subconscious,<br>
+and with just the hook - drive them to <strong>purchase</strong>?
+</p>
+</div>
+</div>
+
+
+<div class="quote-section-isolated">
+<div class="quote-content-isolated">
+<p class="quote-intro-isolated">
+David Ogilvy, one of the greatest advertisers of all time - once said...
+</p>
+<p class="quote-text-isolated">
+On average, five times as many people read the headline as read the body copy.
+</p>
+<p class="quote-author-isolated">
+— David Ogilvy
+</p>
+<p class="quote-explanation-isolated">
+In other words...
+</p>
+<p class="quote-punchline-isolated">
+If your headline doesn't stop them,<br>
+you've already lost them before the ad even begins.
+</p>
+</div>
+</div>
+
+
+<div class="solution-section-isolated">
+<div class="solution-content-isolated">
+<h1 class="solution-headline-isolated">
+Here's the simple solution that's about to change everything for you…
+</h1>
+<h2 class="solution-product-title-isolated">
+85 Ad Headlines & Hooks
+</h2>
+<p class="solution-description-isolated">
+In an easy-to-use fill-in-the-blank format, you'll get 85 templates for Meta ad hooks and headlines designed to grab attention at the absolute highest levels…
+</p>
+<p class="solution-description-isolated">
+No need to think of hook ideas - it's all there for you.<br>
+85 different templates, 5 seconds, and you've got a written hook that slices through the scroll <strong>like a knife to the gut.</strong>
+</p>
+</div>
+</div>
+
+
+<div class="proof-section-isolated">
+<div class="proof-content-isolated">
+<h2 class="proof-headline-isolated">
+And it's proven…
+</h2>
+<div class="proof-image-isolated">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7_Products.jpg?v=1753076234" alt="Product Results">
+</div>
+<p class="proof-description-isolated">
+Yes, it works for any niche, in any language. And you get lifetime access.
+</p>
+<p class="proof-description-isolated">
+Copy the template, fill in the missing word based on your product, and you've got a proven hook that converts.
+</p>
+</div>
+</div>
+
+
+<div class="hopkins-quote-section-isolated">
+<div class="hopkins-quote-content-isolated">
+<p class="hopkins-quote-intro-isolated">
+Claude Hopkins, another legend... said:
+</p>
+<p class="hopkins-quote-text-isolated">
+If your headline can't sell the product by itself, you've failed.
+</p>
+<p class="hopkins-quote-author-isolated">
+— Claude Hopkins
+</p>
+</div>
+</div>
+
+
+<div class="faq-section-isolated">
+<div class="faq-content-isolated">
+<h2 class="faq-title-isolated">
+Frequently Asked Questions
+</h2>
+<div class="faq-item-isolated">
+<h3 class="faq-question-isolated">Will I get lifetime access?</h3>
+<p class="faq-answer-isolated">
+Yes. <strong>One-time payment, lifetime access.</strong> No subscriptions. No hidden fees.
+</p>
+</div>
+<div class="faq-item-isolated">
+<h3 class="faq-question-isolated">Do I need a team to apply this?</h3>
+<p class="faq-answer-isolated">
+Not at all. Every template was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.
+</p>
+</div>
+<div class="faq-item-isolated">
+<h3 class="faq-question-isolated">What if it doesn't work for my niche?</h3>
+<p class="faq-answer-isolated">
+These templates work for <strong>any niche, in any language.</strong> They're based on proven psychological triggers that work across all industries - from ecommerce to services, B2B to B2C.
+</p>
+</div>
+<div class="faq-item-isolated">
+<h3 class="faq-question-isolated">How quickly can I start using these?</h3>
+<p class="faq-answer-isolated">
+Immediately. Each template is fill-in-the-blank. Just copy the format, add your product details, and you're done. It takes about <strong>5 seconds per hook.</strong>
+</p>
+</div>
+<div class="faq-item-isolated">
+<h3 class="faq-question-isolated">Are these templates proven to work?</h3>
+<p class="faq-answer-isolated">
+Absolutely. These are the same hook structures used by 7-figure brands to stop the scroll and drive conversions at the highest levels. They're battle-tested across thousands of ads.
+</p>
+</div>
+</div>
+</div>
+
+
+<div class="cta-final-section-isolated">
+<div class="cta-final-content-isolated">
+<h2 class="cta-final-headline-isolated">
+Ready to Stop The Scroll and <span class="cta-final-highlight-isolated">Start Converting</span>?
+</h2>
+<p class="cta-final-subtext-isolated">
+Get instant access to all 85 proven headline & hook templates. Fill in the blanks and watch your Meta ads come to life in seconds.
+</p>
+<div class="cta-final-price-isolated">
+<span class="cta-final-original-price-isolated">$37</span>
+<span class="cta-final-current-price-isolated">Only $19</span>
+</div>
+<button class="cta-final-button-isolated" id="meta-hooks-final-btn" data-variant-id="43539671711837">
+<div class="cta-final-lock-icon-isolated"></div>
+<span style="font-size: 14.88px !important; font-weight: 700 !important; line-height: 1.3 !important;">GET INSTANT ACCESS NOW!<br><small class="small-text-isolated" style="font-size: 10px !important;">one time payment of $19, lifetime access.</small></span>
+</button>
+<div class="cta-final-bundle-isolated">
+<span>
+$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="cta-final-bundle-link-isolated">building a bundle</a>
+</span>
+</div>
+<div class="cta-final-secure-isolated">
+<div class="cta-final-secure-icon-isolated"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+  `,
+
+  // ==================== OFFER WORKSHOP ====================
+  'offer-workshop': `
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+}
+
+.landing-section {
+    all: initial;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #000000 !important;
+    padding: 25px 5px 28px 5px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.landing-section::before,
+.landing-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #000000 !important;
+    z-index: -1 !important;
+}
+
+.landing-section::before {
+    right: 100% !important;
+}
+
+.landing-section::after {
+    left: 100% !important;
+}
+
+.content-container {
+    margin: 0 auto !important;
+    max-width: 1200px !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+}
+
+.intro-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: rgba(30, 148, 19, 0.1) !important;
+    border: 1px solid #1e9413 !important;
+    border-radius: 50px !important;
+    padding: 12px 18px !important;
+    margin: 0 auto 25px auto !important;
+    font-size: 13px !important;
+    color: #1e9413 !important;
+    font-weight: 600 !important;
+    max-width: fit-content !important;
+}
+
+.pulse-dot {
+    width: 8px !important;
+    height: 8px !important;
+    background: #1e9413 !important;
+    border-radius: 50% !important;
+    animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+.main-headline {
+    font-size: 48px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 15px 0 !important;
+    line-height: 1.2 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.highlight {
+    color: #1e9413 !important;
+}
+
+.sub-headline {
+    font-size: 22px !important;
+    color: #cccccc !important;
+    margin: 0 0 35px 0 !important;
+    font-weight: 400 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.screenshot-container {
+    margin: 40px auto !important;
+    max-width: 900px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 60px rgba(30, 148, 19, 0.3) !important;
+}
+
+.screenshot {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+.pricing-section {
+    margin: 35px 0 25px 0 !important;
+}
+
+.price-text {
+    font-size: 18px !important;
+    color: #ffffff !important;
+    margin: 0 0 25px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.original-price {
+    text-decoration: line-through !important;
+    color: #999999 !important;
+    font-size: 24px !important;
+    margin-right: 10px !important;
+}
+
+.current-price {
+    color: #1e9413 !important;
+    font-size: 32px !important;
+    font-weight: 800 !important;
+}
+
+.cta-button {
+    background: radial-gradient(ellipse at bottom, #5CDE4C 0%, #1e9413 40%) !important;
+    border: none !important;
+    border-radius: 35px !important;
+    padding: 24px 76px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: white !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-family: 'Open Sans', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 10px 30px rgba(30, 148, 19, 0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 400px !important;
+    height: 90px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 15px 40px rgba(30, 148, 19, 0.6) !important;
+}
+
+.cta-button.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.cta-button .small-text {
+    display: block !important;
+    font-size: 9.5px !important;
+    font-weight: 400 !important;
+    margin-top: 3px !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.bundle-price-container {
+    margin-top: 15px !important;
+    text-align: center !important;
+}
+
+.bundle-price-text {
+    font-size: 14px !important;
+    color: #cccccc !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link {
+    color: #1e9413 !important;
+    text-decoration: underline !important;
+    transition: all 0.3s ease !important;
+}
+
+.bundle-link:hover {
+    color: #2bb81a !important;
+    text-decoration: none !important;
+}
+
+.secure-payment {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 20px !important;
+    font-size: 14px !important;
+    color: #999999 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.secure-payment-icon {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.secure-payment-icon::before {
+    content: '🔒' !important;
+    font-size: 16px !important;
+}
+
+@media (max-width: 768px) {
+    .main-headline {
+        font-size: 32px !important;
+    }
+    
+    .sub-headline {
+        font-size: 18px !important;
+    }
+    
+    .cta-button {
+        min-width: 320px !important;
+        font-size: 19px !important;
+        padding: 16px 30px !important;
+    }
+    
+    .current-price {
+        font-size: 28px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-section {
+        padding: 20px 5px !important;
+    }
+    
+    .main-headline {
+        font-size: 26px !important;
+    }
+    
+    .sub-headline {
+        font-size: 16px !important;
+    }
+    
+    .cta-button {
+        min-width: 280px !important;
+        font-size: 18px !important;
+        padding: 15px 25px !important;
+    }
+    
+    .intro-text {
+        font-size: 11px !important;
+        padding: 10px 15px !important;
+    }
+}
+
+
+.problem-section {
+    all: initial;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #ffffff !important;
+    padding: 80px 20px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.problem-section::before,
+.problem-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -1 !important;
+}
+
+.problem-section::before {
+    right: 100% !important;
+}
+
+.problem-section::after {
+    left: 100% !important;
+}
+
+.problem-container {
+    max-width: 900px !important;
+    margin: 0 auto !important;
+}
+
+.problem-headline {
+    font-size: 33.48px !important;
+    font-weight: 800 !important;
+    color: #000000 !important;
+    margin: 0 0 30px 0 !important;
+    line-height: 1.3 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.problem-text {
+    font-size: 19px !important;
+    color: #333333 !important;
+    line-height: 1.8 !important;
+    margin: 0 0 25px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.parenthetical {
+    font-style: italic !important;
+    color: #666666 !important;
+    font-size: 16px !important;
+    display: block !important;
+    margin: 10px 0 !important;
+}
+
+.highlight-text {
+    font-weight: 800 !important;
+    color: #000000 !important;
+}
+
+.big-number {
+    font-size: 42px !important;
+    font-weight: 900 !important;
+    color: #1e9413 !important;
+    margin: 40px 0 !important;
+    line-height: 1.2 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+@media (max-width: 768px) {
+    .problem-section {
+        padding: 60px 20px !important;
+    }
+    
+    .problem-headline {
+        font-size: 26.04px !important;
+    }
+    
+    .problem-text {
+        font-size: 17px !important;
+    }
+    
+    .big-number {
+        font-size: 32px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .problem-section {
+        padding: 50px 15px !important;
+    }
+    
+    .problem-headline {
+        font-size: 22.32px !important;
+    }
+    
+    .problem-text {
+        font-size: 16px !important;
+    }
+    
+    .big-number {
+        font-size: 28px !important;
+    }
+}
+
+
+.master-section {
+    all: initial;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #000000 !important;
+    padding: 100px 20px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.master-section::before,
+.master-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #000000 !important;
+    z-index: -1 !important;
+}
+
+.master-section::before {
+    right: 100% !important;
+}
+
+.master-section::after {
+    left: 100% !important;
+}
+
+.master-container {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+}
+
+.pre-headline {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1e9413 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    margin: 0 0 20px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.power-headline {
+    font-size: 52px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    margin: 0 0 25px 0 !important;
+    line-height: 1.2 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.power-highlight {
+    color: #1e9413 !important;
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.sub-power {
+    font-size: 24px !important;
+    color: #cccccc !important;
+    margin: 0 0 60px 0 !important;
+    line-height: 1.5 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    max-width: 850px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.sub-power strong {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+.mastery-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px !important;
+    margin: 0 0 60px 0 !important;
+}
+
+.mastery-card {
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%) !important;
+    border: 2px solid #1e9413 !important;
+    border-radius: 16px !important;
+    padding: 40px 35px !important;
+    text-align: left !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.mastery-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(135deg, rgba(30, 148, 19, 0.05) 0%, rgba(30, 148, 19, 0) 100%) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.mastery-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: #2bb81a !important;
+    box-shadow: 0 10px 40px rgba(30, 148, 19, 0.3) !important;
+}
+
+.mastery-card:hover::before {
+    opacity: 1 !important;
+}
+
+.card-number {
+    font-size: 48px !important;
+    font-weight: 900 !important;
+    color: #1e9413 !important;
+    opacity: 0.3 !important;
+    margin: 0 0 15px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    line-height: 1 !important;
+}
+
+.card-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 15px 0 !important;
+    line-height: 1.3 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.card-description {
+    font-size: 16px !important;
+    color: #cccccc !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.card-description strong {
+    color: #1e9413 !important;
+    font-weight: 700 !important;
+}
+
+.reality-check {
+    background: rgba(30, 148, 19, 0.1) !important;
+    border: 2px solid #1e9413 !important;
+    border-radius: 16px !important;
+    padding: 50px 40px !important;
+    margin: 60px 0 0 0 !important;
+}
+
+.reality-title {
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.reality-text {
+    font-size: 20px !important;
+    color: #ffffff !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.reality-text strong {
+    color: #1e9413 !important;
+    font-weight: 900 !important;
+}
+
+.emphasis-red {
+    color: #ff3600 !important;
+    font-weight: 900 !important;
+}
+
+@media (max-width: 968px) {
+    .mastery-grid {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .master-section {
+        padding: 70px 20px !important;
+    }
+    
+    .power-headline {
+        font-size: 38px !important;
+    }
+    
+    .sub-power {
+        font-size: 20px !important;
+    }
+    
+    .mastery-card {
+        padding: 35px 28px !important;
+    }
+    
+    .card-title {
+        font-size: 20px !important;
+    }
+    
+    .reality-check {
+        padding: 40px 30px !important;
+    }
+    
+    .reality-title {
+        font-size: 24px !important;
+    }
+    
+    .reality-text {
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .master-section {
+        padding: 60px 15px !important;
+    }
+    
+    .power-headline {
+        font-size: 32px !important;
+    }
+    
+    .sub-power {
+        font-size: 18px !important;
+    }
+    
+    .mastery-card {
+        padding: 30px 25px !important;
+    }
+    
+    .card-number {
+        font-size: 40px !important;
+    }
+    
+    .card-title {
+        font-size: 19px !important;
+    }
+    
+    .card-description {
+        font-size: 15px !important;
+    }
+    
+    .reality-check {
+        padding: 35px 25px !important;
+    }
+    
+    .reality-title {
+        font-size: 22px !important;
+    }
+    
+    .reality-text {
+        font-size: 17px !important;
+    }
+}
+
+
+.comparison-section-wrapper {
+    all: initial;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #ffffff !important;
+    padding: 80px 20px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.comparison-section-wrapper::before,
+.comparison-section-wrapper::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -1 !important;
+}
+
+.comparison-section-wrapper::before {
+    right: 100% !important;
+}
+
+.comparison-section-wrapper::after {
+    left: 100% !important;
+}
+
+.comparison-container {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+}
+
+.comparison-title {
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    color: #000000 !important;
+    margin: 0 0 20px 0 !important;
+    line-height: 1.3 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.highlight-green {
+    color: #1e9413 !important;
+}
+
+.comparison-subtitle {
+    font-size: 20px !important;
+    color: #666666 !important;
+    margin: 0 0 15px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.options-text {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    margin: 50px 0 30px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.comparison-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 0 auto !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.column-header {
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 20px !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+}
+
+.column-header:first-child {
+    border-radius: 12px 0 0 0 !important;
+}
+
+.column-header:last-child {
+    border-radius: 0 12px 0 0 !important;
+}
+
+.highlight-col {
+    background: #1e9413 !important;
+}
+
+.comparison-row {
+    background: #ffffff !important;
+}
+
+.comparison-item {
+    padding: 25px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #333333 !important;
+    vertical-align: middle !important;
+    text-align: left !important;
+}
+
+.comparison-item.highlight-col {
+    background: rgba(30, 148, 19, 0.05) !important;
+    border-color: #1e9413 !important;
+    font-weight: 600 !important;
+}
+
+.comparison-row:last-child .comparison-item:first-child {
+    border-radius: 0 0 0 12px !important;
+}
+
+.comparison-row:last-child .comparison-item:last-child {
+    border-radius: 0 0 12px 0 !important;
+}
+
+.ps-note {
+    font-size: 17px !important;
+    color: #333333 !important;
+    line-height: 1.8 !important;
+    margin: 40px auto 50px auto !important;
+    max-width: 800px !important;
+    text-align: left !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.ps-note strong {
+    font-weight: 800 !important;
+    color: #000000 !important;
+}
+
+.cta-button-comparison {
+    background: radial-gradient(ellipse at bottom, #5CDE4C 0%, #1e9413 40%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 35px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 24px 76px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-family: 'Open Sans', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 10px 30px rgba(30, 148, 19, 0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 450px !important;
+    height: 90px !important;
+    text-align: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.cta-button-comparison:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 15px 40px rgba(30, 148, 19, 0.6) !important;
+}
+
+.cta-button-comparison.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.cta-button-comparison .small-text {
+    display: block !important;
+    font-size: 9.5px !important;
+    font-weight: 400 !important;
+    margin-top: 3px !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.bundle-price-wrapper {
+    margin: 15px 0 0 0 !important;
+    text-align: center !important;
+    display: block !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link-comp {
+    color: #1e9413 !important;
+    text-decoration: underline !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link-comp:hover {
+    color: #2bb81a !important;
+    text-decoration: none !important;
+}
+
+@media (max-width: 768px) {
+    .comparison-section-wrapper {
+        padding: 60px 15px !important;
+    }
+    
+    .comparison-title {
+        font-size: 30px !important;
+    }
+    
+    .comparison-subtitle {
+        font-size: 18px !important;
+    }
+    
+    .column-header {
+        font-size: 18px !important;
+        padding: 15px 10px !important;
+    }
+    
+    .comparison-item {
+        padding: 18px !important;
+        font-size: 15px !important;
+    }
+    
+    .cta-button-comparison {
+        min-width: 320px !important;
+        font-size: 18px !important;
+        padding: 18px 30px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .comparison-section-wrapper {
+        padding: 50px 10px !important;
+    }
+    
+    .comparison-title {
+        font-size: 26px !important;
+    }
+    
+    .comparison-table {
+        font-size: 14px !important;
+    }
+    
+    .column-header {
+        font-size: 16px !important;
+        padding: 12px 8px !important;
+    }
+    
+    .comparison-item {
+        padding: 15px !important;
+        font-size: 14px !important;
+    }
+    
+    .cta-button-comparison {
+        min-width: 280px !important;
+        font-size: 17px !important;
+        padding: 16px 25px !important;
+    }
+}
+
+
+.faq-section {
+    all: initial;
+    display: block;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #f8f8f8 !important;
+    padding: 80px 20px !important;
+    box-sizing: border-box !important;
+    font-family: Arial, sans-serif !important;
+    isolation: isolate !important;
+    overflow-x: hidden !important;
+}
+
+.faq-section::before,
+.faq-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #f8f8f8 !important;
+    z-index: -1 !important;
+}
+
+.faq-section::before {
+    right: 100% !important;
+}
+
+.faq-section::after {
+    left: 100% !important;
+}
+
+.faq-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-section *,
+.faq-section *::before,
+.faq-section *::after {
+    box-sizing: border-box;
+}
+
+.faq-section h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    text-align: center;
+    margin: 0 0 40px 0;
+    padding: 0;
+    color: black;
+}
+
+.faq-section .faq-item {
+    margin-bottom: 15px;
+}
+
+.faq-section .question {
+    background-color: black;
+    border-radius: 12px;
+    padding: 25px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    user-select: none;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-section .question:hover {
+    opacity: 0.9;
+}
+
+.faq-section .question .arrow {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    margin-left: 15px;
+    flex-shrink: 0;
+}
+
+.faq-section .question.active .arrow {
+    transform: rotate(180deg);
+}
+
+.faq-section .answer {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: black;
+    display: none;
+    box-sizing: border-box;
+}
+
+.faq-section .answer.active {
+    display: block;
+}
+
+.faq-section .answer strong {
+    color: black;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .faq-section {
+        padding: 60px 20px !important;
+    }
+    
+    .faq-section h1 {
+        font-size: 2rem;
+    }
+    
+    .faq-section .question {
+        font-size: 17px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .faq-section {
+        padding: 50px 15px !important;
+    }
+    
+    .faq-section h1 {
+        font-size: 1.75rem;
+    }
+    
+    .faq-section .question {
+        font-size: 16px;
+        padding: 20px;
+    }
+    
+    .faq-section .answer {
+        font-size: 15px;
+        padding: 18px;
+    }
+}
+
+
+.final-cta-section {
+    all: initial;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
+    padding: 100px 20px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.final-cta-section::before,
+.final-cta-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
+    z-index: -1 !important;
+}
+
+.final-cta-section::before {
+    right: 100% !important;
+}
+
+.final-cta-section::after {
+    left: 100% !important;
+}
+
+.final-cta-container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+}
+
+.final-headline {
+    font-size: 44px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    line-height: 1.3 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.highlight-green-final {
+    color: #1e9413 !important;
+}
+
+.final-subheadline {
+    font-size: 22px !important;
+    color: #cccccc !important;
+    margin: 0 0 50px 0 !important;
+    line-height: 1.6 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.price-box {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid #1e9413 !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+    margin: 0 0 35px 0 !important;
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.price-label {
+    font-size: 16px !important;
+    color: #999999 !important;
+    margin: 0 0 10px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.price-display {
+    font-size: 18px !important;
+    color: #ffffff !important;
+    margin: 0 0 15px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.original-price-final {
+    text-decoration: line-through !important;
+    color: #666666 !important;
+    font-size: 26px !important;
+    margin-right: 12px !important;
+}
+
+.current-price-final {
+    color: #1e9413 !important;
+    font-size: 42px !important;
+    font-weight: 900 !important;
+}
+
+.value-points {
+    text-align: left !important;
+    margin: 25px 0 0 0 !important;
+    padding: 0 !important;
+}
+
+.value-point {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 12px 0 !important;
+    font-size: 16px !important;
+    color: #cccccc !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.checkmark-final {
+    color: #1e9413 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    flex-shrink: 0 !important;
+}
+
+.cta-button-final {
+    background: radial-gradient(ellipse at bottom, #5CDE4C 0%, #1e9413 40%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 35px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 24px 76px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-family: 'Open Sans', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 10px 30px rgba(30, 148, 19, 0.5) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 500px !important;
+    height: 90px !important;
+    text-align: center !important;
+    margin: 0 0 15px 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.cta-button-final:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 15px 40px rgba(30, 148, 19, 0.6) !important;
+}
+
+.cta-button-final.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.cta-button-final .small-text-final {
+    display: block !important;
+    font-size: 9.5px !important;
+    font-weight: 400 !important;
+    margin-top: 3px !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.bundle-price-final {
+    margin: 15px 0 0 0 !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    color: #999999 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link-final {
+    color: #1e9413 !important;
+    text-decoration: underline !important;
+    transition: all 0.3s ease !important;
+}
+
+.bundle-link-final:hover {
+    color: #2bb81a !important;
+    text-decoration: none !important;
+}
+
+.guarantee-text {
+    font-size: 15px !important;
+    color: #999999 !important;
+    margin: 30px 0 0 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.guarantee-icon {
+    display: inline-block !important;
+    margin-right: 8px !important;
+}
+
+@media (max-width: 768px) {
+    .final-cta-section {
+        padding: 70px 20px !important;
+    }
+    
+    .final-headline {
+        font-size: 32px !important;
+    }
+    
+    .final-subheadline {
+        font-size: 19px !important;
+    }
+    
+    .cta-button-final {
+        min-width: 350px !important;
+        font-size: 20px !important;
+        padding: 20px 35px !important;
+    }
+    
+    .current-price-final {
+        font-size: 36px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .final-cta-section {
+        padding: 60px 15px !important;
+    }
+    
+    .final-headline {
+        font-size: 28px !important;
+    }
+    
+    .final-subheadline {
+        font-size: 17px !important;
+    }
+    
+    .cta-button-final {
+        min-width: 280px !important;
+        font-size: 18px !important;
+        padding: 18px 30px !important;
+    }
+    
+    .current-price-final {
+        font-size: 32px !important;
+    }
+    
+    .price-box {
+        padding: 25px 20px !important;
+    }
+}
+
+</style>
+
+<div class="landing-section">
+    <div class="content-container">
+        <div class="intro-text">
+            <div class="pulse-dot"></div>
+            <span>The missing piece most ecommerce brands ignore</span>
+        </div>
+        
+        <h1 class="main-headline">
+            Build an Offer So Good, Only an <span class="highlight">Idiot Would Refuse It</span>
+        </h1>
+        
+        <p class="sub-headline">
+            (The brain-science formula that makes customers unable to say no)
+        </p>
+        
+        <div class="screenshot-container">
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_12.jpg?v=1760541756" 
+                 alt="Irresistible Offer Framework" 
+                 class="screenshot">
+        </div>
+        
+        <div class="pricing-section">
+            <p class="price-text">
+                <span class="original-price">$39</span>
+                <span class="current-price">Only $19 Today</span>
+            </p>
+            
+            <button class="cta-button" id="offer-hero-btn" data-variant-id="43531690115165">
+                <span style="position: relative; z-index: 999; color: white; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+                    YES, SHOW ME HOW TO BUILD WINNING OFFERS
+                    <span class="small-text">One-Time Payment - Lifetime Access</span>
+                </span>
+            </button>
+            
+            <div class="bundle-price-container">
+                <div class="bundle-price-text">
+                    $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+                </div>
+            </div>
+            
+            <div class="secure-payment">
+                <span class="secure-payment-icon"></span>
+                <span>Secure Payment - 256-bit SSL Encrypted</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="problem-section">
+    <div class="problem-container">
+        <h2 class="problem-headline">
+            In 2025, one of the things ecommerce entrepreneurs <span class="highlight-text">completely neglect</span> is the power of the offer...
+        </h2>
+        
+        <p class="problem-text">
+            They do CRO work, launch tons of creatives…
+            <span class="parenthetical">(which is excellent and important)</span>
+        </p>
+        
+        <p class="problem-text" style="margin-top: 50px !important;">
+            But they completely forget how much <span class="highlight-text">one simple offer can build an entire brand.</span>
+        </p>
+        
+        <p class="problem-text">
+            One brilliant offer can give you the ability to scale a marketing budget of
+        </p>
+        
+        <div class="big-number">
+            $20K per day with high ROAS
+        </div>
+    </div>
+</div>
+
+
+<div class="master-section">
+    <div class="master-container">
+        <div class="pre-headline">INSIDE THIS GUIDE</div>
+        
+        <h2 class="power-headline">
+            The Exact <span class="power-highlight">Weapon</span> You Need to Dominate Your Market
+        </h2>
+        
+        <p class="sub-power">
+            While your competitors throw random discounts hoping something sticks, you'll engineer offers that <strong>hijack the customer's decision-making process</strong> and make buying feel inevitable.
+        </p>
+        
+        <div class="mastery-grid">
+            <div class="mastery-card">
+                <div class="card-number">01</div>
+                <h3 class="card-title">The Anatomy of an Irresistible Offer</h3>
+                <p class="card-description">
+                    Discover the <strong>4 core components</strong> that transform a mediocre offer into one customers literally cannot refuse. Miss even one, and your conversion rate stays stuck. Get all four right, and watch customers fight to buy from you.
+                </p>
+            </div>
+            
+            <div class="mastery-card">
+                <div class="card-number">02</div>
+                <h3 class="card-title">The Psychology Playbook</h3>
+                <p class="card-description">
+                    Learn the <strong>cognitive triggers</strong> that billion-dollar brands exploit to turn browsers into buyers. These aren't theories—these are battle-tested psychological mechanisms that <strong>force action</strong> at the subconscious level.
+                </p>
+            </div>
+            
+            <div class="mastery-card">
+                <div class="card-number">03</div>
+                <h3 class="card-title">The Magic Square Framework</h3>
+                <p class="card-description">
+                    The <strong>4-element system</strong> that makes offers literally impossible to refuse. When these four pieces align perfectly, customers stop thinking rationally and start buying <strong>impulsively</strong>. This is how you engineer desire.
+                </p>
+            </div>
+            
+            <div class="mastery-card">
+                <div class="card-number">04</div>
+                <h3 class="card-title">Your Complete Arsenal</h3>
+                <p class="card-description">
+                    Every proven offer structure that works—from <strong>urgency-based</strong> to <strong>value-stacking</strong> to <strong>scarcity manipulation</strong>. You'll know exactly which weapon to deploy for any product, any audience, any situation. No more guessing.
+                </p>
+            </div>
+            
+            <div class="mastery-card">
+                <div class="card-number">05</div>
+                <h3 class="card-title">Advanced Structural Manipulation</h3>
+                <p class="card-description">
+                    The ninja-level tactics that separate <strong>amateurs from assassins</strong>. How to use offer architecture to position price as irrelevant, make competitors look weak, and create buying urgency that feels natural—not forced.
+                </p>
+            </div>
+            
+            <div class="mastery-card">
+                <div class="card-number">06</div>
+                <h3 class="card-title">Deploy & Dominate</h3>
+                <p class="card-description">
+                    <strong>Plug-and-play</strong> strategies you can implement today. Within hours, you'll have offers running that convert at levels your competitors can't comprehend—let alone compete with.
+                </p>
+            </div>
+        </div>
+        
+        <div class="reality-check">
+            <h3 class="reality-title">Here's The Reality:</h3>
+            <p class="reality-text">
+                In <strong>30 focused minutes</strong>, you'll absorb the same offer-building framework that powers <strong>8-figure brands</strong>. The same psychology that makes customers <span class="emphasis-red">unable to click away</span>. The same structural tactics that turn cold traffic into <strong>instant buyers</strong>. This isn't theory. This is the exact playbook that <strong>scales budgets to $20K/day</strong> with high ROAS-while everyone else struggles to break even.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="comparison-section-wrapper">
+    <div class="comparison-container">
+        <h2 class="comparison-title">
+            Why This Is <span class="highlight-green">Completely Different</span>
+        </h2>
+        
+        <p class="comparison-subtitle">
+            Most entrepreneurs guess at offers. This shows you the exact framework.
+        </p>
+        
+        <p class="options-text">You have two paths:</p>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th class="column-header">The Old Way</th>
+                    <th class="column-header highlight-col">The Irresistible Offer System</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="comparison-row">
+                    <td class="comparison-item">
+                        Throwing random discounts and hoping something converts
+                    </td>
+                    <td class="comparison-item highlight-col">
+                        Using the magic square framework that taps into customer psychology - making refusal nearly impossible
+                    </td>
+                </tr>
+                <tr class="comparison-row">
+                    <td class="comparison-item">
+                        Competing on price and watching your margins disappear
+                    </td>
+                    <td class="comparison-item highlight-col">
+                        Building offers so compelling that customers don't even look at the price - they just buy
+                    </td>
+                </tr>
+                <tr class="comparison-row">
+                    <td class="comparison-item">
+                        Copying what other brands do without understanding why it works
+                    </td>
+                    <td class="comparison-item highlight-col">
+                        Mastering the psychology of buying so you can engineer offers that convert at will
+                    </td>
+                </tr>
+                <tr class="comparison-row">
+                    <td class="comparison-item">
+                        Constantly tweaking and testing without a proven framework to follow
+                    </td>
+                    <td class="comparison-item highlight-col">
+                        Having an arsenal of winning offer structures you can deploy immediately - knowing exactly which one to use and when
+                    </td>
+                </tr>
+                <tr class="comparison-row">
+                    <td class="comparison-item">
+                        Watching competitors crush it with offers you don't understand
+                    </td>
+                    <td class="comparison-item highlight-col">
+                        Operating with the same sophisticated offer architecture that billion-dollar brands use to dominate their markets
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p class="ps-note">
+            <strong>P.S.</strong> - The brands crushing it with offers aren't smarter than you. They're just using frameworks you haven't been shown yet. Frameworks that turn offers from "nice discount" into "impossible to refuse."
+        </p>
+        
+        <button class="cta-button-comparison" id="comparison-cta-btn" data-variant-id="43531690115165">
+            <span style="position: relative; z-index: 999; color: white; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+                YES, I WANT THE FRAMEWORK!
+                <span class="small-text">One-Time Payment - Lifetime Access</span>
+            </span>
+        </button>
+        
+        <div class="bundle-price-wrapper">
+            <span style="color: #333; font-size: 14px;">
+                $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-comp">building a bundle</a>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="faq-section">
+    <div class="faq-content">
+        <h1>Common Questions</h1>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>I already know about offers. Why do I need this?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">You might know the basics of discounting and bundling—but this isn't about basics. This is about <strong>highly advanced offer architecture</strong> that takes conversion rates from "decent" to <strong>"impossible to compete with."</strong> These are the frameworks that give billion-dollar brands an unfair advantage. If you're not using the magic square, psychological triggers, and strategic offer stacking, you're leaving <strong>massive revenue</strong> on the table.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>Can't I just copy what other successful brands are doing?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">Here's the reality: copying an offer without understanding <strong>why it works</strong> is like copying a recipe without understanding cooking. You'll get inconsistent results and won't know how to adapt when things change. This guide teaches you the <strong>underlying psychology and structure</strong> so you can engineer winning offers for any product, any audience, any market—on demand.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>Will I get lifetime access?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">Yes. <strong>One-time payment, lifetime access.</strong> No subscriptions. No hidden fees.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>Is this just theory or can I apply it right away?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">This is <strong>100% practical</strong>. You'll get the exact framework + real examples + proven offer structures that you can implement <strong>immediately</strong>. Within 30 minutes, you'll have everything you need to start building irresistible offers.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>Do I need a team to apply this?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">Not at all. Every tactic was designed for <strong>solo operators</strong>. You can implement everything with minimal tech skills or outsource it easily if you prefer.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>What if this doesn't work for my business?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">These offer frameworks are being used by businesses across every major industry—eCommerce, digital products, services, B2B. If you have customers and something to sell, <strong>this works</strong>. And if for any reason you're not satisfied, you're protected by our guarantee.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>How is this different from other marketing guides?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">Most guides teach you tactics in isolation. This teaches you the <strong>complete offer system</strong>—psychology, structure, positioning, and strategic deployment. It's not about <strong>making better offers</strong>. It's about engineering offers at a <strong>world-class level</strong> that your competitors simply can't match.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                <span>I'm worried about competing on price. Won't better offers hurt my margins?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="answer">This is the exact <strong>opposite</strong> of what happens. When you build truly irresistible offers using psychological principles, customers stop focusing on price. They focus on <strong>value and desire</strong>. The best offers actually <strong>protect your margins</strong> by making the decision about the entire package—not just the price tag.</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="final-cta-section">
+    <div class="final-cta-container">
+        <h2 class="final-headline">
+            Stop Guessing. Start <span class="highlight-green-final">Engineering</span> Offers That Convert
+        </h2>
+        
+        <p class="final-subheadline">
+            Within 30 minutes, you'll have the exact framework billion-dollar brands use to build offers customers can't refuse.
+        </p>
+        
+        <div class="price-box">
+            <p class="price-label">One-time investment:</p>
+            <p class="price-display">
+                <span class="original-price-final">$39</span>
+                <span class="current-price-final">$19</span>
+            </p>
+            
+            <div class="value-points">
+                <div class="value-point">
+                    <span class="checkmark-final">✓</span>
+                    <span>Complete offer architecture framework</span>
+                </div>
+                <div class="value-point">
+                    <span class="checkmark-final">✓</span>
+                    <span>Psychology-backed strategies</span>
+                </div>
+                <div class="value-point">
+                    <span class="checkmark-final">✓</span>
+                    <span>Arsenal of proven offer structures</span>
+                </div>
+                <div class="value-point">
+                    <span class="checkmark-final">✓</span>
+                    <span>Lifetime access - no subscriptions</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="cta-button-final" id="final-cta-btn" data-variant-id="43531690115165">
+            <span style="position: relative; z-index: 999; color: white; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+                GET INSTANT ACCESS NOW
+                <span class="small-text-final">One-Time Payment - Lifetime Access</span>
+            </span>
+        </button>
+        
+        <div class="bundle-price-final">
+            $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-final">building a bundle</a>
+        </div>
+        
+        <p class="guarantee-text">
+            <span class="guarantee-icon">🔒</span>
+            100% Secure Checkout - Your information is protected
+        </p>
+    </div>
+</div>
+  `,
+
+  // ==================== 20 LAWS ====================
+  '20-laws': `
+<style>
+
+* {
+    all: revert;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    overflow-x: hidden;
+}
+
+#isolated-hero-section {
+    all: initial !important;
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    background: #000000 !important;
+    padding: 60px 5px 28px 5px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    padding-top: 60px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    isolation: isolate !important;
+    contain: layout style paint !important;
+    z-index: 999999 !important;
+}
+
+#isolated-hero-section *,
+#isolated-hero-section *::before,
+#isolated-hero-section *::after {
+    all: revert !important;
+    box-sizing: border-box !important;
+    font-family: 'Open Sans', sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#isolated-hero-section .content-container {
+    display: block !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 20px 20px 0 20px !important;
+    width: 100% !important;
+}
+
+#isolated-hero-section .intro-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: rgba(74, 134, 197, 0.15) !important;
+    border: 1px solid #4A86C5 !important;
+    border-radius: 25px !important;
+    padding: 12px 20px !important;
+    font-size: 11.05px !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    margin: 0 0 32px 0 !important;
+}
+
+#isolated-hero-section .pulse-dot {
+    display: block !important;
+    width: 8px !important;
+    height: 8px !important;
+    background: #4A86C5 !important;
+    border-radius: 50% !important;
+    animation: pulse-anim 2s infinite !important;
+    box-shadow: 0 0 10px #4A86C5 !important;
+}
+
+@keyframes pulse-anim {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+#isolated-hero-section .main-headline {
+    display: block !important;
+    font-size: 50px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+}
+
+#isolated-hero-section .main-headline .highlight {
+    color: #4A86C5 !important;
+    text-shadow: 0 0 30px rgba(74, 134, 197, 0.8) !important;
+}
+
+#isolated-hero-section .sub-headline {
+    display: block !important;
+    font-size: 24px !important;
+    color: #cccccc !important;
+    margin: 0 0 40px 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+}
+
+#isolated-hero-section .screenshot-container {
+    display: block !important;
+    margin: 0 auto !important;
+    max-width: 684px !important;
+    width: 100% !important;
+}
+
+#isolated-hero-section .screenshot {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(74, 134, 197, 0.3) !important;
+}
+
+#isolated-hero-section .pricing-section {
+    display: block !important;
+    margin: 35px 0 0 0 !important;
+}
+
+#isolated-hero-section .price-text {
+    display: block !important;
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 25px 0 !important;
+    text-align: center !important;
+}
+
+#isolated-hero-section .original-price {
+    text-decoration: line-through !important;
+    color: #888888 !important;
+    font-size: 32px !important;
+    margin-right: 15px !important;
+}
+
+#isolated-hero-section .price-text .current-price {
+    color: #4A86C5 !important;
+    text-shadow: 0 0 20px rgba(74, 134, 197, 0.6) !important;
+}
+
+#isolated-hero-section .cta-button {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    background: radial-gradient(ellipse at bottom, #7AADDA 0%, #4A86C5 40%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    font-size: 18.4px !important;
+    font-weight: 600 !important;
+    padding: 16px 24px !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease !important;
+    text-decoration: none !important;
+    min-width: 280px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-shadow: 0 6px 16px rgba(74, 134, 197, 0.4) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    min-height: 56px !important;
+    position: relative !important;
+    border: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    margin: 0 auto 10px auto !important;
+}
+
+#isolated-hero-section .cta-button:hover {
+    transform: translateY(-2px) !important;
+}
+
+#isolated-hero-section .cta-button.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+#isolated-hero-section .cta-button span {
+    display: block !important;
+    position: relative !important;
+    z-index: 999 !important;
+    font-size: 18.4px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+#isolated-hero-section .cta-button .small-text {
+    display: block !important;
+    font-size: 12.31px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    margin-top: 3px !important;
+    text-align: center !important;
+}
+
+#isolated-hero-section .lock-icon {
+    display: block !important;
+    width: 22px !important;
+    height: 22px !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/The_New_Way_-_Sales_Page.png?v=1758114605') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    flex-shrink: 0 !important;
+}
+
+#isolated-hero-section .bundle-wrapper {
+    display: block !important;
+    text-align: center !important;
+    margin: 12px 0 0 0 !important;
+}
+
+#isolated-hero-section .bundle-wrapper span {
+    color: #e8e8e8 !important;
+    font-size: 14px !important;
+}
+
+#isolated-hero-section .bundle-link {
+    color: #4A86C5 !important;
+    text-decoration: underline !important;
+}
+
+#isolated-hero-section .secure-payment {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 15.44px !important;
+    color: #e8e8e8 !important;
+    font-weight: 500 !important;
+    margin: 10px 0 8px 0 !important;
+}
+
+#isolated-hero-section .secure-payment-icon {
+    display: block !important;
+    width: 28.31px !important;
+    height: 28.31px !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+#isolated-hero-section .bonus-section {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    margin-top: 28px !important;
+    padding: 0 20px !important;
+}
+
+#isolated-hero-section .bonus-text {
+    display: block !important;
+    font-size: 21.75px !important;
+    font-weight: 700 !important;
+    color: #4A86C5 !important;
+    text-align: right !important;
+    line-height: 1.3 !important;
+    margin-right: -3px !important;
+    max-width: 180px !important;
+}
+
+#isolated-hero-section .divider {
+    display: block !important;
+    width: 2px !important;
+    height: 100px !important;
+    background: linear-gradient(to bottom, transparent, #4A86C5, transparent) !important;
+}
+
+@media (max-width: 768px) {
+    #isolated-hero-section {
+        padding: 3px 3px 20px 3px !important;
+    }
+
+    #isolated-hero-section .intro-text {
+        font-size: 10.2px !important;
+        padding: 10px 15px !important;
+        max-width: 320px !important;
+    }
+
+    #isolated-hero-section .main-headline {
+        font-size: 31.46px !important;
+    }
+
+    #isolated-hero-section .price-text {
+        font-size: 28.9px !important;
+    }
+
+    #isolated-hero-section .original-price {
+        font-size: 22px !important;
+    }
+
+    #isolated-hero-section .sub-headline {
+        font-size: 20px !important;
+    }
+
+    #isolated-hero-section .screenshot-container {
+        max-width: 883.5px !important;
+    }
+
+    #isolated-hero-section .cta-button {
+        font-size: 14.79px !important;
+        width: 90% !important;
+        max-width: 400px !important;
+        min-width: 320px !important;
+    }
+
+    #isolated-hero-section .cta-button span {
+        font-size: 14.79px !important;
+    }
+
+    #isolated-hero-section .cta-button .small-text {
+        font-size: 11.56px !important;
+    }
+
+    #isolated-hero-section .secure-payment {
+        font-size: 13.24px !important;
+    }
+
+    #isolated-hero-section .secure-payment-icon {
+        width: 23.59px !important;
+        height: 23.59px !important;
+    }
+
+    #isolated-hero-section .bonus-section {
+        gap: 3px !important;
+        padding: 0 8px !important;
+    }
+
+    #isolated-hero-section .bonus-text {
+        font-size: 18.63px !important;
+        margin-right: -3px !important;
+        max-width: 120px !important;
+        line-height: 1.2 !important;
+    }
+
+    #isolated-hero-section .divider {
+        height: 60px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #isolated-hero-section {
+        padding: 2px 2px 20px 2px !important;
+    }
+
+    #isolated-hero-section .main-headline {
+        font-size: 26.45px !important;
+    }
+
+    #isolated-hero-section .sub-headline {
+        font-size: 17px !important;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    #isolated-hero-section .cta-button {
+        width: 600px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.profit-engines-mega-section {
+    all: initial !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 80px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    isolation: isolate !important;
+    display: block !important;
+}
+
+.profit-engines-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.profit-engines-mega-section::before,
+.profit-engines-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -2 !important;
+}
+
+.profit-engines-mega-section::before {
+    left: -100vw !important;
+}
+
+.profit-engines-mega-section::after {
+    right: -100vw !important;
+}
+
+.container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+}
+
+.section-headline {
+    font-size: 38px !important;
+    font-weight: 900 !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    margin-bottom: 50px !important;
+    color: #000000 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-headline .highlight-blue {
+    color: #4A86C5 !important;
+}
+
+.main-paragraph {
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    text-align: center !important;
+    margin-bottom: 40px !important;
+    color: #333333 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.emphasis {
+    font-weight: 700 !important;
+    color: #000000 !important;
+}
+
+.image-container {
+    text-align: center !important;
+    margin: 50px 0 !important;
+}
+
+.content-image {
+    width: 98% !important;
+    max-width: 98% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.quote-section {
+    text-align: center !important;
+    margin: 70px 0 !important;
+    padding: 40px 20px !important;
+    background: linear-gradient(135deg, rgba(74, 134, 197, 0.05), rgba(74, 134, 197, 0.02)) !important;
+    border-radius: 12px !important;
+}
+
+.quote-text {
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    line-height: 1.4 !important;
+    color: #000000 !important;
+    margin-bottom: 20px !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.quote-attribution {
+    font-size: 16px !important;
+    color: #666666 !important;
+    font-style: italic !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.revenue-text {
+    font-size: 19px !important;
+    line-height: 1.7 !important;
+    text-align: center !important;
+    margin: 35px 0 !important;
+    color: #333333 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.underline-emphasis {
+    text-decoration: underline !important;
+    font-weight: 700 !important;
+}
+
+.large-statement {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin: 50px 0 30px 0 !important;
+    color: #000000 !important;
+    line-height: 1.4 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+@media (max-width: 768px) {
+    .profit-engines-mega-section {
+        padding: 50px 0 !important;
+    }
+
+    .section-headline {
+        font-size: 28px !important;
+        margin-bottom: 35px !important;
+    }
+
+    .main-paragraph {
+        font-size: 16px !important;
+    }
+
+    .quote-text {
+        font-size: 24px !important;
+    }
+
+    .revenue-text {
+        font-size: 17px !important;
+    }
+
+    .large-statement {
+        font-size: 20px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.benefits-mega-section {
+    width: 100%;
+    padding: 80px 20px;
+    background-color: #000000;
+    overflow-x: hidden;
+}
+
+.benefits-mega-section .container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.benefits-mega-section .section-title {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.3;
+    text-align: center;
+    margin: 0 0 30px 0;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.benefits-mega-section .intro-text {
+    font-size: 18px;
+    line-height: 1.8;
+    text-align: center;
+    margin: 0 0 60px 0;
+    color: #cccccc;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.benefits-mega-section .emphasis {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.benefits-mega-section .highlight-blue {
+    color: #4A86C5;
+    font-weight: 700;
+}
+
+.benefits-mega-section .benefits-list {
+    margin: 50px 0;
+}
+
+.benefits-mega-section .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 0 35px 0;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(74, 134, 197, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.benefits-mega-section .benefit-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 25px rgba(74, 134, 197, 0.25);
+}
+
+.benefits-mega-section .checkmark {
+    font-size: 24px;
+    margin: 0 20px 0 0;
+    flex-shrink: 0;
+    color: #4A86C5;
+    font-weight: 900;
+}
+
+.benefits-mega-section .benefit-text {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #e0e0e0;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+}
+
+.benefits-mega-section .italic-text {
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .benefits-mega-section {
+        padding: 50px 15px;
+    }
+
+    .benefits-mega-section .section-title {
+        font-size: 28px;
+        margin: 0 0 25px 0;
+    }
+
+    .benefits-mega-section .intro-text {
+        font-size: 16px;
+        margin: 0 0 40px 0;
+    }
+
+    .benefits-mega-section .benefit-item {
+        padding: 20px;
+        margin: 0 0 25px 0;
+    }
+
+    .benefits-mega-section .benefit-text {
+        font-size: 16px;
+    }
+
+    .benefits-mega-section .checkmark {
+        font-size: 20px;
+        margin: 0 15px 0 0;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.copywriters-mega-section-unique {
+    width: 100%;
+    padding: 80px 20px;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+.copywriters-container-unique {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.copywriters-section-title-unique {
+    font-size: 39.24px;
+    font-weight: 900;
+    line-height: 1.3;
+    text-align: center;
+    margin: 0 0 40px 0;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.copywriters-intro-paragraph-unique {
+    font-size: 18px;
+    line-height: 1.8;
+    text-align: left;
+    margin: 0 0 50px 0;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.copywriters-emphasis-unique {
+    font-weight: 700;
+    color: #000000;
+}
+
+.copywriters-showcase-intro-unique {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    margin: 60px 0 40px 0;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.copywriters-mega-emphasis-unique {
+    font-weight: 900;
+    color: #4A86C5;
+}
+
+.copywriters-image-unique {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+}
+
+.copywriters-image-unique:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px rgba(74, 134, 197, 0.2);
+}
+
+.copywriters-asterisk-note-unique {
+    font-size: 14px;
+    margin: 40px 0 0 0;
+    font-style: italic;
+    text-align: center;
+    color: #666666;
+    font-family: 'Open Sans', sans-serif;
+}
+
+@media (max-width: 768px) {
+    .copywriters-mega-section-unique {
+        padding: 50px 15px;
+    }
+
+    .copywriters-section-title-unique {
+        font-size: 30.52px;
+        margin: 0 0 30px 0;
+    }
+
+    .copywriters-intro-paragraph-unique {
+        font-size: 16px;
+        margin: 0 0 35px 0;
+    }
+
+    .copywriters-showcase-intro-unique {
+        font-size: 19px;
+        margin: 40px 0 30px 0;
+    }
+
+    .copywriters-image-unique {
+        margin: 0 auto 25px auto;
+    }
+
+    .copywriters-asterisk-note-unique {
+        font-size: 13px;
+        margin: 30px 0 0 0;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.section-wrapper-isolated {
+    all: initial !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    font-family: 'Open Sans', sans-serif !important;
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    display: block !important;
+    padding: 80px 20px !important;
+    box-sizing: border-box !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    isolation: isolate !important;
+}
+
+.section-wrapper-isolated::before,
+.section-wrapper-isolated::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #000000 !important;
+    z-index: -1 !important;
+}
+
+.section-wrapper-isolated::before {
+    left: -100vw !important;
+}
+
+.section-wrapper-isolated::after {
+    right: -100vw !important;
+}
+
+.section-wrapper-isolated *,
+.section-wrapper-isolated *::before,
+.section-wrapper-isolated *::after {
+    all: unset !important;
+    box-sizing: border-box !important;
+}
+
+.section-wrapper-isolated table {
+    border-collapse: collapse !important;
+    display: table !important;
+}
+
+.section-wrapper-isolated thead {
+    display: table-header-group !important;
+}
+
+.section-wrapper-isolated tbody {
+    display: table-row-group !important;
+}
+
+.section-wrapper-isolated tr {
+    display: table-row !important;
+}
+
+.section-wrapper-isolated th,
+.section-wrapper-isolated td {
+    display: table-cell !important;
+}
+
+.section-wrapper-isolated .container-isolated {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+}
+
+.section-wrapper-isolated .title-isolated {
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 42px !important;
+    margin: 0 0 15px 0 !important;
+    color: #ffffff !important;
+    display: block !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+}
+
+.section-wrapper-isolated .title-isolated .highlight-isolated {
+    color: #4A86C5 !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    font-size: inherit !important;
+}
+
+.section-wrapper-isolated .subtitle-isolated {
+    font-size: 18px !important;
+    margin: 0 0 50px 0 !important;
+    color: #cccccc !important;
+    display: block !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-wrapper-isolated .comparison-table-isolated {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 40px 0 !important;
+    border-collapse: collapse !important;
+    background-color: #1a1a1a !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    display: table !important;
+}
+
+.section-wrapper-isolated .comparison-header-isolated {
+    display: table-row !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.section-wrapper-isolated .column-header-isolated {
+    display: table-cell !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 20px !important;
+    padding: 25px 20px !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    width: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    vertical-align: middle !important;
+    line-height: 1.4 !important;
+}
+
+.section-wrapper-isolated .column-header-isolated.highlight-header-isolated {
+    background: rgba(74, 134, 197, 0.15) !important;
+    color: #4A86C5 !important;
+}
+
+.section-wrapper-isolated .comparison-row-isolated {
+    display: table-row !important;
+}
+
+.section-wrapper-isolated .comparison-item-isolated {
+    display: table-cell !important;
+    padding: 25px !important;
+    font-size: 16px !important;
+    color: #cccccc !important;
+    font-weight: 400 !important;
+    background-color: #1a1a1a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    vertical-align: top !important;
+    width: 50% !important;
+    line-height: 1.8 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    text-align: left !important;
+}
+
+.section-wrapper-isolated .comparison-item-isolated.highlight-col-isolated {
+    background: rgba(74, 134, 197, 0.08) !important;
+    font-weight: 500 !important;
+    color: #e8e8e8 !important;
+}
+
+.section-wrapper-isolated .ps-note-isolated {
+    font-size: 16px !important;
+    color: #cccccc !important;
+    font-style: italic !important;
+    margin: 50px 0 !important;
+    text-align: left !important;
+    display: block !important;
+    line-height: 1.7 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-wrapper-isolated .ps-note-isolated strong {
+    font-weight: 700 !important;
+    font-style: normal !important;
+    color: #ffffff !important;
+}
+
+.section-wrapper-isolated .cta-button-isolated {
+    all: unset !important;
+    background: radial-gradient(ellipse at bottom, #7AADDA 0%, #4A86C5 40%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 16px 24px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 50px auto 0 auto !important;
+    width: 280px !important;
+    min-height: 56px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-shadow: 0 6px 16px rgba(74, 134, 197, 0.4) !important;
+    outline: none !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+
+.section-wrapper-isolated .cta-button-isolated:hover {
+    transform: translateY(-2px) !important;
+}
+
+.section-wrapper-isolated .cta-button-isolated.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.section-wrapper-isolated .cta-button-isolated span {
+    position: relative !important;
+    z-index: 999 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    display: block !important;
+    font-family: 'Open Sans', sans-serif !important;
+    text-align: center !important;
+    line-height: 1.3 !important;
+}
+
+.section-wrapper-isolated .cta-button-isolated .small-text-isolated {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    margin-top: 4px !important;
+    display: block !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+}
+
+.section-wrapper-isolated .lock-icon-isolated {
+    width: 22px !important;
+    height: 22px !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/The_New_Way_-_Sales_Page.png?v=1758114605') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    margin-right: 8px !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+}
+
+.section-wrapper-isolated .bundle-price-wrapper-isolated {
+    margin: 15px 0 0 0 !important;
+    text-align: center !important;
+    display: block !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-wrapper-isolated .bundle-link-isolated {
+    color: #4A86C5 !important;
+    text-decoration: underline !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-wrapper-isolated .bundle-link-isolated:hover {
+    color: #6FA3D6 !important;
+    text-decoration: none !important;
+}
+
+@media (max-width: 768px) {
+    .section-wrapper-isolated {
+        padding: 50px 15px !important;
+    }
+
+    .section-wrapper-isolated .title-isolated {
+        font-size: 32px !important;
+    }
+
+    .section-wrapper-isolated .comparison-table-isolated {
+        font-size: 14px !important;
+    }
+
+    .section-wrapper-isolated .column-header-isolated {
+        font-size: 18px !important;
+        padding: 18px 12px !important;
+    }
+
+    .section-wrapper-isolated .comparison-item-isolated {
+        padding: 18px !important;
+        font-size: 15px !important;
+    }
+
+    .section-wrapper-isolated .ps-note-isolated {
+        font-size: 15px !important;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .section-wrapper-isolated .cta-button-isolated {
+        width: 600px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.final-cta-mega-section {
+    all: initial !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 120px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    isolation: isolate !important;
+    display: block !important;
+}
+
+.final-cta-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.final-cta-mega-section::before,
+.final-cta-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -2 !important;
+}
+
+.final-cta-mega-section::before {
+    left: -100vw !important;
+}
+
+.final-cta-mega-section::after {
+    right: -100vw !important;
+}
+
+.container {
+    max-width: 650px !important;
+    margin: 0 auto !important;
+    padding: 0 30px !important;
+    text-align: center !important;
+}
+
+.final-headline {
+    font-size: 52px !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+    margin-bottom: 28px !important;
+    color: #000000 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    letter-spacing: -0.5px !important;
+}
+
+.final-headline .highlight-blue {
+    color: #4A86C5 !important;
+}
+
+.final-subtext {
+    font-size: 20px !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    margin-bottom: 60px !important;
+    color: #555555 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 400 !important;
+}
+
+.price-display {
+    font-size: 56px !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    margin-bottom: 8px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    letter-spacing: -1px !important;
+}
+
+.price-strike {
+    text-decoration: line-through !important;
+    color: #CCCCCC !important;
+    font-size: 38px !important;
+    margin-right: 18px !important;
+}
+
+.price-current {
+    color: #4A86C5 !important;
+}
+
+.price-subtitle {
+    font-size: 15px !important;
+    color: #888888 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    margin-bottom: 50px !important;
+    font-weight: 400 !important;
+}
+
+.final-cta-button {
+    all: unset !important;
+    background: radial-gradient(ellipse at bottom, #7AADDA 0%, #4A86C5 40%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 18px 32px !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin: 0 auto 18px auto !important;
+    width: 320px !important;
+    min-height: 62px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-shadow: 0 8px 24px rgba(74, 134, 197, 0.35) !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+
+.final-cta-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 32px rgba(74, 134, 197, 0.45) !important;
+}
+
+.final-cta-button.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.final-cta-button span {
+    position: relative !important;
+    z-index: 999 !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    display: block !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.final-cta-button .small-text {
+    font-size: 11px !important;
+    display: block !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: 0.3px !important;
+    margin-top: 5px !important;
+    text-align: center !important;
+    opacity: 0.95 !important;
+}
+
+.lock-icon-final {
+    width: 22px !important;
+    height: 22px !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/The_New_Way_-_Sales_Page.png?v=1758114605') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+}
+
+.bundle-wrapper-final {
+    text-align: center !important;
+    margin: 0 0 50px 0 !important;
+    display: block !important;
+}
+
+.bundle-wrapper-final span {
+    color: #999999 !important;
+    font-size: 14px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 400 !important;
+}
+
+.bundle-link-final {
+    color: #4A86C5 !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+}
+
+.secure-badge {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 25px !important;
+    font-size: 13px !important;
+    color: #AAAAAA !important;
+    font-weight: 400 !important;
+}
+
+.secure-icon {
+    width: 24px !important;
+    height: 24px !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .final-cta-mega-section {
+        padding: 80px 0 !important;
+    }
+
+    .container {
+        padding: 0 25px !important;
+    }
+
+    .final-headline {
+        font-size: 32.76px !important;
+        margin-bottom: 22px !important;
+    }
+
+    .final-subtext {
+        font-size: 18px !important;
+        margin-bottom: 50px !important;
+    }
+
+    .price-display {
+        font-size: 44px !important;
+    }
+
+    .price-strike {
+        font-size: 30px !important;
+    }
+
+    .final-cta-button {
+        width: 100% !important;
+        max-width: 320px !important;
+        font-size: 16px !important;
+    }
+
+    .final-cta-button span {
+        font-size: 16px !important;
+    }
+
+    .secure-icon {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .final-cta-button {
+        width: 480px !important;
+    }
+}
+
+</style>
+
+<div id="isolated-hero-section">
+    <div class="content-container">
+        <div class="intro-text">
+            <div class="pulse-dot"></div>
+            <span>The secrets that generated billions in sales</span>
+        </div>
+        
+        <h1 class="main-headline">
+            Master the <span class="highlight">20 Laws</span> to Sell Anything to Anyone with Words
+        </h1>
+        
+        <p class="sub-headline">
+            (Even if they don't want it, can't afford it, or don't believe they need it)
+        </p>
+        
+        <div class="screenshot-container">
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_14.jpg?v=1762373735" alt="20 Laws Course Preview" class="screenshot">
+        </div>
+        
+        <div class="pricing-section">
+            <p class="price-text">
+                <span class="original-price">$97</span> <span class="current-price">Only $19</span>
+            </p>
+            
+            <button class="cta-button" id="laws-hero-btn" data-variant-id="43720838611037">
+                <div class="lock-icon"></div>
+                <span>
+                    UNLOCK THE 20 LAWS<br>
+                    <small class="small-text">one time payment of $19, lifetime access.</small>
+                </span>
+            </button>
+            
+            <div class="bundle-wrapper">
+                <span>
+                    $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+                </span>
+            </div>
+            
+            <div class="secure-payment">
+                <div class="secure-payment-icon"></div>
+                <span>Secure 256-bit SSL encrypted payment</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="profit-engines-mega-section">
+    <div class="container">
+        <h2 class="section-headline">
+            Your words have the power to <span class="highlight-blue">move people to extremes...</span>
+        </h2>
+        
+        <p class="main-paragraph">
+            The words you use in writing can make people jump out of a window,<br>
+            make completely normal people rob a bank...<br>
+            or make the most loyal woman betray her man....
+        </p>
+        
+        <div class="image-container">
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/manipulate-adam.gif?v=1760877908" alt="Power of Words" class="content-image">
+        </div>
+        
+        <p class="main-paragraph" style="margin-top: 60px;">
+            Likewise, <span class="emphasis">words alone can sell anything to anyone</span>, enter their mind, and make them type in their credit card details - all through writing.
+        </p>
+        
+        <div class="quote-section">
+            <p class="quote-text">
+                "He who understands words controls the minds of others."
+            </p>
+            <p class="quote-attribution">
+                - Robert Collier, one of the leading copywriters in the world
+            </p>
+        </div>
+        
+        <p class="revenue-text">
+            And this is exactly how copywriter Clayton Makepeace created sales pages that generated <span class="emphasis">over 1.5 billion dollars</span> in total revenue...
+        </p>
+        
+        <p class="revenue-text">
+            and why the legendary copywriter Eugene Schwartz charged over $50,000 for writing a short sales page...
+        </p>
+        
+        <p class="revenue-text" style="margin-top: 120px;">
+            <span class="underline-emphasis">The reason is very simple:</span>
+        </p>
+        
+        <p class="large-statement">
+            The right words can sell <span class="emphasis">anything</span> - to anyone.
+        </p>
+        
+        <p class="main-paragraph" style="margin-top: 140px; font-size: 22px !important;">
+            And now, You're about to uncover the secrets that have generated <span class="emphasis">billions of dollars</span>...
+        </p>
+        
+        <p class="revenue-text" style="margin-top: 50px;">
+            Even if they don't want it.<br>
+            Even if they can't afford it.<br>
+            Even if they don't believe they need it.
+        </p>
+        
+        <p class="revenue-text" style="margin-top: 60px;">
+            This course <span class="emphasis">isn't about</span> "how to write better descriptions" or "how to craft catchy ad hooks."
+        </p>
+        
+        <p class="large-statement" style="margin-top: 70px;">
+            This is about <span class="highlight-blue">hypnotic writing</span> that puts readers in a trance and makes them want to buy - here and now.
+        </p>
+    </div>
+</div>
+
+
+<div class="benefits-mega-section">
+    <div class="container">
+        <h2 class="section-title">
+            Welcome to The 20 Laws to Sell Anything to Anyone with Words
+        </h2>
+        
+        <p class="intro-text">
+            The course reveals <span class="emphasis">20 powerful secrets</span> used by the most elite copywriters in the world - techniques that have generated <span class="emphasis">billions of dollars</span> in sales.
+        </p>
+        
+        <h2 class="section-title" style="margin-top: 80px;">
+            What Will You Gain from This Course?
+        </h2>
+        
+        <div class="benefits-list">
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to make people buy - even when they swore they wouldn't - and feel like it was their own decision.
+                </p>
+            </div>
+            
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to turn a hesitant visitor into a customer who feels they'd be <span class="italic-text">foolish not to buy</span>.
+                </p>
+            </div>
+            
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to write words so powerful they <span class="emphasis">bypass logic</span>, hit emotions, and make your product feel like the <span class="italic-text">only possible choice</span>.
+                </p>
+            </div>
+            
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to charge premium prices - and make people believe they're walking away with an incredible deal.
+                </p>
+            </div>
+            
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to create ads so magnetic they feel impossible to ignore - the kind that makes scrolling past feel like <span class="italic-text">missing out</span>.
+                </p>
+            </div>
+            
+            <div class="benefit-item">
+                <span class="checkmark">✓</span>
+                <p class="benefit-text">
+                    How to inject desire so strong that hesitation disappears - and they're reaching for their wallet before they've even finished reading.
+                </p>
+            </div>
+        </div>
+        
+        <p class="intro-text" style="margin-top: 70px; font-size: 20px;">
+            You're not just learning copywriting... You're learning <span class="highlight-blue">manipulation through words</span> - the ability to control minds with pixels on a screen.
+        </p>
+    </div>
+</div>
+
+
+<div class="copywriters-mega-section-unique">
+    <div class="copywriters-container-unique">
+        <h2 class="copywriters-section-title-unique">
+            The Weapons Basket That Can Sell Anything
+        </h2>
+        
+        <p class="copywriters-intro-paragraph-unique">
+            In this course, you'll learn <span class="copywriters-emphasis-unique">20 proven techniques</span> - each one taken directly from the greatest copywriters in the world.
+        </p>
+        
+        <p class="copywriters-intro-paragraph-unique">
+            Each technique is the <span class="copywriters-emphasis-unique">signature move</span> that built their legacy - and when you combine them, you'll have unlimited access to your readers subconscious brain.
+        </p>
+        
+        <p class="copywriters-intro-paragraph-unique" style="margin-top: 50px; margin-bottom: 60px;">
+            These are the same copywriters who charge <span class="copywriters-emphasis-unique">$50,000+ for a single sales page</span>... because they know something most people don't:
+        </p>
+        
+        <p class="copywriters-intro-paragraph-unique" style="font-size: 20px; text-align: center; margin-top: 60px; margin-bottom: 60px;">
+            <span class="copywriters-emphasis-unique">Words aren't just communication - they're mind control.</span>
+        </p>
+        
+        <div class="copywriters-showcase-intro-unique" style="margin-top: 60px;">
+            You'll discover the secrets that generated them <span class="copywriters-mega-emphasis-unique">billions of dollars</span>...
+        </div>
+        
+        <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/DOCTYPE_html_html_lang_he_head_meta_charset_UTF-8_meta_name_viewport_content_width_device-width_initial-scale_1.0_link_rel_preconnect_href_httpsfonts.googleapis.com_link_rel_preconnec_29670368-66f9-4251-b8bc-1d8c4fbc5ba7.jpg?v=1760881311" alt="Legendary Copywriter 1" class="copywriters-image-unique">
+        
+        <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/DOCTYPE_html_html_lang_he_head_meta_charset_UTF-8_meta_name_viewport_content_width_device-width_initial-scale_1.0_link_rel_preconnect_href_httpsfonts.googleapis.com_link_rel_preconnec_2b3f5b85-03e2-4bd7-94b6-3abe178fbeae.jpg?v=1760881311" alt="Legendary Copywriter 2" class="copywriters-image-unique">
+        
+        <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/DOCTYPE_html_html_lang_he_head_meta_charset_UTF-8_meta_name_viewport_content_width_device-width_initial-scale_1.0_link_rel_preconnect_href_httpsfonts.googleapis.com_link_rel_preconnec_8aa2f517-c630-4cf3-8205-fff5e870df53.jpg?v=1760881311" alt="Legendary Copywriter 3" class="copywriters-image-unique">
+        
+        <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/DOCTYPE_html_html_lang_he_head_meta_charset_UTF-8_meta_name_viewport_content_width_device-width_initial-scale_1.0_link_rel_preconnect_href_httpsfonts.googleapis.com_link_rel_preconnec_229544b2-44dc-4f06-94f0-2b174605b591.jpg?v=1760881311" alt="Legendary Copywriter 4" class="copywriters-image-unique">
+        
+        <p class="copywriters-asterisk-note-unique">
+            * This is just the tip of the iceberg
+        </p>
+        
+        <p class="copywriters-intro-paragraph-unique" style="margin-top: 60px; text-align: center; font-size: 19px;">
+            You might think you're good at writing... but you haven't seen the <span class="copywriters-emphasis-unique">hypnotic tricks</span> these masters use to put readers in a trance and make them desperate to buy.
+        </p>
+    </div>
+</div>
+
+
+<div class="section-wrapper-isolated">
+    <div class="container-isolated">
+        <h2 class="title-isolated">
+            The Difference Between <span class="highlight-isolated">Average Conversion Rates</span> and Hypnotic Sales Copy
+        </h2>
+        
+        <p class="subtitle-isolated">
+            Most people think they're good at writing... until they see what real persuasion looks like.
+        </p>
+        
+        <table class="comparison-table-isolated">
+            <thead>
+                <tr class="comparison-header-isolated">
+                    <th class="column-header-isolated">
+                        Regular Copywriting
+                    </th>
+                    <th class="column-header-isolated highlight-header-isolated">
+                        The 20 Laws (Hypnotic Writing)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="comparison-row-isolated">
+                    <td class="comparison-item-isolated">
+                        Writing product descriptions and hoping people will buy
+                    </td>
+                    <td class="comparison-item-isolated highlight-col-isolated">
+                        Using psychological triggers that bypass logic and make buying feel inevitable
+                    </td>
+                </tr>
+                
+                <tr class="comparison-row-isolated">
+                    <td class="comparison-item-isolated">
+                        Relying on discounts and promotions to drive sales
+                    </td>
+                    <td class="comparison-item-isolated highlight-col-isolated">
+                        Creating such strong desire that people buy at premium prices - and feel grateful for the opportunity
+                    </td>
+                </tr>
+                
+                <tr class="comparison-row-isolated">
+                    <td class="comparison-item-isolated">
+                        Getting ignored because your message sounds like everyone else's
+                    </td>
+                    <td class="comparison-item-isolated highlight-col-isolated">
+                        Commanding attention with words that feel impossible to look away from - making scrolling past feel like missing out
+                    </td>
+                </tr>
+                
+                <tr class="comparison-row-isolated">
+                    <td class="comparison-item-isolated">
+                        Struggling with low conversion rates and wondering what's wrong
+                    </td>
+                    <td class="comparison-item-isolated highlight-col-isolated">
+                        Watching conversion rates soar as you apply the same techniques that generated billions for the masters
+                    </td>
+                </tr>
+                
+                <tr class="comparison-row-isolated">
+                    <td class="comparison-item-isolated">
+                        Spending hours writing copy that gets mediocre results
+                    </td>
+                    <td class="comparison-item-isolated highlight-col-isolated">
+                        Having a weapons arsenal of proven techniques - each one a signature move from the greatest copywriters in history
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p class="ps-note-isolated">
+            <strong>P.S.</strong> - Copywriters who charge $50,000+ for a sales page aren't just "better writers." They're using specific, learnable techniques that put readers in a trance. Techniques you're about to master.
+        </p>
+        
+        <button class="cta-button-isolated" id="laws-comparison-btn" data-variant-id="43720838611037">
+            <div class="lock-icon-isolated"></div>
+            <span style="font-size: 16px !important; font-weight: 600 !important; text-align: center !important;">
+                YES, GIVE ME THE 20 LAWS!
+                <span class="small-text-isolated" style="font-size: 11px !important; text-align: center !important;">One-Time Payment - Lifetime Access</span>
+            </span>
+        </button>
+        
+        <div class="bundle-price-wrapper-isolated">
+            <span style="color: #cccccc; font-size: 14px;">
+                $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-isolated">building a bundle</a>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="final-cta-mega-section">
+    <div class="container">
+        <h2 class="final-headline">
+            Master the <span class="highlight-blue">20 Laws</span><br>That Sell Anything
+        </h2>
+        
+        <p class="final-subtext">
+            Join the elite copywriters who generate millions with words alone
+        </p>
+        
+        <div class="price-display">
+            <span class="price-strike">$97</span>
+            <span class="price-current">$37</span>
+        </div>
+        
+        <p class="price-subtitle">
+            One-time payment • Lifetime access • No subscription
+        </p>
+        
+        <button class="final-cta-button" id="laws-final-btn" data-variant-id="43720838611037">
+            <div class="lock-icon-final"></div>
+            <span style="font-size: 17px !important; font-weight: 600 !important; line-height: 1.3 !important; text-align: center !important;">
+                GET INSTANT ACCESS<br>
+                <small class="small-text" style="font-size: 11px !important; text-align: center !important;">Unlock in 60 seconds</small>
+            </span>
+        </button>
+        
+        <div class="bundle-wrapper-final">
+            <span>
+                $12.35 if <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-final">building a bundle</a>
+            </span>
+        </div>
+        
+        <div class="secure-badge">
+            <div class="secure-icon"></div>
+            <span>Secure 256-bit SSL encrypted payment</span>
+        </div>
+    </div>
+</div>
+  `,
+
+  // ==================== UGLY ADS ====================
+  'ugly-ads': `
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+}
+
+.landing-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    background: #000000 !important;
+    padding: 25px 5px 35px 5px !important;
+    text-align: center !important;
+    font-family: 'Open Sans', sans-serif !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+.landing-section::before,
+.landing-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #000000 !important;
+    z-index: -1 !important;
+}
+
+.landing-section::before {
+    left: -100vw !important;
+}
+
+.landing-section::after {
+    right: -100vw !important;
+}
+
+.landing-section * {
+    box-sizing: border-box !important;
+}
+
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.intro-text {
+    background: rgba(127, 143, 166, 0.15) !important;
+    border: 1px solid #7F8FA6 !important;
+    border-radius: 25px !important;
+    padding: 12px 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-size: 13px !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    margin: 0 0 32px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.pulse-dot {
+    width: 8px !important;
+    height: 8px !important;
+    background: #7F8FA6 !important;
+    border-radius: 50% !important;
+    animation: pulse 2s infinite !important;
+    box-shadow: 0 0 10px #7F8FA6 !important;
+    display: block !important;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+.main-headline {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 37.4px !important;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+.main-headline .highlight {
+    color: #7F8FA6 !important;
+}
+
+.sub-headline {
+    font-size: 20.4px !important;
+    color: #ffffff !important;
+    font-weight: 400 !important;
+    margin: 0 0 40px 0 !important;
+    line-height: 1.4 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.pricing-section {
+    margin: 30px 0 0 0 !important;
+}
+
+.price-text {
+    font-size: 32.64px !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    margin: 0 0 20px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.original-price {
+    text-decoration: line-through !important;
+    color: #999999 !important;
+    font-size: 25.5px !important;
+    margin-right: 15px !important;
+}
+
+.current-price {
+    color: #7F8FA6 !important;
+}
+
+.cta-button {
+    display: inline-block !important;
+    background: radial-gradient(ellipse at bottom, #a8b8cc 0%, #7F8FA6 40%) !important;
+    color: #ffffff !important;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 20.19px !important;
+    padding: 20px 45px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(127, 143, 166, 0.3) !important;
+    min-width: 400px !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.1) !important;
+}
+
+.cta-button:hover {
+    background: radial-gradient(ellipse at bottom, #7F8FA6 0%, #6d7a8f 40%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(127, 143, 166, 0.4) !important;
+}
+
+.cta-button.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.bundle-price-wrapper {
+    margin: 15px 0 0 0 !important;
+    text-align: center !important;
+    display: block !important;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+}
+
+.bundle-link {
+    color: #7F8FA6 !important;
+    text-decoration: underline !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link:hover {
+    color: #8a9fb5 !important;
+    text-decoration: none !important;
+}
+
+@media (max-width: 768px) {
+    .landing-section {
+        padding: 3px 3px 20px 3px !important;
+    }
+    
+    .main-headline {
+        font-size: 31.46px !important;
+    }
+    
+    .price-text {
+        font-size: 28.9px !important;
+    }
+    
+    .original-price {
+        font-size: 22px !important;
+    }
+    
+    .cta-button {
+        min-width: 340px !important;
+        font-size: 18.05px !important;
+        padding: 16px 30px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-section {
+        padding: 2px 2px 20px 2px !important;
+    }
+    
+    .main-headline {
+        font-size: 26.45px !important;
+    }
+    
+    .sub-headline {
+        font-size: 17px !important;
+    }
+    
+    .cta-button {
+        min-width: 340px !important;
+        font-size: 18.05px !important;
+        padding: 16px 30px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.reality-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 60px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.reality-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.reality-mega-section::before,
+.reality-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -2 !important;
+}
+
+.reality-mega-section::before {
+    left: -100vw !important;
+}
+
+.reality-mega-section::after {
+    right: -100vw !important;
+}
+
+.reality-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.reality-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 32.3px !important;
+    text-align: center !important;
+    margin: 0 0 25px 0 !important;
+    color: #000000 !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.reality-title .highlight {
+    color: #000000 !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    font-size: 20.67px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+.reality-title .main-text {
+    font-size: 28.42px !important;
+    display: block !important;
+}
+
+.reality-subtitle {
+    font-size: 18px !important;
+    text-align: center !important;
+    margin: 0 0 50px 0 !important;
+    color: #333333 !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+}
+
+.reality-content {
+    margin: 40px 0 !important;
+}
+
+.reality-paragraph {
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    margin: 0 0 22px 0 !important;
+    color: #000000 !important;
+    text-align: center !important;
+}
+
+.reality-paragraph-large {
+    font-size: 19.8px !important;
+    margin-top: 30px !important;
+}
+
+.reality-paragraph strong {
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 800 !important;
+}
+
+.reality-emphasis {
+    font-size: 32px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    margin: 65px 0 !important;
+    color: #000000 !important;
+    line-height: 1.4 !important;
+}
+
+.reality-image-container {
+    text-align: center !important;
+    margin: 45px 0 !important;
+}
+
+.reality-image {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+.reality-spacer {
+    height: 30px !important;
+}
+
+@media (max-width: 768px) {
+    .reality-mega-section {
+        padding: 40px 0 !important;
+    }
+    
+    .reality-title {
+        font-size: 27px !important;
+    }
+    
+    .reality-title .main-text {
+        font-size: 23.76px !important;
+    }
+    
+    .reality-title .highlight {
+        font-size: 17.28px !important;
+    }
+    
+    .reality-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .reality-paragraph {
+        font-size: 16px !important;
+    }
+    
+    .reality-emphasis {
+        font-size: 26px !important;
+        margin: 50px 0 !important;
+    }
+    
+    .reality-paragraph-large {
+        font-size: 17.6px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.solution-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 60px 0 !important;
+    background: #f8f8f8 !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.solution-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.solution-mega-section::before,
+.solution-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #f8f8f8 !important;
+    z-index: -2 !important;
+}
+
+.solution-mega-section::before {
+    left: -100vw !important;
+}
+
+.solution-mega-section::after {
+    right: -100vw !important;
+}
+
+.solution-container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.solution-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 40px !important;
+    text-align: center !important;
+    margin: 0 0 20px 0 !important;
+    color: #000000 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.solution-title .highlight {
+    color: #7F8FA6 !important;
+}
+
+.solution-subtitle {
+    font-size: 19px !important;
+    text-align: center !important;
+    margin: 0 0 45px 0 !important;
+    color: #333333 !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+}
+
+.solution-benefits-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 40px 0 !important;
+}
+
+.solution-benefits-list li {
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    margin: 0 0 20px 0 !important;
+    color: #000000 !important;
+    padding-left: 30px !important;
+    position: relative !important;
+}
+
+.solution-benefits-list li::before {
+    content: "✓" !important;
+    position: absolute !important;
+    left: 0 !important;
+    color: #7F8FA6 !important;
+    font-weight: 900 !important;
+    font-size: 20px !important;
+}
+
+.solution-benefits-list li strong {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    text-decoration: underline !important;
+}
+
+.solution-closing {
+    font-size: 20px !important;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    margin: 45px 0 0 0 !important;
+    color: #000000 !important;
+    line-height: 1.4 !important;
+}
+
+@media (max-width: 768px) {
+    .solution-mega-section {
+        padding: 40px 0 !important;
+    }
+    
+    .solution-title {
+        font-size: 32px !important;
+    }
+    
+    .solution-subtitle {
+        font-size: 17px !important;
+    }
+    
+    .solution-benefits-list li {
+        font-size: 16px !important;
+    }
+    
+    .solution-closing {
+        font-size: 18px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.whats-inside-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 60px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.whats-inside-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.whats-inside-mega-section::before,
+.whats-inside-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -2 !important;
+}
+
+.whats-inside-mega-section::before {
+    left: -100vw !important;
+}
+
+.whats-inside-mega-section::after {
+    right: -100vw !important;
+}
+
+.whats-inside-container {
+    max-width: 850px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.whats-inside-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 40px !important;
+    text-align: center !important;
+    margin: 0 0 15px 0 !important;
+    color: #000000 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.whats-inside-title .highlight {
+    color: #7F8FA6 !important;
+}
+
+.whats-inside-subtitle {
+    font-size: 18px !important;
+    text-align: center !important;
+    margin: 0 0 55px 0 !important;
+    color: #555555 !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+}
+
+.modules-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 25px !important;
+    margin: 0 0 50px 0 !important;
+}
+
+.module-card {
+    background: #f8f8f8 !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    padding: 30px !important;
+    transition: all 0.4s ease !important;
+}
+
+.module-card:hover {
+    border-color: #7F8FA6 !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    box-shadow: 0 8px 32px rgba(127, 143, 166, 0.3), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+    transform: translateY(-2px) !important;
+}
+
+.module-number {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 16px !important;
+    color: #7F8FA6 !important;
+    margin: 0 0 10px 0 !important;
+    letter-spacing: 1px !important;
+}
+
+.module-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 24px !important;
+    color: #000000 !important;
+    margin: 0 0 15px 0 !important;
+    line-height: 1.3 !important;
+}
+
+.module-description {
+    font-size: 17px !important;
+    color: #333333 !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+}
+
+.final-statement-box {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.08), rgba(127, 143, 166, 0.15)) !important;
+    border: 2px solid #7F8FA6 !important;
+    border-radius: 10px !important;
+    padding: 40px !important;
+    margin: 50px 0 0 0 !important;
+}
+
+.final-text {
+    font-size: 19px !important;
+    line-height: 1.8 !important;
+    color: #000000 !important;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
+}
+
+.final-text:last-child {
+    margin-bottom: 0 !important;
+}
+
+.final-text strong {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+}
+
+@media (max-width: 768px) {
+    .whats-inside-mega-section {
+        padding: 40px 0 !important;
+    }
+    
+    .whats-inside-title {
+        font-size: 32px !important;
+    }
+    
+    .whats-inside-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .module-card {
+        padding: 25px !important;
+    }
+    
+    .module-title {
+        font-size: 21px !important;
+    }
+    
+    .module-description {
+        font-size: 16px !important;
+    }
+    
+    .final-statement-box {
+        padding: 30px 20px !important;
+    }
+    
+    .final-text {
+        font-size: 17px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+/* Reset all possible inherited styles */
+.section-wrapper-isolated {
+    all: initial;
+    display: block;
+}
+
+.section-wrapper-isolated * {
+    all: unset;
+    display: revert;
+}
+
+.section-wrapper-isolated {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+    min-width: 100vw;
+    padding: 60px 0;
+    background: #f8f8f8;
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    display: block;
+    isolation: isolate;
+}
+
+.section-wrapper-isolated::before,
+.section-wrapper-isolated::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    background: #f8f8f8;
+    z-index: -2;
+}
+
+.section-wrapper-isolated::before {
+    left: -100vw;
+}
+
+.section-wrapper-isolated::after {
+    right: -100vw;
+}
+
+.section-wrapper-isolated *,
+.section-wrapper-isolated *::before,
+.section-wrapper-isolated *::after {
+    box-sizing: border-box;
+}
+
+.section-wrapper-isolated table {
+    border-collapse: collapse;
+    display: table;
+}
+
+.section-wrapper-isolated thead {
+    display: table-header-group;
+}
+
+.section-wrapper-isolated tbody {
+    display: table-row-group;
+}
+
+.section-wrapper-isolated tr {
+    display: table-row;
+}
+
+.section-wrapper-isolated th,
+.section-wrapper-isolated td {
+    display: table-cell;
+}
+
+.container-isolated {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    display: block;
+    padding: 0 25px;
+}
+
+.title-isolated {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 42px;
+    margin: 0 0 15px 0;
+    color: #000000;
+    display: block;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.highlight-isolated {
+    color: #7F8FA6;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+}
+
+.subtitle-isolated {
+    font-size: 18px;
+    margin: 0 0 50px 0;
+    color: #333333;
+    font-weight: 400;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.comparison-table-isolated {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    margin: 40px auto 0 auto;
+    border: 1px solid #ccc;
+    table-layout: fixed;
+    display: table;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.column-header-isolated {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    text-align: center;
+    padding: 20px;
+    color: #000000;
+    background-color: #d0d0d0;
+    border: 1px solid #ccc;
+    width: 50%;
+    display: table-cell;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+.column-header-isolated.highlight-col-isolated {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.2), rgba(127, 143, 166, 0.3));
+    color: #000000;
+}
+
+.comparison-item-isolated {
+    padding: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    font-family: 'Open Sans', sans-serif;
+    color: #000000;
+    width: 50%;
+}
+
+.comparison-item-isolated.highlight-item-isolated {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.05), rgba(127, 143, 166, 0.1));
+    font-weight: 600;
+}
+
+.cta-button-isolated {
+    display: inline-block;
+    background: radial-gradient(ellipse at bottom, #a8b8cc 0%, #7F8FA6 40%);
+    color: #ffffff;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 17.85px;
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(127, 143, 166, 0.3);
+    margin: 50px 0 0 0;
+    min-width: 380px;
+    letter-spacing: 0.5px;
+}
+
+.cta-button-isolated:hover {
+    background: radial-gradient(ellipse at bottom, #7F8FA6 0%, #6d7a8f 40%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(127, 143, 166, 0.4);
+}
+
+.cta-button-isolated.loading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.cta-button-isolated span {
+    display: block;
+    font-size: 17.85px;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+}
+
+.bundle-price-wrapper-isolated {
+    margin: 15px 0 0 0;
+    text-align: center;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    color: #000000;
+}
+
+.bundle-link-isolated {
+    color: #7F8FA6;
+    text-decoration: underline;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bundle-link-isolated:hover {
+    color: #8a9fb5;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .title-isolated {
+        font-size: 32px;
+    }
+    
+    .comparison-table-isolated {
+        font-size: 14px;
+    }
+    
+    .column-header-isolated {
+        font-size: 18px;
+        padding: 15px 10px;
+    }
+    
+    .comparison-item-isolated {
+        padding: 15px;
+        font-size: 14px;
+    }
+    
+    .cta-button-isolated {
+        font-size: 15.66px;
+        padding: 18px 35px;
+        min-width: 320px;
+    }
+    
+    .cta-button-isolated span {
+        font-size: 15.66px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-isolated {
+        font-size: 28px;
+    }
+    
+    .column-header-isolated {
+        font-size: 16px;
+        padding: 12px 8px;
+    }
+    
+    .comparison-item-isolated {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.social-proof-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 60px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.social-proof-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.social-proof-mega-section::before,
+.social-proof-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #ffffff !important;
+    z-index: -2 !important;
+}
+
+.social-proof-mega-section::before {
+    left: -100vw !important;
+}
+
+.social-proof-mega-section::after {
+    right: -100vw !important;
+}
+
+.social-proof-container {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.social-proof-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 40px !important;
+    text-align: center !important;
+    margin: 0 0 20px 0 !important;
+    color: #000000 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.social-proof-title .highlight {
+    color: #7F8FA6 !important;
+}
+
+.social-proof-subtitle {
+    font-size: 18px !important;
+    text-align: center !important;
+    margin: 0 0 55px 0 !important;
+    color: #555555 !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+}
+
+.testimonials-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    margin: 0 0 50px 0 !important;
+}
+
+.testimonial-card {
+    background: #f8f8f8 !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    padding: 35px !important;
+    transition: all 0.4s ease !important;
+}
+
+.testimonial-card:hover {
+    border-color: #7F8FA6 !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 32px rgba(127, 143, 166, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+.testimonial-header {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 20px !important;
+}
+
+.testimonial-avatar {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    background: #7F8FA6 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 24px !important;
+    color: #ffffff !important;
+    margin-right: 20px !important;
+}
+
+.testimonial-info {
+    flex: 1 !important;
+}
+
+.testimonial-name {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 19px !important;
+    color: #000000 !important;
+    margin: 0 0 5px 0 !important;
+}
+
+.testimonial-role {
+    font-size: 14px !important;
+    color: #666666 !important;
+    margin: 0 !important;
+}
+
+.testimonial-text {
+    font-size: 17px !important;
+    line-height: 1.8 !important;
+    color: #333333 !important;
+    margin: 0 !important;
+}
+
+.testimonial-text strong {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+}
+
+.stats-highlight {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.08), rgba(127, 143, 166, 0.15)) !important;
+    border: 2px solid #7F8FA6 !important;
+    border-radius: 10px !important;
+    padding: 40px !important;
+    text-align: center !important;
+    margin: 50px 0 0 0 !important;
+}
+
+.stats-text {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 22px !important;
+    color: #000000 !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+}
+
+.stats-highlight-number {
+    color: #7F8FA6 !important;
+}
+
+@media (max-width: 768px) {
+    .social-proof-mega-section {
+        padding: 40px 0 !important;
+    }
+    
+    .social-proof-title {
+        font-size: 32px !important;
+    }
+    
+    .social-proof-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .testimonial-card {
+        padding: 25px !important;
+    }
+    
+    .testimonial-text {
+        font-size: 16px !important;
+    }
+    
+    .stats-text {
+        font-size: 19px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.faq-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 60px 0 !important;
+    background: #f8f8f8 !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.faq-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.faq-mega-section::before,
+.faq-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #f8f8f8 !important;
+    z-index: -2 !important;
+}
+
+.faq-mega-section::before {
+    left: -100vw !important;
+}
+
+.faq-mega-section::after {
+    right: -100vw !important;
+}
+
+.faq-container {
+    max-width: 850px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.faq-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 40px !important;
+    text-align: center !important;
+    margin: 0 0 20px 0 !important;
+    color: #000000 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.faq-title .highlight {
+    color: #7F8FA6 !important;
+}
+
+.faq-subtitle {
+    font-size: 18px !important;
+    text-align: center !important;
+    margin: 0 0 50px 0 !important;
+    color: #555555 !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+}
+
+.faq-section {
+    margin: 0 0 40px 0 !important;
+}
+
+.faq-item {
+    background: #ffffff !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+    overflow: hidden !important;
+    transition: all 0.4s ease !important;
+}
+
+.faq-item:hover {
+    border-color: #7F8FA6 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 32px rgba(127, 143, 166, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-1px) !important;
+}
+
+.question {
+    padding: 22px 25px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 18px !important;
+    color: #000000 !important;
+    user-select: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.question:hover {
+    background: #f8f8f8 !important;
+}
+
+.question.active {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.08), rgba(127, 143, 166, 0.12)) !important;
+    color: #000000 !important;
+}
+
+.arrow {
+    font-size: 14px !important;
+    transition: transform 0.3s ease !important;
+    color: #7F8FA6 !important;
+    font-weight: normal !important;
+}
+
+.question.active .arrow {
+    transform: rotate(180deg) !important;
+}
+
+.answer {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease !important;
+    padding: 0 25px !important;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    color: #333333 !important;
+}
+
+.answer.active {
+    max-height: 500px !important;
+    padding: 0 25px 22px 25px !important;
+}
+
+.answer strong {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+}
+
+@media (max-width: 768px) {
+    .faq-mega-section {
+        padding: 40px 0 !important;
+    }
+    
+    .faq-title {
+        font-size: 32px !important;
+    }
+    
+    .faq-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .question {
+        font-size: 16px !important;
+        padding: 18px 20px !important;
+    }
+    
+    .answer {
+        font-size: 15px !important;
+        padding: 0 20px !important;
+    }
+    
+    .answer.active {
+        padding: 0 20px 18px 20px !important;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nexa:wght@900&display=swap');
+
+.final-cta-mega-section {
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    padding: 70px 0 !important;
+    background: #000000 !important;
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    line-height: 1.6 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.final-cta-mega-section * {
+    box-sizing: border-box !important;
+}
+
+.final-cta-mega-section::before,
+.final-cta-mega-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    background: #000000 !important;
+    z-index: -2 !important;
+}
+
+.final-cta-mega-section::before {
+    left: -100vw !important;
+}
+
+.final-cta-mega-section::after {
+    right: -100vw !important;
+}
+
+.final-cta-container {
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    padding: 0 25px !important;
+    position: relative !important;
+    z-index: 1 !important;
+    text-align: center !important;
+}
+
+.final-cta-title {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 42px !important;
+    text-align: center !important;
+    margin: 0 0 25px 0 !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.final-cta-title .highlight {
+    color: #7F8FA6 !important;
+}
+
+.final-cta-text {
+    font-size: 20px !important;
+    line-height: 1.8 !important;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
+}
+
+.final-cta-emphasis {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 24px !important;
+    color: #7F8FA6 !important;
+    margin: 35px 0 !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+}
+
+.pricing-box {
+    background: linear-gradient(135deg, rgba(127, 143, 166, 0.1), rgba(127, 143, 166, 0.2)) !important;
+    border: 2px solid #7F8FA6 !important;
+    border-radius: 12px !important;
+    padding: 45px !important;
+    margin: 45px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.price-display {
+    font-size: 36px !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    margin: 0 0 10px 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.original-price-final {
+    text-decoration: line-through !important;
+    color: #999999 !important;
+    font-size: 28px !important;
+    margin-right: 15px !important;
+}
+
+.current-price-final {
+    color: #7F8FA6 !important;
+}
+
+.price-subtext {
+    font-size: 16px !important;
+    color: #cccccc !important;
+    margin: 0 0 30px 0 !important;
+}
+
+.cta-button-final {
+    display: block !important;
+    background: radial-gradient(ellipse at bottom, #a8b8cc 0%, #7F8FA6 40%) !important;
+    color: #ffffff !important;
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 22px !important;
+    padding: 22px 50px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(127, 143, 166, 0.4) !important;
+    width: 420px !important;
+    max-width: 100% !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.1) !important;
+}
+
+.cta-button-final:hover {
+    background: radial-gradient(ellipse at bottom, #7F8FA6 0%, #6d7a8f 40%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(127, 143, 166, 0.5) !important;
+}
+
+.cta-button-final.loading {
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+}
+
+.bundle-price-wrapper-final {
+    margin: 20px 0 0 0 !important;
+    text-align: center !important;
+    display: block !important;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #ffffff !important;
+}
+
+.bundle-link-final {
+    color: #7F8FA6 !important;
+    text-decoration: underline !important;
+    font-size: 15px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link-final:hover {
+    color: #8a9fb5 !important;
+    text-decoration: none !important;
+}
+
+.guarantee-text {
+    font-size: 14px !important;
+    color: #cccccc !important;
+    margin: 35px 0 0 0 !important;
+    text-align: center !important;
+    line-height: 1.6 !important;
+}
+
+.closing-statement {
+    margin: 50px 0 0 0 !important;
+    padding-top: 40px !important;
+    border-top: 1px solid #333333 !important;
+}
+
+.closing-text {
+    font-size: 15.4px !important;
+    color: #ffffff !important;
+    line-height: 1.8 !important;
+    margin: 0 0 15px 0 !important;
+    text-align: center !important;
+}
+
+.closing-text strong {
+    font-family: 'Nexa', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 900 !important;
+    color: #7F8FA6 !important;
+}
+
+@media (max-width: 768px) {
+    .final-cta-mega-section {
+        padding: 50px 0 !important;
+    }
+    
+    .final-cta-title {
+        font-size: 34px !important;
+    }
+    
+    .final-cta-text {
+        font-size: 18px !important;
+    }
+    
+    .final-cta-emphasis {
+        font-size: 21px !important;
+    }
+    
+    .pricing-box {
+        padding: 35px 25px !important;
+    }
+    
+    .price-display {
+        font-size: 32px !important;
+    }
+    
+    .cta-button-final {
+        font-size: 19px !important;
+        padding: 18px 35px !important;
+        width: 340px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .final-cta-title {
+        font-size: 28px !important;
+    }
+    
+    .cta-button-final {
+        width: 300px !important;
+        font-size: 18px !important;
+    }
+}
+
+</style>
+
+<div class="landing-section">
+    <div class="content-container">
+        <div class="intro-text">
+            <div class="pulse-dot"></div>
+            <span>The rapid creative system crushing Meta's algorithm</span>
+        </div>
+        
+        <h1 class="main-headline">
+            Build Simple Meta Ad Creatives <span class="highlight">That Actually Work</span> In 20 Seconds Or Less
+        </h1>
+        
+        <p class="sub-headline">
+            (The ugly ads formula that's secretly behind our best-performing campaigns)
+        </p>
+        
+        <div class="pricing-section">
+            <p class="price-text">
+                <span class="original-price">$97</span> <span class="current-price">Only $19 Today</span>
+            </p>
+            
+            <button class="cta-button" id="ugly-ads-hero-btn" data-variant-id="43543499145309">
+                GET INSTANT ACCESS NOW
+            </button>
+            
+            <div class="bundle-price-wrapper">
+                $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="reality-mega-section">
+    <div class="reality-container">
+        <h2 class="reality-title">
+            <span class="highlight">Let's Be Honest...</span>
+            <span class="main-text">Facebook Advertising Changed Dramatically</span>
+        </h2>
+        
+        <p class="reality-subtitle">
+            What worked last year no longer works today
+        </p>
+        
+        <div class="reality-image-container">
+            <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17_dc883100-2986-4880-a0b5-1aec2e6c543f.jpg?v=1753249296" alt="Campaign Results" class="reality-image">
+        </div>
+        
+        <div class="reality-content">
+            <p class="reality-paragraph">
+                Most "mentors" teaching Facebook advertising haven't managed a real campaign in years.
+            </p>
+            
+            <p class="reality-paragraph">
+                They teach old methods that waste your money and leave you frustrated.
+            </p>
+            
+            <p class="reality-emphasis">
+                The biggest change?<br>The creatives.
+            </p>
+            
+            <p class="reality-paragraph">
+                If you don't have a consistent method to upload new creatives every week-your campaigns won't bring results.
+            </p>
+            
+            <div class="reality-spacer"></div>
+            
+            <p class="reality-paragraph reality-paragraph-large">
+                <strong>And we understand, it's hard to upload dozens of creatives per week...</strong>
+            </p>
+            
+            <p class="reality-paragraph">
+                As of today, simple text-based ads <strong>crush</strong> everything else.
+            </p>
+            
+            <p class="reality-paragraph">
+                Forget expensive videos.
+            </p>
+            
+            <p class="reality-paragraph">
+                Forget expensive designs.
+            </p>
+            
+            <p class="reality-paragraph">
+                Forget spending 6 hours a day in Canva.
+            </p>
+            
+            <p class="reality-emphasis">
+                This is the new front-and you need TONS of creatives to make ads succeed in 2025 and beyond.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="solution-mega-section">
+    <div class="solution-container">
+        <h2 class="solution-title">
+            Meet: <span class="highlight">Rapid Creatives Framework</span>
+        </h2>
+        
+        <p class="solution-subtitle">
+            An insanely simple guide to creating ugly text ads that work brilliantly
+        </p>
+        
+        <ul class="solution-benefits-list">
+            <li>Takes only 20-90 seconds to design and upload</li>
+            <li>Works with Facebook's artificial intelligence, not against it</li>
+            <li>Focuses on what really matters: <strong>quantity of creatives is the name of the game</strong></li>
+            <li>You don't need to know how to design at all (on the contrary-I'll prove to you that designed ads no longer bring results)</li>
+        </ul>
+        
+        <p class="solution-closing">
+            This is not theory. Just practice.
+        </p>
+    </div>
+</div>
+
+
+<div class="whats-inside-mega-section">
+    <div class="whats-inside-container">
+        <h2 class="whats-inside-title">
+            Why Choose <span class="highlight">Us</span>
+        </h2>
+        
+        <p class="whats-inside-subtitle">
+            The advantages that set us apart from the competition
+        </p>
+        
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-number">MODULE 1</div>
+                <div class="module-title">The Rapid Creatives Philosophy</div>
+                <div class="module-description">
+                    Understand why ugly, simple text ads are dominating in 2025-and why your expensive designs are actually hurting your performance. This module shifts your entire mindset about creative production.
+                </div>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-number">MODULE 2</div>
+                <div class="module-title">The 20-Second Creative Formula</div>
+                <div class="module-description">
+                    The exact step-by-step process we use to create high-converting text ads in under 90 seconds. No design skills needed. No expensive tools. Just a simple, repeatable system that works.
+                </div>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-number">MODULE 3</div>
+                <div class="module-title">Quantity Over Quality Strategy</div>
+                <div class="module-description">
+                    Learn how to systematically produce 20-50 creatives per week without burning out. We show you the exact workflow that lets you flood Meta's algorithm with winning variations.
+                </div>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-number">MODULE 4</div>
+                <div class="module-title">Real Campaign Breakdowns</div>
+                <div class="module-description">
+                    See actual campaigns running right now using this framework-from every niche. We break down what's working, why it's working, and how you can replicate it immediately in your business.
+                </div>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-number">MODULE 5</div>
+                <div class="module-title">Implementation Checklist</div>
+                <div class="module-description">
+                    Your simple roadmap to launch your first batch of rapid creatives this week. Follow the checklist, upload your ads, and start seeing results fast. No overthinking required.
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-statement-box">
+            <p class="final-text">
+                This isn't another course that teaches theory and leaves you wondering what to do next.
+            </p>
+            <p class="final-text">
+                This is a <strong>battle-tested framework</strong> that's crushing it right now, across <strong>every niche</strong>, with <strong>real businesses</strong> getting <strong>real results</strong>.
+            </p>
+            <p class="final-text">
+                You'll have everything you need to start producing winning creatives <strong>today</strong>-not next week, not next month. <strong>Today.</strong>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="section-wrapper-isolated">
+    <div class="container-isolated">
+        <h2 class="title-isolated">
+            Old Way vs. <span class="highlight-isolated">The Rapid Way</span>
+        </h2>
+        
+        <p class="subtitle-isolated">
+            See why everything changed in 2025
+        </p>
+        
+        <table class="comparison-table-isolated">
+            <thead>
+                <tr>
+                    <th class="column-header-isolated">The Old (Expensive) Way</th>
+                    <th class="column-header-isolated highlight-col-isolated">The Rapid Creatives Way</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Spend 4-6 hours designing "perfect" creatives in Canva or Photoshop
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Create winning ads in 20-90 seconds with simple text
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Hire expensive designers or video editors ($500-2000 per creative)
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Do it yourself with zero design skills needed
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Upload 3-5 creatives per week (if you're lucky)
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Easily generate 200+ creatives per week
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Fight against Meta's AI with overly polished content
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Work WITH Meta's AI using what actually converts
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Burn out trying to create "quality" content constantly
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Sustainable system that runs on autopilot
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comparison-item-isolated">
+                        Watch campaigns die because you can't test fast enough
+                    </td>
+                    <td class="comparison-item-isolated highlight-item-isolated">
+                        Always have fresh winning creatives ready to scale
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button class="cta-button-isolated" id="comparison-cta-btn" data-variant-id="43543499145309">
+            <span>CLICK TO GET THE FRAMEWORK</span>
+        </button>
+        
+        <div class="bundle-price-wrapper-isolated">
+            $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-isolated">building a bundle</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="social-proof-mega-section">
+    <div class="social-proof-container">
+        <h2 class="social-proof-title">
+            What Students Are <span class="highlight">Saying</span>
+        </h2>
+        
+        <p class="social-proof-subtitle">
+            Real results from real people using the Rapid Creatives Framework
+        </p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">MR</div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-name">Michael Rodriguez</div>
+                        <div class="testimonial-role">E-commerce Owner</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "I was burning $3,000/month on designer fees and STILL couldn't keep up with creative demand. This framework changed everything. Now I'm uploading 30+ creatives per week myself, and my ROAS jumped from 2.1 to <strong>4.8 in just three weeks</strong>. The ugly ads actually work better than my polished ones ever did."
+                </p>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">SC</div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-name">Sarah Chen</div>
+                        <div class="testimonial-role">Digital Marketing Agency</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "As an agency, we need to move FAST for clients. This system lets us test <strong>10x more creative variations</strong> than we ever could before. Our client retention went up because we're consistently beating their old numbers. Best $20 I've ever spent on education."
+                </p>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">JK</div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-name">James Kingston</div>
+                        <div class="testimonial-role">Course Creator</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "I'm not a designer. Never was, never will be. That's why this is PERFECT for me. I went from struggling to create 5 ads per month to pumping out <strong>40 winning variations in a single afternoon</strong>. My cost per lead dropped 63%. Simple really does win."
+                </p>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">LM</div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-name">Lisa Martinez</div>
+                        <div class="testimonial-role">SaaS Founder</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "The biggest revelation? Meta's algorithm LOVES these ugly text ads. My fancy video ads that cost $800 each? Dead. My <strong>20-second text ads following this framework? Scaling to $5K/day</strong>. Wish I found this 6 months ago-would've saved me $15K in wasted production costs."
+                </p>
+            </div>
+        </div>
+        
+        <div class="stats-highlight">
+            <p class="stats-text">
+                Students using this framework are averaging <span class="stats-highlight-number">3-5x more creative output</span> while spending <span class="stats-highlight-number">90% less time</span> on production
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="faq-mega-section">
+    <div class="faq-container">
+        <h2 class="faq-title">
+            <span class="highlight">Frequently Asked</span> Questions
+        </h2>
+        
+        <p class="faq-subtitle">
+            Everything you need to know before getting started
+        </p>
+        
+        <div class="faq-section">
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>Will this work for my niche?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    Yes. This framework has been tested across <strong>dozens of niches</strong>-e-commerce, courses, coaching, SaaS, local businesses, agencies, and more. The principles work because they're based on how Meta's algorithm actually operates in 2025, not on industry-specific tricks. If you're running Facebook ads, this works.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>Do I need design experience?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    <strong>Absolutely not.</strong> In fact, having NO design experience is actually better. The whole point of this framework is that over-designed ads are failing. You'll learn to create simple, ugly text ads that convert-and you can do that with zero design skills.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>How quickly can I implement this?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    You can have your first batch of creatives uploaded <strong>the same day you access the course</strong>. The framework is designed for speed-that's the entire point. Watch the training, follow the steps, and you'll be creating ads in 20-90 seconds within hours.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>Will I get lifetime access?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    Yes. <strong>One-time payment, lifetime access.</strong> No subscriptions. No hidden fees. Buy it once, keep it forever, and implement it whenever you're ready.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>Do I need a team to apply this?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    Not at all. Every tactic was designed for <strong>solo operators</strong>. You can implement everything with minimal tech skills or outsource it easily if you prefer. Most students are one-person businesses who use this framework themselves.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    <span>What if I'm already running ads?</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="answer">
+                    Perfect. This is designed to <strong>layer on top</strong> of what you're already doing. You don't need to kill your existing campaigns-just start adding these rapid creatives into your rotation and watch your performance improve. Most students see results within the first week of implementation.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="final-cta-mega-section">
+    <div class="final-cta-container">
+        <h2 class="final-cta-title">
+            Stop Wasting Time On <span class="highlight">Creatives That Don't Work</span>
+        </h2>
+        
+        <p class="final-cta-text">
+            Every day you wait is another day your competitors are flooding Meta with rapid creatives while you're investing hours on each creative.
+        </p>
+        
+        <p class="final-cta-text">
+            Every dollar you spend on designers could be going into your ad budget instead.
+        </p>
+        
+        <p class="final-cta-text">
+            Every hour you waste "perfecting" designs is an hour you could be scaling winners.
+        </p>
+        
+        <p class="final-cta-emphasis">
+            The game changed. It's time you changed with it.
+        </p>
+        
+        <div class="pricing-box">
+            <p class="price-display">
+                <span class="original-price-final">$97</span>
+                <span class="current-price-final">Only $19</span>
+            </p>
+            
+            <p class="price-subtext">
+                One-time payment • Lifetime access
+            </p>
+            
+            <button class="cta-button-final" id="final-cta-btn" data-variant-id="43543499145309">
+                GET INSTANT ACCESS NOW
+            </button>
+            
+            <div class="bundle-price-wrapper-final">
+                $12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-final">building a bundle</a>
+            </div>
+            
+            <p class="guarantee-text">
+                ✓ Instant access after purchase<br>
+                ✓ No monthly fees or subscriptions
+            </p>
+        </div>
+        
+        <div class="closing-statement">
+            <p class="closing-text">
+                The Rapid Creatives Framework isn't about making prettier ads. It's about making <strong>MORE ads, FASTER</strong>-because that's what wins in 2025.
+            </p>
+        </div>
+    </div>
+</div>
+  `,
 };
 
 // Helper function to get HTML for a course
