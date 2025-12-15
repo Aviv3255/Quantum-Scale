@@ -2382,131 +2382,220 @@ interface SubconsciousTrapAlternativeProps {
 const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousTrapAlternativeProps) => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
-  const bonuses = [
-    { title: 'The Secret A/B Tests', value: 147, desc: 'Raw data from 127 split tests across 23 niches' },
-    { title: 'Psychology Swipe File', value: 97, desc: '50+ proven psychological triggers with examples' },
-    { title: 'Conversion Audit Checklist', value: 127, desc: 'Step-by-step checklist to audit any store' },
-    { title: 'The Subconscious Scripts', value: 197, desc: 'Copy templates that bypass logical resistance' },
-    { title: 'Visual Hierarchy Blueprint', value: 147, desc: 'Design layouts that guide the eye to buy' },
-    { title: 'Urgency Engine Templates', value: 97, desc: 'Ethical urgency systems that work 24/7' },
-    { title: 'Private Community Access', value: 117, desc: 'Network with 500+ conversion-focused sellers' },
+  // Exact modules from course data
+  const modules = [
+    { title: "The Brain, Unlocked", description: "What triggers the brain to buy and how to activate those triggers on demand." },
+    { title: "The Copywriting Secrets", description: "The exact button text that boosted our conversions by 39%." },
+    { title: "The Power of Fonts", description: "Which fonts increase trust and perceived brand value." },
+    { title: "Winning Layouts", description: "Data-backed page structures that psychologically convert." },
+    { title: "Code-Based Conversion Hacks", description: "CSS tweaks that increased our purchase rate by 21%." },
+    { title: "Color Manipulations", description: "The exact color tactics that knock out the subconscious." },
+    { title: "Psychological Positioning", description: "How to charge double your competitors and still convert at 6%+." },
+    { title: "The Subconscious Switch", description: "70+ step-by-step implementation tasks." }
   ];
 
+  // Exact bonuses from course data with images
+  const bonuses = [
+    { title: "The $10,000 AI Photographer", value: 297, desc: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261" },
+    { title: "Secret Tools Vault", value: 97, desc: "We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570" },
+    { title: "Lifetime Discount Vault", value: 97, desc: "We partnered with dozens of eCommerce tools and top Shopify apps to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375" },
+    { title: "The Intelligence Agent", value: 97, desc: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. For FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697" },
+    { title: "Einstein on Steroids", value: 97, desc: "An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300" },
+    { title: "Your Personal Conversion Map", value: 147, desc: "A guided tracking system that takes you step by step - all the way to success (6%+).", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730" },
+    { title: "Access to Our Secret Newsletter", value: 97, desc: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015" }
+  ];
+
+  // Exact FAQs from course data
   const faqItems = [
-    { question: 'How is this different from other CRO courses?', answer: 'This isn\'t theory. Every tactic comes from real A/B tests with documented results. You\'re getting the exact psychological triggers that produced a 44% conversion lift in our tests - not generic advice.' },
-    { question: 'Will this work for my niche?', answer: 'These psychological principles work across all niches because they target how the human brain makes buying decisions. We\'ve tested across 23 different niches with consistent results.' },
-    { question: 'How long until I see results?', answer: 'Most students see measurable improvements within 7-14 days of implementing the core tactics. Some have seen conversion lifts within 48 hours on their first changes.' },
-    { question: 'Do I need technical skills?', answer: 'No coding required. Everything can be implemented with standard Shopify settings, or simple copy-paste for any platform. We focus on psychology, not technology.' },
-    { question: 'What if it doesn\'t work for me?', answer: 'You\'re protected by our 30-day money-back guarantee. If you implement the tactics and don\'t see improvement, we\'ll refund every penny - no questions asked.' },
-    { question: 'Is this a one-time payment?', answer: 'Yes! Pay once, access forever. Plus you get all future updates and bonus content we release at no extra cost.' },
+    { question: "Will this really work if my site already looks professional?", answer: "Absolutely. \"Looking professional\" and \"converting visitors\" are two completely different things. Your site might look like a million-dollar brand, but if it's not using psychological triggers, you're leaving massive money on the table. This framework shows you exactly what's missing - the subconscious manipulations that drive purchases." },
+    { question: "I'm already converting at 3%. Is this still worth it?", answer: "Let me put it this way: if you're converting 3% now, this framework could take you to 5-6%+. That means nearly DOUBLING your revenue from the exact same traffic. Same ad spend, double the sales. How much is that worth to you?" },
+    { question: "Do I need to know how to code?", answer: "Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users." },
+    { question: "Will this work for my specific product/niche?", answer: "Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers." },
+    { question: "What if I implement everything and it doesn't work?", answer: "Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back." },
+    { question: "Why is it only $10?", answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $10. One-time payment, lifetime access." }
+  ];
+
+  // GIFs from course data
+  const visuals = [
+    { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/facepalm-stress.gif?v=1760351539", caption: "Stop losing money on ineffective strategies" },
+    { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/HOW_TO.gif?v=1760351539", caption: "Learn proven psychological triggers" },
+    { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1760351539", caption: "Watch your conversions skyrocket" }
   ];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-block px-5 py-2 rounded-full mb-8"
-            style={{ backgroundColor: 'rgba(255, 79, 3, 0.2)', border: '1px solid rgba(255, 79, 3, 0.3)' }}
-          >
-            <span className="text-sm font-bold tracking-wide" style={{ color: '#ff4f03' }}>PSYCHOLOGY-BASED CONVERSION</span>
-          </motion.div>
+      <div className="w-full py-16 lg:py-24 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-block px-4 py-2 rounded-full mb-6"
+                style={{ backgroundColor: 'rgba(255, 79, 3, 0.15)', border: '1px solid rgba(255, 79, 3, 0.3)' }}
+              >
+                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#ff4f03' }}>Psychology-Based CRO</span>
+              </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
-          >
-            THE <span style={{ color: '#ff4f03' }}>SUBCONSCIOUS</span> TRAP
-          </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl lg:text-5xl xl:text-6xl font-black mb-6 text-white leading-tight"
+              >
+                Convert at <span style={{ color: '#ff4f03' }}>4-6%+</span>
+                <br />
+                <span className="text-white/90">Using Subconscious Influence</span>
+              </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl lg:text-2xl mb-4 max-w-2xl mx-auto text-white/80"
-          >
-            The Hidden Psychology Behind <span style={{ color: '#ff4f03' }}>44% Higher Conversions</span>
-          </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-lg lg:text-xl mb-8 text-white/70 leading-relaxed"
+              >
+                A psychology-driven framework to increase conversions, boost AOV, and drive repeat purchases — <span style={{ color: '#ff4f03' }}>without spending more on ads.</span>
+              </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="text-lg mb-10 max-w-xl mx-auto text-white/60"
-          >
-            Discover the A/B tested psychological triggers that make visitors buy without knowing why
-          </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-wrap items-center gap-6 mb-8"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 79, 3, 0.2)' }}>
+                    <BookOpen size={20} style={{ color: '#ff4f03' }} />
+                  </div>
+                  <span className="text-white/80 text-sm">8 Modules</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 79, 3, 0.2)' }}>
+                    <Clock size={20} style={{ color: '#ff4f03' }} />
+                  </div>
+                  <span className="text-white/80 text-sm">6+ Hours</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 79, 3, 0.2)' }}>
+                    <FileText size={20} style={{ color: '#ff4f03' }} />
+                  </div>
+                  <span className="text-white/80 text-sm">50+ Templates</span>
+                </div>
+              </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center justify-center gap-4 mb-8"
-          >
-            <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#ff4f03' }}>${course.price}</span>
-            {course.originalPrice && (
-              <div className="flex flex-col items-start">
-                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
-                <span className="text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#ff4f03', color: '#fff' }}>
-                  SAVE {Math.round((1 - course.price / course.originalPrice) * 100)}%
-                </span>
-              </div>
-            )}
-          </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="flex items-center gap-4 mb-6"
+              >
+                <span className="text-5xl lg:text-6xl font-black" style={{ color: '#ff4f03' }}>${course.price}</span>
+                {course.originalPrice && (
+                  <div className="flex flex-col">
+                    <span className="text-xl line-through text-white/40">${course.originalPrice}</span>
+                    <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#ff4f03', color: '#fff' }}>
+                      SAVE {Math.round((1 - course.price / course.originalPrice) * 100)}%
+                    </span>
+                  </div>
+                )}
+              </motion.div>
 
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            onClick={onCheckout}
-            className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
-            style={{
-              background: 'linear-gradient(135deg, #ff4f03 0%, #ff7a3d 50%, #ff4f03 100%)',
-              boxShadow: '0 10px 40px rgba(255, 79, 3, 0.4)'
-            }}
-          >
-            <ShoppingCart size={24} />
-            UNLOCK THE PSYCHOLOGY
-          </motion.button>
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                onClick={onCheckout}
+                className="inline-flex items-center gap-3 px-10 py-4 rounded-xl font-bold text-base transition-all hover:scale-105 text-white uppercase tracking-wide"
+                style={{
+                  background: 'linear-gradient(135deg, #ff4f03 0%, #ff7a3d 50%, #ff4f03 100%)',
+                  boxShadow: '0 10px 40px rgba(255, 79, 3, 0.4)'
+                }}
+              >
+                <ShoppingCart size={20} />
+                GET INSTANT ACCESS
+                <ArrowRight size={18} />
+              </motion.button>
 
-          <p className="text-sm mt-8 text-white/40">
-            30-day money-back guarantee • Instant access • 7 bonuses worth $929 included
-          </p>
+              <p className="text-xs mt-6 text-white/40">
+                30-day money-back guarantee • Instant access • 7 bonuses worth $929 included
+              </p>
+            </div>
+
+            {/* Right - Hero Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 rounded-2xl" style={{ background: 'radial-gradient(circle at center, rgba(255, 79, 3, 0.3) 0%, transparent 70%)' }} />
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539"
+                alt="The Subconscious Trap Course"
+                className="w-full rounded-2xl shadow-2xl relative z-10"
+                style={{ boxShadow: '0 25px 80px rgba(255, 79, 3, 0.3)' }}
+              />
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* The Discovery Story Section */}
+      {/* The Story Section with GIFs */}
       <div className="w-full py-20 px-6 lg:px-10 bg-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              The Discovery That Changed Everything
+              Your customers don&apos;t buy logically.
             </h2>
             <p className="text-xl text-[#666] max-w-2xl mx-auto">
-              How one A/B test revealed the psychology gap most stores are missing
+              They buy emotionally — then justify it later.
             </p>
           </motion.div>
 
-          <div className="space-y-8">
+          {/* GIFs Grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {visuals.map((visual, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="rounded-xl overflow-hidden mb-4 bg-[#fafafa] border border-[#eee]">
+                  <img
+                    src={visual.url}
+                    alt={visual.caption}
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <p className="text-sm text-[#666]">{visual.caption}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* The Problem */}
+          <div className="grid lg:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="p-8 rounded-2xl bg-[#fafafa] border border-[#eee]"
             >
-              <h3 className="text-xl font-bold text-[#111] mb-4">We ran 127 split tests across 23 niches...</h3>
+              <h3 className="text-xl font-bold text-[#111] mb-4">Every element of your store...</h3>
+              <p className="text-[#666] leading-relaxed mb-4">
+                From your headline to your checkout button — either builds buying momentum or kills it.
+              </p>
               <p className="text-[#666] leading-relaxed">
-                And discovered something shocking: The difference between a 1% conversion rate and a 3% conversion rate wasn't the product, the price, or even the traffic source. It was how the store <em>felt</em> to visitors on a subconscious level.
+                Most stores are unknowingly sabotaging themselves at every step. Your site might look like a million-dollar brand, but if it&apos;s not using psychological triggers, you&apos;re leaving massive money on the table.
               </p>
             </motion.div>
 
@@ -2522,19 +2611,19 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
                   <TrendingUp size={32} className="text-white" />
                 </div>
                 <div>
-                  <div className="text-4xl font-bold" style={{ color: '#ff4f03' }}>44%</div>
-                  <div className="text-sm text-[#666]">Average Conversion Lift</div>
+                  <div className="text-4xl font-bold" style={{ color: '#ff4f03' }}>6%+</div>
+                  <div className="text-sm text-[#666]">Target Conversion Rate</div>
                 </div>
               </div>
               <p className="text-[#444] leading-relaxed">
-                When we applied specific psychological triggers - the exact ones you'll learn in this course - conversion rates increased by an average of 44%. Not through manipulation, but by aligning with how the brain naturally makes buying decisions.
+                In this course, you&apos;ll learn exactly how to identify and fix these conversion killers, then install proven psychological triggers that turn browsers into buyers, and buyers into loyal customers.
               </p>
             </motion.div>
           </div>
         </div>
       </div>
 
-      {/* What You'll Learn Section */}
+      {/* Course Modules Section */}
       <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -2543,6 +2632,9 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             viewport={{ once: true }}
             className="text-center mb-12"
           >
+            <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ backgroundColor: 'rgba(255, 79, 3, 0.15)' }}>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#ff4f03' }}>8 Complete Modules</span>
+            </div>
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
               Inside The Subconscious Trap
             </h2>
@@ -2551,39 +2643,47 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { icon: Brain, title: 'Cognitive Load Reduction', desc: 'Remove decision friction that kills conversions' },
-              { icon: Eye, title: 'Visual Anchoring', desc: 'Guide attention to your highest-converting elements' },
-              { icon: Zap, title: 'Urgency Psychology', desc: 'Create real urgency without feeling pushy' },
-              { icon: Shield, title: 'Trust Architecture', desc: 'Build instant credibility that converts skeptics' },
-              { icon: Target, title: 'Choice Architecture', desc: 'Present options that naturally lead to purchase' },
-              { icon: Award, title: 'Social Proof Optimization', desc: 'Position reviews and testimonials for maximum impact' },
-            ].map((item, index) => (
+          <div className="grid md:grid-cols-2 gap-4">
+            {modules.map((module, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-start gap-4 p-6 rounded-xl bg-white/5 border border-white/10"
+                transition={{ delay: index * 0.05 }}
+                className="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10"
               >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#ff4f03' }}>
-                  <item.icon size={24} className="text-white" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-white" style={{ backgroundColor: '#ff4f03' }}>
+                  {index + 1}
                 </div>
                 <div>
-                  <h3 className="font-bold text-white mb-1">{item.title}</h3>
-                  <p className="text-white/60 text-sm">{item.desc}</p>
+                  <h3 className="font-bold text-white mb-1">{module.title}</h3>
+                  <p className="text-white/60 text-sm">{module.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {/* Total Bonus Value Callout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 p-6 rounded-xl text-center"
+            style={{ backgroundColor: 'rgba(255, 79, 3, 0.15)', border: '2px dashed rgba(255, 79, 3, 0.5)' }}
+          >
+            <p className="text-lg text-white">
+              <span className="font-bold">Plus 7 Exclusive Bonuses</span>{' '}
+              <span className="text-2xl font-black" style={{ color: '#ff4f03' }}>Worth $929</span>{' '}
+              <span className="text-white/70">— All Included FREE</span>
+            </p>
+          </motion.div>
         </div>
       </div>
 
-      {/* Bonuses Section */}
+      {/* Bonuses Section with Images */}
       <div className="w-full py-20 px-6 lg:px-10 bg-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2601,7 +2701,8 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          {/* Bonus Cards with Images */}
+          <div className="space-y-6">
             {bonuses.map((bonus, index) => (
               <motion.div
                 key={index}
@@ -2609,17 +2710,31 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="flex items-start gap-4 p-5 rounded-xl bg-[#fafafa] border border-[#eee]"
+                className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-[#fafafa] border border-[#eee] overflow-hidden"
               >
-                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#ff4f03' }}>
-                  <Gift size={20} className="text-white" />
+                {/* Bonus Image */}
+                <div className="w-full md:w-48 h-40 md:h-auto flex-shrink-0 rounded-xl overflow-hidden bg-white">
+                  <img
+                    src={bonus.image}
+                    alt={bonus.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+
+                {/* Bonus Content */}
                 <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-bold text-[#111]">{bonus.title}</h3>
-                    <span className="text-sm font-medium" style={{ color: '#ff4f03' }}>${bonus.value} Value</span>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#ff4f03' }}>
+                        <Gift size={16} className="text-white" />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#111]">{bonus.title}</h3>
+                    </div>
+                    <span className="text-sm font-bold px-3 py-1 rounded-full" style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)', color: '#ff4f03' }}>
+                      ${bonus.value} Value
+                    </span>
                   </div>
-                  <p className="text-sm text-[#666]">{bonus.desc}</p>
+                  <p className="text-[#666] leading-relaxed">{bonus.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -2629,12 +2744,12 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-8 p-6 rounded-xl text-center"
+            className="mt-10 p-8 rounded-2xl text-center"
             style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)', border: '2px dashed #ff4f03' }}
           >
-            <p className="text-lg">
+            <p className="text-xl">
               <span className="font-bold text-[#111]">Total Bonus Value:</span>{' '}
-              <span className="text-xl font-bold" style={{ color: '#ff4f03' }}>$929</span>{' '}
+              <span className="text-3xl font-black" style={{ color: '#ff4f03' }}>$929</span>{' '}
               <span className="text-[#666]">— Yours FREE when you join today</span>
             </p>
           </motion.div>
