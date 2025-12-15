@@ -1432,9 +1432,9 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
 
   // Set up the checkout handler for the HTML
   useEffect(() => {
-    window.__socialProofOnCheckout = onCheckout;
+    (window as any).__socialProofOnCheckout = onCheckout;
     return () => {
-      delete window.__socialProofOnCheckout;
+      delete (window as any).__socialProofOnCheckout;
     };
   }, [onCheckout]);
 
