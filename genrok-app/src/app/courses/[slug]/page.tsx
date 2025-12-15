@@ -898,13 +898,19 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
             }
 
             .hero-image {
-                width: 86%;
-                max-width: 516px;
-                height: auto;
-                display: block;
-                margin: 20px auto;
-                border-radius: 15px;
-                filter: drop-shadow(0 0 18px rgba(119, 0, 253, 0.6)) drop-shadow(0 0 35px rgba(119, 0, 253, 0.4));
+                width: 86% !important;
+                max-width: 516px !important;
+                height: auto !important;
+                display: block !important;
+                margin: 20px auto !important;
+                border-radius: 15px !important;
+                filter: drop-shadow(0 0 18px rgba(119, 0, 253, 0.6)) drop-shadow(0 0 35px rgba(119, 0, 253, 0.4)) !important;
+            }
+
+            img {
+                width: auto !important;
+                height: auto !important;
+                max-width: 100% !important;
             }
 
             .price-section {
@@ -1439,7 +1445,13 @@ const SocialProofAlternativeLayout = ({ course, onCheckout }: SocialProofAlterna
   }, [onCheckout]);
 
   return (
-    <div className="w-full">
+    <div
+      style={{
+        all: 'initial',
+        display: 'block',
+        width: '100%'
+      }}
+    >
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </div>
   );
