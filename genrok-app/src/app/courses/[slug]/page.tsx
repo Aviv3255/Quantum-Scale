@@ -61,6 +61,73 @@ type TabType = 'content' | 'bonuses' | 'faq';
 
 // ========== SHARED COMPONENTS ==========
 
+// Get Access Bar - Shown at top of landing page
+interface GetAccessBarProps {
+  price: number;
+  originalPrice?: number;
+  onCheckout: () => void;
+}
+
+const GetAccessBar = ({ price, originalPrice, onCheckout }: GetAccessBarProps) => (
+  <div className="w-full bg-white border-b border-[#eee] py-4 px-6 lg:px-10 sticky top-0 z-40">
+    <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl font-bold text-[#111]">${price}</span>
+          {originalPrice && (
+            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
+          )}
+        </div>
+        {originalPrice && (
+          <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#111] text-white">
+            Save {Math.round((1 - price / originalPrice) * 100)}%
+          </span>
+        )}
+      </div>
+      <button
+        onClick={onCheckout}
+        className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]"
+        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+      >
+        <ShoppingCart size={18} />
+        Get Access - ${price}
+      </button>
+    </div>
+  </div>
+);
+
+// Sticky Cart - Shown at bottom of landing page
+interface StickyCartProps {
+  title: string;
+  price: number;
+  originalPrice?: number;
+  onCheckout: () => void;
+}
+
+const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps) => (
+  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#eee] shadow-lg py-4 px-6" style={{ marginLeft: 'var(--sidebar-width, 260px)' }}>
+    <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-[#111] truncate">{title}</p>
+        <div className="flex items-baseline gap-2 mt-1">
+          <span className="text-xl font-bold text-[#111]">${price}</span>
+          {originalPrice && (
+            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
+          )}
+        </div>
+      </div>
+      <button
+        onClick={onCheckout}
+        className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
+        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+      >
+        <ShoppingCart size={18} />
+        Get Access - ${price}
+      </button>
+    </div>
+  </div>
+);
+
 const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; suffix?: string; prefix?: string }) => {
   const [count, setCount] = useState(0);
 
@@ -5682,21 +5749,69 @@ export default function CourseDetailPage() {
 
         {/* Alternative Layouts - Priority: 1. localStorage, 2. code HTML blocks, 3. React components */}
         {useAlternativeLayout && (getStoredHTMLBlock(slug) || getCourseHTML(slug)) ? (
-          <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
-          <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
-          <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
-          <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
-          <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'ltv-system' && useAlternativeLayout ? (
-          <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
-          <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : slug === 'abandoned-checkout' && useAlternativeLayout ? (
-          <AbandonedCheckoutAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <div className="pb-24">
+              <AbandonedCheckoutAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+          </>
         ) : (
           <>
         {/* Hero Section */}

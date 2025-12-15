@@ -925,6 +925,22 @@ h4, .text-h4 {
   right: auto !important;
 }
 
+/*
+ * Reset typography colors inside raw-html-container
+ *
+ * The HTML blocks have their own embedded <style> tags that define colors.
+ * The global h1, h2, p etc. rules would normally override inheritance,
+ * causing black text on black backgrounds.
+ *
+ * We use :where() to give these rules ZERO specificity, so any class-based
+ * color rules in the HTML blocks will take precedence. This allows:
+ * 1. Elements without classes to inherit color from styled parents
+ * 2. Elements WITH classes to use their class-defined colors
+ */
+.raw-html-container :where(h1, h2, h3, h4, h5, h6, p, li, td, th, label) {
+  color: inherit;
+}
+
 /* Top Bar - Glass Effect */
 .topbar {
   position: sticky;
