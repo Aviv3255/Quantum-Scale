@@ -50,7 +50,7 @@ export const coursesData: Record<string, Course> = {
     title: "The Subconscious Trap",
     subtitle: "How to Bypass Buying Resistance Using Subconscious Influence",
     description: "A psychology-driven framework to increase conversions, boost AOV, and drive repeat purchases — without spending more on ads.",
-    price: 29,
+    price: 10,
     originalPrice: 197,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539",
@@ -194,8 +194,8 @@ The same frameworks in this course have been used to optimize 7-figure stores an
     title: "The LTV System",
     subtitle: "The Automatic System That Earns $1,000 Per Customer",
     description: "Transform one-time buyers into lifetime customers with automated systems that maximize customer lifetime value.",
-    price: 47,
-    originalPrice: 500,
+    price: 10,
+    originalPrice: 97,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_58_efa8c3cd-aa72-4542-a933-0f433d8c01a1.jpg?v=1757325732",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg",
     badge: "New",
@@ -284,7 +284,7 @@ Inside, you'll get the exact blueprints, templates, and automation recipes that 
     title: "Email Marketing Revenue Engine",
     subtitle: "Turn Email Marketing Into a Revenue Engine",
     description: "Steal the full billion-dollar email system that generates 20X more revenue than any social platform — without spending another dollar on ads.",
-    price: 29,
+    price: 10,
     originalPrice: 97,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_40.jpg?v=1757233368",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_3.jpg?v=1760516155",
@@ -382,7 +382,7 @@ Inside this course, you'll get the exact systems that billion-dollar brands use 
     title: "Abandoned Checkout Finisher",
     subtitle: "How to Convert 82% of Your Lost Customers",
     description: "The system that recovers 82% of abandoned checkouts — automatically. Stop losing 75% of your potential revenue.",
-    price: 29,
+    price: 10,
     originalPrice: 97,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_76.png?v=1757233333",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_1.jpg?v=1760514814",
@@ -481,7 +481,7 @@ This system stops the leak. It brings money back into your store. Every day. On 
     title: "The Social Proof",
     subtitle: "How to Force Anyone to Buy From You Using One Psychological Law",
     description: "Turn every visitor into a buyer by triggering the most powerful force in human psychology — the Social Proof Effect.",
-    price: 39,
+    price: 10,
     originalPrice: 197,
     image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_43.jpg?v=1757233352",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5.jpg?v=1760517983",
@@ -589,6 +589,702 @@ We promise you: In a few days you will send us a message that you have no way of
       {
         question: "What if Facebook shuts down my ad account?",
         answer: "That's exactly why you need this. Social proof is a skill that transcends platforms. Whether you're on Facebook, TikTok, Google, or selling in person — human psychology doesn't change. You'll own a skill that can't be taken away."
+      }
+    ]
+  },
+  "product-mapping": {
+    slug: "product-mapping",
+    title: "Product Mapping Manipulation",
+    subtitle: "The Data-Driven System That Creates Money-Printing Product Pages",
+    description: "Master the strategic product mapping framework used by billion-dollar brands to turn every product page into a high-converting sales machine.",
+    price: 10,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_44.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_6.jpg",
+    badge: "Strategy",
+    stats: [
+      { value: "5", label: "weapons" },
+      { value: "4+", label: "hours" },
+      { value: "∞", label: "ROI potential" }
+    ],
+    highlights: [
+      "Master the billion-dollar mapping system used by top brands",
+      "Create strategic product ecosystems that maximize AOV",
+      "Use the anchor product effect to boost perceived value",
+      "Build hidden funnels that convert visitors automatically",
+      "Apply the law of multiple options to increase sales",
+      "Turn every product page into a money-printing machine"
+    ],
+    visuals: [],
+    longDescription: `The Biggest Brands Are Investing Billions Into Understanding How You Think...
+
+They're not just selling products — they're engineering decisions.
+
+It All Started Four Years Ago...
+
+We discovered that the most successful eCommerce brands weren't winning because of better products or bigger ad budgets. They were winning because they understood something most store owners completely miss:
+
+Strategic Product Mapping.
+
+The way you position, present, and connect your products determines whether visitors buy — or bounce.
+
+While most stores throw products on a page and hope for the best, billion-dollar brands use precise psychological frameworks to guide customers toward purchasing decisions they feel good about.
+
+This isn't manipulation. It's strategic alignment between what customers want and how you present your solutions.
+
+Inside this course, you'll discover the exact data-driven system that transforms chaotic product catalogs into strategic sales machines. You'll learn how to map your products in ways that naturally increase average order value, boost conversion rates, and create customers who buy more — without feeling sold to.
+
+The same framework inside has been used to optimize stores generating 7-8 figures. Now it's yours.`,
+    modules: [
+      {
+        title: "The Law of Multiple Options",
+        description: "Discover why giving customers the right number of choices dramatically increases conversions — and how to structure your offerings for maximum psychological impact."
+      },
+      {
+        title: "The Billion-Dollar Mapping System",
+        description: "The exact framework used by world-class brands to position products strategically. Learn how to create product ecosystems that naturally guide customers toward higher-value purchases."
+      },
+      {
+        title: "The Strategic Product Mapping Framework",
+        description: "A step-by-step system for analyzing, organizing, and presenting your products in ways that maximize perceived value and minimize decision friction."
+      },
+      {
+        title: "The Anchor Product Effect",
+        description: "Master the psychology of anchoring to make your core offerings feel like incredible deals — without discounting or cheapening your brand."
+      },
+      {
+        title: "The Hidden Funnel Strategy",
+        description: "Build invisible conversion paths that guide customers from browse to buy without aggressive selling. Turn your product catalog into an automated sales machine."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Will this work if I only have a few products?",
+        answer: "Absolutely. The strategic mapping framework works whether you have 5 products or 500. In fact, smaller catalogs often see even bigger improvements because each product placement decision has more impact. You'll learn how to maximize every position in your store."
+      },
+      {
+        question: "I'm already getting sales. Do I really need this?",
+        answer: "If you're getting sales without strategic product mapping, imagine what happens when you add it. Most stores see 30-50% increases in average order value alone. You're leaving significant money on the table if your products aren't strategically positioned."
+      },
+      {
+        question: "Is this different from just organizing my store?",
+        answer: "Completely different. Organization is about making products easy to find. Strategic mapping is about engineering purchase decisions. It's the difference between a grocery store and Apple's product lineup — both sell things, but one prints money."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug-and-play templates that you can implement immediately."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "Why is this only $39?",
+        answer: "We want every serious eCommerce entrepreneur to have access to billion-dollar strategies — not just those with big budgets. At $39, this pays for itself with a single additional sale. Important: This price won't last forever. We reserve the right to increase it at any time."
+      }
+    ]
+  },
+  "ab-test-results": {
+    slug: "ab-test-results",
+    title: "37 Proven A/B Test Results",
+    subtitle: "Years of Data, Delivered in Hours",
+    description: "Skip the guesswork. Apply what already works. Get instant access to 37 proven A/B tests that delivered 6% to 44% conversion improvements.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_42_9dbe83ef-43df-40d5-88eb-3cd7f29d394a.jpg?v=1757233262",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_7.jpg?v=1760524354",
+    badge: "Data-Driven",
+    stats: [
+      { value: "37", label: "tests" },
+      { value: "6-44%", label: "improvement" },
+      { value: "XLS", label: "format" }
+    ],
+    highlights: [
+      "Get 37 proven A/B test results in one actionable XLS file",
+      "Skip months of testing and thousands in wasted ad spend",
+      "Each test delivered 6% to 44% conversion improvement",
+      "Data from millions of real visitors with statistical significance",
+      "Apply proven changes to your site in hours, not years",
+      "Stop guessing — implement what already works"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1751796400", caption: "Years of testing data" },
+      { url: "https://media.tenor.com/IQ6Z-aPhr1wAAAAM/date-everywhere-data.gif", caption: "Data worth millions" }
+    ],
+    longDescription: `If you're tired of guessing, or wasting money... Here's the shortcut that will save you months of testing and thousands of dollars in wasted ad spend.
+
+Data = Money. And here's the proof...
+
+For years, we've been running A/B tests across multiple websites - testing everything from simple button text to complex page structures. Every website we managed had at least one live A/B test at all times. Every change - no matter how small - was tested, measured, and optimized.
+
+Some tests improved conversions by 6%, others by as much as 44%. Together, they created powerful insights that drove consistent growth.
+
+Each test was run on real websites with tens of thousands (sometimes hundreds of thousands) of real visitors. This is data that cost millions of dollars and years of testing to obtain.
+
+Now, for the first time, we've compiled the results of 37 proven A/B tests into a clear, actionable XLS file...
+
+Instead of spending years testing every possible change... You can skip the guesswork and implement what's already proven to work. In just a few hours.
+
+From minor tweaks like button text to deeper changes in page structure and messaging. These results reveal what actually moves the needle - not what "sounds good."
+
+Backed by pure, indisputable data about how humans actually make decisions.`,
+    modules: [
+      {
+        title: "Button Text Changes",
+        description: "Simple tweaks to button copy delivered measurable lift — some as high as 18% improvement in click-through rates."
+      },
+      {
+        title: "Page Structure Optimization",
+        description: "Rearranging elements and adjusting layouts led to conversion improvements between 12% and 31% across different page types."
+      },
+      {
+        title: "Messaging & Copy Tests",
+        description: "Changes to headlines, value propositions, and messaging boosted conversions by up to 44% — the highest result in the collection."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Will these tests work for my website?",
+        answer: "Yes. These are 37 fundamental tests relevant to virtually any website. Each one has been proven to increase conversions between 6% and 44%. Whether you're running e-commerce, SaaS, or lead generation — these principles apply universally because they're based on how humans make decisions."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear XLS file with real test results and actionable insights that you can implement immediately. No fluff, no theory — just what worked, what didn't, and by how much."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every insight was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer. Most changes take minutes, not hours."
+      },
+      {
+        question: "How is this different from generic 'best practices' advice?",
+        answer: "This isn't generic advice. This is real data from real tests run on high-traffic websites with tens (sometimes hundreds) of thousands of visitors per test. Every result is backed by statistical significance — not opinion or guesswork."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these insights, just reach out and we'll refund you — no questions asked."
+      },
+      {
+        question: "Can I really see results 'starting today'?",
+        answer: "Yes. These are proven changes you can implement immediately. Some take minutes to apply. The moment you make the change, you start benefiting from years of testing that's already been done for you."
+      }
+    ]
+  },
+  "quiz-tactic": {
+    slug: "quiz-tactic",
+    title: "The Quiz Tactic",
+    subtitle: "The Secret Weapon That Took Brands From 3% to 10% Conversion",
+    description: "Steal the billion-dollar tactic that makes visitors 10X more likely to buy. Build conversion machines that generate 8-10% conversion rates consistently.",
+    price: 10,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_46.jpg?v=1757233317",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_8.jpg?v=1760529285",
+    badge: "Conversion",
+    stats: [
+      { value: "6", label: "modules" },
+      { value: "8-10%", label: "conversion" },
+      { value: "300-400%", label: "lift" }
+    ],
+    highlights: [
+      "Build conversion machines that generate 8-10% conversion rates",
+      "Bypass logical resistance and tap into emotional decision-making",
+      "Get plug-and-play templates for any eCommerce niche",
+      "Master personalization that makes visitors feel understood",
+      "Collect valuable customer data while delivering massive value",
+      "Turn browsers into buyers with psychological precision"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/9708718a5263943a338e9072eec122d5.gif?v=1742999762", caption: "Stop the frustration of low conversions" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/3be5a1c2fd9a8bd284bfabb6506ed8ce.gif?v=1742999766", caption: "Watch your conversion rate go to the moon" }
+    ],
+    longDescription: `In a world where Zuck rules us... Millions of eCom store owners believe their creative is what sets them apart, blindly testing creatives hoping to find a "winner" and barely hitting 1% conversion rate. And they think it's called 'strategy'...
+
+We build a conversion machine for every brand that keeps generating for us over 2 years 8–10% conversion Rate. That's a "Cha-ching!" for every 10-12 visitors.
+
+It all started two years ago... when a friendly guy sitting with me at the office complex, turned out to be the lead developer at one of the biggest skincare companies in the world...
+
+"What's your conversion rate?" I asked him. And he gave an answer I didn't believe was real… "8%–12%, depends on the period"
+
+From that moment – everything inside me changed completely. Like a good source of truth, he just spilled everything… The entire method that took them from losing money to a company generating hundreds of millions a year.
+
+The Quiz tactic is like a money machine. Put in $1 – get back $10.
+
+A properly built quiz tactic changes the game forever. We're not talking about tweaks – but about jumps of 300–400% in conversion rate that actually happen when done right.`,
+    modules: [
+      {
+        title: "The Psychology Framework",
+        description: "Discover why quizzes bypass logical resistance and tap directly into the buyer's emotional decision-making process. Learn the exact psychological triggers that make visitors 10X more likely to purchase."
+      },
+      {
+        title: "Quiz Architecture Blueprint",
+        description: "Get the proven question structure that elite brands use. Learn which questions to ask, in what order, and why each one builds unstoppable momentum toward the purchase."
+      },
+      {
+        title: "Personalization Engine",
+        description: "Master the art of making every visitor feel like you're speaking directly to them. Learn how to segment and recommend products with laser precision, dramatically increasing perceived value."
+      },
+      {
+        title: "Implementation Templates",
+        description: "No need to start from scratch. Get plug-and-play templates for fashion, beauty, supplements, and general eCommerce. Simply customize for your brand and deploy within hours."
+      },
+      {
+        title: "Data Collection Strategy",
+        description: "Learn how to ethically collect valuable customer data while delivering massive value. This data becomes pure gold for your email marketing, retargeting, and product development."
+      },
+      {
+        title: "Conversion Optimization Secrets",
+        description: "Discover the micro-optimizations that separate 3% conversion rates from 10%+ conversion rates. Every button placement, color choice, and word matters — and you'll know exactly what works."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "I don't need this. Why should I care about quiz tactics?",
+        answer: "You think you don't need it only because you haven't known it yet. There's a reason why the world's leading brands invest billions in this tactic. They don't do it for fun — they do it because it multiplies revenue. While you're stuck at 1-3% conversion, they're cruising at 8-12%. The gap isn't talent or budget — it's knowing what they know."
+      },
+      {
+        question: "Will this work for my specific type of eCommerce store?",
+        answer: "The Quiz Tactic works for any eCommerce brand that sells to humans. Fashion, beauty, supplements, home goods, electronics — it doesn't matter. The psychology is universal. We've seen it transform conversion rates across dozens of niches."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating, so stacking them creates compounding impact."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. You buy it once and own it forever, including all future updates."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug & play templates that you can implement immediately. No fluff, no filler — just actionable strategies."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer. No developers required."
+      },
+      {
+        question: "How long will it take to see results?",
+        answer: "Most brands see measurable improvements within days of implementing the Quiz Tactic. The case study in this page? That brand saw results in less than a week. This isn't a slow-burn strategy — it's a rapid transformation tool."
+      },
+      {
+        question: "What if I'm not tech-savvy?",
+        answer: "The templates are designed to be plug-and-play. If you can copy and paste, you can implement this. We've removed all technical barriers so you can focus on results, not code."
+      }
+    ]
+  },
+  "laser-targeting": {
+    slug: "laser-targeting",
+    title: "Laser Targeting",
+    subtitle: "Reach Only The 0.001% Ready to Buy",
+    description: "Inject steroids into Meta's AI and reach only people who match your product 100%. Stop burning money on audiences that will never buy.",
+    price: 10,
+    originalPrice: 197,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_45.jpg?v=1757233284",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742",
+    badge: "Meta Ads",
+    stats: [
+      { value: "14.84", label: "ROAS" },
+      { value: "23M+", label: "impressions" },
+      { value: "52K", label: "data points" }
+    ],
+    highlights: [
+      "Target the 0.001% who will crave your product the second they see the ad",
+      "Train Meta's AI to work like a bloodhound hunting your perfect customer",
+      "Leverage 52,000 data points Meta collects on every user",
+      "Build remarketing sequences that generate 30-50% of your revenue",
+      "Master the Avatar Mapping Protocol for subconscious targeting",
+      "Achieve 10+ ROAS consistently with surgical precision"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/rambo-shooting.gif?v=1743008740", caption: "Precision targeting that hits every time" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742", caption: "Real results: 14.84 ROAS over 5 months" }
+    ],
+    longDescription: `While Everyone's Playing Russian Roulette With Their Ad Budget...
+
+Cold audiences... Warm audiences... Interest-based targeting... Lookalikes... All of them acting like it's the Wild West, relying on Zuckerberg and praying the algorithm will bless them...
+
+You're burning $50, $100, $500 a day on Meta ads. That's 5,000 to 50,000 impressions daily. Enough audience to turn you into a millionaire if everyone bought.
+
+But 99.7% of your audience isn't relevant. Only 1 in 3,000 to 7,000 people will actually buy.
+
+The problem isn't your product. The problem isn't your creative. The problem is who's seeing it.
+
+Meta Collects 52,000 Data Points On Every Single User. 80% of your screen time belongs to Meta. That means Facebook knows exactly what you want, what you love, what you're struggling with... What you'll buy – and exactly when you're most likely to buy it.
+
+While everyone's spraying bullets hoping to hit something... We target like a laser and reach only the 0.001% who are ready to pull out the credit card.
+
+Train Meta's AI To Work Like a Bloodhound — hunting down only the people who match your product 100%.
+
+14.84 ROAS Over 5 Months With 23+ Million Impressions. Real results. Not cold traffic gambling. Not algorithm prayers. Surgical precision targeting that prints money.`,
+    modules: [
+      {
+        title: "The 0.001% Targeting Method",
+        description: "Learn how to identify and reach the tiny fraction of people who will crave your product the second they see the ad. Stop wasting money on irrelevant impressions."
+      },
+      {
+        title: "Meta AI Injection System",
+        description: "Discover the exact data inputs that make Meta's algorithm obsessed with finding your perfect buyer. Train the AI to work for you 24/7."
+      },
+      {
+        title: "Multi-Angle Attack Strategy",
+        description: "Learn how to attack your audience from so many angles, it's nearly impossible for them to ignore you. Combine AI to pay less for better traffic."
+      },
+      {
+        title: "The Avatar Mapping Protocol",
+        description: "Target not by demographics, but by subconscious fears and desires. Go beyond surface-level targeting to psychological precision."
+      },
+      {
+        title: "Remarketing Mastery",
+        description: "Build remarketing sequences that feel like psychological compulsion. Generate 30-50% of your revenue from people who already showed interest."
+      },
+      {
+        title: "The Bloodhound System",
+        description: "Make Meta's AI work 24/7 like a bloodhound, hunting down ready-to-buy customers while you sleep. Set it and let it print money."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "I already know all the targeting secrets...",
+        answer: "No, you don't. What you know is the 3% that everyone teaches — the surface-level tactics. What we're revealing are secret, precise methods that tap into the remaining 97% of Meta's AI capabilities. If you already knew them, you'd already be running 10+ ROAS consistently."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the conversion equation. They complement each other without repeating content, so stacking them creates compounding impact. Laser Targeting focuses exclusively on reaching the right audience with surgical precision."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Access it whenever you want, as many times as you want."
+      },
+      {
+        question: "Is this just theory or can I apply it right away?",
+        answer: "This is 100% practical. You'll get a clear framework + real examples + plug & play templates that you can implement immediately. No fluff, no theory for theory's sake."
+      },
+      {
+        question: "Do I need a team to apply this?",
+        answer: "Not at all. Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer."
+      },
+      {
+        question: "What if this doesn't work for my product/niche?",
+        answer: "Every product has an audience. There are 8 billion people on this planet. Even if your product is 'weird' or 'niche,' there are thousands who want it. The Laser Targeting method works for any product because it's about finding YOUR specific buyers."
+      },
+      {
+        question: "How long does it take to see results?",
+        answer: "Most people see improvements within the first week of implementation. Some see dramatic results within 48-72 hours. The tactics are designed for fast implementation and quick wins."
+      }
+    ]
+  },
+  "ai-photographer": {
+    slug: "ai-photographer",
+    title: "The $10,000 AI Photographer",
+    subtitle: "Create Billion-Dollar Brand Images in Seconds",
+    description: "Stop paying $10,000 for product photography. Generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots — completely free with AI.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_54.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7c40abec-7cfc-4805-9c1d-5290a3fd3afa.png",
+    badge: "AI Tool",
+    stats: [
+      { value: "$10K", label: "saved per shoot" },
+      { value: "10 sec", label: "per image" },
+      { value: "∞", label: "possibilities" }
+    ],
+    highlights: [
+      "Generate studio-quality product photos without a camera",
+      "Create lifestyle shots with AI models that convert better than real photos",
+      "Replace $10,000 photography budgets with free AI tools",
+      "Get consistent brand imagery across all products",
+      "Create unlimited variations for A/B testing",
+      "No photography skills or equipment needed"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7c40abec-7cfc-4805-9c1d-5290a3fd3afa.png", caption: "AI-generated product photography" }
+    ],
+    longDescription: `The Old Way of Product Photography Is Dead.
+
+Hiring a photographer: $2,000-$10,000 per shoot. Models: $500-$2,000 per day. Studio rental: $200-$500 per hour. Props and styling: $500+. Post-production editing: $50-$200 per image.
+
+Total cost for one product line? $5,000-$15,000. Time to get final images? 2-4 weeks.
+
+The New Way Takes 10 Seconds.
+
+We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots — and it's completely FREE.
+
+The images you'll create will make people think you spent $10,000 on a professional shoot. Billion-dollar brands are already using this exact method.
+
+You'll learn exactly how to:
+• Generate photorealistic product images that convert
+• Create model shots without hiring models
+• Build lifestyle scenes that tell your brand story
+• Produce consistent imagery across your entire catalog
+• A/B test unlimited creative variations
+
+The same AI photography techniques in this course are being used by brands generating 8-figures. Now they're yours.`,
+    modules: [
+      {
+        title: "AI Photography Fundamentals",
+        description: "Master the core concepts of AI image generation. Learn which tools to use, how to write prompts that produce professional results, and the secrets to consistent brand imagery."
+      },
+      {
+        title: "Product Photography Mastery",
+        description: "Generate stunning product shots on any background. Learn lighting techniques, composition rules, and post-processing workflows that make AI images indistinguishable from professional photography."
+      },
+      {
+        title: "Model & Lifestyle Shots",
+        description: "Create photorealistic model shots and lifestyle scenes without hiring anyone. Master the art of generating humans, poses, and environments that sell your products."
+      },
+      {
+        title: "Brand Consistency System",
+        description: "Build a system for producing consistent imagery across your entire product catalog. Create style guides, prompt templates, and workflows that scale."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need any design or photography experience?",
+        answer: "Not at all. This course is designed for complete beginners. If you can type, you can create professional product images. We provide exact prompts and step-by-step instructions that anyone can follow."
+      },
+      {
+        question: "What AI tools do I need?",
+        answer: "We show you how to use free AI tools that produce professional results. No expensive software subscriptions required. Everything you need is either free or has a free tier that's more than enough for most stores."
+      },
+      {
+        question: "Will AI images look fake or obvious?",
+        answer: "When done correctly, AI images are indistinguishable from professional photography. In fact, many AI-generated images now outperform real photos in conversion tests. We teach you the techniques that make images look 100% real."
+      },
+      {
+        question: "Can I use these images commercially?",
+        answer: "Yes. The images you generate are yours to use however you want — on your website, in ads, on social media, anywhere. We also cover the legal aspects and best practices for commercial AI image use."
+      },
+      {
+        question: "How long does it take to create an image?",
+        answer: "Once you know the techniques, you can generate a professional product image in under 10 seconds. Creating a full product line with multiple angles and lifestyle shots takes minutes, not days."
+      },
+      {
+        question: "Will this work for my specific product type?",
+        answer: "Yes. Whether you're selling fashion, electronics, home goods, beauty products, or anything else — the AI techniques work universally. We include examples and prompts for all major product categories."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the eCommerce equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive all future updates as AI technology evolves."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in this course, just reach out and we'll refund you — no questions asked."
+      }
+    ]
+  },
+  "meta-ad-templates": {
+    slug: "meta-ad-templates",
+    title: "1,000+ Meta Ad Templates",
+    subtitle: "Generate Winning Ad Creatives In 10 Seconds",
+    description: "Stop wasting 6 hours to find one winning creative. Get instant access to 1,000+ proven Meta ad templates that are battle-tested on massive budgets.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_59.jpg?v=1757325725",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6574469f-6304-4b63-a8a5-9d260fc2739a.png?v=1760535779",
+    badge: "Templates",
+    stats: [
+      { value: "1,000+", label: "templates" },
+      { value: "10 sec", label: "to generate" },
+      { value: "$0.02", label: "per template" }
+    ],
+    highlights: [
+      "No more creative block - every template ready to customize in seconds",
+      "30 seconds from choosing to downloading your ad creative",
+      "Zero financial investment - works with Canva's free version",
+      "Battle-tested on massive ad budgets in Meta ads",
+      "Instant creative variety - test multiple angles without designing from scratch",
+      "Scale faster than competitors while they waste time in design tools"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif1.webp?v=1752485872", caption: "Step 1: Choose your template" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif2.gif?v=1752485913", caption: "Step 2: Customize in Canva" },
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/canvagif3.gif?v=1752485958", caption: "Step 3: Launch & Scale" }
+    ],
+    longDescription: `Why struggle for hours thinking... Staring at a blank screen. Wondering what creative will work. Trying to come up with something "different"...
+
+When you can generate a proven creative in 10 seconds?
+
+On average, it takes a marketer about 35 minutes to create a single creative. That's 15 minutes brainstorming + 20 minutes actually creating it. And to find a winning creative? You need to test about 10 different variations.
+
+Which means it takes you almost 6 HOURS to create just ONE winning creative!
+
+And even after all that time... You're still not sure if it will work. You're burning money on tests. You're losing time. Your competitors are scaling while you're stuck in Canva...
+
+There's a better way.
+
+In one simple file, over 1,000 Canva templates for Meta ads that are proven to work! No thinking required. No design skills needed. Just pick, customize, and launch.`,
+    modules: [
+      {
+        title: "Choose Your Template",
+        description: "Pick from 1,000+ expertly designed static ad templates in Canva. Every template is battle-tested and proven to convert."
+      },
+      {
+        title: "Customize in Canva",
+        description: "Edit your template in seconds with your logo, colors, and copy. Simple drag-and-drop. No design experience needed."
+      },
+      {
+        title: "Launch & Scale",
+        description: "Download your ad from Canva and launch it in Ads Manager. Watch your ROAS climb while your competitors struggle with creative testing."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need design skills to use these templates?",
+        answer: "Absolutely not. Every template is designed for drag-and-drop editing in Canva. If you can click and type, you can create stunning ad creatives. No design experience required."
+      },
+      {
+        question: "Will these templates work for my niche/product?",
+        answer: "Yes. The templates cover a wide variety of styles, layouts, and formats that work across virtually every niche. From fashion to electronics, supplements to home goods - you'll find templates that fit your brand."
+      },
+      {
+        question: "Do I need to pay for Canva Pro?",
+        answer: "No. All templates work perfectly with Canva's free version. Zero additional software costs. You can start using them immediately without any subscriptions."
+      },
+      {
+        question: "How are these different from free templates online?",
+        answer: "These templates are battle-tested on real ad campaigns with massive budgets. They're not generic designs - they're proven winners that have generated real results. Free templates online are untested guesses. These are data-backed performers."
+      },
+      {
+        question: "What if I buy multiple courses - do they overlap?",
+        answer: "Every course and tool is designed to solve a specific part of the advertising equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive any future template additions at no extra cost."
+      },
+      {
+        question: "How quickly can I start using the templates?",
+        answer: "Instantly. After purchase, you'll get immediate access to the entire library. You can have your first ad creative ready in under 60 seconds."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these templates, just reach out and we'll refund you — no questions asked."
+      }
+    ]
+  },
+  "ad-copy-templates": {
+    slug: "ad-copy-templates",
+    title: "50+ Ad Copy Templates",
+    subtitle: "From The World's Greatest Copywriters",
+    description: "Steal the exact ad copy frameworks from copywriters who charge $50,000 per sales letter. Templates tested on over $10 million in ad spend.",
+    price: 10,
+    originalPrice: 97,
+    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_47.jpg",
+    heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg",
+    badge: "Copy Templates",
+    stats: [
+      { value: "50+", label: "templates" },
+      { value: "$10M+", label: "ad spend tested" },
+      { value: "$50K", label: "copywriter rate" }
+    ],
+    highlights: [
+      "Copy frameworks from Stefan Georgi ($50K per sales letter)",
+      "Templates inspired by Gary Halbert ($15K per page)",
+      "Battle-tested on over $10 million in Meta ad spend",
+      "Plug-and-play headlines, hooks, and CTAs",
+      "Works for any niche or product type",
+      "No copywriting experience needed"
+    ],
+    visuals: [
+      { url: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg", caption: "Ad copy that converts" }
+    ],
+    longDescription: `The World's Greatest Copywriters Charge $15,000-$50,000 Per Letter...
+
+Stefan Georgi charges $50,000 for a single sales letter. Gary Halbert charged $15,000 per page. David Ogilvy's campaigns generated billions. Eugene Schwartz wrote ads that ran profitably for decades.
+
+What do they know that you don't?
+
+They've spent lifetimes discovering the exact psychological triggers, headline formulas, and story structures that make people pull out their credit cards.
+
+Now You Can Steal Their Secrets.
+
+We've compiled 50+ ad copy templates directly inspired by the frameworks these legendary copywriters used. Every headline formula. Every hook structure. Every call-to-action that converts.
+
+These aren't generic templates you find online. These are battle-tested frameworks proven on over $10 million in real ad spend.
+
+You'll get:
+• Headline formulas that stop the scroll instantly
+• Opening hooks that create irresistible curiosity
+• Story structures that build emotional connection
+• Objection handlers that eliminate doubt
+• CTAs that compel immediate action
+
+Simply fill in the blanks with your product details and launch. No copywriting experience required.`,
+    modules: [
+      {
+        title: "Headline Formulas",
+        description: "15+ proven headline templates that stop the scroll. Each formula is designed to trigger curiosity and demand attention in a crowded newsfeed."
+      },
+      {
+        title: "Hook Structures",
+        description: "Opening lines that grab attention in the first 3 seconds. These hooks are engineered to make people stop scrolling and start reading."
+      },
+      {
+        title: "Story Frameworks",
+        description: "Narrative structures that build emotional connection and desire. Turn features into feelings that drive purchases."
+      },
+      {
+        title: "CTA Templates",
+        description: "Call-to-action formulas that compel immediate action. Remove friction and make clicking feel like the obvious next step."
+      }
+    ],
+    bonuses: [],
+    faq: [
+      {
+        question: "Do I need copywriting experience to use these?",
+        answer: "Not at all. Every template is fill-in-the-blank simple. Just insert your product details, benefits, and brand voice. The psychological structure is already built in — you just add your specifics."
+      },
+      {
+        question: "Will these work for my specific product/niche?",
+        answer: "Yes. These are universal frameworks based on human psychology — not niche-specific tricks. Whether you sell fashion, supplements, electronics, or services, these templates work because they tap into fundamental buying triggers."
+      },
+      {
+        question: "How are these different from free templates online?",
+        answer: "Free templates online are generic and untested. These templates are directly inspired by copywriters who charge $15,000-$50,000 per letter and have been tested on over $10 million in real ad spend. The difference shows in your results."
+      },
+      {
+        question: "Can I use these for Facebook, Instagram, and TikTok ads?",
+        answer: "Absolutely. These copy frameworks work across all platforms. We include variations optimized for different placements — feed ads, stories, reels, and more."
+      },
+      {
+        question: "What if I buy multiple courses — do they overlap?",
+        answer: "Every course is designed to solve a specific part of the advertising equation. They complement each other without repeating content, so combining them creates compounding results."
+      },
+      {
+        question: "Will I get lifetime access?",
+        answer: "Yes. One-time payment, lifetime access. No subscriptions. No hidden fees. Plus you'll receive any future template additions at no extra cost."
+      },
+      {
+        question: "How quickly can I start using these templates?",
+        answer: "Immediately. After purchase, you get instant access to all 50+ templates. You can have your first ad copy ready in minutes."
+      },
+      {
+        question: "What if I'm not satisfied?",
+        answer: "We offer a full money-back guarantee. If you don't find value in these templates, just reach out and we'll refund you — no questions asked."
       }
     ]
   }
