@@ -45,7 +45,14 @@ export default function RawHTMLRenderer({ html, onCheckout }: RawHTMLRendererPro
   return (
     <div
       ref={containerRef}
-      className="raw-html-container w-full"
+      className="raw-html-container"
+      style={{
+        all: 'initial',
+        display: 'block',
+        width: '100%',
+        margin: 0,
+        padding: 0,
+      }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

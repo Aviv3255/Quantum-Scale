@@ -6,6 +6,20 @@ export const courseHTMLBlocks: Record<string, string> = {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,800;1,400&display=swap');
 
+* {
+    all: initial !important;
+    display: revert;
+    padding: revert;
+    margin: revert;
+}
+
+img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+}
+
 .sp-landing-section {
     background: #000;
     padding: 0;
@@ -58,13 +72,13 @@ export const courseHTMLBlocks: Record<string, string> = {
 }
 
 .sp-hero-image {
-    width: 86%;
-    max-width: 516px;
-    height: auto;
-    display: block;
-    margin: 20px auto;
-    border-radius: 15px;
-    filter: drop-shadow(0 0 18px rgba(119, 0, 253, 0.6)) drop-shadow(0 0 35px rgba(119, 0, 253, 0.4));
+    width: 86% !important;
+    max-width: 516px !important;
+    height: auto !important;
+    display: block !important;
+    margin: 20px auto !important;
+    border-radius: 15px !important;
+    filter: drop-shadow(0 0 18px rgba(119, 0, 253, 0.6)) drop-shadow(0 0 35px rgba(119, 0, 253, 0.4)) !important;
 }
 
 .sp-price-section {
