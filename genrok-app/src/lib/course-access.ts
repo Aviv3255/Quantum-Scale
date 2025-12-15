@@ -69,28 +69,95 @@ export interface IPCheckResult {
 
 // Check if user has purchased a course
 export const hasPurchasedCourse = async (userId: string, courseSlug: string): Promise<boolean> => {
-  const { data, error } = await supabase
-    .rpc('has_purchased_course', { p_user_id: userId, p_course_slug: courseSlug });
+  // Get course ID from slug
+  const { data: course } = await supabase
+    .from('courses')
+    .select('id')
+    .eq('slug', courseSlug)
+    .single();
 
-  if (error) {
+  if (!course) return false;
+
+  const courseData = course as { id: string };
+
+  // Check if user has purchased this course
+  const { data, error } = await supabase
+    .from('user_purchases')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('course_id', courseData.id)
+    .eq('status', 'completed')
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
     console.error('Error checking purchase:', error);
     return false;
   }
 
-  return data || false;
+  return !!data;
 };
 
 // Get user's purchased courses
 export const getUserCourses = async (userId: string): Promise<PurchasedCourse[]> => {
-  const { data, error } = await supabase
-    .rpc('get_user_courses', { p_user_id: userId });
+  // Get user's purchases with course details
+  const { data: purchases, error } = await supabase
+    .from('user_purchases')
+    .select('course_id, purchase_date')
+    .eq('user_id', userId)
+    .eq('status', 'completed');
 
   if (error) {
-    console.error('Error fetching user courses:', error);
+    console.error('Error fetching user purchases:', error);
     return [];
   }
 
-  return (data || []) as PurchasedCourse[];
+  if (!purchases || purchases.length === 0) return [];
+
+  const typedPurchases = purchases as Array<{ course_id: string; purchase_date: string }>;
+
+  // Get course details for each purchase
+  const courseIds = typedPurchases.map(p => p.course_id);
+  const { data: courses } = await supabase
+    .from('courses')
+    .select('id, slug, title, description, image_url')
+    .in('id', courseIds);
+
+  if (!courses) return [];
+
+  const typedCourses = courses as Array<{
+    id: string;
+    slug: string;
+    title: string;
+    description: string | null;
+    image_url: string | null;
+  }>;
+
+  // Get file counts for each course
+  const { data: fileCounts } = await supabase
+    .from('course_files')
+    .select('course_id')
+    .in('course_id', courseIds);
+
+  const fileCountMap: Record<string, number> = {};
+  if (fileCounts) {
+    (fileCounts as Array<{ course_id: string }>).forEach(fc => {
+      fileCountMap[fc.course_id] = (fileCountMap[fc.course_id] || 0) + 1;
+    });
+  }
+
+  // Combine the data
+  return typedCourses.map(course => {
+    const purchase = typedPurchases.find(p => p.course_id === course.id);
+    return {
+      course_id: course.id,
+      slug: course.slug,
+      title: course.title,
+      description: course.description,
+      image_url: course.image_url,
+      purchase_date: purchase?.purchase_date || '',
+      file_count: fileCountMap[course.id] || 0,
+    };
+  });
 };
 
 // Get course files for a purchased course
@@ -143,15 +210,61 @@ export const logFileAccess = async (
 
 // Check IP activity (for account sharing detection)
 export const checkIPActivity = async (userId: string, ipAddress: string): Promise<IPCheckResult | null> => {
-  const { data, error } = await supabase
-    .rpc('check_ip_activity', { p_user_id: userId, p_ip_address: ipAddress });
+  try {
+    const now = new Date();
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  if (error) {
+    // Get sessions from last 24 hours
+    const { data: sessions24h } = await supabase
+      .from('user_sessions')
+      .select('ip_address')
+      .eq('user_id', userId)
+      .gte('created_at', oneDayAgo);
+
+    // Get sessions from last 7 days
+    const { data: sessions7d } = await supabase
+      .from('user_sessions')
+      .select('ip_address')
+      .eq('user_id', userId)
+      .gte('created_at', sevenDaysAgo);
+
+    // Count unique IPs
+    const uniqueIps24h = new Set((sessions24h as Array<{ ip_address: string }> || []).map(s => s.ip_address)).size;
+    const uniqueIps7d = new Set((sessions7d as Array<{ ip_address: string }> || []).map(s => s.ip_address)).size;
+
+    // Check if this IP has been seen before
+    const { data: existingSession } = await supabase
+      .from('user_sessions')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('ip_address', ipAddress)
+      .single();
+
+    const isNewIp = !existingSession;
+
+    // Check if IP is in allowlist
+    const { data: allowedIp } = await supabase
+      .from('user_ip_allowlist')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('ip_address', ipAddress)
+      .eq('is_verified', true)
+      .single();
+
+    const isAllowed = !!allowedIp;
+
+    return {
+      unique_ips_24h: uniqueIps24h,
+      unique_ips_7d: uniqueIps7d,
+      is_new_ip: isNewIp,
+      is_allowed: isAllowed,
+      is_suspicious: (uniqueIps24h > 5 || uniqueIps7d > 10) && !isAllowed,
+    };
+  } catch (error) {
     console.error('Error checking IP activity:', error);
     return null;
   }
-
-  return data as IPCheckResult;
 };
 
 // Record user session
