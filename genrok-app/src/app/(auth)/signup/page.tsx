@@ -10,22 +10,24 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
 import { signUp, signIn, createUserProfile } from '@/lib/supabase';
 
-const signupSchema = z.object({
-  fullName: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+const signupSchema = z
+  .object({
+    fullName: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 type SignupFormData = z.infer<typeof signupSchema>;
-
 
 export default function SignupPage() {
   const router = useRouter();
@@ -96,7 +98,7 @@ export default function SignupPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-xl text-sm bg-[var(--error)]/5 border border-[var(--error)]/10 text-[var(--error)]"
+          className="bg-[var(--error)]/5 border-[var(--error)]/10 mb-6 rounded-xl border p-4 text-sm text-[var(--error)]"
         >
           {error}
         </motion.div>
@@ -119,9 +121,7 @@ export default function SignupPage() {
               className={`form-input input-with-icon ${errors.fullName ? 'border-[var(--error)]' : ''}`}
             />
           </div>
-          {errors.fullName && (
-            <span className="form-error">{errors.fullName.message}</span>
-          )}
+          {errors.fullName && <span className="form-error">{errors.fullName.message}</span>}
         </div>
 
         {/* Email Field */}
@@ -139,9 +139,7 @@ export default function SignupPage() {
               className={`form-input input-with-icon ${errors.email ? 'border-[var(--error)]' : ''}`}
             />
           </div>
-          {errors.email && (
-            <span className="form-error">{errors.email.message}</span>
-          )}
+          {errors.email && <span className="form-error">{errors.email.message}</span>}
         </div>
 
         {/* Password Field */}
@@ -161,7 +159,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] transition-colors hover:text-[#333333]"
             >
               {showPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -170,15 +168,13 @@ export default function SignupPage() {
               )}
             </button>
           </div>
-          {errors.password && (
-            <span className="form-error">{errors.password.message}</span>
-          )}
+          {errors.password && <span className="form-error">{errors.password.message}</span>}
           {password && (
             <div className="mt-3 flex flex-wrap gap-2">
               {passwordRequirements.map((req) => (
                 <div
                   key={req.label}
-                  className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-full ${
+                  className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-xs ${
                     req.met
                       ? 'bg-[#000000]/10 text-[#000000]'
                       : 'bg-[#F5F5F7] text-[var(--text-muted)]'
@@ -209,7 +205,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] transition-colors hover:text-[#333333]"
             >
               {showConfirmPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -225,33 +221,24 @@ export default function SignupPage() {
 
         {/* Terms Checkbox */}
         <div className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            id="terms"
-            required
-            className="checkbox-black mt-0.5"
-          />
+          <input type="checkbox" id="terms" required className="checkbox-black mt-0.5" />
           <label htmlFor="terms" className="text-sm text-[var(--text-muted)]">
             I agree to the{' '}
-            <Link href="/terms" className="text-[#000000] font-medium hover:underline">
+            <Link href="/terms" className="font-medium text-[#000000] hover:underline">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-[#000000] font-medium hover:underline">
+            <Link href="/privacy" className="font-medium text-[#000000] hover:underline">
               Privacy Policy
             </Link>
           </label>
         </div>
 
         {/* Submit Button - Premium Black */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="btn-auth-primary w-full"
-        >
+        <button type="submit" disabled={isSubmitting} className="btn-auth-primary w-full">
           {isSubmitting ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
               Creating account...
             </>
           ) : (

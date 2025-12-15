@@ -4,7 +4,12 @@ import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Loader2, Globe, Search, ChevronDown, X } from 'lucide-react';
-import { getCurrentUser, getUserProfile, createUserProfile, updateUserProfile } from '@/lib/supabase';
+import {
+  getCurrentUser,
+  getUserProfile,
+  createUserProfile,
+  updateUserProfile,
+} from '@/lib/supabase';
 
 // All countries with flags
 const COUNTRIES = [
@@ -222,16 +227,16 @@ const QUESTIONS: Question[] = [
   {
     id: 'full_name',
     type: 'text',
-    title: "First things first...",
-    subtitle: "What should we call you?",
-    placeholder: "Your name",
+    title: 'First things first...',
+    subtitle: 'What should we call you?',
+    placeholder: 'Your name',
     field: 'full_name',
   },
   {
     id: 'age',
     type: 'select',
     title: (name: string) => `Nice to meet you, ${name}!`,
-    subtitle: "How many trips around the sun?",
+    subtitle: 'How many trips around the sun?',
     options: [
       { value: '18-24', label: '18-24' },
       { value: '25-34', label: '25-34' },
@@ -245,15 +250,15 @@ const QUESTIONS: Question[] = [
   {
     id: 'country',
     type: 'country',
-    title: "Where in the world are you building from?",
+    title: 'Where in the world are you building from?',
     subtitle: "Your empire's headquarters",
     field: 'country',
   },
   {
     id: 'business_type',
     type: 'select',
-    title: "What type of business do you run?",
-    subtitle: "Pick the closest match",
+    title: 'What type of business do you run?',
+    subtitle: 'Pick the closest match',
     options: [
       { value: 'ecommerce', label: '🛒 E-commerce' },
       { value: 'dropshipping', label: '📦 Dropshipping' },
@@ -269,8 +274,8 @@ const QUESTIONS: Question[] = [
   {
     id: 'ecommerce_model',
     type: 'select',
-    title: "What e-commerce model do you use?",
-    subtitle: "How do you handle inventory?",
+    title: 'What e-commerce model do you use?',
+    subtitle: 'How do you handle inventory?',
     options: [
       { value: 'dropshipping', label: '📦 Dropshipping' },
       { value: 'own_inventory', label: '🏭 Own inventory / Warehouse' },
@@ -283,8 +288,8 @@ const QUESTIONS: Question[] = [
   {
     id: 'fulfillment_method',
     type: 'select',
-    title: "How do you fulfill orders?",
-    subtitle: "Your supply chain setup",
+    title: 'How do you fulfill orders?',
+    subtitle: 'Your supply chain setup',
     options: [
       { value: 'aliexpress', label: '🇨🇳 AliExpress / Direct suppliers' },
       { value: 'private_agent', label: '🤝 Private sourcing agent' },
@@ -302,7 +307,7 @@ const QUESTIONS: Question[] = [
     id: 'niche',
     type: 'select',
     title: "What's your niche?",
-    subtitle: "Pick your industry (or the closest match)",
+    subtitle: 'Pick your industry (or the closest match)',
     options: [
       { value: 'fashion', label: '👗 Fashion & Apparel' },
       { value: 'beauty', label: '💄 Beauty & Cosmetics' },
@@ -321,8 +326,8 @@ const QUESTIONS: Question[] = [
   {
     id: 'platform',
     type: 'select',
-    title: "Where do you sell?",
-    subtitle: "Your digital storefront",
+    title: 'Where do you sell?',
+    subtitle: 'Your digital storefront',
     options: [
       { value: 'shopify', label: 'Shopify' },
       { value: 'woocommerce', label: 'WooCommerce' },
@@ -340,7 +345,7 @@ const QUESTIONS: Question[] = [
     id: 'monthly_revenue',
     type: 'select',
     title: "Let's talk numbers 💰",
-    subtitle: "Monthly revenue (be honest, it stays between us)",
+    subtitle: 'Monthly revenue (be honest, it stays between us)',
     options: [
       { value: '0', label: '$0 - Just getting started' },
       { value: '1-1000', label: '$1 - $1,000' },
@@ -359,7 +364,7 @@ const QUESTIONS: Question[] = [
   {
     id: 'time_in_field',
     type: 'select',
-    title: "How long have you been in the game?",
+    title: 'How long have you been in the game?',
     subtitle: "Time flies when you're building empires",
     options: [
       { value: 'new', label: 'Just starting out' },
@@ -374,8 +379,8 @@ const QUESTIONS: Question[] = [
   {
     id: 'main_traffic_source',
     type: 'multiselect',
-    title: "Where do your customers come from?",
-    subtitle: "Select all that apply",
+    title: 'Where do your customers come from?',
+    subtitle: 'Select all that apply',
     options: [
       { value: 'facebook', label: '📘 Facebook Ads' },
       { value: 'instagram', label: '📸 Instagram' },
@@ -395,7 +400,7 @@ const QUESTIONS: Question[] = [
     id: 'monthly_ad_budget',
     type: 'select',
     title: "What's your monthly ad spend?",
-    subtitle: "Fuel for the fire",
+    subtitle: 'Fuel for the fire',
     options: [
       { value: '0', label: '$0 - Organic only' },
       { value: '1-500', label: '$1 - $500' },
@@ -411,9 +416,9 @@ const QUESTIONS: Question[] = [
   {
     id: 'store_link',
     type: 'text',
-    title: "Almost done! Got a store link?",
-    subtitle: "Drop it here (totally optional)",
-    placeholder: "https://your-store.com",
+    title: 'Almost done! Got a store link?',
+    subtitle: 'Drop it here (totally optional)',
+    placeholder: 'https://your-store.com',
     field: 'store_link',
     optional: true,
   },
@@ -452,7 +457,7 @@ function TypingText({ text, onComplete }: { text: string; onComplete?: () => voi
 // Country dropdown component
 function CountryDropdown({
   value,
-  onChange
+  onChange,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -463,21 +468,16 @@ function CountryDropdown({
   const filteredCountries = useMemo(() => {
     if (!search) return COUNTRIES;
     const lower = search.toLowerCase();
-    return COUNTRIES.filter(c =>
-      c.name.toLowerCase().includes(lower) ||
-      c.code.toLowerCase().includes(lower)
+    return COUNTRIES.filter(
+      (c) => c.name.toLowerCase().includes(lower) || c.code.toLowerCase().includes(lower)
     );
   }, [search]);
 
-  const selectedCountry = COUNTRIES.find(c => c.code === value);
+  const selectedCountry = COUNTRIES.find((c) => c.code === value);
 
   return (
     <div className="country-dropdown">
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="country-dropdown-trigger"
-      >
+      <button type="button" onClick={() => setIsOpen(!isOpen)} className="country-dropdown-trigger">
         {selectedCountry ? (
           <span className="country-selected">
             <span className="country-flag">{selectedCountry.flag}</span>
@@ -543,7 +543,7 @@ function OnboardingContent() {
 
   // Filter questions based on conditions
   const activeQuestions = useMemo(() => {
-    return QUESTIONS.filter(q => !q.condition || q.condition(answers));
+    return QUESTIONS.filter((q) => !q.condition || q.condition(answers));
   }, [answers]);
 
   useEffect(() => {
@@ -613,7 +613,7 @@ function OnboardingContent() {
       if (isLastStep) {
         router.push('/dashboard');
       } else {
-        setCurrentStep(prev => prev + 1);
+        setCurrentStep((prev) => prev + 1);
         setTypingComplete(false);
       }
       return;
@@ -641,26 +641,35 @@ function OnboardingContent() {
       });
       router.push('/dashboard');
     } else {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
       setTypingComplete(false);
     }
 
     setSaving(false);
-  }, [userId, canProceed, currentQuestion, answers, currentStep, isLastStep, router, isPreviewMode]);
+  }, [
+    userId,
+    canProceed,
+    currentQuestion,
+    answers,
+    currentStep,
+    isLastStep,
+    router,
+    isPreviewMode,
+  ]);
 
   const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
       setTypingComplete(false);
     }
   };
 
   const handleSelect = (value: string) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion.field]: value }));
+    setAnswers((prev) => ({ ...prev, [currentQuestion.field]: value }));
   };
 
   const handleMultiSelect = (value: string) => {
-    setAnswers(prev => {
+    setAnswers((prev) => {
       const current = prev[currentQuestion.field];
       const currentArray = Array.isArray(current) ? current : [];
 
@@ -670,23 +679,23 @@ function OnboardingContent() {
       }
 
       // If none is selected and user selects something else, remove none
-      const withoutNone = currentArray.filter(v => v !== 'none');
+      const withoutNone = currentArray.filter((v) => v !== 'none');
 
       if (currentArray.includes(value)) {
-        return { ...prev, [currentQuestion.field]: withoutNone.filter(v => v !== value) };
+        return { ...prev, [currentQuestion.field]: withoutNone.filter((v) => v !== value) };
       }
       return { ...prev, [currentQuestion.field]: [...withoutNone, value] };
     });
   };
 
   const handleTextChange = (value: string) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion.field]: value }));
+    setAnswers((prev) => ({ ...prev, [currentQuestion.field]: value }));
   };
 
   if (loading) {
     return (
       <div className="onboarding-container">
-        <Loader2 className="w-8 h-8 animate-spin text-black" />
+        <Loader2 className="h-8 w-8 animate-spin text-black" />
       </div>
     );
   }
@@ -699,10 +708,7 @@ function OnboardingContent() {
       {isPreviewMode && (
         <div className="onboarding-preview-banner">
           <span>Preview Mode - Changes will not be saved</span>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="onboarding-preview-close"
-          >
+          <button onClick={() => router.push('/dashboard')} className="onboarding-preview-close">
             <X size={16} />
           </button>
         </div>
@@ -710,10 +716,7 @@ function OnboardingContent() {
 
       {/* Progress bar */}
       <div className="onboarding-progress">
-        <div
-          className="onboarding-progress-bar"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="onboarding-progress-bar" style={{ width: `${progress}%` }} />
       </div>
 
       <AnimatePresence mode="wait">
@@ -729,10 +732,7 @@ function OnboardingContent() {
           <div className="onboarding-header">
             {currentQuestion.typing && currentStep > 0 ? (
               <h1 className="onboarding-title">
-                <TypingText
-                  text={getTitle()}
-                  onComplete={() => setTypingComplete(true)}
-                />
+                <TypingText text={getTitle()} onComplete={() => setTypingComplete(true)} />
               </h1>
             ) : (
               <h1 className="onboarding-title">{getTitle()}</h1>
@@ -770,7 +770,8 @@ function OnboardingContent() {
               <div className="onboarding-options multiselect">
                 {currentQuestion.options?.map((option) => {
                   const currentValue = answers[currentQuestion.field];
-                  const isSelected = Array.isArray(currentValue) && currentValue.includes(option.value);
+                  const isSelected =
+                    Array.isArray(currentValue) && currentValue.includes(option.value);
                   return (
                     <button
                       key={option.value}
@@ -808,11 +809,7 @@ function OnboardingContent() {
           {/* Navigation */}
           <div className="onboarding-nav">
             {currentStep > 0 && (
-              <button
-                type="button"
-                onClick={handleBack}
-                className="onboarding-back"
-              >
+              <button type="button" onClick={handleBack} className="onboarding-back">
                 <ArrowLeft size={18} />
                 Back
               </button>
@@ -825,7 +822,7 @@ function OnboardingContent() {
               className="onboarding-next"
             >
               {saving ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
               ) : isLastStep ? (
                 <>
                   Let&apos;s Go!
@@ -842,11 +839,7 @@ function OnboardingContent() {
 
           {/* Skip for optional */}
           {currentQuestion.optional && !answers[currentQuestion.field] && (
-            <button
-              type="button"
-              onClick={handleNext}
-              className="onboarding-skip"
-            >
+            <button type="button" onClick={handleNext} className="onboarding-skip">
               Skip for now
             </button>
           )}
@@ -859,11 +852,13 @@ function OnboardingContent() {
 // Wrap in Suspense for useSearchParams
 export default function OnboardingPage() {
   return (
-    <Suspense fallback={
-      <div className="onboarding-container">
-        <Loader2 className="w-8 h-8 animate-spin text-black" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="onboarding-container">
+          <Loader2 className="h-8 w-8 animate-spin text-black" />
+        </div>
+      }
+    >
       <OnboardingContent />
     </Suspense>
   );

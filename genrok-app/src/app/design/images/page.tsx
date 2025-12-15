@@ -11,7 +11,7 @@ const niches = [
   { id: 'kids', name: 'Kids', emoji: '👶' },
   { id: 'homeDecor', name: 'Home Decor', emoji: '🏠' },
   { id: 'sportwear', name: 'Sportwear', emoji: '⚽' },
-  { id: 'beauty', name: 'Beauty', emoji: '💄' }
+  { id: 'beauty', name: 'Beauty', emoji: '💄' },
 ];
 
 const images: Record<string, string[]> = {
@@ -55,7 +55,7 @@ const images: Record<string, string[]> = {
     'https://i.pinimg.com/1200x/b1/ff/b4/b1ffb4231d332f6f98dc461f15519ac9.jpg',
     'https://i.pinimg.com/736x/92/39/31/923931d9967a6e8d618545475ef1f175.jpg',
     'https://i.pinimg.com/1200x/dd/64/63/dd6463fb011877d38f5876ea92581339.jpg',
-    'https://i.pinimg.com/736x/d1/a3/6c/d1a36ce136f809627a89e0ccd72e3025.jpg'
+    'https://i.pinimg.com/736x/d1/a3/6c/d1a36ce136f809627a89e0ccd72e3025.jpg',
   ],
   kids: [
     'https://i.pinimg.com/736x/75/d5/92/75d59206719cfec00710435626011a9b.jpg',
@@ -77,7 +77,7 @@ const images: Record<string, string[]> = {
     'https://i.pinimg.com/1200x/c8/8e/8b/c88e8b3704a93d19401739e5a380c768.jpg',
     'https://i.pinimg.com/736x/34/b4/3c/34b43c393abcebe490d9306e5b34e043.jpg',
     'https://i.pinimg.com/736x/7c/9d/3f/7c9d3f823e1ba185a169155964f3fec7.jpg',
-    'https://i.pinimg.com/736x/b0/49/d5/b049d525e77115da86e18be910a847fa.jpg'
+    'https://i.pinimg.com/736x/b0/49/d5/b049d525e77115da86e18be910a847fa.jpg',
   ],
   homeDecor: [
     'https://i.pinimg.com/736x/47/81/9b/47819bb9253855136a98f620ab71e4eb.jpg',
@@ -99,7 +99,7 @@ const images: Record<string, string[]> = {
     'https://i.pinimg.com/1200x/c2/41/22/c241229a47fd4037e4cad461dd5739c7.jpg',
     'https://i.pinimg.com/736x/9f/69/38/9f693847c807e9a8a6f167ca54e45217.jpg',
     'https://i.pinimg.com/1200x/b6/1e/6e/b61e6e0d1e6c8ddff16a6af3e7b862fc.jpg',
-    'https://i.pinimg.com/1200x/af/f8/57/aff85715c46d9b3272e9f2653bdec0f1.jpg'
+    'https://i.pinimg.com/1200x/af/f8/57/aff85715c46d9b3272e9f2653bdec0f1.jpg',
   ],
   sportwear: [
     'https://i.pinimg.com/1200x/e1/ef/2d/e1ef2dabe9d2ef09807cabfb34f0e6bb.jpg',
@@ -121,7 +121,7 @@ const images: Record<string, string[]> = {
     'https://i.pinimg.com/736x/06/b1/12/06b11296e1e4c1be6d7fd38abad6c52b.jpg',
     'https://i.pinimg.com/736x/32/a3/ab/32a3ab87f3177c36448fc78e43476d04.jpg',
     'https://i.pinimg.com/736x/df/60/a3/df60a320e6dc29112f67de91f80302c5.jpg',
-    'https://i.pinimg.com/736x/a9/4a/d2/a94ad2e27134f358f2b5d66514b69287.jpg'
+    'https://i.pinimg.com/736x/a9/4a/d2/a94ad2e27134f358f2b5d66514b69287.jpg',
   ],
   beauty: [
     'https://i.pinimg.com/736x/e4/4a/3e/e44a3e48e72e61345ae0d050eb900a16.jpg',
@@ -143,8 +143,8 @@ const images: Record<string, string[]> = {
     'https://i.pinimg.com/1200x/52/9d/ce/529dcef9fb09292f0de374c9a2e9b9e7.jpg',
     'https://i.pinimg.com/1200x/b4/45/23/b44523eec6e0549bc6ad68c6e165ede8.jpg',
     'https://i.pinimg.com/736x/03/01/39/03013933c83fa253b438a41da55c67b1.jpg',
-    'https://i.pinimg.com/736x/2b/51/85/2b518563b71399ab283e3839c9665646.jpg'
-  ]
+    'https://i.pinimg.com/736x/2b/51/85/2b518563b71399ab283e3839c9665646.jpg',
+  ],
 };
 
 export default function ImageInspirationPage() {
@@ -186,8 +186,8 @@ export default function ImageInspirationPage() {
 
       await navigator.clipboard.write([
         new ClipboardItem({
-          'image/png': finalBlob
-        })
+          'image/png': finalBlob,
+        }),
       ]);
 
       URL.revokeObjectURL(img.src);
@@ -201,8 +201,8 @@ export default function ImageInspirationPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
       </div>
     );
   }
@@ -212,46 +212,82 @@ export default function ImageInspirationPage() {
       <div className="page-wrapper">
         {/* Header */}
         <div className="mb-8 md:mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-               style={{ background: '#F3E8FF', border: '1px solid #E9D5FF' }}>
-            <Sparkles className="w-4 h-4" style={{ color: '#8B5CF6' }} />
-            <span className="text-sm font-semibold" style={{ color: '#8B5CF6' }}>IMAGE LIBRARY</span>
+          <div
+            className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2"
+            style={{ background: '#F3E8FF', border: '1px solid #E9D5FF' }}
+          >
+            <Sparkles className="h-4 w-4" style={{ color: '#8B5CF6' }} />
+            <span className="text-sm font-semibold" style={{ color: '#8B5CF6' }}>
+              IMAGE LIBRARY
+            </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{
-            color: '#1E1E1E',
-            fontFamily: 'Poppins, sans-serif',
-            letterSpacing: '-0.02em'
-          }}>
-            Image <span style={{ fontStyle: 'italic', fontFamily: 'Georgia, serif', fontWeight: '700', letterSpacing: '0.05em' }}>Inspiration</span>
+          <h1
+            className="mb-4 text-4xl font-bold md:text-5xl"
+            style={{
+              color: '#1E1E1E',
+              fontFamily: 'Poppins, sans-serif',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Image{' '}
+            <span
+              style={{
+                fontStyle: 'italic',
+                fontFamily: 'Georgia, serif',
+                fontWeight: '700',
+                letterSpacing: '0.05em',
+              }}
+            >
+              Inspiration
+            </span>
           </h1>
 
-          <p className="text-base md:text-lg leading-relaxed mb-6" style={{ color: '#6B7280' }}>
-            A brand destined to be worth a billion dollars must act like a billion-dollar brand, and look like one-from day one. We&apos;ve curated a library of thousands of visuals that will elevate your brand&apos;s appearance to an entirely different level.
+          <p className="mb-6 text-base leading-relaxed md:text-lg" style={{ color: '#6B7280' }}>
+            A brand destined to be worth a billion dollars must act like a billion-dollar brand, and
+            look like one-from day one. We&apos;ve curated a library of thousands of visuals that
+            will elevate your brand&apos;s appearance to an entirely different level.
           </p>
 
           {/* Important Notice */}
-          <div className="p-5 md:p-6 rounded-xl mb-6" style={{
-            background: '#FEF3C7',
-            border: '1px solid #FDE68A'
-          }}>
-            <div className="flex items-start gap-3 mb-3">
-              <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: '#F59E0B' }} />
-              <h3 className="font-bold text-base md:text-lg" style={{ color: '#D97706' }}>
+          <div
+            className="mb-6 rounded-xl p-5 md:p-6"
+            style={{
+              background: '#FEF3C7',
+              border: '1px solid #FDE68A',
+            }}
+          >
+            <div className="mb-3 flex items-start gap-3">
+              <AlertTriangle
+                className="mt-0.5 h-5 w-5 flex-shrink-0"
+                style={{ color: '#F59E0B' }}
+              />
+              <h3 className="text-base font-bold md:text-lg" style={{ color: '#D97706' }}>
                 Important!
               </h3>
             </div>
-            <div className="text-sm md:text-base leading-relaxed space-y-3" style={{ color: '#78350F' }}>
+            <div
+              className="space-y-3 text-sm leading-relaxed md:text-base"
+              style={{ color: '#78350F' }}
+            >
               <p>
-                These images are <strong>NOT for commercial use</strong>—they are for inspiration only. If you want to create a similar image in the same style, use ChatGPT with the following prompt:
+                These images are <strong>NOT for commercial use</strong>—they are for inspiration
+                only. If you want to create a similar image in the same style, use ChatGPT with the
+                following prompt:
               </p>
-              <div className="p-4 rounded-lg text-sm" style={{
-                background: '#FFFBEB',
-                borderLeft: '3px solid #F59E0B',
-                fontFamily: 'monospace',
-                color: '#78350F'
-              }}>
-                &quot;Create the exact same image for me, but without any text—remove all text or any small branding that appears. Make sure the model&apos;s face is not 1:1 identical. Other than that, do everything exactly the same, and keep the image in very high resolution.&quot;
+              <div
+                className="rounded-lg p-4 text-sm"
+                style={{
+                  background: '#FFFBEB',
+                  borderLeft: '3px solid #F59E0B',
+                  fontFamily: 'monospace',
+                  color: '#78350F',
+                }}
+              >
+                &quot;Create the exact same image for me, but without any text—remove all text or
+                any small branding that appears. Make sure the model&apos;s face is not 1:1
+                identical. Other than that, do everything exactly the same, and keep the image in
+                very high resolution.&quot;
               </div>
             </div>
           </div>
@@ -261,33 +297,39 @@ export default function ImageInspirationPage() {
             href="https://quantum-scale.co/products/the-subconscious-switch"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 group hover:shadow-lg"
+            className="group inline-flex items-center gap-3 rounded-xl px-6 py-3 transition-all duration-300 hover:shadow-lg"
             style={{
               background: '#FFFFFF',
               border: '1px solid #E5E7EB',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             }}
           >
-            <Sparkles className="w-5 h-5" style={{ color: '#3B82F6' }} />
+            <Sparkles className="h-5 w-5" style={{ color: '#3B82F6' }} />
             <span className="font-semibold" style={{ color: '#1E1E1E' }}>
               Unlock the Full Power of Design Psychology
             </span>
-            <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: '#3B82F6' }} />
+            <ExternalLink
+              className="h-4 w-4 transition-transform group-hover:translate-x-1"
+              style={{ color: '#3B82F6' }}
+            />
           </a>
         </div>
 
         {/* Niche Filters */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {niches.map(niche => (
+        <div className="mb-8 flex flex-wrap gap-3">
+          {niches.map((niche) => (
             <button
               key={niche.id}
               onClick={() => setActiveNiche(niche.id)}
-              className="px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all duration-300"
+              className="rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300 md:text-base"
               style={{
                 background: activeNiche === niche.id ? '#EFF6FF' : '#FFFFFF',
                 border: activeNiche === niche.id ? '1px solid #3B82F6' : '1px solid #E5E7EB',
                 color: activeNiche === niche.id ? '#3B82F6' : '#6B7280',
-                boxShadow: activeNiche === niche.id ? '0 2px 8px rgba(59, 130, 246, 0.15)' : '0 1px 3px rgba(0, 0, 0, 0.05)'
+                boxShadow:
+                  activeNiche === niche.id
+                    ? '0 2px 8px rgba(59, 130, 246, 0.15)'
+                    : '0 1px 3px rgba(0, 0, 0, 0.05)',
               }}
             >
               <span className="mr-2">{niche.emoji}</span>
@@ -297,36 +339,36 @@ export default function ImageInspirationPage() {
         </div>
 
         {/* Image Grid */}
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-2">
+        <div className="columns-2 gap-2 md:columns-3 lg:columns-4">
           {images[activeNiche]?.map((imageUrl, idx) => (
             <div
               key={idx}
-              className="group relative overflow-hidden mb-2 break-inside-avoid transition-all duration-300 hover:scale-[1.02]"
+              className="group relative mb-2 break-inside-avoid overflow-hidden transition-all duration-300 hover:scale-[1.02]"
               style={{ background: '#FFFFFF' }}
             >
               <img
                 src={imageUrl}
                 alt={`Inspiration ${idx + 1}`}
-                className="w-full h-auto object-cover rounded-lg"
+                className="h-auto w-full rounded-lg object-cover"
                 style={{ display: 'block' }}
               />
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
               {/* Copy Button */}
               <button
                 onClick={() => handleCopyImage(imageUrl)}
-                className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full opacity-0 transition-all group-hover:opacity-100"
                 style={{
                   background: copiedId === imageUrl ? '#DCFCE7' : '#FFFFFF',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                 }}
               >
                 {copiedId === imageUrl ? (
-                  <Check className="w-5 h-5" style={{ color: '#16A34A' }} />
+                  <Check className="h-5 w-5" style={{ color: '#16A34A' }} />
                 ) : (
-                  <Copy className="w-5 h-5" style={{ color: '#3B82F6' }} />
+                  <Copy className="h-5 w-5" style={{ color: '#3B82F6' }} />
                 )}
               </button>
             </div>

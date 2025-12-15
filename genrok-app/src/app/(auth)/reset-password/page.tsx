@@ -10,17 +10,20 @@ import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
 import { updatePassword } from '@/lib/supabase';
 
-const resetPasswordSchema = z.object({
-  password: z.string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
@@ -73,19 +76,19 @@ export default function ResetPasswordPage() {
         transition={{ duration: 0.5 }}
         className="auth-form text-center"
       >
-        <div className="w-16 h-16 mx-auto mb-6 bg-[#F5F5F7] rounded-full flex items-center justify-center">
-          <Check className="w-8 h-8 text-[#000000]" strokeWidth={2} />
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#F5F5F7]">
+          <Check className="h-8 w-8 text-[#000000]" strokeWidth={2} />
         </div>
-        <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Password updated!</h1>
-        <p className="text-[var(--text-muted)] mb-6">
+        <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary)]">Password updated!</h1>
+        <p className="mb-6 text-[var(--text-muted)]">
           Your password has been successfully reset. Redirecting you to sign in...
         </p>
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-[#000000] hover:underline font-semibold"
+          className="inline-flex items-center gap-2 font-semibold text-[#000000] hover:underline"
         >
           Sign In Now
-          <ArrowRight className="w-4 h-4" strokeWidth={2} />
+          <ArrowRight className="h-4 w-4" strokeWidth={2} />
         </Link>
       </motion.div>
     );
@@ -98,8 +101,10 @@ export default function ResetPasswordPage() {
       transition={{ duration: 0.5 }}
     >
       <div className="auth-form">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Reset your password</h1>
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary)]">
+            Reset your password
+          </h1>
           <p className="text-[var(--text-muted)]">Create a new secure password for your account</p>
         </div>
 
@@ -107,7 +112,7 @@ export default function ResetPasswordPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm"
+            className="mb-6 rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-600"
           >
             {error}
           </motion.div>
@@ -130,9 +135,13 @@ export default function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] transition-colors hover:text-[#333333]"
               >
-                {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
+                {showPassword ? (
+                  <EyeOff size={18} strokeWidth={1.5} />
+                ) : (
+                  <Eye size={18} strokeWidth={1.5} />
+                )}
               </button>
             </div>
             {errors.password && (
@@ -143,7 +152,7 @@ export default function ResetPasswordPage() {
                 {passwordRequirements.map((req) => (
                   <div
                     key={req.label}
-                    className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-full ${
+                    className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-xs ${
                       req.met
                         ? 'bg-[#000000]/10 text-[#000000]'
                         : 'bg-[#F5F5F7] text-[var(--text-muted)]'
@@ -173,9 +182,13 @@ export default function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] transition-colors hover:text-[#333333]"
               >
-                {showConfirmPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
+                {showConfirmPassword ? (
+                  <EyeOff size={18} strokeWidth={1.5} />
+                ) : (
+                  <Eye size={18} strokeWidth={1.5} />
+                )}
               </button>
             </div>
             {errors.confirmPassword && (
@@ -183,20 +196,16 @@ export default function ResetPasswordPage() {
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-auth-primary w-full"
-          >
+          <button type="submit" disabled={isSubmitting} className="btn-auth-primary w-full">
             {isSubmitting ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" strokeWidth={1.5} />
+                <Loader2 className="h-5 w-5 animate-spin" strokeWidth={1.5} />
                 Updating password...
               </>
             ) : (
               <>
                 Update Password
-                <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                <ArrowRight className="h-5 w-5" strokeWidth={2} />
               </>
             )}
           </button>

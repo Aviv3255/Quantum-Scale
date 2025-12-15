@@ -2457,6 +2457,368 @@ log.info('FAQ System script loaded successfully! 🎉');
   'ltv-system': `
     <!-- PASTE YOUR LTV SYSTEM HTML HERE -->
   `,
+
+  // ==================== PRODUCT MAPPING MANIPULATION ====================
+  'product-mapping-manipulation':
+    `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Mapping Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+.landing-section {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 25px 5px 28px 5px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+}
+.landing-section::before,
+.landing-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.landing-section::before {
+left: -100vw !important;
+}
+.landing-section::after {
+right: -100vw !important;
+}
+.landing-section * {
+box-sizing: border-box !important;
+}
+.landing-section .content-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+}
+.landing-section .intro-text {
+background: rgba(179, 59, 40, 0.15) !important;
+border: 1px solid #B33B28 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 10px !important;
+font-size: 13px !important;
+color: #ffffff !important;
+font-weight: 500 !important;
+margin: 15px 0 32px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.landing-section .pulse-dot {
+width: 8px !important;
+height: 8px !important;
+background: #B33B28 !important;
+border-radius: 50% !important;
+animation: pulse 2s infinite !important;
+box-shadow: 0 0 10px #B33B28 !important;
+display: block !important;
+}
+@keyframes pulse {
+0%, 100% {
+opacity: 1;
+transform: scale(1);
+}
+50% {
+opacity: 0.5;
+transform: scale(1.1);
+}
+}
+.landing-section .main-headline {
+font-family: 'Open Sans', sans-serif !important;
+font-weight: 800 !important;
+font-size: 38.89px !important;
+line-height: 1.2 !important;
+color: #ffffff !important;
+margin: 0 0 16px 0 !important;
+letter-spacing: -0.5px !important;
+}
+.landing-section .highlight {
+color: #B33B28 !important;
+}
+.landing-section .sub-headline {
+font-family: 'Open Sans', sans-serif !important;
+font-size: 18.67px !important;
+color: #e8e8e8 !important;
+margin: 0 0 32px 0 !important;
+font-weight: 400 !important;
+}
+.landing-section .screenshot-container {
+margin: 32px 0 !important;
+padding: 0 !important;
+}
+.landing-section .screenshot {
+width: 100% !important;
+max-width: 870px !important;
+height: auto !important;
+border-radius: 16px !important;
+display: block !important;
+margin: 0 auto !important;
+box-shadow: 0 0 30px rgba(179, 59, 40, 0.5), 0 0 60px rgba(179, 59, 40, 0.3) !important;
+}
+.landing-section .pricing-section {
+margin: 28px 0 0 0 !important;
+}
+.landing-section .price-text {
+font-size: 42px !important;
+font-weight: 800 !important;
+color: #ffffff !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.landing-section .original-price {
+text-decoration: line-through !important;
+color: #888888 !important;
+font-size: 32px !important;
+margin-right: 15px !important;
+}
+.landing-section .current-price {
+color: #B33B28 !important;
+text-shadow: 0 0 20px rgba(179, 59, 40, 0.6) !important;
+}
+.landing-section .cta-button {
+background: radial-gradient(ellipse at bottom, #ff9b7a 0%, #e8634d 40%, #B33B28 100%) !important;
+border: none !important;
+border-radius: 35px !important;
+padding: 8px 90px !important;
+font-size: 22px !important;
+font-weight: 700 !important;
+color: white !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+position: relative !important;
+overflow: hidden !important;
+display: inline-block !important;
+align-items: center !important;
+justify-content: center !important;
+text-align: center !important;
+margin: 0 auto !important;
+width: auto !important;
+height: 80px !important;
+box-shadow: 0 6px 20px rgba(179, 59, 40, 0.35) !important;
+font-family: 'Open Sans', sans-serif !important;
+vertical-align: middle !important;
+}
+.landing-section .cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(179, 59, 40, 0.6) !important;
+}
+.landing-section .cta-button:active {
+transform: translateY(0px) !important;
+box-shadow: 0 5px 15px rgba(179, 59, 40, 0.4) !important;
+}
+.landing-section .cta-button.loading {
+opacity: 0.8;
+pointer-events: none;
+}
+.landing-section .cta-button span {
+font-weight: 700 !important;
+color: white !important;
+display: block !important;
+font-size: 19.8px !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.landing-section .small-text {
+font-size: 12.6px !important;
+font-weight: 400 !important;
+text-transform: none !important;
+letter-spacing: 0 !important;
+display: block !important;
+margin-top: 3px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.landing-section .bundle-wrapper {
+text-align: center !important;
+margin: 12px 0 0 0 !important;
+display: block !important;
+}
+.landing-section .bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.landing-section .bundle-link {
+color: #B33B28 !important;
+text-decoration: underline !important;
+}
+.landing-section .secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15.44px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 10px !important;
+margin-bottom: 8px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.landing-section .secure-payment-icon {
+width: 28.31px !important;
+height: 28.31px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+display: block !important;
+}
+@media (max-width: 768px) {
+.landing-section {
+padding: 3px 3px 20px 3px !important;
+}
+.landing-section .main-headline {
+font-size: 31.46px !important;
+}
+.landing-section .price-text {
+font-size: 36px !important;
+}
+.landing-section .original-price {
+font-size: 26px !important;
+}
+.landing-section .sub-headline {
+font-size: 17px !important;
+}
+.landing-section .cta-button {
+font-size: 18px !important;
+padding: 18px 60px !important;
+height: 90px !important;
+}
+.landing-section .cta-button span {
+font-size: 18px !important;
+}
+.landing-section .small-text {
+font-size: 12.42px !important;
+}
+}
+@media (max-width: 480px) {
+.landing-section {
+padding: 2px 2px 20px 2px !important;
+}
+.landing-section .main-headline {
+font-size: 26.45px !important;
+}
+.landing-section .sub-headline {
+font-size: 17px !important;
+}
+.landing-section .price-text {
+font-size: 32px !important;
+}
+.landing-section .original-price {
+font-size: 24px !important;
+}
+.landing-section .cta-button {
+min-width: 300px !important;
+font-size: 16.2px !important;
+padding: 16px 40px !important;
+height: 85px !important;
+}
+.landing-section .cta-button span {
+font-size: 16.2px !important;
+}
+.landing-section .small-text {
+font-size: 11.385px !important;
+}
+}
+@media (min-width: 769px) {
+.landing-section .screenshot {
+max-width: 75% !important;
+}
+.landing-section .cta-button {
+max-width: 850px !important;
+border-radius: 35px !important;
+height: 120px !important;
+padding: 15px 90px !important;
+}
+.landing-section .cta-button span {
+transform: scale(1.2) !important;
+transform-origin: center !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="landing-section">
+<div class="content-container">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>The billion-dollar mapping system no competitor uses</span>
+</div>
+<h1 class="main-headline">
+Wire Your Store With a <span class="highlight">Data-Driven System</span> That Forces High Conversions
+</h1>
+<p class="sub-headline">
+(The same framework billion-dollar brands invest in - now accessible to you)
+</p>
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_13.jpg?v=1762175110" alt="Product Mapping System" class="screenshot">
+</div>
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$197</span> <span class="current-price">Only $39</span>
+</p>
+<button class="cta-button" id="product-mapping-add-to-cart-btn" data-variant-id="43208454176861">
+<span>UNLOCK THE SYSTEM NOW!<br><small class="small-text">one time payment of $39, lifetime access.</small></span>
+</button>
+<div class="bundle-wrapper">
+<span>$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+</div>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    const CONFIG = { VARIANT_ID: '43208454176861', DEBUG: true, RETRY_ATTEMPTS: 3, RETRY_DELAY: 500 };
+    const log = { info: (msg, data) => CONFIG.DEBUG && console.log(\`[Product Mapping] ℹ️ \${msg}\`, data || ''), success: (msg, data) => CONFIG.DEBUG && console.log(\`[Product Mapping] ✅ \${msg}\`, data || ''), error: (msg, data) => console.error(\`[Product Mapping] ❌ \${msg}\`, data || ''), warn: (msg, data) => console.warn(\`[Product Mapping] ⚠️ \${msg}\`, data || '') };
+    function removeInterferingElements() { log.info('Removing interfering popups and overlays...'); const interferingSelectors = ['[class*="rewards"]', '[class*="Rewards"]', '[id*="rewards"]', '[id*="Rewards"]', '.smile-launcher-frame', 'iframe[title*="Smile.io"]', '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher', '.modal-backdrop', '.popup-overlay']; let removed = 0; interferingSelectors.forEach(selector => { try { const elements = document.querySelectorAll(selector); elements.forEach(el => { el.style.display = 'none'; el.style.visibility = 'hidden'; el.style.opacity = '0'; el.style.pointerEvents = 'none'; if (el.remove) el.remove(); removed++; }); } catch (e) {} }); if (removed > 0) { log.success(\`Removed \${removed} interfering elements\`); } }
+    async function addToCartAjaxAPI(variantId) { log.info('Attempting Method 1: Shopify Ajax API...'); const response = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] }) }); if (!response.ok) { throw new Error(\`Ajax API failed: \${response.status} \${response.statusText}\`); } return await response.json(); }
+    async function addToCartFormData(variantId) { log.info('Attempting Method 2: FormData...'); const formData = new FormData(); formData.append('id', variantId); formData.append('quantity', '1'); const response = await fetch('/cart/add.js', { method: 'POST', body: formData }); if (!response.ok) { throw new Error(\`FormData failed: \${response.status} \${response.statusText}\`); } return await response.json(); }
+    async function addToCartSimpleJSON(variantId) { log.info('Attempting Method 3: Simple JSON...'); const response = await fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: variantId, quantity: 1 }) }); if (!response.ok) { throw new Error(\`Simple JSON failed: \${response.status} \${response.statusText}\`); } return await response.json(); }
+    function addToCartFormSubmit(variantId) { log.info('Attempting Method 4: Form Submit (fallback)...'); const form = document.createElement('form'); form.method = 'POST'; form.action = '/cart/add'; const idInput = document.createElement('input'); idInput.type = 'hidden'; idInput.name = 'id'; idInput.value = variantId; const qtyInput = document.createElement('input'); qtyInput.type = 'hidden'; qtyInput.name = 'quantity'; qtyInput.value = '1'; form.appendChild(idInput); form.appendChild(qtyInput); document.body.appendChild(form); form.submit(); return new Promise(resolve => { setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000); }); }
+    async function addToCart(variantId) { log.info(\`Starting add to cart process for variant: \${variantId}\`); const methods = [{ name: 'Ajax API', fn: addToCartAjaxAPI }, { name: 'FormData', fn: addToCartFormData }, { name: 'Simple JSON', fn: addToCartSimpleJSON }, { name: 'Form Submit', fn: addToCartFormSubmit }]; for (const method of methods) { try { log.info(\`Trying: \${method.name}\`); const result = await method.fn(variantId); log.success(\`\${method.name} succeeded!\`, result); return result; } catch (error) { log.warn(\`\${method.name} failed:\`, error.message); } } throw new Error('All add-to-cart methods failed'); }
+    async function refreshCart() { log.info('Refreshing cart...'); try { const response = await fetch('/cart.js'); const cart = await response.json(); log.success(\`Cart updated: \${cart.item_count} items, Total: \${cart.total_price}\`); const cartCountSelectors = ['.cart-count', '.cart-count-bubble', '[data-cart-count]', '.cart__count', '#cart-icon-bubble']; cartCountSelectors.forEach(selector => { const elements = document.querySelectorAll(selector); elements.forEach(el => { el.textContent = cart.item_count; el.setAttribute('data-cart-count', cart.item_count); }); }); document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart } })); if (window.Shopify && window.Shopify.theme) { document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart } })); } setTimeout(() => { openCartDrawer(); }, 300); return cart; } catch (error) { log.error('Failed to refresh cart:', error); } }
+    function openCartDrawer() { log.info('Attempting to open cart drawer...'); const cartTriggers = ['[href="/cart"]', '.cart-link', '.cart-icon', '.header__icon--cart', '[data-cart-drawer]', '#cart-icon-bubble']; for (const selector of cartTriggers) { const element = document.querySelector(selector); if (element) { log.info(\`Found cart trigger: \${selector}\`); element.click(); return true; } } const events = ['theme:cart:open', 'cart:open', 'drawer:open']; events.forEach(eventName => { document.documentElement.dispatchEvent(new CustomEvent(eventName, { bubbles: true })); }); log.warn('Could not find cart drawer trigger'); return false; }
+    async function handleButtonClick(event) { event.preventDefault(); event.stopPropagation(); log.info('Button clicked!'); removeInterferingElements(); const button = event.currentTarget; const originalContent = button.innerHTML; const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID; button.disabled = true; button.classList.add('loading'); button.style.cursor = 'wait'; button.innerHTML = '<span style="font-size: 18px; color: white; font-weight: 700;">⏳ ADDING TO CART...</span>'; try { const result = await addToCart(variantId); log.success('Successfully added to cart!', result); button.style.background = 'radial-gradient(ellipse at bottom, #ff9b7a 0%, #e8634d 40%, #B33B28 100%)'; button.innerHTML = '<span style="font-size: 18px; color: white; font-weight: 700;">✓ ADDED SUCCESSFULLY!</span>'; await refreshCart(); setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; button.classList.remove('loading'); button.style.cursor = 'pointer'; button.style.background = ''; }, 2000); } catch (error) { log.error('Failed to add to cart:', error); button.style.background = '#d32f2f'; button.innerHTML = '<span style="font-size: 16px; color: white; font-weight: 700;">❌ ERROR - PLEASE TRY AGAIN</span>'; setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; button.classList.remove('loading'); button.style.cursor = 'pointer'; button.style.background = ''; }, 3000); } }
+    function init() { log.info('Initializing Product Mapping System...'); const button = document.getElementById('product-mapping-add-to-cart-btn'); if (!button) { log.error('Button not found! Retrying...'); setTimeout(init, 500); return; } log.success('Button found!'); const newButton = button.cloneNode(true); button.parentNode.replaceChild(newButton, button); newButton.addEventListener('click', handleButtonClick); newButton.style.position = 'relative'; newButton.style.zIndex = '999999'; log.success('Product Mapping System ready! 🚀'); }
+    removeInterferingElements(); [1000, 2000, 3000, 5000].forEach(delay => { setTimeout(removeInterferingElements, delay); }); if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); } setTimeout(init, 500); setTimeout(init, 1500); window.testProductMappingSystem = function() { log.info('=== MANUAL TEST TRIGGERED ==='); const button = document.getElementById('product-mapping-add-to-cart-btn'); if (button) { button.click(); } else { log.error('Button not found for manual test!'); } }; window.diagnoseProductMappingSystem = function() { console.log('=== PRODUCT MAPPING DIAGNOSTICS ==='); console.log('Button:', document.getElementById('product-mapping-add-to-cart-btn')); console.log('Variant ID:', CONFIG.VARIANT_ID); console.log('Shopify available:', typeof Shopify !== 'undefined'); console.log('Cart API:', '/cart/add.js'); console.log('=========================='); }; log.info('Product Mapping System script loaded successfully! 🎉'); log.info('Test manually with: testProductMappingSystem()'); log.info('Run diagnostics with: diagnoseProductMappingSystem()');
+})();
+</script>
+</body>
+</html>` +
+    `<div id="profit-engines-root-isolator"><div class="profit-engines-mega-section"><div class="content-wrapper"><h2 class="section-headline">The Biggest Brands Are Investing Billions in This...</h2><p class="paragraph" style="margin-bottom: 8px;">While you're busy testing creatives,</p><p class="paragraph" style="margin-bottom: 8px;">Hunting for that one "winning product,"</p><p class="paragraph" style="margin-bottom: 8px;">Burning budget on endless split tests...</p><p class="paragraph">They're playing a <span class="highlight">completely different game.</span></p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/mad-scream.gif?v=1743322510" alt="Frustrated marketer" class="image-center" style="max-width: 650px; width: 99%; border-radius: 12px;"><div class="spacer"></div><div class="spacer"></div><h2 class="section-subheadline" style="font-weight: 800; font-size: 24px; margin-bottom: 25px;">If you're in eCommerce...</h2><p class="paragraph">You've probably tried <span class="highlight">countless ways</span> to boost your conversion rate...</p><p class="paragraph">A new product, new design, new creatives, different pricing...</p><p class="paragraph">But all of these require constant effort and maintenance.</p><div class="spacer"></div><div class="spacer"></div><p class="paragraph" style="font-size: 19.8px;">What if, <span class="highlight">just once...</span></p><p class="paragraph">you could wire your store with an advanced psychological system - turning it into a fully-optimized conversion machine?</p><div class="spacer"></div><div class="spacer"></div><p class="paragraph underlined"><span class="highlight">Straight to the point:</span></p><h2 class="medium-text"><span class="highlight">Strategic Product Mapping = Explosive Conversion Rate</span></h2><p class="paragraph">And yes - this is one of the core tactics we implement in every brand we work on to generate results like this...</p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-30T114333.853.png?v=1743324252" alt="Results screenshot" class="image-center" style="max-width: 424px; width: 99%; border-radius: 12px; margin-bottom: 15px;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-30T114351.180.png?v=1743324274" alt="Results screenshot" class="image-center" style="max-width: 412px; width: 99%; border-radius: 12px; margin-bottom: 15px;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-30T114401.713.png?v=1743324299" alt="Results screenshot" class="image-center" style="max-width: 412px; width: 99%; border-radius: 12px;"><div class="spacer"></div><h2 class="section-subheadline">With advanced tools, we ensure there's <span class="highlight">no chance</span> a visitor sees less than <span class="highlight">60%</span> of your products without falling in love - <span class="highlight">at a purchase-ready level</span>.</h2><img src="https://media.tenor.com/PnsShgYowW8AAAAM/shopping-spree.gif" alt="Shopping spree" class="image-center" style="max-width: 400px; width: 99%; margin-top: 25px; border-radius: 12px;"><div class="spacer"></div><div class="spacer"></div><div class="spacer"></div><p style="font-weight: 900; font-size: 28px; margin-bottom: 25px; line-height: 1.3; color: #000000; text-align: center; font-family: 'Open Sans', sans-serif; display: block;">Pay attention...</p><p class="paragraph" style="margin-bottom: 12px;">Not a single product shown randomly,</p><p class="paragraph" style="margin-bottom: 12px;">No guessing...</p><p class="paragraph" style="margin-bottom: 25px;">And not products you <span class="highlight">think</span> are good...</p><div class="spacer"></div><div class="spacer"></div><h2 style="font-weight: 900; font-size: 28px; margin-bottom: 35px; line-height: 1.25; color: #000000; text-align: center; font-family: 'Open Sans', sans-serif; display: block;">Here's The Psychology That Changes Everything...</h2><p class="paragraph" style="margin-bottom: 18px;">Think about it for a second...</p><p class="paragraph" style="margin-bottom: 18px;">If you browse a store and see <span class="highlight">3 products you like,</span></p><p class="paragraph" style="margin-bottom: 30px;">The question in your mind is: <span class="highlight">"Should I buy or not?"</span></p><div class="spacer"></div><p class="paragraph" style="margin-bottom: 18px;">But what if, within <span class="highlight">3 minutes of scrolling,</span></p><p class="paragraph" style="margin-bottom: 30px;">You see <span class="highlight">78 products you absolutely love?</span></p><div class="spacer"></div><p class="medium-text" style="margin-bottom: 40px; font-size: 20.93px; font-weight: 400;">You're no longer asking "should I buy?"<br>You're asking <span class="highlight">"WHAT should I buy?"</span></p><div class="spacer"></div><div class="spacer"></div><p class="paragraph" style="margin-bottom: 15px;">Your internal dialogue shifts instantly:</p><p class="paragraph" style="margin-bottom: 12px;">"Okay, I can't go <span class="highlight">completely</span> crazy with my budget...</p><p class="paragraph" style="margin-bottom: 18px;">Let me add a bunch of items and then narrow it down..."</p><div class="spacer"></div><div class="spacer"></div><p class="paragraph" style="margin-bottom: 12px;">So you add <span class="highlight">20 items</span> to your cart,</p><p class="paragraph" style="margin-bottom: 12px;">Filter it down to <span class="highlight">8 products,</span></p><p class="paragraph" style="margin-bottom: 8px; font-size: 31.46px; font-weight: 700;">BOOM!</p><p class="paragraph" style="margin-bottom: 25px;">you just spent $600 without even realizing it.</p><p class="small-text" style="margin-top: 8px; margin-bottom: 20px;">(Even though literally one minute before clicking the ad, you were complaining about how tight money is and that you need to start saving.)</p><img src="https://media.tenor.com/w_pxI6Z22a0AAAAM/budget-accounting.gif" alt="Budget accounting" class="image-center" style="max-width: 400px; width: 99%; border-radius: 12px;"><div class="spacer"></div><p class="medium-text">One-time strategic Product Mapping (based on data) can skyrocket your conversion rate by <span class="highlight">200-400% FOREVER.</span></p><p class="small-text">(No need to test endlessly)</p></div></div></div><style>@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');#profit-engines-root-isolator{all:initial;display:block!important;position:relative!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;border:none!important;background:transparent!important;box-sizing:border-box!important;contain:layout style paint!important;isolation:isolate!important;z-index:auto!important;}#profit-engines-root-isolator *,#profit-engines-root-isolator *::before,#profit-engines-root-isolator *::after{all:revert;box-sizing:border-box!important;}#profit-engines-root-isolator .profit-engines-mega-section{position:relative;width:100%;max-width:100%;padding:40px 0;background:#ffffff;font-family:'Open Sans',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6;box-sizing:border-box;margin:0;border:none;}#profit-engines-root-isolator .content-wrapper{max-width:800px;margin:0 auto;padding:0 20px;box-sizing:border-box;}#profit-engines-root-isolator .section-headline{font-family:'Open Sans',sans-serif;font-weight:800;font-size:42px;line-height:1.3;color:#000000;text-align:center;margin:0 0 25px 0;padding:0;display:block;border:none;background:none;}#profit-engines-root-isolator .section-subheadline{font-family:'Open Sans',sans-serif;font-size:20px;line-height:1.6;color:#000000;text-align:center;margin:0 0 30px 0;padding:0;font-weight:400;display:block;border:none;background:none;}#profit-engines-root-isolator .paragraph{font-family:'Open Sans',sans-serif;font-size:18px;line-height:1.8;color:#000000;text-align:center;margin:0 0 16px 0;padding:0;font-weight:400;display:block;border:none;background:none;}#profit-engines-root-isolator .highlight{font-weight:700;color:#000000;background:none;}#profit-engines-root-isolator .image-center{display:block;margin:30px auto;max-width:100%;width:auto;height:auto;border-radius:4px;border:none;padding:0;}#profit-engines-root-isolator .medium-text{font-family:'Open Sans',sans-serif;font-size:28px;line-height:1.4;color:#000000;text-align:center;margin:30px 0;padding:0;font-weight:700;display:block;border:none;background:none;}#profit-engines-root-isolator .small-text{font-family:'Open Sans',sans-serif;font-size:16px;line-height:1.6;color:#666666;text-align:center;margin:12px 0;padding:0;font-style:italic;font-weight:400;display:block;border:none;background:none;}#profit-engines-root-isolator .spacer{height:40px;display:block;margin:0;padding:0;border:none;background:none;}#profit-engines-root-isolator span{display:inline;margin:0;padding:0;}#profit-engines-root-isolator br{display:inline;}#profit-engines-root-isolator img{border:none;outline:none;vertical-align:middle;}@media(max-width:768px){#profit-engines-root-isolator .section-headline{font-size:32px;}#profit-engines-root-isolator .section-subheadline{font-size:18px;}#profit-engines-root-isolator .paragraph{font-size:17px;}#profit-engines-root-isolator .medium-text{font-size:24px;}#profit-engines-root-isolator .image-center{max-width:85%;}}@media(max-width:480px){#profit-engines-root-isolator .section-headline{font-size:28px;}#profit-engines-root-isolator .section-subheadline{font-size:16px;}#profit-engines-root-isolator .paragraph{font-size:16px;}#profit-engines-root-isolator .medium-text{font-size:22px;}#profit-engines-root-isolator .image-center{max-width:90%;}}</style>` +
+    `<div id="origin-story-root-isolator"><div class="origin-story-section"><div class="content-wrapper"><h1 class="big-text">It All Started Four Years Ago...</h1><p class="paragraph">We stumbled upon a <span class="highlight">brutal strategy</span> used by a Dominican businessman who owns over 20 retail brands.</p><div class="spacer"></div><p class="paragraph">Let's just say this...</p><p class="paragraph">Every brand he acquires sees a 40-80% increase in sales within 3 months - and we're talking hundreds of millions in revenue...</p><div class="spacer"></div><p class="paragraph">This guy is ruthless.</p><p class="paragraph">He doesn't "see with his eyes" - he sees with data, psychology, and <span class="highlight">cold calculation.</span></p><p class="paragraph">He plays the business game <span class="highlight">without mercy.</span></p><img src="https://y.yarn.co/71c323fa-47af-4c63-bf63-47b195e2daf8_text.gif" alt="Game of Thrones" class="gif-image"><div class="spacer"></div><p class="paragraph"><span class="highlight">Instead of getting mad at the monopoly,<br><span class="underlined">We decided to copy it.</span></span></p><div class="spacer"></div><h2 class="big-text big-text-normal">And It Works. Every. Single. Time.</h2><div class="spacer"></div><div class="brand-images-grid"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7268.png?v=1749204475" alt="Brand 1" class="brand-image"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7271.png?v=1749204475" alt="Brand 2" class="brand-image"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7267.png?v=1749204475" alt="Brand 3" class="brand-image"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7265.png?v=1749204475" alt="Brand 4" class="brand-image"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7273.png?v=1749204475" alt="Brand 5" class="brand-image"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/IMG_7272.png?v=1749204475" alt="Brand 6" class="brand-image"></div><p class="paragraph">We studied the entire system inside-out... how it works, why it works, and how to apply it to any niche imaginable.</p><div class="spacer"></div><h2 class="section-headline"><span class="highlight">It's the complete opposite of everything you've been taught.</span></h2><p class="small-text">(Which is probably exactly why most brands crash within two months.)</p><div class="spacer"></div><div class="spacer"></div><div class="spacer"></div><p class="paragraph">We basically stole from him...</p><h2 class="big-text big-text-normal">Security</h2><p class="paragraph">This entrepreneur applies the same system across every single company he owns.</p><div class="spacer"></div><div class="spacer"></div><p class="paragraph">It doesn't matter if it's in fashion...</p><p class="paragraph">or luxury goods...</p><p class="paragraph">or even kids' bath products...</p><div class="spacer"></div><p class="paragraph">Once you have this knowledge,<br>you can apply it to any <span class="highlight">brand</span> and start seeing measurable results <span class="highlight">(starting today).</span></p><div class="spacer"></div><div class="spacer"></div><p class="paragraph">It doesn't matter what product you're selling...</p><p class="paragraph enlarged-text"><span class="highlight">Every other brand doing under $100M/year isn't doing this. Not one. <span class="yellow-highlight-2">And you will.</span></span></p><div class="spacer"></div><div class="spacer"></div><div class="spacer"></div><p class="paragraph smaller-italic">And this is exactly what it's going to give you...</p><h2 class="big-text big-text-normal">An Unfair Advantage</h2><p class="paragraph">You'll learn how to wire your site in an advanced, data-driven way</p><p class="paragraph">that skyrockets its conversions into orbit.</p><div class="spacer"></div><p class="medium-text"><span class="highlight">Because if a visitor <span class="italic-normal">(personally matched)</span> loves 25-70% of the products they see on your site,<br>it's obvious they'll end up buying <span class="underlined">at least four</span>.</span></p><div class="spacer"></div><p class="paragraph">So here too - we've decided to reveal all the knowledge we've gathered,<br>To turn your store from "nice" - into a money-printing machine.</p><p class="medium-text"><span class="highlight">You're going to thank us.</span></p></div></div></div><style>@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');#origin-story-root-isolator{all:initial;display:block!important;position:relative!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;border:none!important;background:transparent!important;box-sizing:border-box!important;contain:layout style paint!important;isolation:isolate!important;z-index:auto!important;}#origin-story-root-isolator *,#origin-story-root-isolator *::before,#origin-story-root-isolator *::after{all:revert;box-sizing:border-box!important;}#origin-story-root-isolator .origin-story-section{position:relative;width:100%;max-width:100%;padding:50px 0 30px 0;background:#ffffff;font-family:'Open Sans',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6;box-sizing:border-box;margin:0;border:none;}#origin-story-root-isolator .content-wrapper{max-width:800px;margin:0 auto;padding:0 20px;box-sizing:border-box;}#origin-story-root-isolator .big-text{font-family:'Open Sans',sans-serif;font-weight:800;font-size:40.66px;line-height:1.3;color:#000000;text-align:center;margin:0 0 30px 0;padding:0;display:block;border:none;background:none;}#origin-story-root-isolator .big-text-normal{font-size:38px;}#origin-story-root-isolator .section-headline{font-family:'Open Sans',sans-serif;font-weight:700;font-size:32px;line-height:1.3;color:#000000;text-align:center;margin:40px 0 25px 0;padding:0;display:block;border:none;background:none;}#origin-story-root-isolator .paragraph{font-family:'Open Sans',sans-serif;font-size:18px;line-height:1.8;color:#333333;text-align:center;margin:0 0 16px 0;padding:0;font-weight:400;display:block;border:none;background:none;}#origin-story-root-isolator .highlight{font-weight:700;color:#000000;background:none;}#origin-story-root-isolator .medium-text{font-family:'Open Sans',sans-serif;font-size:23.4px;line-height:1.4;color:#000000;text-align:center;margin:30px 0;padding:0;font-weight:700;display:block;border:none;background:none;}#origin-story-root-isolator .small-text{font-family:'Open Sans',sans-serif;font-size:16px;line-height:1.6;color:#666666;text-align:center;margin:12px 0;padding:0;font-style:italic;font-weight:400;display:block;border:none;background:none;}#origin-story-root-isolator .underlined{text-decoration:underline;}#origin-story-root-isolator .spacer{height:40px;display:block;margin:0;padding:0;border:none;background:none;}#origin-story-root-isolator .yellow-highlight-2{background-color:#ffeb3b;padding:2px 4px;}#origin-story-root-isolator .enlarged-text{font-size:24.27px;}#origin-story-root-isolator .smaller-italic{font-size:16.2px;font-style:italic;font-weight:400;}#origin-story-root-isolator .italic-normal{font-style:italic;font-weight:400;}#origin-story-root-isolator .gif-image{display:block;max-width:100%;height:auto;margin:20px auto;}#origin-story-root-isolator .brand-images-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:30px auto;max-width:540px;padding:0 20px;}#origin-story-root-isolator .brand-image{width:100%;height:auto;display:block;border-radius:8px;}#origin-story-root-isolator span{display:inline;margin:0;padding:0;}#origin-story-root-isolator br{display:inline;}#origin-story-root-isolator h1,#origin-story-root-isolator h2{border:none;outline:none;}@media(max-width:768px){#origin-story-root-isolator .origin-story-section{padding:50px 0 25px 0;}#origin-story-root-isolator .big-text{font-size:34.24px;}#origin-story-root-isolator .big-text-normal{font-size:32px;}#origin-story-root-isolator .section-headline{font-size:28px;}#origin-story-root-isolator .paragraph{font-size:17px;}#origin-story-root-isolator .enlarged-text{font-size:22.96px;}#origin-story-root-isolator .medium-text{font-size:21.6px;}#origin-story-root-isolator .smaller-italic{font-size:15.3px;}#origin-story-root-isolator .brand-images-grid{gap:14px;max-width:440px;margin:25px auto;}}@media(max-width:480px){#origin-story-root-isolator .origin-story-section{padding:50px 0 20px 0;}#origin-story-root-isolator .big-text{font-size:29.96px;}#origin-story-root-isolator .big-text-normal{font-size:28px;}#origin-story-root-isolator .section-headline{font-size:24px;}#origin-story-root-isolator .paragraph{font-size:16px;}#origin-story-root-isolator .enlarged-text{font-size:21.57px;}#origin-story-root-isolator .medium-text{font-size:19.8px;}#origin-story-root-isolator .smaller-italic{font-size:14.4px;}#origin-story-root-isolator .brand-images-grid{gap:12px;max-width:360px;margin:20px auto;}}</style>` +
+    `<div class="whats-inside-section"><div class="content-wrapper"><h2 class="section-title">What's Inside:</h2><p class="section-subtitle">5 Advanced Frameworks That Multiply Conversions</p><div class="weapon-item"><h3 class="weapon-title"><span class="highlight-color">WEAPON 1:</span> The Law of Multiple Options</h3><p class="weapon-description">Discover the psychological principle that multiplies both conversion rates and average cart values. Learn how to transform your store into a place customers find it nearly impossible to leave without filling their cart to the maximum.</p></div><div class="weapon-item"><h3 class="weapon-title"><span class="highlight-color">WEAPON 2:</span> The Billion-Dollar Mapping System</h3><p class="weapon-description">Master how to segment your audience into distinct avatars, and understand exactly how they think and what they desire — based exclusively on data, not guesswork.</p></div><div class="weapon-item"><h3 class="weapon-title"><span class="highlight-color">WEAPON 3:</span> The Strategic Product Mapping Framework</h3><p class="weapon-description">Copy the exact product mapping architecture that mega-brands use to turn every product on their site into a high-performer. Understand how to arrange products so the customer's brain is compelled to choose something — and choose a lot.</p></div><div class="weapon-item"><h3 class="weapon-title"><span class="highlight-color">WEAPON 4:</span> The Anchor Product Effect</h3><p class="weapon-description">Learn how to select one product that makes everything else appear impossible to ignore. The magnet that pulls customers into a deep (and extended) buying state that ends with a massive cart.</p></div><div class="weapon-item"><h3 class="weapon-title"><span class="highlight-color">WEAPON 5:</span> The Hidden Funnel Strategy</h3><p class="weapon-description">The logic behind the invisible system that guides customers to conversion without them noticing. From completely cold (not planning to buy), to walking out within minutes with a $400+ cart and forgetting their bank account balance.</p></div></div></div><style>.whats-inside-section{position:relative!important;left:50%!important;right:50%!important;margin-left:-50vw!important;margin-right:-50vw!important;width:100vw!important;min-width:100vw!important;padding:60px 0!important;background:#000000!important;font-family:'Open Sans',system-ui,-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1.6!important;overflow-x:hidden!important;box-sizing:border-box!important;}.whats-inside-section *{box-sizing:border-box!important;}.whats-inside-section::before,.whats-inside-section::after{content:''!important;position:absolute!important;top:0!important;bottom:0!important;width:100vw!important;background:#000000!important;z-index:-2!important;}.whats-inside-section::before{left:-100vw!important;}.whats-inside-section::after{right:-100vw!important;}.content-wrapper{max-width:900px!important;margin:0 auto!important;padding:0 20px!important;}.section-title{font-family:'Open Sans',sans-serif!important;font-weight:800!important;font-size:42px!important;line-height:1.3!important;color:#ffffff!important;text-align:center!important;margin:0 0 50px 0!important;}.section-subtitle{font-family:'Open Sans',sans-serif!important;font-size:20px!important;line-height:1.6!important;color:#e8e8e8!important;text-align:center!important;margin:-30px 0 50px 0!important;font-weight:400!important;}.weapon-item{position:relative!important;background:linear-gradient(145deg,#0d0d0d,#050505)!important;border:1px solid #1a1a1a!important;border-left:5px solid #B33B28!important;padding:30px 35px!important;margin:0 0 25px 0!important;border-radius:16px!important;cursor:pointer!important;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)!important;overflow:hidden!important;box-shadow:0 4px 15px rgba(0,0,0,0.4)!important;}.weapon-item::before{content:''!important;position:absolute!important;top:-50%!important;left:-50%!important;width:200%!important;height:200%!important;background:radial-gradient(circle,rgba(179,59,40,0.2) 0%,transparent 60%)!important;opacity:0!important;transition:opacity 0.6s ease,transform 0.6s ease!important;z-index:0!important;transform:scale(0.5) rotate(0deg)!important;}.weapon-item::after{content:''!important;position:absolute!important;top:0!important;left:-100%!important;width:100%!important;height:100%!important;background:linear-gradient(90deg,transparent,rgba(179,59,40,0.15),transparent)!important;transition:left 0.7s ease!important;z-index:1!important;}.weapon-item:hover{transform:translateY(-12px) scale(1.02)!important;border:1px solid #B33B28!important;border-left:5px solid #d94a35!important;box-shadow:0 20px 60px rgba(179,59,40,0.4),0 10px 30px rgba(179,59,40,0.3),0 5px 15px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.1)!important;background:linear-gradient(145deg,#1a0f0d,#0a0505)!important;}.weapon-item:hover::before{opacity:1!important;transform:scale(1) rotate(45deg)!important;}.weapon-item:hover::after{left:100%!important;}.weapon-item:active{transform:translateY(-10px) scale(1.01)!important;}.weapon-title{position:relative!important;z-index:1!important;font-family:'Open Sans',sans-serif!important;font-weight:800!important;font-size:24px!important;line-height:1.3!important;color:#ffffff!important;margin:0 0 15px 0!important;transition:color 0.3s ease,transform 0.3s ease!important;}.weapon-item:hover .weapon-title{color:#ffffff!important;transform:translateX(3px)!important;}.weapon-description{position:relative!important;z-index:1!important;font-family:'Open Sans',sans-serif!important;font-size:17px!important;line-height:1.7!important;color:#b8b8b8!important;margin:0!important;font-weight:400!important;transition:color 0.3s ease!important;}.weapon-item:hover .weapon-description{color:#e0e0e0!important;}.highlight-color{color:#B33B28!important;transition:all 0.3s ease!important;display:inline-block!important;}.weapon-item:hover .highlight-color{color:#d94a35!important;text-shadow:0 0 20px rgba(179,59,40,0.5)!important;}@media(max-width:768px){.section-title{font-size:34px!important;}.section-subtitle{font-size:18px!important;}.weapon-title{font-size:22px!important;}.weapon-description{font-size:16px!important;}.weapon-item{padding:25px 25px!important;}}@media(max-width:480px){.section-title{font-size:30px!important;}.section-subtitle{font-size:17px!important;}.weapon-title{font-size:20px!important;}.weapon-description{font-size:15px!important;}.weapon-item{padding:20px 20px!important;}.weapon-item:hover{transform:translateY(-3px) scale(1.005)!important;}}@media(hover:none){.weapon-item:hover{transform:none!important;}}</style>` +
+    `<div class="section-wrapper-isolated"><div class="container-isolated"><h2 class="title-isolated">Before vs. After <span class="highlight-isolated">Product Mapping</span></h2><p class="subtitle-isolated">See the transformation when you implement the billion-dollar system</p><table class="comparison-table-isolated"><thead><tr class="comparison-row-isolated"><th class="column-header-isolated" style="width:40%;background:transparent!important;border:none!important;"></th><th class="column-header-isolated without-isolated" style="width:30%;">Without Product Mapping</th><th class="column-header-isolated with-isolated" style="width:30%;">With Product Mapping</th></tr></thead><tbody><tr class="comparison-row-isolated"><td class="comparison-item-isolated label-isolated">Conversion Rate</td><td class="comparison-item-isolated without-value-isolated">1.2% - 2.5%</td><td class="comparison-item-isolated with-value-isolated">4% - 8%+</td></tr><tr class="comparison-row-isolated"><td class="comparison-item-isolated label-isolated">Average Order Value</td><td class="comparison-item-isolated without-value-isolated">$45 - $80</td><td class="comparison-item-isolated with-value-isolated">$120 - $280+</td></tr><tr class="comparison-row-isolated"><td class="comparison-item-isolated label-isolated">Product Discovery</td><td class="comparison-item-isolated without-value-isolated">Random & Guesswork</td><td class="comparison-item-isolated with-value-isolated">Strategic & Data-Driven</td></tr><tr class="comparison-row-isolated"><td class="comparison-item-isolated label-isolated">Customer Match Rate</td><td class="comparison-item-isolated without-value-isolated">10% - 15%</td><td class="comparison-item-isolated with-value-isolated">25% - 70%</td></tr><tr class="comparison-row-isolated"><td class="comparison-item-isolated label-isolated">Maintenance Required</td><td class="comparison-item-isolated without-value-isolated">Constant Testing</td><td class="comparison-item-isolated with-value-isolated">One-Time Setup</td></tr></tbody></table><button class="cta-button-isolated" id="product-mapping-comparison-btn" data-variant-id="43208454176861"><span>GET INSTANT ACCESS NOW<br><small class="small-text-isolated">one time payment of $39, lifetime access.</small></span></button><div class="bundle-price-wrapper-isolated"><span style="color:#666666;font-size:14px;">$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-isolated">building a bundle</a></span></div></div></div><style>.section-wrapper-isolated{all:initial!important;display:block!important;position:relative!important;left:50%!important;right:50%!important;margin-left:-50vw!important;margin-right:-50vw!important;width:100vw!important;max-width:100vw!important;font-family:'Open Sans',sans-serif!important;background-color:#ffffff!important;color:#000000!important;padding:60px 20px!important;box-sizing:border-box!important;line-height:1.6!important;overflow-x:hidden!important;font-size:16px!important;font-weight:400!important;text-align:left!important;border:none!important;outline:none!important;box-shadow:none!important;}.section-wrapper-isolated::before,.section-wrapper-isolated::after{content:''!important;position:absolute!important;top:0!important;bottom:0!important;width:100vw!important;background:#ffffff!important;z-index:-1!important;}.section-wrapper-isolated::before{left:-100vw!important;}.section-wrapper-isolated::after{right:-100vw!important;}.section-wrapper-isolated *,.section-wrapper-isolated *::before,.section-wrapper-isolated *::after{all:unset!important;box-sizing:border-box!important;}.section-wrapper-isolated table{border-collapse:collapse!important;display:table!important;}.section-wrapper-isolated thead{display:table-header-group!important;}.section-wrapper-isolated tbody{display:table-row-group!important;}.section-wrapper-isolated tr{display:table-row!important;}.section-wrapper-isolated th,.section-wrapper-isolated td{display:table-cell!important;}.section-wrapper-isolated .container-isolated{max-width:800px!important;margin:0 auto!important;text-align:center!important;position:relative!important;z-index:1!important;display:block!important;}.section-wrapper-isolated .title-isolated{font-family:'Open Sans',sans-serif!important;font-weight:800!important;font-size:42px!important;margin:0 0 15px 0!important;color:#000000!important;display:block!important;line-height:1.2!important;text-align:center!important;}.section-wrapper-isolated .title-isolated .highlight-isolated{color:#B33B28!important;font-family:inherit!important;font-weight:inherit!important;font-size:inherit!important;}.section-wrapper-isolated .subtitle-isolated{font-size:18px!important;margin:0 0 40px 0!important;color:#333333!important;font-family:'Open Sans',sans-serif!important;font-weight:400!important;display:block!important;line-height:1.6!important;text-align:center!important;}.section-wrapper-isolated .comparison-table-isolated{width:100%!important;max-width:700px!important;margin:0 auto 40px auto!important;border-radius:8px!important;overflow:hidden!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;font-family:'Open Sans',sans-serif!important;background:#ffffff!important;display:table!important;border-collapse:collapse!important;}.section-wrapper-isolated .comparison-row-isolated{display:table-row!important;}.section-wrapper-isolated .column-header-isolated{font-weight:800!important;font-size:20px!important;padding:20px 15px!important;text-align:center!important;font-family:'Open Sans',sans-serif!important;border-bottom:2px solid #e0e0e0!important;display:table-cell!important;vertical-align:middle!important;}.section-wrapper-isolated .column-header-isolated.without-isolated{background-color:#ffffff!important;color:#666666!important;border:1px solid #e0e0e0!important;}.section-wrapper-isolated .column-header-isolated.with-isolated{background-color:#B33B28!important;color:#ffffff!important;}.section-wrapper-isolated .comparison-item-isolated{padding:20px!important;border-bottom:1px solid #e0e0e0!important;font-size:16px!important;font-family:'Open Sans',sans-serif!important;font-weight:400!important;text-align:center!important;display:table-cell!important;vertical-align:middle!important;line-height:1.6!important;}.section-wrapper-isolated .comparison-item-isolated.label-isolated{background-color:#ffffff!important;font-weight:600!important;text-align:left!important;padding-left:25px!important;color:#000000!important;border:1px solid #e0e0e0!important;}.section-wrapper-isolated .comparison-item-isolated.without-value-isolated{color:#999999!important;background-color:#ffffff!important;border:1px solid #e0e0e0!important;}.section-wrapper-isolated .comparison-item-isolated.with-value-isolated{color:#B33B28!important;font-weight:700!important;background-color:#ffffff!important;border:1px solid #e0e0e0!important;}.section-wrapper-isolated .cta-button-isolated{background:radial-gradient(ellipse at bottom,#B33B28 0%,#8B2A1F 40%)!important;border:none!important;border-radius:35px!important;padding:21px 76px!important;font-size:16px!important;font-weight:700!important;color:white!important;cursor:pointer!important;transition:all 0.3s ease!important;text-transform:uppercase!important;letter-spacing:1px!important;position:relative!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:15px!important;margin:0 auto 10px auto!important;width:auto!important;min-width:380px!important;height:81px!important;font-family:'Open Sans',sans-serif!important;}.section-wrapper-isolated .cta-button-isolated:hover{transform:translateY(-2px)!important;}.section-wrapper-isolated .cta-button-isolated.loading{opacity:0.8;pointer-events:none;}.section-wrapper-isolated .cta-button-isolated span{position:relative!important;z-index:999!important;font-size:16px!important;font-weight:700!important;color:white!important;display:block!important;font-family:'Open Sans',sans-serif!important;line-height:1.3!important;}.section-wrapper-isolated .cta-button-isolated .small-text-isolated{font-size:10.7px!important;display:block!important;font-weight:400!important;text-transform:none!important;letter-spacing:0.5px!important;margin-top:3px!important;}.section-wrapper-isolated .bundle-price-wrapper-isolated{margin:15px 0 0 0!important;text-align:center!important;display:block!important;font-family:'Open Sans',sans-serif!important;}.section-wrapper-isolated .bundle-link-isolated{color:#B33B28!important;text-decoration:underline!important;font-size:14px!important;transition:all 0.3s ease!important;cursor:pointer!important;font-family:'Open Sans',sans-serif!important;}.section-wrapper-isolated .bundle-link-isolated:hover{color:#8B2A1F!important;text-decoration:none!important;}@media(max-width:768px){.section-wrapper-isolated .title-isolated{font-size:32px!important;}.section-wrapper-isolated .comparison-table-isolated{font-size:14px!important;}.section-wrapper-isolated .column-header-isolated{font-size:18px!important;padding:15px 10px!important;}.section-wrapper-isolated .comparison-item-isolated{padding:15px!important;font-size:14px!important;}.section-wrapper-isolated .cta-button-isolated{font-size:15px!important;padding:18px 35px!important;min-width:320px!important;}.section-wrapper-isolated .cta-button-isolated span{font-size:15px!important;}}@media(max-width:480px){.section-wrapper-isolated .title-isolated{font-size:28px!important;}.section-wrapper-isolated .subtitle-isolated{font-size:16px!important;}.section-wrapper-isolated .comparison-table-isolated{font-size:13px!important;}.section-wrapper-isolated .column-header-isolated{font-size:16px!important;padding:12px 8px!important;}.section-wrapper-isolated .comparison-item-isolated{padding:12px!important;font-size:13px!important;}.section-wrapper-isolated .cta-button-isolated{font-size:14px!important;padding:16px 30px!important;min-width:300px!important;}}</style>` +
+    `<div class="faq-section"><h1>Common Questions</h1><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>Why haven't I heard about this before?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Because <strong>billion-dollar brands don't share their competitive advantages.</strong> They invest millions in teams and systems to implement this, keeping it far from public knowledge. We've reverse-engineered it and made it accessible to you - but your competitors? They have no idea it exists.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>I don't think I need this.</span><span class="faq-arrow">▼</span></div><div class="faq-answer">That's <strong>exactly</strong> what we thought before discovering it. The only reason you think you don't need it is because you haven't experienced it yet. There's a reason the world's most successful brands invest billions in this system - it's not optional at their level. It's foundational.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>What if I buy multiple courses - do they overlap?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Every course is designed to solve a <strong>specific part of the conversion equation</strong>. They complement each other without repeating content, so stacking them creates <strong>compounding impact</strong>.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>Will I get lifetime access?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Yes. <strong>One-time payment, lifetime access.</strong> No subscriptions. No hidden fees.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>Is this just theory or can I apply it right away?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">This is <strong>100% practical</strong>. You'll get a clear framework + real examples + plug-and-play templates that you can implement <strong>immediately</strong>.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>Do I need a team to apply this?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Not at all. Every tactic was designed for <strong>solo operators</strong>. You can implement everything with minimal tech skills or outsource it easily if you prefer.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>Will this work for my specific niche?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Yes. This system has been proven across <strong>fashion, luxury goods, kids products, and dozens of other niches</strong>. The psychological principles are universal - they work regardless of what you sell.</div></div><div class="faq-item"><div class="faq-question" onclick="toggleFAQAnswer(this)"><span>How long until I see results?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Most brands see <strong>measurable improvements within days</strong> of implementing the core framework. Full optimization typically takes 2-4 weeks, but the impact is <strong>permanent</strong> - this is a one-time setup that continues working 24/7.</div></div></div><style>.faq-section{all:initial;display:block;width:100%;max-width:900px;margin:60px auto;padding:20px;box-sizing:border-box;font-family:Arial,sans-serif;isolation:isolate;}.faq-section *,.faq-section *::before,.faq-section *::after{box-sizing:border-box;}.faq-section h1{font-family:'Open Sans',sans-serif;font-weight:800;font-size:2.5rem;text-align:center;margin:0 0 40px 0;color:black;display:block;box-sizing:border-box;}.faq-section .faq-item{margin-bottom:15px;}.faq-section .faq-question{background-color:black;border-radius:12px;padding:25px;color:white;font-weight:bold;font-size:18px;cursor:pointer;transition:opacity 0.3s ease;user-select:none;margin:0;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;}.faq-section .faq-question:hover{opacity:0.9;}.faq-section .faq-question .faq-arrow{font-size:14px;transition:transform 0.3s ease;margin-left:15px;flex-shrink:0;}.faq-section .faq-question.active .faq-arrow{transform:rotate(180deg);}.faq-section .faq-answer{background-color:white;border:1px solid black;border-radius:8px;padding:20px;margin-top:10px;font-size:16px;line-height:1.7;color:black;display:none;box-sizing:border-box;}.faq-section .faq-answer.active{display:block;}.faq-section .faq-answer strong{color:black;font-weight:700;}@media(max-width:768px){.faq-section .faq-question{font-size:17px;padding:24px;}}</style><script>function toggleFAQAnswer(el){const answer=el.nextElementSibling;const isActive=answer.classList.contains('active');document.querySelectorAll('.faq-section .faq-answer').forEach(a=>{a.classList.remove('active');});document.querySelectorAll('.faq-section .faq-question').forEach(q=>{q.classList.remove('active');});if(!isActive){answer.classList.add('active');el.classList.add('active');}}</script>` +
+    `<div class="final-cta-section"><div class="cta-container"><h2 class="cta-headline">Your Competitors Are <span class="cta-highlight">Still Guessing.</span><br>You're About to Know.</h2><p class="cta-subheadline">Stop burning budget on random tests. Start using the system billion-dollar brands rely on.</p><p class="urgency-text">While you're reading this, your competitors are spending thousands on ads that send traffic to <span class="urgency-highlight">poorly optimized stores</span>. Every visitor that bounces is money thrown away. Every day you wait is revenue you're handing to brands that <span class="urgency-highlight">already have this system installed</span>.</p><button class="cta-button-final" id="product-mapping-final-cta-btn" data-variant-id="43208454176861"><span>GET INSTANT ACCESS NOW<br><small class="small-text-final">one time payment of $39, lifetime access.</small></span></button><div class="bundle-wrapper-final"><span>$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-final">building a bundle</a></span></div><div class="guarantee-box"><p class="guarantee-text"><strong>Lifetime Access.</strong> One payment. No subscriptions. No upsells. You get everything, forever. Implement this once, and watch it work for years.</p></div><p class="final-message">The brands winning in 2025 aren't the ones with the best products.<br>They're the ones with the best systems.</p></div></div><style>.final-cta-section{position:relative!important;left:50%!important;right:50%!important;margin-left:-50vw!important;margin-right:-50vw!important;width:100vw!important;min-width:100vw!important;padding:60px 0 60px 0!important;background:#000000!important;font-family:'Open Sans',system-ui,-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1.6!important;overflow-x:hidden!important;box-sizing:border-box!important;}.final-cta-section *{box-sizing:border-box!important;}.final-cta-section::before,.final-cta-section::after{content:''!important;position:absolute!important;top:0!important;bottom:0!important;width:100vw!important;background:#000000!important;z-index:-2!important;}.final-cta-section::before{left:-100vw!important;}.final-cta-section::after{right:-100vw!important;}.cta-container{max-width:800px!important;margin:0 auto!important;padding:0 20px!important;text-align:center!important;}.cta-headline{font-family:'Open Sans',sans-serif!important;font-weight:800!important;font-size:44px!important;line-height:1.3!important;color:#ffffff!important;text-align:center!important;margin:0 0 25px 0!important;}.cta-highlight{color:#B33B28!important;}.cta-subheadline{font-family:'Open Sans',sans-serif!important;font-size:20.9px!important;line-height:1.6!important;color:#e8e8e8!important;text-align:center!important;margin:0 0 40px 0!important;font-weight:400!important;}.urgency-text{font-family:'Open Sans',sans-serif!important;font-size:17.1px!important;line-height:1.7!important;color:#cccccc!important;text-align:center!important;margin:0 0 40px 0!important;font-weight:400!important;}.urgency-highlight{color:#B33B28!important;font-weight:700!important;}.cta-button-final{background:radial-gradient(ellipse at bottom,#B33B28 0%,#8B2A1F 40%)!important;border:none!important;border-radius:35px!important;padding:21px 76px!important;font-size:16px!important;font-weight:700!important;color:white!important;cursor:pointer!important;transition:all 0.3s ease!important;text-transform:uppercase!important;letter-spacing:1px!important;position:relative!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:15px!important;margin:0 auto 10px auto!important;width:auto!important;min-width:420px!important;height:81px!important;font-family:'Open Sans',sans-serif!important;box-shadow:0 10px 30px rgba(179,59,40,0.4)!important;}.cta-button-final:hover{transform:translateY(-2px)!important;box-shadow:0 15px 40px rgba(179,59,40,0.6)!important;}.cta-button-final.loading{opacity:0.8;pointer-events:none;}.cta-button-final span{position:relative!important;z-index:999!important;font-size:16px!important;font-weight:700!important;color:white!important;display:block!important;font-family:'Open Sans',sans-serif!important;line-height:1.3!important;}.cta-button-final .small-text-final{font-size:10.7px!important;display:block!important;font-weight:400!important;text-transform:none!important;letter-spacing:0.5px!important;margin-top:3px!important;}.bundle-wrapper-final{text-align:center!important;margin:15px 0 0 0!important;display:block!important;}.bundle-wrapper-final span{color:#e8e8e8!important;font-size:15px!important;font-family:'Open Sans',sans-serif!important;}.bundle-link-final{color:#B33B28!important;text-decoration:underline!important;}.guarantee-box{background:rgba(255,255,255,0.08)!important;border-radius:8px!important;padding:25px!important;margin:40px 0 0 0!important;}.guarantee-text{font-family:'Open Sans',sans-serif!important;font-size:13.6px!important;line-height:1.7!important;color:#cccccc!important;text-align:center!important;margin:0!important;font-weight:400!important;}.guarantee-text strong{color:#B33B28!important;font-weight:700!important;}.final-message{font-family:'Open Sans',sans-serif!important;font-size:15.84px!important;line-height:1.7!important;color:#e8e8e8!important;text-align:center!important;margin:35px 0 0 0!important;font-weight:400!important;font-style:italic!important;}@media(max-width:768px){.cta-headline{font-size:36px!important;}.cta-subheadline{font-size:19px!important;}.urgency-text{font-size:16.2px!important;}.guarantee-text{font-size:12.92px!important;}.cta-button-final{font-size:15px!important;padding:20px 40px!important;min-width:360px!important;}}@media(max-width:480px){.cta-headline{font-size:30px!important;}.cta-subheadline{font-size:17.1px!important;}.urgency-text{font-size:15.2px!important;}.guarantee-text{font-size:11.56px!important;}.cta-button-final{font-size:14px!important;padding:18px 35px!important;min-width:320px!important;}.final-message{font-size:14.08px!important;}}</style><script>(function(){const CONFIG={VARIANT_ID:'43208454176861',DEBUG:true,RETRY_ATTEMPTS:3,RETRY_DELAY:500};const log={info:(msg,data)=>CONFIG.DEBUG&&console.log(\`[Product Mapping Final CTA] ℹ️ \${msg}\`,data||''),success:(msg,data)=>CONFIG.DEBUG&&console.log(\`[Product Mapping Final CTA] ✅ \${msg}\`,data||''),error:(msg,data)=>console.error(\`[Product Mapping Final CTA] ❌ \${msg}\`,data||''),warn:(msg,data)=>console.warn(\`[Product Mapping Final CTA] ⚠️ \${msg}\`,data||'')};function removeInterferingElements(){log.info('Removing interfering popups and overlays...');const interferingSelectors=['[class*="rewards"]','[class*="Rewards"]','[id*="rewards"]','[id*="Rewards"]','.smile-launcher-frame','iframe[title*="Smile.io"]','[class*="smile-"]','.loyalty-modal','.rewards-launcher','.modal-backdrop','.popup-overlay'];let removed=0;interferingSelectors.forEach(selector=>{try{const elements=document.querySelectorAll(selector);elements.forEach(el=>{el.style.display='none';el.style.visibility='hidden';el.style.opacity='0';el.style.pointerEvents='none';if(el.remove)el.remove();removed++;});}catch(e){}});if(removed>0){log.success(\`Removed \${removed} interfering elements\`);}}async function addToCartAjaxAPI(variantId){log.info('Attempting Method 1: Shopify Ajax API...');const response=await fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:[{id:parseInt(variantId),quantity:1}]})});if(!response.ok){throw new Error(\`Ajax API failed: \${response.status} \${response.statusText}\`);}return await response.json();}async function addToCartFormData(variantId){log.info('Attempting Method 2: FormData...');const formData=new FormData();formData.append('id',variantId);formData.append('quantity','1');const response=await fetch('/cart/add.js',{method:'POST',body:formData});if(!response.ok){throw new Error(\`FormData failed: \${response.status} \${response.statusText}\`);}return await response.json();}async function addToCartSimpleJSON(variantId){log.info('Attempting Method 3: Simple JSON...');const response=await fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:variantId,quantity:1})});if(!response.ok){throw new Error(\`Simple JSON failed: \${response.status} \${response.statusText}\`);}return await response.json();}function addToCartFormSubmit(variantId){log.info('Attempting Method 4: Form Submit (fallback)...');const form=document.createElement('form');form.method='POST';form.action='/cart/add';const idInput=document.createElement('input');idInput.type='hidden';idInput.name='id';idInput.value=variantId;const qtyInput=document.createElement('input');qtyInput.type='hidden';qtyInput.name='quantity';qtyInput.value='1';form.appendChild(idInput);form.appendChild(qtyInput);document.body.appendChild(form);form.submit();return new Promise(resolve=>{setTimeout(()=>resolve({method:'form_submit',status:'submitted'}),1000);});}async function addToCart(variantId){log.info(\`Starting add to cart process for variant: \${variantId}\`);const methods=[{name:'Ajax API',fn:addToCartAjaxAPI},{name:'FormData',fn:addToCartFormData},{name:'Simple JSON',fn:addToCartSimpleJSON},{name:'Form Submit',fn:addToCartFormSubmit}];for(const method of methods){try{log.info(\`Trying: \${method.name}\`);const result=await method.fn(variantId);log.success(\`\${method.name} succeeded!\`,result);return result;}catch(error){log.warn(\`\${method.name} failed:\`,error.message);}}throw new Error('All add-to-cart methods failed');}async function refreshCart(){log.info('Refreshing cart...');try{const response=await fetch('/cart.js');const cart=await response.json();log.success(\`Cart updated: \${cart.item_count} items, Total: \${cart.total_price}\`);const cartCountSelectors=['.cart-count','.cart-count-bubble','[data-cart-count]','.cart__count','#cart-icon-bubble'];cartCountSelectors.forEach(selector=>{const elements=document.querySelectorAll(selector);elements.forEach(el=>{el.textContent=cart.item_count;el.setAttribute('data-cart-count',cart.item_count);});});document.documentElement.dispatchEvent(new CustomEvent('cart:refresh',{bubbles:true,detail:{cart}}));if(window.Shopify&&window.Shopify.theme){document.documentElement.dispatchEvent(new CustomEvent('cart:updated',{bubbles:true,detail:{cart}}));}setTimeout(()=>{openCartDrawer();},300);return cart;}catch(error){log.error('Failed to refresh cart:',error);}}function openCartDrawer(){log.info('Attempting to open cart drawer...');const cartTriggers=['[href="/cart"]','.cart-link','.cart-icon','.header__icon--cart','[data-cart-drawer]','#cart-icon-bubble'];for(const selector of cartTriggers){const element=document.querySelector(selector);if(element){log.info(\`Found cart trigger: \${selector}\`);element.click();return true;}}const events=['theme:cart:open','cart:open','drawer:open'];events.forEach(eventName=>{document.documentElement.dispatchEvent(new CustomEvent(eventName,{bubbles:true}));});log.warn('Could not find cart drawer trigger');return false;}async function handleButtonClick(event){event.preventDefault();event.stopPropagation();log.info('Button clicked!');removeInterferingElements();const button=event.currentTarget;const originalContent=button.innerHTML;const variantId=button.getAttribute('data-variant-id')||CONFIG.VARIANT_ID;button.disabled=true;button.classList.add('loading');button.style.cursor='wait';button.innerHTML='<span style="font-size: 18px; color: white; font-weight: 700;">⏳ ADDING TO CART...</span>';try{const result=await addToCart(variantId);log.success('Successfully added to cart!',result);button.style.background='radial-gradient(ellipse at bottom, #B33B28 0%, #8B2A1F 40%)';button.innerHTML='<span style="font-size: 18px; color: white; font-weight: 700;">✓ ADDED SUCCESSFULLY!</span>';await refreshCart();setTimeout(()=>{button.innerHTML=originalContent;button.disabled=false;button.classList.remove('loading');button.style.cursor='pointer';button.style.background='';},2000);}catch(error){log.error('Failed to add to cart:',error);button.style.background='#d32f2f';button.innerHTML='<span style="font-size: 16px; color: white; font-weight: 700;">❌ ERROR - PLEASE TRY AGAIN</span>';setTimeout(()=>{button.innerHTML=originalContent;button.disabled=false;button.classList.remove('loading');button.style.cursor='pointer';button.style.background='';},3000);}}function init(){log.info('Initializing Product Mapping Final CTA System...');const button=document.getElementById('product-mapping-final-cta-btn');if(!button){log.error('Button not found! Retrying...');setTimeout(init,500);return;}log.success('Button found!');const newButton=button.cloneNode(true);button.parentNode.replaceChild(newButton,button);newButton.addEventListener('click',handleButtonClick);newButton.style.position='relative';newButton.style.zIndex='999999';log.success('Product Mapping Final CTA System ready! 🚀');}removeInterferingElements();[1000,2000,3000,5000].forEach(delay=>{setTimeout(removeInterferingElements,delay);});if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}setTimeout(init,500);setTimeout(init,1500);window.testProductMappingFinalCTASystem=function(){log.info('=== MANUAL TEST TRIGGERED ===');const button=document.getElementById('product-mapping-final-cta-btn');if(button){button.click();}else{log.error('Button not found for manual test!');}};window.diagnoseProductMappingFinalCTASystem=function(){console.log('=== PRODUCT MAPPING FINAL CTA DIAGNOSTICS ===');console.log('Button:',document.getElementById('product-mapping-final-cta-btn'));console.log('Variant ID:',CONFIG.VARIANT_ID);console.log('Shopify available:',typeof Shopify!=='undefined');console.log('Cart API:','/cart/add.js');console.log('==========================');};log.info('Product Mapping Final CTA System script loaded successfully! 🎉');log.info('Test manually with: testProductMappingFinalCTASystem()');log.info('Run diagnostics with: diagnoseProductMappingFinalCTASystem()');})();</script>`,
 };
 
 // Helper function to get HTML for a course

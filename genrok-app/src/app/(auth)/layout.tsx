@@ -57,11 +57,7 @@ const DESKTOP_ONLY_VIDEOS = [
 const DESKTOP_VIDEOS = [...BASE_VIDEOS, ...DESKTOP_ONLY_VIDEOS];
 const MOBILE_VIDEOS = BASE_VIDEOS;
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [showForm, setShowForm] = useState(false);
@@ -90,15 +86,16 @@ export default function AuthLayout({
       <div className="auth-container-desktop">
         {/* Left Panel - Form */}
         <div className="auth-form-side">
-          <div className="auth-form-wrapper">
-            {children}
-          </div>
+          <div className="auth-form-wrapper">{children}</div>
         </div>
 
         {/* Right Panel - Video */}
         <div className="auth-media-side">
           <div className="auth-media-content" style={{ justifyContent: 'center' }}>
-            <div className="auth-media-wrapper" style={{ borderRadius: '32px', overflow: 'hidden' }}>
+            <div
+              className="auth-media-wrapper"
+              style={{ borderRadius: '32px', overflow: 'hidden' }}
+            >
               <video
                 src={desktopVideo}
                 autoPlay
@@ -124,7 +121,10 @@ export default function AuthLayout({
         )}
 
         {/* Video Section - Smaller when form is shown */}
-        <div className={`auth-mobile-video ${showForm ? 'compact' : ''}`} style={{ overflow: 'hidden' }}>
+        <div
+          className={`auth-mobile-video ${showForm ? 'compact' : ''}`}
+          style={{ overflow: 'hidden' }}
+        >
           <video
             src={mobileVideo}
             autoPlay
@@ -142,18 +142,10 @@ export default function AuthLayout({
             {/* Buttons Panel */}
             <div className="auth-mobile-slide-buttons">
               <div className="auth-mobile-btn-group">
-                <button
-                  type="button"
-                  onClick={handleLogin}
-                  className="btn-auth-primary w-full"
-                >
+                <button type="button" onClick={handleLogin} className="btn-auth-primary w-full">
                   LOG IN
                 </button>
-                <button
-                  type="button"
-                  onClick={handleSignup}
-                  className="btn-auth-secondary w-full"
-                >
+                <button type="button" onClick={handleSignup} className="btn-auth-secondary w-full">
                   SIGN UP
                 </button>
               </div>
@@ -161,11 +153,7 @@ export default function AuthLayout({
 
             {/* Form Panel */}
             <div className="auth-mobile-slide-form">
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="auth-mobile-back"
-              >
+              <button type="button" onClick={() => setShowForm(false)} className="auth-mobile-back">
                 <ArrowLeft size={16} />
                 Back
               </button>

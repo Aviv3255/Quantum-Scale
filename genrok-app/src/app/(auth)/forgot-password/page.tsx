@@ -48,18 +48,19 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.5 }}
         className="auth-form text-center"
       >
-        <div className="w-16 h-16 mx-auto mb-6 bg-[#F5F5F7] rounded-full flex items-center justify-center">
-          <Check className="w-8 h-8 text-[#000000]" strokeWidth={2} />
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#F5F5F7]">
+          <Check className="h-8 w-8 text-[#000000]" strokeWidth={2} />
         </div>
-        <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Check your email</h1>
-        <p className="text-[var(--text-muted)] mb-6">
-          We&apos;ve sent a password reset link to your email address. Click the link to create a new password.
+        <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary)]">Check your email</h1>
+        <p className="mb-6 text-[var(--text-muted)]">
+          We&apos;ve sent a password reset link to your email address. Click the link to create a
+          new password.
         </p>
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-[#000000] hover:underline font-semibold"
+          className="inline-flex items-center gap-2 font-semibold text-[#000000] hover:underline"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={2} />
+          <ArrowLeft className="h-4 w-4" strokeWidth={2} />
           Back to Sign In
         </Link>
       </motion.div>
@@ -73,11 +74,13 @@ export default function ForgotPasswordPage() {
       transition={{ duration: 0.5 }}
     >
       <div className="auth-form">
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 mx-auto mb-4 bg-[#F5F5F7] rounded-full flex items-center justify-center">
-            <KeyRound className="w-7 h-7 text-[#000000]" strokeWidth={1.5} />
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#F5F5F7]">
+            <KeyRound className="h-7 w-7 text-[#000000]" strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Forgot your password?</h1>
+          <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary)]">
+            Forgot your password?
+          </h1>
           <p className="text-[var(--text-muted)]">
             No worries, we&apos;ll send you reset instructions.
           </p>
@@ -87,7 +90,7 @@ export default function ForgotPasswordPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm"
+            className="mb-6 rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-600"
           >
             {error}
           </motion.div>
@@ -108,25 +111,19 @@ export default function ForgotPasswordPage() {
                 className={`form-input input-with-icon ${errors.email ? 'border-[var(--error)]' : ''}`}
               />
             </div>
-            {errors.email && (
-              <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-auth-primary w-full"
-          >
+          <button type="submit" disabled={isSubmitting} className="btn-auth-primary w-full">
             {isSubmitting ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" strokeWidth={1.5} />
+                <Loader2 className="h-5 w-5 animate-spin" strokeWidth={1.5} />
                 Sending reset link...
               </>
             ) : (
               <>
                 Reset Password
-                <ArrowRight className="w-5 h-5" strokeWidth={2} />
+                <ArrowRight className="h-5 w-5" strokeWidth={2} />
               </>
             )}
           </button>
@@ -135,9 +132,9 @@ export default function ForgotPasswordPage() {
         <div className="mt-6 text-center">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[#000000] font-medium"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-muted)] hover:text-[#000000]"
           >
-            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+            <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
             Back to Sign In
           </Link>
         </div>

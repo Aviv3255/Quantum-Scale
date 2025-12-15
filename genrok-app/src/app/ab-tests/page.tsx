@@ -3,13 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import {
-  TrendingUp,
-  TrendingDown,
-  BarChart3,
-  ExternalLink,
-  Lightbulb,
-} from 'lucide-react';
+import { TrendingUp, TrendingDown, BarChart3, ExternalLink, Lightbulb } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -121,8 +115,8 @@ export default function ABTestsPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
       </div>
     );
   }
@@ -132,12 +126,15 @@ export default function ABTestsPage() {
       <div className="page-wrapper">
         {/* Page Header */}
         <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h1>A/B Test Results</h1>
-              <p>Real results from real tests. See what actually moves the needle for conversion rates and AOV.</p>
+              <p>
+                Real results from real tests. See what actually moves the needle for conversion
+                rates and AOV.
+              </p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+            <div className="flex items-center gap-2 rounded-full bg-[var(--bg-secondary)] px-4 py-2">
               <BarChart3 size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
               <span className="text-sm font-medium text-[var(--text-primary)]">Real Data</span>
             </div>
@@ -149,74 +146,85 @@ export default function ABTestsPage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid md:grid-cols-2 gap-6"
+          className="grid gap-6 md:grid-cols-2"
         >
           {abTests.map((test) => (
             <motion.div key={test.id} variants={itemVariants}>
               <div className="card card-hover overflow-hidden" style={{ padding: 0 }}>
                 {/* Header */}
-                <div className="p-6 border-b border-[var(--border-light)]">
-                  <span className="badge badge-gold">
-                    {test.category}
-                  </span>
-                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mt-3">
+                <div className="border-b border-[var(--border-light)] p-6">
+                  <span className="badge badge-gold">{test.category}</span>
+                  <h3 className="mt-3 text-lg font-semibold text-[var(--text-primary)]">
                     {test.title}
                   </h3>
                 </div>
 
                 {/* Results */}
-                <div className="p-6 bg-[var(--bg-secondary)]">
-                  <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="bg-[var(--bg-secondary)] p-6">
+                  <div className="mb-4 grid grid-cols-3 gap-4">
                     <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Control</p>
-                      <p className="text-2xl font-bold text-[var(--text-primary)]">{test.controlCvr}%</p>
+                      <p className="mb-1 text-sm text-[var(--text-muted)]">Control</p>
+                      <p className="text-2xl font-bold text-[var(--text-primary)]">
+                        {test.controlCvr}%
+                      </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Variant</p>
+                      <p className="mb-1 text-sm text-[var(--text-muted)]">Variant</p>
                       <p className="text-2xl font-bold text-green-600">{test.variantCvr}%</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm mb-1 text-[var(--text-muted)]">Lift</p>
+                      <p className="mb-1 text-sm text-[var(--text-muted)]">Lift</p>
                       <div className="flex items-center justify-center gap-1">
                         {test.lift > 0 ? (
                           <TrendingUp size={20} className="text-green-600" strokeWidth={1.5} />
                         ) : (
-                          <TrendingDown size={20} className="text-[var(--text-muted)]" strokeWidth={1.5} />
+                          <TrendingDown
+                            size={20}
+                            className="text-[var(--text-muted)]"
+                            strokeWidth={1.5}
+                          />
                         )}
-                        <p className={`text-2xl font-bold ${test.lift > 0 ? 'text-green-600' : 'text-[var(--text-muted)]'}`}>
-                          {test.lift > 0 ? '+' : ''}{test.lift}%
+                        <p
+                          className={`text-2xl font-bold ${test.lift > 0 ? 'text-green-600' : 'text-[var(--text-muted)]'}`}
+                        >
+                          {test.lift > 0 ? '+' : ''}
+                          {test.lift}%
                         </p>
                       </div>
                     </div>
                   </div>
                   {test.aovLift && (
-                    <div className="text-center p-2 rounded-lg bg-[var(--bg-secondary)]">
+                    <div className="rounded-lg bg-[var(--bg-secondary)] p-2 text-center">
                       <span className="text-sm font-medium text-[var(--text-primary)]">
                         +{test.aovLift}% AOV increase
                       </span>
                     </div>
                   )}
-                  <p className="text-xs text-center mt-2 text-[var(--text-muted)]">
+                  <p className="mt-2 text-center text-xs text-[var(--text-muted)]">
                     Sample size: {test.sampleSize.toLocaleString()} visitors
                   </p>
                 </div>
 
                 {/* Insight */}
                 <div className="p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <Lightbulb size={20} className="text-[var(--text-primary)] flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                  <div className="mb-4 flex items-start gap-3">
+                    <Lightbulb
+                      size={20}
+                      className="mt-0.5 flex-shrink-0 text-[var(--text-primary)]"
+                      strokeWidth={1.5}
+                    />
                     <div>
-                      <p className="font-medium text-[var(--text-primary)] mb-1">Insight</p>
+                      <p className="mb-1 font-medium text-[var(--text-primary)]">Insight</p>
                       <p className="text-sm text-[var(--text-muted)]">{test.insight}</p>
                     </div>
                   </div>
-                  <div className="p-4 rounded-xl bg-[var(--bg-secondary)]">
-                    <p className="text-sm text-[var(--text-primary)] mb-2">{test.recommendation}</p>
+                  <div className="rounded-xl bg-[var(--bg-secondary)] p-4">
+                    <p className="mb-2 text-sm text-[var(--text-primary)]">{test.recommendation}</p>
                     <a
                       href={test.recommendedAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent-gold-hover)] transition-colors"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] transition-colors hover:text-[var(--accent-gold-hover)]"
                     >
                       Try {test.recommendedApp}
                       <ExternalLink size={14} strokeWidth={1.5} />

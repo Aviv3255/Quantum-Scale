@@ -37,7 +37,8 @@ const apps = [
     name: 'Shrine Theme',
     category: 'Theme',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121029.783.png?v=1760087435',
-    description: "Proven as one of the world's highest-converting Shopify themes: ultra-fast load times, precise UX, and conversion-first sections.",
+    description:
+      "Proven as one of the world's highest-converting Shopify themes: ultra-fast load times, precise UX, and conversion-first sections.",
     url: 'https://shrinesolutions.com/?ref=0d9fe741',
     couponCode: 'QUANTUMSCALE',
     discount: '20%',
@@ -47,7 +48,8 @@ const apps = [
     name: 'HyperSKU',
     category: 'Fulfillment',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T115639.885.png?v=1760086613',
-    description: 'Private-agent sourcing & fulfillment with 5-day delivery options, branded packaging, and no upfront fees.',
+    description:
+      'Private-agent sourcing & fulfillment with 5-day delivery options, branded packaging, and no upfront fees.',
     url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
   },
   {
@@ -55,7 +57,8 @@ const apps = [
     name: 'Section Store',
     category: 'Conversion',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121113.691.png?v=1760087483',
-    description: 'The best plug-and-play sections library for Shopify. Ship premium landing pages without code.',
+    description:
+      'The best plug-and-play sections library for Shopify. Ship premium landing pages without code.',
     url: 'https://platform.shoffi.app/r/rl_WvFtTikK',
   },
   {
@@ -63,7 +66,8 @@ const apps = [
     name: 'Vitals',
     category: 'Conversion',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121155.514.png?v=1760087521',
-    description: 'All-in-one conversion suite: reviews, bundles, sticky ATC, urgency, trust, and more.',
+    description:
+      'All-in-one conversion suite: reviews, bundles, sticky ATC, urgency, trust, and more.',
     url: 'https://vitals.app/shopify/12548540',
     discount: '40-day free trial',
   },
@@ -72,7 +76,8 @@ const apps = [
     name: 'ABConvert - A/B Testing',
     category: 'Conversion',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121227.284.png?v=1760087566',
-    description: 'The #1 A/B testing tool for Shopify: test prices, headlines, layouts, CTAs, and more.',
+    description:
+      'The #1 A/B testing tool for Shopify: test prices, headlines, layouts, CTAs, and more.',
     url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel',
     couponCode: 'LASERCRO',
     discount: '10%',
@@ -91,7 +96,8 @@ const apps = [
     name: 'Selleasy - Upsell & Cross Sell',
     category: 'Conversion',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T134136.646.png?v=1760265713',
-    description: "18+ ways to increase AOV: cart page upsells, thank you page offers, post-purchase one-click upsells.",
+    description:
+      '18+ ways to increase AOV: cart page upsells, thank you page offers, post-purchase one-click upsells.',
     url: 'https://platform.shoffi.app/r/rl_lYJ1Z4Eq',
   },
   {
@@ -123,7 +129,8 @@ const apps = [
     name: 'PayPal Tracking Sync',
     category: 'Automation',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122054.732.png?v=1760088059',
-    description: 'Automatically sync order tracking to PayPal to reduce holds and unlock funds faster.',
+    description:
+      'Automatically sync order tracking to PayPal to reduce holds and unlock funds faster.',
     url: 'https://platform.shoffi.app/r/rl_Fn8dZcAb',
   },
   {
@@ -163,8 +170,8 @@ export default function ShopifyAppsPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-gold)] border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--accent-gold)] border-t-transparent" />
       </div>
     );
   }
@@ -184,34 +191,40 @@ export default function ShopifyAppsPage() {
       <div className="page-wrapper">
         {/* Page Header */}
         <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h1>Discounted Shopify Apps</h1>
               <p>Install via our links to unlock special pricing and extended trials</p>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
+            <div className="flex items-center gap-2 rounded-full bg-[var(--bg-secondary)] px-4 py-2">
               <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--text-primary)]">22 Curated Apps</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">
+                22 Curated Apps
+              </span>
             </div>
           </div>
         </header>
 
         {/* Categories Filter */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
+        <div className="scrollbar-hide mb-8 flex items-center gap-2 overflow-x-auto pb-4">
           {categories.map((category) => {
             const isActive = activeCategory === category.id;
             return (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-[var(--primary)]'
-                    : 'bg-white text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                    : 'border border-[var(--border-light)] bg-white text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                 }`}
                 style={isActive ? { color: '#FFFFFF' } : undefined}
               >
-                <category.icon size={16} strokeWidth={1.5} style={isActive ? { color: '#FFFFFF' } : undefined} />
+                <category.icon
+                  size={16}
+                  strokeWidth={1.5}
+                  style={isActive ? { color: '#FFFFFF' } : undefined}
+                />
                 <span>{category.name}</span>
               </button>
             );
@@ -228,43 +241,43 @@ export default function ShopifyAppsPage() {
           >
             {filteredApps.map((app) => (
               <motion.div key={app.id} variants={itemVariants} className="h-full">
-                <div className="card card-hover overflow-hidden h-full flex flex-col" style={{ padding: 0 }}>
+                <div
+                  className="card card-hover flex h-full flex-col overflow-hidden"
+                  style={{ padding: 0 }}
+                >
                   {/* Header */}
                   <div className="p-6 pb-4">
                     <div className="flex items-start gap-4">
-                      <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-[var(--bg-secondary)]">
-                        <Image
-                          src={app.logo}
-                          alt={app.name}
-                          fill
-                          className="object-cover"
-                        />
+                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--bg-secondary)]">
+                        <Image src={app.logo} alt={app.name} fill className="object-cover" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg text-[var(--text-primary)] truncate">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-lg font-semibold text-[var(--text-primary)]">
                           {app.name}
                         </h3>
-                        <span className="badge badge-gold mt-1">
-                          {app.category}
-                        </span>
+                        <span className="badge badge-gold mt-1">{app.category}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Description - flex-1 to fill available space */}
-                  <div className="px-6 pb-4 flex-1">
-                    <p className="text-sm text-[var(--text-muted)] line-clamp-3">
+                  <div className="flex-1 px-6 pb-4">
+                    <p className="line-clamp-3 text-sm text-[var(--text-muted)]">
                       {app.description}
                     </p>
                   </div>
 
                   {/* Fixed height section for badges and coupon */}
-                  <div className="px-6 pb-4 min-h-[72px]">
+                  <div className="min-h-[72px] px-6 pb-4">
                     {/* Discount Badge */}
                     {app.discount && (
                       <div className="mb-3">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-gold)]">
-                          <Gift size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
+                        <div className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-gold)] bg-[var(--bg-secondary)] px-3 py-1.5">
+                          <Gift
+                            size={16}
+                            className="text-[var(--text-primary)]"
+                            strokeWidth={1.5}
+                          />
                           <span className="text-sm font-semibold text-[var(--text-primary)]">
                             {app.discount} OFF
                           </span>
@@ -275,14 +288,14 @@ export default function ShopifyAppsPage() {
                     {/* Coupon Code */}
                     {app.couponCode && (
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-secondary)] border border-dashed border-[var(--border-gold)]">
-                          <code className="text-sm font-mono font-semibold text-[var(--text-primary)]">
+                        <div className="flex-1 rounded-lg border border-dashed border-[var(--border-gold)] bg-[var(--bg-secondary)] px-3 py-2">
+                          <code className="font-mono text-sm font-semibold text-[var(--text-primary)]">
                             {app.couponCode}
                           </code>
                         </div>
                         <button
                           onClick={() => copyCode(app.couponCode!)}
-                          className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                          className="p-2 text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
                         >
                           {copiedCode === app.couponCode ? (
                             <Check size={20} className="text-green-500" strokeWidth={1.5} />
@@ -295,7 +308,7 @@ export default function ShopifyAppsPage() {
                   </div>
 
                   {/* Action - mt-auto to push to bottom */}
-                  <div className="p-6 pt-0 mt-auto">
+                  <div className="mt-auto p-6 pt-0">
                     <a
                       href={app.url}
                       target="_blank"

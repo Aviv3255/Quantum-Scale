@@ -58,8 +58,8 @@ export default function LearnPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function LearnPage() {
       <div className="page-wrapper">
         {/* Page Header */}
         <header className="page-header">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h1>Learning Center</h1>
               <p>38+ in-depth articles on scaling strategies and proven systems</p>
@@ -102,21 +102,25 @@ export default function LearnPage() {
         </header>
 
         {/* Categories Filter */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
+        <div className="scrollbar-hide mb-8 flex items-center gap-2 overflow-x-auto pb-4">
           {categories.map((category) => {
             const isActive = activeCategory === category.id;
             return (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all text-sm font-medium ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-[var(--primary)]'
-                    : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-light)] hover:bg-[var(--bg-hover)]'
+                    : 'border border-[var(--border-light)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                 }`}
                 style={isActive ? { color: '#FFFFFF' } : undefined}
               >
-                <category.icon size={16} strokeWidth={1.5} style={isActive ? { color: '#FFFFFF' } : undefined} />
+                <category.icon
+                  size={16}
+                  strokeWidth={1.5}
+                  style={isActive ? { color: '#FFFFFF' } : undefined}
+                />
                 <span>{category.name}</span>
               </button>
             );
@@ -148,9 +152,11 @@ export default function LearnPage() {
 
         {/* All Articles */}
         <section>
-          <div className="flex items-center justify-between mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-              {activeCategory === 'all' ? 'All Articles' : categories.find(c => c.id === activeCategory)?.name}
+              {activeCategory === 'all'
+                ? 'All Articles'
+                : categories.find((c) => c.id === activeCategory)?.name}
               <span className="ml-2 font-normal text-[var(--text-muted)]">
                 ({filteredArticles.length})
               </span>
@@ -178,7 +184,7 @@ export default function LearnPage() {
                 exit={{ opacity: 0, y: -20 }}
                 className="empty-state"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-[var(--bg-secondary)]">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-secondary)]">
                   <Search size={24} className="text-[var(--text-tertiary)]" strokeWidth={1.5} />
                 </div>
                 <h3>No articles found</h3>
@@ -211,42 +217,36 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           alt={article.title}
           fill
           unoptimized
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';
           }}
         />
-        {featured && (
-          <div className="absolute top-4 left-4 badge badge-primary">
-            Featured
-          </div>
-        )}
-        <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-md rounded-full bg-white/90 border border-white/50">
+        {featured && <div className="badge badge-primary absolute left-4 top-4">Featured</div>}
+        <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 backdrop-blur-md">
           <Clock size={14} className="text-[var(--text-muted)]" strokeWidth={1.5} />
-          <span className="text-xs font-medium text-[var(--text-secondary)]">{article.readTime} min read</span>
+          <span className="text-xs font-medium text-[var(--text-secondary)]">
+            {article.readTime} min read
+          </span>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="badge badge-gold capitalize">
-            {article.category}
-          </span>
+        <div className="mb-3 flex items-center gap-2">
+          <span className="badge badge-gold capitalize">{article.category}</span>
         </div>
 
-        <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2 line-clamp-2 group-hover:opacity-70 transition-opacity">
+        <h3 className="mb-2 line-clamp-2 text-base font-semibold text-[var(--text-primary)] transition-opacity group-hover:opacity-70">
           {article.title}
         </h3>
 
-        <p className="text-sm text-[var(--text-muted)] mb-4 line-clamp-2">
-          {article.description}
-        </p>
+        <p className="mb-4 line-clamp-2 text-sm text-[var(--text-muted)]">{article.description}</p>
 
         {/* Stats if available */}
         {article.stats && article.stats.length > 0 && (
-          <div className="flex gap-4 mb-4">
+          <div className="mb-4 flex gap-4">
             {article.stats.map((stat, i) => (
               <div key={i} className="flex items-center gap-1.5">
                 <span className="text-sm font-bold text-[var(--text-primary)]">{stat.value}</span>
@@ -256,7 +256,7 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           </div>
         )}
 
-        <div className="flex items-center gap-1 font-medium text-sm text-[var(--text-primary)] group-hover:gap-2 transition-all">
+        <div className="flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] transition-all group-hover:gap-2">
           Read article
           <ChevronRight size={16} strokeWidth={1.5} />
         </div>

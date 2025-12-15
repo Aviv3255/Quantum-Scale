@@ -71,16 +71,16 @@ export default function HTMLBlocksAdmin() {
     setHtmlContent('');
   };
 
-  const selectedCourseData = COURSES.find(c => c.slug === selectedCourse);
+  const selectedCourseData = COURSES.find((c) => c.slug === selectedCourse);
   const hasContent = htmlContent.trim().length > 100;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
-      <div className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="sticky top-0 z-50 border-b border-white/10 bg-black/50 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
-            <Link href="/courses" className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+            <Link href="/courses" className="rounded-lg p-2 transition-colors hover:bg-white/10">
               <ChevronLeft size={20} />
             </Link>
             <div>
@@ -93,7 +93,7 @@ export default function HTMLBlocksAdmin() {
             {hasContent && (
               <button
                 onClick={handleDelete}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+                className="flex items-center gap-2 rounded-lg bg-red-500/20 px-4 py-2 text-red-400 transition-colors hover:bg-red-500/30"
               >
                 <Trash2 size={16} />
                 Delete
@@ -102,10 +102,10 @@ export default function HTMLBlocksAdmin() {
             <button
               onClick={handleSave}
               disabled={saveStatus === 'saving'}
-              className="flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all"
+              className="flex items-center gap-2 rounded-lg px-6 py-2 font-medium transition-all"
               style={{
                 backgroundColor: saveStatus === 'saved' ? '#22c55e' : selectedCourseData?.color,
-                color: '#fff'
+                color: '#fff',
               }}
             >
               {saveStatus === 'saved' ? (
@@ -124,20 +124,21 @@ export default function HTMLBlocksAdmin() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Course Selector */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-white/70 mb-2">Select Course</label>
+          <label className="mb-2 block text-sm font-medium text-white/70">Select Course</label>
           <div className="flex flex-wrap gap-2">
             {COURSES.map((course) => {
               const isSelected = selectedCourse === course.slug;
-              const hasSavedContent = savedBlocks[course.slug] && savedBlocks[course.slug].length > 100;
+              const hasSavedContent =
+                savedBlocks[course.slug] && savedBlocks[course.slug].length > 100;
 
               return (
                 <button
                   key={course.slug}
                   onClick={() => setSelectedCourse(course.slug)}
-                  className="relative px-4 py-2 rounded-lg font-medium transition-all"
+                  className="relative rounded-lg px-4 py-2 font-medium transition-all"
                   style={{
                     backgroundColor: isSelected ? course.color : 'rgba(255,255,255,0.1)',
                     color: isSelected ? '#fff' : 'rgba(255,255,255,0.7)',
@@ -146,7 +147,7 @@ export default function HTMLBlocksAdmin() {
                 >
                   {course.name}
                   {hasSavedContent && (
-                    <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-green-500" />
+                    <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-green-500" />
                   )}
                 </button>
               );
@@ -155,7 +156,7 @@ export default function HTMLBlocksAdmin() {
         </div>
 
         {/* Status Bar */}
-        <div className="flex items-center justify-between mb-4 p-4 rounded-xl bg-white/5 border border-white/10">
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Code size={16} className="text-white/50" />
@@ -164,7 +165,7 @@ export default function HTMLBlocksAdmin() {
               </span>
             </div>
             {hasContent && (
-              <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-400">
+              <span className="rounded-full bg-green-500/20 px-2 py-1 text-xs font-medium text-green-400">
                 Ready to use
               </span>
             )}
@@ -173,7 +174,7 @@ export default function HTMLBlocksAdmin() {
           <button
             onClick={() => setShowPreview(!showPreview)}
             disabled={!hasContent}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white/10 hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {showPreview ? <EyeOff size={16} /> : <Eye size={16} />}
             {showPreview ? 'Hide Preview' : 'Show Preview'}
@@ -199,7 +200,7 @@ export default function HTMLBlocksAdmin() {
 <div class="hero-section">
   ...
 </div>`}
-              className="w-full h-[600px] p-4 rounded-xl bg-[#1a1a1a] border border-white/10 text-white/90 font-mono text-sm resize-none focus:outline-none focus:border-white/30 placeholder:text-white/30"
+              className="h-[600px] w-full resize-none rounded-xl border border-white/10 bg-[#1a1a1a] p-4 font-mono text-sm text-white/90 placeholder:text-white/30 focus:border-white/30 focus:outline-none"
             />
           </div>
 
@@ -207,10 +208,10 @@ export default function HTMLBlocksAdmin() {
           {showPreview && hasContent && (
             <div className="space-y-2">
               <label className="block text-sm font-medium text-white/70">Live Preview</label>
-              <div className="h-[600px] rounded-xl overflow-hidden border border-white/10 bg-white">
+              <div className="h-[600px] overflow-hidden rounded-xl border border-white/10 bg-white">
                 <iframe
                   srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;padding:0;">${htmlContent}</body></html>`}
-                  className="w-full h-full"
+                  className="h-full w-full"
                   title="Preview"
                 />
               </div>
@@ -219,19 +220,19 @@ export default function HTMLBlocksAdmin() {
         </div>
 
         {/* Instructions */}
-        <div className="mt-8 p-6 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="text-lg font-semibold mb-4">How to use:</h3>
-          <ol className="list-decimal list-inside space-y-2 text-white/70">
+        <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-6">
+          <h3 className="mb-4 text-lg font-semibold">How to use:</h3>
+          <ol className="list-inside list-decimal space-y-2 text-white/70">
             <li>Select the course you want to add a VIEW 2 layout for</li>
             <li>Paste your complete HTML (including &lt;style&gt; tags) into the editor</li>
             <li>Click "Save HTML Block" to save</li>
             <li>Go to the course page and click "Alternative Layout" to see your HTML</li>
           </ol>
 
-          <div className="mt-4 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+          <div className="mt-4 rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-4">
             <p className="text-sm text-yellow-400">
-              <strong>Note:</strong> HTML blocks are saved in your browser's localStorage.
-              They will persist across sessions but not across different browsers or devices.
+              <strong>Note:</strong> HTML blocks are saved in your browser's localStorage. They will
+              persist across sessions but not across different browsers or devices.
             </p>
           </div>
         </div>
@@ -241,7 +242,7 @@ export default function HTMLBlocksAdmin() {
           <div className="mt-6 text-center">
             <Link
               href={`/courses/${selectedCourse}`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-medium transition-all hover:scale-105"
               style={{ backgroundColor: selectedCourseData?.color }}
             >
               <Eye size={18} />

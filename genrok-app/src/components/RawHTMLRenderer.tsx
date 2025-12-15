@@ -14,7 +14,9 @@ export default function RawHTMLRenderer({ html, onCheckout }: RawHTMLRendererPro
     if (!containerRef.current) return;
 
     // Find all buttons with data-checkout attribute and attach checkout handler
-    const checkoutButtons = containerRef.current.querySelectorAll('[data-checkout], .cta-button, [class*="cta"]');
+    const checkoutButtons = containerRef.current.querySelectorAll(
+      '[data-checkout], .cta-button, [class*="cta"]'
+    );
     checkoutButtons.forEach((button) => {
       button.addEventListener('click', (e) => {
         e.preventDefault();

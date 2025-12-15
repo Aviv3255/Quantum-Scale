@@ -43,7 +43,7 @@ function getTimeBasedGreeting(userName: string) {
     return {
       greeting: `Good evening, ${firstName}`,
       icon: Sparkles,
-      message: "Wrapping up? Take a moment to celebrate your wins today.",
+      message: 'Wrapping up? Take a moment to celebrate your wins today.',
       mood: 'evening',
     };
   } else {
@@ -153,8 +153,8 @@ export default function DashboardPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
       </div>
     );
   }
@@ -179,7 +179,10 @@ export default function DashboardPage() {
               </h1>
               <p className="mt-2">{message}</p>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]" style={{ color: '#FFFFFF' }}>
+            <div
+              className="hidden items-center gap-2 rounded-full bg-[var(--primary)] px-4 py-2 md:flex"
+              style={{ color: '#FFFFFF' }}
+            >
               <Flame size={16} style={{ color: '#FFFFFF' }} />
               <span className="text-sm font-medium">Day 7 Streak</span>
             </div>
@@ -227,21 +230,17 @@ export default function DashboardPage() {
           </div>
           <div className="grid-4">
             {quickActions.map((action) => (
-              <Link
-                key={action.title}
-                href={action.href}
-                className="card card-hover group"
-              >
-                <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-4`}>
+              <Link key={action.title} href={action.href} className="card card-hover group">
+                <div
+                  className={`h-12 w-12 rounded-xl ${action.color} mb-4 flex items-center justify-center`}
+                >
                   <action.icon size={22} className={action.iconColor} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-base font-semibold text-[var(--text-primary)] mb-1">
+                <h3 className="mb-1 text-base font-semibold text-[var(--text-primary)]">
                   {action.title}
                 </h3>
-                <p className="text-sm text-[var(--text-muted)] mb-4">
-                  {action.description}
-                </p>
-                <div className="flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] group-hover:gap-2 transition-all">
+                <p className="mb-4 text-sm text-[var(--text-muted)]">{action.description}</p>
+                <div className="flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] transition-all group-hover:gap-2">
                   Get Started
                   <ArrowRight size={14} strokeWidth={1.5} />
                 </div>
@@ -262,53 +261,58 @@ export default function DashboardPage() {
             <h2 className="section-title">Your Journey</h2>
           </div>
           <div className="card">
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+                <h3 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">
                   250-Step Success Checklist
                 </h3>
-                <p className="text-[var(--text-muted)] mb-4">
-                  You&apos;re making progress. Every step brings you closer to building a successful eCommerce brand.
+                <p className="mb-4 text-[var(--text-muted)]">
+                  You&apos;re making progress. Every step brings you closer to building a successful
+                  eCommerce brand.
                 </p>
-                <div className="flex items-center gap-4 mb-4">
+                <div className="mb-4 flex items-center gap-4">
                   <div className="flex-1">
                     <div className="progress-bar">
-                      <div
-                        className="progress-bar-fill"
-                        style={{ width: '4.8%' }}
-                      />
+                      <div className="progress-bar-fill" style={{ width: '4.8%' }} />
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-[var(--text-primary)]">
-                    12/250
-                  </span>
+                  <span className="text-sm font-semibold text-[var(--text-primary)]">12/250</span>
                 </div>
-                <Link
-                  href="/checklist"
-                  className="btn btn-primary"
-                >
+                <Link href="/checklist" className="btn btn-primary">
                   Continue Checklist
                   <ArrowRight size={16} strokeWidth={1.5} />
                 </Link>
               </div>
-              <div className="w-full md:w-48 h-32 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center">
+              <div className="flex h-32 w-full items-center justify-center rounded-2xl bg-[var(--bg-secondary)] md:w-48">
                 {/* Monkey illustration placeholder */}
-                <svg width="100" height="100" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="90" cy="70" r="35" fill="#555"/>
-                  <ellipse cx="90" cy="78" rx="24" ry="20" fill="#888"/>
-                  <circle cx="78" cy="68" r="6" fill="white"/>
-                  <circle cx="102" cy="68" r="6" fill="white"/>
-                  <circle cx="79" cy="69" r="3" fill="#1a1a1a"/>
-                  <circle cx="103" cy="69" r="3" fill="#1a1a1a"/>
-                  <ellipse cx="90" cy="80" rx="5" ry="3" fill="#444"/>
-                  <path d="M82 86 Q90 92 98 86" stroke="#444" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                  <circle cx="57" cy="65" r="12" fill="#555"/>
-                  <circle cx="57" cy="65" r="7" fill="#888"/>
-                  <circle cx="123" cy="65" r="12" fill="#555"/>
-                  <circle cx="123" cy="65" r="7" fill="#888"/>
+                <svg
+                  width="100"
+                  height="100"
+                  viewBox="0 0 180 180"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="90" cy="70" r="35" fill="#555" />
+                  <ellipse cx="90" cy="78" rx="24" ry="20" fill="#888" />
+                  <circle cx="78" cy="68" r="6" fill="white" />
+                  <circle cx="102" cy="68" r="6" fill="white" />
+                  <circle cx="79" cy="69" r="3" fill="#1a1a1a" />
+                  <circle cx="103" cy="69" r="3" fill="#1a1a1a" />
+                  <ellipse cx="90" cy="80" rx="5" ry="3" fill="#444" />
+                  <path
+                    d="M82 86 Q90 92 98 86"
+                    stroke="#444"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="57" cy="65" r="12" fill="#555" />
+                  <circle cx="57" cy="65" r="7" fill="#888" />
+                  <circle cx="123" cy="65" r="12" fill="#555" />
+                  <circle cx="123" cy="65" r="7" fill="#888" />
                   {/* Thumbs up hand */}
-                  <path d="M60 110 L65 100 L75 100 L75 130 L55 130 L55 115 Z" fill="#555"/>
-                  <ellipse cx="70" cy="95" rx="8" ry="6" fill="#555"/>
+                  <path d="M60 110 L65 100 L75 100 L75 130 L55 130 L55 115 Z" fill="#555" />
+                  <ellipse cx="70" cy="95" rx="8" ry="6" fill="#555" />
                 </svg>
               </div>
             </div>
@@ -327,20 +331,28 @@ export default function DashboardPage() {
           </div>
           <div className="grid-2">
             <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Recommended Article</h4>
-              <p className="text-sm text-[var(--text-muted)] mb-4">
-                Based on your progress, we recommend reading about customer lifetime value optimization.
+              <h4 className="mb-2 font-semibold text-[var(--text-primary)]">Recommended Article</h4>
+              <p className="mb-4 text-sm text-[var(--text-muted)]">
+                Based on your progress, we recommend reading about customer lifetime value
+                optimization.
               </p>
-              <Link href="/learn" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
+              <Link
+                href="/learn"
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] hover:opacity-70"
+              >
                 Read Now <ArrowRight size={14} />
               </Link>
             </div>
             <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Today&apos;s Focus</h4>
-              <p className="text-sm text-[var(--text-muted)] mb-4">
-                Complete 3 more checklist items to maintain your streak and unlock your next milestone.
+              <h4 className="mb-2 font-semibold text-[var(--text-primary)]">Today&apos;s Focus</h4>
+              <p className="mb-4 text-sm text-[var(--text-muted)]">
+                Complete 3 more checklist items to maintain your streak and unlock your next
+                milestone.
               </p>
-              <Link href="/checklist" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
+              <Link
+                href="/checklist"
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] hover:opacity-70"
+              >
                 View Checklist <ArrowRight size={14} />
               </Link>
             </div>

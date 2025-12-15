@@ -30,17 +30,18 @@ export interface Article {
 }
 
 const articles: RawArticle[] = [
-    {
-      id: 1,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
-      title: 'Who Is the Best Private Agent in the Market Today',
-      intro: '5-days home shipping, 18/6 Whatsapp support, cheaper prices..',
-      specialFeatures: [
-        { value: '3-5%', label: 'Shipping cost savings' },
-        { value: '5-7 Days', label: 'Delivery time' },
-        { value: '18/6', label: 'WhatsApp support' }
-      ],
-      content: `## What We Tested
+  {
+    id: 1,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577',
+    title: 'Who Is the Best Private Agent in the Market Today',
+    intro: '5-days home shipping, 18/6 Whatsapp support, cheaper prices..',
+    specialFeatures: [
+      { value: '3-5%', label: 'Shipping cost savings' },
+      { value: '5-7 Days', label: 'Delivery time' },
+      { value: '18/6', label: 'WhatsApp support' },
+    ],
+    content: `## What We Tested
 
 We ran two independent tests to create a realistic comparison.
 
@@ -66,16 +67,20 @@ We ran two independent tests to create a realistic comparison.
 ## Conclusion
 
 With pricing nearly identical, the deciding factors were speed, scale readiness, and service efficiency. The winning agent delivered faster shipping, more stable performance, and significantly better support, making it the strongest choice for long-term scaling.`,
-      buttons: [
-        { text: 'Connect the winning agent to your store', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
-    },
-    {
-      id: 2,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_1.jpg?v=1763290608',
-      title: 'Stop Using AliExpress Now',
-      intro: 'AliExpress destroys your store faster than you realize.',
-      content: `## Why AliExpress Damages Your Brand
+    buttons: [
+      {
+        text: 'Connect the winning agent to your store',
+        url: 'https://erp.matedropshipping.com/login?invite_id=915',
+      },
+    ],
+  },
+  {
+    id: 2,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_1.jpg?v=1763290608',
+    title: 'Stop Using AliExpress Now',
+    intro: 'AliExpress destroys your store faster than you realize.',
+    content: `## Why AliExpress Damages Your Brand
 
 ### Problem 1: Slow Shipping Times
 AliExpress averages 21 to 45 days.
@@ -134,16 +139,20 @@ If you have no orders, you pay nothing.
 
 AliExpress might look simple, but it destroys customer experience and eliminates repeat customers.
 A private agent fixes every weakness and gives your brand the foundation required for real scale.`,
-      buttons: [
-        { text: 'Connect Private agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
-    },
-    {
-      id: 3,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_2.jpg?v=1763290696',
-      title: 'Do Product Reviews Increase Conversion?',
-      intro: 'We\'ve did a test if product reviews increase CVR, Here\'s the results',
-      content: `## What We Tested
+    buttons: [
+      {
+        text: 'Connect Private agent',
+        url: 'https://erp.matedropshipping.com/login?invite_id=915',
+      },
+    ],
+  },
+  {
+    id: 3,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_2.jpg?v=1763290696',
+    title: 'Do Product Reviews Increase Conversion?',
+    intro: "We've did a test if product reviews increase CVR, Here's the results",
+    content: `## What We Tested
 
 We tested Shopify product reviews across multiple stores.
 Each product had between 2 and 55 reviews.
@@ -177,17 +186,21 @@ Fake looking reviews can lower conversion instead of increasing it.
 
 Authentic product reviews improve trust and increase conversion.
 Removing them creates a measurable drop of 12.7%.`,
-      buttons: [
-        { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
-        { text: 'Social Proof course', url: 'https://quantum-scale.co/pages/the-social-proof?_pos=1&_psq=social&_ss=e&_v=1.0' }
-      ]
-    },
-    {
-      id: 4,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_3.jpg?v=1763297153',
-      title: 'Important: The Cheat Code for Ecommerce success',
-      intro: 'Do this to understand exactly how much each customer is worth to you',
-      content: `## Have you heard of the Pareto principle?
+    buttons: [
+      { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
+      {
+        text: 'Social Proof course',
+        url: 'https://quantum-scale.co/pages/the-social-proof?_pos=1&_psq=social&_ss=e&_v=1.0',
+      },
+    ],
+  },
+  {
+    id: 4,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_3.jpg?v=1763297153',
+    title: 'Important: The Cheat Code for Ecommerce success',
+    intro: 'Do this to understand exactly how much each customer is worth to you',
+    content: `## Have you heard of the Pareto principle?
 
 20% of the actions generate 80% of the results.
 
@@ -229,17 +242,21 @@ The same process can be applied to the top 10%, top 5% and additional segments.
 ![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
 ![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
 ![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
-      buttons: [
-        { text: 'Connect app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
-        { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
-    },
-    {
-      id: 5,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_4.jpg?v=1763297241',
-      title: 'The Roadmap to One $1M/Month',
-      intro: 'When you build a system strong enough, You cannot be stopped.',
-      content: `## Step 1: Building a 1,000 Dollar LTV Machine for Every Customer
+    buttons: [
+      {
+        text: 'Connect app',
+        url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+      },
+      { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' },
+    ],
+  },
+  {
+    id: 5,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_4.jpg?v=1763297241',
+    title: 'The Roadmap to One $1M/Month',
+    intro: 'When you build a system strong enough, You cannot be stopped.',
+    content: `## Step 1: Building a 1,000 Dollar LTV Machine for Every Customer
 
 This is the entire secret.
 A 1,000 dollar LTV machine for every customer is what allows you to reach the truly large numbers.
@@ -325,18 +342,22 @@ It is simple mathematics plus a smart system plus high LTV.
 $385 per day.
 
 From here, your business becomes a machine that cannot be stopped.`,
-      buttons: [
-        { text: 'The Automatic System That Earn 1,000 Dollars per Customer', url: 'https://quantum-scale.co/pages/test1' },
-        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
-        { text: 'Abandoned Checkout Finisher', url: 'https://quantum-scale.co/pages/test3' }
-      ]
-    },
-    {
-      id: 6,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_5.jpg?v=1763297318',
-      title: 'Does a GEO-Location Announcement Bar Increase Conversion Rates, or Not?',
-      intro: 'We conducted an extensive test, and the results change the rules entirely.',
-      content: `First, no need to keep you curious, we will begin with the conclusion.
+    buttons: [
+      {
+        text: 'The Automatic System That Earn 1,000 Dollars per Customer',
+        url: 'https://quantum-scale.co/pages/test1',
+      },
+      { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
+      { text: 'Abandoned Checkout Finisher', url: 'https://quantum-scale.co/pages/test3' },
+    ],
+  },
+  {
+    id: 6,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_5.jpg?v=1763297318',
+    title: 'Does a GEO-Location Announcement Bar Increase Conversion Rates, or Not?',
+    intro: 'We conducted an extensive test, and the results change the rules entirely.',
+    content: `First, no need to keep you curious, we will begin with the conclusion.
 
 The answer is absolutely **YES**, and by a significant margin.
 
@@ -415,16 +436,15 @@ This feels extremely personal, as if the site was Polish. It creates a sense of 
 And in three stores, AOV increased by 7% to 22%, likely due to the personal connection the visitor experienced.
 
 Since discovering this method, we have implemented it in every brand we manage, and the results have been consistent and clear.`,
-      buttons: [
-        { text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }
-      ]
-    },
-    {
-      id: 7,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_6.jpg?v=1763297348',
-      title: 'Does a Wishlist on Your Website Increase REV/Visit?',
-      intro: 'We conducted several A/B tests, and the results may surprise you.',
-      content: `Many major brands use a Wishlist feature on their websites (see example: farfetch.com).
+    buttons: [{ text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }],
+  },
+  {
+    id: 7,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_6.jpg?v=1763297348',
+    title: 'Does a Wishlist on Your Website Increase REV/Visit?',
+    intro: 'We conducted several A/B tests, and the results may surprise you.',
+    content: `Many major brands use a Wishlist feature on their websites (see example: farfetch.com).
 
 A few years ago, we decided to test why, and how significant it truly is.
 
@@ -453,16 +473,16 @@ A Wishlist is not just a cosmetic addition.
 It is a layer of consumer behavior that deepens buying intention, increases positive emotional connection to the product, and generates a clear rise in revenue per visit.
 
 It is one of the simplest features to install, yet one of the most impactful for Rev/Visit, AOV, and overall conversions.`,
-      buttons: [
-        { text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }
-      ]
-    },
-    {
-      id: 8,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_7.jpg?v=1763297381',
-      title: 'Email vs SMS: Which Generates More Revenue?',
-      intro: 'On the 4th of July, we sent both an SMS and an email campaign to the same audience... Here are the results…',
-      content: `There is constant debate around SMS and email, which one is better.
+    buttons: [{ text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }],
+  },
+  {
+    id: 8,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_7.jpg?v=1763297381',
+    title: 'Email vs SMS: Which Generates More Revenue?',
+    intro:
+      'On the 4th of July, we sent both an SMS and an email campaign to the same audience... Here are the results…',
+    content: `There is constant debate around SMS and email, which one is better.
 We decided to test it out of pure curiosity.
 
 We took one major event, the 4th of July, and within the same brand, to the exact same audience, we sent both an email campaign and an SMS campaign, with the same offer, same main text, and same timing.
@@ -500,17 +520,21 @@ It is money waiting to be collected, just like the **28,000$+** generated from a
 
 If you want the full strategy for both email and SMS, it is available here:
 https://quantum-scale.co/pages/categories`,
-      buttons: [
-        { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
-        { text: 'The Email marketing platform we use', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-      ]
-    },
-    {
-      id: 9,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_8.jpg?v=1763297448',
-      title: 'Email VS SMS for recovering abandoned carts, which one performs better?',
-      intro: 'Results collected over years, summarized.',
-      content: `Across a long period of time, in both large and small stores, we tested which method works better for recovering abandoned carts: automated email or AI-powered SMS that conducts a real conversation with the customer.
+    buttons: [
+      { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
+      {
+        text: 'The Email marketing platform we use',
+        url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
+      },
+    ],
+  },
+  {
+    id: 9,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_8.jpg?v=1763297448',
+    title: 'Email VS SMS for recovering abandoned carts, which one performs better?',
+    intro: 'Results collected over years, summarized.',
+    content: `Across a long period of time, in both large and small stores, we tested which method works better for recovering abandoned carts: automated email or AI-powered SMS that conducts a real conversation with the customer.
 
 There is no theory here, only data.
 
@@ -539,16 +563,20 @@ The meaning is clear: anyone running smart SMS earns more from every abandoned c
 But, **use both**. Never leave money on the floor.
 
 However, it is important to choose the correct tactic for SMS automation, one that does not expose you to legal risk.`,
-      buttons: [
-        { text: 'Copy our method that recovers 82% of abandoned checkouts', url: 'https://quantum-scale.co/pages/test3' }
-      ]
-    },
-    {
-      id: 10,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_9.jpg?v=1763297491',
-      title: 'The Pareto Law in eCommerce: The truth that 98% of entrepreneurs miss',
-      intro: 'Very few customers are responsible for almost all of your profit.',
-      content: `Most store owners believe their revenue is spread more or less evenly across all customers. Reality is far from that.
+    buttons: [
+      {
+        text: 'Copy our method that recovers 82% of abandoned checkouts',
+        url: 'https://quantum-scale.co/pages/test3',
+      },
+    ],
+  },
+  {
+    id: 10,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_9.jpg?v=1763297491',
+    title: 'The Pareto Law in eCommerce: The truth that 98% of entrepreneurs miss',
+    intro: 'Very few customers are responsible for almost all of your profit.',
+    content: `Most store owners believe their revenue is spread more or less evenly across all customers. Reality is far from that.
 
 In eCommerce, the Pareto Law is not only valid, it is dramatically more extreme.
 
@@ -646,16 +674,20 @@ The same tactic works identically for the Top 10% and the Top 5%.
 ![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
 ![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
 ![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
-      buttons: [
-        { text: 'Connect the app to your store', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
-    },
-    {
-      id: 11,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_10.jpg?v=1763297561',
-      title: 'Should you add WhatsApp support on your website?',
-      intro: 'It sounds convenient and accessible, but is it the right choice?',
-      content: `## Is it recommended to place WhatsApp on your site?
+    buttons: [
+      {
+        text: 'Connect the app to your store',
+        url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+      },
+    ],
+  },
+  {
+    id: 11,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_10.jpg?v=1763297561',
+    title: 'Should you add WhatsApp support on your website?',
+    intro: 'It sounds convenient and accessible, but is it the right choice?',
+    content: `## Is it recommended to place WhatsApp on your site?
 
 We will start with the conclusion, **no**.
 
@@ -700,16 +732,20 @@ For anyone who wants clean, clear and efficient support, email only is the corre
 We personally like adding this section on the Contact Us form to still provide a sense of differentiation and avoid looking like the other 30 million eCommerce stores:
 
 ![Contact Form Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/56.jpg?v=1763062329)`,
-      buttons: [
-        { text: 'Add This Contact form to your store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
-      ]
-    },
-    {
-      id: 12,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_11.jpg?v=1763297609',
-      title: 'LIVE TEST: Is Meta lying about creative performance reporting?',
-      intro: 'The results will genuinely shock you.',
-      content: `## Introduction
+    buttons: [
+      {
+        text: 'Add This Contact form to your store',
+        url: 'https://platform.shoffi.app/r/rl_WvFtTikK',
+      },
+    ],
+  },
+  {
+    id: 12,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_11.jpg?v=1763297609',
+    title: 'LIVE TEST: Is Meta lying about creative performance reporting?',
+    intro: 'The results will genuinely shock you.',
+    content: `## Introduction
 
 Many entrepreneurs make decisions based solely on Meta's dashboard.
 It seems logical: Meta tells you what generated purchases, what did not, and which creatives should be turned off.
@@ -791,16 +827,16 @@ And in eCommerce, **accuracy in data is the difference between growth and collap
 
 We personally use an outstanding tool (#1 in the world) for external attribution.
 We arranged a discount link for our community if you choose to install through it.`,
-      buttons: [
-        { text: 'Connect the Pixel to your store', url: 'https://www.triplewhale.com/' }
-      ]
-    },
-    {
-      id: 13,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_12.jpg?v=1763297680',
-      title: 'Do you actually know everything about your customers?',
-      intro: 'Post Purchase Surveys will reveal a completely different reality that is worth a lot of money.',
-      content: `**Introduction:** Most store owners are convinced they understand what makes the customer buy, who their customers are, what motivates them, and what their biggest concerns are.
+    buttons: [{ text: 'Connect the Pixel to your store', url: 'https://www.triplewhale.com/' }],
+  },
+  {
+    id: 13,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_12.jpg?v=1763297680',
+    title: 'Do you actually know everything about your customers?',
+    intro:
+      'Post Purchase Surveys will reveal a completely different reality that is worth a lot of money.',
+    content: `**Introduction:** Most store owners are convinced they understand what makes the customer buy, who their customers are, what motivates them, and what their biggest concerns are.
 
 In 90–95% of cases **this is simply wrong and harms conversions**.
 
@@ -883,16 +919,20 @@ In your ads you highlight that your clothing communicates wealth. You run aggres
 The result is simple. From now on you acquire only customers who are worth a lot to the business, instead of those who buy once for $70 and disappear.
 
 You attract customers who within half a year are worth $1,000 each, and within two years $3,000.`,
-      buttons: [
-        { text: 'Add Post Purchase Surveys to your store', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }
-      ]
-    },
-    {
-      id: 14,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_13.jpg?v=1763297723',
-      title: 'The Truth About Fonts',
-      intro: 'The font you choose directly affects trust and conversions.',
-      content: `## A short and precise lesson
+    buttons: [
+      {
+        text: 'Add Post Purchase Surveys to your store',
+        url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
+      },
+    ],
+  },
+  {
+    id: 14,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_13.jpg?v=1763297723',
+    title: 'The Truth About Fonts',
+    intro: 'The font you choose directly affects trust and conversions.',
+    content: `## A short and precise lesson
 
 A font is a psychological decision before it is an aesthetic one.
 The brain evaluates your site within seconds, and the wrong font triggers effort, confusion, and lower conversions.
@@ -979,14 +1019,15 @@ Do not mix fonts.
 And your conversions will rise naturally.
 
 If you want, I can prepare a font recommendation list tailored to specific niches like jewelry, men's fashion, cosmetics, sports, and more.`,
-      buttons: []
-    },
-    {
-      id: 15,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_14.jpg?v=1763297792',
-      title: 'The campaign that delivers 18 ROAS on Google',
-      intro: 'Brand Search is one of the most profitable moves in any store.',
-      content: `## How & Why this works
+    buttons: [],
+  },
+  {
+    id: 15,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_14.jpg?v=1763297792',
+    title: 'The campaign that delivers 18 ROAS on Google',
+    intro: 'Brand Search is one of the most profitable moves in any store.',
+    content: `## How & Why this works
 
 A customer sees you on Meta, becomes interested, but does not buy immediately.
 Maybe he was busy or his credit limit was full.
@@ -1066,14 +1107,15 @@ A Brand Search campaign is mandatory for every store:
 • It is extremely cheap to maintain
 
 This is one of the few campaigns that consistently delivers guaranteed results in every store.`,
-      buttons: []
-    },
-    {
-      id: 16,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_15.jpg?v=1763297827',
-      title: 'Do Swatch Variants Increase Conversion Rates?',
-      intro: 'A small change, a reasonable lift.',
-      content: `Let us start with the conclusion, **yes**.
+    buttons: [],
+  },
+  {
+    id: 16,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_15.jpg?v=1763297827',
+    title: 'Do Swatch Variants Increase Conversion Rates?',
+    intro: 'A small change, a reasonable lift.',
+    content: `Let us start with the conclusion, **yes**.
 It is not a massive change, but it is still meaningful.
 
 ## Our explanation
@@ -1109,16 +1151,20 @@ Swatches are not just "prettier".
 They reduce effort, improve the buying experience, and increase conversions in a measurable way.
 
 Any store with variants should be using them.`,
-      buttons: [
-        { text: 'Add Swatches to your store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }
-      ]
-    },
-    {
-      id: 17,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_16.jpg?v=1763297869',
-      title: 'Buy Now Button - Does It Hurt Revenue per Visit?',
-      intro: 'The data is clear, the conclusions are clear.',
-      content: `First of all, **yes**.
+    buttons: [
+      {
+        text: 'Add Swatches to your store',
+        url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      },
+    ],
+  },
+  {
+    id: 17,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_16.jpg?v=1763297869',
+    title: 'Buy Now Button - Does It Hurt Revenue per Visit?',
+    intro: 'The data is clear, the conclusions are clear.',
+    content: `First of all, **yes**.
 It harms both conversion rate and AOV in a significant way.
 
 ## The explanation
@@ -1175,17 +1221,18 @@ Removing it increases conversions and REV/VISIT significantly and opens an addit
 **Add to Cart + Cart Drawer + cart upsells + Wishlist**
 
 This structure produces more money, more items per order, and more purchases.`,
-      buttons: [
-        { text: 'Add Wishlist', url: 'https://vitals.app/shopify/12548540' },
-        { text: 'Add cart upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }
-      ]
-    },
-    {
-      id: 18,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_17.jpg?v=1763297911',
-      title: 'Add to Cart Button – Rounded or Not?',
-      intro: 'We tested it. A 28px rounded shape produced the highest conversion rate.',
-      content: `## Explanation
+    buttons: [
+      { text: 'Add Wishlist', url: 'https://vitals.app/shopify/12548540' },
+      { text: 'Add cart upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' },
+    ],
+  },
+  {
+    id: 18,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_17.jpg?v=1763297911',
+    title: 'Add to Cart Button – Rounded or Not?',
+    intro: 'We tested it. A 28px rounded shape produced the highest conversion rate.',
+    content: `## Explanation
 
 The Add to Cart button plays a psychological role.
 It must feel clear, accessible, visually pleasant, and inviting to click.
@@ -1240,14 +1287,15 @@ A rounded Add to Cart button converts slightly better than a square one.
 It will not transform the entire business, but it improves the buying experience and adds incremental conversion gains.
 
 In ecommerce, every percent matters, and this is an easy win.`,
-      buttons: []
-    },
-    {
-      id: 19,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_18.jpg?v=1763297988',
-      title: 'Which Shopify Theme Is the Best?',
-      intro: 'Shrine VS. Impulse – Who\'s the king?',
-      content: `## What we tested
+    buttons: [],
+  },
+  {
+    id: 19,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_18.jpg?v=1763297988',
+    title: 'Which Shopify Theme Is the Best?',
+    intro: "Shrine VS. Impulse – Who's the king?",
+    content: `## What we tested
 
 We examined two highly popular themes:
 **Impulse versus Shrine**.
@@ -1272,16 +1320,20 @@ to find which theme creates a smoother buying experience and increases conversio
 • More efficient placement of key information above the fold
 
 Impulse is still an excellent theme, but in a direct comparison Shrine simply outperformed it across the board.`,
-      buttons: [
-        { text: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }
-      ]
-    },
-    {
-      id: 20,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_19.jpg?v=1763298027',
-      title: 'Your Store Is Leaking Coupons',
-      intro: 'Do this now to stop losing profit without noticing.',
-      content: `## The Explanation
+    buttons: [
+      {
+        text: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)',
+        url: 'https://shrinesolutions.com/?ref=0d9fe741',
+      },
+    ],
+  },
+  {
+    id: 20,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_19.jpg?v=1763298027',
+    title: 'Your Store Is Leaking Coupons',
+    intro: 'Do this now to stop losing profit without noticing.',
+    content: `## The Explanation
 
 If you have even one discount code on your site, no matter how hidden or how specific it is, you are losing money every single day.
 
@@ -1316,16 +1368,16 @@ It automatically prevents Honey and other extensions from revealing your coupons
 • Your profit stays with you
 
 This is the first mandatory step we implement for every brand we build.`,
-      buttons: [
-        { text: 'Install coupon blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }
-      ]
-    },
-    {
-      id: 21,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_20.jpg?v=1763298065',
-      title: 'Meta\'s New Brain: Andromeda – How You Must Operate From Now On',
-      intro: 'Meta has upgraded its advertising engine. Those who adapt will earn more from every cent spent.',
-      content: `## What Andromeda Is
+    buttons: [{ text: 'Install coupon blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }],
+  },
+  {
+    id: 21,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_20.jpg?v=1763298065',
+    title: "Meta's New Brain: Andromeda – How You Must Operate From Now On",
+    intro:
+      'Meta has upgraded its advertising engine. Those who adapt will earn more from every cent spent.',
+    content: `## What Andromeda Is
 
 Andromeda is Meta's new advertising engine.
 
@@ -1417,14 +1469,15 @@ Andromeda has changed the rules.
 Those who continue splitting audiences and trying to outsmart the algorithm will lose.
 
 Those who understand that the system is now an AI-driven matching engine, and focus on creative and offer, will generate stronger results on the same budget.`,
-      buttons: []
-    },
-    {
-      id: 22,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_21.jpg?v=1763298175',
-      title: 'The Genius Business Model of Gillette – And How It Can Transform Your Store',
-      intro: 'They sold the main product for almost nothing… and made billions elsewhere.',
-      content: `## The Full Story
+    buttons: [],
+  },
+  {
+    id: 22,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_21.jpg?v=1763298175',
+    title: 'The Genius Business Model of Gillette – And How It Can Transform Your Store',
+    intro: 'They sold the main product for almost nothing… and made billions elsewhere.',
+    content: `## The Full Story
 
 In the early 20th century, when most competitors were selling traditional razors at standard prices, Gillette made a move no one expected.
 
@@ -1487,14 +1540,16 @@ It won because it sold a **cheap entry into a long-term profit engine**.
 The same principle can turn any ecommerce store into an LTV machine.
 
 If you want, I can show you exactly how to apply the Gillette model to your brand step by step.`,
-      buttons: []
-    },
-    {
-      id: 23,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_22.jpg?v=1763298233',
-      title: 'The Best Ecommerce Niches for 2026',
-      intro: 'To reach seven figures in 2026, you must choose a niche that creates a long customer journey.',
-      content: `## Introduction
+    buttons: [],
+  },
+  {
+    id: 23,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_22.jpg?v=1763298233',
+    title: 'The Best Ecommerce Niches for 2026',
+    intro:
+      'To reach seven figures in 2026, you must choose a niche that creates a long customer journey.',
+    content: `## Introduction
 
 As you already know, we are obsessed with LTV.
 
@@ -1602,14 +1657,15 @@ A journey where they:
 ✔ and build around your brand
 
 The longer the journey, the higher the LTV, the more resistant your CAC becomes, and the easier it is to reach millions without relying on luck or hacks.`,
-      buttons: []
-    },
-    {
-      id: 24,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_23.jpg?v=1763298300',
-      title: 'The Two Rules That Determine Whether a Product Can Win on Meta',
-      intro: 'Only products that meet these two rules can scale to real volume.',
-      content: `## 1. The product must be special enough — even in Fashion or Home Decor
+    buttons: [],
+  },
+  {
+    id: 24,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_23.jpg?v=1763298300',
+    title: 'The Two Rules That Determine Whether a Product Can Win on Meta',
+    intro: 'Only products that meet these two rules can scale to real volume.',
+    content: `## 1. The product must be special enough — even in Fashion or Home Decor
 
 On Meta, the customer must do something difficult:
 stop scrolling, feel something, get up from the sofa, grab a credit card, trust a brand they have never heard of, and wait for shipping.
@@ -1676,16 +1732,20 @@ Winning products on Meta always combine two elements:
 **a sharp USP + broad market fit.**
 
 If you want, I can prepare a list of product examples with strong USP in every niche.`,
-      buttons: [
-        { text: 'Product Mapping Manipulation course', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
-    },
-    {
-      id: 25,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_24.jpg?v=1763298453',
-      title: 'A simple trick to reduce CAC on Meta',
-      intro: 'Use every inch of the ad to destroy objections before they appear.',
-      content: `## How it works
+    buttons: [
+      {
+        text: 'Product Mapping Manipulation course',
+        url: 'https://quantum-scale.co/pages/product-mapping-manipulation',
+      },
+    ],
+  },
+  {
+    id: 25,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_24.jpg?v=1763298453',
+    title: 'A simple trick to reduce CAC on Meta',
+    intro: 'Use every inch of the ad to destroy objections before they appear.',
+    content: `## How it works
 
 Instead of waiting for real comments, you place a single pinned comment under every Meta ad that answers the deepest objections.
 
@@ -1723,14 +1783,15 @@ Yes. If used consistently with no improvement, there is a full product guarantee
 • It consistently lowers CAC by filtering hesitation at the subconscious level
 
 If you want, I can now prepare versions for skincare, clothing, home decor, jewelry, fitness, or any other niche.`,
-      buttons: []
-    },
-    {
-      id: 26,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_25.jpg?v=1763298514',
-      title: 'Does Adding a Mastercard Logo Increase Conversion Rates?',
-      intro: 'Research shows that sometimes one small icon is enough to make people spend more.',
-      content: `## The Psychology Behind It
+    buttons: [],
+  },
+  {
+    id: 26,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_25.jpg?v=1763298514',
+    title: 'Does Adding a Mastercard Logo Increase Conversion Rates?',
+    intro: 'Research shows that sometimes one small icon is enough to make people spend more.',
+    content: `## The Psychology Behind It
 
 Most store owners believe that money starts flowing only when the customer enters their card details.
 
@@ -1774,14 +1835,15 @@ A simple logo triggers this perception and reduces resistance.
 Adding a small MasterCard (or similar payment) logo on your product page or checkout page can **increase conversion rates**, because it reduces perceived financial friction and increases willingness to purchase.
 
 Across many stores we see a consistent lift in the "willingness to pay" metric when the icon is present.`,
-      buttons: []
-    },
-    {
-      id: 27,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_26.jpg?v=1763298626',
-      title: 'The Formula to Sell Anything to Anyone',
-      intro: 'The 4 elements for unlimited sales',
-      content: `## 1. Dream Outcome
+    buttons: [],
+  },
+  {
+    id: 27,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_26.jpg?v=1763298626',
+    title: 'The Formula to Sell Anything to Anyone',
+    intro: 'The 4 elements for unlimited sales',
+    content: `## 1. Dream Outcome
 
 **Goal: Increase**
 
@@ -1848,17 +1910,18 @@ plus **Low Effort and Sacrifice**
 equals a buying decision that feels almost inevitable.
 
 This is how you sell anything to anyone at scale.`,
-      buttons: [
-        { text: 'The Social Proof', url: 'https://quantum-scale.co/pages/the-social-proof' },
-        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' }
-      ]
-    },
-    {
-      id: 28,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_27.jpg?v=1763298626',
-      title: 'How to Choose the Right Products for Ecommerce',
-      intro: 'Two rules decide everything. Win or lose.',
-      content: `## 1. The product must be special enough
+    buttons: [
+      { text: 'The Social Proof', url: 'https://quantum-scale.co/pages/the-social-proof' },
+      { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
+    ],
+  },
+  {
+    id: 28,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_27.jpg?v=1763298626',
+    title: 'How to Choose the Right Products for Ecommerce',
+    intro: 'Two rules decide everything. Win or lose.',
+    content: `## 1. The product must be special enough
 
 Your product needs one core quality:
 **a real reason to buy**.
@@ -1932,17 +1995,24 @@ If either answer is no, the product is not suitable.
 ## Want to go deeper and master this at a professional level
 
 These two resources will take you to the next stage:`,
-      buttons: [
-        { text: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
-        { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
-    },
-    {
-      id: 29,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_28.jpg?v=1763298859',
-      title: 'Gary Halbert\'s Secret to Selling Anything to Anyone',
-      intro: 'You do not sell the product. You sell the outcome.',
-      content: `Gary Halbert's greatest advantage was not copywriting talent, creativity, or clever tactics.
+    buttons: [
+      {
+        text: 'Offer Workshop: Irresistible eCom Offer',
+        url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer',
+      },
+      {
+        text: 'Product Mapping Manipulation',
+        url: 'https://quantum-scale.co/pages/product-mapping-manipulation',
+      },
+    ],
+  },
+  {
+    id: 29,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_28.jpg?v=1763298859',
+    title: "Gary Halbert's Secret to Selling Anything to Anyone",
+    intro: 'You do not sell the product. You sell the outcome.',
+    content: `Gary Halbert's greatest advantage was not copywriting talent, creativity, or clever tactics.
 
 It was something much simpler and far more powerful:
 **he sold what people already wanted.**
@@ -2037,14 +2107,15 @@ It is immune to algorithms, platform changes, and ad costs because it is built o
 **Customers buy the future version of themselves, not the product that gets them there.**
 
 Halbert built his entire empire on this truth.`,
-      buttons: []
-    },
-    {
-      id: 30,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_29.jpg?v=1763298901',
-      title: 'How to Sell Rocks for 30 Million Dollars?',
-      intro: 'This marketer sold beach stones for thirty million dollars.',
-      content: `In 1975, **Gary Dahl** was sitting in a bar with friends. Everyone complained about pets, the mess, the responsibility, the feeding and the care.
+    buttons: [],
+  },
+  {
+    id: 30,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_29.jpg?v=1763298901',
+    title: 'How to Sell Rocks for 30 Million Dollars?',
+    intro: 'This marketer sold beach stones for thirty million dollars.',
+    content: `In 1975, **Gary Dahl** was sitting in a bar with friends. Everyone complained about pets, the mess, the responsibility, the feeding and the care.
 
 Amid the noise, smoke and laughter, Dahl threw a joke:
 "The easiest pet in the world? A rock. You don't have to do anything with it."
@@ -2128,18 +2199,25 @@ Add this story to your product pages, ads, and emails.
 At Quantum Scale we teach exactly this, how to take a product that seems ordinary and transform it into a brand people feel compelled to buy.
 
 **Three courses that will change your thinking at the foundation level:**`,
-      buttons: [
-        { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
-        { text: 'Offer Workshop', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
-        { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
-    },
-    {
-      id: 31,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_30.jpg?v=1763300006',
-      title: 'How Starbucks Makes $14,099 From Every Customer?',
-      intro: 'Be stingy about this, and you will never lack money for the rest of your life.',
-      content: `Winning brands share one repeating principle:
+    buttons: [
+      { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
+      {
+        text: 'Offer Workshop',
+        url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer',
+      },
+      {
+        text: 'Product Mapping Manipulation',
+        url: 'https://quantum-scale.co/pages/product-mapping-manipulation',
+      },
+    ],
+  },
+  {
+    id: 31,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_30.jpg?v=1763300006',
+    title: 'How Starbucks Makes $14,099 From Every Customer?',
+    intro: 'Be stingy about this, and you will never lack money for the rest of your life.',
+    content: `Winning brands share one repeating principle:
 
 They do not look at immediate profit, the only thing that matters to them is **CAC vs LTV**.
 
@@ -2290,17 +2368,21 @@ And yes, the products on this site cost $30–$55.
 ![Screenshot 1](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216)
 ![Screenshot 2](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224129_1.png?v=1763051216)
 ![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
-      buttons: [
-        { text: 'Connect the app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
-        { text: 'Full LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
-    },
-    {
-      id: 32,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_31.jpg?v=1763300076',
-      title: 'How to Write Killer Ad Headlines',
-      intro: 'Your headline is 80% of your ad\'s success. Master this and you master the money.',
-      content: `Most advertisers obsess over colors, edits, effects, transitions, and long copy.
+    buttons: [
+      {
+        text: 'Connect the app',
+        url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+      },
+      { text: 'Full LTV Course', url: 'https://quantum-scale.co/pages/test1' },
+    ],
+  },
+  {
+    id: 32,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_31.jpg?v=1763300076',
+    title: 'How to Write Killer Ad Headlines',
+    intro: "Your headline is 80% of your ad's success. Master this and you master the money.",
+    content: `Most advertisers obsess over colors, edits, effects, transitions, and long copy.
 
 But they ignore the one element that decides whether the ad succeeds or fails: **the headline**.
 
@@ -2361,16 +2443,20 @@ A collection of 85 proven, psychology-based headlines tested across hundreds of 
 Each headline is engineered to stop the scroll, open a curiosity loop, and activate the buyer's decision-making system.
 
 If you're ready to stop guessing and start using formulas that are scientifically and psychologically proven, this is for you.`,
-      buttons: [
-        { text: '85 Meta Ad Headlines & Hooks Templates', url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks' }
-      ]
-    },
-    {
-      id: 33,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_37.jpg?v=1763398897',
-      title: 'Two Dirty Tricks to Sell Anything to Anyone',
-      intro: 'Use them responsibly, they\'re too powerful.',
-      content: `**These psychological mechanisms are extremely powerful. Use them responsibly. We strongly oppose unethical, manipulative, or deceptive selling.**
+    buttons: [
+      {
+        text: '85 Meta Ad Headlines & Hooks Templates',
+        url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks',
+      },
+    ],
+  },
+  {
+    id: 33,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_37.jpg?v=1763398897',
+    title: 'Two Dirty Tricks to Sell Anything to Anyone',
+    intro: "Use them responsibly, they're too powerful.",
+    content: `**These psychological mechanisms are extremely powerful. Use them responsibly. We strongly oppose unethical, manipulative, or deceptive selling.**
 
 ## 1. The Dream Outcome
 
@@ -2454,16 +2540,20 @@ Miss one, and the sale dies.
 Combine both, and you can sell almost anything to almost anyone at almost any reasonable price.
 
 This is the psychology used by the best marketers in the world.`,
-      buttons: [
-        { text: 'Apply Social Proof Protocol to your strategy', url: 'https://quantum-scale.co/pages/the-social-proof' }
-      ]
-    },
-    {
-      id: 34,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_32.jpg?v=1763397612',
-      title: 'The Lookalike Audience That Will Explode Your Business',
-      intro: 'The Golden Nugget Every Ecommerce Entrepreneur Must Use',
-      content: `There are moments in ecommerce when you discover a growth engine that is not just another tool, but a breach in the system.
+    buttons: [
+      {
+        text: 'Apply Social Proof Protocol to your strategy',
+        url: 'https://quantum-scale.co/pages/the-social-proof',
+      },
+    ],
+  },
+  {
+    id: 34,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_32.jpg?v=1763397612',
+    title: 'The Lookalike Audience That Will Explode Your Business',
+    intro: 'The Golden Nugget Every Ecommerce Entrepreneur Must Use',
+    content: `There are moments in ecommerce when you discover a growth engine that is not just another tool, but a breach in the system.
 
 The following audience is exactly that.
 
@@ -2539,16 +2629,21 @@ Is not dependent on market noise.
 It becomes a business with a power coefficient ten times higher than any competitor.
 
 And this, dear entrepreneurs, is the golden nugget of the marketing world.`,
-      buttons: [
-        { text: 'Connect the free data app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
-    },
-    {
-      id: 35,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_33.jpg?v=1763397653',
-      title: 'CBO vs ABO – The Only Scaling Structure That Works Under Andromeda',
-      intro: 'The debate "ABO or CBO?" is outdated. They are not alternatives. They are two different systems with two different jobs.',
-      content: `ABO is your testing lab.
+    buttons: [
+      {
+        text: 'Connect the free data app',
+        url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+      },
+    ],
+  },
+  {
+    id: 35,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_33.jpg?v=1763397653',
+    title: 'CBO vs ABO – The Only Scaling Structure That Works Under Andromeda',
+    intro:
+      'The debate "ABO or CBO?" is outdated. They are not alternatives. They are two different systems with two different jobs.',
+    content: `ABO is your testing lab.
 CBO is your scaling engine.
 
 ## ABO – Constant Testing, Maximum Creative Diversity
@@ -2625,16 +2720,15 @@ To work correctly under Andromeda, your data must be 100% accurate.
 Below, we will provide access to a free external pixel that delivers exact attribution.
 
 Only then can ABO testing and CBO scaling operate at full power.`,
-      buttons: [
-        { text: 'Connect Accurate Pixel', url: 'https://www.triplewhale.com/pixel' }
-      ]
-    },
-    {
-      id: 36,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_34.jpg?v=1763397682',
-      title: 'The Power of Personalization',
-      intro: 'The psychological weapon behind the GEO-Location Announcement Bar',
-      content: `In a world where eCommerce stores look far too similar, personalization has become the mechanism that separates a brand that sells out of pressure from a brand that sells out of human understanding.
+    buttons: [{ text: 'Connect Accurate Pixel', url: 'https://www.triplewhale.com/pixel' }],
+  },
+  {
+    id: 36,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_34.jpg?v=1763397682',
+    title: 'The Power of Personalization',
+    intro: 'The psychological weapon behind the GEO-Location Announcement Bar',
+    content: `In a world where eCommerce stores look far too similar, personalization has become the mechanism that separates a brand that sells out of pressure from a brand that sells out of human understanding.
 
 Think about it, your customer is exposed to thousands of ads per day, enters dozens of websites every week.
 
@@ -2732,16 +2826,17 @@ As markets become more competitive, the feeling of personal relevance is becomin
 
 Not marketing tactics.
 Human understanding.`,
-      buttons: [
-        { text: 'Add this Announcement bar to your store', url: 'https://parityrocket.com/' }
-      ]
-    },
-    {
-      id: 37,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_35.jpg?v=1763397898',
-      title: 'No one cares about you!',
-      intro: 'Apply This Method in Your Copywriting and You Will Sell More',
-      content: `The principle is simple, and it completely shifts how customers respond to your message:
+    buttons: [
+      { text: 'Add this Announcement bar to your store', url: 'https://parityrocket.com/' },
+    ],
+  },
+  {
+    id: 37,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_35.jpg?v=1763397898',
+    title: 'No one cares about you!',
+    intro: 'Apply This Method in Your Copywriting and You Will Sell More',
+    content: `The principle is simple, and it completely shifts how customers respond to your message:
 
 People do not care about you.
 They care only about themselves.
@@ -2783,14 +2878,15 @@ Every line of copy must answer one question, clearly and instantly:
 If it does not, remove it.
 
 Because the fastest way to make someone fall in love with your brand is to make them fall in love with the version of themselves they become with your product.`,
-      buttons: []
-    },
-    {
-      id: 38,
-      thumbnail: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_36.jpg?v=1763398676',
-      title: 'Do You Really Need High Creative Volume in 2026?',
-      intro: 'Andromeda Has Completely Changed the Rules',
-      content: `Let's start with the answer.
+    buttons: [],
+  },
+  {
+    id: 38,
+    thumbnail:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails_36.jpg?v=1763398676',
+    title: 'Do You Really Need High Creative Volume in 2026?',
+    intro: 'Andromeda Has Completely Changed the Rules',
+    content: `Let's start with the answer.
 
 Yes.
 
@@ -2912,12 +3008,18 @@ And not just volume, but deep, rich, varied, psychologically wide volume, releva
 Brands that master this will enjoy stable CAC, deep scale, and natural optimization.
 
 Brands that don't will continue fighting over prices and searching for "magic targeting tricks" that no longer exist.`,
-      buttons: [
-        { text: '500 Ad Templates in Canva', url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates' },
-        { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
-      ]
-    }
-  ];
+    buttons: [
+      {
+        text: '500 Ad Templates in Canva',
+        url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates',
+      },
+      {
+        text: 'How to Build Simple & Ugly Meta Ad Creatives That Work',
+        url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work',
+      },
+    ],
+  },
+];
 
 // Helper function to generate slug from title
 function generateSlug(title: string): string {
@@ -2931,20 +3033,64 @@ function generateSlug(title: string): string {
 function determineCategory(article: RawArticle): Article['category'] {
   const title = article.title.toLowerCase();
   const content = article.content?.toLowerCase() || '';
-  
-  if (title.includes('ltv') || title.includes('lifetime') || title.includes('pareto') || title.includes('starbucks') || title.includes('gillette')) {
+
+  if (
+    title.includes('ltv') ||
+    title.includes('lifetime') ||
+    title.includes('pareto') ||
+    title.includes('starbucks') ||
+    title.includes('gillette')
+  ) {
     return 'ltv';
   }
-  if (title.includes('meta') || title.includes('ad') || title.includes('email') || title.includes('sms') || title.includes('google') || title.includes('marketing') || title.includes('creative') || title.includes('lookalike') || title.includes('cbo') || title.includes('abo')) {
+  if (
+    title.includes('meta') ||
+    title.includes('ad') ||
+    title.includes('email') ||
+    title.includes('sms') ||
+    title.includes('google') ||
+    title.includes('marketing') ||
+    title.includes('creative') ||
+    title.includes('lookalike') ||
+    title.includes('cbo') ||
+    title.includes('abo')
+  ) {
     return 'marketing';
   }
-  if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
+  if (
+    title.includes('conversion') ||
+    title.includes('cvr') ||
+    title.includes('rev') ||
+    title.includes('aov') ||
+    title.includes('button') ||
+    title.includes('wishlist') ||
+    title.includes('review') ||
+    title.includes('swatch') ||
+    title.includes('theme') ||
+    title.includes('cart')
+  ) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline')) {
+  if (
+    title.includes('psychology') ||
+    title.includes('font') ||
+    title.includes('halbert') ||
+    title.includes('rock') ||
+    title.includes('formula') ||
+    title.includes('trick') ||
+    title.includes('personalization') ||
+    title.includes('copywriting') ||
+    title.includes('headline')
+  ) {
     return 'psychology';
   }
-  if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {
+  if (
+    title.includes('agent') ||
+    title.includes('aliexpress') ||
+    title.includes('whatsapp') ||
+    title.includes('shipping') ||
+    title.includes('coupon')
+  ) {
     return 'operations';
   }
   return 'marketing';
@@ -2969,25 +3115,25 @@ export const processedArticles: Article[] = articles.map((article, index) => ({
 // Helper function to get articles by category
 export function getArticlesByCategory(category: string): Article[] {
   if (category === 'all') return processedArticles;
-  return processedArticles.filter(a => a.category === category);
+  return processedArticles.filter((a) => a.category === category);
 }
 
 // Helper function to get featured articles
 export function getFeaturedArticles(): Article[] {
-  return processedArticles.filter(a => a.isFeatured);
+  return processedArticles.filter((a) => a.isFeatured);
 }
 
 // Helper function to get article by slug
 export function getArticleBySlug(slug: string): Article | undefined {
-  return processedArticles.find(a => a.slug === slug);
+  return processedArticles.find((a) => a.slug === slug);
 }
 
 // Helper function to get related articles
 export function getRelatedArticles(currentSlug: string, limit: number = 3): Article[] {
-  const current = processedArticles.find(a => a.slug === currentSlug);
+  const current = processedArticles.find((a) => a.slug === currentSlug);
   if (!current) return processedArticles.slice(0, limit);
 
   return processedArticles
-    .filter(a => a.slug !== currentSlug && a.category === current.category)
+    .filter((a) => a.slug !== currentSlug && a.category === current.category)
     .slice(0, limit);
 }

@@ -18,12 +18,6 @@ export function LottieAnimation({
   style = {},
 }: LottieAnimationProps) {
   return (
-    <DotLottieReact
-      src={src}
-      loop={loop}
-      autoplay={autoplay}
-      className={className}
-      style={style}
-    />
+    <DotLottieReact src={src} loop={loop} autoplay={autoplay} className={className} style={style} />
   );
 }

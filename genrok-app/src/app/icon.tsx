@@ -6,27 +6,25 @@ export const size = { width: 32, height: 32 };
 
 export default function Icon() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'transparent',
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846"
-          alt=""
-          width={32}
-          height={32}
-          style={{ objectFit: 'contain' }}
-        />
-      </div>
-    ),
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'transparent',
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846"
+        alt=""
+        width={32}
+        height={32}
+        style={{ objectFit: 'contain' }}
+      />
+    </div>,
     { ...size }
   );
 }

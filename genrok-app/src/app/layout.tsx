@@ -1,26 +1,39 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { AuthProvider } from "@/components/providers/AuthProvider";
+import type { Metadata } from 'next';
+import './globals.css';
+import { AuthProvider } from '@/components/providers/AuthProvider';
 
 export const metadata: Metadata = {
-  title: "Quantum Scale | Follow the Monkey",
-  description: "Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond. Follow the Monkey - he knows the path to success.",
-  keywords: ["ecommerce", "shopify", "dropshipping", "LTV", "conversion rate", "meta ads", "tiktok ads", "quantum scale"],
-  authors: [{ name: "Quantum Scale" }],
+  title: 'Quantum Scale | Follow the Monkey',
+  description:
+    'Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond. Follow the Monkey - he knows the path to success.',
+  keywords: [
+    'ecommerce',
+    'shopify',
+    'dropshipping',
+    'LTV',
+    'conversion rate',
+    'meta ads',
+    'tiktok ads',
+    'quantum scale',
+  ],
+  authors: [{ name: 'Quantum Scale' }],
   icons: {
-    icon: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846",
-    apple: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846",
+    icon: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846',
+    apple:
+      'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_14.png?v=1765206846',
   },
   openGraph: {
-    title: "Quantum Scale | Follow the Monkey",
-    description: "Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond.",
-    type: "website",
-    locale: "en_US",
+    title: 'Quantum Scale | Follow the Monkey',
+    description:
+      'Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond.',
+    type: 'website',
+    locale: 'en_US',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Quantum Scale | Follow the Monkey",
-    description: "Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond.",
+    card: 'summary_large_image',
+    title: 'Quantum Scale | Follow the Monkey',
+    description:
+      'Data-driven strategies, proven systems, and premium tools to scale your eCommerce brand to 7 figures and beyond.',
   },
 };
 
@@ -45,10 +58,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased bg-white text-[var(--text-secondary)]">
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className="bg-white font-sans text-[var(--text-secondary)] antialiased">
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

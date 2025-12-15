@@ -88,28 +88,28 @@ const CourseContentInputForm = () => {
   // Validate URL is accessible
   const validateUrl = async (url: string, type: 'mockup' | 'html') => {
     if (!url.trim()) {
-      setUrlValidation(prev => ({ ...prev, [type]: 'idle' }));
+      setUrlValidation((prev) => ({ ...prev, [type]: 'idle' }));
       return;
     }
 
-    setUrlValidation(prev => ({ ...prev, [type]: 'checking' }));
+    setUrlValidation((prev) => ({ ...prev, [type]: 'checking' }));
 
     try {
       // For GitHub Gist raw URLs, we just check the format
       if (url.includes('gist.githubusercontent.com') || url.includes('raw.githubusercontent.com')) {
-        setUrlValidation(prev => ({ ...prev, [type]: 'valid' }));
+        setUrlValidation((prev) => ({ ...prev, [type]: 'valid' }));
         return;
       }
 
       // For other URLs, check if they look valid
       const urlObj = new URL(url);
       if (urlObj.protocol === 'https:' || urlObj.protocol === 'http:') {
-        setUrlValidation(prev => ({ ...prev, [type]: 'valid' }));
+        setUrlValidation((prev) => ({ ...prev, [type]: 'valid' }));
       } else {
-        setUrlValidation(prev => ({ ...prev, [type]: 'invalid' }));
+        setUrlValidation((prev) => ({ ...prev, [type]: 'invalid' }));
       }
     } catch {
-      setUrlValidation(prev => ({ ...prev, [type]: 'invalid' }));
+      setUrlValidation((prev) => ({ ...prev, [type]: 'invalid' }));
     }
   };
 
@@ -120,9 +120,7 @@ const CourseContentInputForm = () => {
       return '';
     }
 
-    const lines = [
-      `Course: ${courseName.trim()}`,
-    ];
+    const lines = [`Course: ${courseName.trim()}`];
 
     if (mockupUrl.trim()) {
       lines.push(`Mockup: ${mockupUrl.trim()}`);
@@ -165,7 +163,7 @@ const CourseContentInputForm = () => {
 
   // Delete a saved course
   const handleDeleteCourse = (id: string) => {
-    saveCourses(savedCourses.filter(c => c.id !== id));
+    saveCourses(savedCourses.filter((c) => c.id !== id));
   };
 
   // Get validation icon
@@ -183,11 +181,11 @@ const CourseContentInputForm = () => {
   };
 
   return (
-    <div className="w-full mb-8">
+    <div className="mb-8 w-full">
       {/* Toggle Button */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+        className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all"
         style={{
           backgroundColor: isExpanded ? '#7700fd' : '#f5f5f5',
           color: isExpanded ? '#ffffff' : '#666',
@@ -207,19 +205,21 @@ const CourseContentInputForm = () => {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-6 rounded-2xl border border-[#eee] bg-white">
+            <div className="mt-4 rounded-2xl border border-[#eee] bg-white p-6">
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="mb-6 flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-semibold text-[#111]">Add Course Content</h3>
-                  <p className="text-sm text-[#666]">Upload HTML to GitHub Gist, then paste the URL here</p>
+                  <p className="text-sm text-[#666]">
+                    Upload HTML to GitHub Gist, then paste the URL here
+                  </p>
                 </div>
 
                 {/* Saved Courses Toggle */}
                 {savedCourses.length > 0 && (
                   <button
                     onClick={() => setShowSavedList(!showSavedList)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-[#f5f5f5] text-[#666] hover:bg-[#eee] transition-colors"
+                    className="flex items-center gap-2 rounded-lg bg-[#f5f5f5] px-3 py-2 text-sm font-medium text-[#666] transition-colors hover:bg-[#eee]"
                   >
                     <FileCode size={14} />
                     History ({savedCourses.length})
@@ -234,30 +234,30 @@ const CourseContentInputForm = () => {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="mb-6 p-4 rounded-xl bg-[#fafafa] border border-[#eee]"
+                    className="mb-6 rounded-xl border border-[#eee] bg-[#fafafa] p-4"
                   >
-                    <h4 className="text-sm font-semibold text-[#111] mb-3">Previous Courses</h4>
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {savedCourses.map(course => (
+                    <h4 className="mb-3 text-sm font-semibold text-[#111]">Previous Courses</h4>
+                    <div className="max-h-48 space-y-2 overflow-y-auto">
+                      {savedCourses.map((course) => (
                         <div
                           key={course.id}
-                          className="flex items-center justify-between p-3 rounded-lg bg-white border border-[#eee]"
+                          className="flex items-center justify-between rounded-lg border border-[#eee] bg-white p-3"
                         >
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-[#111] truncate">{course.courseName}</p>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-medium text-[#111]">{course.courseName}</p>
                             <p className="text-xs text-[#888]">{course.createdAt}</p>
                           </div>
-                          <div className="flex items-center gap-2 ml-4">
+                          <div className="ml-4 flex items-center gap-2">
                             <button
                               onClick={() => handleLoadCourse(course)}
-                              className="p-2 rounded-lg hover:bg-[#f5f5f5] text-[#666]"
+                              className="rounded-lg p-2 text-[#666] hover:bg-[#f5f5f5]"
                               title="Load"
                             >
                               <FileCode size={16} />
                             </button>
                             <button
                               onClick={() => handleDeleteCourse(course.id)}
-                              className="p-2 rounded-lg hover:bg-red-50 text-red-500"
+                              className="rounded-lg p-2 text-red-500 hover:bg-red-50"
                               title="Delete"
                             >
                               <Trash2 size={16} />
@@ -271,16 +271,32 @@ const CourseContentInputForm = () => {
               </AnimatePresence>
 
               {/* Step 1: GitHub Gist Instructions */}
-              <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-[#f6f8fa] to-[#f0f3f6] border border-[#d0d7de]">
+              <div className="mb-6 rounded-xl border border-[#d0d7de] bg-gradient-to-r from-[#f6f8fa] to-[#f0f3f6] p-4">
                 <div className="flex items-start gap-3">
-                  <Github size={20} className="text-[#24292f] mt-0.5" />
+                  <Github size={20} className="mt-0.5 text-[#24292f]" />
                   <div>
-                    <h4 className="font-semibold text-[#24292f] mb-2">Step 1: Upload HTML to GitHub Gist</h4>
-                    <ol className="text-sm text-[#57606a] space-y-1.5">
-                      <li>1. Go to <a href="https://gist.github.com" target="_blank" rel="noopener noreferrer" className="text-[#0969da] hover:underline inline-flex items-center gap-1">gist.github.com <ExternalLink size={12} /></a></li>
+                    <h4 className="mb-2 font-semibold text-[#24292f]">
+                      Step 1: Upload HTML to GitHub Gist
+                    </h4>
+                    <ol className="space-y-1.5 text-sm text-[#57606a]">
+                      <li>
+                        1. Go to{' '}
+                        <a
+                          href="https://gist.github.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[#0969da] hover:underline"
+                        >
+                          gist.github.com <ExternalLink size={12} />
+                        </a>
+                      </li>
                       <li>2. Paste your HTML content</li>
-                      <li>3. Click <strong>"Create secret gist"</strong> (or public)</li>
-                      <li>4. Click <strong>"Raw"</strong> button and copy the URL</li>
+                      <li>
+                        3. Click <strong>"Create secret gist"</strong> (or public)
+                      </li>
+                      <li>
+                        4. Click <strong>"Raw"</strong> button and copy the URL
+                      </li>
                     </ol>
                   </div>
                 </div>
@@ -292,7 +308,7 @@ const CourseContentInputForm = () => {
 
                 {/* Course Name */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                  <label className="mb-2 flex items-center gap-2 text-sm font-medium text-[#333]">
                     <Type size={14} />
                     Course Name *
                   </label>
@@ -301,13 +317,13 @@ const CourseContentInputForm = () => {
                     value={courseName}
                     onChange={(e) => setCourseName(e.target.value)}
                     placeholder="e.g., Product Mapping Manipulation"
-                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
+                    className="w-full rounded-xl border border-[#ddd] px-4 py-3 text-sm focus:border-[#7700fd] focus:outline-none"
                   />
                 </div>
 
                 {/* Mockup URL */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                  <label className="mb-2 flex items-center gap-2 text-sm font-medium text-[#333]">
                     <LinkIcon size={14} />
                     Mockup Image URL
                     {getValidationIcon(urlValidation.mockup)}
@@ -318,16 +334,15 @@ const CourseContentInputForm = () => {
                     onChange={(e) => setMockupUrl(e.target.value)}
                     onBlur={() => validateUrl(mockupUrl, 'mockup')}
                     placeholder="https://cdn.shopify.com/... or https://quantum-scale.co/..."
-                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm"
+                    className="w-full rounded-xl border border-[#ddd] px-4 py-3 text-sm focus:border-[#7700fd] focus:outline-none"
                   />
                 </div>
 
                 {/* HTML Source URL */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-[#333] mb-2">
+                  <label className="mb-2 flex items-center gap-2 text-sm font-medium text-[#333]">
                     <FileCode size={14} />
-                    HTML Source URL (GitHub Gist Raw) *
-                    {getValidationIcon(urlValidation.html)}
+                    HTML Source URL (GitHub Gist Raw) *{getValidationIcon(urlValidation.html)}
                   </label>
                   <input
                     type="url"
@@ -335,17 +350,17 @@ const CourseContentInputForm = () => {
                     onChange={(e) => setHtmlSourceUrl(e.target.value)}
                     onBlur={() => validateUrl(htmlSourceUrl, 'html')}
                     placeholder="https://gist.githubusercontent.com/username/..."
-                    className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#7700fd] focus:outline-none text-sm font-mono"
+                    className="w-full rounded-xl border border-[#ddd] px-4 py-3 font-mono text-sm focus:border-[#7700fd] focus:outline-none"
                   />
-                  <p className="text-xs text-[#888] mt-2">
+                  <p className="mt-2 text-xs text-[#888]">
                     Paste the <strong>Raw</strong> URL from your GitHub Gist
                   </p>
                 </div>
               </div>
 
               {/* Step 3: Actions */}
-              <div className="mt-6 pt-4 border-t border-[#eee]">
-                <h4 className="font-semibold text-[#111] mb-4">Step 3: Copy and send to Claude</h4>
+              <div className="mt-6 border-t border-[#eee] pt-4">
+                <h4 className="mb-4 font-semibold text-[#111]">Step 3: Copy and send to Claude</h4>
 
                 <div className="flex items-center justify-between">
                   <button
@@ -355,7 +370,7 @@ const CourseContentInputForm = () => {
                       setHtmlSourceUrl('');
                       setUrlValidation({ mockup: 'idle', html: 'idle' });
                     }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[#666] hover:bg-[#f5f5f5] transition-colors"
+                    className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-[#666] transition-colors hover:bg-[#f5f5f5]"
                   >
                     <X size={16} />
                     Clear
@@ -364,7 +379,7 @@ const CourseContentInputForm = () => {
                   <button
                     onClick={handleCopyForClaude}
                     disabled={!courseName.trim()}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-white transition-all hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
                     style={{ backgroundColor: copied ? '#22c55e' : '#7700fd' }}
                   >
                     {copied ? (
@@ -384,20 +399,20 @@ const CourseContentInputForm = () => {
 
               {/* Preview of what will be copied */}
               {courseName.trim() && (
-                <div className="mt-4 p-4 rounded-xl bg-[#111] text-white font-mono text-sm">
-                  <p className="text-[#888] text-xs mb-2">Preview (what Claude will receive):</p>
+                <div className="mt-4 rounded-xl bg-[#111] p-4 font-mono text-sm text-white">
+                  <p className="mb-2 text-xs text-[#888]">Preview (what Claude will receive):</p>
                   <pre className="whitespace-pre-wrap text-green-400">
-{generateClaudeMessage()}
+                    {generateClaudeMessage()}
                   </pre>
                 </div>
               )}
 
               {/* Token Savings Info */}
-              <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+              <div className="mt-6 rounded-xl border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
                 <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-green-600 mt-0.5" />
+                  <CheckCircle size={20} className="mt-0.5 text-green-600" />
                   <div>
-                    <h4 className="font-semibold text-green-800 mb-1">Token Savings: ~99%</h4>
+                    <h4 className="mb-1 font-semibold text-green-800">Token Savings: ~99%</h4>
                     <p className="text-sm text-green-700">
                       Instead of pasting 50,000+ characters of HTML, you send ~200 characters.
                       Claude fetches the HTML directly from the URL when building your landing page.
@@ -426,8 +441,11 @@ export default function CoursesPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ffffff' }}>
-        <div className="animate-spin w-8 h-8 border-2 border-black border-t-transparent rounded-full" />
+      <div
+        className="flex min-h-screen items-center justify-center"
+        style={{ backgroundColor: '#ffffff' }}
+      >
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent" />
       </div>
     );
   }
@@ -444,8 +462,8 @@ export default function CoursesPage() {
         }}
       >
         {/* Full Width Header */}
-        <div className="w-full px-6 lg:px-10 pt-8 pb-6">
-          <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
+        <div className="w-full px-6 pb-6 pt-8 lg:px-10">
+          <h1 className="mb-2 text-3xl font-bold text-[#111111]">Courses</h1>
           <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
         </div>
 
@@ -455,19 +473,19 @@ export default function CoursesPage() {
         </div>
 
         {/* Course Grid - Full Width */}
-        <div className="w-full px-6 lg:px-10 pb-10">
+        <div className="w-full px-6 pb-10 lg:px-10">
           {courses.length > 0 ? (
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+              className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
             >
               {courses.map((course) => (
                 <motion.div key={course.slug} variants={itemVariants}>
                   <Link
                     href={`/courses/${course.slug}`}
-                    className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl"
+                    className="group block overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-xl"
                     style={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e5e5e5',
@@ -475,7 +493,7 @@ export default function CoursesPage() {
                   >
                     {/* Image Section */}
                     <div
-                      className="relative w-full flex items-center justify-center p-10"
+                      className="relative flex w-full items-center justify-center p-10"
                       style={{
                         backgroundColor: '#f8f8f8',
                         minHeight: '220px',
@@ -494,13 +512,13 @@ export default function CoursesPage() {
                           }}
                         />
                       ) : (
-                        <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
-                          <BookOpen className="w-10 h-10 text-[#999999]" />
+                        <div className="flex h-32 w-24 items-center justify-center rounded-lg bg-[#e5e5e5]">
+                          <BookOpen className="h-10 w-10 text-[#999999]" />
                         </div>
                       )}
                       {course.badge && (
                         <div
-                          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
+                          className="absolute left-4 top-4 rounded-full px-3 py-1.5 text-xs font-medium"
                           style={{ backgroundColor: '#111111', color: '#ffffff' }}
                         >
                           {course.badge}
@@ -511,48 +529,51 @@ export default function CoursesPage() {
                     {/* Content Section */}
                     <div className="p-6">
                       {/* Title */}
-                      <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
+                      <h2 className="mb-2 text-xl font-semibold text-[#111111] transition-opacity group-hover:opacity-80">
                         {course.title}
                       </h2>
 
                       {/* Subtitle */}
-                      <p className="text-sm text-[#666666] mb-4 line-clamp-2">
-                        {course.subtitle}
-                      </p>
+                      <p className="mb-4 line-clamp-2 text-sm text-[#666666]">{course.subtitle}</p>
 
                       {/* Stats Row */}
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm text-[#888888]">
+                      <div className="mb-4 flex flex-wrap gap-4 text-sm text-[#888888]">
                         <div className="flex items-center gap-1.5">
                           <BookOpen size={14} />
-                          <span>{course.stats[0]?.value} {course.stats[0]?.label}</span>
+                          <span>
+                            {course.stats[0]?.value} {course.stats[0]?.label}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Clock size={14} />
-                          <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
+                          <span>
+                            {course.stats[1]?.value} {course.stats[1]?.label}
+                          </span>
                         </div>
                       </div>
 
                       {/* Bonuses indicator */}
                       {course.bonuses && course.bonuses.length > 0 && (
                         <div
-                          className="flex items-center gap-2 mb-5 p-3 rounded-xl"
+                          className="mb-5 flex items-center gap-2 rounded-xl p-3"
                           style={{ backgroundColor: '#f5f5f5' }}
                         >
-                          <Gift className="w-4 h-4 text-[#666666]" />
+                          <Gift className="h-4 w-4 text-[#666666]" />
                           <span className="text-xs text-[#666666]">
-                            <strong className="text-[#111111]">{course.bonuses.length} bonuses</strong> worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
+                            <strong className="text-[#111111]">
+                              {course.bonuses.length} bonuses
+                            </strong>{' '}
+                            worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
                           </span>
                         </div>
                       )}
 
                       {/* Price and CTA */}
-                      <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
+                      <div className="flex items-center justify-between border-t border-[#eeeeee] pt-5">
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-[#111111]">
-                            ${course.price}
-                          </span>
+                          <span className="text-2xl font-bold text-[#111111]">${course.price}</span>
                           {course.originalPrice && (
-                            <span className="text-sm line-through text-[#999999]">
+                            <span className="text-sm text-[#999999] line-through">
                               ${course.originalPrice}
                             </span>
                           )}
@@ -563,7 +584,7 @@ export default function CoursesPage() {
                           style={{ color: '#111111' }}
                         >
                           View Course
-                          <ArrowRight className="w-4 h-4" />
+                          <ArrowRight className="h-4 w-4" />
                         </div>
                       </div>
                     </div>
@@ -572,11 +593,11 @@ export default function CoursesPage() {
               ))}
             </motion.div>
           ) : (
-            <div className="text-center py-16">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-[#f5f5f5]">
+            <div className="py-16 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#f5f5f5]">
                 <GraduationCap size={24} className="text-[#999999]" strokeWidth={1.5} />
               </div>
-              <h3 className="text-lg font-medium text-[#111111] mb-2">No courses available yet</h3>
+              <h3 className="mb-2 text-lg font-medium text-[#111111]">No courses available yet</h3>
               <p className="text-[#666666]">Check back soon for new learning materials</p>
             </div>
           )}

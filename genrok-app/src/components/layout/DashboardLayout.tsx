@@ -48,96 +48,96 @@ interface NavItem {
 
 const navigationItems: NavItem[] = [
   {
-    title: "Overview",
-    href: "/dashboard",
+    title: 'Overview',
+    href: '/dashboard',
     icon: Home,
   },
   {
-    title: "Business Planning & Forecasts",
+    title: 'Business Planning & Forecasts',
     icon: Briefcase,
     isCategory: true,
     subItems: [
-      { title: "Calculators & Forecasts", href: "/calculators" },
-      { title: "$100K Blueprint", href: "/blueprint" }
-    ]
+      { title: 'Calculators & Forecasts', href: '/calculators' },
+      { title: '$100K Blueprint', href: '/blueprint' },
+    ],
   },
   {
-    title: "Checklists",
+    title: 'Checklists',
     icon: CheckSquare,
     isCategory: true,
     subItems: [
-      { title: "Setup Checklist", href: "/checklist" },
-      { title: "Scale Checklist", href: "/scale-checklist" }
-    ]
+      { title: 'Setup Checklist', href: '/checklist' },
+      { title: 'Scale Checklist', href: '/scale-checklist' },
+    ],
   },
   {
-    title: "Learning Center",
-    href: "/learn",
+    title: 'Learning Center',
+    href: '/learn',
     icon: BookOpen,
   },
   {
-    title: "Courses",
-    href: "/courses",
+    title: 'Courses',
+    href: '/courses',
     icon: GraduationCap,
   },
   {
-    title: "Data Center",
-    href: "/data-center",
+    title: 'Data Center',
+    href: '/data-center',
     icon: Database,
   },
   {
-    title: "Products",
+    title: 'Products',
     icon: ShoppingBag,
     isCategory: true,
     subItems: [
-      { title: "AliExpress Stores", href: "/products/aliexpress" },
-      { title: "Sell These Products", href: "/products/sell-these" },
-      { title: "Private Agent", href: "/products/private-agent" }
-    ]
+      { title: 'AliExpress Stores', href: '/products/aliexpress' },
+      { title: 'Sell These Products', href: '/products/sell-these' },
+      { title: 'Private Agent', href: '/products/private-agent' },
+    ],
   },
   {
-    title: "Secret Apps",
+    title: 'Secret Apps',
     icon: Package,
     isCategory: true,
     subItems: [
-      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
-      { title: "Secret Apps", href: "/apps/secret" }
-    ]
+      { title: 'Discounted Shopify Apps', href: '/apps/shopify' },
+      { title: 'Secret Apps', href: '/apps/secret' },
+    ],
   },
   {
-    title: "Design",
+    title: 'Design',
     icon: Palette,
     isCategory: true,
     subItems: [
-      { title: "Reference Store", href: "/design/reference" },
-      { title: "Web UI Inspiration", href: "/design/web" },
-      { title: "Sections Inspiration", href: "/design/sections" },
-      { title: "Image Inspiration", href: "/design/images" },
-      { title: "AI Tools", href: "/design/ai-tools" },
-      { title: "Shrine Theme", href: "/design/shrine-theme" },
-      { title: "A/B Test Results", href: "/design/ab-tests" }
-    ]
+      { title: 'Reference Store', href: '/design/reference' },
+      { title: 'Web UI Inspiration', href: '/design/web' },
+      { title: 'Sections Inspiration', href: '/design/sections' },
+      { title: 'Image Inspiration', href: '/design/images' },
+      { title: 'AI Tools', href: '/design/ai-tools' },
+      { title: 'Shrine Theme', href: '/design/shrine-theme' },
+      { title: 'A/B Test Results', href: '/design/ab-tests' },
+    ],
   },
   {
-    title: "$6,000 Credit for TikTok Ads",
-    href: "/tiktok-credits",
+    title: '$6,000 Credit for TikTok Ads',
+    href: '/tiktok-credits',
     icon: TrendingUp,
   },
   {
-    title: "Updates",
-    href: "/updates",
+    title: 'Updates',
+    href: '/updates',
     icon: Bell,
   },
   {
-    title: "Preview Onboarding",
-    href: "/onboarding?preview=true",
+    title: 'Preview Onboarding',
+    href: '/onboarding?preview=true',
     icon: UserCircle,
   },
   {
-    title: "Build a Bundle & Save 35%",
-    href: "https://quantum-scale.co/pages/bundle-builder",
+    title: 'Build a Bundle & Save 35%',
+    href: 'https://quantum-scale.co/pages/bundle-builder',
     icon: Package,
-    external: true
+    external: true,
   },
 ];
 
@@ -151,7 +151,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const userEmail = user?.email || '';
-  const userInitials = userName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+  const userInitials = userName
+    .split(' ')
+    .map((n: string) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   const handleSignOut = async () => {
     await signOut();
@@ -167,8 +172,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     for (const item of navigationItems) {
       if (item.isCategory && item.subItems) {
-        const hasActiveSubItem = item.subItems.some(sub =>
-          pathname === sub.href || pathname.startsWith(sub.href + '/')
+        const hasActiveSubItem = item.subItems.some(
+          (sub) => pathname === sub.href || pathname.startsWith(sub.href + '/')
         );
         if (hasActiveSubItem) {
           setExpandedCategory(item.title);
@@ -181,7 +186,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const isItemActive = (item: NavItem): boolean => {
     if (item.external) return false;
     if (item.href) {
-      if (item.title === "Overview") {
+      if (item.title === 'Overview') {
         return pathname === '/dashboard' || pathname === item.href;
       }
       return pathname === item.href || pathname.startsWith(item.href + '/');
@@ -195,7 +200,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const hasCategoryActiveItem = (item: NavItem): boolean => {
     if (!item.subItems) return false;
-    return item.subItems.some(sub => isSubItemActive(sub));
+    return item.subItems.some((sub) => isSubItemActive(sub));
   };
 
   const renderNavItem = (item: NavItem, index: number, isMobile: boolean = false) => {
@@ -208,7 +213,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       // Collapsed sidebar - show only icon with hover tooltip
       if (sidebarCollapsed && !isMobile) {
         return (
-          <div key={index} className="relative group">
+          <div key={index} className="group relative">
             <div
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
@@ -216,20 +221,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
             </div>
             {/* Hover dropdown for collapsed state */}
-            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
-                 style={{
-                   background: 'var(--bg-sidebar)',
-                   border: '1px solid var(--border-subtle)',
-                   borderRadius: '12px',
-                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                 }}>
-              <div className="p-2 space-y-1">
+            <div
+              className="absolute left-full top-0 z-50 ml-2 hidden min-w-[200px] group-hover:block"
+              style={{
+                background: 'var(--bg-sidebar)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div className="space-y-1 p-2">
                 {item.subItems?.map((subItem, subIdx) => (
                   <Link
                     key={subIdx}
                     href={subItem.href}
-                    className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
-                      isSubItemActive(subItem) ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
+                    className={`block rounded-lg px-4 py-2 text-sm transition-colors ${
+                      isSubItemActive(subItem)
+                        ? 'bg-[var(--bg-active)] font-medium text-[var(--text-primary)]'
+                        : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                     }`}
                   >
                     {subItem.title}
@@ -251,11 +260,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
             style={{ textAlign: 'left' }}
           >
-            <div className="flex items-center gap-3 flex-1">
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
+            <div className="flex flex-1 items-center gap-3">
+              <Icon
+                size={20}
+                strokeWidth={1.5}
+                className="flex-shrink-0 text-[var(--text-tertiary)]"
+              />
               <span className="text-left">{item.title}</span>
             </div>
-            {isExpanded ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
+            {isExpanded ? (
+              <ChevronUp size={16} className="flex-shrink-0" />
+            ) : (
+              <ChevronDown size={16} className="flex-shrink-0" />
+            )}
           </button>
 
           <AnimatePresence>
@@ -267,14 +284,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="pl-8 space-y-1 py-1">
+                <div className="space-y-1 py-1 pl-8">
                   {item.subItems?.map((subItem, subIdx) => (
                     <Link
                       key={subIdx}
                       href={subItem.href}
-                      className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                      className={`block rounded-lg px-4 py-2 text-sm transition-colors ${
                         isSubItemActive(subItem)
-                          ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
+                          ? 'bg-[var(--bg-active)] font-medium text-[var(--text-primary)]'
                           : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                       }`}
                       onClick={() => isMobile && setSidebarOpen(false)}
@@ -345,25 +362,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
+      <aside
+        className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}
+      >
         {/* Logo */}
-        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '16px 0' }}>
+        <div
+          className="sidebar-logo"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            padding: '16px 0',
+          }}
+        >
           <img
             src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-12 h-12 rounded-xl object-cover" : "w-24 h-24 rounded-xl object-cover"}
+            className={
+              sidebarCollapsed
+                ? 'h-12 w-12 rounded-xl object-cover'
+                : 'h-24 w-24 rounded-xl object-cover'
+            }
           />
         </div>
 
         {/* Collapse Toggle (Desktop only) */}
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
+          className="absolute -right-3.5 top-6 z-50 hidden h-7 w-7 items-center justify-center rounded-full transition-all md:flex"
           style={{
             background: 'var(--bg-card)',
             border: '1px solid var(--border-light)',
             color: 'var(--text-tertiary)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}
         >
           {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -387,13 +419,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </div>
             </>
           ) : (
-            <div className="sidebar-user-avatar mx-auto" title={userName}>{userInitials}</div>
+            <div className="sidebar-user-avatar mx-auto" title={userName}>
+              {userInitials}
+            </div>
           )}
-          <button
-            onClick={handleSignOut}
-            className="btn-icon"
-            title="Sign out"
-          >
+          <button onClick={handleSignOut} className="btn-icon" title="Sign out">
             <LogOut size={18} strokeWidth={1.5} />
           </button>
         </div>
@@ -405,10 +435,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="topbar">
           <div className="topbar-left">
             {/* Mobile Menu Button */}
-            <button
-              className="btn-icon md:hidden"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
+            <button className="btn-icon md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
@@ -430,7 +457,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Notifications */}
             <button className="btn-icon relative">
               <Bell size={20} strokeWidth={1.5} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white">
                 3
               </span>
             </button>
@@ -438,9 +465,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* Main Content */}
-        <main className="main-content">
-          {children}
-        </main>
+        <main className="main-content">{children}</main>
       </div>
     </div>
   );

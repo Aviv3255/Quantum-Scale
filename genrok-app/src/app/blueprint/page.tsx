@@ -90,7 +90,7 @@ const itemVariants: Variants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.3 }
+    transition: { duration: 0.3 },
   },
 };
 
@@ -99,7 +99,7 @@ export default function BlueprintPage() {
   const { user, isLoading } = useAuthStore();
   const [selectedTier, setSelectedTier] = useState<string>('100k');
 
-  const currentTier = tiersData.find(t => t.id === selectedTier) || tiersData[0];
+  const currentTier = tiersData.find((t) => t.id === selectedTier) || tiersData[0];
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -109,8 +109,8 @@ export default function BlueprintPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
       </div>
     );
   }
@@ -125,20 +125,19 @@ export default function BlueprintPage() {
           minHeight: 'calc(100vh - 64px)',
         }}
       >
-        <div className="w-full px-6 lg:px-12 py-8">
-
+        <div className="w-full px-6 py-8 lg:px-12">
           {/* Header */}
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-16"
+            className="mb-16 text-center"
           >
-<h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-5 tracking-tight">
+            <h1 className="mb-5 text-5xl font-black tracking-tight text-gray-900 md:text-6xl">
               The $100K-$1M Profit Blueprint
             </h1>
 
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-xl text-gray-500">
               The exact metrics that turn potential into unstoppable scale.
             </p>
           </motion.header>
@@ -148,45 +147,46 @@ export default function BlueprintPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="relative rounded-3xl bg-[#0a0a0a] p-8 md:p-12 overflow-hidden"
+            className="relative overflow-hidden rounded-3xl bg-[#0a0a0a] p-8 md:p-12"
             style={{
-              boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+              boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
             }}
           >
             {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5 pointer-events-none" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5" />
 
             {/* Glow effect */}
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="pointer-events-none absolute -right-40 -top-40 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
             <div className="relative z-10">
               {/* Section Title */}
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-2 mb-4">
+              <div className="mb-10 text-center">
+                <div className="mb-4 inline-flex items-center gap-2">
                   <Target size={20} className="text-emerald-400" />
-                  <h2 className="text-3xl md:text-4xl font-bold" style={{ color: '#ffffff' }}>
+                  <h2 className="text-3xl font-bold md:text-4xl" style={{ color: '#ffffff' }}>
                     Your Ideal Metrics Table
                   </h2>
                 </div>
-                <p className="text-gray-400 text-lg">
+                <p className="text-lg text-gray-400">
                   Know your targets. Hit them. Scale relentlessly.
                 </p>
               </div>
 
               {/* Tier Selector */}
-              <div className="flex justify-center gap-3 mb-12">
+              <div className="mb-12 flex justify-center gap-3">
                 {tiersData.map((tier) => (
                   <button
                     key={tier.id}
                     onClick={() => setSelectedTier(tier.id)}
                     className={`
-                      relative px-8 py-4 rounded-2xl font-bold text-base transition-all duration-300
-                      ${selectedTier === tier.id
-                        ? tier.id === '1m'
-                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30 scale-105'
-                          : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30 scale-105'
-                        : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:text-white'
+                      relative rounded-2xl px-8 py-4 text-base font-bold transition-all duration-300
+                      ${
+                        selectedTier === tier.id
+                          ? tier.id === '1m'
+                            ? 'scale-105 bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                            : 'scale-105 bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30'
+                          : 'border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                       }
                     `}
                   >
@@ -196,11 +196,15 @@ export default function BlueprintPage() {
               </div>
 
               {/* Metrics Table */}
-              <div className="mb-10 rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden backdrop-blur-sm">
+              <div className="mb-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
                 {/* Table Header */}
-                <div className="grid grid-cols-2 gap-4 px-6 py-4 bg-white/[0.03] border-b border-white/10">
-                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Metric</span>
-                  <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider text-right">Minimum Target to Hit Goal</span>
+                <div className="grid grid-cols-2 gap-4 border-b border-white/10 bg-white/[0.03] px-6 py-4">
+                  <span className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                    Metric
+                  </span>
+                  <span className="text-right text-sm font-semibold uppercase tracking-wider text-gray-400">
+                    Minimum Target to Hit Goal
+                  </span>
                 </div>
 
                 {/* Table Rows */}
@@ -215,12 +219,14 @@ export default function BlueprintPage() {
                     <motion.div
                       key={`${selectedTier}-${idx}`}
                       variants={itemVariants}
-                      className="grid grid-cols-2 gap-4 px-6 py-5 hover:bg-white/[0.02] transition-colors"
+                      className="grid grid-cols-2 gap-4 px-6 py-5 transition-colors hover:bg-white/[0.02]"
                     >
-                      <span className="text-white font-medium">{metric.name}</span>
+                      <span className="font-medium text-white">{metric.name}</span>
                       <div className="text-right">
-                        <span className="text-white font-bold text-lg">{metric.min}</span>
-                        <span className="text-emerald-400 ml-2 font-semibold">(aim for {metric.aim})</span>
+                        <span className="text-lg font-bold text-white">{metric.min}</span>
+                        <span className="ml-2 font-semibold text-emerald-400">
+                          (aim for {metric.aim})
+                        </span>
                       </div>
                     </motion.div>
                   ))}
@@ -228,37 +234,47 @@ export default function BlueprintPage() {
               </div>
 
               {/* Budget & Profit Cards */}
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid gap-6 md:grid-cols-2">
                 {/* Daily Budget Card */}
-                <div className="relative rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 p-8 overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl" />
+                <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-orange-500/5 p-8">
+                  <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-amber-500/10 blur-2xl" />
                   <div className="relative">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="mb-2 flex items-center gap-2">
                       <Zap size={16} className="text-amber-400" />
-                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                      <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
                         YOUR DAILY BUDGET FOR {currentTier.displayTitle} PROFIT
                       </span>
                     </div>
-                    <p className="text-gray-400 text-sm mb-4">Based on realistic benchmarks</p>
-                    <div className="text-5xl font-black text-white mb-3">${currentTier.dailyBudget}</div>
+                    <p className="mb-4 text-sm text-gray-400">Based on realistic benchmarks</p>
+                    <div className="mb-3 text-5xl font-black text-white">
+                      ${currentTier.dailyBudget}
+                    </div>
                     <p className="text-gray-300">
-                      <span className="text-white font-semibold">~{currentTier.customersPerDay}</span> customers/day •{' '}
-                      <span className="text-white font-semibold">{currentTier.customersPerMonth}</span> customers/month
+                      <span className="font-semibold text-white">
+                        ~{currentTier.customersPerDay}
+                      </span>{' '}
+                      customers/day •{' '}
+                      <span className="font-semibold text-white">
+                        {currentTier.customersPerMonth}
+                      </span>{' '}
+                      customers/month
                     </p>
                   </div>
                 </div>
 
                 {/* Max Profit Card */}
-                <div className="relative rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/20 p-8 overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
+                <div className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-8">
+                  <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-emerald-500/10 blur-2xl" />
                   <div className="relative">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="mb-2 flex items-center gap-2">
                       <TrendingUp size={16} className="text-emerald-400" />
-                      <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
                         IF YOU HIT ALL TARGETS
                       </span>
                     </div>
-                    <p className="text-gray-400 text-sm mb-4">Your potential monthly profit with the same budget</p>
+                    <p className="mb-4 text-sm text-gray-400">
+                      Your potential monthly profit with the same budget
+                    </p>
                     <div className="text-5xl font-black text-white">{currentTier.maxProfit}</div>
                   </div>
                 </div>
@@ -274,44 +290,46 @@ export default function BlueprintPage() {
             className="mt-12 text-center"
           >
             <div
-              className="rounded-3xl bg-[#0a0a0a] p-12 md:p-16 overflow-hidden relative"
+              className="relative overflow-hidden rounded-3xl bg-[#0a0a0a] p-12 md:p-16"
               style={{
-                boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+                boxShadow: '0 25px 80px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
               }}
             >
               {/* Glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="pointer-events-none absolute left-1/2 top-0 h-32 w-96 -translate-x-1/2 rounded-full bg-emerald-500/20 blur-3xl" />
 
               <div className="relative">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>
+                <h2 className="mb-4 text-3xl font-bold md:text-4xl" style={{ color: '#ffffff' }}>
                   Ready to Hit These Numbers?
                 </h2>
-                <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
+                <p className="mx-auto mb-10 max-w-xl text-lg text-gray-400">
                   Learn the exact systems and strategies to make these metrics your reality.
                 </p>
 
                 <Link
                   href="/learn"
                   className="
-                    group relative inline-flex items-center gap-3 px-10 py-5
+                    group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl
                     bg-gradient-to-r from-emerald-500 to-teal-500
-                    text-white font-bold text-lg
-                    rounded-2xl
-                    transition-all duration-300
-                    hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/30
+                    px-10 py-5 text-lg
+                    font-bold
+                    text-white transition-all
+                    duration-300 hover:scale-105 hover:shadow-xl
+                    hover:shadow-emerald-500/30
                     active:scale-100
-                    overflow-hidden
                   "
                 >
                   {/* Shine effect */}
-                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                   <span className="relative">Start Learning</span>
-                  <ArrowRight size={20} className="relative group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight
+                    size={20}
+                    className="relative transition-transform group-hover:translate-x-1"
+                  />
                 </Link>
               </div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </DashboardLayout>

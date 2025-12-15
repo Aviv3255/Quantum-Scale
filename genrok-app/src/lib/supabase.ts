@@ -48,12 +48,18 @@ export const signOut = async () => {
 };
 
 export const getCurrentUser = async () => {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   return { user, error };
 };
 
 export const getSession = async () => {
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
   return { session, error };
 };
 
@@ -81,7 +87,9 @@ export type UserProfile = {
 };
 
 // User Profile helpers
-export const getUserProfile = async (userId: string): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
+export const getUserProfile = async (
+  userId: string
+): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
   const { data, error } = await supabase
     .from('user_profiles')
     .select('*')
@@ -90,7 +98,9 @@ export const getUserProfile = async (userId: string): Promise<{ data: UserProfil
   return { data: data as UserProfile | null, error };
 };
 
-export const createUserProfile = async (userId: string): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
+export const createUserProfile = async (
+  userId: string
+): Promise<{ data: UserProfile | null; error: { code?: string; message: string } | null }> => {
   const { data, error } = await supabase
     .from('user_profiles' as const)
     .insert({

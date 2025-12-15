@@ -84,7 +84,7 @@ export default function LoginPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-xl text-sm bg-[var(--error)]/5 border border-[var(--error)]/10 text-[var(--error)]"
+          className="bg-[var(--error)]/5 border-[var(--error)]/10 mb-6 rounded-xl border p-4 text-sm text-[var(--error)]"
         >
           {error}
         </motion.div>
@@ -107,9 +107,7 @@ export default function LoginPage() {
               className={`form-input input-with-icon ${errors.email ? 'border-[var(--error)]' : ''}`}
             />
           </div>
-          {errors.email && (
-            <span className="form-error">{errors.email.message}</span>
-          )}
+          {errors.email && <span className="form-error">{errors.email.message}</span>}
         </div>
 
         {/* Password Field */}
@@ -129,7 +127,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#333333] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] transition-colors hover:text-[#333333]"
             >
               {showPassword ? (
                 <EyeOff size={18} strokeWidth={1.5} />
@@ -141,7 +139,7 @@ export default function LoginPage() {
           {errors.password ? (
             <span className="form-error">{errors.password.message}</span>
           ) : (
-            <div className="text-right mt-2">
+            <div className="mt-2 text-right">
               <Link href="/forgot-password" className="form-link">
                 Forgot password?
               </Link>
@@ -150,14 +148,10 @@ export default function LoginPage() {
         </div>
 
         {/* Submit Button - Premium Black */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="btn-auth-primary w-full"
-        >
+        <button type="submit" disabled={isSubmitting} className="btn-auth-primary w-full">
           {isSubmitting ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
               Signing in...
             </>
           ) : (
