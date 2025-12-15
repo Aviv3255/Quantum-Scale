@@ -85,90 +85,150 @@ const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; su
 
 const SubconsciousTrapVisuals = () => (
   <>
-    {/* Conversion Comparison */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The Psychology Advantage</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What happens when you apply subconscious triggers</p>
-        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Conversion Rate: Before vs After</h3>
-          <div className="flex items-end justify-center gap-12">
-            <div className="text-center">
-              <div className="relative w-20 mx-auto mb-4">
-                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
-                <div className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ height: '28px', backgroundColor: '#ddd' }} />
-              </div>
-              <div className="text-2xl font-bold text-[#999]">0.89%</div>
-              <div className="text-sm text-[#888] mt-1">Before</div>
-            </div>
-            <div className="pb-16"><ArrowRight size={32} className="text-[#111]" /></div>
-            <div className="text-center">
-              <div className="relative w-20 mx-auto mb-4">
-                <div className="w-full bg-[#f0f0f0] rounded-t-lg" style={{ height: '80px' }} />
-                <motion.div initial={{ height: 0 }} whileInView={{ height: '80px' }} transition={{ duration: 1, delay: 0.3 }} viewport={{ once: true }} className="absolute bottom-0 left-0 right-0 rounded-t-lg" style={{ backgroundColor: '#111' }} />
-              </div>
-              <div className="text-2xl font-bold text-[#111]">6.54%</div>
-              <div className="text-sm text-[#888] mt-1">After</div>
-            </div>
-          </div>
-          <div className="mt-6 text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-600 font-semibold"><ArrowUp size={16} />+635% Increase</span>
-          </div>
-        </div>
+    {/* Hero Stats Banner */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-gradient-to-br from-[#111] via-[#1a1a1a] to-[#111] relative overflow-hidden">
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       </div>
-    </div>
-
-    {/* Key Metrics */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-white">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Psychology-Driven Metrics</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What stores achieve with subconscious influence</p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white/80 text-sm font-medium mb-4">PROVEN RESULTS</span>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">The Psychology Advantage</h2>
+          <p className="text-white/60 max-w-lg mx-auto">What happens when you apply subconscious triggers</p>
+        </motion.div>
+        <div className="grid md:grid-cols-4 gap-6">
           {[
-            { icon: MousePointer, label: 'Click Rate', before: '2.1%', after: '8.7%', increase: '+314%' },
-            { icon: ShoppingBag, label: 'Add to Cart', before: '3.2%', after: '12.4%', increase: '+288%' },
-            { icon: DollarSign, label: 'AOV', before: '$47', after: '$89', increase: '+89%' },
-            { icon: Users, label: 'Trust Score', before: '42%', after: '91%', increase: '+117%' },
-          ].map((metric, index) => (
-            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white border border-[#eee] text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#f5f5f5] flex items-center justify-center mx-auto mb-4"><metric.icon size={24} className="text-[#111]" /></div>
-              <div className="text-sm text-[#888] mb-2">{metric.label}</div>
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
-                <ArrowRight size={14} className="text-[#ccc]" />
-                <span className="text-lg font-bold text-[#111]">{metric.after}</span>
+            { value: '635%', label: 'Conversion Increase', icon: TrendingUp },
+            { value: '314%', label: 'Click Rate Boost', icon: MousePointer },
+            { value: '288%', label: 'Add to Cart Lift', icon: ShoppingBag },
+            { value: '89%', label: 'AOV Growth', icon: DollarSign },
+          ].map((stat, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all opacity-0 group-hover:opacity-100" />
+              <div className="relative p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm text-center hover:bg-white/10 transition-all">
+                <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center mx-auto mb-4">
+                  <stat.icon size={28} className="text-white" />
+                </div>
+                <div className="text-4xl lg:text-5xl font-bold text-white mb-2">+{stat.value}</div>
+                <div className="text-sm text-white/60">{stat.label}</div>
               </div>
-              <span className="text-xs font-medium text-green-500">{metric.increase}</span>
             </motion.div>
           ))}
         </div>
       </div>
     </div>
 
-    {/* Funnel */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-      <div className="max-w-3xl mx-auto">
-        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-          <h3 className="text-lg font-semibold text-[#111] mb-6 text-center">Optimized Conversion Funnel</h3>
-          <div className="max-w-md mx-auto space-y-2">
+    {/* Before/After Transformation */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">Conversion Rate Transformation</h2>
+          <p className="text-[#666]">Real results from applying psychological triggers</p>
+        </motion.div>
+        <div className="p-10 rounded-3xl bg-gradient-to-br from-[#fafafa] to-white border border-[#eee] shadow-sm">
+          <div className="flex items-center justify-center gap-8 lg:gap-16">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center">
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <svg className="w-full h-full -rotate-90">
+                  <circle cx="64" cy="64" r="56" fill="none" stroke="#f0f0f0" strokeWidth="12" />
+                  <circle cx="64" cy="64" r="56" fill="none" stroke="#ddd" strokeWidth="12" strokeDasharray="352" strokeDashoffset="349" strokeLinecap="round" />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-[#999]">0.89%</span>
+                </div>
+              </div>
+              <div className="text-lg font-semibold text-[#666]">Before</div>
+              <div className="text-sm text-[#999]">Industry Average</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} viewport={{ once: true }} className="flex flex-col items-center">
+              <div className="w-16 h-16 rounded-full bg-[#111] flex items-center justify-center">
+                <ArrowRight size={28} className="text-white" />
+              </div>
+              <span className="mt-2 text-xs font-bold text-[#111] bg-green-100 px-3 py-1 rounded-full">+635%</span>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center">
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <svg className="w-full h-full -rotate-90">
+                  <circle cx="64" cy="64" r="56" fill="none" stroke="#f0f0f0" strokeWidth="12" />
+                  <motion.circle initial={{ strokeDashoffset: 352 }} whileInView={{ strokeDashoffset: 120 }} transition={{ duration: 1.5, delay: 0.5 }} viewport={{ once: true }} cx="64" cy="64" r="56" fill="none" stroke="#111" strokeWidth="12" strokeDasharray="352" strokeLinecap="round" />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-[#111]">6.54%</span>
+                </div>
+              </div>
+              <div className="text-lg font-semibold text-[#111]">After</div>
+              <div className="text-sm text-[#666]">With Psychology</div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Metrics Grid */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">Psychology-Driven Metrics</h2>
+          <p className="text-[#666]">What stores achieve with subconscious influence</p>
+        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {[
+            { icon: MousePointer, label: 'Click Rate', before: '2.1%', after: '8.7%', increase: '+314%' },
+            { icon: ShoppingBag, label: 'Add to Cart', before: '3.2%', after: '12.4%', increase: '+288%' },
+            { icon: DollarSign, label: 'AOV', before: '$47', after: '$89', increase: '+89%' },
+            { icon: Users, label: 'Trust Score', before: '42%', after: '91%', increase: '+117%' },
+          ].map((metric, index) => (
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.08 }} viewport={{ once: true }} className="group">
+              <div className="p-6 rounded-2xl bg-white border border-[#eee] text-center h-full hover:shadow-lg hover:border-[#ddd] transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-[#111] flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <metric.icon size={26} className="text-white" />
+                </div>
+                <div className="text-sm font-medium text-[#888] mb-3">{metric.label}</div>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
+                  <ArrowRight size={14} className="text-[#ccc]" />
+                  <span className="text-xl font-bold text-[#111]">{metric.after}</span>
+                </div>
+                <span className="inline-block px-3 py-1 rounded-full bg-green-50 text-green-600 text-xs font-semibold">{metric.increase}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Optimized Funnel */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-white">
+      <div className="max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">Optimized Conversion Funnel</h2>
+          <p className="text-[#666]">Industry average: 1-3% • With psychology triggers: 15-25%</p>
+        </motion.div>
+        <div className="p-10 rounded-3xl bg-gradient-to-br from-[#111] to-[#222]">
+          <div className="max-w-lg mx-auto space-y-3">
             {[
-              { label: 'Visitors', width: '100%', value: '100%', color: '#f5f5f5', textColor: '#666666' },
-              { label: 'Engaged', width: '75%', value: '75%', color: '#e5e5e5', textColor: '#666666' },
-              { label: 'Add to Cart', width: '45%', value: '45%', color: '#d5d5d5', textColor: '#666666' },
-              { label: 'Checkout', width: '30%', value: '30%', color: '#333', textColor: '#ffffff' },
-              { label: 'Purchase', width: '22%', value: '22%', color: '#111', textColor: '#ffffff' },
+              { label: 'Visitors', width: '100%', value: '100%', opacity: 0.2 },
+              { label: 'Engaged', width: '75%', value: '75%', opacity: 0.35 },
+              { label: 'Add to Cart', width: '45%', value: '45%', opacity: 0.5 },
+              { label: 'Checkout', width: '30%', value: '30%', opacity: 0.75 },
+              { label: 'Purchase', width: '22%', value: '22%', opacity: 1 },
             ].map((step, index) => (
-              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="flex items-center gap-4">
-                <div className="w-20 text-right text-sm text-[#888]">{step.label}</div>
-                <div className="flex-1 h-10 bg-[#fafafa] rounded-lg overflow-hidden">
-                  <motion.div initial={{ width: 0 }} whileInView={{ width: step.width }} transition={{ duration: 0.8, delay: index * 0.15 }} viewport={{ once: true }} className="h-full rounded-lg flex items-center justify-end pr-3" style={{ backgroundColor: step.color }}>
-                    <span className="text-sm font-medium" style={{ color: step.textColor }}>{step.value}</span>
+              <motion.div key={index} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="flex items-center gap-4">
+                <div className="w-24 text-right text-sm font-medium text-white/70">{step.label}</div>
+                <div className="flex-1 h-12 bg-white/5 rounded-xl overflow-hidden">
+                  <motion.div initial={{ width: 0 }} whileInView={{ width: step.width }} transition={{ duration: 0.8, delay: index * 0.15 }} viewport={{ once: true }} className="h-full rounded-xl flex items-center justify-end pr-4 bg-white" style={{ opacity: step.opacity }}>
+                    <span className="text-sm font-bold text-[#111]">{step.value}</span>
                   </motion.div>
                 </div>
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-sm text-[#888] mt-6">Industry average: 1-3% • With psychology triggers: 15-25%</p>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} viewport={{ once: true }} className="text-center mt-8">
+            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-[#111] font-semibold text-sm">
+              <TrendingUp size={18} />
+              7X Higher Than Industry Average
+            </span>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -179,77 +239,107 @@ const SubconsciousTrapVisuals = () => (
 
 const LTVSystemVisuals = () => (
   <>
-    {/* LTV Multiplier */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The LTV Multiplier Effect</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Transform one-time buyers into lifetime customers</p>
+    {/* LTV Multiplier - Premium Dark Section */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-gradient-to-br from-[#0a2e0a] via-[#0d3d0d] to-[#0a2e0a] relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #00bc0d 1px, transparent 0)', backgroundSize: '50px 50px' }} />
+      </div>
+      <div className="max-w-5xl mx-auto relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[#00bc0d]/20 text-[#00bc0d] text-sm font-medium mb-4">REVENUE MULTIPLICATION</span>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">The LTV Multiplier Effect</h2>
+          <p className="text-white/60 max-w-lg mx-auto">Transform one-time buyers into lifetime customers</p>
+        </motion.div>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { value: '$47', label: 'First Purchase', desc: 'Average initial order', color: '#ddd', textColor: '#666666', labelColor: '#444444', descColor: '#888888' },
-            { value: '$470', label: 'After 12 Months', desc: 'With LTV system', color: '#666', textColor: '#ffffff', labelColor: '#ffffff', descColor: 'rgba(255,255,255,0.7)' },
-            { value: '$1,000+', label: 'Lifetime Value', desc: 'Customer potential', color: '#111', textColor: '#ffffff', labelColor: '#ffffff', descColor: 'rgba(255,255,255,0.7)' },
+            { value: '$47', label: 'First Purchase', desc: 'Average initial order', highlight: false },
+            { value: '$470', label: 'After 12 Months', desc: 'With LTV system', highlight: true },
+            { value: '$1,000+', label: 'Lifetime Value', desc: 'Customer potential', highlight: true },
           ].map((item, index) => (
-            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl text-center" style={{ backgroundColor: item.color }}>
-              <div className="text-4xl font-bold mb-2" style={{ color: item.textColor }}>{item.value}</div>
-              <div className="font-medium mb-1" style={{ color: item.labelColor }}>{item.label}</div>
-              <div className="text-sm" style={{ color: item.descColor }}>{item.desc}</div>
+            <motion.div key={index} initial={{ opacity: 0, y: 30, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="group">
+              <div className={`p-10 rounded-3xl text-center h-full transition-all duration-300 ${item.highlight ? 'bg-gradient-to-br from-[#00bc0d] to-[#009d0b] hover:shadow-2xl hover:shadow-[#00bc0d]/30' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}>
+                <motion.div initial={{ scale: 0.5 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }} viewport={{ once: true }} className={`text-5xl lg:text-6xl font-bold mb-3 ${item.highlight ? 'text-white' : 'text-white/70'}`}>{item.value}</motion.div>
+                <div className={`font-semibold text-lg mb-1 ${item.highlight ? 'text-white' : 'text-white/80'}`}>{item.label}</div>
+                <div className={`text-sm ${item.highlight ? 'text-white/80' : 'text-white/50'}`}>{item.desc}</div>
+                {index < 2 && <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20"><ArrowRight className="text-[#00bc0d]" size={24} /></div>}
+              </div>
             </motion.div>
           ))}
         </div>
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} viewport={{ once: true }} className="text-center mt-10">
+          <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#111] font-bold text-lg">
+            <TrendingUp size={22} className="text-[#00bc0d]" />
+            21X Customer Value Increase
+          </span>
+        </motion.div>
       </div>
     </div>
 
-    {/* Customer Journey */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-white">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-8 text-center">The Automated Revenue Loop</h2>
-        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
+    {/* Customer Journey - Interactive Timeline */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">The Automated Revenue Loop</h2>
+          <p className="text-[#666]">A self-perpetuating system that grows your revenue automatically</p>
+        </motion.div>
+        <div className="p-10 rounded-3xl bg-gradient-to-br from-[#fafafa] to-white border border-[#eee]">
           <div className="relative">
-            <div className="absolute top-6 left-8 right-8 h-0.5 bg-[#eee]" />
-            <motion.div initial={{ width: '0%' }} whileInView={{ width: '100%' }} transition={{ duration: 1.5 }} viewport={{ once: true }} className="absolute top-6 left-8 h-0.5 bg-[#111]" style={{ maxWidth: 'calc(100% - 64px)' }} />
-            <div className="flex justify-between relative">
+            <div className="absolute top-8 left-12 right-12 h-1 bg-[#eee] rounded-full hidden md:block" />
+            <motion.div initial={{ width: '0%' }} whileInView={{ width: '100%' }} transition={{ duration: 2 }} viewport={{ once: true }} className="absolute top-8 left-12 h-1 bg-gradient-to-r from-[#00bc0d] to-[#00d410] rounded-full hidden md:block" style={{ maxWidth: 'calc(100% - 96px)' }} />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative">
               {[
-                { step: 1, title: 'Purchase', desc: 'First sale', icon: ShoppingCart },
-                { step: 2, title: 'Nurture', desc: 'Email flows', icon: Mail },
-                { step: 3, title: 'Re-engage', desc: 'Smart triggers', icon: RefreshCw },
-                { step: 4, title: 'Repeat', desc: 'Lifetime value', icon: Repeat },
+                { title: 'Purchase', desc: 'First sale', icon: ShoppingCart },
+                { title: 'Nurture', desc: 'Email flows', icon: Mail },
+                { title: 'Re-engage', desc: 'Smart triggers', icon: RefreshCw },
+                { title: 'Repeat', desc: 'Lifetime value', icon: Repeat },
               ].map((item, index) => (
-                <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center mb-3 relative z-10">
-                    <item.icon size={20} style={{ color: '#ffffff' }} />
+                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }} className="flex flex-col items-center text-center group">
+                  <div className="w-16 h-16 rounded-2xl bg-[#111] flex items-center justify-center mb-4 relative z-10 group-hover:scale-110 group-hover:bg-[#00bc0d] transition-all duration-300 shadow-lg">
+                    <item.icon size={28} className="text-white" />
                   </div>
-                  <div className="text-sm font-semibold text-[#111]">{item.title}</div>
-                  <div className="text-xs text-[#888] text-center max-w-[80px]">{item.desc}</div>
+                  <div className="text-base font-bold text-[#111] mb-1">{item.title}</div>
+                  <div className="text-sm text-[#666]">{item.desc}</div>
                 </motion.div>
               ))}
             </div>
           </div>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1 }} viewport={{ once: true }} className="flex justify-center mt-10">
+            <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-[#111]">
+              <Repeat size={20} className="text-[#00bc0d]" />
+              <span className="text-white font-medium">Automated • 24/7 • Hands-off</span>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
 
-    {/* Repeat Purchase Stats */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
+    {/* Retention Metrics */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Customer Retention Metrics</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">What the automation system achieves</p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">Customer Retention Metrics</h2>
+          <p className="text-[#666]">What the automation system achieves</p>
+        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {[
             { icon: Repeat, label: 'Repeat Rate', before: '12%', after: '47%', increase: '+292%' },
             { icon: DollarSign, label: 'LTV', before: '$89', after: '$340', increase: '+282%' },
             { icon: Users, label: 'Retention', before: '23%', after: '68%', increase: '+196%' },
             { icon: Mail, label: 'Email Revenue', before: '8%', after: '35%', increase: '+338%' },
           ].map((metric, index) => (
-            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white border border-[#eee] text-center">
-              <div className="w-12 h-12 rounded-xl bg-[#f5f5f5] flex items-center justify-center mx-auto mb-4"><metric.icon size={24} className="text-[#111]" /></div>
-              <div className="text-sm text-[#888] mb-2">{metric.label}</div>
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
-                <ArrowRight size={14} className="text-[#ccc]" />
-                <span className="text-lg font-bold text-[#111]">{metric.after}</span>
+            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.08 }} viewport={{ once: true }} className="group">
+              <div className="p-6 rounded-2xl bg-white border border-[#eee] text-center h-full hover:shadow-xl hover:border-[#00bc0d]/30 transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00bc0d] to-[#009d0b] flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-[#00bc0d]/20">
+                  <metric.icon size={26} className="text-white" />
+                </div>
+                <div className="text-sm font-medium text-[#888] mb-3">{metric.label}</div>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="text-sm text-[#bbb] line-through">{metric.before}</span>
+                  <ArrowRight size={14} className="text-[#00bc0d]" />
+                  <span className="text-xl font-bold text-[#111]">{metric.after}</span>
+                </div>
+                <span className="inline-block px-3 py-1 rounded-full bg-[#00bc0d]/10 text-[#00bc0d] text-xs font-bold">{metric.increase}</span>
               </div>
-              <span className="text-xs font-medium text-green-500">{metric.increase}</span>
             </motion.div>
           ))}
         </div>
@@ -262,58 +352,75 @@ const LTVSystemVisuals = () => (
 
 const EmailMarketingVisuals = () => (
   <>
-    {/* Email vs Social ROI */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Email vs Social Media ROI</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Research from January 2025 - EmailToolTester</p>
-        <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="text-center">
-              <h4 className="font-semibold text-[#888] mb-4">Social Media ROI</h4>
-              <div className="relative w-32 h-32 mx-auto mb-4">
-                <div className="w-full h-full rounded-full bg-[#f0f0f0] flex items-center justify-center">
-                  <span className="text-3xl font-bold text-[#999]">$2</span>
+    {/* ROI Comparison - Premium Gold */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-gradient-to-br from-[#1a1510] via-[#2a2015] to-[#1a1510] relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #D4B160 1px, transparent 0)', backgroundSize: '50px 50px' }} />
+      </div>
+      <div className="max-w-5xl mx-auto relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[#D4B160]/20 text-[#D4B160] text-sm font-medium mb-4">PROVEN DATA</span>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">Email vs Social Media ROI</h2>
+          <p className="text-white/60 max-w-lg mx-auto">Research from January 2025 - EmailToolTester</p>
+        </motion.div>
+        <div className="p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm">
+          <div className="flex items-center justify-center gap-8 lg:gap-20">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center">
+              <h4 className="font-medium text-white/60 mb-4">Social Media ROI</h4>
+              <div className="relative w-36 h-36 mx-auto mb-4">
+                <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                  <span className="text-4xl font-bold text-white/50">$2</span>
                 </div>
               </div>
-              <p className="text-sm text-[#666]">Per $1 spent</p>
-            </div>
-            <div className="text-center">
-              <h4 className="font-semibold text-[#111] mb-4">Email Marketing ROI</h4>
-              <motion.div initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="relative w-32 h-32 mx-auto mb-4">
-                <div className="w-full h-full rounded-full bg-[#111] flex items-center justify-center">
-                  <span className="text-3xl font-bold text-white">$42</span>
+              <p className="text-sm text-white/50">Per $1 spent</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} viewport={{ once: true }} className="flex flex-col items-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4B160] to-[#BD9B5E] flex items-center justify-center shadow-lg shadow-[#D4B160]/30">
+                <ArrowRight size={28} className="text-white" />
+              </div>
+              <span className="mt-2 text-xs font-bold text-[#D4B160] bg-[#D4B160]/20 px-3 py-1 rounded-full">21X MORE</span>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center">
+              <h4 className="font-medium text-[#D4B160] mb-4">Email Marketing ROI</h4>
+              <motion.div initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.5 }} viewport={{ once: true }} className="relative w-36 h-36 mx-auto mb-4">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-[#D4B160] to-[#BD9B5E] flex items-center justify-center shadow-2xl shadow-[#D4B160]/40">
+                  <span className="text-4xl font-bold text-white">$42</span>
                 </div>
               </motion.div>
-              <p className="text-sm text-[#666]">Per $1 spent</p>
-            </div>
+              <p className="text-sm text-white/70">Per $1 spent</p>
+            </motion.div>
           </div>
-          <div className="mt-8 text-center">
-            <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111] text-white font-semibold text-lg">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} viewport={{ once: true }} className="mt-10 text-center">
+            <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#D4B160] to-[#BD9B5E] text-[#111] font-bold text-lg shadow-lg shadow-[#D4B160]/30">
+              <TrendingUp size={22} />
               Email generates 20X more revenue
             </span>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
 
-    {/* The 3 Systems */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+    {/* The 3-Part System */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-white">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: '#ffffff' }}>The 3-Part System</h2>
-        <p className="text-center mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>Three layers of technology that create an unfair advantage</p>
-        <div className="space-y-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">The 3-Part System</h2>
+          <p className="text-[#666]">Three layers of technology that create an unfair advantage</p>
+        </motion.div>
+        <div className="space-y-5">
           {[
             { num: '1', title: 'Business Intelligence + World-Class Setup', desc: 'The most advanced BI configuration — optimizing send times, frequency, and content delivery on a per-customer basis.' },
             { num: '2', title: 'Smart Automation Powered by AI + Data', desc: 'Automated systems that send hyper-personalized messages based on behavioral data and AI-driven predictions.' },
             { num: '3', title: 'Precision-Engineered Email Copy', desc: 'Emails designed to strike the exact psychological trigger in each customer\'s mind — at the perfect moment.' },
           ].map((item, index) => (
-            <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-white/5 border border-white/10">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white font-bold text-xl" style={{ color: '#111111' }}>{item.num}</div>
-                <div>
-                  <h3 className="font-semibold mb-2" style={{ color: '#ffffff' }}>{item.title}</h3>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+            <motion.div key={index} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: index * 0.15 }} viewport={{ once: true }} className="group">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#fafafa] to-white border border-[#eee] hover:shadow-xl hover:border-[#D4B160]/30 transition-all duration-300">
+                <div className="flex items-start gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D4B160] to-[#BD9B5E] flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-[#D4B160]/20 group-hover:scale-110 transition-transform">{item.num}</div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-[#111] mb-2">{item.title}</h3>
+                    <p className="text-[#666] leading-relaxed">{item.desc}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -322,23 +429,33 @@ const EmailMarketingVisuals = () => (
       </div>
     </div>
 
-    {/* Email Stats */}
-    <div className="w-full py-16 px-6 lg:px-10 bg-white">
+    {/* Email Stats - Premium Cards */}
+    <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">What Top Brands Achieve</h2>
-        <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">From our COVID story: 764 sales = $92,462 from one email</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[#111] mb-3">What Top Brands Achieve</h2>
+          <p className="text-[#666]">From our COVID story: 764 sales = $92,462 from one email</p>
+        </motion.div>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { value: 45, suffix: '%', label: 'Open Rate', desc: 'vs 20% industry average' },
-            { value: 12, suffix: '%', label: 'Click Rate', desc: 'vs 2.6% industry average' },
-            { value: 92462, prefix: '$', suffix: '', label: 'Single Campaign', desc: 'From one email blast' },
+            { value: 45, suffix: '%', label: 'Open Rate', desc: 'vs 20% industry average', icon: Mail },
+            { value: 12, suffix: '%', label: 'Click Rate', desc: 'vs 2.6% industry average', icon: MousePointer },
+            { value: 92462, prefix: '$', suffix: '', label: 'Single Campaign', desc: 'From one email blast', icon: DollarSign },
           ].map((stat, index) => (
-            <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-[#111] text-center">
-              <div className="text-4xl lg:text-5xl font-bold mb-2" style={{ color: '#ffffff' }}>
-                <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+            <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="group">
+              <div className="p-8 rounded-3xl bg-gradient-to-br from-[#111] to-[#1a1a1a] text-center h-full hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4B160]/10 rounded-full blur-3xl" />
+                <div className="relative z-10">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D4B160] to-[#BD9B5E] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#D4B160]/30 group-hover:scale-110 transition-transform">
+                    <stat.icon size={26} className="text-white" />
+                  </div>
+                  <div className="text-4xl lg:text-5xl font-bold mb-2 text-white">
+                    <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+                  </div>
+                  <div className="font-semibold text-[#D4B160] mb-1">{stat.label}</div>
+                  <div className="text-sm text-white/50">{stat.desc}</div>
+                </div>
               </div>
-              <div className="font-medium mb-1" style={{ color: '#ffffff' }}>{stat.label}</div>
-              <div className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
             </motion.div>
           ))}
         </div>
@@ -363,119 +480,141 @@ const AbandonedCheckoutVisuals = () => {
 
   return (
     <>
-      {/* Revenue Calculator */}
-      <div className="w-full py-16 px-6 lg:px-10 bg-[#fafafa]">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">Calculate Your Lost Revenue</h2>
-          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">See how much money you're leaving on the table</p>
+      {/* Interactive Revenue Calculator */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-gradient-to-br from-[#0a1f0a] via-[#0d2d0d] to-[#0a1f0a] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #00cc6e 1px, transparent 0)', backgroundSize: '50px 50px' }} />
+        </div>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#00cc6e]/20 text-[#00cc6e] text-sm font-medium mb-4">REVENUE CALCULATOR</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">Calculate Your Lost Revenue</h2>
+            <p className="text-white/60 max-w-lg mx-auto">See how much money you're leaving on the table</p>
+          </motion.div>
 
-          <div className="p-8 rounded-2xl bg-white border border-[#eee]">
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm">
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
               <div>
-                <label className="block text-sm font-medium text-[#333] mb-2">Monthly Revenue ($)</label>
+                <label className="block text-sm font-medium text-white/80 mb-3">Monthly Revenue ($)</label>
                 <input
                   type="number"
                   value={monthlyRevenue}
                   onChange={(e) => setMonthlyRevenue(Number(e.target.value) || 0)}
-                  className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#111] focus:outline-none text-lg font-semibold"
+                  className="w-full px-5 py-4 rounded-2xl bg-white/10 border border-white/20 text-white text-xl font-bold focus:border-[#00cc6e] focus:outline-none focus:ring-2 focus:ring-[#00cc6e]/20 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#333] mb-2">Average Order Value ($)</label>
+                <label className="block text-sm font-medium text-white/80 mb-3">Average Order Value ($)</label>
                 <input
                   type="number"
                   value={aov}
                   onChange={(e) => setAov(Number(e.target.value) || 1)}
-                  className="w-full px-4 py-3 rounded-xl border border-[#ddd] focus:border-[#111] focus:outline-none text-lg font-semibold"
+                  className="w-full px-5 py-4 rounded-2xl bg-white/10 border border-white/20 text-white text-xl font-bold focus:border-[#00cc6e] focus:outline-none focus:ring-2 focus:ring-[#00cc6e]/20 transition-all"
                 />
               </div>
             </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#f5f5f5]">
-                <span className="text-[#666]">Monthly completed orders</span>
-                <span className="font-bold text-[#111]">{monthlyOrders.toLocaleString()}</span>
+            <div className="space-y-3 mb-10">
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white/5">
+                <span className="text-white/70">Monthly completed orders</span>
+                <span className="font-bold text-white text-lg">{monthlyOrders.toLocaleString()}</span>
               </div>
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#f5f5f5]">
-                <span className="text-[#666]">Checkout starts (estimated)</span>
-                <span className="font-bold text-[#111]">{checkoutStarts.toLocaleString()}</span>
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white/5">
+                <span className="text-white/70">Checkout starts (estimated)</span>
+                <span className="font-bold text-white text-lg">{checkoutStarts.toLocaleString()}</span>
               </div>
-              <div className="flex items-center justify-between p-4 rounded-xl bg-red-50 border border-red-200">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle size={18} className="text-red-500" />
-                  <span className="text-red-700 font-medium">Abandoned checkouts</span>
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="flex items-center justify-between p-5 rounded-2xl bg-red-500/20 border border-red-500/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-500/30 flex items-center justify-center">
+                    <AlertTriangle size={20} className="text-red-400" />
+                  </div>
+                  <span className="text-red-300 font-medium">Abandoned checkouts</span>
                 </div>
-                <span className="font-bold text-red-600">{abandonedCheckouts.toLocaleString()}</span>
-              </div>
+                <span className="font-bold text-red-400 text-xl">{abandonedCheckouts.toLocaleString()}</span>
+              </motion.div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#111] text-center">
-              <p className="text-white/70 mb-2">With 82% recovery rate, you could recover:</p>
-              <div className="text-4xl font-bold text-green-400 mb-2">
-                ${recoveredRevenue.toLocaleString()}/month
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-8 rounded-3xl bg-gradient-to-br from-[#00cc6e] to-[#00aa5c] text-center shadow-2xl shadow-[#00cc6e]/30">
+              <p className="text-white/80 mb-3 text-lg">With 82% recovery rate, you could recover:</p>
+              <div className="text-5xl lg:text-6xl font-bold text-white mb-2">
+                ${recoveredRevenue.toLocaleString()}<span className="text-2xl">/month</span>
               </div>
-              <div className="text-2xl font-semibold text-white mb-4">
+              <div className="text-2xl font-semibold text-white/90 mb-4">
                 ${yearlyRecovered.toLocaleString()}/year
               </div>
-              <div className="flex items-center justify-center gap-2 text-green-400">
+              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/20 text-white font-medium">
                 <CheckCircle size={20} />
-                <span className="font-medium">{recoveredOrders} orders recovered monthly</span>
+                <span>{recoveredOrders} orders recovered monthly</span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
       {/* The 7-Email Sequence */}
-      <div className="w-full py-16 px-6 lg:px-10 bg-white">
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#111] mb-4 text-center">The 7-Email Recovery Sequence</h2>
-          <p className="text-[#666] text-center mb-10 max-w-xl mx-auto">Strategic timing that converts 82% of abandoned checkouts</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#111] mb-3">The 7-Email Recovery Sequence</h2>
+            <p className="text-[#666]">Strategic timing that converts 82% of abandoned checkouts</p>
+          </motion.div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {[
-              { time: '1 hour', title: 'Instant Reminder', desc: 'Catches them while you\'re fresh in their mind', color: '#111' },
-              { time: '4 hours', title: 'Trust Builder', desc: 'Social proof + guarantees', color: '#333' },
-              { time: '24 hours', title: 'Objection Handler', desc: 'Addresses shipping, returns, questions', color: '#444' },
-              { time: '48 hours', title: 'Scarcity Trigger', desc: 'Creates authentic urgency', color: '#555' },
-              { time: '72 hours', title: 'Value Stack', desc: 'Re-frames as investment', color: '#666' },
-              { time: '5 days', title: 'Personal Touch', desc: 'Feels 1-on-1', color: '#777' },
-              { time: '7 days', title: 'Final Push', desc: 'Last chance + incentive', color: '#888' },
+              { time: '1 hour', title: 'Instant Reminder', desc: 'Catches them while you\'re fresh in their mind' },
+              { time: '4 hours', title: 'Trust Builder', desc: 'Social proof + guarantees' },
+              { time: '24 hours', title: 'Objection Handler', desc: 'Addresses shipping, returns, questions' },
+              { time: '48 hours', title: 'Scarcity Trigger', desc: 'Creates authentic urgency' },
+              { time: '72 hours', title: 'Value Stack', desc: 'Re-frames as investment' },
+              { time: '5 days', title: 'Personal Touch', desc: 'Feels 1-on-1' },
+              { time: '7 days', title: 'Final Push', desc: 'Last chance + incentive' },
             ].map((email, index) => (
-              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} viewport={{ once: true }} className="flex items-center gap-4 p-4 rounded-xl border border-[#eee] hover:border-green-300 hover:bg-green-50/30 transition-all">
-                <div className="w-20 text-center flex-shrink-0">
-                  <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#f5f5f5] text-[#666]">{email.time}</span>
+              <motion.div key={index} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: index * 0.08 }} viewport={{ once: true }} className="group">
+                <div className="flex items-center gap-5 p-5 rounded-2xl bg-gradient-to-br from-[#fafafa] to-white border border-[#eee] hover:shadow-lg hover:border-[#00cc6e]/30 transition-all duration-300">
+                  <div className="w-20 text-center flex-shrink-0">
+                    <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-[#00cc6e]/10 text-[#00cc6e]">{email.time}</span>
+                  </div>
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00cc6e] to-[#00aa5c] flex items-center justify-center flex-shrink-0 shadow-lg shadow-[#00cc6e]/20 group-hover:scale-110 transition-transform">
+                    <Send size={20} className="text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-[#111] text-lg">{email.title}</h4>
+                    <p className="text-sm text-[#666]">{email.desc}</p>
+                  </div>
+                  <div className="w-10 h-10 rounded-xl bg-[#00cc6e]/10 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle size={22} className="text-[#00cc6e]" />
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: email.color }}>
-                  <Send size={16} className="text-white" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-[#111]">{email.title}</h4>
-                  <p className="text-sm text-[#666]">{email.desc}</p>
-                </div>
-                <CheckCircle size={20} className="text-green-500 flex-shrink-0" />
               </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="w-full py-16 px-6 lg:px-10 bg-[#111]">
+      {/* Proven Results Stats */}
+      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold mb-10 text-center" style={{ color: '#ffffff' }}>Proven Results</h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#111] mb-3">Proven Results</h2>
+            <p className="text-[#666]">What this recovery system achieves</p>
+          </motion.div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { value: 82, suffix: '%', label: 'Recovery Rate', desc: 'Of abandoned checkouts' },
-              { value: 58, suffix: '%', label: 'Revenue Increase', desc: 'From recovered sales' },
-              { value: 2, suffix: 'hrs', label: 'Setup Time', desc: 'Plug and play' },
+              { value: 82, suffix: '%', label: 'Recovery Rate', desc: 'Of abandoned checkouts', icon: Target },
+              { value: 58, suffix: '%', label: 'Revenue Increase', desc: 'From recovered sales', icon: TrendingUp },
+              { value: 2, suffix: 'hrs', label: 'Setup Time', desc: 'Plug and play', icon: Clock },
             ].map((stat, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="p-8 rounded-2xl bg-white/5 border border-white/10 text-center">
-                <div className="text-4xl lg:text-5xl font-bold mb-2" style={{ color: '#4ade80' }}>
-                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+              <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.15 }} viewport={{ once: true }} className="group">
+                <div className="p-8 rounded-3xl bg-white border border-[#eee] text-center h-full hover:shadow-xl hover:border-[#00cc6e]/30 transition-all duration-300">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00cc6e] to-[#00aa5c] flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#00cc6e]/20 group-hover:scale-110 transition-transform">
+                    <stat.icon size={30} className="text-white" />
+                  </div>
+                  <div className="text-5xl font-bold text-[#111] mb-2">
+                    <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div className="font-semibold text-[#00cc6e] text-lg mb-1">{stat.label}</div>
+                  <div className="text-sm text-[#666]">{stat.desc}</div>
                 </div>
-                <div className="font-medium mb-1" style={{ color: '#ffffff' }}>{stat.label}</div>
-                <div className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
               </motion.div>
             ))}
           </div>
