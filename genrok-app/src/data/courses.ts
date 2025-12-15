@@ -1509,6 +1509,118 @@ Simply fill in the blanks with your product details and launch. No copywriting e
       },
     ],
   },
+  'product-mapping-manipulation': {
+    slug: 'product-mapping-manipulation',
+    title: 'Product Mapping Manipulation',
+    subtitle: 'The Hidden Psychology Behind Product Selection That Multiplies Your AOV',
+    description:
+      'Master the art of psychological product mapping to influence customer choices, increase average order value, and maximize lifetime value without discounting.',
+    price: 39,
+    originalPrice: 197,
+    image: 'https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_48.jpg',
+    heroImage: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/product-mapping-hero.jpg',
+    badge: 'Psychology Framework',
+    stats: [
+      { value: '5', label: 'weapons/frameworks' },
+      { value: '7+', label: 'hours' },
+      { value: '100+', label: 'case studies' },
+    ],
+    highlights: [
+      'Master the psychology of product selection and recommendation',
+      'Increase AOV by strategically mapping complementary products',
+      'Use scarcity, anchoring, and choice architecture to drive sales',
+      'Implement proven frameworks from luxury and eCommerce brands',
+      'Convert browsers into high-value customers',
+      'Build a product recommendation engine that sells',
+    ],
+    longDescription: `Most store owners don't realize that how they present their products directly influences what customers buy.
+
+Product Mapping Manipulation is the hidden psychology behind product selection that the world's most profitable eCommerce stores use to multiply their average order value without discounting.
+
+The problem: Your customers see your products as individual items. They don't see the complete purchasing journey or how to build their ideal bundle. So they buy less, spend less, and leave more money on the table.
+
+The solution: Strategic psychological product mapping.
+
+This isn't about manipulating customers. It's about presenting your products in a way that naturally guides them toward the purchases that give them the most value — which also means higher profits for you.
+
+In this course, you'll learn the exact frameworks used by luxury brands, high-ticket sellers, and subscription services to increase average order value by 30-50% just by changing how they present products.
+
+You'll discover 5 powerful psychological weapons that influence product selection, and exactly how to implement them in your store.`,
+    modules: [
+      {
+        title: 'The Psychology of Product Selection',
+        description:
+          'How customers choose products at the neurological level, and what triggers influence their decisions.',
+      },
+      {
+        title: 'Weapon #1: Anchoring & Price Perception',
+        description: 'Present products strategically to make high-ticket items feel affordable.',
+      },
+      {
+        title: 'Weapon #2: Choice Architecture',
+        description:
+          'Design your product display to guide customers toward the options you want them to choose.',
+      },
+      {
+        title: 'Weapon #3: The Decoy Effect',
+        description: 'Add a strategically priced product to make other options more appealing.',
+      },
+      {
+        title: 'Weapon #4: Scarcity & Urgency Mapping',
+        description: 'Use stock levels and time-based pressure to influence product selection.',
+      },
+      {
+        title: 'Weapon #5: The Bundle Illusion',
+        description: 'Create perceived value through strategic product pairing and bundling.',
+      },
+    ],
+    bonuses: [
+      {
+        title: 'Product Mapping Swipe File',
+        description:
+          'Real examples from 100+ eCommerce stores showing exactly how they structure product recommendations and bundles.',
+        value: 197,
+      },
+      {
+        title: 'Psychology Implementation Checklist',
+        description:
+          'Step-by-step checklist to implement all 5 psychological weapons in your store in 30 days.',
+        value: 97,
+      },
+    ],
+    faq: [
+      {
+        question: 'Will product mapping work for my store if I only have a few products?',
+        answer:
+          'Yes. Product mapping is even more powerful with limited selections because strategic positioning creates urgency and perceived value. We include examples for stores with 5 products and stores with 5,000+ products.',
+      },
+      {
+        question: 'How quickly will I see AOV increases?',
+        answer:
+          'Implementation can happen immediately. Many store owners see AOV increases of 15-20% within the first week just by reorganizing how products are presented. Larger increases (30-50%) come after testing and optimization over 2-3 months.',
+      },
+      {
+        question: 'Can I use these strategies on multiple sales channels?',
+        answer:
+          'Absolutely. These psychological principles work on any sales channel: Shopify, email, social ads, Amazon, and more. We include specific optimization guides for each platform.',
+      },
+      {
+        question: 'Is this about upselling and cross-selling?',
+        answer:
+          'It goes beyond basic upselling. This is about strategic product presentation that makes customers naturally want to buy more because they see the value, not because they feel pressured.',
+      },
+      {
+        question: "What if I'm selling products that aren't naturally bundleable?",
+        answer:
+          'Product mapping works for any category. We include frameworks for services, digital products, B2B, and products that seem unbundleable. The psychology remains the same.',
+      },
+      {
+        question: 'Will I get lifetime access?',
+        answer:
+          'Yes. One-time payment, lifetime access to all course materials and future updates. No subscriptions, no recurring fees.',
+      },
+    ],
+  },
 };
 
 export const getCourseBySlug = (slug: string): Course | undefined => {
