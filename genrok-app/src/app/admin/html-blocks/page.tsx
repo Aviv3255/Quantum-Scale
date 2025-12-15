@@ -14,6 +14,7 @@ const COURSES = [
   { slug: 'meta-ad-templates', name: 'Meta Ad Templates', color: '#EFBF04' },
   { slug: 'email-marketing', name: 'Email Marketing', color: '#D4B160' },
   { slug: 'abandoned-checkout', name: 'Abandoned Checkout', color: '#00cc6e' },
+  { slug: 'ab-test-results', name: 'A/B Tests Results', color: '#8E5DFF' },
 ];
 
 const STORAGE_KEY = 'quantum-scale-html-blocks';
