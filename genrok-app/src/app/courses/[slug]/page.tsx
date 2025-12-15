@@ -55,6 +55,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getCourseBySlug } from '@/data/courses';
 import RawHTMLRenderer from '@/components/RawHTMLRenderer';
 import { getCourseHTML } from '@/data/course-html-blocks';
+import { getStoredHTMLBlock } from '@/lib/html-blocks';
 
 type TabType = 'content' | 'bonuses' | 'faq';
 
@@ -5679,18 +5680,18 @@ export default function CourseDetailPage() {
           )}
         </div>
 
-        {/* Alternative Layouts - Prioritize HTML blocks if available */}
-        {useAlternativeLayout && getCourseHTML(slug) ? (
-          <RawHTMLRenderer html={getCourseHTML(slug)!} onCheckout={() => setShowCheckout(true)} />
+        {/* Alternative Layouts - Priority: 1. localStorage, 2. code HTML blocks, 3. React components */}
+        {useAlternativeLayout && (getStoredHTMLBlock(slug) || getCourseHTML(slug)) ? (
+          <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
           <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
           <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'subconscious-trap' && useAlternativeLayout && !getCourseHTML('subconscious-trap') ? (
+        ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
           <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'ltv-system' && useAlternativeLayout && !getCourseHTML('ltv-system') ? (
+        ) : slug === 'ltv-system' && useAlternativeLayout ? (
           <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
           <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
