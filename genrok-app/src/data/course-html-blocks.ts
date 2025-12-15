@@ -7,10 +7,9 @@ export const courseHTMLBlocks: Record<string, string> = {
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,800;1,400&display=swap');
 
 * {
-    all: initial !important;
-    display: revert;
-    padding: revert;
-    margin: revert;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 img {

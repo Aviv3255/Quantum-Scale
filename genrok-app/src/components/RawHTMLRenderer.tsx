@@ -47,11 +47,11 @@ export default function RawHTMLRenderer({ html, onCheckout }: RawHTMLRendererPro
       ref={containerRef}
       className="raw-html-container"
       style={{
-        all: 'initial',
         display: 'block',
         width: '100%',
         margin: 0,
         padding: 0,
+        overflow: 'visible',
       }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
