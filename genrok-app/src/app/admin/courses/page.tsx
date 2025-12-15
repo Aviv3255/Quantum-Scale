@@ -7,7 +7,6 @@ import {
   Upload,
   FileText,
   Trash2,
-  Plus,
   GraduationCap,
   Save,
   ArrowLeft,
@@ -81,7 +80,7 @@ export default function AdminCoursesPage() {
         .order('created_at', { ascending: false });
 
       if (!error && data) {
-        setCourses(data);
+        setCourses(data as Course[]);
       }
       setIsLoading(false);
     }
@@ -105,7 +104,7 @@ export default function AdminCoursesPage() {
         .order('order_index', { ascending: true });
 
       if (!error && data) {
-        setCourseFiles(data);
+        setCourseFiles(data as CourseFile[]);
       }
     }
 
@@ -186,7 +185,7 @@ export default function AdminCoursesPage() {
           .order('order_index', { ascending: true });
 
         if (data) {
-          setCourseFiles(data);
+          setCourseFiles(data as CourseFile[]);
         }
       }, 1000);
 

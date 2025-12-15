@@ -87,9 +87,10 @@ export async function checkCourseAccess(
     .eq('id', userId)
     .single();
 
+  const typedProfile = profile as { created_at: string } | null;
   const isNewUser =
-    profile &&
-    new Date(profile.created_at) >
+    typedProfile &&
+    new Date(typedProfile.created_at) >
       new Date(Date.now() - IP_PROTECTION_CONFIG.NEW_USER_GRACE_PERIOD_DAYS * 24 * 60 * 60 * 1000);
 
   // If IP is in allowlist, always allow
@@ -186,7 +187,11 @@ export async function getTrustedIPs(userId: string): Promise<
     return [];
   }
 
-  return data || [];
+  return (data || []) as Array<{
+    ip_address: string;
+    label: string | null;
+    created_at: string;
+  }>;
 }
 
 // Remove a trusted IP
@@ -226,7 +231,16 @@ export async function getRecentSessions(userId: string): Promise<
     return [];
   }
 
-  return (data || []).map((session) => ({
+  const typedData = (data || []) as Array<{
+    id: string;
+    ip_address: string;
+    user_agent: string | null;
+    country: string | null;
+    city: string | null;
+    last_active_at: string;
+  }>;
+
+  return typedData.map((session) => ({
     ...session,
     is_current: session.ip_address === currentIP,
   }));

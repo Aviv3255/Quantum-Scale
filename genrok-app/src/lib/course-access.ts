@@ -230,8 +230,10 @@ export const checkIPActivity = async (userId: string, ipAddress: string): Promis
       .gte('created_at', sevenDaysAgo);
 
     // Count unique IPs
-    const uniqueIps24h = new Set((sessions24h as Array<{ ip_address: string }> || []).map(s => s.ip_address)).size;
-    const uniqueIps7d = new Set((sessions7d as Array<{ ip_address: string }> || []).map(s => s.ip_address)).size;
+    const typedSessions24h = (sessions24h || []) as Array<{ ip_address: string }>;
+    const typedSessions7d = (sessions7d || []) as Array<{ ip_address: string }>;
+    const uniqueIps24h = new Set(typedSessions24h.map(s => s.ip_address)).size;
+    const uniqueIps7d = new Set(typedSessions7d.map(s => s.ip_address)).size;
 
     // Check if this IP has been seen before
     const { data: existingSession } = await supabase
@@ -282,12 +284,14 @@ export const recordSession = async (
     .eq('ip_address', ipAddress)
     .single();
 
-  if (existing) {
+  const typedExisting = existing as { id: string } | null;
+
+  if (typedExisting) {
     // Update last_active_at
     await supabase
       .from('user_sessions')
       .update({ last_active_at: new Date().toISOString() } as never)
-      .eq('id', existing.id);
+      .eq('id', typedExisting.id);
   } else {
     // Create new session
     await supabase
@@ -365,12 +369,14 @@ export const grantCourseAccess = async (
     return false;
   }
 
+  const typedCourse = course as { id: string };
+
   // Create purchase record
   const { error } = await supabase
     .from('user_purchases')
     .insert({
       user_id: userId,
-      course_id: course.id,
+      course_id: typedCourse.id,
       amount_paid: amountPaid,
       payment_id: paymentId || null,
       status: 'completed',
