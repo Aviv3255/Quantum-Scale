@@ -5660,13 +5660,13 @@ export default function CourseDetailPage() {
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
           {/* Layout Toggle - For courses with VIEW 2 */}
-          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'the-subconscious-trap' || slug === 'the-ltv-system' || slug === 'email-marketing' || slug === 'abandoned-checkout') && (
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'subconscious-trap' || slug === 'ltv-system' || slug === 'email-marketing' || slug === 'abandoned-checkout') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 backgroundColor: useAlternativeLayout
-                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'the-subconscious-trap' ? '#ff4f03' : slug === 'the-ltv-system' ? '#00bc0d' : slug === 'email-marketing' ? '#D4B160' : slug === 'abandoned-checkout' ? '#00cc6e' : '#111')
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'subconscious-trap' ? '#ff4f03' : slug === 'ltv-system' ? '#00bc0d' : slug === 'email-marketing' ? '#D4B160' : slug === 'abandoned-checkout' ? '#00cc6e' : '#111')
                   : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
@@ -5686,9 +5686,9 @@ export default function CourseDetailPage() {
           <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'the-subconscious-trap' && useAlternativeLayout ? (
+        ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
           <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
-        ) : slug === 'the-ltv-system' && useAlternativeLayout ? (
+        ) : slug === 'ltv-system' && useAlternativeLayout ? (
           <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
           <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
