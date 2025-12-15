@@ -48,6 +48,7 @@ import {
   Star,
   MessageCircle,
   Trophy,
+  FileText,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
