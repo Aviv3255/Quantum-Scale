@@ -15,6 +15,9 @@ const COURSES = [
   { slug: 'email-marketing', name: 'Email Marketing', color: '#D4B160' },
   { slug: 'abandoned-checkout', name: 'Abandoned Checkout', color: '#00cc6e' },
   { slug: 'ab-test-results', name: 'A/B Tests Results', color: '#8E5DFF' },
+  { slug: 'product-mapping', name: 'Product Mapping', color: '#B33B28' },
+  { slug: 'quiz-tactic', name: 'Quiz Tactic', color: '#00CFFF' },
+  { slug: 'laser-targeting', name: 'Laser Targeting', color: '#ff0017' },
 ];
 
 const STORAGE_KEY = 'quantum-scale-html-blocks';

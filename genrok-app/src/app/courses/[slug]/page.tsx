@@ -5663,13 +5663,13 @@ export default function CourseDetailPage() {
           <Link href="/courses" className="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#111] transition-colors"><ChevronLeft size={16} />Back to Courses</Link>
 
           {/* Layout Toggle - For courses with VIEW 2 */}
-          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'subconscious-trap' || slug === 'ltv-system' || slug === 'email-marketing' || slug === 'abandoned-checkout' || slug === 'ab-test-results') && (
+          {(slug === 'the-social-proof' || slug === 'ai-photographer' || slug === 'ad-copy-templates' || slug === 'meta-ad-templates' || slug === 'subconscious-trap' || slug === 'ltv-system' || slug === 'email-marketing' || slug === 'abandoned-checkout' || slug === 'ab-test-results' || slug === 'product-mapping' || slug === 'quiz-tactic' || slug === 'laser-targeting') && (
             <button
               onClick={() => setUseAlternativeLayout(!useAlternativeLayout)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 backgroundColor: useAlternativeLayout
-                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'subconscious-trap' ? '#ff4f03' : slug === 'ltv-system' ? '#00bc0d' : slug === 'email-marketing' ? '#D4B160' : slug === 'abandoned-checkout' ? '#00cc6e' : slug === 'ab-test-results' ? '#8E5DFF' : '#111')
+                  ? (slug === 'the-social-proof' ? '#7700fd' : slug === 'ai-photographer' ? '#9ba4a6' : slug === 'ad-copy-templates' ? '#D4B160' : slug === 'meta-ad-templates' ? '#EFBF04' : slug === 'subconscious-trap' ? '#ff4f03' : slug === 'ltv-system' ? '#00bc0d' : slug === 'email-marketing' ? '#D4B160' : slug === 'abandoned-checkout' ? '#00cc6e' : slug === 'ab-test-results' ? '#8E5DFF' : slug === 'product-mapping' ? '#B33B28' : slug === 'quiz-tactic' ? '#00CFFF' : slug === 'laser-targeting' ? '#ff0017' : '#111')
                   : '#f5f5f5',
                 color: useAlternativeLayout ? '#ffffff' : '#666',
               }}
