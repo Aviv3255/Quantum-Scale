@@ -27,7 +27,6 @@ import {
   Rocket,
   UserCircle,
   GraduationCap,
-  FolderOpen,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -78,13 +77,12 @@ const navigationItems: NavItem[] = [
   },
   {
     title: "Courses",
-    href: "/courses",
     icon: GraduationCap,
-  },
-  {
-    title: "My Courses",
-    href: "/my-courses",
-    icon: FolderOpen,
+    isCategory: true,
+    subItems: [
+      { title: "Explore Courses", href: "/courses" },
+      { title: "My Courses", href: "/my-courses" }
+    ]
   },
   {
     title: "Data Center",
