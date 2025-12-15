@@ -2951,321 +2951,618 @@ interface LTVSystemAlternativeProps {
 const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternativeProps) => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
-  const trainingModules = [
-    { icon: Users, title: 'Customer Retention Engine', desc: 'Turn one-time buyers into repeat customers automatically' },
-    { icon: Mail, title: 'Email Revenue System', desc: 'Generate 30-40% of revenue from email alone' },
-    { icon: Repeat, title: 'Subscription Architecture', desc: 'Build recurring revenue into any product' },
-    { icon: Gift, title: 'Loyalty & Rewards Framework', desc: 'Create programs that customers actually use' },
-    { icon: TrendingUp, title: 'Upsell & Cross-sell Mastery', desc: 'Increase AOV without feeling salesy' },
+  // 5 Weapons - Training Modules
+  const weapons = [
+    { number: 1, title: 'The LTV Engine Blueprint', desc: 'Discover the psychological and technical system that makes every customer worth $1,000+. A backend architecture built to multiply profits automatically.' },
+    { number: 2, title: 'The Laws of Human Persuasion', desc: 'Harness the secret laws of human psychology that steer attention, trigger craving, and make customers load massive carts - again and again.' },
+    { number: 3, title: 'The Automation Loop Protocols', desc: 'Build the self-sustaining system that runs your business 24/7 — loyalty, upsells, emails, all working together to generate infinite LTV.' },
+    { number: 4, title: 'The Rebuy Technology System', desc: 'Master the brain loops that trigger automatic repeat purchases and oversized carts - used by luxury brands to multiply LTV effortlessly.' },
+    { number: 5, title: 'The Empire Growth Formula', desc: 'The scaling logic that lets you outspend competitors fearlessly - using psychology, math, and automation instead of luck.' },
   ];
 
+  // FAQ items from HTML
   const faqItems = [
-    { question: 'How is this different from other LTV courses?', answer: 'Most courses focus on acquisition. This focuses on what happens AFTER someone buys. You\'ll learn the exact systems that turn $80 customers into $1,000+ lifetime customers - with real numbers and case studies.' },
-    { question: 'I\'m just starting out. Is this for me?', answer: 'If you have ANY sales coming in, yes. The best time to build LTV systems is early - before you\'ve trained customers to expect discounts and one-time purchases.' },
-    { question: 'What if I sell low-ticket products?', answer: 'LTV is even MORE important for low-ticket sellers. One customer buying 10x is worth more than 10 customers buying once. We\'ll show you how to make this happen.' },
-    { question: 'How long until I see results?', answer: 'Most students see measurable LTV improvements within 30 days. Some see results in the first week when they implement our quick-win email sequences.' },
-    { question: 'Do I need special software?', answer: 'No. Everything works with standard email providers (Klaviyo, Mailchimp, etc.) and your existing store. We\'ll show you how to maximize what you already have.' },
-    { question: 'Is there a guarantee?', answer: 'Yes! 30-day money-back guarantee. If you implement the systems and don\'t see improvement in your customer lifetime value, we\'ll refund every penny.' },
+    { question: 'Is this really possible? Can I actually get $1,000 from each customer?', answer: 'Yes, absolutely. This isn\'t theory - it\'s a proven system we use in our own stores and have taught to thousands of students. The screenshots and results you see are real. When you build a proper LTV system with the right psychology triggers, email sequences, and product ecosystem, customers naturally spend $1,000+ over their lifetime. And with our system, around $600 of that is pure profit going into your pocket.' },
+    { question: 'Don\'t I need a huge brand or massive inventory to do this?', answer: 'Not at all. This is one of the biggest myths. The LTV system is built on psychology and automation, not on having 10,000 SKUs. You can start with as few as 10-20 products and build a money-printing machine. The key is understanding how to make customers come back automatically, which has nothing to do with inventory size and everything to do with the right triggers and sequences.' },
+    { question: 'What if I have no prior experience, and my website is not live yet?', answer: 'Perfect. Do not begin before joining us. Most entrepreneurs with prior experience quickly realize that they must rebuild everything from the ground up, and in the right way. Joining us will save you a great deal of time and money, even as a beginner. We\'ll show you exactly how to set up your entire system correctly from day one.' },
+    { question: 'Will this work in my niche or market?', answer: 'Yes, absolutely. The system is designed for every niche and every market. Whether you\'re selling in a small town or globally, whether you\'re offering beauty products, home goods, fitness equipment, or anything else - the psychology of high LTV works universally. We have students succeeding in dozens of different niches.' },
+    { question: 'How long until I see results?', answer: 'LTV is a long-term game, but you\'ll start seeing the foundation working within 30-60 days. The beauty of this system is that once it\'s set up, it compounds. Month 1 might bring in $500 per customer, month 3 might be $700, and by month 12 you\'re hitting $1,000+ per customer. This isn\'t a "get rich quick" scheme - it\'s a "get rich for sure" system.' },
+    { question: 'Why $10?', answer: 'An excellent question. This course contains the exact system we use to generate $180,000+ in monthly net profit. The information inside is worth tens of thousands of dollars in real-world value. When creating the course, we could have easily priced it at $2,000 or more - and it would still be worth it. However, we want this to be accessible to serious entrepreneurs who are ready to invest in a proven system. At $10, you\'re getting a complete blueprint that will transform every customer into a $1,000 money tree. This is a one-time payment with lifetime access and no hidden fees.' },
+  ];
+
+  // Comparison table data
+  const comparisonRows = [
+    { skip: 'Chasing $80 LTV customers forever', join: 'Building $1,000 LTV money trees' },
+    { skip: 'Panic when CAC rises by 10%', join: 'Unbeatable - acquire customers at 0.5 ROAS and still profit massively' },
+    { skip: 'Living in fear of algorithm changes', join: 'A proven system that prints $180,000+ monthly net profit' },
+    { skip: 'One-time sales, constant stress', join: 'Automatic repeat purchases - customers come back again and again' },
+    { skip: 'Settling for break-even or small profits', join: '$600 pure profit per customer going straight to your pocket' },
   ];
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="w-full py-20 lg:py-28 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Hero Section - Black Background */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-5xl mx-auto text-center">
+          {/* Pulse Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-block px-5 py-2 rounded-full mb-8"
-            style={{ backgroundColor: 'rgba(0, 188, 13, 0.2)', border: '1px solid rgba(0, 188, 13, 0.3)' }}
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-8"
+            style={{ backgroundColor: '#252525' }}
           >
-            <span className="text-sm font-bold tracking-wide" style={{ color: '#00bc0d' }}>CUSTOMER LIFETIME VALUE</span>
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{
+                backgroundColor: '#00bc0d',
+                animation: 'pulse 1.6s infinite',
+                boxShadow: '0 0 0 0 rgba(0, 188, 13, 0.7)'
+              }}
+            />
+            <span className="text-sm text-white">The system that changes the rules of the game...</span>
           </motion.div>
 
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white leading-tight"
           >
-            THE <span style={{ color: '#00bc0d' }}>LTV</span> SYSTEM
+            How to earn <span style={{ color: '#00bc0d' }}>$1,000</span> per customer
           </motion.h1>
 
+          {/* Sub Headline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl lg:text-2xl mb-4 max-w-2xl mx-auto text-white/80"
+            className="text-xl lg:text-2xl mb-8 text-white/80 italic"
           >
-            Turn <span style={{ color: '#00bc0d' }}>$80 Customers</span> Into <span style={{ color: '#00bc0d' }}>$1,000+ Lifetime Value</span>
+            Even with $30-60 products, turn every customer into $600 net profit
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="text-lg mb-10 max-w-xl mx-auto text-white/60"
-          >
-            The complete system for maximizing every customer you've already paid to acquire
-          </motion.p>
-
+          {/* Hero Screenshot */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex items-center justify-center gap-4 mb-8"
+            className="mb-10"
           >
-            <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#00bc0d' }}>${course.price}</span>
-            {course.originalPrice && (
-              <div className="flex flex-col items-start">
-                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
-                <span className="text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#00bc0d', color: '#fff' }}>
-                  SAVE {Math.round((1 - course.price / course.originalPrice) * 100)}%
-                </span>
-              </div>
-            )}
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg?v=1760347643"
+              alt="High LTV Dashboard"
+              className="max-w-full md:max-w-3xl mx-auto rounded-lg"
+              style={{
+                boxShadow: '0 0 16px rgba(0, 188, 13, 0.9), 0 0 28px rgba(0, 188, 13, 0.6), 0 0 40px rgba(0, 188, 13, 0.3)',
+                border: '2px solid rgba(0, 188, 13, 0.7)'
+              }}
+            />
           </motion.div>
 
-          <motion.button
+          {/* Pricing */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            onClick={onCheckout}
-            className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
-            style={{
-              background: 'linear-gradient(135deg, #00bc0d 0%, #00e610 50%, #00bc0d 100%)',
-              boxShadow: '0 10px 40px rgba(0, 188, 13, 0.4)'
-            }}
+            transition={{ delay: 0.35 }}
+            className="mb-8"
           >
-            <ShoppingCart size={24} />
-            UNLOCK THE LTV SYSTEM
-          </motion.button>
+            <p className="text-3xl lg:text-4xl font-semibold text-white mb-6">
+              <span className="line-through opacity-60 mr-4">${course.originalPrice || 500}</span>
+              Only ${course.price} Today
+            </p>
 
-          <p className="text-sm mt-8 text-white/40">
-            30-day money-back guarantee • Instant access • Lifetime updates
-          </p>
+            {/* CTA Button */}
+            <button
+              onClick={onCheckout}
+              className="inline-flex flex-col items-center justify-center px-16 lg:px-24 py-4 lg:py-5 rounded-full font-bold text-lg lg:text-xl text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl"
+              style={{
+                background: 'radial-gradient(ellipse at bottom, #4BC978 0%, #00A820 40%)',
+                boxShadow: '0 6px 20px rgba(0, 168, 32, 0.35)',
+                minHeight: '80px'
+              }}
+            >
+              <span>ADD THE LTV SYSTEM!</span>
+              <span className="text-xs lg:text-sm font-normal normal-case tracking-normal mt-1">
+                one time payment of ${course.price}, lifetime access.
+              </span>
+            </button>
+          </motion.div>
+
+          {/* Secure Payment */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-center gap-2 text-white/80 text-sm"
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867"
+              alt="Secure"
+              className="w-7 h-7 object-contain"
+            />
+            <span>Secure 256-bit SSL encrypted payment</span>
+          </motion.div>
         </div>
       </div>
 
-      {/* Problem Section */}
-      <div className="w-full py-20 px-6 lg:px-10 bg-white">
-        <div className="max-w-4xl mx-auto">
+      {/* Story Section - White Background */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto">
+          {/* Title */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              Why Most Stores Fail (And How To Win)
+            <h2 className="text-2xl lg:text-3xl font-black text-black mb-4">
+              Finally, a way to earn $1,000 per new customer...
             </h2>
-            <p className="text-xl text-[#666] max-w-2xl mx-auto">
-              The math doesn't lie - acquisition alone isn't sustainable
-            </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="p-8 rounded-2xl bg-red-50 border border-red-200"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-red-500">
-                  <X size={32} className="text-white" />
-                </div>
-                <div>
-                  <div className="text-sm text-red-600 font-medium">AVERAGE STORE</div>
-                  <div className="text-3xl font-bold text-red-700">$80 LTV</div>
-                </div>
-              </div>
-              <ul className="space-y-3 text-[#666]">
-                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> One-time purchases only</li>
-                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> No email strategy</li>
-                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> Constantly chasing new traffic</li>
-                <li className="flex items-center gap-2"><X size={16} className="text-red-400" /> Razor-thin margins</li>
-              </ul>
-            </motion.div>
+          {/* Story Content */}
+          <div className="space-y-6 text-lg text-black leading-relaxed">
+            <p className="mb-16">Before you dive in... let me share something that completely transformed how we think about eCommerce.</p>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="p-8 rounded-2xl border-2"
-              style={{ borderColor: '#00bc0d', backgroundColor: 'rgba(0, 188, 13, 0.05)' }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#00bc0d' }}>
-                  <TrendingUp size={32} className="text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium" style={{ color: '#00bc0d' }}>WITH LTV SYSTEM</div>
-                  <div className="text-3xl font-bold" style={{ color: '#00bc0d' }}>$1,000+ LTV</div>
-                </div>
-              </div>
-              <ul className="space-y-3 text-[#444]">
-                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Repeat purchases on autopilot</li>
-                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> 30-40% revenue from email</li>
-                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Customers that come back</li>
-                <li className="flex items-center gap-2"><Check size={16} style={{ color: '#00bc0d' }} /> Sustainable profit margins</li>
-              </ul>
-            </motion.div>
+            <p className="mb-10">Most store owners are stuck in survival mode...</p>
+
+            <p className="mb-10">Praying that their next ad campaign breaks even. Celebrating when they make $50 profit on a customer...</p>
+
+            <div className="h-16" />
+
+            <p className="mb-10">And here&apos;s the brutal truth... If your LTV (Customer&apos;s Lifetime Value) is only $80, you&apos;re one algorithm change away from <span className="font-bold text-red-600">bankruptcy</span>.</p>
+
+            <p className="mb-6">When CAC rises from $30 to $45, you panic.<br/>When Meta changes something, you lose sleep.<br/><br/>Your entire business hangs by a thread.</p>
+
+            <div className="h-12" />
+
+            <p className="text-2xl mb-6">But what if you could spend <strong>$90 to acquire a customer</strong> and still smile... because you know they&apos;ll generate $1,000?</p>
+
+            <div className="h-12" />
+
+            <p className="text-center text-sm text-gray-500 mb-4">(ROAS 11 Overtime)</p>
+
+            <p className="text-xl text-center mb-16">Exactly, you&apos;d become <strong>unstoppable</strong>. And that&apos;s exactly what you&apos;re about to become.</p>
+
+            <p className="mb-6">The YouTube influencers won&apos;t tell you this... because they profit from keeping you stuck in the testing trap.</p>
+
+            {/* Mentor GIF */}
+            <div className="text-center my-10">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/a-mentor-everybodys-talking-about-jamie.gif?v=1756821071"
+                alt="Fake guru meme"
+                className="max-w-xs mx-auto rounded-lg"
+              />
+            </div>
+
+            <p className="text-3xl font-bold text-red-600 text-center my-10">&quot;Just lower the CPA!&quot;</p>
+
+            <p className="text-center">But no one talks about what happens when it rises a bit... The fine line is crossed, and you start losing money.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* The Truth Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-black text-black mb-6">Here&apos;s what nobody talks about...</h2>
+
+          <div className="space-y-6 text-lg text-black leading-relaxed">
+            <p>The real difference between struggling stores and million-dollar stores isn&apos;t traffic.</p>
+
+            <div className="h-6" />
+
+            <p className="mb-12">It&apos;s not better products. It&apos;s not even better ads.</p>
+
+            <div className="h-6" />
+
+            <p className="mb-8">It&apos;s <strong>Customer Lifetime Value</strong>.</p>
+
+            <p className="mb-6">The biggest leverage you can pull in eCommerce is simply making more from each customer.</p>
+
+            <p className="mb-6">Instead of a per-customer turnover of $80 that leaves you with $20 profit (you&apos;d need 300 new customers per day for <strong>$180,000 profit per month</strong>...</p>
+
+            <div className="h-12" />
+
+            <p className="mb-2">your average customer will be worth $1,000 with a net profit of $600.</p>
+
+            <p className="mb-6">Now, you&apos;ll only need <strong>10 new customers every day</strong> (instead of 300!) to maintain <strong>$180,000 profit per month</strong>... and guess what?</p>
+
+            <p className="text-xl mb-8"><strong>Even if the algorithm breaks and your CPA increases by 50%... you&apos;re unbreakable.</strong></p>
+
+            <p className="mb-8">Your profit per customer is so high, it simply doesn&apos;t concern you.</p>
+
+            {/* Knockout GIF */}
+            <div className="text-center my-10">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/200w.gif?v=1760566014"
+                alt="Knockout punch"
+                className="max-w-xs mx-auto rounded-lg"
+              />
+              <p className="text-sm text-gray-500 mt-2 italic">This is the official knockout to the ruthless Zuckerberg</p>
+            </div>
+
+            <p className="mb-8">The stores printing money have cracked the code: turn one customer into multiple sales. Automatically.</p>
+
+            <p className="mb-4">While everyone else fights over scraps... these stores dominate because they can afford to pay MORE for customers.</p>
+
+            {/* Money Scrolling GIF */}
+            <div className="text-center my-10">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5__gm_optimized.gif?v=1760351611"
+                alt="High AOV orders scrolling"
+                className="max-w-2xl mx-auto rounded-lg w-full"
+              />
+              <p className="text-xs text-gray-500 mt-2 italic">*Women&apos;s fashion brand, items priced $40-60, average cart $340, within a year the customer is worth an average of $1,426</p>
+            </div>
+
+            <div className="h-6" />
+
+            <p className="mb-6">I know this feeling intimately...</p>
+
+            <p className="mb-8">That sinking sensation when you check your ad account and realize you just burned $200 to make $150 in revenue.</p>
+
+            <p className="mb-6">The constant stress of wondering if you&apos;ll still be profitable tomorrow...</p>
+
+            <p className="mb-6">Knowing that if tomorrow your ad account gets shut down, you won&apos;t make a single cent...</p>
+
+            <div className="h-6" />
+
+            <p className="text-2xl mb-16">Living month-to-month, <strong>never feeling secure.</strong></p>
+
+            <div className="h-6" />
+
+            <p className="mb-8">Everything changed when we discovered this truth:<br/><br/>Before you start chasing new clients, make sure you have an automated system that turns every new customer into a <strong>big chunk of money.</strong></p>
+
+            {/* Cash Image */}
+            <div className="text-center my-10">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-13T123143.184.png?v=1760347916"
+                alt="$600 cash profit"
+                className="max-w-2xl mx-auto rounded-lg w-full"
+              />
+              <p className="text-xs text-gray-500 mt-2">*This is what $600 looks like - your pure profit from just ONE customer with the LTV system.</p>
+            </div>
+
+            <div className="h-6" />
+
+            <h2 className="text-3xl font-black text-black text-center my-16">Sounds too good to be true? Now, it&apos;s possible...</h2>
+
+            <p className="text-center mb-6">In recent years we developed, refined, tested, an automatic system that turns every customer into a seed of a money tree, that after he purchased from us grows automatically, and within a year reaches $1,000 alone - without spending more money on marketing for him...</p>
+
+            {/* Money Tree Image */}
+            <div className="text-center my-10">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2500_x_1000_1.jpg?v=1756821177"
+                alt="Money Tree Growth"
+                className="max-w-full mx-auto rounded-lg shadow-lg"
+              />
+            </div>
+
+            <p className="text-2xl font-bold mt-10 mb-4">This is your turning point...</p>
+
+            <p className="mb-6">No more living in fear. No more barely breaking even.</p>
+
+            <p className="mb-14">You&apos;re about to discover <strong>the only sustainable path</strong> to real wealth in eCommerce.</p>
+
+            <p className="mb-10">A system where each customer becomes worth <strong>$1,000 automatically</strong>... generating cash flow while you focus on growth, not survival.</p>
+
+            <p className="mb-6">Are you ready?</p>
+
+            <p className="mb-8">Because what you&apos;re about to see will change everything you thought you knew about eCommerce...</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Course Blueprint Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-10">
+            <p className="text-gray-500 font-normal tracking-widest text-sm mb-4">THE COMPLETE BLUEPRINT:</p>
+            <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-8">THE LTV SYSTEM</h2>
           </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-10 text-lg text-[#666]"
-          >
-            <strong className="text-[#111]">The difference?</strong> One store keeps paying for customers. The other maximizes every customer they've already paid to acquire.
-          </motion.p>
-        </div>
-      </div>
+          <div className="space-y-6 text-lg text-black leading-relaxed">
+            <p>This is the <strong>exact framework</strong> we use to generate over $180,000 in net monthly profit... by transforming every single customer into a recurring revenue machine worth $1,000.</p>
 
-      {/* Revenue Impact Section */}
-      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              The Revenue Impact
-            </h2>
-            <p className="text-xl text-[#666] max-w-2xl mx-auto">
-              See how LTV compounds over time
-            </p>
-          </motion.div>
+            <p className="italic text-base text-gray-600">(Yes, even if your average product price is just $30-60)</p>
 
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse rounded-xl overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="p-4 text-left bg-[#111] text-white font-bold">Metric</th>
-                  <th className="p-4 text-center bg-[#111] text-white font-bold">Without LTV System</th>
-                  <th className="p-4 text-center text-white font-bold" style={{ backgroundColor: '#00bc0d' }}>With LTV System</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { metric: 'Customer Lifetime Value', without: '$80', with: '$1,000+' },
-                  { metric: 'Repeat Purchase Rate', without: '5%', with: '35%+' },
-                  { metric: 'Email Revenue %', without: '5%', with: '35%+' },
-                  { metric: 'Customer Acquisition Cost Tolerance', without: 'Low', with: '10x Higher' },
-                  { metric: 'Annual Revenue (1,000 customers)', without: '$80,000', with: '$350,000+' },
-                ].map((row, index) => (
-                  <tr key={index} className="border-b border-[#eee]">
-                    <td className="p-4 font-medium text-[#111] bg-white">{row.metric}</td>
-                    <td className="p-4 text-center text-[#666] bg-white">{row.without}</td>
-                    <td className="p-4 text-center font-bold bg-white" style={{ color: '#00bc0d' }}>{row.with}</td>
+            <div className="h-6" />
+
+            <p>Inside, you&apos;ll discover the <strong>complete system...</strong></p>
+
+            <p>Every psychology trigger... every automation sequence... every metric that matters. Nothing held back.</p>
+
+            <div className="h-6" />
+
+            <p>So you can start earn $1,000+ Per customer (on 12 months period, and $200-300$ within the first month),</p>
+
+            <p>just like this...</p>
+
+            {/* Revenue Screenshots */}
+            <div className="space-y-4 my-10">
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-17_161158.png?v=1760706795" alt="Revenue Screenshot 1" className="w-full rounded-lg" />
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-17_161549.png?v=1760706973" alt="Revenue Screenshot 2" className="w-full rounded-lg" />
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-17_164641.png?v=1760708904" alt="Revenue Screenshot 3" className="w-full rounded-lg" />
+            </div>
+
+            <p>This isn&apos;t theory from someone who &quot;teaches&quot; eCommerce. This is the battle-tested playbook from stores doing <strong>multiple 7-figures monthly</strong>.</p>
+
+            <div className="h-6" />
+
+            <p>And here&apos;s what makes it revolutionary...</p>
+
+            <p className="mb-12">When your LTV hits $1,000 per customer... you become <strong>unstoppable</strong>. While competitors panic at $35 CAC, you&apos;re casually spending $60+ and still printing money. You own the market.</p>
+
+            <h3 className="text-2xl font-black text-black mt-24 mb-8">This system eliminates guesswork and gambling</h3>
+
+            <p>This is <strong>not</strong> about &quot;finding winners&quot; or hoping your next product goes viral.</p>
+
+            <p className="mb-12">This is about building an asset that generates predictable, compound revenue. Month after month. Year after year.</p>
+
+            <div className="h-12" />
+
+            <p className="italic">Think about it...</p>
+
+            <p className="mb-8">What if you had a <strong>proven blueprint</strong> that guarantees long-term profitability?</p>
+
+            <div className="h-6" />
+
+            <p>A system pouring cash into your account <strong>every hour of every day...</strong></p>
+
+            <p className="italic text-sm text-gray-600 -mt-4 mb-8">(Completely on autopilot once it&apos;s set up)</p>
+
+            <div className="h-6" />
+
+            <p>Where acquiring customers at &quot;high&quot; CAC doesn&apos;t scare you... because each one generates $1,000?</p>
+
+            <p className="mt-2 mb-8">That&apos;s your new reality. Starting now.</p>
+
+            <p className="text-center text-2xl mb-16"><strong>Welcome to true financial freedom in eCommerce.</strong></p>
+
+            <div className="h-6" />
+
+            <p>Now listen, I want to be honest with you...</p>
+
+            <p className="mb-16">I know how much you&apos;ve been burned in the past. I know the frustration. I know the fears. But deep down, both you and I know <strong>you are capable of achieving this</strong> - and in a very big way.</p>
+
+            <div className="h-12" />
+
+            <p className="text-2xl font-bold mb-1">Here&apos;s my commitment to you...</p>
+            <p className="italic text-sm text-gray-600 mb-6">(From the founder of Quantum Scale)</p>
+
+            <p className="mb-10">If you implement this system exactly as taught, <strong>you will transform your business</strong>. This isn&apos;t hype. It&apos;s mathematics. Higher LTV = unstoppable growth.</p>
+
+            <p className="mb-12">You&apos;re here because you want real results, not empty promises. So let me show you exactly what you&apos;re getting...</p>
+
+            <h3 className="text-2xl font-bold text-black mt-16 mb-6">The proof is in the numbers...</h3>
+
+            <p className="mb-6">Here&apos;s what happens when you implement the LTV System:</p>
+
+            {/* Comparison Table 1 */}
+            <div className="overflow-x-auto my-8">
+              <table className="w-full border-collapse shadow-lg text-sm">
+                <thead>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold"></th>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold">LTV $80</th>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold">LTV $1,000</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Monthly Customers</th>
+                    <td className="border border-gray-300 p-3 text-center">100</td>
+                    <td className="border border-gray-300 p-3 text-center">100</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Revenue</th>
+                    <td className="border border-gray-300 p-3 text-center">$8,000</td>
+                    <td className="border border-gray-300 p-3 text-center font-bold" style={{ color: '#00bc0d' }}>$100,000</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Product+Fee Cost</th>
+                    <td className="border border-gray-300 p-3 text-center">$2,640</td>
+                    <td className="border border-gray-300 p-3 text-center">$33,000</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Ad Spend</th>
+                    <td className="border border-gray-300 p-3 text-center">$3,000</td>
+                    <td className="border border-gray-300 p-3 text-center">$3,000</td>
+                  </tr>
+                  <tr className="bg-red-50">
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Net Profit (Future Monthly)</th>
+                    <td className="border border-gray-300 p-3 text-center text-red-600 font-bold">-$1,640<br/>(monthly)</td>
+                    <td className="border border-gray-300 p-3 text-center font-bold text-lg" style={{ color: '#00bc0d' }}>$64,000<br/>(monthly)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-center italic text-sm text-gray-500 mb-12">* Based on 100 customers per month with $30 CAC</p>
+
+            <h3 className="text-2xl font-bold text-black text-center mt-16 mb-6">But that&apos;s not all...</h3>
+
+            <p className="mb-6">After you copy our system, you won&apos;t be afraid anymore of CAC rising with scale...</p>
+
+            <p className="mb-6">Because if you raise the budget to $15,000 per day, you won&apos;t be afraid that the acquisition cost will rise to $60, because each customer is worth $1,000 to you, which means <strong>you become unbeatable...</strong></p>
+
+            <p className="mb-8">You&apos;ll be able to raise budgets almost endlessly, and be significantly profitable. Which means - crushing your competition and anyone who stands in your way.</p>
+
+            {/* Comparison Table 2 */}
+            <div className="overflow-x-auto my-8">
+              <table className="w-full border-collapse shadow-lg text-sm">
+                <thead>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold"></th>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold">LTV $80</th>
+                    <th className="border border-gray-300 p-3 text-center bg-gray-100 font-bold">LTV $1,000</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Monthly Customers</th>
+                    <td className="border border-gray-300 p-3 text-center">7,500</td>
+                    <td className="border border-gray-300 p-3 text-center">7,500</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Revenue</th>
+                    <td className="border border-gray-300 p-3 text-center">$600,000</td>
+                    <td className="border border-gray-300 p-3 text-center font-bold" style={{ color: '#00bc0d' }}>$7,500,000</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Product+Fee Cost</th>
+                    <td className="border border-gray-300 p-3 text-center">$198,000</td>
+                    <td className="border border-gray-300 p-3 text-center">$2,475,000</td>
+                  </tr>
+                  <tr>
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Ad Spend</th>
+                    <td className="border border-gray-300 p-3 text-center">$450,000</td>
+                    <td className="border border-gray-300 p-3 text-center">$450,000</td>
+                  </tr>
+                  <tr className="bg-red-50">
+                    <th className="border border-gray-300 p-3 text-left bg-gray-50 font-bold">Net Profit (Future Monthly)</th>
+                    <td className="border border-gray-300 p-3 text-center text-red-600 font-bold">-$48,000<br/>(monthly)</td>
+                    <td className="border border-gray-300 p-3 text-center font-bold text-lg" style={{ color: '#00bc0d' }}>$4,575,000<br/>(monthly)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-center italic text-sm text-gray-500 mb-12">* Table calculated based on $15,000 daily budget - $60 CAC</p>
+
+            <h3 className="text-2xl font-bold text-black mt-24 mb-6">Real results from real students...</h3>
+
+            {/* Testimonial Images */}
+            <div className="space-y-1 my-8">
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-09-21_at_10.01.47_b3adc62a_c2c430a8-e580-4140-91cf-8525c28fef88.jpg?v=1758438491" alt="Student testimonials" className="w-full rounded-lg" />
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-09-21_at_09.47.58_29fb6179.jpg?v=1758438412" alt="Student testimonials" className="w-full rounded-lg" />
+              <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-09-21_at_09.06.37_d3541d83.jpg?v=1758438423" alt="Student testimonials" className="w-full rounded-lg" />
+            </div>
+
+            <h3 className="text-2xl font-bold text-black mt-24 mb-6">What&apos;s inside The LTV System:</h3>
+
+            <div className="space-y-3">
+              <p className="text-base">💰 The psychology framework that makes customers buy repeatedly (without feeling &quot;sold to&quot;)</p>
+              <p className="text-base">💰 Email automation sequences that generate 40-60% of total revenue</p>
+              <p className="text-base">💰 The product ecosystem strategy that naturally drives repeat purchases</p>
+              <p className="text-base">💰 Scaling strategies that work at $10K/month and $1M/month</p>
+              <p className="text-base">💰 The complete metrics dashboard to track and optimize your LTV</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Training Modules Section */}
-      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-              5 Weapons in Your Arsenal
-            </h2>
-            <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Complete training modules to maximize customer lifetime value
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trainingModules.map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-6 rounded-xl bg-white/5 border border-white/10 text-center"
-              >
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#00bc0d' }}>
-                  <module.icon size={32} className="text-white" />
-                </div>
-                <h3 className="font-bold text-white mb-2">{module.title}</h3>
-                <p className="text-white/60 text-sm">{module.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* We Do It Different Section */}
-      <div className="w-full py-20 px-6 lg:px-10 bg-white">
+      {/* 5 Weapons Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-10"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              We Do It Different
-            </h2>
-            <p className="text-xl text-[#666] max-w-2xl mx-auto">
-              What sets The LTV System apart
-            </p>
+            <h2 className="text-3xl font-black text-black mb-4">The Arsenal That Transforms Customers Into Money Trees</h2>
+            <p className="text-lg text-gray-700">Master the dark psychology and cutting-edge technology that forces customers to buy repeatedly</p>
           </motion.div>
 
-          <div className="space-y-4">
-            {[
-              { old: 'Generic retention advice', new: 'Specific, tested playbooks with exact sequences' },
-              { old: 'Theory without numbers', new: 'Real case studies with documented results' },
-              { old: 'One-size-fits-all approach', new: 'Customizable systems for any product type' },
-              { old: 'Complicated tech requirements', new: 'Works with tools you already have' },
-              { old: 'Focus on acquisition only', new: 'Complete post-purchase optimization system' },
-            ].map((row, index) => (
+          {/* Weapon Cards */}
+          <div className="space-y-6">
+            {weapons.map((weapon, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="grid md:grid-cols-2 gap-4"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+                style={{ boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.1)' }}
               >
-                <div className="p-4 rounded-xl bg-[#fafafa] border border-[#eee] flex items-center gap-3">
-                  <X size={20} className="text-red-400 flex-shrink-0" />
-                  <span className="text-[#666]">{row.old}</span>
+                <div className="inline-block bg-black text-white px-5 py-2 rounded-full text-sm font-bold mb-5">
+                  🎁 WEAPON {weapon.number}
                 </div>
-                <div className="p-4 rounded-xl flex items-center gap-3" style={{ backgroundColor: 'rgba(0, 188, 13, 0.1)', border: '1px solid rgba(0, 188, 13, 0.2)' }}>
-                  <Check size={20} style={{ color: '#00bc0d' }} className="flex-shrink-0" />
-                  <span className="text-[#111] font-medium">{row.new}</span>
-                </div>
+                <h3 className="text-2xl font-black mb-3" style={{ color: '#00bc0d' }}>{weapon.title}</h3>
+                <p className="text-gray-700 text-base leading-relaxed">{weapon.desc}</p>
               </motion.div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* We Do It Different / Comparison Section */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-extrabold text-black mb-6">We Do it Different</h2>
+
+            <p className="text-lg text-black mb-8">
+              For the price of a pair of socks, you&apos;re about to unlock life-changing content. Or... you can ignore this page... and stay trapped in the $80 LTV hamster wheel forever.
+            </p>
+
+            <p className="text-base text-black mb-10">
+              You&apos;ve got 2 options, just choose who you&apos;d rather be.
+            </p>
+
+            {/* Comparison Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300 text-left">
+                <thead>
+                  <tr>
+                    <th className="text-2xl font-extrabold text-center p-5 bg-gray-300 border border-gray-300">❌ Skip this offer</th>
+                    <th className="text-2xl font-extrabold text-center p-5 bg-gray-300 border border-gray-300">✅ Join Us</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonRows.map((row, index) => (
+                    <tr key={index}>
+                      <td className="p-5 text-base text-black bg-gray-50 border border-gray-300 align-top">{row.skip}</td>
+                      <td className="p-5 text-base text-black bg-gray-50 border border-gray-300 align-top">{row.join}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-sm text-black italic mt-6 mb-10 text-left">* P.S. 100% of the course price (${course.price}) is recognized as a business expense for tax purposes.</p>
+
+            {/* CTA Button */}
+            <button
+              onClick={onCheckout}
+              className="inline-flex items-center justify-center px-16 py-5 rounded-full font-bold text-2xl text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl mt-10"
+              style={{
+                background: 'radial-gradient(ellipse at bottom, #4BC978 0%, #00A820 40%)',
+                boxShadow: '0 6px 20px rgba(0, 168, 32, 0.35)',
+                minWidth: '380px',
+                minHeight: '81px'
+              }}
+            >
+              Turn Customers Into Money Trees!
+            </button>
+          </motion.div>
         </div>
       </div>
 
       {/* FAQ Section */}
-      <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4 text-center">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-[#666] text-center mb-12">
-            Everything you need to know before you start
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-5xl font-extrabold text-black mb-4 text-center"
+          >
+            FAQ
+          </motion.h2>
+          <p className="text-center text-black mb-12 text-lg">
+            (Got questions? I&apos;ve got no-BS answers.)
           </p>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {faqItems.map((item, index) => (
               <motion.div
                 key={index}
@@ -3273,17 +3570,17 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 viewport={{ once: true }}
-                className="rounded-xl overflow-hidden bg-white border border-[#eee]"
+                className="rounded-2xl overflow-hidden bg-black"
               >
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#f5f5f5] transition-colors"
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#1a1a1a] transition-colors"
                 >
-                  <span className="font-semibold text-[#111] pr-4">{item.question}</span>
+                  <span className="font-bold text-white pr-4 text-base">{item.question}</span>
                   {expandedFaq === index ? (
-                    <ChevronUp size={20} className="text-[#666] flex-shrink-0" />
+                    <ChevronUp size={20} className="text-white flex-shrink-0" />
                   ) : (
-                    <ChevronDown size={20} className="text-[#666] flex-shrink-0" />
+                    <ChevronDown size={20} className="text-white flex-shrink-0" />
                   )}
                 </button>
                 <AnimatePresence>
@@ -3295,7 +3592,7 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
                       transition={{ duration: 0.2 }}
                       className="px-5 pb-5"
                     >
-                      <p className="text-[#666]">{item.answer}</p>
+                      <p className="text-white/80 text-base">{item.answer}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -3306,54 +3603,29 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
       </div>
 
       {/* Final CTA Section */}
-      <div className="w-full py-20 px-6 lg:px-10" style={{ backgroundColor: '#111' }}>
+      <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
-              Ready to <span style={{ color: '#00bc0d' }}>Maximize</span> Your Customers?
-            </h2>
-            <p className="text-xl mb-4 text-white/70">
-              Stop leaving money on the table. Start building real customer lifetime value.
-            </p>
-
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl lg:text-7xl font-bold" style={{ color: '#00bc0d' }}>${course.price}</span>
-              {course.originalPrice && (
-                <span className="text-2xl line-through text-white/40">${course.originalPrice}</span>
-              )}
-            </div>
-
             <button
               onClick={onCheckout}
-              className="inline-flex items-center gap-3 px-14 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 text-white uppercase tracking-wide"
+              className="inline-flex items-center justify-center px-20 py-6 rounded-full font-bold text-2xl text-white uppercase tracking-wide transition-all hover:scale-105 hover:shadow-2xl"
               style={{
-                background: 'linear-gradient(135deg, #00bc0d 0%, #00e610 50%, #00bc0d 100%)',
-                boxShadow: '0 10px 40px rgba(0, 188, 13, 0.4)'
+                background: 'radial-gradient(ellipse at bottom, #4BC978 0%, #00A820 40%)',
+                boxShadow: '0 6px 20px rgba(0, 168, 32, 0.35)',
+                minWidth: '480px',
+                minHeight: '90px'
               }}
             >
-              <ShoppingCart size={24} />
-              GET INSTANT ACCESS
-              <ArrowRight size={20} />
+              BUILD MY MONEY TREES!
             </button>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm text-white/50">
-              <div className="flex items-center gap-2">
-                <Shield size={18} />
-                <span>30-Day Guarantee</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock size={18} />
-                <span>Instant Access</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award size={18} />
-                <span>Lifetime Updates</span>
-              </div>
-            </div>
+            <p className="text-base text-black mt-6">
+              Everything will be in your email within 17 seconds.
+            </p>
           </motion.div>
         </div>
       </div>
