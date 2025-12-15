@@ -5001,7 +5001,7 @@ export default function CourseDetailPage() {
           <div className="text-center">
             <h3 className="text-xl font-medium text-[#111] mb-2">Course not found</h3>
             <p className="text-[#666] mb-6">The course you're looking for doesn't exist.</p>
-            <Link href="/courses" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white" style={{ background: 'linear-gradient(150deg, #000 0%, #222 50%, #000 100%)' }}>Back to Courses</Link>
+            <Link href="/courses" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white" style={{ background: 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)' }}>Back to Courses</Link>
           </div>
         </div>
       </DashboardLayout>
@@ -5152,7 +5152,7 @@ export default function CourseDetailPage() {
                   <span className="text-[#666]">Total</span>
                   <span className="text-2xl font-bold text-[#111]">${course.price}</span>
                 </div>
-                <button onClick={handlePurchase} disabled={isProcessing} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}>
+                <button onClick={handlePurchase} disabled={isProcessing} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
                   {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase</>)}
                 </button>
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#888]">
@@ -5250,7 +5250,7 @@ export default function CourseDetailPage() {
                 )}
               </div>
 
-              <button onClick={() => setShowCheckout(true)} className="flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]" style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #222 50%, #000 70%, #000 100%)' }}>
+              <button onClick={() => setShowCheckout(true)} className="flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]" style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
                 <ShoppingCart size={20} />Get Instant Access
               </button>
               <p className="text-xs text-center text-[#888] mt-3">30-day money-back guarantee • Instant access • Lifetime updates</p>
