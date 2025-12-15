@@ -120,24 +120,6 @@ The same frameworks in this course have been used to optimize 7-figure stores an
     ],
     bonuses: [
       {
-        title: "The $10,000 AI Photographer",
-        description: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE. You'll get full access to the complete course that teaches you how to create jaw-dropping product photos using AI.",
-        value: 297,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261"
-      },
-      {
-        title: "Secret Tools Vault",
-        description: "We've already done the heavy lifting for you. We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570"
-      },
-      {
-        title: "Lifetime Discount Vault",
-        description: "And we didn't stop there... We partnered with dozens of eCommerce tools and top Shopify apps - the ones you already use - to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions. Yes, really.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375"
-      },
-      {
         title: "The Intelligence Agent",
         description: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.",
         value: 97,
@@ -154,12 +136,6 @@ The same frameworks in this course have been used to optimize 7-figure stores an
         description: "Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).",
         value: 147,
         image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730"
-      },
-      {
-        title: "Access to Our Secret Newsletter",
-        description: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015"
       }
     ],
     faq: [
@@ -185,7 +161,7 @@ The same frameworks in this course have been used to optimize 7-figure stores an
       },
       {
         question: "Why is it only $29?",
-        answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $29. One-time payment, lifetime access. Important: This price won't last forever. We reserve the right to increase it at any time. If you're seeing $29 now, consider yourself lucky - this discount is temporary."
+        answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access. Important: This price won't last forever. We reserve the right to increase it at any time. If you're seeing $10 now, consider yourself lucky - this discount is temporary."
       }
     ]
   },

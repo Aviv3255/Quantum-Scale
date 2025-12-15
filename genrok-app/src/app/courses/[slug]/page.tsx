@@ -2566,15 +2566,11 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
     { title: "The Subconscious Switch", description: "70+ step-by-step implementation tasks." }
   ];
 
-  // Exact bonuses from course data with images
+  // Exact bonuses from course data with images (3 bonuses, total $341)
   const bonuses = [
-    { title: "The $10,000 AI Photographer", value: 297, desc: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261" },
-    { title: "Secret Tools Vault", value: 97, desc: "We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570" },
-    { title: "Lifetime Discount Vault", value: 97, desc: "We partnered with dozens of eCommerce tools and top Shopify apps to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375" },
     { title: "The Intelligence Agent", value: 97, desc: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. For FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697" },
     { title: "Einstein on Steroids", value: 97, desc: "An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300" },
-    { title: "Your Personal Conversion Map", value: 147, desc: "A guided tracking system that takes you step by step - all the way to success (6%+).", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730" },
-    { title: "Access to Our Secret Newsletter", value: 97, desc: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015" }
+    { title: "Your Personal Conversion Map", value: 147, desc: "A guided tracking system that takes you step by step - all the way to success (6%+).", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730" }
   ];
 
   // Exact FAQs from course data
@@ -2584,7 +2580,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
     { question: "Do I need to know how to code?", answer: "Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users." },
     { question: "Will this work for my specific product/niche?", answer: "Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers." },
     { question: "What if I implement everything and it doesn't work?", answer: "Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back." },
-    { question: "Why is it only $10?", answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $10. One-time payment, lifetime access." }
+    { question: "Why is it only $10?", answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access." }
   ];
 
   // GIFs from course data
@@ -2691,7 +2687,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
               </motion.button>
 
               <p className="text-xs mt-6 text-white/40">
-                30-day money-back guarantee • Instant access • 7 bonuses worth $929 included
+                30-day money-back guarantee • Instant access • 3 bonuses worth $341 included
               </p>
             </div>
 
@@ -2845,8 +2841,8 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             style={{ backgroundColor: 'rgba(255, 79, 3, 0.15)', border: '2px dashed rgba(255, 79, 3, 0.5)' }}
           >
             <p className="text-lg text-white">
-              <span className="font-bold">Plus 7 Exclusive Bonuses</span>{' '}
-              <span className="text-2xl font-black" style={{ color: '#ff4f03' }}>Worth $929</span>{' '}
+              <span className="font-bold">Plus 3 Exclusive Bonuses</span>{' '}
+              <span className="text-2xl font-black" style={{ color: '#ff4f03' }}>Worth $341</span>{' '}
               <span className="text-white/70">— All Included FREE</span>
             </p>
           </motion.div>
@@ -2863,10 +2859,10 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             className="text-center mb-12"
           >
             <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)' }}>
-              <span className="text-sm font-bold" style={{ color: '#ff4f03' }}>VALUED AT $929</span>
+              <span className="text-sm font-bold" style={{ color: '#ff4f03' }}>VALUED AT $341</span>
             </div>
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              7 Exclusive Bonuses Included
+              3 Exclusive Bonuses Included
             </h2>
             <p className="text-xl text-[#666] max-w-2xl mx-auto">
               Everything you need to implement these tactics immediately
@@ -2921,7 +2917,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
           >
             <p className="text-xl">
               <span className="font-bold text-[#111]">Total Bonus Value:</span>{' '}
-              <span className="text-3xl font-black" style={{ color: '#ff4f03' }}>$929</span>{' '}
+              <span className="text-3xl font-black" style={{ color: '#ff4f03' }}>$341</span>{' '}
               <span className="text-[#666]">— Yours FREE when you join today</span>
             </p>
           </motion.div>
@@ -3100,7 +3096,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
               </div>
               <div className="flex items-center gap-2">
                 <Gift size={18} />
-                <span>$929 in Bonuses</span>
+                <span>$341 in Bonuses</span>
               </div>
             </div>
           </motion.div>
