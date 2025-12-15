@@ -47,6 +47,7 @@ import {
   ThumbsUp,
   Star,
   MessageCircle,
+  Trophy,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
