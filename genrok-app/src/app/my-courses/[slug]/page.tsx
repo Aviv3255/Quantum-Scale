@@ -177,11 +177,12 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
           .eq('slug', resolvedParams.slug)
           .single();
 
-        if (courseData) {
-          setCourse(courseData);
+        const typedCourseData = courseData as CourseData | null;
+        if (typedCourseData) {
+          setCourse(typedCourseData);
 
           // Get course files
-          const courseFiles = await getCourseFiles(courseData.id);
+          const courseFiles = await getCourseFiles(typedCourseData.id);
           setFiles(courseFiles);
         }
       }
