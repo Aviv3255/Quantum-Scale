@@ -63,8 +63,8 @@ export default function AdminCoursesPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Admin email check (you can customize this)
-  const ADMIN_EMAILS = ['admin@quantum-scale.co', 'your-email@example.com'];
+  // Admin email check
+  const ADMIN_EMAILS = ['admin@quantum-scale.co', 'aviv32552@gmail.com'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
   useEffect(() => {
