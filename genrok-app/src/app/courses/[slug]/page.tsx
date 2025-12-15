@@ -51,8 +51,9 @@ import {
   FileText,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useCartStore, CartItem } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { getCourseBySlug } from '@/data/courses';
+import { getCourseBySlug, getAllCourses, Course } from '@/data/courses';
 import RawHTMLRenderer from '@/components/RawHTMLRenderer';
 import { getCourseHTML } from '@/data/course-html-blocks';
 import { getStoredHTMLBlock } from '@/lib/html-blocks';
@@ -5519,6 +5520,7 @@ export default function CourseDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { items: cartItems, addItem, removeItem, isInCart, getTotal, getOriginalTotal, clearCart } = useCartStore();
   const [activeTab, setActiveTab] = useState<TabType>('content');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -5527,9 +5529,11 @@ export default function CourseDetailPage() {
   const [showEmailChange, setShowEmailChange] = useState(false);
   const [customEmail, setCustomEmail] = useState('');
   const [useAlternativeLayout, setUseAlternativeLayout] = useState(false);
+  const [showAddCourses, setShowAddCourses] = useState(false);
 
   const slug = params.slug as string;
   const course = getCourseBySlug(slug);
+  const allCourses = getAllCourses();
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -5537,13 +5541,31 @@ export default function CourseDetailPage() {
     }
   }, [user, isLoading, router]);
 
+  // Add current course to cart and show checkout
+  const handleGetAccess = () => {
+    if (course && !isInCart(course.slug)) {
+      addItem({
+        slug: course.slug,
+        title: course.title,
+        price: course.price,
+        originalPrice: course.originalPrice,
+        image: course.image,
+      });
+    }
+    setShowCheckout(true);
+  };
+
   const handlePurchase = async () => {
     setIsProcessing(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsProcessing(false);
     setShowCheckout(false);
-    alert('Purchase successful! You now have access to this course.');
+    clearCart();
+    alert('Purchase successful! You now have access to your courses.');
   };
+
+  // Available courses to add (not already in cart)
+  const availableToAdd = allCourses.filter(c => !isInCart(c.slug));
 
   if (isLoading || !user) {
     return (
@@ -5657,62 +5679,144 @@ export default function CourseDetailPage() {
       <AnimatePresence>
         {showCheckout && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => !isProcessing && setShowCheckout(false)}>
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md rounded-2xl overflow-hidden bg-white" onClick={(e) => e.stopPropagation()}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg rounded-2xl overflow-hidden bg-white max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
               <div className="p-6 border-b border-[#eee]">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-[#111]">Quick Checkout</h2>
+                  <h2 className="text-xl font-bold text-[#111]">Your Order</h2>
                   {!isProcessing && (<button onClick={() => setShowCheckout(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]"><X size={20} className="text-[#666]" /></button>)}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#666]"><Lock size={14} /><span>Secure checkout powered by Stripe</span></div>
               </div>
-              <div className="p-6 border-b border-[#eee]">
-                <div className="flex gap-4">
-                  <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-[#f5f5f5]">
-                    <Image src={course.image} alt={course.title} width={80} height={64} unoptimized className="w-full h-full object-contain" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-[#111] text-sm">{course.title}</h3>
-                    <p className="text-xs text-[#666] mt-1">Instant digital access</p>
-                    <div className="flex items-baseline gap-2 mt-2">
-                      <span className="font-bold text-[#111]">${course.price}</span>
-                      {course.originalPrice && <span className="text-xs line-through text-[#999]">${course.originalPrice}</span>}
+
+              {/* Cart Items */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="p-6 border-b border-[#eee] space-y-4">
+                  {cartItems.map((item) => (
+                    <div key={item.slug} className="flex gap-4">
+                      <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
+                        <Image src={item.image} alt={item.title} width={80} height={64} unoptimized className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-[#111] text-sm">{item.title}</h3>
+                        <p className="text-xs text-[#666] mt-1">Instant digital access</p>
+                        <div className="flex items-baseline gap-2 mt-2">
+                          <span className="font-bold text-[#111]">${item.price}</span>
+                          {item.originalPrice && <span className="text-xs line-through text-[#999]">${item.originalPrice}</span>}
+                        </div>
+                      </div>
+                      <button onClick={() => removeItem(item.slug)} className="p-1.5 h-fit rounded-lg hover:bg-[#f5f5f5] text-[#999] hover:text-red-500 transition-colors">
+                        <X size={16} />
+                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
-              <div className="p-6 border-b border-[#eee]">
-                {!showEmailChange ? (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">{(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}</div>
-                      <div>
-                        <p className="font-medium text-[#111] text-sm">{customEmail || user?.email}</p>
-                        <p className="text-xs text-[#666]">Course will be sent to this email</p>
+
+                {/* Add More Courses Section */}
+                <div className="p-4 mx-4 my-4 rounded-xl border border-[#111] bg-white">
+                  <button
+                    onClick={() => setShowAddCourses(!showAddCourses)}
+                    className="w-full flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <ShoppingBag size={18} className="text-[#111]" />
+                      <span className="font-medium text-[#111]">Add more courses to your order</span>
+                    </div>
+                    {showAddCourses ? <ChevronUp size={18} className="text-[#666]" /> : <ChevronDown size={18} className="text-[#666]" />}
+                  </button>
+
+                  <AnimatePresence>
+                    {showAddCourses && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-4 space-y-3 max-h-[300px] overflow-y-auto">
+                          {availableToAdd.length === 0 ? (
+                            <p className="text-sm text-[#666] text-center py-4">All courses are in your cart!</p>
+                          ) : (
+                            availableToAdd.map((c) => (
+                              <div key={c.slug} className="flex items-center gap-3 p-3 rounded-xl border border-[#eee] hover:border-[#111] transition-colors">
+                                <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
+                                  <Image src={c.image} alt={c.title} width={56} height={56} unoptimized className="w-full h-full object-contain" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-medium text-[#111] text-sm truncate">{c.title}</h4>
+                                  <p className="text-xs text-[#666] truncate">{c.description}</p>
+                                  <div className="flex items-baseline gap-2 mt-1">
+                                    <span className="font-bold text-[#111] text-sm">${c.price}</span>
+                                    {c.originalPrice && <span className="text-xs line-through text-[#999]">${c.originalPrice}</span>}
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => addItem({
+                                    slug: c.slug,
+                                    title: c.title,
+                                    price: c.price,
+                                    originalPrice: c.originalPrice,
+                                    image: c.image,
+                                  })}
+                                  className="px-3 py-1.5 rounded-lg bg-[#111] text-white text-xs font-medium hover:bg-[#333] transition-colors flex-shrink-0"
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Email Section */}
+                <div className="p-6 border-b border-[#eee]">
+                  {!showEmailChange ? (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">{(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}</div>
+                        <div>
+                          <p className="font-medium text-[#111] text-sm">{customEmail || user?.email}</p>
+                          <p className="text-xs text-[#666]">Courses will be sent to this email</p>
+                        </div>
+                      </div>
+                      <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]"><Edit3 size={12} />Change</button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-[#111]">Send to a different email</p>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888]" size={16} />
+                        <input type="email" value={customEmail} onChange={(e) => setCustomEmail(e.target.value)} placeholder="Enter email address" className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => setShowEmailChange(false)} className="flex-1 py-2 text-sm font-medium rounded-lg bg-[#111] text-white">Confirm</button>
+                        <button onClick={() => { setCustomEmail(''); setShowEmailChange(false); }} className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-[#f5f5f5] text-[#666]">Cancel</button>
                       </div>
                     </div>
-                    <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]"><Edit3 size={12} />Change</button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <p className="text-sm font-medium text-[#111]">Send to a different email</p>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888]" size={16} />
-                      <input type="email" value={customEmail} onChange={(e) => setCustomEmail(e.target.value)} placeholder="Enter email address" className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none" />
-                    </div>
-                    <div className="flex gap-2">
-                      <button onClick={() => setShowEmailChange(false)} className="flex-1 py-2 text-sm font-medium rounded-lg bg-[#111] text-white">Confirm</button>
-                      <button onClick={() => { setCustomEmail(''); setShowEmailChange(false); }} className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-[#f5f5f5] text-[#666]">Cancel</button>
-                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Total & Purchase */}
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[#666]">Subtotal ({cartItems.length} {cartItems.length === 1 ? 'course' : 'courses'})</span>
+                  <span className="font-medium text-[#111]">${getTotal()}</span>
+                </div>
+                {getOriginalTotal() > getTotal() && (
+                  <div className="flex items-center justify-between mb-2 text-sm">
+                    <span className="text-green-600">You save</span>
+                    <span className="text-green-600 font-medium">${getOriginalTotal() - getTotal()}</span>
                   </div>
                 )}
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[#666]">Total</span>
-                  <span className="text-2xl font-bold text-[#111]">${course.price}</span>
+                <div className="flex items-center justify-between mb-4 pt-2 border-t border-[#eee]">
+                  <span className="font-semibold text-[#111]">Total</span>
+                  <span className="text-2xl font-bold text-[#111]">${getTotal()}</span>
                 </div>
-                <button onClick={handlePurchase} disabled={isProcessing} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
-                  {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase</>)}
+                <button onClick={handlePurchase} disabled={isProcessing || cartItems.length === 0} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing || cartItems.length === 0 ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
+                  {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase - ${getTotal()}</>)}
                 </button>
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#888]">
                   <span>30-day guarantee</span><span>•</span><span>Instant access</span><span>•</span><span>Lifetime updates</span>
@@ -5750,67 +5854,67 @@ export default function CourseDetailPage() {
         {/* Alternative Layouts - Priority: 1. localStorage, 2. code HTML blocks, 3. React components */}
         {useAlternativeLayout && (getStoredHTMLBlock(slug) || getCourseHTML(slug)) ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={() => setShowCheckout(true)} />
+              <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <AIPhotographerAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <AdCopyTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <MetaAdTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <SubconsciousTrapAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ltv-system' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <LTVSystemAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <EmailMarketingAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'abandoned-checkout' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
             <div className="pb-24">
-              <AbandonedCheckoutAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+              <AbandonedCheckoutAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={() => setShowCheckout(true)} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
           </>
         ) : (
           <>
