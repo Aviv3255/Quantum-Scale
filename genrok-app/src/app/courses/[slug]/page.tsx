@@ -3085,6 +3085,57 @@ interface LTVSystemAlternativeProps {
 const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternativeProps) => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
+  // Counter animation effect
+  useEffect(() => {
+    const animateCounter = () => {
+      const counter = document.getElementById('ltv-price-counter');
+      if (!counter) return;
+
+      const target = 929;
+      const duration = 2000;
+      const startTime = performance.now();
+
+      const updateCounter = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(easeOutQuart * target);
+        counter.textContent = '$' + currentValue;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = '$' + target;
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const priceCounter = document.getElementById('ltv-price-counter');
+    if (priceCounter) {
+      observer.observe(priceCounter);
+    }
+
+    return () => {
+      if (priceCounter) {
+        observer.unobserve(priceCounter);
+      }
+    };
+  }, []);
+
   // 5 Weapons - Training Modules
   const weapons = [
     { number: 1, title: 'The LTV Engine Blueprint', desc: 'Discover the psychological and technical system that makes every customer worth $1,000+. A backend architecture built to multiply profits automatically.' },
@@ -3681,6 +3732,36 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
         </div>
       </div>
 
+      {/* Bonuses Section with Counter */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-gray-600 font-normal tracking-widest text-sm mb-6 uppercase">
+              PLUS, YOU'LL ALSO GET 7 EXCLUSIVE BONUSES WORTH
+            </p>
+            <div
+              id="ltv-price-counter"
+              style={{
+                fontSize: '72px',
+                fontWeight: '900',
+                color: '#000',
+                fontFamily: "'Inter', sans-serif",
+                marginBottom: '20px'
+              }}
+            >
+              $0
+            </div>
+            <p className="text-lg text-gray-600 font-normal">
+              absolutely <span className="font-bold text-black underline">FREE</span> when you enroll today
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
@@ -3708,7 +3789,7 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
               >
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#1a1a1a] transition-colors"
+                  className="w-full p-5 flex items-center justify-between text-left hover:bg-[#1a1a1a] transition-colors text-white"
                 >
                   <span className="font-bold text-white pr-4 text-base">{item.question}</span>
                   {expandedFaq === index ? (
@@ -3779,6 +3860,57 @@ interface EmailMarketingAlternativeProps {
 
 const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingAlternativeProps) => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Counter animation effect
+  useEffect(() => {
+    const animateCounter = () => {
+      const counter = document.getElementById('email-price-counter');
+      if (!counter) return;
+
+      const target = 929;
+      const duration = 2000;
+      const startTime = performance.now();
+
+      const updateCounter = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(easeOutQuart * target);
+        counter.textContent = '$' + currentValue;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = '$' + target;
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const priceCounter = document.getElementById('email-price-counter');
+    if (priceCounter) {
+      observer.observe(priceCounter);
+    }
+
+    return () => {
+      if (priceCounter) {
+        observer.unobserve(priceCounter);
+      }
+    };
+  }, []);
 
   const systemParts = [
     { number: '1', title: 'Business Intelligence + World-Class Setup', desc: 'The most advanced BI configuration on the planet—optimizing send times, frequency, and content delivery on a per-customer basis. No more batch-and-blast. Every email hits when that specific person is most likely to convert.' },
@@ -4068,6 +4200,36 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
         </div>
       </div>
 
+      {/* Bonuses Section with Counter */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-gray-600 font-normal tracking-widest text-sm mb-6 uppercase">
+              PLUS, YOU'LL ALSO GET 7 EXCLUSIVE BONUSES WORTH
+            </p>
+            <div
+              id="email-price-counter"
+              style={{
+                fontSize: '72px',
+                fontWeight: '900',
+                color: '#000',
+                fontFamily: "'Inter', sans-serif",
+                marginBottom: '20px'
+              }}
+            >
+              $0
+            </div>
+            <p className="text-lg text-gray-600 font-normal">
+              absolutely <span className="font-bold text-black underline">FREE</span> when you enroll today
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <div className="w-full py-20 px-6 lg:px-10 bg-[#fafafa]">
         <div className="max-w-4xl mx-auto">
@@ -4090,11 +4252,11 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
                   className="w-full p-6 flex items-center justify-between text-left transition-colors text-white"
                   style={{ backgroundColor: '#111' }}
                 >
-                  <span className="font-bold pr-4">"{item.question}"</span>
+                  <span className="font-bold pr-4 text-white">"{item.question}"</span>
                   {expandedFaq === index ? (
-                    <ChevronUp size={20} className="flex-shrink-0" />
+                    <ChevronUp size={20} className="flex-shrink-0 text-white" />
                   ) : (
-                    <ChevronDown size={20} className="flex-shrink-0" />
+                    <ChevronDown size={20} className="flex-shrink-0 text-white" />
                   )}
                 </button>
                 <AnimatePresence>
@@ -4179,6 +4341,57 @@ interface AbandonedCheckoutAlternativeProps {
 
 const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedCheckoutAlternativeProps) => {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Counter animation effect
+  useEffect(() => {
+    const animateCounter = () => {
+      const counter = document.getElementById('checkout-price-counter');
+      if (!counter) return;
+
+      const target = 929;
+      const duration = 2000;
+      const startTime = performance.now();
+
+      const updateCounter = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(easeOutQuart * target);
+        counter.textContent = '$' + currentValue;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = '$' + target;
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const priceCounter = document.getElementById('checkout-price-counter');
+    if (priceCounter) {
+      observer.observe(priceCounter);
+    }
+
+    return () => {
+      if (priceCounter) {
+        observer.unobserve(priceCounter);
+      }
+    };
+  }, []);
 
   const features = [
     { title: 'Strategic Timing', desc: 'Each email goes out at the exact right time. When people are most likely to come back and buy.' },
@@ -4511,6 +4724,36 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
         </div>
       </div>
 
+      {/* Bonuses Section with Counter */}
+      <div className="w-full py-16 lg:py-20 px-6 lg:px-10 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-gray-600 font-normal tracking-widest text-sm mb-6 uppercase">
+              PLUS, YOU'LL ALSO GET 7 EXCLUSIVE BONUSES WORTH
+            </p>
+            <div
+              id="checkout-price-counter"
+              style={{
+                fontSize: '72px',
+                fontWeight: '900',
+                color: '#000',
+                fontFamily: "'Inter', sans-serif",
+                marginBottom: '20px'
+              }}
+            >
+              $0
+            </div>
+            <p className="text-lg text-gray-600 font-normal">
+              absolutely <span className="font-bold text-black underline">FREE</span> when you enroll today
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <div className="w-full py-20 px-6 lg:px-10 bg-white">
         <div className="max-w-4xl mx-auto">
@@ -4533,11 +4776,11 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
                   className="w-full p-6 flex items-center justify-between text-left transition-colors text-white"
                   style={{ backgroundColor: '#111' }}
                 >
-                  <span className="font-bold pr-4">{item.question}</span>
+                  <span className="font-bold pr-4 text-white">{item.question}</span>
                   {expandedFaq === index ? (
-                    <ChevronUp size={20} className="flex-shrink-0" />
+                    <ChevronUp size={20} className="flex-shrink-0 text-white" />
                   ) : (
-                    <ChevronDown size={20} className="flex-shrink-0" />
+                    <ChevronDown size={20} className="flex-shrink-0 text-white" />
                   )}
                 </button>
                 <AnimatePresence>
