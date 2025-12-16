@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -33,6 +33,7 @@ export default function ArticlePage() {
   const { user, isLoading } = useAuthStore();
   const params = useParams();
   const slug = params.slug as string;
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const article = getArticleBySlug(slug);
   const relatedArticles = getRelatedArticles(slug, 3);
@@ -42,6 +43,20 @@ export default function ArticlePage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Make all links in the content open in new tab
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const links = contentRef.current.querySelectorAll('a[href]');
+    links.forEach((link) => {
+      const anchor = link as HTMLAnchorElement;
+      if (!anchor.target || anchor.target !== '_blank') {
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+      }
+    });
+  }, [article?.content]);
 
   if (isLoading || !user) {
     return (
@@ -137,6 +152,7 @@ export default function ArticlePage() {
           className="max-w-3xl"
         >
           <div
+            ref={contentRef}
             className="prose-content"
             dangerouslySetInnerHTML={{
               __html: `<p class="mb-4 text-[var(--text-muted)] leading-relaxed">${parseMarkdown(article.content)}</p>`

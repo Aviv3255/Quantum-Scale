@@ -13,6 +13,17 @@ export default function RawHTMLRenderer({ html, onCheckout }: RawHTMLRendererPro
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Make all links open in new tab
+    const links = containerRef.current.querySelectorAll('a[href]');
+    links.forEach((link) => {
+      const anchor = link as HTMLAnchorElement;
+      // Only modify external links or links that don't have a target
+      if (!anchor.target || anchor.target !== '_blank') {
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+      }
+    });
+
     // Find all buttons with data-checkout attribute and attach checkout handler
     const checkoutButtons = containerRef.current.querySelectorAll('[data-checkout], .cta-button, [class*="cta"]');
     checkoutButtons.forEach((button) => {
