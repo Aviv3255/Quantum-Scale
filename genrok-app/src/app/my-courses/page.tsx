@@ -14,9 +14,10 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
+import { getUserCourses, PurchasedCourse, getFileProgress, FileProgress } from '@/lib/course-access';
 import { useChecklist } from '@/hooks/useChecklist';
 import { getCourseBySlug, getCourseByTitle } from '@/data/courses';
+import { hasChecklist } from '@/data/course-checklists';
 
 // Circular progress component
 interface CircularProgressProps {
@@ -91,9 +92,29 @@ interface CourseCardProps {
 
 function CourseCard({ course, userId }: CourseCardProps) {
   const { progress: checklistProgress, items } = useChecklist(course.slug, userId);
-  // Reading progress would be calculated from file progress - for now showing 0
-  // This could be fetched from getFileProgress if needed
-  const readingProgress = 0;
+  const [readingProgress, setReadingProgress] = useState(0);
+  const courseHasChecklist = hasChecklist(course.slug);
+
+  // Load reading progress from localStorage/Supabase
+  useEffect(() => {
+    async function loadReadingProgress() {
+      if (!userId || !course.course_id) return;
+      try {
+        const progressData = await getFileProgress(userId, course.course_id);
+        if (progressData && Object.keys(progressData).length > 0) {
+          // Calculate average progress across all files
+          const progressValues = Object.values(progressData).map((p: FileProgress) => p.progress);
+          const avgProgress = progressValues.length > 0
+            ? Math.round(progressValues.reduce((a, b) => a + b, 0) / progressValues.length)
+            : 0;
+          setReadingProgress(avgProgress);
+        }
+      } catch (error) {
+        console.error('Error loading reading progress:', error);
+      }
+    }
+    loadReadingProgress();
+  }, [userId, course.course_id]);
 
   // Get mockup image from static course data if database image not available
   // Try slug first, then title as fallback
@@ -130,7 +151,7 @@ function CourseCard({ course, userId }: CourseCardProps) {
             {/* Progress Circles */}
             <div className="flex items-center gap-4 flex-shrink-0">
               <CircularProgress progress={readingProgress} label="Read" />
-              {items.length > 0 && (
+              {courseHasChecklist && items.length > 0 && (
                 <CircularProgress progress={checklistProgress} label="Tasks" />
               )}
             </div>

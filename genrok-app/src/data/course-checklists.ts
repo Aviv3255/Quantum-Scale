@@ -1440,6 +1440,36 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
   ],
 };
 
+// Courses that should NOT have checklists (templates, tools, resources)
+export const coursesWithoutChecklist: string[] = [
+  'offer-workshop',
+  '20-laws',
+  'ugly-ads',
+  'meta-ad-templates',
+  'ad-copy-templates',
+  'meta-headlines',
+  'ai-photographer',
+];
+
+export const hasChecklist = (courseSlug: string): boolean => {
+  // Normalize slug for matching
+  const normalizedSlug = courseSlug.toLowerCase();
+
+  // Check if course is in the no-checklist list
+  for (const noChecklistSlug of coursesWithoutChecklist) {
+    if (normalizedSlug.includes(noChecklistSlug) || noChecklistSlug.includes(normalizedSlug)) {
+      return false;
+    }
+  }
+
+  // Also check if there's actually checklist data
+  return !!defaultChecklists[courseSlug] && defaultChecklists[courseSlug].length > 0;
+};
+
 export const getDefaultChecklist = (courseSlug: string): ChecklistItem[] => {
+  // Return empty array for courses without checklists
+  if (!hasChecklist(courseSlug)) {
+    return [];
+  }
   return defaultChecklists[courseSlug] || [];
 };

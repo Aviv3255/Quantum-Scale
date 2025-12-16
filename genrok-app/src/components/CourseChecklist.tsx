@@ -208,10 +208,11 @@ export default function CourseChecklist({
                                   href={item.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-80"
+                                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium transition-opacity hover:opacity-80"
+                                  style={{ color: '#ffffff' }}
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  <ExternalLink size={14} />
+                                  <ExternalLink size={14} style={{ color: '#ffffff' }} />
                                   {item.linkText || 'Open Link'}
                                 </a>
                               )}

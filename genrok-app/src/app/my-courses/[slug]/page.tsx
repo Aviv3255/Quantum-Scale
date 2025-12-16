@@ -38,6 +38,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import CourseChecklist from '@/components/CourseChecklist';
 import { useChecklist } from '@/hooks/useChecklist';
+import { hasChecklist } from '@/data/course-checklists';
 
 interface CourseData {
   id: string;
@@ -59,11 +60,13 @@ interface PDFViewerProps {
 function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate }: PDFViewerProps) {
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isChecklistOpen, setIsChecklistOpen] = useState(true);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const courseHasChecklist = hasChecklist(courseSlug);
+  const [isChecklistOpen, setIsChecklistOpen] = useState(courseHasChecklist);
 
   const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
     useChecklist(courseSlug, userId);
@@ -179,16 +182,20 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
           >
             <Maximize2 size={20} />
           </button>
-          <div className="w-px h-6 bg-[#333] mx-2" />
-          <button
-            onClick={() => setIsChecklistOpen(!isChecklistOpen)}
-            className={`p-2 rounded-lg transition-colors text-white flex items-center gap-2 ${
-              isChecklistOpen ? 'bg-[#333]' : 'hover:bg-[#333]'
-            }`}
-          >
-            <ListChecks size={20} />
-            <span className="text-sm">{progress}%</span>
-          </button>
+          {courseHasChecklist && (
+            <>
+              <div className="w-px h-6 bg-[#333] mx-2" />
+              <button
+                onClick={() => setIsChecklistOpen(!isChecklistOpen)}
+                className={`p-2 rounded-lg transition-colors text-white flex items-center gap-2 ${
+                  isChecklistOpen ? 'bg-[#333]' : 'hover:bg-[#333]'
+                }`}
+              >
+                <ListChecks size={20} />
+                <span className="text-sm">{progress}%</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -225,7 +232,7 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
 
         {/* Checklist Panel */}
         <AnimatePresence mode="wait">
-          {isChecklistOpen && (
+          {courseHasChecklist && isChecklistOpen && (
             <motion.div
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 320, opacity: 1 }}
@@ -345,10 +352,11 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
                                     href={item.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--primary)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--primary)] px-3 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
+                                    style={{ color: '#ffffff' }}
                                     onClick={(e) => e.stopPropagation()}
                                   >
-                                    <ExternalLink size={12} />
+                                    <ExternalLink size={12} style={{ color: '#ffffff' }} />
                                     {item.linkText || 'Open Link'}
                                   </a>
                                 )}
@@ -395,7 +403,7 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
         </AnimatePresence>
 
         {/* Collapsed Checklist Toggle */}
-        {!isChecklistOpen && (
+        {courseHasChecklist && !isChecklistOpen && (
           <button
             onClick={() => setIsChecklistOpen(true)}
             className="absolute right-0 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white p-2 rounded-l-lg shadow-lg hover:bg-[#333] transition-colors"
@@ -590,7 +598,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
         </motion.header>
 
         {/* Checklist Progress Card */}
-        {checklistItems.length > 0 && (
+        {hasChecklist(resolvedParams.slug) && checklistItems.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -762,7 +770,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
       </AnimatePresence>
 
       {/* Course Checklist Panel (shown when not viewing PDF) */}
-      {!selectedFile && (
+      {!selectedFile && hasChecklist(resolvedParams.slug) && (
         <CourseChecklist
           courseSlug={resolvedParams.slug}
           userId={user?.id}

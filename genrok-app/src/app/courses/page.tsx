@@ -33,7 +33,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
 import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
 import { ShoppingCart, Trash2 as TrashIcon, X as CloseIcon, Lock } from 'lucide-react';
-import { getDefaultChecklist } from '@/data/course-checklists';
+import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
 
 // Small circular progress for course cards
 interface SmallCircularProgressProps {
@@ -830,10 +830,12 @@ export default function CoursesPage() {
                                 <SmallCircularProgress progress={0} size={32} strokeWidth={2} />
                                 <span className="text-[8px] text-[#666] mt-0.5">Read</span>
                               </div>
-                              <div className="flex flex-col items-center">
-                                <SmallCircularProgress progress={checklistProgress} size={32} strokeWidth={2} />
-                                <span className="text-[8px] text-[#666] mt-0.5">Tasks</span>
-                              </div>
+                              {hasChecklist(course.slug) && (
+                                <div className="flex flex-col items-center">
+                                  <SmallCircularProgress progress={checklistProgress} size={32} strokeWidth={2} />
+                                  <span className="text-[8px] text-[#666] mt-0.5">Tasks</span>
+                                </div>
+                              )}
                             </div>
                           )}
                           {course.badge && !isOwned && (
