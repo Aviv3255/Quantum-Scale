@@ -275,19 +275,18 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
                     No checklist items
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     {(() => {
                       let taskNumber = 0;
                       return items.map((item, index) => {
-                        // Category header - displayed as simple header
+                        // Category header - simple text header
                         if (item.isCategory) {
                           return (
                             <div
                               key={item.id}
-                              className={`${index > 0 ? 'mt-4 pt-3 border-t border-[#e0e0e0]' : ''}`}
+                              className={`${index > 0 ? 'mt-6 pt-4 border-t border-[#e5e5e5]' : ''}`}
                             >
-                              <h4 className="text-xs font-semibold text-[#333] flex items-center gap-1.5">
-                                <span className="w-1 h-1 rounded-full bg-[var(--primary)]" />
+                              <h4 className="text-xs font-semibold text-[#222]">
                                 {item.title}:
                               </h4>
                             </div>
@@ -298,8 +297,6 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
                         taskNumber++;
                         const currentTaskNumber = taskNumber;
                         const isCompleted = isItemCompleted(item.id);
-                        const isExpanded = expandedItems.has(item.id);
-                        const hasExpandableContent = !!item.description || !!item.link;
 
                         return (
                           <div
@@ -310,74 +307,51 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
                                 : 'border-[#eee] bg-white hover:border-[#ddd]'
                             }`}
                           >
-                            <div className="flex items-start gap-2 p-2.5">
+                            <div className="flex items-start gap-2.5 p-3">
                               <button
                                 onClick={() => toggleItem(item.id)}
                                 className="mt-0.5 flex-shrink-0"
                               >
                                 {isCompleted ? (
-                                  <CheckCircle2 size={18} className="text-green-500" />
+                                  <CheckCircle2 size={20} className="text-green-500" />
                                 ) : (
                                   <Circle
-                                    size={18}
+                                    size={20}
                                     className="text-[#ccc] hover:text-[#999] transition-colors"
                                   />
                                 )}
                               </button>
                               <div className="min-w-0 flex-1">
-                                <div
-                                  className={`flex items-start justify-between gap-1 ${
-                                    hasExpandableContent ? 'cursor-pointer' : ''
+                                <span
+                                  className={`text-sm font-medium leading-snug block ${
+                                    isCompleted
+                                      ? 'text-green-700 line-through'
+                                      : 'text-[var(--text-primary)]'
                                   }`}
-                                  onClick={() => hasExpandableContent && toggleExpand(item.id)}
                                 >
-                                  <span
-                                    className={`text-xs font-medium leading-tight ${
-                                      isCompleted
-                                        ? 'text-green-700 line-through'
-                                        : 'text-[var(--text-primary)]'
-                                    }`}
+                                  {currentTaskNumber}. {item.title}
+                                </span>
+
+                                {/* Description */}
+                                {item.description && (
+                                  <p className={`mt-1 text-xs ${isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'}`}>
+                                    {item.description}
+                                  </p>
+                                )}
+
+                                {/* Link Button - Always visible */}
+                                {item.link && (
+                                  <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--primary)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                                    onClick={(e) => e.stopPropagation()}
                                   >
-                                    {currentTaskNumber}. {item.title}
-                                  </span>
-                                  {hasExpandableContent && (
-                                    <ChevronDown
-                                      size={14}
-                                      className={`text-[var(--text-muted)] transition-transform flex-shrink-0 ${
-                                        isExpanded ? 'rotate-180' : ''
-                                      }`}
-                                    />
-                                  )}
-                                </div>
-                                <AnimatePresence>
-                                  {isExpanded && (item.description || item.link) && (
-                                    <motion.div
-                                      initial={{ height: 0, opacity: 0 }}
-                                      animate={{ height: 'auto', opacity: 1 }}
-                                      exit={{ height: 0, opacity: 0 }}
-                                      transition={{ duration: 0.2 }}
-                                      className="overflow-hidden"
-                                    >
-                                      {item.description && (
-                                        <p className={`mt-1 text-xs ${isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'}`}>
-                                          {item.description}
-                                        </p>
-                                      )}
-                                      {item.link && (
-                                        <a
-                                          href={item.link}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="mt-2 inline-flex items-center gap-1 rounded-md bg-[var(--primary)] px-2 py-1 text-[10px] font-medium text-white transition-opacity hover:opacity-80"
-                                          onClick={(e) => e.stopPropagation()}
-                                        >
-                                          <ExternalLink size={10} />
-                                          {item.linkText || 'Open Link'}
-                                        </a>
-                                      )}
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
+                                    <ExternalLink size={12} />
+                                    {item.linkText || 'Open Link'}
+                                  </a>
+                                )}
                               </div>
                             </div>
                           </div>

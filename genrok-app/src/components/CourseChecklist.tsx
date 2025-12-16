@@ -129,17 +129,16 @@ export default function CourseChecklist({
                   <p className="text-[var(--text-muted)]">No checklist items available</p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {items.map((item, index) => {
-                    // Category header - displayed as a simple header with colon
+                    // Category header - simple text header with colon
                     if (item.isCategory) {
                       return (
                         <div
                           key={item.id}
-                          className={`${index > 0 ? 'mt-5 pt-4 border-t border-[#e0e0e0]' : 'mb-1'}`}
+                          className={`${index > 0 ? 'mt-8 pt-5 border-t border-[#e5e5e5]' : 'mb-2'}`}
                         >
-                          <h4 className="text-sm font-semibold text-[#333] flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" />
+                          <h4 className="text-sm font-semibold text-[#222]">
                             {item.title}:
                           </h4>
                         </div>
@@ -163,7 +162,7 @@ export default function CourseChecklist({
                             : 'border-[#eee] bg-white hover:border-[#ddd]'
                         }`}
                       >
-                        <div className="p-3">
+                        <div className="p-4">
                           <div className="flex items-start gap-3">
                             {/* Checkbox */}
                             <button
@@ -171,10 +170,10 @@ export default function CourseChecklist({
                               className="mt-0.5 flex-shrink-0"
                             >
                               {isCompleted ? (
-                                <CheckCircle2 size={22} className="text-green-500" />
+                                <CheckCircle2 size={24} className="text-green-500" />
                               ) : (
                                 <Circle
-                                  size={22}
+                                  size={24}
                                   className="text-[#ccc] transition-colors hover:text-[#999]"
                                 />
                               )}
@@ -183,7 +182,7 @@ export default function CourseChecklist({
                             {/* Content */}
                             <div className="min-w-0 flex-1">
                               <span
-                                className={`text-sm font-medium leading-tight block ${
+                                className={`text-[15px] font-medium leading-snug block ${
                                   isCompleted
                                     ? 'text-green-700 line-through'
                                     : 'text-[var(--text-primary)]'
@@ -195,7 +194,7 @@ export default function CourseChecklist({
                               {/* Description */}
                               {item.description && (
                                 <p
-                                  className={`mt-1 text-xs ${
+                                  className={`mt-1.5 text-sm ${
                                     isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'
                                   }`}
                                 >
@@ -203,16 +202,16 @@ export default function CourseChecklist({
                                 </p>
                               )}
 
-                              {/* Link Button */}
+                              {/* Link Button - Always visible */}
                               {item.link && (
                                 <a
                                   href={item.link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-80"
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  <ExternalLink size={12} />
+                                  <ExternalLink size={14} />
                                   {item.linkText || 'Open Link'}
                                 </a>
                               )}

@@ -31,8 +31,54 @@ import { useAuthStore } from '@/store/auth';
 import { useCartStore } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
-import { getUserCourses } from '@/lib/course-access';
+import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
 import { ShoppingCart, Trash2 as TrashIcon, X as CloseIcon, Lock } from 'lucide-react';
+import { getDefaultChecklist } from '@/data/course-checklists';
+
+// Small circular progress for course cards
+interface SmallCircularProgressProps {
+  progress: number;
+  size?: number;
+  strokeWidth?: number;
+}
+
+function SmallCircularProgress({ progress, size = 36, strokeWidth = 2.5 }: SmallCircularProgressProps) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg className="absolute" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#e5e5e5"
+          strokeWidth={strokeWidth}
+        />
+      </svg>
+      <svg className="absolute -rotate-90" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#000"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-[10px] font-semibold text-[#111]">{progress}%</span>
+      </div>
+    </div>
+  );
+}
 
 // Course Content Input Interface (URL-based for token efficiency)
 interface CourseContentInput {
@@ -622,7 +668,24 @@ export default function CoursesPage() {
   const { user, isLoading } = useAuthStore();
   const { addItem, isInCart, openCart } = useCartStore();
   const courses = getAllCourses();
-  const [ownedCourseSlugs, setOwnedCourseSlugs] = useState<string[]>([]);
+  const [ownedCourses, setOwnedCourses] = useState<PurchasedCourse[]>([]);
+  const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
+
+  // Helper to get checklist progress from localStorage
+  const getChecklistProgressForCourse = (userId: string, courseSlug: string): number => {
+    try {
+      const storageKey = `checklist-${courseSlug}-${userId}`;
+      const stored = localStorage.getItem(storageKey);
+      if (!stored) return 0;
+      const completedItems = JSON.parse(stored) as string[];
+      const checklistItems = getDefaultChecklist(courseSlug);
+      const taskItems = checklistItems.filter(item => !item.isCategory);
+      if (taskItems.length === 0) return 0;
+      return Math.round((completedItems.length / taskItems.length) * 100);
+    } catch {
+      return 0;
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -630,12 +693,19 @@ export default function CoursesPage() {
     }
   }, [user, isLoading, router]);
 
-  // Load user's purchased courses
+  // Load user's purchased courses and their progress
   useEffect(() => {
     const loadOwnedCourses = async () => {
       if (user?.id) {
         const purchasedCourses = await getUserCourses(user.id);
-        setOwnedCourseSlugs(purchasedCourses.map((c) => c.slug));
+        setOwnedCourses(purchasedCourses);
+
+        // Calculate checklist progress for each owned course
+        const progressMap: Record<string, number> = {};
+        purchasedCourses.forEach(course => {
+          progressMap[course.slug] = getChecklistProgressForCourse(user.id, course.slug);
+        });
+        setChecklistProgressMap(progressMap);
       }
     };
     loadOwnedCourses();
@@ -711,7 +781,8 @@ export default function CoursesPage() {
               className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
             >
               {courses.map((course) => {
-                const isOwned = ownedCourseSlugs.includes(course.slug);
+                const isOwned = ownedCourses.some(c => c.slug === course.slug);
+                const checklistProgress = checklistProgressMap[course.slug] || 0;
 
                 return (
                   <motion.div key={course.slug} variants={itemVariants}>
@@ -745,19 +816,24 @@ export default function CoursesPage() {
                               <BookOpen className="w-10 h-10 text-[#999999]" />
                             </div>
                           )}
-                          {/* Already Owned Badge */}
+                          {/* Progress Circles for Owned */}
                           {isOwned && (
                             <div
-                              className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border"
+                              className="absolute top-4 right-4 flex items-center gap-2 px-2 py-1.5 rounded-xl border"
                               style={{
                                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                                color: '#111',
-                                borderColor: '#ddd',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                                borderColor: '#e5e5e5',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
                               }}
                             >
-                              <Check size={12} className="text-[#22c55e]" />
-                              Owned
+                              <div className="flex flex-col items-center">
+                                <SmallCircularProgress progress={0} size={32} strokeWidth={2} />
+                                <span className="text-[8px] text-[#666] mt-0.5">Read</span>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <SmallCircularProgress progress={checklistProgress} size={32} strokeWidth={2} />
+                                <span className="text-[8px] text-[#666] mt-0.5">Tasks</span>
+                              </div>
                             </div>
                           )}
                           {course.badge && !isOwned && (
@@ -816,20 +892,17 @@ export default function CoursesPage() {
                         {/* Price and CTA - Only show if not owned */}
                         <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
                           {isOwned ? (
-                            <>
-                              <Link
-                                href={`/my-courses/${course.slug}`}
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
-                                style={{
-                                  background: 'linear-gradient(150deg, #22c55e 0%, #16a34a 100%)',
-                                  color: '#ffffff',
-                                }}
-                              >
-                                <ArrowRight size={16} />
-                                Go to Course
-                              </Link>
-                              <span className="text-sm text-[#22c55e] font-medium">Purchased ✓</span>
-                            </>
+                            <Link
+                              href={`/my-courses/${course.slug}`}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105 w-full justify-center"
+                              style={{
+                                background: 'linear-gradient(150deg, #000 0%, #333 100%)',
+                                color: '#ffffff',
+                              }}
+                            >
+                              <ArrowRight size={16} />
+                              Go to Course
+                            </Link>
                           ) : (
                             <>
                               <div className="flex items-baseline gap-2">

@@ -761,80 +761,49 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
   ],
 
   'quiz-tactic': [
+    // Category: Preparation
+    { id: 'cat-prep', title: 'Preparation', isCategory: true },
     {
       id: generateId('quiz-tactic', 1),
-      title: 'Learn Psychology Framework',
-      description: 'Understand quiz conversion power',
+      title: 'Understand the importance and advantages of The Quiz Tactic',
     },
     {
       id: generateId('quiz-tactic', 2),
-      title: 'Choose quiz platform',
-      description: 'Select best tool for your store',
+      title: 'Install the quiz app',
+      link: 'https://apps.shopify.com/quiz-kit?mref=nasigsuy-4902',
+      linkText: 'Install Quiz Kit',
     },
+
+    // Category: Building the Quiz
+    { id: 'cat-build', title: 'Building the Quiz', isCategory: true },
     {
       id: generateId('quiz-tactic', 3),
-      title: 'Study Quiz Architecture Blueprint',
-      description: 'Learn proven question structure',
+      title: 'Craft the Quiz Concept based on your niche & data goals',
     },
     {
       id: generateId('quiz-tactic', 4),
-      title: 'Design quiz questions',
-      description: 'Create engaging questions',
+      title: 'Plan question structure to be Laser-focused (Better data = better marketing)',
     },
     {
       id: generateId('quiz-tactic', 5),
-      title: 'Build Personalization Engine',
-      description: 'Create tailored recommendations',
+      title: 'Build the quiz following course steps (see pages 21-36)',
     },
+
+    // Category: Email Marketing Integration & Automation
+    { id: 'cat-email', title: 'Email Marketing Integration & Automation', isCategory: true },
     {
       id: generateId('quiz-tactic', 6),
-      title: 'Set up result pages',
-      description: 'Design personalized results',
+      title: 'Connect Klaviyo to your store',
+      link: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
+      linkText: 'Get Klaviyo',
     },
     {
       id: generateId('quiz-tactic', 7),
-      title: 'Customize Implementation Templates',
-      description: 'Adapt for your niche',
+      title: 'Connect the integration between Klaviyo and the quiz app',
     },
     {
       id: generateId('quiz-tactic', 8),
-      title: 'Connect quiz to products',
-      description: 'Map results to offerings',
-    },
-    {
-      id: generateId('quiz-tactic', 9),
-      title: 'Implement Data Collection Strategy',
-      description: 'Capture valuable customer data',
-    },
-    {
-      id: generateId('quiz-tactic', 10),
-      title: 'Set up email capture',
-      description: 'Build list from quiz',
-    },
-    {
-      id: generateId('quiz-tactic', 11),
-      title: 'Apply Conversion Optimization Secrets',
-      description: 'Optimize every detail',
-    },
-    {
-      id: generateId('quiz-tactic', 12),
-      title: 'Test quiz flow',
-      description: 'Verify user experience',
-    },
-    {
-      id: generateId('quiz-tactic', 13),
-      title: 'Launch quiz to traffic',
-      description: 'Go live with quiz',
-    },
-    {
-      id: generateId('quiz-tactic', 14),
-      title: 'Monitor conversion rate',
-      description: 'Track quiz performance',
-    },
-    {
-      id: generateId('quiz-tactic', 15),
-      title: 'Optimize based on data',
-      description: 'Improve weak points',
+      title: 'Build post-quiz email flow',
     },
   ],
 

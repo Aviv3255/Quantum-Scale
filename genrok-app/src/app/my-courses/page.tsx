@@ -8,17 +8,67 @@ import Link from 'next/link';
 import {
   GraduationCap,
   FileText,
-  Calendar,
   ArrowRight,
   ShoppingBag,
   Loader2,
-  ListChecks,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
 import { useChecklist } from '@/hooks/useChecklist';
 import { getCourseBySlug } from '@/data/courses';
+
+// Circular progress component
+interface CircularProgressProps {
+  progress: number;
+  size?: number;
+  strokeWidth?: number;
+  label: string;
+}
+
+function CircularProgress({ progress, size = 56, strokeWidth = 3, label }: CircularProgressProps) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="relative" style={{ width: size, height: size }}>
+        {/* Background circle */}
+        <svg className="absolute" width={size} height={size}>
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke="#e5e5e5"
+            strokeWidth={strokeWidth}
+          />
+        </svg>
+        {/* Progress circle */}
+        <svg className="absolute -rotate-90" width={size} height={size}>
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke="#000"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+          />
+        </svg>
+        {/* Percentage text */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-sm font-semibold text-[#111]">{progress}%</span>
+        </div>
+      </div>
+      <span className="text-[10px] text-[#666] font-medium">{label}</span>
+    </div>
+  );
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,7 +90,10 @@ interface CourseCardProps {
 }
 
 function CourseCard({ course, userId }: CourseCardProps) {
-  const { progress, items, completedItems } = useChecklist(course.slug, userId);
+  const { progress: checklistProgress, items } = useChecklist(course.slug, userId);
+  // Reading progress would be calculated from file progress - for now showing 0
+  // This could be fetched from getFileProgress if needed
+  const readingProgress = 0;
 
   // Get mockup image from static course data if database image not available
   const staticCourse = getCourseBySlug(course.slug);
@@ -68,9 +121,20 @@ function CourseCard({ course, userId }: CourseCardProps) {
 
         {/* Course Details */}
         <div className="flex-1 flex flex-col">
-          <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
-            {course.title}
-          </h3>
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h3 className="text-xl font-semibold text-[var(--text-primary)]">
+              {course.title}
+            </h3>
+
+            {/* Progress Circles */}
+            <div className="flex items-center gap-4 flex-shrink-0">
+              <CircularProgress progress={readingProgress} label="Read" />
+              {items.length > 0 && (
+                <CircularProgress progress={checklistProgress} label="Tasks" />
+              )}
+            </div>
+          </div>
+
           {course.description && (
             <p className="text-[var(--text-muted)] mb-4 line-clamp-2">{course.description}</p>
           )}
@@ -83,40 +147,7 @@ function CourseCard({ course, userId }: CourseCardProps) {
                 {course.file_count} {course.file_count === 1 ? 'file' : 'files'}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-              <Calendar size={16} />
-              <span>Purchased {new Date(course.purchase_date).toLocaleDateString()}</span>
-            </div>
           </div>
-
-          {/* Checklist Progress */}
-          {items.length > 0 && (
-            <div className="mb-4 p-3 rounded-xl bg-[var(--bg-secondary)]">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <ListChecks size={16} className="text-[var(--primary)]" />
-                  <span className="text-sm font-medium text-[var(--text-primary)]">
-                    Checklist Progress
-                  </span>
-                </div>
-                <span className="text-sm font-bold text-[var(--primary)]">{progress}%</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex-1 h-2 rounded-full bg-white overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${progress}%`,
-                      background: 'linear-gradient(90deg, #000 0%, #333 100%)',
-                    }}
-                  />
-                </div>
-                <span className="text-xs text-[var(--text-muted)] whitespace-nowrap">
-                  {completedItems.length}/{items.length} done
-                </span>
-              </div>
-            </div>
-          )}
 
           {/* Action Button */}
           <Link href={`/my-courses/${course.slug}`} className="btn btn-primary self-start mt-auto">
