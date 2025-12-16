@@ -198,9 +198,13 @@ interface ArticleCardProps {
 }
 
 function ArticleCard({ article, featured }: ArticleCardProps) {
+  // Use directUrl for lessons, otherwise use article page
+  const linkHref = article.directUrl || `/learn/${article.slug}`;
+  const isLesson = !!article.directUrl;
+
   return (
     <Link
-      href={`/learn/${article.slug}`}
+      href={linkHref}
       className={`card card-hover group block overflow-hidden ${featured ? 'border-[var(--border-strong)]' : ''}`}
       style={{ padding: 0 }}
     >
@@ -220,6 +224,11 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
         {featured && (
           <div className="absolute top-4 left-4 badge badge-primary">
             Featured
+          </div>
+        )}
+        {isLesson && (
+          <div className="absolute top-4 right-4 badge" style={{ backgroundColor: '#7c3aed', color: 'white' }}>
+            Interactive Lesson
           </div>
         )}
         <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-md rounded-full bg-white/90 border border-white/50">
@@ -257,7 +266,7 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
         )}
 
         <div className="flex items-center gap-1 font-medium text-sm text-[var(--text-primary)] group-hover:gap-2 transition-all">
-          Read article
+          {isLesson ? 'Start lesson' : 'Read article'}
           <ChevronRight size={16} strokeWidth={1.5} />
         </div>
       </div>

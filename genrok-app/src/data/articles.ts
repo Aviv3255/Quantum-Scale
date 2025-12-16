@@ -10,6 +10,7 @@ interface RawArticle {
   content: string;
   specialFeatures?: { value: string; label: string }[];
   buttons?: { text: string; url: string }[];
+  directUrl?: string; // For lessons that open directly without article page
 }
 
 // Processed article interface (with generated fields)
@@ -27,6 +28,7 @@ export interface Article {
   intro?: string;
   specialFeatures?: { value: string; label: string }[];
   buttons?: { text: string; url: string }[];
+  directUrl?: string; // For lessons that open directly without article page
 }
 
 const articles: RawArticle[] = [
@@ -2925,6 +2927,7 @@ Brands that don't will continue fighting over prices and searching for "magic ta
       thumbnail: '/images/lessons/familiar-surprise-secret.png',
       title: 'The Familiar Surprise Secret',
       intro: 'Why we love the unexpected in familiar packages - the MAYA principle that drives all successful marketing.',
+      directUrl: '/lessons/familiar-surprise-secret/lesson.html',
       specialFeatures: [
         { value: 'MAYA', label: 'Most Advanced Yet Acceptable' },
         { value: '2x', label: 'Engagement boost' }
@@ -2952,6 +2955,7 @@ People want NEW things... but wrapped in FAMILIAR packages. This is the secret t
       thumbnail: '/images/lessons/red-button-effect.png',
       title: 'The Red Button Effect',
       intro: 'The psychology of "don\'t press this" - how restriction creates irresistible desire.',
+      directUrl: '/lessons/red-button-effect/lesson.html',
       specialFeatures: [
         { value: 'Reactance', label: 'Psychological trigger' },
         { value: '3x', label: 'Click-through boost' }
@@ -2979,6 +2983,7 @@ When freedom is threatened, we want it MORE. Smart copywriters use this to creat
       thumbnail: '/images/lessons/fred-method.png',
       title: 'The F.R.E.D. Method',
       intro: 'Master the four dimensions of your audience\'s mind: Fears, Results, Expectations, Desires.',
+      directUrl: '/lessons/fred-method/lesson.html',
       specialFeatures: [
         { value: 'F.R.E.D.', label: '4-part framework' },
         { value: '100%', label: 'Audience insight' }
@@ -3006,6 +3011,7 @@ Know these four dimensions and you'll know exactly what buttons to push in your 
       thumbnail: '/images/lessons/emotion-decides.png',
       title: 'Emotion Decides, Logic Justifies',
       intro: 'The hidden driver of every purchase decision and how to leverage it.',
+      directUrl: '/lessons/emotion-decides/lesson.html',
       specialFeatures: [
         { value: '95%', label: 'Decisions are emotional' },
         { value: '2 Systems', label: 'Brain processing' }
@@ -3033,6 +3039,7 @@ Every purchase is emotional first. Your copy must trigger the feeling, then prov
       thumbnail: '/images/lessons/gatekeeper-method.png',
       title: 'The Gatekeeper Method',
       intro: 'Four moves to bypass the brain\'s "ignore this" filter and capture attention.',
+      directUrl: '/lessons/gatekeeper-method/lesson.html',
       specialFeatures: [
         { value: '4 Moves', label: 'Pattern interrupt system' },
         { value: '10x', label: 'Attention capture' }
@@ -3060,6 +3067,7 @@ The brain filters out 99% of incoming information. These four moves help you be 
       thumbnail: '/images/lessons/three-second-rule.png',
       title: 'The 3-Second Rule',
       intro: 'Capture attention before they scroll - the critical window that determines everything.',
+      directUrl: '/lessons/three-second-rule/lesson.html',
       specialFeatures: [
         { value: '3 Sec', label: 'Decision window' },
         { value: 'First', label: 'Impression matters' }
@@ -3087,6 +3095,7 @@ You have 3 seconds to prove you're worth their attention. Everything else is irr
       thumbnail: '/images/lessons/science-of-selling.png',
       title: 'The Science of Selling',
       intro: 'Prospect-centric marketing that converts - from Nissan vs Toyota to the Forever Rule.',
+      directUrl: '/lessons/science-of-selling/lesson.html',
       specialFeatures: [
         { value: '5 Stages', label: 'Awareness levels' },
         { value: 'Rule of 1', label: 'Focus principle' }
@@ -3117,6 +3126,7 @@ Great copy isn't about you or your product - it's about the transformation your 
       thumbnail: '/images/lessons/persuasion-blueprint.png',
       title: 'The Persuasion Blueprint',
       intro: 'Your complete conversion architecture - from the Tossed Salad approach to the 3-Phase Campaign.',
+      directUrl: '/lessons/persuasion-blueprint/lesson.html',
       specialFeatures: [
         { value: '3 Phases', label: 'Campaign structure' },
         { value: 'Complete', label: 'Blueprint system' }
@@ -3147,6 +3157,7 @@ Persuasion isn't random - it follows a precise architectural blueprint that guid
       thumbnail: '/images/lessons/persuasion-stack.png',
       title: 'The Persuasion Stack',
       intro: 'Four layers of irresistible influence - from psychology to relentless refinement.',
+      directUrl: '/lessons/persuasion-stack/lesson.html',
       specialFeatures: [
         { value: '4 Layers', label: 'Persuasion system' },
         { value: '10x', label: 'Effort principle' }
@@ -3175,6 +3186,7 @@ Great copywriters don't just write - they build persuasion stacks that compound 
       thumbnail: '/images/lessons/architecture-of-influence.png',
       title: 'Architecture of Influence',
       intro: 'The structural blueprint that transforms words into irresistible persuasion engines.',
+      directUrl: '/lessons/architecture-of-influence/lesson.html',
       specialFeatures: [
         { value: 'Pyramid', label: 'Persuasion structure' },
         { value: '3 Principles', label: 'Guiding stars' }

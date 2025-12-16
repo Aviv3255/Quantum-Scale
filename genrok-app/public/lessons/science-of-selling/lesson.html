@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Science of Selling: Why Awards Don't Pay Bills</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#2563eb',
+            'accent-light': '#3b82f6',
+            'accent-dark': '#1d4ed8',
+            'copper': '#b87333',
+            'copper-light': '#d4956a',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #FFFFFF; color: #1a1a1a; }
+    ::selection { background: #2563eb; color: #fff; }
+    h1, h2, h3 { letter-spacing: -0.025em; }
+
+    .gold-frame {
+      background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #d4af37 100%);
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .awareness-stone {
+      background: linear-gradient(180deg, #f5f5f0 0%, #e8e4dc 100%);
+      border-radius: 50% 50% 45% 45%;
+    }
+
+    .venn-overlap {
+      background: linear-gradient(135deg, #c4785c 0%, #9a5d47 100%);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, useInView, AnimatePresence } = window.Motion;
+    const { useState, useRef, useEffect } = React;
+
+    const springConfig = { stiffness: 400, damping: 25 };
+    const gentleSpring = { stiffness: 300, damping: 20 };
+
+    // Icons
+    const Icons = {
+      Trophy: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+      ),
+      TrendingUp: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+        </svg>
+      ),
+      Target: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      ),
+      Brain: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+        </svg>
+      ),
+      Heart: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+      ),
+      Users: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      ),
+      Zap: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      ),
+      CheckCircle: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      ),
+      XCircle: () => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+      ),
+    };
+
+    // Scroll-triggered section wrapper
+    function Section({ children, className = "", delay = 0 }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+      return (
+        <motion.section
+          ref={ref}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
+          className={className}
+        >
+          {children}
+        </motion.section>
+      );
+    }
+
+    // Hero Section - The Big Reveal
+    function HeroSection() {
+      const [revealed, setRevealed] = useState(false);
+
+      return (
+        <Section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 bg-gradient-to-b from-stone-50 to-white">
+          <motion.p
+            className="text-sm font-semibold text-accent uppercase tracking-wider mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Lesson 7: The Science of Selling
+          </motion.p>
+
+          <motion.h1
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-center max-w-4xl leading-tight mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            In 1996, one car ad won{" "}
+            <span className="text-amber-600">"Commercial of the Year"</span>
+            <br />
+            The other became{" "}
+            <span className="text-accent">America's best-seller</span>
+          </motion.h1>
+
+          <motion.p
+            className="text-xl text-gray-500 mb-12 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Click to reveal which was which
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl w-full">
+            {/* Nissan Card */}
+            <motion.div
+              className="relative cursor-pointer"
+              onClick={() => setRevealed(true)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="gold-frame">
+                <div className="bg-gradient-to-br from-orange-100 to-amber-50 p-8 rounded">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Icons.Trophy />
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
+                      {revealed ? "Award Winner" : "Car A"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Nissan 300ZX</h3>
+                  <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                    <li>Praised by Time Magazine, Oprah, Jerry Seinfeld</li>
+                    <li>Cost: $200 million to produce and air</li>
+                  </ul>
+
+                  <AnimatePresence>
+                    {revealed && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="border-t border-amber-200 pt-4"
+                      >
+                        <div className="flex items-center gap-2 text-red-600 mb-2">
+                          <Icons.XCircle />
+                          <span className="font-bold">The Result</span>
+                        </div>
+                        <p className="text-red-700 font-semibold">US Sales: Down 37%</p>
+                        <p className="text-gray-500 text-sm">Pulled from US market a year later</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Toyota Card */}
+            <motion.div
+              className="relative cursor-pointer"
+              onClick={() => setRevealed(true)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="bg-gray-100 p-2 rounded-lg">
+                <div className="bg-white p-8 rounded border-2 border-dashed border-gray-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Icons.TrendingUp className="text-gray-400" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                      {revealed ? "Sales Champion" : "Car B"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Toyota Camry</h3>
+                  <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                    <li>Largely ignored by awards circuits</li>
+                    <li>Considered "boring" by creative standards</li>
+                  </ul>
+
+                  <AnimatePresence>
+                    {revealed && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="border-t border-gray-200 pt-4"
+                      >
+                        <div className="flex items-center gap-2 text-green-600 mb-2">
+                          <Icons.CheckCircle />
+                          <span className="font-bold">The Result</span>
+                        </div>
+                        <p className="text-green-700 font-semibold">US Sales: Up 350,000+ units (8%)</p>
+                        <p className="text-gray-500 text-sm">Best sales year ever for the model</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <AnimatePresence>
+            {revealed && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-12 text-center"
+              >
+                <p className="text-2xl font-medium text-gray-700 italic">
+                  "An advert's purpose is to sell. That's it."
+                </p>
+                <p className="text-gray-400 mt-2">This lesson is about what actually works.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Section>
+      );
+    }
+
+    // The Fatal Focus
+    function FatalFocusSection() {
+      const [activeView, setActiveView] = useState('company');
+
+      return (
+        <Section className="py-24 px-6 bg-stone-50">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              Most Marketing Fails Because It's Focused on the
+              <span className="text-red-500"> Wrong Person</span>
+            </h2>
+
+            <blockquote className="text-xl md:text-2xl text-center text-gray-600 italic max-w-3xl mx-auto my-12">
+              "Never sell something just because you want to sell it...
+              Persuasion needs to start with the person on the other end of the ad, not you."
+              <span className="block text-base text-gray-400 mt-4 not-italic">— Gary Bencivenga</span>
+            </blockquote>
+
+            <div className="flex justify-center gap-4 mb-12">
+              <button
+                onClick={() => setActiveView('company')}
+                className={`px-6 py-3 rounded-full font-medium transition-all ${
+                  activeView === 'company'
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Company-Centric
+              </button>
+              <button
+                onClick={() => setActiveView('prospect')}
+                className={`px-6 py-3 rounded-full font-medium transition-all ${
+                  activeView === 'prospect'
+                    ? 'bg-accent text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Prospect-Centric
+              </button>
+            </div>
+
+            <AnimatePresence mode="wait">
+              {activeView === 'company' ? (
+                <motion.div
+                  key="company"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg border-2 border-red-100"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-500">
+                      <Icons.XCircle />
+                    </div>
+                    <h3 className="text-xl font-bold text-red-600">Company-Centric View</h3>
+                    <span className="ml-auto px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full">Underperforms</span>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-gray-500 text-sm uppercase tracking-wider mb-3">What they focus on:</p>
+                      <ul className="space-y-3">
+                        {['Our Features', 'Our Brand', 'Our Message', 'Our Awards', 'Internal Goals', 'Quarterly Targets'].map((item, i) => (
+                          <motion.li
+                            key={item}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="flex items-center gap-2 text-gray-700"
+                          >
+                            <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                            {item}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-red-50 rounded-xl p-6">
+                      <p className="text-red-700 font-medium mb-2">The Problem:</p>
+                      <p className="text-gray-600">Marketing written to please the company, the boss, or the client—not the prospect.</p>
+                      <p className="text-gray-500 text-sm mt-4">The Nissan ad was a success for the agency but a failure for the business.</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="prospect"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg border-2 border-green-100"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500">
+                      <Icons.CheckCircle />
+                    </div>
+                    <h3 className="text-xl font-bold text-green-600">Prospect-Centric View</h3>
+                    <span className="ml-auto px-3 py-1 bg-green-100 text-green-600 text-sm rounded-full">Sells</span>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-gray-500 text-sm uppercase tracking-wider mb-3">What they focus on:</p>
+                      <ul className="space-y-3">
+                        {['Their Problems', 'Their Desires', 'Their World', 'Their Beliefs', 'Unmet Needs', 'Daily Challenges'].map((item, i) => (
+                          <motion.li
+                            key={item}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="flex items-center gap-2 text-gray-700"
+                          >
+                            <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                            {item}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-green-50 rounded-xl p-6">
+                      <p className="text-green-700 font-medium mb-2">The Shift:</p>
+                      <p className="text-gray-600">The only indicator of good copy is its measurable results. This ultimately means sales.</p>
+                      <p className="text-gray-500 text-sm mt-4">Great marketers focus on what the product means to the customer.</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </Section>
+      );
+    }
+
+    // The Forever Rule - Venn Diagram
+    function ForeverRuleSection() {
+      const [hoveredSide, setHoveredSide] = useState(null);
+
+      return (
+        <Section className="py-24 px-6 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-sm font-semibold text-accent uppercase tracking-wider text-center mb-4">
+              The Single Most Important Job of Your Copy
+            </p>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
+              The "Forever Rule"
+            </h2>
+
+            <p className="text-xl text-center text-gray-600 max-w-3xl mx-auto mb-16">
+              Connect your product to your prospect's dominating conscious desire using only your advertising message
+            </p>
+
+            {/* Interactive Venn Diagram */}
+            <div className="relative h-80 md:h-96 max-w-4xl mx-auto mb-12">
+              {/* Left Circle - Product */}
+              <motion.div
+                className="absolute left-0 md:left-12 top-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 rounded-full border-4 border-slate-300 bg-slate-50 flex items-center justify-center cursor-pointer"
+                animate={{
+                  scale: hoveredSide === 'product' ? 1.05 : 1,
+                  borderColor: hoveredSide === 'product' ? '#64748b' : '#cbd5e1'
+                }}
+                onMouseEnter={() => setHoveredSide('product')}
+                onMouseLeave={() => setHoveredSide(null)}
+              >
+                <div className="text-center p-4">
+                  <p className="font-bold text-slate-700 mb-2">Your Product's Facts</p>
+                  <p className="text-xs text-slate-500">Camera quality, storage, features, specs, battery life...</p>
+                </div>
+              </motion.div>
+
+              {/* Right Circle - Prospect */}
+              <motion.div
+                className="absolute right-0 md:right-12 top-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 rounded-full border-4 border-slate-300 bg-slate-50 flex items-center justify-center cursor-pointer"
+                animate={{
+                  scale: hoveredSide === 'prospect' ? 1.05 : 1,
+                  borderColor: hoveredSide === 'prospect' ? '#64748b' : '#cbd5e1'
+                }}
+                onMouseEnter={() => setHoveredSide('prospect')}
+                onMouseLeave={() => setHoveredSide(null)}
+              >
+                <div className="text-center p-4">
+                  <p className="font-bold text-slate-700 mb-2">The Prospect's World</p>
+                  <p className="text-xs text-slate-500">Problems, desires, beliefs, fears, aspirations, identity...</p>
+                </div>
+              </motion.div>
+
+              {/* Center Overlap - The Sweet Spot */}
+              <motion.div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 md:w-40 h-32 md:h-40 venn-overlap rounded-full flex items-center justify-center cursor-pointer z-10"
+                animate={{ scale: hoveredSide === 'message' ? 1.1 : 1 }}
+                whileHover={{ scale: 1.1 }}
+                onMouseEnter={() => setHoveredSide('message')}
+                onMouseLeave={() => setHoveredSide(null)}
+              >
+                <div className="text-center text-white">
+                  <p className="font-bold text-lg">Your Message</p>
+                  <p className="text-xs opacity-80">(The Sweet Spot)</p>
+                </div>
+              </motion.div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+              <div className="bg-slate-50 rounded-xl p-6">
+                <p className="text-slate-500 text-sm mb-2">Most marketers focus on...</p>
+                <p className="font-medium">What they like about their product</p>
+              </div>
+              <div className="bg-accent/5 rounded-xl p-6 border-2 border-accent/20">
+                <p className="text-accent text-sm mb-2">Great marketers focus on...</p>
+                <p className="font-medium">What the product means to the customer</p>
+              </div>
+            </div>
+
+            <p className="text-center text-gray-500 mt-8 italic">
+              "Your job is not to create new problems, but to join the conversation already happening in their head."
+            </p>
+          </div>
+        </Section>
+      );
+    }
+
+    // 5 Stages of Awareness
+    function AwarenessStagesSection() {
+      const [activeStage, setActiveStage] = useState(0);
+
+      const stages = [
+        {
+          name: 'Unaware',
+          desc: "They don't know they have a problem",
+          job: 'Appeal to identity, create intrigue',
+          color: 'bg-gray-200'
+        },
+        {
+          name: 'Problem Aware',
+          desc: "They know they have a problem, but don't know of any solutions",
+          job: "Show you understand their problem and claim you have a solution",
+          color: 'bg-gray-300'
+        },
+        {
+          name: 'Solution Aware',
+          desc: "They know solutions exist, but not your specific product",
+          job: 'Prove your product delivers that solution better',
+          color: 'bg-stone-300'
+        },
+        {
+          name: 'Product Aware',
+          desc: "They know your product, but aren't convinced it's for them",
+          job: 'Reiterate your best promises and prove superiority',
+          color: 'bg-stone-400'
+        },
+        {
+          name: 'Most Aware',
+          desc: "They know your product and want it",
+          job: 'Overcome final objections and present a clear offer',
+          color: 'bg-amber-200'
+        },
+      ];
+
+      return (
+        <Section className="py-24 px-6 bg-gradient-to-b from-stone-100 to-stone-50">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              The Customer Journey is a Predictable Path
+            </h2>
+            <p className="text-xl text-center text-gray-600 mb-16">
+              Your message must meet them at the right step
+            </p>
+
+            {/* Stones visualization */}
+            <div className="flex justify-center items-end gap-2 md:gap-4 mb-12 h-40">
+              {stages.map((stage, i) => (
+                <motion.div
+                  key={stage.name}
+                  className={`cursor-pointer ${stage.color} awareness-stone flex items-center justify-center text-center`}
+                  style={{
+                    width: `${60 + i * 15}px`,
+                    height: `${50 + i * 18}px`,
+                  }}
+                  animate={{
+                    y: activeStage === i ? -10 : 0,
+                    boxShadow: activeStage === i ? '0 10px 30px rgba(0,0,0,0.2)' : '0 4px 10px rgba(0,0,0,0.1)'
+                  }}
+                  whileHover={{ y: -5 }}
+                  onClick={() => setActiveStage(i)}
+                >
+                  <span className="text-xs md:text-sm font-bold text-gray-700">{i + 1}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Stage Details */}
+            <motion.div
+              key={activeStage}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <span className="w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-bold">
+                  {activeStage + 1}
+                </span>
+                <h3 className="text-2xl font-bold">{stages[activeStage].name}</h3>
+              </div>
+
+              <p className="text-gray-600 mb-6">{stages[activeStage].desc}</p>
+
+              <div className="bg-accent/5 rounded-xl p-4 border border-accent/20">
+                <p className="text-sm text-accent font-medium mb-1">Your Job:</p>
+                <p className="text-gray-700">{stages[activeStage].job}</p>
+              </div>
+            </motion.div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Cognitive Biases Toolkit
+    function CognitiveBiasesSection() {
+      const biases = [
+        { name: 'Halo Effect', desc: 'First impression colors all future interactions', icon: '✨', category: 'Impression' },
+        { name: 'Serial Position', desc: 'We remember first and last items best', icon: '📋', category: 'Impression' },
+        { name: 'Recency Effect', desc: 'We give more weight to recent information', icon: '⏰', category: 'Familiarity' },
+        { name: 'Mere Exposure', desc: 'The more we see something, the more we trust it', icon: '👁️', category: 'Familiarity' },
+        { name: 'Anchoring', desc: 'First price becomes the reference point', icon: '⚓', category: 'Choices' },
+        { name: 'Compromise Effect', desc: 'Most people choose the middle option', icon: '📊', category: 'Choices' },
+        { name: 'Loss Aversion', desc: 'We hate losing more than we enjoy gaining', icon: '💔', category: 'Action' },
+        { name: 'Zero-Risk Bias', desc: 'We prefer options with zero perceived risk', icon: '🛡️', category: 'Action' },
+      ];
+
+      return (
+        <Section className="py-24 px-6 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              The Persuasion Toolkit
+            </h2>
+            <p className="text-xl text-center text-gray-600 mb-4">
+              Cognitive Shortcuts That Drive Decisions
+            </p>
+            <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+              These aren't tricks—they're fundamental aspects of human psychology. When used ethically, they create powerful connections.
+            </p>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {biases.map((bias, i) => (
+                <motion.div
+                  key={bias.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  whileHover={{ y: -5, boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }}
+                  className="bg-stone-50 rounded-xl p-6 cursor-pointer"
+                >
+                  <span className="text-3xl mb-4 block">{bias.icon}</span>
+                  <p className="text-xs text-accent font-medium uppercase tracking-wider mb-1">{bias.category}</p>
+                  <h3 className="font-bold text-lg mb-2">{bias.name}</h3>
+                  <p className="text-sm text-gray-600">{bias.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Emotional Transformation
+    function EmotionalTransformSection() {
+      const [sliderValue, setSliderValue] = useState(0);
+
+      const emotions = [
+        'Fear', 'Frustration', 'Anger', 'Shame', 'Sadness',
+        'Relaxation', 'Hope', 'Happiness', 'Security', 'Love'
+      ];
+
+      return (
+        <Section className="py-24 px-6 bg-gradient-to-b from-stone-50 to-white">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              Your Product Doesn't Sell Features
+            </h2>
+            <p className="text-xl text-center text-gray-600 mb-4">
+              It Sells a <span className="text-accent font-semibold">Transformation</span>
+            </p>
+            <p className="text-center text-gray-500 mb-12">
+              Don't just trigger an emotion; show the movement from a negative state to a positive state.
+            </p>
+
+            {/* Transformation Slider */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg mb-12">
+              <div className="flex justify-between items-center mb-8">
+                <div className="text-center">
+                  <motion.div
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-100 flex items-center justify-center mb-4 mx-auto"
+                    animate={{
+                      scale: sliderValue < 50 ? 1.1 : 0.9,
+                      opacity: sliderValue < 50 ? 1 : 0.5
+                    }}
+                  >
+                    <span className="text-4xl">😰</span>
+                  </motion.div>
+                  <p className="font-bold text-gray-700">The "From" State</p>
+                  <p className="text-sm text-gray-500">anxiety, uncertainty, worry</p>
+                </div>
+
+                <div className="flex-1 mx-8">
+                  <motion.div
+                    className="h-4 bg-gradient-to-r from-gray-300 via-accent to-green-400 rounded-full relative"
+                    style={{ backgroundSize: '200% 100%', backgroundPosition: `${sliderValue}% 0` }}
+                  >
+                    <motion.div
+                      className="absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg border-2 border-accent flex items-center justify-center"
+                      style={{ left: `${sliderValue}%`, x: '-50%' }}
+                    >
+                      <Icons.Zap className="w-4 h-4 text-accent" />
+                    </motion.div>
+                  </motion.div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={sliderValue}
+                    onChange={(e) => setSliderValue(Number(e.target.value))}
+                    className="w-full mt-2 opacity-0 cursor-pointer"
+                    style={{ height: '40px', marginTop: '-20px', position: 'relative', zIndex: 10 }}
+                  />
+                  <p className="text-center text-accent font-medium mt-4">Your Product / Service</p>
+                </div>
+
+                <div className="text-center">
+                  <motion.div
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-green-50 flex items-center justify-center mb-4 mx-auto"
+                    animate={{
+                      scale: sliderValue > 50 ? 1.1 : 0.9,
+                      opacity: sliderValue > 50 ? 1 : 0.5
+                    }}
+                  >
+                    <span className="text-4xl">😌</span>
+                  </motion.div>
+                  <p className="font-bold text-gray-700">The "To" State</p>
+                  <p className="text-sm text-gray-500">confidence, peace, stability</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 16 Dominant Emotions */}
+            <div className="text-center">
+              <p className="text-sm text-gray-500 mb-4">16 Dominant Emotions to Channel</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {emotions.map((emotion, i) => (
+                  <motion.span
+                    key={emotion}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.05 }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium ${
+                      i < 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
+                    }`}
+                  >
+                    {emotion}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Section>
+      );
+    }
+
+    // The Rule of One
+    function RuleOfOneSection() {
+      const rules = [
+        { name: 'One Reader', desc: 'Write to a single, specific person. The wider you cast your net, the less fish you catch.' },
+        { name: 'One Idea', desc: 'A fully believed idea is 100x more powerful than 10 partially believed ideas.' },
+        { name: 'One Offer', desc: 'Clear, compelling, easy to picture. No confusion about what they get.' },
+        { name: 'One Action', desc: 'Multiple options are one of the biggest conversion killers.' },
+      ];
+
+      return (
+        <Section className="py-24 px-6 bg-accent text-white">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-accent-light text-sm font-semibold uppercase tracking-wider text-center mb-4">
+              The Most Powerful Strategy
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              Radical Simplicity: The Rule of One
+            </h2>
+            <p className="text-xl text-center text-blue-100 mb-16 max-w-2xl mx-auto">
+              A confused or overwhelmed mind doesn't buy. The more messages you throw at someone,
+              the less likely they are to understand your main point and take action.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {rules.map((rule, i) => (
+                <motion.div
+                  key={rule.name}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
+                      1
+                    </span>
+                    <h3 className="text-xl font-bold">{rule.name}</h3>
+                  </div>
+                  <p className="text-blue-100">{rule.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="mt-12 text-center"
+            >
+              <div className="inline-flex items-center gap-4 bg-white/10 backdrop-blur rounded-full px-8 py-4">
+                <span className="text-4xl font-bold">4</span>
+                <span className="text-left">
+                  <span className="block text-sm text-blue-200">Elements that equal</span>
+                  <span className="font-bold">CONVERSION</span>
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Voice of the Masters
+    function MastersWisdomSection() {
+      const quotes = [
+        { lesson: 'Clarity Trumps Cleverness', quote: "A person is smart, people are stupid. The best copywriters I know are really good at writing at like a fifth-grade reading level.", takeaway: 'If a 10-year-old can\'t understand it, rewrite it.' },
+        { lesson: 'Output is a Skill', quote: "You can write way faster and way more than you think you can... I got to a point where I could write eight emails in like half an hour.", takeaway: 'Your capacity for work is greater than you believe.' },
+        { lesson: 'Mastery is Forged in Action', quote: "The best way to improve as a copywriter is by actually doing the thing... You're going to not suck in like two months as long as you keep writing.", takeaway: 'Stop consuming and start creating.' },
+      ];
+
+      return (
+        <Section className="py-24 px-6 bg-stone-50">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              Voice of the Masters
+            </h2>
+            <p className="text-xl text-center text-gray-600 mb-16">
+              Wisdom from the Field
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {quotes.map((item, i) => (
+                <motion.div
+                  key={item.lesson}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-white rounded-xl p-6 shadow-sm"
+                >
+                  <p className="text-accent text-sm font-medium mb-4">{item.lesson}</p>
+                  <p className="text-lg font-medium text-gray-800 mb-4 italic">"{item.quote}"</p>
+                  <p className="text-sm text-gray-500">{item.takeaway}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Path to Mastery - Final Section
+    function PathToMasterySection() {
+      return (
+        <Section className="py-24 px-6 bg-gradient-to-b from-white to-stone-100">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">
+              The Path to Mastery
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl p-6 shadow-lg"
+              >
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icons.Target className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">The Foundation</h3>
+                <p className="text-sm text-gray-500">(The Why)</p>
+                <p className="text-gray-600 mt-2">Shift focus from your company to your customer's world</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white rounded-xl p-6 shadow-lg"
+              >
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icons.Brain className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">The Toolkit</h3>
+                <p className="text-sm text-gray-500">(The What)</p>
+                <p className="text-gray-600 mt-2">Deep understanding of human psychology to connect, not manipulate</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white rounded-xl p-6 shadow-lg"
+              >
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icons.Zap className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">The Craft</h3>
+                <p className="text-sm text-gray-500">(The How)</p>
+                <p className="text-gray-600 mt-2">Execute with discipline, guided by the Rule of One</p>
+              </motion.div>
+            </div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-xl text-gray-700 font-medium max-w-3xl mx-auto"
+            >
+              Mastery isn't about finding more hacks. It's a relentless focus on the customer's world,
+              armed with a deep understanding of human psychology, and executed with the discipline of a craftsman.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="mt-12"
+            >
+              <div className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-full font-medium">
+                <Icons.CheckCircle className="w-5 h-5" />
+                Lesson Complete
+              </div>
+            </motion.div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Main App
+    function App() {
+      return (
+        <div className="min-h-screen">
+          <HeroSection />
+          <FatalFocusSection />
+          <ForeverRuleSection />
+          <AwarenessStagesSection />
+          <CognitiveBiasesSection />
+          <EmotionalTransformSection />
+          <RuleOfOneSection />
+          <MastersWisdomSection />
+          <PathToMasterySection />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
