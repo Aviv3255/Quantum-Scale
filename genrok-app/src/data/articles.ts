@@ -3039,7 +3039,7 @@ Every purchase is emotional first. Your copy must trigger the feeling, then prov
       thumbnail: '/images/lessons/gatekeeper-method.png',
       title: 'The Gatekeeper Method',
       intro: 'Four moves to bypass the brain\'s "ignore this" filter and capture attention.',
-      directUrl: '/lessons/gatekeeper-method/lesson.html',
+      directUrl: '/learn/lessons/gatekeeper-method',
       specialFeatures: [
         { value: '4 Moves', label: 'Pattern interrupt system' },
         { value: '10x', label: 'Attention capture' }
@@ -3067,7 +3067,7 @@ The brain filters out 99% of incoming information. These four moves help you be 
       thumbnail: '/images/lessons/three-second-rule.png',
       title: 'The 3-Second Rule',
       intro: 'Capture attention before they scroll - the critical window that determines everything.',
-      directUrl: '/lessons/three-second-rule/lesson.html',
+      directUrl: '/learn/lessons/three-second-rule',
       specialFeatures: [
         { value: '3 Sec', label: 'Decision window' },
         { value: 'First', label: 'Impression matters' }
@@ -3095,7 +3095,7 @@ You have 3 seconds to prove you're worth their attention. Everything else is irr
       thumbnail: '/images/lessons/science-of-selling.png',
       title: 'The Science of Selling',
       intro: 'Prospect-centric marketing that converts - from Nissan vs Toyota to the Forever Rule.',
-      directUrl: '/lessons/science-of-selling/lesson.html',
+      directUrl: '/learn/lessons/science-of-selling',
       specialFeatures: [
         { value: '5 Stages', label: 'Awareness levels' },
         { value: 'Rule of 1', label: 'Focus principle' }
@@ -3126,7 +3126,7 @@ Great copy isn't about you or your product - it's about the transformation your 
       thumbnail: '/images/lessons/persuasion-blueprint.png',
       title: 'The Persuasion Blueprint',
       intro: 'Your complete conversion architecture - from the Tossed Salad approach to the 3-Phase Campaign.',
-      directUrl: '/lessons/persuasion-blueprint/lesson.html',
+      directUrl: '/learn/lessons/persuasion-blueprint',
       specialFeatures: [
         { value: '3 Phases', label: 'Campaign structure' },
         { value: 'Complete', label: 'Blueprint system' }
@@ -3157,7 +3157,7 @@ Persuasion isn't random - it follows a precise architectural blueprint that guid
       thumbnail: '/images/lessons/persuasion-stack.png',
       title: 'The Persuasion Stack',
       intro: 'Four layers of irresistible influence - from psychology to relentless refinement.',
-      directUrl: '/lessons/persuasion-stack/lesson.html',
+      directUrl: '/learn/lessons/persuasion-stack',
       specialFeatures: [
         { value: '4 Layers', label: 'Persuasion system' },
         { value: '10x', label: 'Effort principle' }
@@ -3186,7 +3186,7 @@ Great copywriters don't just write - they build persuasion stacks that compound 
       thumbnail: '/images/lessons/architecture-of-influence.png',
       title: 'Architecture of Influence',
       intro: 'The structural blueprint that transforms words into irresistible persuasion engines.',
-      directUrl: '/lessons/architecture-of-influence/lesson.html',
+      directUrl: '/learn/lessons/architecture-of-influence',
       specialFeatures: [
         { value: 'Pyramid', label: 'Persuasion structure' },
         { value: '3 Principles', label: 'Guiding stars' }

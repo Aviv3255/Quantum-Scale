@@ -7,7 +7,7 @@ import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-// Lesson metadata for the 4 interactive lessons
+// Lesson metadata for all 10 interactive lessons
 const lessonMeta: Record<string, { title: string; description: string }> = {
   'familiar-surprise-secret': {
     title: 'The Familiar Surprise Secret',
@@ -24,6 +24,30 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'emotion-decides': {
     title: 'Emotion Decides, Logic Justifies',
     description: 'How emotions drive purchasing decisions',
+  },
+  'gatekeeper-method': {
+    title: 'The Gatekeeper Method',
+    description: 'Four moves to bypass the brain\'s attention filter',
+  },
+  'three-second-rule': {
+    title: 'The 3-Second Rule',
+    description: 'The critical window to capture attention before they scroll',
+  },
+  'science-of-selling': {
+    title: 'The Science of Selling',
+    description: 'The systematic, scientific approach to conversion',
+  },
+  'persuasion-blueprint': {
+    title: 'The Persuasion Blueprint',
+    description: 'The master architectural plan for influential copy',
+  },
+  'persuasion-stack': {
+    title: 'The Persuasion Stack',
+    description: 'Layered persuasion techniques building upon each other',
+  },
+  'architecture-of-influence': {
+    title: 'Architecture of Influence',
+    description: 'The structural framework of persuasive communication',
   },
 };
 
