@@ -2927,7 +2927,7 @@ Brands that don't will continue fighting over prices and searching for "magic ta
       thumbnail: '/images/lessons/familiar-surprise-secret.png',
       title: 'The Familiar Surprise Secret',
       intro: 'Why we love the unexpected in familiar packages - the MAYA principle that drives all successful marketing.',
-      directUrl: '/lessons/familiar-surprise-secret/lesson.html',
+      directUrl: '/learn/lessons/familiar-surprise-secret',
       specialFeatures: [
         { value: 'MAYA', label: 'Most Advanced Yet Acceptable' },
         { value: '2x', label: 'Engagement boost' }
@@ -2955,7 +2955,7 @@ People want NEW things... but wrapped in FAMILIAR packages. This is the secret t
       thumbnail: '/images/lessons/red-button-effect.png',
       title: 'The Red Button Effect',
       intro: 'The psychology of "don\'t press this" - how restriction creates irresistible desire.',
-      directUrl: '/lessons/red-button-effect/lesson.html',
+      directUrl: '/learn/lessons/red-button-effect',
       specialFeatures: [
         { value: 'Reactance', label: 'Psychological trigger' },
         { value: '3x', label: 'Click-through boost' }
@@ -2983,7 +2983,7 @@ When freedom is threatened, we want it MORE. Smart copywriters use this to creat
       thumbnail: '/images/lessons/fred-method.png',
       title: 'The F.R.E.D. Method',
       intro: 'Master the four dimensions of your audience\'s mind: Fears, Results, Expectations, Desires.',
-      directUrl: '/lessons/fred-method/lesson.html',
+      directUrl: '/learn/lessons/fred-method',
       specialFeatures: [
         { value: 'F.R.E.D.', label: '4-part framework' },
         { value: '100%', label: 'Audience insight' }
@@ -3011,7 +3011,7 @@ Know these four dimensions and you'll know exactly what buttons to push in your 
       thumbnail: '/images/lessons/emotion-decides.png',
       title: 'Emotion Decides, Logic Justifies',
       intro: 'The hidden driver of every purchase decision and how to leverage it.',
-      directUrl: '/lessons/emotion-decides/lesson.html',
+      directUrl: '/learn/lessons/emotion-decides',
       specialFeatures: [
         { value: '95%', label: 'Decisions are emotional' },
         { value: '2 Systems', label: 'Brain processing' }
