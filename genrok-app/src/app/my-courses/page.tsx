@@ -98,23 +98,31 @@ function CourseCard({ course, userId }: CourseCardProps) {
   // Load reading progress from localStorage/Supabase
   useEffect(() => {
     async function loadReadingProgress() {
-      if (!userId || !course.course_id) return;
+      if (!userId || !course.course_id) {
+        console.log(`[CourseCard] Missing data: userId=${userId}, course_id=${course.course_id}`);
+        return;
+      }
+      console.log(`[CourseCard] Loading progress for course "${course.title}" (${course.course_id})`);
       try {
         const progressData = await getFileProgress(userId, course.course_id);
+        console.log(`[CourseCard] Got progress data:`, progressData);
         if (progressData && Object.keys(progressData).length > 0) {
           // Calculate average progress across all files
           const progressValues = Object.values(progressData).map((p: FileProgress) => p.progress);
           const avgProgress = progressValues.length > 0
             ? Math.round(progressValues.reduce((a, b) => a + b, 0) / progressValues.length)
             : 0;
+          console.log(`[CourseCard] Calculated average progress: ${avgProgress}%`);
           setReadingProgress(avgProgress);
+        } else {
+          console.log(`[CourseCard] No progress data found`);
         }
       } catch (error) {
         console.error('Error loading reading progress:', error);
       }
     }
     loadReadingProgress();
-  }, [userId, course.course_id]);
+  }, [userId, course.course_id, course.title]);
 
   // Get mockup image from static course data if database image not available
   // Try slug first, then title as fallback

@@ -47,6 +47,51 @@ interface CourseData {
   description: string | null;
 }
 
+// Small circular progress indicator for file list
+function FileProgressCircle({ progress, size = 36 }: { progress: number; size?: number }) {
+  const strokeWidth = 3;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
+      {/* Background circle */}
+      <svg className="absolute" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#e5e5e5"
+          strokeWidth={strokeWidth}
+        />
+      </svg>
+      {/* Progress circle */}
+      <svg className="absolute -rotate-90" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={progress === 100 ? '#22c55e' : '#000'}
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+        />
+      </svg>
+      {/* Percentage text */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className={`text-[10px] font-semibold ${progress === 100 ? 'text-green-600' : 'text-[#111]'}`}>
+          {progress}%
+        </span>
+      </div>
+    </div>
+  );
+}
+
 interface PDFViewerProps {
   file: CourseFile;
   fileUrl: string;
@@ -55,15 +100,18 @@ interface PDFViewerProps {
   userId?: string;
   courseId?: string;
   onProgressUpdate?: (fileId: string, progress: number) => void;
+  initialProgress?: number;
 }
 
-function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate }: PDFViewerProps) {
+function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate, initialProgress = 0 }: PDFViewerProps) {
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [readingProgress, setReadingProgress] = useState(initialProgress);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSavedProgressRef = useRef(initialProgress);
 
   const courseHasChecklist = hasChecklist(courseSlug);
   const [isChecklistOpen, setIsChecklistOpen] = useState(courseHasChecklist);
@@ -71,29 +119,45 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
   const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
     useChecklist(courseSlug, userId);
 
-  // Track scroll progress
+  // Time-based reading progress tracking
+  // Since PDFs are in an iframe (cross-origin), we can't track scroll
+  // Instead, we track time spent viewing: +5% every 10 seconds, up to 100%
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
+    // Save initial view (at least 10% for opening)
+    const startProgress = Math.max(initialProgress, 10);
+    if (startProgress > initialProgress) {
+      setReadingProgress(startProgress);
+      if (userId && courseId) {
+        saveFileProgress(userId, courseId, file.id, startProgress);
+        onProgressUpdate?.(file.id, startProgress);
+        lastSavedProgressRef.current = startProgress;
+      }
+    }
 
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      const maxScroll = scrollHeight - clientHeight;
-      if (maxScroll > 0) {
-        const progressPercent = Math.round((scrollTop / maxScroll) * 100);
-        setScrollProgress(progressPercent);
+    // Increment progress every 10 seconds
+    progressIntervalRef.current = setInterval(() => {
+      setReadingProgress(prev => {
+        const newProgress = Math.min(prev + 5, 100);
 
-        // Save progress (debounced - only save when user stops scrolling)
-        if (userId && courseId) {
-          saveFileProgress(userId, courseId, file.id, progressPercent);
-          onProgressUpdate?.(file.id, progressPercent);
+        // Save progress every 10% increment
+        if (userId && courseId && newProgress >= lastSavedProgressRef.current + 10) {
+          saveFileProgress(userId, courseId, file.id, newProgress);
+          onProgressUpdate?.(file.id, newProgress);
+          lastSavedProgressRef.current = newProgress;
+          console.log(`[Progress] Saved reading progress for ${file.title}: ${newProgress}%`);
         }
+
+        return newProgress;
+      });
+    }, 10000); // Every 10 seconds
+
+    return () => {
+      // Save final progress on unmount
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
       }
     };
-
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [userId, courseId, file.id, onProgressUpdate]);
+  }, [userId, courseId, file.id, file.title, initialProgress, onProgressUpdate]);
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 200));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
@@ -222,11 +286,11 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
           </div>
         </div>
 
-        {/* Scroll Progress Indicator */}
+        {/* Reading Progress Indicator */}
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#333]">
           <div
-            className="w-full bg-green-500 transition-all duration-150"
-            style={{ height: `${scrollProgress}%` }}
+            className="w-full bg-green-500 transition-all duration-300"
+            style={{ height: `${readingProgress}%` }}
           />
         </div>
 
@@ -667,7 +731,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             </h2>
             {files.map((file, index) => {
               const fileProgress = fileProgressMap[file.id];
-              const hasProgress = fileProgress && fileProgress.progress > 0;
+              const progressValue = fileProgress?.progress || 0;
 
               return (
                 <motion.button
@@ -680,49 +744,39 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
                   className="w-full card card-hover flex items-center gap-4 text-left relative overflow-hidden"
                 >
                   {/* Progress background */}
-                  {hasProgress && (
+                  {progressValue > 0 && (
                     <div
                       className="absolute inset-y-0 left-0 bg-green-50 transition-all duration-300"
-                      style={{ width: `${fileProgress.progress}%` }}
+                      style={{ width: `${progressValue}%` }}
                     />
                   )}
 
                   <div className="relative flex items-center gap-4 w-full">
+                    {/* File icon with status */}
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                        hasProgress && fileProgress.progress === 100
+                        progressValue === 100
                           ? 'bg-green-100'
-                          : hasProgress
+                          : progressValue > 0
                             ? 'bg-blue-100'
                             : 'bg-red-100'
                       }`}
                     >
-                      {hasProgress && fileProgress.progress === 100 ? (
+                      {progressValue === 100 ? (
                         <CheckCircle2 size={24} className="text-green-500" />
                       ) : (
                         <FileText
                           size={24}
-                          className={hasProgress ? 'text-blue-500' : 'text-red-500'}
+                          className={progressValue > 0 ? 'text-blue-500' : 'text-red-500'}
                         />
                       )}
                     </div>
+
+                    {/* File details */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-[var(--text-primary)] truncate">
-                          {file.title}
-                        </h3>
-                        {hasProgress && (
-                          <span
-                            className={`text-xs px-2 py-0.5 rounded-full ${
-                              fileProgress.progress === 100
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-blue-100 text-blue-700'
-                            }`}
-                          >
-                            {fileProgress.progress === 100 ? 'Completed' : `${fileProgress.progress}%`}
-                          </span>
-                        )}
-                      </div>
+                      <h3 className="font-medium text-[var(--text-primary)] truncate">
+                        {file.title}
+                      </h3>
                       {file.description && (
                         <p className="text-sm text-[var(--text-muted)] truncate">
                           {file.description}
@@ -734,13 +788,17 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
                             {(file.file_size / 1024 / 1024).toFixed(2)} MB
                           </span>
                         )}
-                        {hasProgress && fileProgress.last_accessed && (
+                        {fileProgress?.last_accessed && (
                           <span className="text-xs text-[var(--text-muted)]">
                             Last read: {new Date(fileProgress.last_accessed).toLocaleDateString()}
                           </span>
                         )}
                       </div>
                     </div>
+
+                    {/* Circular progress indicator */}
+                    <FileProgressCircle progress={progressValue} />
+
                     {loadingFile === file.id ? (
                       <Loader2 size={20} className="animate-spin text-[var(--text-muted)]" />
                     ) : (
@@ -765,6 +823,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             userId={user?.id}
             courseId={course?.id}
             onProgressUpdate={handleProgressUpdate}
+            initialProgress={fileProgressMap[selectedFile.id]?.progress || 0}
           />
         )}
       </AnimatePresence>

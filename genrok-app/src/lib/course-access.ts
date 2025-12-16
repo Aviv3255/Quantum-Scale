@@ -365,16 +365,19 @@ export const getFileProgress = async (
   courseId: string
 ): Promise<Record<string, FileProgress>> => {
   const localKey = `file-progress-${userId}-${courseId}`;
+  console.log(`[getFileProgress] Loading progress for user=${userId}, course=${courseId}`);
 
   // Get from localStorage first
   let progress: Record<string, FileProgress> = {};
   if (typeof window !== 'undefined') {
     const stored = localStorage.getItem(localKey);
+    console.log(`[getFileProgress] localStorage key=${localKey}, stored=${stored ? 'found' : 'not found'}`);
     if (stored) {
       try {
         progress = JSON.parse(stored);
+        console.log(`[getFileProgress] Parsed from localStorage:`, progress);
       } catch {
-        // Ignore parse errors
+        console.error(`[getFileProgress] Failed to parse localStorage`);
       }
     }
   }
@@ -436,6 +439,7 @@ export const saveFileProgress = async (
 ): Promise<void> => {
   const localKey = `file-progress-${userId}-${courseId}`;
   const now = new Date().toISOString();
+  console.log(`[saveFileProgress] Saving progress: user=${userId}, course=${courseId}, file=${fileId}, progress=${progressPercent}%`);
 
   // Update localStorage
   if (typeof window !== 'undefined') {
@@ -458,6 +462,7 @@ export const saveFileProgress = async (
     };
 
     localStorage.setItem(localKey, JSON.stringify(progress));
+    console.log(`[saveFileProgress] Saved to localStorage:`, progress);
   }
 
   // Sync to Supabase (upsert)
