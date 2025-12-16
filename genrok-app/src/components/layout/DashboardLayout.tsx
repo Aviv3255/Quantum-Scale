@@ -134,12 +134,6 @@ const navigationItems: NavItem[] = [
     href: "/data-center",
     icon: Database,
   },
-  {
-    title: "Build a Bundle & Save 35%",
-    href: "https://quantum-scale.co/pages/bundle-builder",
-    icon: Package,
-    external: true
-  },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
