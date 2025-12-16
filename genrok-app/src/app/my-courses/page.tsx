@@ -12,10 +12,12 @@ import {
   ArrowRight,
   ShoppingBag,
   Loader2,
+  ListChecks,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
+import { useChecklist } from '@/hooks/useChecklist';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,6 +31,98 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
+
+// Course card component to use the checklist hook
+interface CourseCardProps {
+  course: PurchasedCourse;
+  userId?: string;
+}
+
+function CourseCard({ course, userId }: CourseCardProps) {
+  const { progress, items, completedItems } = useChecklist(course.slug, userId);
+
+  return (
+    <motion.div variants={itemVariants} className="card card-hover">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Course Image */}
+        <div className="relative w-full md:w-64 h-48 md:h-auto rounded-xl overflow-hidden bg-white flex-shrink-0">
+          {course.image_url ? (
+            <Image
+              src={course.image_url}
+              alt={course.title}
+              fill
+              className="object-contain p-4"
+              unoptimized
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-[var(--bg-secondary)]">
+              <GraduationCap size={48} className="text-[var(--text-muted)]" />
+            </div>
+          )}
+        </div>
+
+        {/* Course Details */}
+        <div className="flex-1 flex flex-col">
+          <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
+            {course.title}
+          </h3>
+          {course.description && (
+            <p className="text-[var(--text-muted)] mb-4 line-clamp-2">{course.description}</p>
+          )}
+
+          {/* Course Meta */}
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+              <FileText size={16} />
+              <span>
+                {course.file_count} {course.file_count === 1 ? 'file' : 'files'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+              <Calendar size={16} />
+              <span>Purchased {new Date(course.purchase_date).toLocaleDateString()}</span>
+            </div>
+          </div>
+
+          {/* Checklist Progress */}
+          {items.length > 0 && (
+            <div className="mb-4 p-3 rounded-xl bg-[var(--bg-secondary)]">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <ListChecks size={16} className="text-[var(--primary)]" />
+                  <span className="text-sm font-medium text-[var(--text-primary)]">
+                    Checklist Progress
+                  </span>
+                </div>
+                <span className="text-sm font-bold text-[var(--primary)]">{progress}%</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-2 rounded-full bg-white overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${progress}%`,
+                      background: 'linear-gradient(90deg, #000 0%, #333 100%)',
+                    }}
+                  />
+                </div>
+                <span className="text-xs text-[var(--text-muted)] whitespace-nowrap">
+                  {completedItems.length}/{items.length} done
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Action Button */}
+          <Link href={`/my-courses/${course.slug}`} className="btn btn-primary self-start mt-auto">
+            Continue Learning
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function MyCoursesPage() {
   const router = useRouter();
@@ -124,63 +218,7 @@ export default function MyCoursesPage() {
             className="grid gap-6"
           >
             {courses.map((course) => (
-              <motion.div
-                key={course.course_id}
-                variants={itemVariants}
-                className="card card-hover"
-              >
-                <div className="flex flex-col md:flex-row gap-6">
-                  {/* Course Image */}
-                  <div className="relative w-full md:w-64 h-48 md:h-auto rounded-xl overflow-hidden bg-white flex-shrink-0">
-                    {course.image_url ? (
-                      <Image
-                        src={course.image_url}
-                        alt={course.title}
-                        fill
-                        className="object-contain p-4"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[var(--bg-secondary)]">
-                        <GraduationCap size={48} className="text-[var(--text-muted)]" />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Course Details */}
-                  <div className="flex-1 flex flex-col">
-                    <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
-                      {course.title}
-                    </h3>
-                    {course.description && (
-                      <p className="text-[var(--text-muted)] mb-4 line-clamp-2">
-                        {course.description}
-                      </p>
-                    )}
-
-                    {/* Course Meta */}
-                    <div className="flex flex-wrap items-center gap-4 mb-4 mt-auto">
-                      <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                        <FileText size={16} />
-                        <span>{course.file_count} {course.file_count === 1 ? 'file' : 'files'}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                        <Calendar size={16} />
-                        <span>Purchased {new Date(course.purchase_date).toLocaleDateString()}</span>
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
-                    <Link
-                      href={`/my-courses/${course.slug}`}
-                      className="btn btn-primary self-start"
-                    >
-                      Continue Learning
-                      <ArrowRight size={18} />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
+              <CourseCard key={course.course_id} course={course} userId={user?.id} />
             ))}
           </motion.section>
         )}

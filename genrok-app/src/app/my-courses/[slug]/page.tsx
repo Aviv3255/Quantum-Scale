@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   FileText,
   ChevronRight,
+  ChevronLeft,
   X,
   ZoomIn,
   ZoomOut,
@@ -14,6 +15,11 @@ import {
   Loader2,
   Lock,
   AlertCircle,
+  ListChecks,
+  CheckCircle2,
+  Circle,
+  ChevronDown,
+  RotateCcw,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
@@ -27,6 +33,7 @@ import {
 } from '@/lib/course-access';
 import { supabase } from '@/lib/supabase';
 import CourseChecklist from '@/components/CourseChecklist';
+import { useChecklist } from '@/hooks/useChecklist';
 
 interface CourseData {
   id: string;
@@ -39,11 +46,19 @@ interface PDFViewerProps {
   file: CourseFile;
   fileUrl: string;
   onClose: () => void;
+  courseSlug: string;
+  userId?: string;
 }
 
-function PDFViewer({ file, fileUrl, onClose }: PDFViewerProps) {
+function PDFViewer({ file, fileUrl, onClose, courseSlug, userId }: PDFViewerProps) {
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isChecklistOpen, setIsChecklistOpen] = useState(true);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
+    useChecklist(courseSlug, userId);
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 200));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
@@ -56,6 +71,23 @@ function PDFViewer({ file, fileUrl, onClose }: PDFViewerProps) {
       document.exitFullscreen();
       setIsFullscreen(false);
     }
+  };
+
+  const toggleExpand = (itemId: string) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
+
+  const handleReset = () => {
+    resetProgress();
+    setShowResetConfirm(false);
   };
 
   useEffect(() => {
@@ -115,28 +147,213 @@ function PDFViewer({ file, fileUrl, onClose }: PDFViewerProps) {
           >
             <Maximize2 size={20} />
           </button>
+          <div className="w-px h-6 bg-[#333] mx-2" />
+          <button
+            onClick={() => setIsChecklistOpen(!isChecklistOpen)}
+            className={`p-2 rounded-lg transition-colors text-white flex items-center gap-2 ${
+              isChecklistOpen ? 'bg-[#333]' : 'hover:bg-[#333]'
+            }`}
+          >
+            <ListChecks size={20} />
+            <span className="text-sm">{progress}%</span>
+          </button>
         </div>
       </div>
 
-      {/* PDF Content */}
-      <div className="flex-1 overflow-auto bg-[#2a2a2a] p-4">
-        <div
-          className="mx-auto transition-transform duration-200"
-          style={{
-            width: `${zoom}%`,
-            maxWidth: `${zoom * 10}px`,
-          }}
-        >
-          <iframe
-            src={`${fileUrl}#toolbar=0&navpanes=0`}
-            className="w-full bg-white rounded-lg shadow-2xl"
+      {/* Main Content Area with PDF and Checklist */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* PDF Content */}
+        <div className="flex-1 overflow-auto bg-[#2a2a2a] p-4">
+          <div
+            className="mx-auto transition-transform duration-200"
             style={{
-              height: 'calc(100vh - 120px)',
-              border: 'none',
+              width: `${zoom}%`,
+              maxWidth: `${zoom * 10}px`,
             }}
-            title={file.title}
-          />
+          >
+            <iframe
+              src={`${fileUrl}#toolbar=0&navpanes=0`}
+              className="w-full bg-white rounded-lg shadow-2xl"
+              style={{
+                height: 'calc(100vh - 120px)',
+                border: 'none',
+              }}
+              title={file.title}
+            />
+          </div>
         </div>
+
+        {/* Checklist Panel */}
+        <AnimatePresence mode="wait">
+          {isChecklistOpen && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 320, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex flex-col bg-white border-l border-[#333] overflow-hidden"
+            >
+              {/* Checklist Header */}
+              <div className="p-4 border-b border-[#eee] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ListChecks size={20} className="text-[var(--primary)]" />
+                  <span className="font-semibold text-[var(--text-primary)]">Checklist</span>
+                </div>
+                <button
+                  onClick={() => setIsChecklistOpen(false)}
+                  className="p-1.5 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
+                >
+                  <ChevronRight size={18} className="text-[var(--text-muted)]" />
+                </button>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="px-4 py-3 border-b border-[#eee]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-[var(--text-muted)]">Progress</span>
+                  <span className="text-sm font-bold text-[var(--primary)]">{progress}%</span>
+                </div>
+                <div className="h-2 rounded-full bg-[var(--bg-secondary)] overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="h-full rounded-full"
+                    style={{ background: 'linear-gradient(90deg, #000 0%, #333 100%)' }}
+                  />
+                </div>
+              </div>
+
+              {/* Checklist Items */}
+              <div className="flex-1 overflow-y-auto p-3">
+                {checklistLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="w-6 h-6 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : items.length === 0 ? (
+                  <div className="text-center py-8 text-[var(--text-muted)] text-sm">
+                    No checklist items
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {items.map((item, index) => {
+                      const isCompleted = isItemCompleted(item.id);
+                      const isExpanded = expandedItems.has(item.id);
+                      const hasDescription = !!item.description;
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`rounded-lg border transition-all ${
+                            isCompleted
+                              ? 'border-green-200 bg-green-50'
+                              : 'border-[#eee] bg-white hover:border-[#ddd]'
+                          }`}
+                        >
+                          <div className="flex items-start gap-2 p-2.5">
+                            <button
+                              onClick={() => toggleItem(item.id)}
+                              className="mt-0.5 flex-shrink-0"
+                            >
+                              {isCompleted ? (
+                                <CheckCircle2 size={18} className="text-green-500" />
+                              ) : (
+                                <Circle
+                                  size={18}
+                                  className="text-[#ccc] hover:text-[#999] transition-colors"
+                                />
+                              )}
+                            </button>
+                            <div className="min-w-0 flex-1">
+                              <div
+                                className={`flex items-start justify-between gap-1 ${
+                                  hasDescription ? 'cursor-pointer' : ''
+                                }`}
+                                onClick={() => hasDescription && toggleExpand(item.id)}
+                              >
+                                <span
+                                  className={`text-xs font-medium leading-tight ${
+                                    isCompleted
+                                      ? 'text-green-700 line-through'
+                                      : 'text-[var(--text-primary)]'
+                                  }`}
+                                >
+                                  {index + 1}. {item.title}
+                                </span>
+                                {hasDescription && (
+                                  <ChevronDown
+                                    size={14}
+                                    className={`text-[var(--text-muted)] transition-transform flex-shrink-0 ${
+                                      isExpanded ? 'rotate-180' : ''
+                                    }`}
+                                  />
+                                )}
+                              </div>
+                              <AnimatePresence>
+                                {isExpanded && item.description && (
+                                  <motion.p
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className={`mt-1 text-xs overflow-hidden ${
+                                      isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'
+                                    }`}
+                                  >
+                                    {item.description}
+                                  </motion.p>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Reset Footer */}
+              <div className="p-3 border-t border-[#eee]">
+                {showResetConfirm ? (
+                  <div className="flex items-center gap-2">
+                    <span className="flex-1 text-xs text-[var(--text-muted)]">Reset?</span>
+                    <button
+                      onClick={() => setShowResetConfirm(false)}
+                      className="px-2 py-1 text-xs rounded bg-[var(--bg-secondary)] text-[var(--text-primary)]"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleReset}
+                      className="px-2 py-1 text-xs rounded bg-red-500 text-white"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowResetConfirm(true)}
+                    className="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                  >
+                    <RotateCcw size={14} />
+                    Reset Progress
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Collapsed Checklist Toggle */}
+        {!isChecklistOpen && (
+          <button
+            onClick={() => setIsChecklistOpen(true)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[var(--primary)] text-white p-2 rounded-l-lg shadow-lg hover:bg-[#333] transition-colors"
+          >
+            <ChevronLeft size={20} />
+          </button>
+        )}
       </div>
     </motion.div>
   );
@@ -154,6 +371,12 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
+
+  // Get checklist progress for displaying in course header
+  const { progress: checklistProgress, items: checklistItems, completedItems } = useChecklist(
+    resolvedParams.slug,
+    user?.id
+  );
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -299,6 +522,48 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
           {course?.description && <p className="mt-2">{course.description}</p>}
         </motion.header>
 
+        {/* Checklist Progress Card */}
+        {checklistItems.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="card mb-6"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center">
+                  <ListChecks size={20} className="text-[var(--primary)]" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[var(--text-primary)]">Course Checklist</h3>
+                  <p className="text-sm text-[var(--text-muted)]">
+                    {completedItems.length} of {checklistItems.length} tasks completed
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl font-bold text-[var(--primary)]">{checklistProgress}%</span>
+                <button
+                  onClick={() => setIsChecklistOpen(true)}
+                  className="btn btn-primary text-sm py-2"
+                >
+                  View Checklist
+                </button>
+              </div>
+            </div>
+            <div className="h-2 rounded-full bg-[var(--bg-secondary)] overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${checklistProgress}%` }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #000 0%, #333 100%)' }}
+              />
+            </div>
+          </motion.div>
+        )}
+
         {/* Files List */}
         {files.length === 0 ? (
           <motion.div
@@ -371,17 +636,21 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             file={selectedFile}
             fileUrl={selectedFileUrl}
             onClose={closeViewer}
+            courseSlug={resolvedParams.slug}
+            userId={user?.id}
           />
         )}
       </AnimatePresence>
 
-      {/* Course Checklist Panel */}
-      <CourseChecklist
-        courseSlug={resolvedParams.slug}
-        userId={user?.id}
-        isOpen={isChecklistOpen}
-        onToggle={() => setIsChecklistOpen(!isChecklistOpen)}
-      />
+      {/* Course Checklist Panel (shown when not viewing PDF) */}
+      {!selectedFile && (
+        <CourseChecklist
+          courseSlug={resolvedParams.slug}
+          userId={user?.id}
+          isOpen={isChecklistOpen}
+          onToggle={() => setIsChecklistOpen(!isChecklistOpen)}
+        />
+      )}
     </DashboardLayout>
   );
 }
