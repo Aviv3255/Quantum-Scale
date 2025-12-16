@@ -21,6 +21,7 @@ import {
   ChevronDown,
   RotateCcw,
   ExternalLink,
+  Play,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
@@ -99,19 +100,24 @@ interface PDFViewerProps {
   courseSlug: string;
   userId?: string;
   courseId?: string;
-  onProgressUpdate?: (fileId: string, progress: number) => void;
+  onProgressUpdate?: (fileId: string, progress: number, page: number) => void;
   initialProgress?: number;
+  initialPage?: number;
 }
 
-function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate, initialProgress = 0 }: PDFViewerProps) {
+function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate, initialProgress = 0, initialPage = 1 }: PDFViewerProps) {
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [readingProgress, setReadingProgress] = useState(initialProgress);
+  const [readingProgress, setReadingProgress] = useState(() => Math.max(initialProgress, 10));
+  const [showResumePrompt, setShowResumePrompt] = useState(initialPage > 1 && initialProgress > 0);
+  const [pdfUrl, setPdfUrl] = useState(fileUrl);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const lastSavedProgressRef = useRef(initialProgress);
+  const lastSavedProgressRef = useRef(Math.max(initialProgress, 10));
+  const currentPageRef = useRef(initialPage);
+  const readingProgressRef = useRef(Math.max(initialProgress, 10));
 
   const courseHasChecklist = hasChecklist(courseSlug);
   const [isChecklistOpen, setIsChecklistOpen] = useState(courseHasChecklist);
@@ -119,45 +125,62 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
   const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
     useChecklist(courseSlug, userId);
 
-  // Time-based reading progress tracking
-  // Since PDFs are in an iframe (cross-origin), we can't track scroll
-  // Instead, we track time spent viewing: +5% every 10 seconds, up to 100%
-  useEffect(() => {
-    // Save initial view (at least 10% for opening)
-    const startProgress = Math.max(initialProgress, 10);
-    if (startProgress > initialProgress) {
-      setReadingProgress(startProgress);
-      if (userId && courseId) {
-        saveFileProgress(userId, courseId, file.id, startProgress);
-        onProgressUpdate?.(file.id, startProgress);
-        lastSavedProgressRef.current = startProgress;
-      }
-    }
+  // Resume from last page
+  const handleResume = () => {
+    setPdfUrl(`${fileUrl}#page=${initialPage}`);
+    setShowResumePrompt(false);
+  };
 
-    // Increment progress every 10 seconds
+  // Start from beginning
+  const handleStartOver = () => {
+    setPdfUrl(`${fileUrl}#page=1`);
+    currentPageRef.current = 1;
+    setShowResumePrompt(false);
+  };
+
+  // Save initial progress on mount
+  useEffect(() => {
+    if (userId && courseId && initialProgress < 10) {
+      saveFileProgress(userId, courseId, file.id, 10, initialPage);
+      onProgressUpdate?.(file.id, 10, initialPage);
+      console.log(`[Progress] Initial save: ${file.title} - 10%, page ${initialPage}`);
+    }
+  }, [userId, courseId, file.id, file.title, initialProgress, initialPage, onProgressUpdate]);
+
+  // Time-based reading progress tracking with page estimation
+  useEffect(() => {
+    // Increment progress every 10 seconds (+5%, max 100%)
     progressIntervalRef.current = setInterval(() => {
       setReadingProgress(prev => {
+        if (prev >= 100) return prev;
         const newProgress = Math.min(prev + 5, 100);
+        readingProgressRef.current = newProgress;
+        const newPage = Math.max(currentPageRef.current, Math.ceil(newProgress / 10));
+        currentPageRef.current = newPage;
 
-        // Save progress every 10% increment
+        // Save every 10% increment
         if (userId && courseId && newProgress >= lastSavedProgressRef.current + 10) {
-          saveFileProgress(userId, courseId, file.id, newProgress);
-          onProgressUpdate?.(file.id, newProgress);
+          saveFileProgress(userId, courseId, file.id, newProgress, newPage);
+          onProgressUpdate?.(file.id, newProgress, newPage);
           lastSavedProgressRef.current = newProgress;
-          console.log(`[Progress] Saved reading progress for ${file.title}: ${newProgress}%`);
+          console.log(`[Progress] Saved: ${file.title} - ${newProgress}%, page ${newPage}`);
         }
 
         return newProgress;
       });
-    }, 10000); // Every 10 seconds
+    }, 10000);
 
     return () => {
-      // Save final progress on unmount
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
+      // Save final progress on close
+      if (userId && courseId) {
+        saveFileProgress(userId, courseId, file.id, readingProgressRef.current, currentPageRef.current);
+        console.log(`[Progress] Final save: ${file.title} - ${readingProgressRef.current}%, page ${currentPageRef.current}`);
+      }
     };
-  }, [userId, courseId, file.id, file.title, initialProgress, onProgressUpdate]);
+  }, [userId, courseId, file.id, file.title, onProgressUpdate]);
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 200));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
@@ -266,7 +289,37 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
       {/* Main Content Area with PDF and Checklist */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* PDF Content */}
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto bg-[#2a2a2a] p-4">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto bg-[#2a2a2a] p-4 relative">
+          {/* Resume Reading Prompt - Minimalist */}
+          <AnimatePresence>
+            {showResumePrompt && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="absolute top-6 left-1/2 -translate-x-1/2 z-10"
+              >
+                <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white shadow-lg border border-[#e5e5e5]">
+                  <span className="text-sm text-[#333]">Continue from page {initialPage}?</span>
+                  <button
+                    onClick={handleResume}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#000] text-white text-xs font-medium hover:bg-[#333] transition-colors"
+                  >
+                    <Play size={12} />
+                    Resume
+                  </button>
+                  <button
+                    onClick={handleStartOver}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f5f5f5] text-[#666] text-xs font-medium hover:bg-[#e5e5e5] transition-colors"
+                  >
+                    <RotateCcw size={12} />
+                    Start Over
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <div
             className="mx-auto transition-transform duration-200"
             style={{
@@ -275,7 +328,7 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
             }}
           >
             <iframe
-              src={`${fileUrl}#toolbar=0&navpanes=0`}
+              src={`${pdfUrl}#toolbar=0&navpanes=0`}
               className="w-full bg-white rounded-lg shadow-2xl"
               style={{
                 height: 'calc(100vh - 120px)',
@@ -501,13 +554,14 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
   );
 
   // Handle file progress updates from PDF viewer
-  const handleProgressUpdate = useCallback((fileId: string, progress: number) => {
+  const handleProgressUpdate = useCallback((fileId: string, progress: number, page: number) => {
     setFileProgressMap((prev) => ({
       ...prev,
       [fileId]: {
         ...prev[fileId],
         file_id: fileId,
         progress,
+        last_page: page,
         last_accessed: new Date().toISOString(),
       },
     }));
@@ -732,6 +786,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             {files.map((file, index) => {
               const fileProgress = fileProgressMap[file.id];
               const progressValue = fileProgress?.progress || 0;
+              const lastPage = fileProgress?.last_page || 0;
 
               return (
                 <motion.button
@@ -788,9 +843,14 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
                             {(file.file_size / 1024 / 1024).toFixed(2)} MB
                           </span>
                         )}
+                        {lastPage > 1 && (
+                          <span className="text-xs text-blue-600">
+                            Last: page {lastPage}
+                          </span>
+                        )}
                         {fileProgress?.last_accessed && (
                           <span className="text-xs text-[var(--text-muted)]">
-                            Last read: {new Date(fileProgress.last_accessed).toLocaleDateString()}
+                            {new Date(fileProgress.last_accessed).toLocaleDateString()}
                           </span>
                         )}
                       </div>
@@ -824,6 +884,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             courseId={course?.id}
             onProgressUpdate={handleProgressUpdate}
             initialProgress={fileProgressMap[selectedFile.id]?.progress || 0}
+            initialPage={fileProgressMap[selectedFile.id]?.last_page || 1}
           />
         )}
       </AnimatePresence>
