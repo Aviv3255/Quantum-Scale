@@ -148,9 +148,9 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
             <X size={20} />
           </button>
           <div>
-            <h3 className="text-white font-medium">{file.title}</h3>
+            <h3 className="font-medium" style={{ color: '#ffffff' }}>{file.title}</h3>
             {file.description && (
-              <p className="text-sm text-gray-400">{file.description}</p>
+              <p className="text-sm" style={{ color: '#9ca3af' }}>{file.description}</p>
             )}
           </div>
         </div>
