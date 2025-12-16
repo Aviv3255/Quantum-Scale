@@ -18,6 +18,7 @@ import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
 import { useChecklist } from '@/hooks/useChecklist';
+import { getCourseBySlug } from '@/data/courses';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -41,14 +42,18 @@ interface CourseCardProps {
 function CourseCard({ course, userId }: CourseCardProps) {
   const { progress, items, completedItems } = useChecklist(course.slug, userId);
 
+  // Get mockup image from static course data if database image not available
+  const staticCourse = getCourseBySlug(course.slug);
+  const courseImage = course.image_url || staticCourse?.image;
+
   return (
     <motion.div variants={itemVariants} className="card card-hover">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Course Image */}
         <div className="relative w-full md:w-64 h-48 md:h-auto rounded-xl overflow-hidden bg-white flex-shrink-0">
-          {course.image_url ? (
+          {courseImage ? (
             <Image
-              src={course.image_url}
+              src={courseImage}
               alt={course.title}
               fill
               className="object-contain p-4"

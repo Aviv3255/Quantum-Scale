@@ -350,6 +350,135 @@ export const removeIPFromAllowlist = async (userId: string, ipAddress: string): 
   return !error;
 };
 
+// File reading progress tracking
+export interface FileProgress {
+  file_id: string;
+  progress: number; // 0-100
+  last_page?: number;
+  total_pages?: number;
+  last_accessed: string;
+}
+
+// Get file progress from localStorage and Supabase
+export const getFileProgress = async (
+  userId: string,
+  courseId: string
+): Promise<Record<string, FileProgress>> => {
+  const localKey = `file-progress-${userId}-${courseId}`;
+
+  // Get from localStorage first
+  let progress: Record<string, FileProgress> = {};
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem(localKey);
+    if (stored) {
+      try {
+        progress = JSON.parse(stored);
+      } catch {
+        // Ignore parse errors
+      }
+    }
+  }
+
+  // Try to sync from Supabase
+  try {
+    const { data, error } = await supabase
+      .from('user_file_progress')
+      .select('file_id, progress, last_page, total_pages, updated_at')
+      .eq('user_id', userId)
+      .eq('course_id', courseId);
+
+    if (!error && data) {
+      const typedData = data as Array<{
+        file_id: string;
+        progress: number;
+        last_page: number | null;
+        total_pages: number | null;
+        updated_at: string;
+      }>;
+
+      // Merge with localStorage, keeping most recent
+      typedData.forEach((item) => {
+        const existing = progress[item.file_id];
+        const dbDate = new Date(item.updated_at).getTime();
+        const localDate = existing ? new Date(existing.last_accessed).getTime() : 0;
+
+        if (!existing || dbDate > localDate) {
+          progress[item.file_id] = {
+            file_id: item.file_id,
+            progress: item.progress,
+            last_page: item.last_page || undefined,
+            total_pages: item.total_pages || undefined,
+            last_accessed: item.updated_at,
+          };
+        }
+      });
+
+      // Save merged progress to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(localKey, JSON.stringify(progress));
+      }
+    }
+  } catch {
+    // If Supabase fails, continue with localStorage data
+  }
+
+  return progress;
+};
+
+// Save file progress to localStorage and Supabase
+export const saveFileProgress = async (
+  userId: string,
+  courseId: string,
+  fileId: string,
+  progressPercent: number,
+  lastPage?: number,
+  totalPages?: number
+): Promise<void> => {
+  const localKey = `file-progress-${userId}-${courseId}`;
+  const now = new Date().toISOString();
+
+  // Update localStorage
+  if (typeof window !== 'undefined') {
+    let progress: Record<string, FileProgress> = {};
+    const stored = localStorage.getItem(localKey);
+    if (stored) {
+      try {
+        progress = JSON.parse(stored);
+      } catch {
+        // Ignore parse errors
+      }
+    }
+
+    progress[fileId] = {
+      file_id: fileId,
+      progress: progressPercent,
+      last_page: lastPage,
+      total_pages: totalPages,
+      last_accessed: now,
+    };
+
+    localStorage.setItem(localKey, JSON.stringify(progress));
+  }
+
+  // Sync to Supabase (upsert)
+  try {
+    await supabase.from('user_file_progress').upsert(
+      {
+        user_id: userId,
+        course_id: courseId,
+        file_id: fileId,
+        progress: progressPercent,
+        last_page: lastPage || null,
+        total_pages: totalPages || null,
+        updated_at: now,
+      } as never,
+      { onConflict: 'user_id,course_id,file_id' }
+    );
+  } catch {
+    // If Supabase fails, localStorage still has the data
+  }
+};
+
 // Grant course access (for admin/payment webhook)
 export const grantCourseAccess = async (
   userId: string,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import React, { useEffect, useState, use, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -30,6 +30,9 @@ import {
   getFileUrl,
   logFileAccess,
   CourseFile,
+  getFileProgress,
+  saveFileProgress,
+  FileProgress,
 } from '@/lib/course-access';
 import { supabase } from '@/lib/supabase';
 import CourseChecklist from '@/components/CourseChecklist';
@@ -48,17 +51,45 @@ interface PDFViewerProps {
   onClose: () => void;
   courseSlug: string;
   userId?: string;
+  courseId?: string;
+  onProgressUpdate?: (fileId: string, progress: number) => void;
 }
 
-function PDFViewer({ file, fileUrl, onClose, courseSlug, userId }: PDFViewerProps) {
+function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onProgressUpdate }: PDFViewerProps) {
   const [zoom, setZoom] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isChecklistOpen, setIsChecklistOpen] = useState(true);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
     useChecklist(courseSlug, userId);
+
+  // Track scroll progress
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const maxScroll = scrollHeight - clientHeight;
+      if (maxScroll > 0) {
+        const progressPercent = Math.round((scrollTop / maxScroll) * 100);
+        setScrollProgress(progressPercent);
+
+        // Save progress (debounced - only save when user stops scrolling)
+        if (userId && courseId) {
+          saveFileProgress(userId, courseId, file.id, progressPercent);
+          onProgressUpdate?.(file.id, progressPercent);
+        }
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [userId, courseId, file.id, onProgressUpdate]);
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 200));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
@@ -161,9 +192,9 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId }: PDFViewerProp
       </div>
 
       {/* Main Content Area with PDF and Checklist */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative">
         {/* PDF Content */}
-        <div className="flex-1 overflow-auto bg-[#2a2a2a] p-4">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto bg-[#2a2a2a] p-4">
           <div
             className="mx-auto transition-transform duration-200"
             style={{
@@ -181,6 +212,14 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId }: PDFViewerProp
               title={file.title}
             />
           </div>
+        </div>
+
+        {/* Scroll Progress Indicator */}
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#333]">
+          <div
+            className="w-full bg-green-500 transition-all duration-150"
+            style={{ height: `${scrollProgress}%` }}
+          />
         </div>
 
         {/* Checklist Panel */}
@@ -371,12 +410,26 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
+  const [fileProgressMap, setFileProgressMap] = useState<Record<string, FileProgress>>({});
 
   // Get checklist progress for displaying in course header
   const { progress: checklistProgress, items: checklistItems, completedItems } = useChecklist(
     resolvedParams.slug,
     user?.id
   );
+
+  // Handle file progress updates from PDF viewer
+  const handleProgressUpdate = useCallback((fileId: string, progress: number) => {
+    setFileProgressMap((prev) => ({
+      ...prev,
+      [fileId]: {
+        ...prev[fileId],
+        file_id: fileId,
+        progress,
+        last_accessed: new Date().toISOString(),
+      },
+    }));
+  }, []);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -407,6 +460,10 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
           // Get course files
           const courseFiles = await getCourseFiles(typedCourseData.id);
           setFiles(courseFiles);
+
+          // Load file progress
+          const progressData = await getFileProgress(user.id, typedCourseData.id);
+          setFileProgressMap(progressData);
         }
       }
 
@@ -590,41 +647,91 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
               Course Files ({files.length})
             </h2>
-            {files.map((file, index) => (
-              <motion.button
-                key={file.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                onClick={() => openFile(file)}
-                disabled={loadingFile === file.id}
-                className="w-full card card-hover flex items-center gap-4 text-left"
-              >
-                <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-                  <FileText size={24} className="text-red-500" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-[var(--text-primary)] truncate">
-                    {file.title}
-                  </h3>
-                  {file.description && (
-                    <p className="text-sm text-[var(--text-muted)] truncate">
-                      {file.description}
-                    </p>
+            {files.map((file, index) => {
+              const fileProgress = fileProgressMap[file.id];
+              const hasProgress = fileProgress && fileProgress.progress > 0;
+
+              return (
+                <motion.button
+                  key={file.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  onClick={() => openFile(file)}
+                  disabled={loadingFile === file.id}
+                  className="w-full card card-hover flex items-center gap-4 text-left relative overflow-hidden"
+                >
+                  {/* Progress background */}
+                  {hasProgress && (
+                    <div
+                      className="absolute inset-y-0 left-0 bg-green-50 transition-all duration-300"
+                      style={{ width: `${fileProgress.progress}%` }}
+                    />
                   )}
-                  {file.file_size && (
-                    <p className="text-xs text-[var(--text-muted)] mt-1">
-                      {(file.file_size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  )}
-                </div>
-                {loadingFile === file.id ? (
-                  <Loader2 size={20} className="animate-spin text-[var(--text-muted)]" />
-                ) : (
-                  <ChevronRight size={20} className="text-[var(--text-muted)]" />
-                )}
-              </motion.button>
-            ))}
+
+                  <div className="relative flex items-center gap-4 w-full">
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        hasProgress && fileProgress.progress === 100
+                          ? 'bg-green-100'
+                          : hasProgress
+                            ? 'bg-blue-100'
+                            : 'bg-red-100'
+                      }`}
+                    >
+                      {hasProgress && fileProgress.progress === 100 ? (
+                        <CheckCircle2 size={24} className="text-green-500" />
+                      ) : (
+                        <FileText
+                          size={24}
+                          className={hasProgress ? 'text-blue-500' : 'text-red-500'}
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-medium text-[var(--text-primary)] truncate">
+                          {file.title}
+                        </h3>
+                        {hasProgress && (
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full ${
+                              fileProgress.progress === 100
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-blue-100 text-blue-700'
+                            }`}
+                          >
+                            {fileProgress.progress === 100 ? 'Completed' : `${fileProgress.progress}%`}
+                          </span>
+                        )}
+                      </div>
+                      {file.description && (
+                        <p className="text-sm text-[var(--text-muted)] truncate">
+                          {file.description}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-3 mt-1">
+                        {file.file_size && (
+                          <span className="text-xs text-[var(--text-muted)]">
+                            {(file.file_size / 1024 / 1024).toFixed(2)} MB
+                          </span>
+                        )}
+                        {hasProgress && fileProgress.last_accessed && (
+                          <span className="text-xs text-[var(--text-muted)]">
+                            Last read: {new Date(fileProgress.last_accessed).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {loadingFile === file.id ? (
+                      <Loader2 size={20} className="animate-spin text-[var(--text-muted)]" />
+                    ) : (
+                      <ChevronRight size={20} className="text-[var(--text-muted)]" />
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
           </motion.div>
         )}
       </div>
@@ -638,6 +745,8 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
             onClose={closeViewer}
             courseSlug={resolvedParams.slug}
             userId={user?.id}
+            courseId={course?.id}
+            onProgressUpdate={handleProgressUpdate}
           />
         )}
       </AnimatePresence>
