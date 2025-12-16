@@ -7,9 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
   Briefcase,
-  CheckSquare,
   BookOpen,
-  Database,
   ShoppingBag,
   Package,
   Palette,
@@ -24,9 +22,15 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
-  Rocket,
-  UserCircle,
   GraduationCap,
+  Server,
+  Megaphone,
+  Image,
+  Video,
+  Users,
+  Podcast,
+  Layers,
+  Database,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -53,55 +57,43 @@ const navigationItems: NavItem[] = [
     icon: Home,
   },
   {
-    title: "Business Planning & Forecasts",
-    icon: Briefcase,
+    title: "Backend System",
+    icon: Server,
     isCategory: true,
     subItems: [
-      { title: "Calculators & Forecasts", href: "/calculators" },
-      { title: "$100K Blueprint", href: "/blueprint" }
+      { title: "Dream Team", href: "/backend/dream-team" },
+      { title: "Secret Apps", href: "/apps/secret" },
+      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
+      { title: "Private Agent", href: "/products/private-agent" }
     ]
-  },
-  {
-    title: "Checklists",
-    icon: CheckSquare,
-    isCategory: true,
-    subItems: [
-      { title: "Setup Checklist", href: "/checklist" },
-      { title: "Scale Checklist", href: "/scale-checklist" }
-    ]
-  },
-  {
-    title: "Learning Center",
-    href: "/learn",
-    icon: BookOpen,
-  },
-  {
-    title: "Courses",
-    href: "/courses",
-    icon: GraduationCap,
-  },
-  {
-    title: "Data Center",
-    href: "/data-center",
-    icon: Database,
   },
   {
     title: "Products",
     icon: ShoppingBag,
     isCategory: true,
     subItems: [
+      { title: "Private Agent", href: "/products/private-agent" },
       { title: "AliExpress Stores", href: "/products/aliexpress" },
-      { title: "Sell These Products", href: "/products/sell-these" },
-      { title: "Private Agent", href: "/products/private-agent" }
+      { title: "Sell These Products", href: "/products/sell-these" }
     ]
   },
   {
-    title: "Secret Apps",
-    icon: Package,
+    title: "Ads",
+    icon: Megaphone,
     isCategory: true,
     subItems: [
-      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
-      { title: "Secret Apps", href: "/apps/secret" }
+      { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
+      { title: "AI Image Ads", href: "/ads/ai-image" },
+      { title: "AI Video Ads", href: "/ads/ai-video" }
+    ]
+  },
+  {
+    title: "Business Planning",
+    icon: Briefcase,
+    isCategory: true,
+    subItems: [
+      { title: "Calculators & Forecasts", href: "/calculators" },
+      { title: "$100K Blueprint", href: "/blueprint" }
     ]
   },
   {
@@ -119,25 +111,28 @@ const navigationItems: NavItem[] = [
     ]
   },
   {
-    title: "$6,000 Credit for TikTok Ads",
-    href: "/tiktok-credits",
-    icon: TrendingUp,
+    title: "Learning Center",
+    icon: BookOpen,
+    isCategory: true,
+    subItems: [
+      { title: "Lessons", href: "/learn" },
+      { title: "The Quantum Podcast", href: "/podcast" },
+      { title: "Learning Cards", href: "/learning-cards" }
+    ]
   },
   {
-    title: "Updates",
-    href: "/updates",
-    icon: Bell,
+    title: "Courses",
+    icon: GraduationCap,
+    isCategory: true,
+    subItems: [
+      { title: "Explore Courses", href: "/courses" },
+      { title: "My Courses", href: "/my-courses" }
+    ]
   },
   {
-    title: "Preview Onboarding",
-    href: "/onboarding?preview=true",
-    icon: UserCircle,
-  },
-  {
-    title: "Build a Bundle & Save 35%",
-    href: "https://quantum-scale.co/pages/bundle-builder",
-    icon: Package,
-    external: true
+    title: "Data Center",
+    href: "/data-center",
+    icon: Database,
   },
 ];
 
@@ -213,7 +208,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
             >
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
+              <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
             </div>
             {/* Hover dropdown for collapsed state */}
             <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
@@ -251,11 +246,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className={`nav-item w-full justify-between ${hasActiveChild ? 'active' : ''}`}
             style={{ textAlign: 'left' }}
           >
-            <div className="flex items-center gap-3 flex-1">
-              <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
+            <div className="flex items-center gap-2.5 flex-1">
+              <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
               <span className="text-left">{item.title}</span>
             </div>
-            {isExpanded ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
+            {isExpanded ? <ChevronUp size={14} className="flex-shrink-0" /> : <ChevronDown size={14} className="flex-shrink-0" />}
           </button>
 
           <AnimatePresence>
@@ -272,7 +267,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <Link
                       key={subIdx}
                       href={subItem.href}
-                      className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
                           ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
                           : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
@@ -323,7 +318,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         title={sidebarCollapsed && !isMobile ? item.title : undefined}
         onClick={() => isMobile && setSidebarOpen(false)}
       >
-        <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
+        <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
         {(!sidebarCollapsed || isMobile) && <span>{item.title}</span>}
       </Link>
     );
@@ -347,11 +342,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
-        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '16px 0' }}>
+        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '12px 0' }}>
           <img
             src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-12 h-12 rounded-xl object-cover" : "w-24 h-24 rounded-xl object-cover"}
+            className={sidebarCollapsed ? "w-10 h-10 rounded-xl object-cover" : "w-20 h-20 rounded-xl object-cover"}
           />
         </div>
 

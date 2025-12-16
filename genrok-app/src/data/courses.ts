@@ -42,6 +42,7 @@ export interface Course {
   modules: CourseModule[];
   bonuses: CourseBonus[];
   faq: CourseFAQ[];
+  hidden?: boolean;
 }
 
 export const coursesData: Record<string, Course> = {
@@ -52,7 +53,7 @@ export const coursesData: Record<string, Course> = {
     description: "A psychology-driven framework to increase conversions, boost AOV, and drive repeat purchases — without spending more on ads.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_41.jpg?v=1757233340",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539",
     badge: "Most Popular",
     stats: [
@@ -120,24 +121,6 @@ The same frameworks in this course have been used to optimize 7-figure stores an
     ],
     bonuses: [
       {
-        title: "The $10,000 AI Photographer",
-        description: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE. You'll get full access to the complete course that teaches you how to create jaw-dropping product photos using AI.",
-        value: 297,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261"
-      },
-      {
-        title: "Secret Tools Vault",
-        description: "We've already done the heavy lifting for you. We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570"
-      },
-      {
-        title: "Lifetime Discount Vault",
-        description: "And we didn't stop there... We partnered with dozens of eCommerce tools and top Shopify apps - the ones you already use - to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions. Yes, really.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375"
-      },
-      {
         title: "The Intelligence Agent",
         description: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.",
         value: 97,
@@ -154,12 +137,6 @@ The same frameworks in this course have been used to optimize 7-figure stores an
         description: "Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).",
         value: 147,
         image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730"
-      },
-      {
-        title: "Access to Our Secret Newsletter",
-        description: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.",
-        value: 97,
-        image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015"
       }
     ],
     faq: [
@@ -185,7 +162,7 @@ The same frameworks in this course have been used to optimize 7-figure stores an
       },
       {
         question: "Why is it only $29?",
-        answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $29. One-time payment, lifetime access. Important: This price won't last forever. We reserve the right to increase it at any time. If you're seeing $29 now, consider yourself lucky - this discount is temporary."
+        answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access. Important: This price won't last forever. We reserve the right to increase it at any time. If you're seeing $10 now, consider yourself lucky - this discount is temporary."
       }
     ]
   },
@@ -196,7 +173,7 @@ The same frameworks in this course have been used to optimize 7-figure stores an
     description: "Transform one-time buyers into lifetime customers with automated systems that maximize customer lifetime value.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_58_efa8c3cd-aa72-4542-a933-0f433d8c01a1.jpg?v=1757325732",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_58_efa8c3cd-aa72-4542-a933-0f433d8c01a1.jpg?v=1757325732",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/43.jpg",
     badge: "New",
     stats: [
@@ -286,7 +263,7 @@ Inside, you'll get the exact blueprints, templates, and automation recipes that 
     description: "Steal the full billion-dollar email system that generates 20X more revenue than any social platform — without spending another dollar on ads.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_40.jpg?v=1757233368",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_40.jpg?v=1757233368",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_3.jpg?v=1760516155",
     badge: "Bestseller",
     stats: [
@@ -384,7 +361,7 @@ Inside this course, you'll get the exact systems that billion-dollar brands use 
     description: "The system that recovers 82% of abandoned checkouts — automatically. Stop losing 75% of your potential revenue.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_76.png?v=1757233333",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_76.png?v=1757233333",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_1.jpg?v=1760514814",
     badge: "Revenue Saver",
     stats: [
@@ -483,7 +460,7 @@ This system stops the leak. It brings money back into your store. Every day. On 
     description: "Turn every visitor into a buyer by triggering the most powerful force in human psychology — the Social Proof Effect.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_43.jpg?v=1757233352",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_43.jpg?v=1757233352",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_5.jpg?v=1760517983",
     badge: "Psychology",
     stats: [
@@ -599,7 +576,7 @@ We promise you: In a few days you will send us a message that you have no way of
     description: "Master the strategic product mapping framework used by billion-dollar brands to turn every product page into a high-converting sales machine.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_44.jpg",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_44.jpg",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_6.jpg",
     badge: "Strategy",
     stats: [
@@ -695,12 +672,13 @@ The same framework inside has been used to optimize stores generating 7-8 figure
   },
   "ab-test-results": {
     slug: "ab-test-results",
+    hidden: true,
     title: "37 Proven A/B Test Results",
     subtitle: "Years of Data, Delivered in Hours",
     description: "Skip the guesswork. Apply what already works. Get instant access to 37 proven A/B tests that delivered 6% to 44% conversion improvements.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_42_9dbe83ef-43df-40d5-88eb-3cd7f29d394a.jpg?v=1757233262",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_42_9dbe83ef-43df-40d5-88eb-3cd7f29d394a.jpg?v=1757233262",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_7.jpg?v=1760524354",
     badge: "Data-Driven",
     stats: [
@@ -794,7 +772,7 @@ Backed by pure, indisputable data about how humans actually make decisions.`,
     description: "Steal the billion-dollar tactic that makes visitors 10X more likely to buy. Build conversion machines that generate 8-10% conversion rates consistently.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_46.jpg?v=1757233317",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_46.jpg?v=1757233317",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_8.jpg?v=1760529285",
     badge: "Conversion",
     stats: [
@@ -896,7 +874,7 @@ A properly built quiz tactic changes the game forever. We're not talking about t
     description: "Inject steroids into Meta's AI and reach only people who match your product 100%. Stop burning money on audiences that will never buy.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_45.jpg?v=1757233284",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_45.jpg?v=1757233284",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742",
     badge: "Meta Ads",
     stats: [
@@ -998,7 +976,7 @@ Train Meta's AI To Work Like a Bloodhound — hunting down only the people who m
     description: "Stop paying $10,000 for product photography. Generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots — completely free with AI.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_54.jpg",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_54.jpg",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/7c40abec-7cfc-4805-9c1d-5290a3fd3afa.png",
     badge: "AI Tool",
     stats: [
@@ -1102,7 +1080,7 @@ The same AI photography techniques in this course are being used by brands gener
     description: "Stop wasting 6 hours to find one winning creative. Get instant access to 1,000+ proven Meta ad templates that are battle-tested on massive budgets.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_59.jpg?v=1757325725",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_59.jpg?v=1757325725",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/6574469f-6304-4b63-a8a5-9d260fc2739a.png?v=1760535779",
     badge: "Templates",
     stats: [
@@ -1193,7 +1171,7 @@ In one simple file, over 1,000 Canva templates for Meta ads that are proven to w
     description: "Steal the exact ad copy frameworks from copywriters who charge $50,000 per sales letter. Templates tested on over $10 million in ad spend.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_47.jpg",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_47.jpg",
     heroImage: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg",
     badge: "Copy Templates",
     stats: [
@@ -1297,7 +1275,7 @@ Simply fill in the blanks with your product details and launch. No copywriting e
     description: "Get 85 battle-tested headlines and hooks that have generated millions in ad revenue. Copy, paste, and watch your CTR skyrocket.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_48.jpg?v=1757233247",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_48.jpg?v=1757233247",
     stats: [
       { value: "5", label: "modules" },
       { value: "2+", label: "hours" },
@@ -1344,7 +1322,7 @@ This course gives you everything you need to start seeing results immediately. N
     description: "Learn the exact framework to craft irresistible eCommerce offers that convert browsers into buyers and maximize your average order value.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_50.jpg?v=1757233399",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_50.jpg?v=1757233399",
     stats: [
       { value: "5", label: "modules" },
       { value: "2+", label: "hours" },
@@ -1391,7 +1369,7 @@ This course gives you everything you need to start seeing results immediately. N
     description: "Master the 20 fundamental laws of selling that have stood the test of time. Apply these principles to any product, any market, any audience.",
     price: 10,
     originalPrice: 197,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_64.jpg?v=1760881483",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_64.jpg?v=1760881483",
     stats: [
       { value: "5", label: "modules" },
       { value: "2+", label: "hours" },
@@ -1438,7 +1416,7 @@ This course gives you everything you need to start seeing results immediately. N
     description: "Discover why simple, 'ugly' ads often outperform polished creatives. Learn to create high-converting Meta ads in minutes, not hours.",
     price: 10,
     originalPrice: 97,
-    image: "https://quantum-scale.co/cdn/shop/files/LaserCRO-Coursemockups_51.jpg?v=1757233270",
+    image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/LaserCRO-Coursemockups_51.jpg?v=1757233270",
     stats: [
       { value: "5", label: "modules" },
       { value: "2+", label: "hours" },
@@ -1479,9 +1457,168 @@ This course gives you everything you need to start seeing results immediately. N
   }};
 
 export const getCourseBySlug = (slug: string): Course | undefined => {
-  return coursesData[slug];
+  // Direct lookup first
+  if (coursesData[slug]) {
+    return coursesData[slug];
+  }
+
+  // Try to find by matching slug property
+  const bySlugProp = Object.values(coursesData).find((c) => c.slug === slug);
+  if (bySlugProp) return bySlugProp;
+
+  // Normalize slug: remove prefixes, convert to lowercase, remove common suffixes
+  const normalizeSlug = (s: string) => s.toLowerCase()
+    .replace(/^the-/, '')
+    .replace(/-course$/, '')
+    .replace(/-system$/, '')
+    .replace(/-tactic$/, '')
+    .replace(/-trap$/, '')
+    .replace(/-marketing$/, '')
+    .replace(/-targeting$/, '')
+    .replace(/-checkout$/, '')
+    .replace(/-proof$/, '')
+    .replace(/-mapping$/, '')
+    .replace(/-templates$/, '')
+    .replace(/-results$/, '')
+    .replace(/-workshop$/, '')
+    .replace(/-ads$/, '')
+    .replace(/-photographer$/, '');
+
+  const normalizedSlug = normalizeSlug(slug);
+  const slugLower = slug.toLowerCase();
+
+  // Try normalized lookup
+  if (coursesData[normalizedSlug]) {
+    return coursesData[normalizedSlug];
+  }
+
+  // Try adding common suffixes back
+  const suffixAttempts = [
+    `${normalizedSlug}-system`,
+    `${normalizedSlug}-trap`,
+    `${normalizedSlug}-tactic`,
+    `${normalizedSlug}-marketing`,
+    `${normalizedSlug}-targeting`,
+    `${normalizedSlug}-checkout`,
+    `${normalizedSlug}-proof`,
+    `${normalizedSlug}-mapping`,
+    `${normalizedSlug}-templates`,
+    `${normalizedSlug}-results`,
+    `${normalizedSlug}-workshop`,
+    `${normalizedSlug}-ads`,
+    `${normalizedSlug}-photographer`,
+    `the-${normalizedSlug}`,
+    `the-${normalizedSlug}-proof`,
+  ];
+
+  for (const attempt of suffixAttempts) {
+    if (coursesData[attempt]) {
+      return coursesData[attempt];
+    }
+  }
+
+  // Common slug mappings for edge cases (keyword -> static slug)
+  const slugMappings: Record<string, string> = {
+    'subconscious': 'subconscious-trap',
+    'trap': 'subconscious-trap',
+    'ltv': 'ltv-system',
+    'email': 'email-marketing',
+    'checkout': 'abandoned-checkout',
+    'finisher': 'abandoned-checkout',
+    'abandoned': 'abandoned-checkout',
+    'social': 'the-social-proof',
+    'proof': 'the-social-proof',
+    'mapping': 'product-mapping',
+    'product': 'product-mapping',
+    'photographer': 'ai-photographer',
+    'ai-photo': 'ai-photographer',
+    'copy': 'ad-copy-templates',
+    'templates': 'meta-ad-templates',
+    'meta-ad': 'meta-ad-templates',
+    'creative': 'meta-ad-templates',
+    'headlines': 'meta-headlines',
+    'hooks': 'meta-headlines',
+    'targeting': 'laser-targeting',
+    'laser': 'laser-targeting',
+    'quiz': 'quiz-tactic',
+    'tactic': 'quiz-tactic',
+    'offer': 'offer-workshop',
+    'workshop': 'offer-workshop',
+    'laws': '20-laws',
+    '20-laws': '20-laws',
+    'twenty': '20-laws',
+    'ugly': 'ugly-ads',
+    'simple': 'ugly-ads',
+    'ab-test': 'ab-test-results',
+    'ab': 'ab-test-results',
+    'a-b': 'ab-test-results',
+    'test-results': 'ab-test-results',
+  };
+
+  // Check mappings
+  for (const [key, mappedSlug] of Object.entries(slugMappings)) {
+    if ((normalizedSlug.includes(key) || slugLower.includes(key)) && coursesData[mappedSlug]) {
+      return coursesData[mappedSlug];
+    }
+  }
+
+  // Try to find by partial match on slug
+  const byPartialMatch = Object.values(coursesData).find(
+    (c) =>
+      c.slug.includes(normalizedSlug) ||
+      normalizedSlug.includes(c.slug) ||
+      normalizeSlug(c.slug).includes(normalizedSlug) ||
+      normalizedSlug.includes(normalizeSlug(c.slug)) ||
+      slugLower.includes(c.slug) ||
+      c.slug.includes(slugLower.replace(/-/g, '')) ||
+      slugLower.replace(/-/g, '').includes(c.slug.replace(/-/g, ''))
+  );
+
+  if (byPartialMatch) return byPartialMatch;
+
+  // Try to find by title match (convert title to slug-like format)
+  const byTitleMatch = Object.values(coursesData).find((c) => {
+    const titleSlug = c.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    return titleSlug.includes(normalizedSlug) ||
+           normalizedSlug.includes(titleSlug) ||
+           slugLower.includes(titleSlug) ||
+           titleSlug.includes(slugLower);
+  });
+
+  return byTitleMatch;
+};
+
+// Helper function to get course by title (for My Courses where we have title from DB)
+export const getCourseByTitle = (title: string): Course | undefined => {
+  const titleLower = title.toLowerCase();
+
+  // Direct title match
+  const directMatch = Object.values(coursesData).find(
+    (c) => c.title.toLowerCase() === titleLower
+  );
+  if (directMatch) return directMatch;
+
+  // Partial title match
+  const partialMatch = Object.values(coursesData).find(
+    (c) => c.title.toLowerCase().includes(titleLower) ||
+           titleLower.includes(c.title.toLowerCase())
+  );
+  if (partialMatch) return partialMatch;
+
+  // Keyword match in title
+  const keywords = titleLower.split(/\s+/);
+  const keywordMatch = Object.values(coursesData).find((c) => {
+    const courseTitle = c.title.toLowerCase();
+    return keywords.some(kw => kw.length > 3 && courseTitle.includes(kw));
+  });
+
+  return keywordMatch;
 };
 
 export const getAllCourses = (): Course[] => {
+  return Object.values(coursesData).filter(course => !course.hidden);
+};
+
+export const getAllCoursesIncludingHidden = (): Course[] => {
   return Object.values(coursesData);
 };

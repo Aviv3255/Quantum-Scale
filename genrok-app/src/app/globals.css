@@ -134,7 +134,6 @@ h1, .text-h1 {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
 }
 
 /* H2 - Section titles */
@@ -143,7 +142,6 @@ h2, .text-h2 {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--text-primary);
 }
 
 /* H3 - Card titles, subsections */
@@ -152,7 +150,6 @@ h3, .text-h3 {
   font-size: 18px;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--text-primary);
 }
 
 /* H4 - Small headings */
@@ -161,6 +158,13 @@ h4, .text-h4 {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.4;
+}
+
+/*
+ * Default text colors for headings - using :where() for zero specificity
+ * This allows Tailwind classes like text-white to override these defaults
+ */
+:where(h1, h2, h3, h4, h5, h6) {
   color: var(--text-primary);
 }
 
@@ -685,7 +689,7 @@ h4, .text-h4 {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 260px;
+  width: 250px;
   background: var(--bg-glass-sidebar);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -693,25 +697,25 @@ h4, .text-h4 {
   display: flex;
   flex-direction: column;
   z-index: 100;
-  padding: 16px 16px;
+  padding: 12px 12px;
 }
 
 .sidebar-logo {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 12px 16px 12px;
+  padding: 4px 8px 16px 8px;
 }
 
 .sidebar-logo img {
-  height: 65px;
-  width: 65px;
+  height: 56px;
+  width: 56px;
   border-radius: 12px;
   object-fit: cover;
 }
 
 .sidebar-logo span {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -726,7 +730,7 @@ h4, .text-h4 {
 }
 
 .sidebar-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .sidebar-section-title {
@@ -735,24 +739,24 @@ h4, .text-h4 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
-  padding: 0 14px;
-  margin-bottom: 8px;
+  padding: 0 12px;
+  margin-bottom: 6px;
 }
 
 .sidebar-user {
-  padding-top: 20px;
-  margin-top: 20px;
+  padding-top: 16px;
+  margin-top: 16px;
   border-top: 1px solid var(--border-light);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-left: 12px;
-  padding-right: 12px;
+  gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .sidebar-user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: var(--primary);
   display: flex;
@@ -769,7 +773,7 @@ h4, .text-h4 {
 }
 
 .sidebar-user-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
@@ -778,7 +782,7 @@ h4, .text-h4 {
 }
 
 .sidebar-user-email {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -789,11 +793,11 @@ h4, .text-h4 {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  gap: 10px;
+  padding: 9px 12px;
   border-radius: var(--radius-md);
   color: var(--text-tertiary);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 450;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -883,7 +887,7 @@ h4, .text-h4 {
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-primary);
-  --sidebar-width: 260px;
+  --sidebar-width: 250px;
 }
 
 /* Landing page full-width sections - sidebar aware */
@@ -923,6 +927,22 @@ h4, .text-h4 {
   margin-right: calc(-50vw + var(--sidebar-width, 260px) / 2 + 50%) !important;
   left: auto !important;
   right: auto !important;
+}
+
+/*
+ * Reset typography colors inside raw-html-container
+ *
+ * The HTML blocks have their own embedded <style> tags that define colors.
+ * The global h1, h2, p etc. rules would normally override inheritance,
+ * causing black text on black backgrounds.
+ *
+ * We use :where() to give these rules ZERO specificity, so any class-based
+ * color rules in the HTML blocks will take precedence. This allows:
+ * 1. Elements without classes to inherit color from styled parents
+ * 2. Elements WITH classes to use their class-defined colors
+ */
+.raw-html-container :where(h1, h2, h3, h4, h5, h6, p, li, td, th, label) {
+  color: inherit;
 }
 
 /* Top Bar - Glass Effect */

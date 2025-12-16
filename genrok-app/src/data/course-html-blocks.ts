@@ -58,8 +58,8 @@ export const courseHTMLBlocks: Record<string, string> = {
 }
 
 .sp-hero-image {
-    width: 86%;
-    max-width: 516px;
+    width: 66%;
+    max-width: 397px;
     height: auto;
     display: block;
     margin: 20px auto;
@@ -471,7 +471,7 @@ export const courseHTMLBlocks: Record<string, string> = {
     <h1>In a world of Chaos...</h1>
     <p>Millions of marketers are fighting to break the creative that sinks money, just to be profitable - and finally see some sales...</p>
     <p><strong>Because their algorithm 'went crazy'...</strong></p>
-    <p><img height="365" width="310" alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802"></p>
+    <p style="text-align: center;"><img height="321" width="273" alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802" style="display: block; margin: 0 auto;"></p>
 
     <h1>
         <span class="sp-highlight-box">We turn every ad into a money-printing machine</span><br>
@@ -487,19 +487,19 @@ export const courseHTMLBlocks: Record<string, string> = {
 
     <h2 style="font-size: 26px;"><strong>And here's the proof...</strong></h2>
     <p>On 27.02.2024, we started using the Social Proof Tactic on one of our brands, Before that, we had a <strong>lame ROAS of 3.16</strong>...</p>
-    <p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328" alt="" style="max-width: 100%;"></p>
+    <p style="text-align: center;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328" alt="" style="max-width: 88%; display: block; margin: 0 auto;"></p>
     <p style="margin-top: 40px;">And just a few days later... the <strong>ROAS skyrocketed to 27.13...</strong></p>
-    <p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467" alt="" style="max-width: 100%;"></p>
+    <p style="text-align: center;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467" alt="" style="max-width: 88%; display: block; margin: 0 auto;"></p>
 
     <h1 style="font-size: 28px; margin-top: 40px;"><strong>"Ads give you exposure, social proof makes sure they pull out their <u>credit card</u>."</strong></h1>
     <p style="font-size: 14px; font-style: italic;">(and make them buy impulsively and extremely)</p>
-    <p style="margin-bottom: 60px;"><img src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif" alt="" style="max-width: 80%; border-radius: 15px;"></p>
+    <p style="margin-bottom: 60px; text-align: center;"><img src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif" alt="" style="max-width: 70%; border-radius: 15px; display: block; margin: 0 auto;"></p>
 
     <p style="font-size: 1.1em; line-height: 2; margin-bottom: 60px;"><strong>Pay attention...</strong><br>No reliance on Facebook algorithms,<br>No endless product testing...<br>No product page reviews,<br>No creatives that competitors can copy...</p>
 
     <div style="font-size: 26px; margin: 60px 0;">Creating social proof is a skill that can <span style="font-weight: bold;">print you money</span> In every ad, every hour</div>
     <div style="font-size: 14px; color: #555; font-style: italic;">(Without relying on Zuckerberg's mercy)</div>
-    <div><img alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888" style="max-width: 100%;"></div>
+    <div style="text-align: center;"><img alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888" style="max-width: 88%; display: block; margin: 0 auto;"></div>
 
     <p style="margin-top: 20px;">Properly built social proof can turn every ad into a money-printing machine In scale, with no limit and without the need for endless testings.</p>
 
@@ -517,7 +517,7 @@ export const courseHTMLBlocks: Record<string, string> = {
     <h1 style="font-size: 26px; line-height: 1.1; margin-top: 5px; margin-bottom: 5px;"><span class="sp-highlight-box">to 1,500%</span></h1>
     <h2 style="font-size: 23.4px; line-height: 1.1; margin-top: 5px; margin-bottom: 30px;"><span style="font-style: italic;">(CTR, CPM, CPC, CPA)</span></h2>
 
-    <p style="margin-bottom: 40px;"><img src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif" alt="" style="max-width: 80%; border-radius: 15px;"></p>
+    <p style="margin-bottom: 40px; text-align: center;"><img src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif" alt="" style="max-width: 70%; border-radius: 15px; display: block; margin: 0 auto;"></p>
 
     <p style="margin-top: 160px;"><em>But the most important thing we've gained...</em></p>
     <p style="font-size: 28px; font-weight: bold; margin-top: 70px; margin-bottom: 60px;">Business Security</p>
@@ -760,7 +760,1676 @@ export const courseHTMLBlocks: Record<string, string> = {
 
   // ==================== SUBCONSCIOUS TRAP ====================
   'subconscious-trap': `
-    <!-- PASTE YOUR SUBCONSCIOUS TRAP HTML HERE -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;0,800;0,900;1,400&display=swap');
+
+/* COMPLETE ISOLATION - No inheritance from page */
+.landing-section-isolated {
+all: initial;
+display: block;
+background: #000;
+padding: 40px 20px;
+text-align: center;
+color: white;
+width: 100%;
+max-width: 100%;
+overflow-x: hidden;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+font-size: 16px;
+line-height: 1.5;
+position: relative;
+z-index: 1;
+box-sizing: border-box;
+}
+
+/* Reset all children to prevent any external styling */
+.landing-section-isolated * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.landing-section-isolated .intro-text {
+background: #252525;
+border-radius: 25px;
+padding: 12px 30px;
+font-size: 14px;
+line-height: 1.4;
+margin: 0 auto 20px auto;
+max-width: 600px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+color: white;
+}
+
+.landing-section-isolated .pulse-dot {
+width: 12px;
+height: 12px;
+background: #ff4f03;
+border-radius: 50%;
+animation: pulse-animation 1.6s infinite;
+flex-shrink: 0;
+display: block;
+}
+
+@keyframes pulse-animation {
+0% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(255, 79, 3, 0.7);
+}
+70% {
+transform: scale(1);
+box-shadow: 0 0 0 10px rgba(255, 79, 3, 0);
+}
+100% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(255, 79, 3, 0);
+}
+}
+
+.landing-section-isolated .main-headline {
+font-size: 46.2px;
+font-weight: 900;
+line-height: 1.2;
+margin: 20px auto;
+max-width: 900px;
+color: white;
+text-align: center;
+padding: 0 20px;
+display: block;
+}
+
+.landing-section-isolated .main-headline .highlight {
+color: #ff4f03;
+font-weight: 900;
+}
+
+.landing-section-isolated .sub-headline {
+font-size: 22px;
+font-style: italic;
+margin: 0 auto 30px auto;
+opacity: 0.8;
+color: white;
+text-align: center;
+max-width: 800px;
+display: block;
+}
+
+.landing-section-isolated .screenshot-container {
+margin: 30px auto;
+text-align: center;
+max-width: 900px;
+display: block;
+}
+
+.landing-section-isolated .screenshot {
+max-width: 69%;
+height: auto;
+border-radius: 8px;
+box-shadow: 0 0 16px rgba(255, 79, 3, 0.9), 0 0 28px rgba(255, 79, 3, 0.6), 0 0 40px rgba(255, 79, 3, 0.3);
+border: 2px solid rgba(255, 79, 3, 0.7);
+display: block;
+margin: 0 auto;
+}
+
+.landing-section-isolated .pricing-section {
+margin: 30px auto 0;
+text-align: center;
+max-width: 600px;
+display: block;
+}
+
+.landing-section-isolated .price-text {
+font-size: 26px;
+font-weight: 600;
+margin-bottom: 20px;
+color: white;
+display: block;
+}
+
+.landing-section-isolated .original-price {
+text-decoration: line-through;
+opacity: 0.6;
+margin-right: 15px;
+}
+
+.landing-section-isolated .cta-button {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%) !important;
+border: none !important;
+border-radius: 50px !important;
+padding: 20px 40px !important;
+font-size: 17.3052px !important;
+font-weight: 700 !important;
+color: white !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+display: inline-block !important;
+margin: 20px auto !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.3 !important;
+width: 90% !important;
+max-width: 810px !important;
+box-sizing: border-box !important;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4) !important;
+}
+
+.landing-section-isolated .cta-button:hover {
+transform: translateY(-2px);
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6);
+}
+
+.landing-section-isolated .cta-button:active {
+transform: translateY(0px);
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4);
+}
+
+.landing-section-isolated .cta-button.loading {
+opacity: 0.8;
+pointer-events: none;
+}
+
+.landing-section-isolated .cta-button small {
+font-size: 11.04px;
+font-weight: 400;
+text-transform: none;
+letter-spacing: 0;
+display: block;
+margin-top: 5px;
+}
+
+.landing-section-isolated .secure-payment {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+font-size: 14px;
+color: #e8e8e8;
+font-weight: 500;
+margin: 15px auto 0;
+}
+
+.landing-section-isolated .secure-payment-icon {
+width: 32px;
+height: 20px;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+display: block;
+}
+
+.landing-section-isolated .lock-icon {
+width: 22px;
+height: 22px;
+background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/></svg>');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+display: inline-block;
+vertical-align: middle;
+margin-right: 10px;
+}
+
+.landing-section-isolated .bundle-info {
+font-size: 13px;
+color: #e8e8e8;
+margin-top: 12px;
+display: block;
+}
+
+.landing-section-isolated .bundle-link {
+color: #ff4f03 !important;
+text-decoration: underline !important;
+font-weight: 600 !important;
+cursor: pointer !important;
+border-bottom: 1px solid #ff4f03 !important;
+}
+
+.landing-section-isolated .bundle-link:hover {
+text-decoration: underline !important;
+opacity: 0.8;
+border-bottom: 1px solid #ff4f03 !important;
+}
+
+.landing-section-isolated .bonus-section {
+margin-top: 40px;
+text-align: center;
+max-width: 800px;
+margin-left: auto;
+margin-right: auto;
+display: block;
+}
+
+.landing-section-isolated .bonus-text {
+font-size: 15.3px;
+font-weight: 400;
+text-align: center;
+line-height: 1.6;
+color: white;
+display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.landing-section-isolated {
+padding: 30px 15px;
+}
+.landing-section-isolated .main-headline {
+font-size: 29.4px;
+}
+.landing-section-isolated .cta-button {
+font-size: 18px;
+padding: 18px 40px;
+}
+.landing-section-isolated .sub-headline {
+font-size: 18px;
+}
+.landing-section-isolated .intro-text {
+font-size: 12px;
+padding: 10px 20px;
+}
+.landing-section-isolated .bonus-text {
+font-size: 13.77px;
+}
+}
+
+@media (max-width: 480px) {
+.landing-section-isolated {
+padding: 20px 10px;
+}
+.landing-section-isolated .main-headline {
+font-size: 25.2px;
+}
+.landing-section-isolated .cta-button {
+font-size: 16px;
+padding: 16px 30px;
+}
+.landing-section-isolated .bonus-text {
+font-size: 12.24px;
+}
+}
+
+/* PROFIT ENGINES SECTION STYLES */
+.profit-engines-mega-section {
+all: initial;
+display: block;
+}
+
+.profit-engines-mega-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.profit-engines-mega-section {
+position: relative !important;
+margin: 0 !important;
+padding: 40px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+width: 100% !important;
+clear: both !important;
+}
+
+.profit-engines-mega-section .mega-content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+background: transparent !important;
+}
+
+.profit-engines-mega-section .ultra-bold-title-block {
+margin: 0 0 25px 0 !important;
+padding: 0 !important;
+text-align: center !important;
+background: transparent !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line {
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+font-size: 24.288px !important;
+font-weight: 900 !important;
+font-style: normal !important;
+text-align: center !important;
+color: #000000 !important;
+margin: 0 !important;
+padding: 0 !important;
+line-height: 0.95 !important;
+display: block !important;
+text-rendering: optimizeLegibility !important;
+-webkit-font-smoothing: antialiased !important;
+-moz-osx-font-smoothing: grayscale !important;
+font-stretch: normal !important;
+letter-spacing: -0.02em !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line:first-child {
+margin-bottom: 8px !important;
+}
+
+.profit-engines-mega-section .mega-subtitle {
+font-size: 23px !important;
+font-weight: 700 !important;
+text-align: center !important;
+margin: 40px 0 !important;
+color: #000000 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.profit-engines-mega-section .mega-red-text {
+color: #ff4f03 !important;
+font-weight: 700 !important;
+}
+
+.profit-engines-mega-section .mega-paragraph {
+font-size: 18px !important;
+color: #000000 !important;
+margin-bottom: 20px !important;
+text-align: left !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.6 !important;
+}
+
+.profit-engines-mega-section .mega-center-text {
+text-align: center !important;
+}
+
+.profit-engines-mega-section .mega-meme-container {
+text-align: center !important;
+margin: 40px 0 !important;
+padding: 0 !important;
+}
+
+.profit-engines-mega-section .mega-meme-gif {
+max-width: 79% !important;
+height: auto !important;
+border-radius: 12px !important;
+display: block !important;
+margin: 0 auto !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif {
+max-width: 528px !important;
+width: 528px !important;
+}
+.profit-engines-mega-section .ultra-bold-line {
+font-size: 26.7168px !important;
+}
+.profit-engines-mega-section .ultra-bold-line[style*="font-size: 28.704px"] {
+font-size: 31.5744px !important;
+}
+.profit-engines-mega-section .mega-subtitle {
+font-size: 25.3px !important;
+}
+.profit-engines-mega-section .mega-paragraph {
+font-size: 19.8px !important;
+margin-bottom: 22px !important;
+}
+.profit-engines-mega-section .mega-quote {
+font-size: 35.2px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="font-size: 24px"] {
+font-size: 26.4px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 76px"] {
+margin-bottom: 83.6px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 26px"] {
+margin-bottom: 28.6px !important;
+}
+.profit-engines-mega-section .mega-paragraph[style*="margin-bottom: 52px"] {
+margin-bottom: 57.2px !important;
+}
+.profit-engines-mega-section .mega-meme-container {
+margin: 44px 0 !important;
+}
+.profit-engines-mega-section .mega-quote {
+margin: 44px 0 !important;
+}
+.profit-engines-mega-section h2 {
+font-size: 35.2px !important;
+margin: 0 0 22px 0 !important;
+}
+}
+
+.profit-engines-mega-section .mega-quote {
+font-size: 32px !important;
+color: #ff4f03 !important;
+font-weight: 700 !important;
+text-align: center !important;
+margin: 40px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.profit-engines-mega-section .ultra-bold-line {
+font-display: block !important;
+}
+
+.profit-engines-mega-section .mega-meme-gif.smaller-centered {
+max-width: 500px !important;
+width: 90% !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif.smaller-centered {
+max-width: 500px !important;
+width: 500px !important;
+}
+}
+
+.profit-engines-mega-section .mega-meme-gif.larger-image {
+max-width: 100% !important;
+width: 100% !important;
+transform: scale(1.05) !important;
+border-radius: 12px !important;
+}
+
+@media (min-width: 768px) {
+.profit-engines-mega-section .mega-meme-gif.larger-image {
+max-width: 770px !important;
+width: 770px !important;
+}
+}
+
+/* COURSE MEGA SECTION STYLES */
+.course-mega-section {
+all: initial;
+display: block;
+}
+
+.course-mega-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.course-mega-section {
+position: relative !important;
+margin: 0 !important;
+padding: 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+width: 100% !important;
+clear: both !important;
+}
+
+.course-mega-section .mega-content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+background: #ffffff !important;
+}
+
+.course-mega-section .mega-paragraph {
+font-size: 18px !important;
+color: #000000 !important;
+margin-bottom: 20px !important;
+text-align: left !important;
+font-family: 'Open Sans', sans-serif !important;
+line-height: 1.6 !important;
+}
+
+.course-mega-section .testimonial-images {
+text-align: center !important;
+margin: 40px 0 !important;
+}
+
+.course-mega-section .testimonial-images img {
+max-width: 100% !important;
+height: auto !important;
+display: block !important;
+margin: 0 auto 1px auto !important;
+border-radius: 8px !important;
+}
+
+.course-mega-section .free-text {
+font-size: 22px !important;
+font-weight: 400 !important;
+margin-bottom: 40px !important;
+text-align: left !important;
+color: #000000 !important;
+font-family: 'Open Sans', sans-serif !important;
+background: transparent !important;
+background-color: transparent !important;
+}
+
+.course-mega-section .free-text .underline {
+text-decoration: underline !important;
+font-weight: 400 !important;
+background: transparent !important;
+background-color: transparent !important;
+}
+
+.course-mega-section .main-title {
+font-size: 26px !important;
+font-weight: 900 !important;
+color: #1a1a1a !important;
+margin: 15px 0 30px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+text-align: center !important;
+}
+</style>
+
+<!-- SECTION 1: HERO -->
+<div class="landing-section-isolated">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>For the first time ever, in a step-by-step framework</span>
+</div>
+
+<h1 class="main-headline">
+How to <span class="highlight">Convert 4-6%+</span> of Your eCommerce Store Visitors Using Extreme Design Manipulations
+</h1>
+
+<p class="sub-headline">
+(Even if your site is already beautiful at a billion-dollar brand level…)
+</p>
+
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff.jpg?v=1760351539" alt="Results Dashboard" class="screenshot">
+</div>
+
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$197</span> Only $10 Today
+</p>
+
+<button class="cta-button" onclick="window.handleCheckoutClick && window.handleCheckoutClick()">
+<span class="lock-icon"></span>ADD THE PACKAGE FOR $10!<br><small>one time payment, lifetime access</small>
+</button>
+
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+
+<div class="bundle-info">
+$6.50 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a>
+</div>
+</div>
+
+<div class="bonus-section">
+<div class="bonus-text">
+* You will also get 3 Bonuses<br>
+Worth $341 for FREE
+</div>
+</div>
+</div>
+
+<!-- SECTION 2: THE STORY -->
+<div class="profit-engines-mega-section">
+<div class="mega-content-wrapper">
+<div class="ultra-bold-title-block">
+<div class="ultra-bold-line" style="font-size: 28.704px !important;"><strong>While 30 Million+ eCommerce Stores Are Stuck at 2% Conversions...</strong></div>
+</div>
+<p class="mega-paragraph" style="margin-bottom: 52px !important; text-align: center; font-size: 20px !important;">chasing products, testing endless creatives, and praying to the algorithm gods for mercy...</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/facepalm-stress.gif?v=1747737705" alt="Facepalm stress" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 24px !important; margin-bottom: 40px !important; text-align: center; font-weight: bold;">A small group discovered something else entirely.</p>
+
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin: 60px auto !important; font-style: italic; max-width: 700px; line-height: 1.5;">"Subconscious design is like a <strong>passcode to the customer's brain</strong> - change the code, change the decision, and multiply the revenue."</p>
+
+<p class="mega-paragraph" style="margin-bottom: 52px !important; text-align: center;">The short page you're about to read is <span style="background-color: #fceda9;">worth more than every YouTube video</span> you watched this past year.</p>
+<br>
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-weight: bold; font-size: 20px !important;">Pay attention…</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more "nice design"...</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more Shopify templates…</p>
+<p class="mega-paragraph" style="margin-bottom: 20px !important;">No more lookalike websites to your competitors…</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important;">No more burning money on ads…</p>
+<br>
+<br>
+<p class="mega-paragraph" style="font-size: 21px !important; text-align: center;">Our framework bypasses the customer's logic and <strong>sells directly to their subconscious</strong> - through pure impulse.</p>
+<p class="mega-paragraph" style="font-size: 15px !important; text-align: center; font-style: italic;">(Yes, with micro-design elements, <strong>we make people buy.</strong>)</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/HOW_TO.gif?v=1753716540" alt="How it works" class="mega-meme-gif">
+</div>
+<br>
+<p class="mega-paragraph" style="font-size: 25.3px !important; font-weight: bold !important; margin: 60px 0 30px 0 !important; text-align: center;">It all started in 2019…</p>
+<p class="mega-paragraph" style="font-size: 13px !important; color: gray; text-align: center; margin-bottom: 30px !important;">(20/01/2019 – The A/B test that changed everything we thought about design)</p>
+
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We had a struggling fashion store, <strong>barely breaking even</strong> - fully dependent on Meta's algorithm.</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">Every day felt like a gamble. Profitability was pure luck.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-07-23T120253.204.png?v=1753261389" alt="Struggling store" class="mega-meme-gif smaller-centered">
+</div>
+<br>
+<p class="mega-paragraph" style="font-size: 20px !important; font-weight: bold !important; margin: 40px 0 20px 0 !important;">But then...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We decided to run, for the first time ever, <strong>an A/B test on the "ADD TO CART" button color...</strong></p>
+<p class="mega-paragraph" style="font-size: 14px !important; font-style: italic; margin-bottom: 40px !important;">(In short - you launch two versions of the product page: one with the change, one without. You split the traffic 50/50 and measure the numbers on each version.)</p>
+<br>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">We let the test run for a few solid days…</p>
+<p class="mega-paragraph" style="font-size: 24px !important; font-weight: bold !important; text-align: center; margin: 40px 0 !important;">And here's what happened...</p>
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep_6.png?v=1747745602" alt="A/B Test Results" class="mega-meme-gif">
+</div>
+
+<p class="mega-paragraph" style="font-size: 22px !important; font-weight: bold !important; text-align: center; margin: 40px 0 !important;">Conversion rate increased by <span style="color: #ff4f03;">44%</span>,<br>from a single small design change!</p>
+
+<p class="mega-paragraph" style="margin-bottom: 60px !important; text-align: center;">And the truth?<br>We actually thought the new version would perform worse… <strong>We were wrong.</strong></p>
+<br>
+<h2 style="font-size: 28px !important; font-weight: 900 !important; text-align: center; text-decoration: underline; margin: 80px 0 40px 0 !important;">That was the moment we realized...</h2>
+
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin-bottom: 30px !important;">The brain doesn't buy through reason. It buys through manipulated perception.</p>
+<p class="mega-paragraph" style="font-size: 20px !important; text-align: center; margin-bottom: 30px !important;">And if we could control what it sees, feels, and expects...</p>
+<p class="mega-paragraph" style="font-size: 20px !important; font-weight: bold; text-align: center; margin-bottom: 60px !important;">We could also control the <span style="color: #ff4f03;">wallet</span>.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/WhatsApp_Image_2025-11-02_at_09.16.46_e6ae7b68.jpg?v=1762067876" alt="Wallet control" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 14px !important; font-style: italic; text-align: center; margin-bottom: 60px !important;">*Subconscious design is the use of strategic manipulations - layouts, copywriting, and color combinations - that convert customers without any logical reason.</p>
+<br>
+<p class="mega-paragraph" style="font-size: 22px !important; font-weight: bold !important; text-align: center; margin: 80px 0 40px 0 !important;">So, We ran A/B tests on every possible element…</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important; text-align: center;">We tested every possible element - every color, every word, every pixel.</p>
+
+<div class="mega-meme-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2.gif?v=1751796400" alt="Testing process" class="mega-meme-gif">
+</div>
+
+<p class="mega-paragraph" style="font-size: 19px !important; margin: 60px 0 !important; text-align: center;">Until we created a step-by-step psychological design protocol that influences the subconscious and makes the customer activate <strong>impulse buying triggers.</strong></p>
+
+<p class="mega-paragraph" style="font-size: 19px !important; margin: 60px 0 !important; text-align: center;">And now, we decided to distill everything into one single Framework that within 24 hours will transform your site <strong>into a sales machine</strong>.</p>
+
+<div class="mega-meme-container">
+<img src="https://media.tenor.com/xZF5yaaqT7kAAAAM/jul-juld.gif" alt="Sales machine" class="mega-meme-gif larger-image">
+</div>
+
+<p class="mega-paragraph" style="font-size: 13px !important; font-style: italic; text-align: center; margin-bottom: 60px !important;">*Yes - even if you're dropshipping from AliExpress and have no ability to shoot studio-grade photos.</p>
+
+<p class="mega-paragraph" style="font-size: 21px !important; font-weight: bold !important; text-align: center; margin: 60px 0 30px 0 !important;">All laid out step by step,<br>with full implementation <span style="color: #ff4f03;">in just 24 hours</span>.</p>
+
+<p class="mega-paragraph" style="text-align: center; margin-bottom: 20px !important;">*And yes - everything is backed by proof. It doesn't matter who you are, or how beautiful your site looks, <strong>we guarantee…</strong></p>
+<p class="mega-paragraph" style="font-size: 19px !important; font-weight: bold !important; text-align: center; margin-bottom: 80px !important;">If you implement everything - your conversion rate will climb.</p>
+</div>
+</div>
+
+<!-- SECTION 3: COURSE INTRO -->
+<div class="course-mega-section">
+<div class="mega-content-wrapper">
+<h2 style="color: #888888 !important; font-weight: 400 !important; letter-spacing: 0.45em !important; font-size: 16.2px !important; margin: 20px 0 15px 0 !important; font-family: 'Open Sans', sans-serif !important; text-align: center !important;">INTRODUCING</h2>
+<h1 class="main-title">THE SUBCONSCIOUS TRAP</h1>
+
+<p class="mega-paragraph" style="margin-bottom: 20px !important; font-size: 19px !important;">In this framework, you're about to discover the <strong>exact step-by-step system to convert 4-6%+</strong> of your store visitors using extreme design manipulations that bypass logic and trigger impulse purchases.</p>
+<p class="mega-paragraph" style="font-style: italic !important; font-size: 15.2px !important; margin-bottom: 40px !important;">(Some of our students consistently reach 8-10%+ conversion rates)</p>
+
+<div class="testimonial-images">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments_1.jpg?v=1752231195" alt="Testimonial 1">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Comments.jpg?v=1752231158" alt="Testimonial 2">
+</div>
+
+<h2 style="font-size: 28px !important; font-weight: 900 !important; color: #000000 !important; margin: 120px 0 40px 0 !important; font-family: 'Open Sans', sans-serif !important;">You're about to unlock 4-6%+ conversion rates...</h2>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">This is a <strong>battle-tested framework</strong> built on thousands of A/B tests - NOT guesswork or theory.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 60px !important;">This isn't about one lucky campaign or temporary results. This framework ensures your conversion rate stays consistently high, month after month.</p>
+<br />
+<br />
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 26px !important; font-size: 19px !important;">Imagine this...</p>
+<p class="mega-paragraph" style="margin-bottom: 40px !important; font-size: 19px !important;">What if you had a <strong>proven design system</strong> that automatically converts 4-6% of every visitor who lands on your store?</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 20px !important; font-size: 19px !important;">A system that works <strong>24/7, automatically...</strong></p>
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 40px !important; font-size: 15px !important; margin-top: -10px !important;">(No matter what time zone, no matter what device!)</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">A system you can replicate on any store, any product, any niche?</p>
+<p class="mega-paragraph" style="margin-bottom: 35px !important; margin-top: 10px !important;">How would your business look?</p>
+<br />
+<p class="mega-paragraph" style="text-align: center !important; font-size: 27px !important; margin-bottom: 90px !important; font-weight: bold;"><span style="color: #ff4f03;">This is your reality starting today.</span></p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-size: 19px !important;">Listen...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">I know how frustrating it is to see traffic come in but no sales.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 26px !important;">I know the pain of spending money on ads with barely any ROI...</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 80px !important;">But I also know <strong>you're 100% capable of reaching 4-6%+ conversions</strong> - starting right now.</p>
+<br />
+<br />
+<p class="mega-paragraph" style="margin-bottom: 5px !important; font-size: 25.2px !important; font-weight: bold;">Here's our personal guarantee...</p>
+<p class="mega-paragraph" style="margin-bottom: 46px !important; font-size: 18px !important;">If you implement this framework step by step, <strong>your conversion rate WILL increase</strong>. Period.</p>
+<br />
+<p class="mega-paragraph" style="margin-bottom: 46px !important; font-size: 18px !important;">I'm excited for you... because you're minutes away from discovering what truly drives conversions.</p>
+<p class="mega-paragraph" style="margin-bottom: 60px !important; font-size: 18px !important;">And if you're serious about maximizing every visitor... if you want to stop leaving money on the table... <strong>then from this moment on, you're on the path to 4-6%+ conversions.</strong></p>
+<h2 style="font-size: 26px !important; font-weight: 700 !important; color: #000000 !important; margin: 120px 0 30px 0 !important; font-family: 'Open Sans', sans-serif !important;">A glimpse at what's inside...</h2>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Brain, Unlocked</strong> - What triggers the brain to buy and how to activate those triggers on demand</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Copywriting Secrets</strong> - The exact button text that boosted our conversions by 39%</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>The Power of Fonts</strong> - Which fonts increase trust and perceived brand value</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Winning Layouts</strong> - Data-backed page structures that psychologically convert</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Code-Based Conversion Hacks</strong> - CSS tweaks that increased our purchase rate by 21%</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Color Manipulations</strong> - The exact color tactics that knock out the subconscious</p>
+<p class="mega-paragraph" style="margin-bottom: 15px !important; font-size: 16.1px !important;">🎯 <strong>Psychological Positioning</strong> - How to charge double your competitors and still convert at 6%+</p>
+<p class="mega-paragraph" style="margin-bottom: 60px !important; font-size: 16.1px !important;">🎯 <strong>The Subconscious Switch</strong> - 70+ step-by-step implementation tasks</p>
+<p class="mega-paragraph" style="font-style: italic !important; margin-bottom: 26px !important; margin-top: 120px !important;">And that's just the framework itself...</p>
+<p class="mega-paragraph" style="margin-bottom: 26px !important; font-size: 19px !important;">We're also giving you <strong>3 exclusive bonuses worth</strong>…</p>
+<div style="text-align: left !important; margin: 40px 0 !important;">
+<div id="price-counter" style="font-size: 72px !important; font-weight: 900 !important; color: #000000 !important; font-family: 'Open Sans', sans-serif !important; margin-bottom: 20px !important;">$341</div>
+</div>
+<div class="free-text">absolutely <span class="underline">FREE</span> when you get the framework today!</div>
+</div>
+</div>
+
+<!-- SECTION 4: BONUSES -->
+<style>
+/* CRITICAL ISOLATION */
+.bonus-main-container {
+all: initial;
+display: block;
+}
+
+.bonus-main-container * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.bonus-main-container * {
+margin: 0 !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+}
+
+.bonus-main-container {
+max-width: 1200px !important;
+margin: 60px auto !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 30px !important;
+font-family: Arial, sans-serif !important;
+background-color: transparent !important;
+padding: 20px !important;
+width: 100% !important;
+clear: both !important;
+overflow-x: hidden !important;
+}
+.bonus-card {
+background: white !important;
+border-radius: 15px !important;
+padding: 30px 40px !important;
+text-align: center !important;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+position: relative !important;
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+margin: 0 !important;
+transform: translateY(0) !important;
+transition: all 0.3s ease !important;
+width: 100% !important;
+max-width: 100% !important;
+overflow: hidden !important;
+}
+.bonus-card:hover {
+transform: translateY(-5px) !important;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+.bonus-badge {
+background: #000 !important;
+color: white !important;
+padding: 8px 20px !important;
+border-radius: 20px !important;
+font-size: 14px !important;
+font-weight: bold !important;
+display: inline-block !important;
+margin-bottom: 20px !important;
+align-self: center !important;
+font-family: Arial, sans-serif !important;
+}
+.bonus-badge::before {
+content: "⭐ " !important;
+}
+.card-content {
+display: flex !important;
+align-items: flex-start !important;
+gap: 30px !important;
+width: 100% !important;
+max-width: 1000px !important;
+flex-direction: row-reverse !important;
+min-height: 250px !important;
+}
+.product-container {
+flex: 0 0 350px !important;
+display: flex !important;
+justify-content: center !important;
+align-items: flex-start !important;
+padding-top: 20px !important;
+}
+.bonus-product-image {
+width: 100% !important;
+max-width: 350px !important;
+height: auto !important;
+border-radius: 10px !important;
+display: block !important;
+}
+.content-container {
+flex: 1 !important;
+text-align: left !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 20px !important;
+}
+.bonus-title {
+font-size: 35.2px !important;
+font-weight: 900 !important;
+color: #ff4f03 !important;
+margin: 0 !important;
+text-transform: none !important;
+letter-spacing: 1px !important;
+line-height: 1.2 !important;
+font-family: Arial, sans-serif !important;
+min-height: auto !important;
+word-break: keep-all !important;
+overflow-wrap: break-word !important;
+hyphens: none !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+color: #333 !important;
+line-height: 1.6 !important;
+margin: 0 !important;
+text-align: left !important;
+font-family: Arial, sans-serif !important;
+word-break: keep-all !important;
+overflow-wrap: break-word !important;
+hyphens: none !important;
+}
+.value-section {
+background: #000 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+gap: 15px !important;
+min-width: 300px !important;
+margin-left: 0 !important;
+}
+.value-text {
+color: white !important;
+font-size: 18px !important;
+font-weight: bold !important;
+font-family: Arial, sans-serif !important;
+white-space: nowrap !important;
+}
+.value-text span {
+text-decoration: line-through !important;
+opacity: 0.8 !important;
+}
+.free-text-bonus {
+background: #ff4f03 !important;
+color: white !important;
+padding: 8px 20px !important;
+border-radius: 20px !important;
+font-weight: bold !important;
+font-size: 16px !important;
+font-family: Arial, sans-serif !important;
+white-space: nowrap !important;
+}
+@media (max-width: 1024px) {
+.card-content {
+flex-direction: column !important;
+gap: 20px !important;
+text-align: center !important;
+}
+.content-container {
+text-align: center !important;
+}
+.bonus-description {
+text-align: center !important;
+}
+.value-section {
+margin: 0 auto !important;
+}
+.product-container {
+flex: none !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+width: 100% !important;
+}
+}
+@media (max-width: 768px) {
+.bonus-main-container {
+padding: 15px !important;
+margin: 30px auto !important;
+width: 90% !important;
+max-width: 90% !important;
+}
+.bonus-card {
+padding: 20px 15px !important;
+width: 100% !important;
+}
+.bonus-title {
+font-size: 26.4px !important;
+padding: 0 !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+padding: 0 !important;
+}
+.value-section {
+display: flex !important;
+flex-direction: column !important;
+gap: 8px !important;
+text-align: center !important;
+padding: 10px 15px !important;
+min-width: auto !important;
+max-width: 100% !important;
+width: auto !important;
+margin: 0 auto !important;
+}
+.value-text {
+font-size: 18px !important;
+}
+.free-text-bonus {
+font-size: 16px !important;
+padding: 6px 15px !important;
+}
+.product-container {
+flex: none !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+width: 100% !important;
+padding: 0 !important;
+}
+.bonus-product-image {
+max-width: 100% !important;
+width: 100% !important;
+height: auto !important;
+}
+}
+@media (max-width: 480px) {
+.bonus-main-container {
+padding: 10px !important;
+margin: 20px auto !important;
+width: 85% !important;
+max-width: 85% !important;
+gap: 20px !important;
+}
+.bonus-card {
+padding: 15px 10px !important;
+border-radius: 10px !important;
+margin: 0 !important;
+}
+.bonus-badge {
+padding: 6px 15px !important;
+font-size: 12px !important;
+margin-bottom: 15px !important;
+}
+.bonus-title {
+font-size: 26.4px !important;
+padding: 0 !important;
+}
+.bonus-description {
+font-size: 15.3px !important;
+padding: 0 !important;
+line-height: 1.6 !important;
+}
+.value-section {
+flex-direction: column !important;
+gap: 6px !important;
+padding: 8px 12px !important;
+min-width: auto !important;
+width: auto !important;
+max-width: 100% !important;
+}
+.value-text {
+font-size: 18px !important;
+}
+.free-text-bonus {
+font-size: 16px !important;
+padding: 5px 12px !important;
+}
+.card-content {
+gap: 15px !important;
+min-height: auto !important;
+}
+}
+</style>
+
+<div class="bonus-main-container">
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 1</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="The Intelligence Agent" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">The Intelligence Agent</h1>
+<p class="bonus-description">For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. for FREE.</p>
+<div class="value-section">
+<div class="value-text">Value <span>$97</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 2</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="Einstein on Steroids" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">Einstein on Steroids</h1>
+<p class="bonus-description">And here it is - one of the most essential tools. To give you the ultimate edge, we trained *Einstein on Steroids* for you. An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.</p>
+<div class="value-section">
+<div class="value-text">Value <span>$97</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bonus-card">
+<div class="bonus-badge">BONUS 3</div>
+<div class="card-content">
+<div class="product-container">
+<img class="bonus-product-image" alt="Your Personal Conversion Map" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730">
+</div>
+<div class="content-container">
+<h1 class="bonus-title">Your Personal Conversion Map</h1>
+<p class="bonus-description">Time to stop watching courses and hoping for change without truly implementing anything. The Personal Conversion Map gives you a guided tracking system that takes you step by step - all the way to success (6%+).</p>
+<div class="value-section">
+<div class="value-text">Value <span>$147</span></div>
+<div class="free-text-bonus">FREE for You!</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 5: TWO PATHS -->
+<style>
+/* ULTRA ISOLATION */
+.quantum-section-wrapper-2024 {
+all: initial !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+background-color: #ffffff !important;
+color: #000000 !important;
+width: 100% !important;
+max-width: 800px !important;
+margin: 60px auto !important;
+padding: 60px 20px !important;
+box-sizing: border-box !important;
+line-height: 1.6 !important;
+position: relative !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+
+.quantum-section-wrapper-2024 *:not(script) {
+all: unset !important;
+display: revert !important;
+box-sizing: border-box !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.quantum-section-wrapper-2024 table {
+border-collapse: collapse !important;
+width: 100% !important;
+}
+
+.quantum-section-wrapper-2024 th,
+.quantum-section-wrapper-2024 td {
+display: table-cell !important;
+}
+
+.quantum-section-wrapper-2024 tr {
+display: table-row !important;
+}
+
+.quantum-section-wrapper-2024 thead {
+display: table-header-group !important;
+}
+
+.quantum-section-wrapper-2024 tbody {
+display: table-row-group !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-container-2024 {
+max-width: 100% !important;
+margin: 0 !important;
+text-align: center !important;
+position: relative !important;
+z-index: 1 !important;
+display: block !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-title-2024 {
+font-family: 'Open Sans', sans-serif !important;
+font-weight: 800 !important;
+font-size: 42.34015px !important;
+margin: 0 0 20px 0 !important;
+color: #000000 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-subtitle-2024 {
+font-size: 18px !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+font-weight: 400 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-options-text-2024 {
+font-size: 16px !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+font-weight: 400 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-table-2024 {
+border-collapse: collapse !important;
+width: 100% !important;
+max-width: 100% !important;
+margin: 40px auto 0 auto !important;
+border: 1px solid #ccc !important;
+table-layout: fixed !important;
+display: table !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-column-header-2024 {
+font-size: 24px !important;
+font-weight: 800 !important;
+text-align: center !important;
+padding: 20px !important;
+color: #000000 !important;
+background-color: #d0d0d0 !important;
+border: 1px solid #ccc !important;
+width: 50% !important;
+display: table-cell !important;
+vertical-align: middle !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-item-2024 {
+display: table-cell !important;
+padding: 20px !important;
+font-size: 16px !important;
+color: #000000 !important;
+font-weight: 400 !important;
+background-color: #f8f8f8 !important;
+border: 1px solid #ccc !important;
+vertical-align: top !important;
+width: 50% !important;
+text-align: center !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-ps-note-2024 {
+font-size: 14px !important;
+color: #000000 !important;
+font-style: italic !important;
+margin: 30px 0 40px 0 !important;
+text-align: left !important;
+display: block !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%) !important;
+border: none !important;
+border-radius: 35px !important;
+padding: 0 !important;
+font-size: 19.551px !important;
+font-weight: 700 !important;
+color: white !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+position: relative !important;
+overflow: hidden !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+text-align: center !important;
+margin: 50px auto 0 auto !important;
+width: fit-content !important;
+min-width: 380px !important;
+max-width: 95% !important;
+height: 81px !important;
+font-family: 'Open Sans', sans-serif !important;
+animation: quantum-pulse-2024 2s infinite !important;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4) !important;
+white-space: nowrap !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 > *:not(:first-child) {
+display: none !important;
+visibility: hidden !important;
+opacity: 0 !important;
+position: absolute !important;
+width: 0 !important;
+height: 0 !important;
+overflow: hidden !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024::after,
+.quantum-section-wrapper-2024 .quantum-cta-button-2024::before {
+display: none !important;
+content: none !important;
+}
+
+@keyframes quantum-pulse-2024 {
+0% {
+transform: scale(1);
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+50% {
+transform: scale(1.05);
+box-shadow: 0 12px 35px rgba(255, 79, 3, 0.6);
+}
+100% {
+transform: scale(1);
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6) !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024:active {
+transform: translateY(0px) !important;
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4) !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+.quantum-section-wrapper-2024 .quantum-title-2024 {
+font-size: 28.58372px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-subtitle-2024 {
+font-size: 16.2px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-options-text-2024 {
+font-size: 14.4px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-column-header-2024 {
+font-size: 18.52px !important;
+padding: 15px 10px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-comparison-item-2024 {
+font-size: 14.4px !important;
+padding: 15px 10px !important;
+}
+
+.quantum-section-wrapper-2024 .quantum-cta-button-2024 {
+font-size: 14.63px !important;
+min-width: 300px !important;
+height: 69px !important;
+}
+}
+</style>
+
+<div class="quantum-section-wrapper-2024">
+<div class="quantum-container-2024">
+<h1 class="quantum-title-2024">Two Paths. One Choice.</h1>
+<p class="quantum-subtitle-2024">
+For less than the cost of lunch, you're looking at a framework that could multiply your revenue. Or... you can keep doing what you're doing and hope something changes.
+</p>
+<p class="quantum-options-text-2024">
+Which path makes more sense to you?
+</p>
+<table class="quantum-comparison-table-2024">
+<thead>
+<tr>
+<th class="quantum-column-header-2024">❌ Keep Guessing</th>
+<th class="quantum-column-header-2024">✅ Use Proven Psychology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="quantum-comparison-item-2024">Pretty design with 2-3% conversions</td>
+<td class="quantum-comparison-item-2024">Psychological framework driving 4-6%+ conversions</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Hoping visitors will buy</td>
+<td class="quantum-comparison-item-2024">Triggering subconscious impulse purchases</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Wasting 97% of your traffic</td>
+<td class="quantum-comparison-item-2024">Converting double or triple the visitors</td>
+</tr>
+<tr>
+<td class="quantum-comparison-item-2024">Copying competitor templates</td>
+<td class="quantum-comparison-item-2024">Using A/B tested manipulations that actually work</td>
+</tr>
+</tbody>
+</table>
+<p class="quantum-ps-note-2024">* Your $10 investment is 100% tax-deductible as a business expense. Plus, if it doesn't increase your conversions, you get every penny back.</p>
+<button class="quantum-cta-button-2024 get-access-btn">ADD THIS TO MY SYSTEM!</button>
+</div>
+</div>
+
+<!-- SECTION 6: FAQ -->
+<style>
+/* CRITICAL ISOLATION */
+.faq-section {
+all: initial;
+display: block;
+}
+
+.faq-section * {
+all: unset;
+display: revert;
+box-sizing: border-box;
+}
+
+.faq-section {
+width: 100%;
+max-width: 800px;
+margin: 60px auto;
+padding: 20px 20px 40px 20px;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+clear: both;
+}
+.faq-section h1 {
+font-family: 'Open Sans', sans-serif;
+font-weight: 800;
+font-size: 1.9rem;
+text-align: center;
+margin: 0 0 40px 0;
+padding: 0;
+color: black;
+display: block;
+position: relative;
+z-index: 1;
+}
+.faq-section .faq-item {
+margin-bottom: 15px;
+}
+.faq-section .question {
+background-color: black;
+border-radius: 12px;
+padding: 25px;
+color: white;
+font-weight: bold;
+font-size: 18px;
+cursor: pointer;
+transition: opacity 0.3s ease;
+user-select: none;
+margin: 0;
+box-sizing: border-box;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.faq-section .question:hover {
+opacity: 0.9;
+}
+.faq-section .question .arrow {
+font-size: 14px;
+transition: transform 0.3s ease;
+margin-left: 15px;
+flex-shrink: 0;
+}
+.faq-section .question.active .arrow {
+transform: rotate(180deg);
+}
+.faq-section .answer {
+background-color: white;
+border: 1px solid black;
+border-radius: 8px;
+padding: 20px;
+margin-top: 10px;
+font-size: 16px;
+line-height: 1.7;
+color: black;
+display: none;
+box-sizing: border-box;
+}
+.faq-section .answer.active {
+display: block;
+}
+.faq-section .cta-section {
+text-align: center;
+margin: 50px auto 30px auto;
+padding: 20px 0;
+max-width: 100%;
+}
+.faq-section .cta-button-faq {
+background: radial-gradient(ellipse at bottom, #FFB380 0%, #FF4F03 40%);
+border: none;
+border-radius: 35px;
+padding: 15px 40px;
+font-size: 24px;
+font-weight: 700;
+color: white !important;
+cursor: pointer;
+transition: all 0.3s ease;
+text-transform: uppercase;
+letter-spacing: 1px;
+position: relative;
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 15px;
+margin: 0 auto 12px auto;
+width: auto;
+min-width: 500px;
+max-width: 90%;
+height: auto;
+min-height: 75px;
+box-shadow: 0 6px 16px rgba(255, 79, 3, 0.4);
+}
+.faq-section .cta-button-faq span .small-text {
+font-size: 15px;
+font-weight: 400;
+text-transform: none;
+letter-spacing: 0;
+display: block;
+margin-top: 3px;
+}
+.faq-section .cta-button-faq span {
+font-weight: 700 !important;
+line-height: 1.3;
+}
+.faq-section .cta-button-faq:hover {
+transform: translateY(-2px);
+box-shadow: 0 15px 40px rgba(255, 79, 3, 0.6);
+}
+.faq-section .cta-button-faq:active {
+transform: translateY(0px);
+box-shadow: 0 5px 15px rgba(255, 79, 3, 0.4);
+}
+.faq-section .cta-button-faq.loading {
+opacity: 0.8;
+pointer-events: none;
+}
+.faq-section .cta-button-faq.loading span {
+text-decoration: none !important;
+background: none !important;
+background-image: none !important;
+border: none !important;
+outline: none !important;
+box-shadow: none !important;
+position: relative;
+z-index: 999;
+font-size: 24px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+}
+.faq-section .cta-button-faq.loading span::before,
+.faq-section .cta-button-faq.loading span::after {
+display: none !important;
+}
+.faq-section .secure-payment {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+font-size: 15.44px;
+color: #666;
+margin-top: 10px;
+margin-bottom: 8px;
+}
+.faq-section .secure-payment-icon {
+width: 28.31px;
+height: 28.31px;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+}
+.faq-section .bundle-price {
+font-size: 13px;
+color: #666;
+margin-top: 8px;
+}
+.faq-section .bundle-link {
+color: #666;
+text-decoration: underline;
+}
+.faq-section .bundle-link:hover {
+text-decoration: none;
+}
+@media (max-width: 768px) {
+.faq-section .question {
+font-size: 17px;
+padding: 24px;
+}
+.faq-section .cta-button-faq {
+font-size: 19px;
+padding: 14px 30px;
+min-width: 350px;
+}
+.faq-section .cta-button-faq .small-text {
+font-size: 13px !important;
+}
+.faq-section .secure-payment {
+font-size: 13.24px;
+}
+.faq-section .secure-payment-icon {
+width: 23.59px;
+height: 23.59px;
+}
+}
+@media (max-width: 480px) {
+.faq-section .cta-button-faq {
+min-width: 280px;
+font-size: 16px;
+padding: 12px 25px;
+}
+.faq-section .cta-button-faq .small-text {
+font-size: 11px !important;
+}
+.faq-section .secure-payment {
+font-size: 12.14px;
+}
+.faq-section .secure-payment-icon {
+width: 21.23px;
+height: 21.23px;
+}
+}
+</style>
+
+<div class="faq-section">
+<h1>Frequently Asked Questions</h1>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will this really work if my site already looks professional?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Absolutely. "Looking professional" and "converting visitors" are two completely different things. Your site might look like a million-dollar brand, but if it's not using psychological triggers, you're leaving massive money on the table. This framework shows you exactly what's missing - the subconscious manipulations that drive purchases.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>I'm already converting at 3%. Is this still worth it?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Let me put it this way: if you're converting 3% now, this framework could take you to 5-6%+. That means nearly DOUBLING your revenue from the exact same traffic. Same ad spend, double the sales. How much is that worth to you?</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Do I need to know how to code?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will this work for my specific product/niche?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if I implement everything and it doesn't work?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back.</div>
+</div>
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Why is it only $10?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets.<br><br>The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access.<br><br><strong>⚠️ Important:</strong> This price won't last forever. We reserve the right to increase it at any time. If you're seeing $10 now, consider yourself lucky - this discount is temporary.</div>
+</div>
+<div class="cta-section">
+<button class="cta-button-faq get-access-btn">
+<span>Add This to my System!<br><small class="small-text">Delivered to your email in under 30 seconds</small></span>
+</button>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+
+<script>
+function toggleAnswer(questionElement) {
+const answer = questionElement.nextElementSibling;
+const isActive = answer.classList.contains('active');
+document.querySelectorAll('.faq-section .answer').forEach(ans => {
+ans.classList.remove('active');
+});
+document.querySelectorAll('.faq-section .question').forEach(q => {
+q.classList.remove('active');
+});
+if (!isActive) {
+answer.classList.add('active');
+questionElement.classList.add('active');
+}
+}
+</script>
   `,
 
   // ==================== LTV SYSTEM ====================
@@ -2251,8 +3920,8 @@ margin: 32px 0 !important;
 padding: 0 !important;
 }
 .landing-section .screenshot {
-width: 100% !important;
-max-width: 870px !important;
+width: 77% !important;
+max-width: 670px !important;
 height: auto !important;
 border-radius: 16px !important;
 display: block !important;
@@ -2428,7 +4097,7 @@ font-size: 11.385px !important;
 }
 @media (min-width: 769px) {
 .landing-section .screenshot {
-max-width: 75% !important;
+max-width: 58% !important;
 }
 .landing-section .cta-button {
 max-width: 850px !important;
@@ -2542,7 +4211,7 @@ background: none;
 #profit-engines-root-isolator .image-center {
 display: block;
 margin: 30px auto;
-max-width: 100%;
+max-width: 88%;
 width: auto;
 height: auto;
 border-radius: 4px;
@@ -2627,7 +4296,7 @@ font-size: 17px;
 font-size: 24px;
 }
 #profit-engines-root-isolator .image-center {
-max-width: 85%;
+max-width: 75%;
 }
 }
 
@@ -2645,7 +4314,7 @@ font-size: 16px;
 font-size: 22px;
 }
 #profit-engines-root-isolator .image-center {
-max-width: 90%;
+max-width: 79%;
 }
 }
 
@@ -3948,7 +5617,7 @@ See the transformation when you implement the billion-dollar system
         }
 
         .screenshot {
-            max-width: 100% !important;
+            max-width: 77% !important;
             height: auto !important;
             border-radius: 8px !important;
             box-shadow: 0 10px 40px rgba(0, 207, 255, 0.3) !important;
@@ -4090,7 +5759,7 @@ See the transformation when you implement the billion-dollar system
             }
 
             .screenshot {
-                max-width: 85% !important;
+                max-width: 65% !important;
             }
 
             .cta-button {
@@ -4139,7 +5808,7 @@ See the transformation when you implement the billion-dollar system
             }
 
             .screenshot {
-                max-width: 80% !important;
+                max-width: 62% !important;
             }
 
             .cta-button {
@@ -6063,7 +7732,7 @@ padding: 12px 20px !important;
 display: inline-flex !important;
 align-items: center !important;
 gap: 10px !important;
-font-size: 13px !important;
+font-size: 11.7px !important;
 color: #ffffff !important;
 font-weight: 500 !important;
 margin: 0 0 32px 0 !important;
@@ -6092,7 +7761,7 @@ transform: scale(1.1);
 }
 
 .main-headline {
-font-size: 49.94px;
+font-size: 44.95px;
 font-weight: 900;
 color: #ffffff;
 margin: 0 0 13px 0;
@@ -6105,7 +7774,7 @@ color: #ff0017;
 }
 
 .sub-headline {
-font-size: 21.75px;
+font-size: 19.58px;
 color: #e8e8e8;
 margin: 0 0 40px 0;
 font-weight: 400;
@@ -6121,7 +7790,7 @@ align-items: center;
 }
 
 .screenshot {
-max-width: 100%;
+max-width: 77%;
 height: auto;
 border-radius: 8px;
 box-shadow: 0 10px 30px rgba(255, 0, 23, 0.3);
@@ -6133,7 +7802,7 @@ margin: 0 0 20px 0;
 }
 
 .price-text {
-font-size: 36.25px;
+font-size: 32.63px;
 color: #ffffff;
 font-weight: 700;
 margin: 0 0 8px 0;
@@ -6143,7 +7812,7 @@ font-family: 'Open Sans', sans-serif;
 .original-price {
 color: #999999;
 text-decoration: line-through;
-font-size: 27.56px;
+font-size: 24.8px;
 margin-right: 10px;
 }
 
@@ -6157,7 +7826,7 @@ display: inline-flex !important;
 background: radial-gradient(ellipse at bottom, #FF9999 0%, #FF0000 50%) !important;
 color: #ffffff !important;
 border-radius: 35px !important;
-font-size: 17.38px !important;
+font-size: 15.64px !important;
 font-weight: 700 !important;
 padding: 21px 76px !important;
 cursor: pointer !important;
@@ -6165,12 +7834,12 @@ transition: all 0.3s ease !important;
 align-items: center !important;
 justify-content: center !important;
 text-decoration: none !important;
-min-width: 421px !important;
+min-width: 379px !important;
 font-family: 'Open Sans', sans-serif !important;
 box-shadow: 0 10px 30px rgba(255, 0, 23, 0.4) !important;
 text-transform: uppercase !important;
 letter-spacing: 1px !important;
-height: 81px !important;
+height: 73px !important;
 position: relative !important;
 border: none !important;
 overflow: hidden !important;
@@ -6189,7 +7858,7 @@ pointer-events: none !important;
 }
 
 .cta-button span {
-font-size: 17.38px !important;
+font-size: 15.64px !important;
 font-weight: 600 !important;
 color: #ffffff !important;
 font-family: 'Open Sans', sans-serif !important;
@@ -8330,7 +9999,7 @@ display: block !important;
 .hero-screenshot-container {
 margin: 40px auto !important;
 width: 100% !important;
-max-width: 540px !important;
+max-width: 416px !important;
 display: block !important;
 border-radius: 15px !important;
 overflow: hidden !important;
@@ -8504,7 +10173,7 @@ font-size: 31.46px !important;
 }
 
 .hero-screenshot-container {
-max-width: 380px !important;
+max-width: 293px !important;
 }
 
 .hero-price-text {
@@ -8560,7 +10229,7 @@ font-size: 26.45px !important;
 }
 
 .hero-screenshot-container {
-max-width: 300px !important;
+max-width: 231px !important;
 }
 
 .hero-sub-headline {
@@ -10260,10 +11929,11 @@ font-family: 'Open Sans', sans-serif !important;
 line-height: 1.4 !important;
 }
 .screenshot-container {
-margin: 40px 0 !important;
+margin: 40px auto !important;
 border-radius: 15px !important;
 overflow: hidden !important;
 box-shadow: 0 20px 60px rgba(255, 122, 0, 0.3) !important;
+max-width: 77% !important;
 }
 .screenshot {
 width: 100% !important;
@@ -11569,7 +13239,7 @@ body {
 
 .screenshot-container {
     margin: 40px auto !important;
-    max-width: 900px !important;
+    max-width: 693px !important;
     border-radius: 12px !important;
     overflow: hidden !important;
     box-shadow: 0 20px 60px rgba(30, 148, 19, 0.3) !important;
@@ -13280,7 +14950,7 @@ body {
 #isolated-hero-section .screenshot-container {
     display: block !important;
     margin: 0 auto !important;
-    max-width: 684px !important;
+    max-width: 527px !important;
     width: 100% !important;
 }
 
@@ -17013,6 +18683,1372 @@ body {
         </div>
     </div>
 </div>
+  `,
+
+  // ==================== 50+ AD COPY TEMPLATES ====================
+  'ad-copy-templates': `
+<style>
+body {
+margin: 0;
+padding: 0;
+background: #ffffff;
+}
+.landing-section {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 25px 5px 28px 5px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.landing-section::before,
+.landing-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.landing-section::before {
+left: -100vw !important;
+}
+.landing-section::after {
+right: -100vw !important;
+}
+.landing-section * {
+box-sizing: border-box !important;
+}
+.content-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+}
+.intro-text {
+background: rgba(212, 177, 96, 0.15) !important;
+border: 1px solid #D4B160 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 10px !important;
+font-size: 13px !important;
+color: #ffffff !important;
+font-weight: 500 !important;
+margin: 0 0 32px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.pulse-dot {
+width: 8px !important;
+height: 8px !important;
+background: #D4B160 !important;
+border-radius: 50% !important;
+animation: pulse 2s infinite !important;
+box-shadow: 0 0 10px #D4B160 !important;
+display: block !important;
+}
+@keyframes pulse {
+0%, 100% {
+opacity: 1;
+transform: scale(1);
+}
+50% {
+opacity: 0.5;
+transform: scale(1.1);
+}
+}
+.main-headline {
+font-size: 37.4px !important;
+font-weight: 800 !important;
+line-height: 1.2 !important;
+color: #ffffff !important;
+margin: 0 0 12px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.highlight {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+font-size: inherit !important;
+}
+.sub-headline {
+font-size: 20.4px !important;
+color: #cccccc !important;
+margin: 0 0 28px 0 !important;
+font-weight: 400 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.screenshot-container {
+margin: 35px 0 !important;
+max-width: 720px !important;
+margin-left: auto !important;
+margin-right: auto !important;
+display: block !important;
+}
+.screenshot {
+width: 100% !important;
+height: auto !important;
+border-radius: 12px !important;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+display: block !important;
+}
+.pricing-section {
+margin: 28px 0 !important;
+display: block !important;
+}
+.price-text {
+font-size: 34.4px !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+margin: 0 0 5px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.original-price {
+color: #999999 !important;
+text-decoration: line-through !important;
+font-size: 26px !important;
+margin-right: 10px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.current-price {
+color: #D4B160 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+padding: 21px 76px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 550px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(212, 177, 96, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 25px auto 10px auto !important;
+}
+.cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(212, 177, 96, 0.6) !important;
+}
+.cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.cta-button span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+font-family: 'Open Sans', sans-serif !important;
+display: inline-block !important;
+line-height: 1.3 !important;
+}
+.bonus-section {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 20px !important;
+margin-top: 28px !important;
+padding: 0 20px !important;
+}
+.bundle-wrapper {
+text-align: center !important;
+margin: 12px 0 0 0 !important;
+display: block !important;
+}
+.bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.bundle-link {
+color: #D4B160 !important;
+text-decoration: underline !important;
+}
+.bundle-link:hover {
+text-decoration: none !important;
+}
+.secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15.44px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 10px !important;
+margin-bottom: 8px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.secure-payment-icon {
+width: 28.31px !important;
+height: 28.31px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+flex-shrink: 0 !important;
+display: block !important;
+}
+@media (max-width: 768px) {
+.landing-section {
+padding: 3px 3px 20px 3px !important;
+}
+.main-headline {
+font-size: 31.46px !important;
+}
+.price-text {
+font-size: 28.9px !important;
+}
+.original-price {
+font-size: 22px !important;
+}
+.current-price {
+font-size: 28.9px !important;
+}
+.cta-button {
+min-width: 340px !important;
+font-size: 19px !important;
+padding: 16px 30px !important;
+}
+.cta-button span {
+font-size: 19px !important;
+}
+}
+@media (max-width: 480px) {
+.landing-section {
+padding: 2px 2px 20px 2px !important;
+}
+.main-headline {
+font-size: 26.45px !important;
+}
+.sub-headline {
+font-size: 17px !important;
+}
+.cta-button {
+min-width: 340px !important;
+font-size: 19px !important;
+padding: 16px 30px !important;
+}
+.cta-button span {
+font-size: 19px !important;
+}
+}
+
+/* Problem Section Styles */
+.problem-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 60px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.problem-mega-section * {
+box-sizing: border-box !important;
+}
+.problem-mega-section::before,
+.problem-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.problem-mega-section::before {
+left: -100vw !important;
+}
+.problem-mega-section::after {
+right: -100vw !important;
+}
+.mega-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.mega-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 15px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-gold-text {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+}
+.mega-subtitle {
+text-align: center !important;
+font-size: 19px !important;
+color: #555555 !important;
+margin: 0 0 50px 0 !important;
+font-weight: 400 !important;
+line-height: 1.5 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-paragraph {
+font-size: 17px !important;
+line-height: 1.8 !important;
+color: #333333 !important;
+margin: 0 0 25px 0 !important;
+text-align: left !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-paragraph strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+.centered-paragraph {
+text-align: center !important;
+}
+@media (max-width: 768px) {
+.problem-mega-section {
+padding: 40px 0 !important;
+}
+.mega-title {
+font-size: 30px !important;
+}
+.mega-subtitle {
+font-size: 17px !important;
+}
+.mega-paragraph {
+font-size: 16px !important;
+}
+}
+
+/* Results Section Styles */
+.isolated-section-wrapper {
+all: initial;
+}
+.isolated-section-wrapper * {
+all: unset;
+}
+.isolated-section {
+all: initial;
+display: block !important;
+position: relative !important;
+width: 100% !important;
+min-width: 100% !important;
+max-width: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
+color: #ffffff !important;
+isolation: isolate !important;
+}
+.isolated-section * {
+box-sizing: border-box !important;
+}
+.isolated-section::before,
+.isolated-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: inherit !important;
+z-index: -1 !important;
+}
+.isolated-section::before {
+left: -100vw !important;
+}
+.isolated-section::after {
+right: -100vw !important;
+}
+.isolated-container {
+max-width: 1100px !important;
+margin: 0 auto !important;
+padding: 60px 20px 60px 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.isolated-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 20px 0 !important;
+color: #ffffff !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.isolated-highlight {
+color: #D4B160 !important;
+}
+.isolated-subtitle {
+text-align: center !important;
+font-size: 20px !important;
+color: #cccccc !important;
+margin: 0 0 40px 0 !important;
+font-weight: 400 !important;
+line-height: 1.5 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.results-image-container {
+margin: 0 !important;
+text-align: center !important;
+display: block !important;
+}
+.results-image {
+width: 100% !important;
+max-width: 704px !important;
+height: auto !important;
+border-radius: 12px !important;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+display: inline-block !important;
+}
+@media (max-width: 768px) {
+.isolated-container {
+padding: 40px 20px 40px 20px !important;
+}
+.isolated-title {
+font-size: 32px !important;
+}
+.isolated-subtitle {
+font-size: 18px !important;
+margin: 0 0 30px 0 !important;
+}
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<div class="landing-section">
+<div class="content-container">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>From the world's greatest copywriters</span>
+</div>
+<h1 class="main-headline">
+50+ Proven Ad Templates That <span class="highlight">Stop The Scroll</span>
+</h1>
+<p class="sub-headline">
+(The same formulas used by copywriters charging $50,000 per letter)
+</p>
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg?v=1760537010" alt="Ad Copy Templates Dashboard" class="screenshot">
+</div>
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$47</span> <span class="current-price">Only $19</span>
+</p>
+<button class="cta-button" id="ad-copy-templates-btn" data-variant-id="43533842382941">
+<span style="font-size: 16px !important; font-weight: 700 !important; line-height: 1.3 !important; color: white !important; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;">GET INSTANT ACCESS NOW!<br><small style="font-size: 10.7px !important; font-weight: 400 !important; text-transform: none !important; letter-spacing: 0.5px !important; margin-top: 3px !important; display: block !important;">one time payment, lifetime access</small></span>
+</button>
+<div class="bundle-wrapper">
+<span>$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+</div>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure Payment • Instant Access</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-mega-section">
+<div class="mega-container">
+<h2 class="mega-title">The secrets from the <span class="mega-gold-text">world's greatest copywriters</span>... in one file</h2>
+<p class="mega-subtitle">
+Compressed into plug-and-play templates you can use in seconds
+</p>
+<p class="mega-paragraph">
+The techniques that enabled Stefan Georgi to charge <strong>$50,000 for a single sales letter</strong>...
+</p>
+<p class="mega-paragraph">
+The formulas that helped Gary Halbert command <strong>$15,000 just to write a product page</strong>...
+</p>
+<p class="mega-paragraph">
+The proven ad angles tested with <strong>over $10 million in ad spend</strong>...
+</p>
+<p class="mega-paragraph centered-paragraph" style="font-size: 22px !important; font-weight: 600 !important; margin-top: 60px !important; margin-bottom: 60px !important;">
+All compressed into <span class="mega-gold-text">one simple file</span> with over <strong>50 plug-and-play templates</strong>.
+</p>
+<p class="mega-paragraph centered-paragraph" style="text-align: center !important; font-size: 18px !important; font-weight: 500 !important; margin-top: 45px !important;">
+No more staring at a blank screen wondering what to write.<br><br>
+No more testing dozens of angles hoping something sticks.<br><br>
+<strong>Just fill in the blanks and watch the clicks roll in.</strong>
+</p>
+</div>
+</div>
+
+<div class="isolated-section">
+<div class="isolated-container">
+<h2 class="isolated-title">
+Here are our personal <span class="isolated-highlight">results</span> with these templates
+</h2>
+<p class="isolated-subtitle">
+Tested with real campaigns and millions in ad spend
+</p>
+<div class="results-image-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Ad_Copy_that_SELLS_1.jpg?v=1752747093" alt="Ad Copy Results" class="results-image">
+</div>
+</div>
+</div>
+
+<style>
+/* Benefits Section Styles */
+.benefits-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.benefits-mega-section * {
+box-sizing: border-box !important;
+}
+.benefits-mega-section::before,
+.benefits-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.benefits-mega-section::before {
+left: -100vw !important;
+}
+.benefits-mega-section::after {
+right: -100vw !important;
+}
+.benefits-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.benefits-title {
+font-size: 36px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.benefit-item {
+display: flex !important;
+align-items: flex-start !important;
+gap: 15px !important;
+margin: 0 0 22px 0 !important;
+padding: 0 !important;
+}
+.checkmark {
+color: #D4B160 !important;
+font-size: 22px !important;
+flex-shrink: 0 !important;
+margin-top: 2px !important;
+font-weight: 900 !important;
+font-family: Arial, sans-serif !important;
+}
+.checkmark::before {
+content: '✓' !important;
+display: inline-block !important;
+}
+.benefit-text {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+flex: 1 !important;
+}
+.benefit-text em {
+font-style: italic !important;
+}
+.benefit-text strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.benefits-mega-section {
+padding: 50px 0 !important;
+}
+.benefits-title {
+font-size: 28px !important;
+}
+.benefit-text {
+font-size: 16px !important;
+}
+}
+
+/* Speed Section Styles */
+.speed-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.speed-mega-section * {
+box-sizing: border-box !important;
+}
+.speed-mega-section::before,
+.speed-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.speed-mega-section::before {
+left: -100vw !important;
+}
+.speed-mega-section::after {
+right: -100vw !important;
+}
+.speed-container {
+max-width: 1000px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.speed-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.speed-highlight {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+}
+.speed-image-container {
+margin: 40px 0 !important;
+text-align: center !important;
+display: block !important;
+}
+.speed-image {
+width: 100% !important;
+max-width: 704px !important;
+height: auto !important;
+border-radius: 12px !important;
+display: inline-block !important;
+}
+@media (max-width: 768px) {
+.speed-mega-section {
+padding: 50px 0 !important;
+}
+.speed-title {
+font-size: 28px !important;
+}
+}
+
+/* Inside Section Styles */
+.inside-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.inside-mega-section * {
+box-sizing: border-box !important;
+}
+.inside-mega-section::before,
+.inside-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.inside-mega-section::before {
+left: -100vw !important;
+}
+.inside-mega-section::after {
+right: -100vw !important;
+}
+.inside-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.inside-title {
+font-size: 36px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.inside-item {
+display: flex !important;
+align-items: flex-start !important;
+gap: 15px !important;
+margin: 0 0 22px 0 !important;
+padding: 0 !important;
+}
+.trophy-icon {
+color: #D4B160 !important;
+font-size: 20px !important;
+flex-shrink: 0 !important;
+margin-top: 2px !important;
+font-weight: 700 !important;
+}
+.inside-text {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+flex: 1 !important;
+}
+.inside-text strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.inside-mega-section {
+padding: 50px 0 !important;
+}
+.inside-title {
+font-size: 28px !important;
+}
+.inside-text {
+font-size: 16px !important;
+}
+}
+
+/* FAQ Section Styles */
+.faq-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.faq-mega-section * {
+box-sizing: border-box !important;
+}
+.faq-mega-section::before,
+.faq-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.faq-mega-section::before {
+left: -100vw !important;
+}
+.faq-mega-section::after {
+right: -100vw !important;
+}
+.faq-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.faq-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.faq-item {
+margin: 0 0 30px 0 !important;
+padding: 0 !important;
+border-bottom: 1px solid #e0e0e0 !important;
+padding-bottom: 30px !important;
+}
+.faq-question {
+font-size: 20px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 0 0 12px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.faq-answer {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+margin: 0 !important;
+}
+.faq-answer strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.faq-mega-section {
+padding: 50px 0 !important;
+}
+.faq-title {
+font-size: 30px !important;
+}
+.faq-question {
+font-size: 18px !important;
+}
+.faq-answer {
+font-size: 16px !important;
+}
+}
+
+/* Final CTA Section Styles */
+.final-cta-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 90px 0 !important;
+background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.final-cta-mega-section * {
+box-sizing: border-box !important;
+}
+.final-cta-mega-section::before,
+.final-cta-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: inherit !important;
+z-index: -2 !important;
+}
+.final-cta-mega-section::before {
+left: -100vw !important;
+}
+.final-cta-mega-section::after {
+right: -100vw !important;
+}
+.final-cta-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+text-align: center !important;
+}
+.final-cta-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 25px 0 !important;
+color: #ffffff !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.final-cta-highlight {
+color: #D4B160 !important;
+}
+.final-cta-subtitle {
+text-align: center !important;
+font-size: 21px !important;
+color: #cccccc !important;
+margin: 0 0 40px 0 !important;
+font-weight: 400 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+max-width: 700px !important;
+margin-left: auto !important;
+margin-right: auto !important;
+}
+.urgency-text {
+background: rgba(255, 79, 3, 0.1) !important;
+border: 2px solid #ff4f03 !important;
+border-radius: 10px !important;
+padding: 20px 30px !important;
+margin: 30px auto !important;
+max-width: 600px !important;
+display: block !important;
+}
+.urgency-text p {
+font-size: 17px !important;
+color: #ffffff !important;
+margin: 0 !important;
+font-weight: 500 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.urgency-text strong {
+color: #ff4f03 !important;
+font-weight: 700 !important;
+}
+.final-price-box {
+background: rgba(212, 177, 96, 0.1) !important;
+border: 2px solid #D4B160 !important;
+border-radius: 15px !important;
+padding: 35px 40px !important;
+margin: 40px auto !important;
+max-width: 500px !important;
+display: block !important;
+}
+.final-price-text {
+font-size: 36px !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+margin: 0 0 5px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.final-original-price {
+color: #999999 !important;
+text-decoration: line-through !important;
+font-size: 28px !important;
+margin-right: 10px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-current-price {
+color: #D4B160 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+padding: 21px 50px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+width: 100% !important;
+max-width: 420px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(212, 177, 96, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+min-height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 25px auto 10px auto !important;
+}
+.final-cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(212, 177, 96, 0.6) !important;
+}
+.final-cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.final-cta-button span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+font-family: 'Open Sans', sans-serif !important;
+display: inline-block !important;
+line-height: 1.3 !important;
+}
+.final-bundle-wrapper {
+text-align: center !important;
+margin: 15px 0 0 0 !important;
+display: block !important;
+}
+.final-bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-bundle-link {
+color: #D4B160 !important;
+text-decoration: underline !important;
+}
+.final-bundle-link:hover {
+text-decoration: none !important;
+}
+.final-secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 15px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-secure-payment-icon {
+width: 28px !important;
+height: 28px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+flex-shrink: 0 !important;
+display: block !important;
+}
+@media (max-width: 768px) {
+.final-cta-mega-section {
+padding: 70px 0 !important;
+}
+.final-cta-title {
+font-size: 32px !important;
+}
+.final-cta-subtitle {
+font-size: 18px !important;
+}
+.final-price-box {
+padding: 25px 20px !important;
+}
+.final-price-text {
+font-size: 30px !important;
+}
+.final-cta-button {
+max-width: 100% !important;
+font-size: 18px !important;
+padding: 20px 30px !important;
+}
+.final-cta-button span {
+font-size: 18px !important;
+}
+.urgency-text {
+padding: 15px 20px !important;
+}
+.urgency-text p {
+font-size: 15px !important;
+}
+}
+</style>
+
+<div class="benefits-mega-section">
+<div class="benefits-container">
+<h2 class="benefits-title">
+What These Templates Will Do For You
+</h2>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Say the <em>right thing</em> to the <em>right people</em>: eliminate guesswork and stop wasting time on ads that don't convert.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Stop the scroll and ignite clicks, even without elaborate visuals or fancy graphics.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Save valuable hours by writing ads that <em>genuinely</em> convert instead of testing endless variations.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Utilize proven ad angles that compel attention, drive clicks and trigger purchases every single time.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Attract qualified leads and buyers across Facebook and Instagram with copy that speaks directly to their desires.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Employ marketing strategies that are seen, read and acted upon-not scrolled past and forgotten.</p>
+</div>
+</div>
+</div>
+
+<div class="speed-mega-section">
+<div class="speed-container">
+<h2 class="speed-title">
+Within 20 seconds you'll have copy that <span class="speed-highlight">sells</span>…
+</h2>
+<div class="speed-image-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-07-17_131228.png?v=1752747174" alt="Template Screenshot" class="speed-image">
+</div>
+</div>
+</div>
+
+<div class="inside-mega-section">
+<div class="inside-container">
+<h2 class="inside-title">
+Here's what you'll get inside…
+</h2>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Lifetime access.</strong> One payment, yours forever. No subscriptions, no hidden fees.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>50+ fill-in-the-blank Meta advertising templates</strong> for Facebook and Instagram that you can use immediately.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Comprehensive coverage of all funnel stages:</strong> Attract, Nurture, Convert, Maximize and beyond-every stage of the customer journey covered.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Relevant for every niche and type of product possible.</strong> Whether you're selling physical products, digital courses, or services-these templates work.</p>
+</div>
+</div>
+</div>
+
+<div class="faq-mega-section">
+<div class="faq-container">
+<h2 class="faq-title">
+Frequently Asked Questions
+</h2>
+<div class="faq-item">
+<h3 class="faq-question">Will I get lifetime access?</h3>
+<p class="faq-answer">Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">Do I need a team to apply this?</h3>
+<p class="faq-answer">Not at all. Every template was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">What if I've never written ad copy before?</h3>
+<p class="faq-answer">Perfect! These templates are specifically designed for beginners. Just fill in the blanks with your product details and you'll have professional-grade ad copy in seconds.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">Will this work for my niche?</h3>
+<p class="faq-answer">Yes. These templates are based on universal copywriting principles that work across all niches-whether you're selling physical products, digital courses, services, or anything else.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">How quickly can I start using these templates?</h3>
+<p class="faq-answer">Immediately after purchase, you'll get instant access. You can have your first high-converting ad written in under 20 seconds.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">What makes these templates different from free resources?</h3>
+<p class="faq-answer">These templates are based on the techniques used by the world's highest-paid copywriters-people who charge $15,000-$50,000 per piece. They've been tested with over $10 million in actual ad spend and proven to work in real campaigns.</p>
+</div>
+</div>
+</div>
+
+<div class="final-cta-mega-section">
+<div class="final-cta-container">
+<h2 class="final-cta-title">
+Stop Wasting Time on <span class="final-cta-highlight">Ads That Don't Convert</span>
+</h2>
+<p class="final-cta-subtitle">
+Every day without these templates is another day of testing random copy, burning ad budget, and watching your competitors pull ahead with proven formulas.
+</p>
+<div class="urgency-text">
+<p>While you're still trying to figure out what to write, your competitors are using these <strong>exact templates</strong> to stop the scroll and generate sales. Every minute you wait is money left on the table.</p>
+</div>
+<div class="final-price-box">
+<p class="final-price-text">
+<span class="final-original-price">$47</span> <span class="final-current-price">Only $19</span>
+</p>
+<button class="final-cta-button" id="ad-copy-final-btn" data-variant-id="43533842382941">
+<span style="font-size: 16px !important; font-weight: 700 !important; line-height: 1.3 !important; color: white !important; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;">YES! GIVE ME INSTANT ACCESS<br><small style="font-size: 10.7px !important; font-weight: 400 !important; text-transform: none !important; letter-spacing: 0.5px !important; margin-top: 3px !important; display: block !important;">one time payment, lifetime access</small></span>
+</button>
+<div class="final-bundle-wrapper">
+<span>$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="final-bundle-link">building a bundle</a></span>
+</div>
+<div class="final-secure-payment">
+<div class="final-secure-payment-icon"></div>
+<span>Secure Payment • Instant Access • Lifetime Updates</span>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const CONFIG = {
+        VARIANT_ID: '43533842382941',
+        DEBUG: true
+    };
+
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log('[Ad Copy] ' + msg, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log('[Ad Copy] ✅ ' + msg, data || ''),
+        error: (msg, data) => console.error('[Ad Copy] ❌ ' + msg, data || '')
+    };
+
+    async function addToCart(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] })
+        });
+        if (!response.ok) throw new Error('Failed to add to cart');
+        return await response.json();
+    }
+
+    async function refreshCart() {
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            document.querySelectorAll('.cart-count, .cart-count-bubble, [data-cart-count]').forEach(el => {
+                el.textContent = cart.item_count;
+            });
+            document.querySelectorAll('[href="/cart"], .cart-link, .header__icon--cart').forEach(el => el.click());
+        } catch (e) { log.error('Cart refresh failed', e); }
+    }
+
+    async function handleClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+
+        button.disabled = true;
+        button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">⏳ PROCESSING...</span>';
+
+        try {
+            await addToCart(variantId);
+            button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">✓ ADDED!</span>';
+            await refreshCart();
+            setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; }, 2000);
+        } catch (error) {
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white;">❌ ERROR</span>';
+            setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; button.style.background = ''; }, 3000);
+        }
+    }
+
+    function init() {
+        ['ad-copy-templates-btn', 'ad-copy-final-btn'].forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', handleClick);
+                newBtn.style.position = 'relative';
+                newBtn.style.zIndex = '999999';
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    setTimeout(init, 500);
+})();
+</script>
   `,
 };
 

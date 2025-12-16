@@ -51,8 +51,9 @@ import {
   FileText,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useCartStore, CartItem } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { getCourseBySlug } from '@/data/courses';
+import { getCourseBySlug, getAllCourses, Course } from '@/data/courses';
 import RawHTMLRenderer from '@/components/RawHTMLRenderer';
 import { getCourseHTML } from '@/data/course-html-blocks';
 import { getStoredHTMLBlock } from '@/lib/html-blocks';
@@ -60,6 +61,73 @@ import { getStoredHTMLBlock } from '@/lib/html-blocks';
 type TabType = 'content' | 'bonuses' | 'faq';
 
 // ========== SHARED COMPONENTS ==========
+
+// Get Access Bar - Shown at top of landing page
+interface GetAccessBarProps {
+  price: number;
+  originalPrice?: number;
+  onCheckout: () => void;
+}
+
+const GetAccessBar = ({ price, originalPrice, onCheckout }: GetAccessBarProps) => (
+  <div className="w-full bg-white border-b border-[#eee] py-4 px-6 lg:px-10 sticky top-0 z-40">
+    <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl font-bold text-[#111]">${price}</span>
+          {originalPrice && (
+            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
+          )}
+        </div>
+        {originalPrice && (
+          <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#111] text-white">
+            Save {Math.round((1 - price / originalPrice) * 100)}%
+          </span>
+        )}
+      </div>
+      <button
+        onClick={onCheckout}
+        className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]"
+        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+      >
+        <ShoppingCart size={18} />
+        Get Access - ${price}
+      </button>
+    </div>
+  </div>
+);
+
+// Sticky Cart - Shown at bottom of landing page
+interface StickyCartProps {
+  title: string;
+  price: number;
+  originalPrice?: number;
+  onCheckout: () => void;
+}
+
+const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps) => (
+  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#eee] shadow-lg py-4 px-6" style={{ marginLeft: 'var(--sidebar-width, 260px)' }}>
+    <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-[#111] truncate">{title}</p>
+        <div className="flex items-baseline gap-2 mt-1">
+          <span className="text-xl font-bold text-[#111]">${price}</span>
+          {originalPrice && (
+            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
+          )}
+        </div>
+      </div>
+      <button
+        onClick={onCheckout}
+        className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
+        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+      >
+        <ShoppingCart size={18} />
+        Get Access - ${price}
+      </button>
+    </div>
+  </div>
+);
 
 const AnimatedNumber = ({ value, suffix = '', prefix = '' }: { value: number; suffix?: string; prefix?: string }) => {
   const [count, setCount] = useState(0);
@@ -2498,15 +2566,11 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
     { title: "The Subconscious Switch", description: "70+ step-by-step implementation tasks." }
   ];
 
-  // Exact bonuses from course data with images
+  // Exact bonuses from course data with images (3 bonuses, total $341)
   const bonuses = [
-    { title: "The $10,000 AI Photographer", value: 297, desc: "We spent months fine-tuning AI capabilities to generate studio-grade model shots, product images, and lifestyle visuals that outperform real human photo shoots - and for FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/12.jpg?v=1752143261" },
-    { title: "Secret Tools Vault", value: 97, desc: "We've assembled a secret vault of tools that give you a decisive, brutal advantage over your competitors. Frankly, we don't know how anyone builds a million-dollar brand without them.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/14.jpg?v=1752149570" },
-    { title: "Lifetime Discount Vault", value: 97, desc: "We partnered with dozens of eCommerce tools and top Shopify apps to give you MASSIVE lifetime discounts. On average, you'll save $40-$60/month on active subscriptions.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/15.jpg?v=1752150375" },
     { title: "The Intelligence Agent", value: 97, desc: "For months, we trained an AI agent to legally mimic the exact tactics used by billion-dollar brands - pixel by pixel, word by word. For FREE.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/16.jpg?v=1752150697" },
     { title: "Einstein on Steroids", value: 97, desc: "An AI brain powered by 180 IQ logic and timeless business wisdom. At the push of a button, it thinks what others can't - and together with you, will take your store to levels you never imagined.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/17.jpg?v=1752151300" },
-    { title: "Your Personal Conversion Map", value: 147, desc: "A guided tracking system that takes you step by step - all the way to success (6%+).", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730" },
-    { title: "Access to Our Secret Newsletter", value: 97, desc: "Unreleased insights, private test results, and weekly breakdowns from 7-8 figure brands. Delivered directly to you.", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/19.jpg?v=1752152015" }
+    { title: "Your Personal Conversion Map", value: 147, desc: "A guided tracking system that takes you step by step - all the way to success (6%+).", image: "https://cdn.shopify.com/s/files/1/0682/3202/0061/files/18.jpg?v=1752151730" }
   ];
 
   // Exact FAQs from course data
@@ -2516,7 +2580,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
     { question: "Do I need to know how to code?", answer: "Not at all. The framework includes simple copy-paste instructions for every element. If you can use Shopify's theme editor, you can implement this. We've made it accessible for complete beginners while keeping it powerful enough for advanced users." },
     { question: "Will this work for my specific product/niche?", answer: "Yes. These are universal psychological principles that work on the human brain - regardless of what you're selling. Whether it's fashion, electronics, home goods, or anything else, the subconscious responds the same way to these triggers." },
     { question: "What if I implement everything and it doesn't work?", answer: "Simple: we refund you 100%. No questions, no hassle. We're that confident because this framework is built on thousands of A/B tests with proven results. But if somehow it doesn't increase your conversions, just let us know and we'll give you every penny back." },
-    { question: "Why is it only $10?", answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 7 bonuses worth $929) is available for just $10. One-time payment, lifetime access." }
+    { question: "Why is it only $10?", answer: "Honest answer? We could easily charge $997+ for this. But we want every serious eCommerce entrepreneur to have access to it - not just the ones with big budgets. The framework itself (plus 3 bonuses worth $341) is available for just $10. One-time payment, lifetime access." }
   ];
 
   // GIFs from course data
@@ -2623,7 +2687,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
               </motion.button>
 
               <p className="text-xs mt-6 text-white/40">
-                30-day money-back guarantee • Instant access • 7 bonuses worth $929 included
+                30-day money-back guarantee • Instant access • 3 bonuses worth $341 included
               </p>
             </div>
 
@@ -2777,8 +2841,8 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             style={{ backgroundColor: 'rgba(255, 79, 3, 0.15)', border: '2px dashed rgba(255, 79, 3, 0.5)' }}
           >
             <p className="text-lg text-white">
-              <span className="font-bold">Plus 7 Exclusive Bonuses</span>{' '}
-              <span className="text-2xl font-black" style={{ color: '#ff4f03' }}>Worth $929</span>{' '}
+              <span className="font-bold">Plus 3 Exclusive Bonuses</span>{' '}
+              <span className="text-2xl font-black" style={{ color: '#ff4f03' }}>Worth $341</span>{' '}
               <span className="text-white/70">— All Included FREE</span>
             </p>
           </motion.div>
@@ -2795,10 +2859,10 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
             className="text-center mb-12"
           >
             <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ backgroundColor: 'rgba(255, 79, 3, 0.1)' }}>
-              <span className="text-sm font-bold" style={{ color: '#ff4f03' }}>VALUED AT $929</span>
+              <span className="text-sm font-bold" style={{ color: '#ff4f03' }}>VALUED AT $341</span>
             </div>
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] mb-4">
-              7 Exclusive Bonuses Included
+              3 Exclusive Bonuses Included
             </h2>
             <p className="text-xl text-[#666] max-w-2xl mx-auto">
               Everything you need to implement these tactics immediately
@@ -2853,7 +2917,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
           >
             <p className="text-xl">
               <span className="font-bold text-[#111]">Total Bonus Value:</span>{' '}
-              <span className="text-3xl font-black" style={{ color: '#ff4f03' }}>$929</span>{' '}
+              <span className="text-3xl font-black" style={{ color: '#ff4f03' }}>$341</span>{' '}
               <span className="text-[#666]">— Yours FREE when you join today</span>
             </p>
           </motion.div>
@@ -3032,7 +3096,7 @@ const SubconsciousTrapAlternativeLayout = ({ course, onCheckout }: SubconsciousT
               </div>
               <div className="flex items-center gap-2">
                 <Gift size={18} />
-                <span>$929 in Bonuses</span>
+                <span>$341 in Bonuses</span>
               </div>
             </div>
           </motion.div>
@@ -3111,7 +3175,8 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             How to earn <span style={{ color: '#00bc0d' }}>$1,000</span> per customer
           </motion.h1>
@@ -3792,7 +3857,8 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+            className="text-4xl lg:text-6xl font-bold mb-6 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             Turn Email Marketing Into a <span style={{ color: '#D4B160', textShadow: '0 0 15px rgba(212, 177, 96, 0.5)' }}>Revenue Engine</span>
           </motion.h1>
@@ -3943,7 +4009,7 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>
               Here's What We're <span style={{ color: '#BD9B5E', textShadow: '0 0 20px rgba(189, 155, 94, 0.6)' }}>Combining</span>
             </h2>
             <p className="text-lg text-white/60">
@@ -4094,7 +4160,7 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6" style={{ color: '#ffffff' }}>
               Ready to Build Your <span style={{ color: '#D4B160' }}>Revenue Engine</span>?
             </h2>
 
@@ -4192,7 +4258,8 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-5xl font-bold mb-4 text-white leading-tight"
+            className="text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             How to Convert <span style={{ color: '#00ff88' }}>82%</span> of Your Lost Customers
           </motion.h1>
@@ -4537,7 +4604,7 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6" style={{ color: '#ffffff' }}>
               Start <span style={{ color: '#00ff88' }}>Recovering Sales</span> Today
             </h2>
 
@@ -5452,6 +5519,7 @@ export default function CourseDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { items: cartItems, addItem, removeItem, isInCart, getTotal, getOriginalTotal, clearCart } = useCartStore();
   const [activeTab, setActiveTab] = useState<TabType>('content');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -5460,9 +5528,11 @@ export default function CourseDetailPage() {
   const [showEmailChange, setShowEmailChange] = useState(false);
   const [customEmail, setCustomEmail] = useState('');
   const [useAlternativeLayout, setUseAlternativeLayout] = useState(false);
+  const [showAddCourses, setShowAddCourses] = useState(false);
 
   const slug = params.slug as string;
   const course = getCourseBySlug(slug);
+  const allCourses = getAllCourses();
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -5470,13 +5540,31 @@ export default function CourseDetailPage() {
     }
   }, [user, isLoading, router]);
 
+  // Add current course to cart and show checkout
+  const handleGetAccess = () => {
+    if (course && !isInCart(course.slug)) {
+      addItem({
+        slug: course.slug,
+        title: course.title,
+        price: course.price,
+        originalPrice: course.originalPrice,
+        image: course.image,
+      });
+    }
+    setShowCheckout(true);
+  };
+
   const handlePurchase = async () => {
     setIsProcessing(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsProcessing(false);
     setShowCheckout(false);
-    alert('Purchase successful! You now have access to this course.');
+    clearCart();
+    alert('Purchase successful! You now have access to your courses.');
   };
+
+  // Available courses to add (not already in cart)
+  const availableToAdd = allCourses.filter(c => !isInCart(c.slug));
 
   if (isLoading || !user) {
     return (
@@ -5590,66 +5678,151 @@ export default function CourseDetailPage() {
       <AnimatePresence>
         {showCheckout && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => !isProcessing && setShowCheckout(false)}>
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md rounded-2xl overflow-hidden bg-white" onClick={(e) => e.stopPropagation()}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg rounded-2xl overflow-hidden bg-white max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
               <div className="p-6 border-b border-[#eee]">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-[#111]">Quick Checkout</h2>
+                  <h2 className="text-xl font-bold text-[#111]">Your Order</h2>
                   {!isProcessing && (<button onClick={() => setShowCheckout(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]"><X size={20} className="text-[#666]" /></button>)}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#666]"><Lock size={14} /><span>Secure checkout powered by Stripe</span></div>
               </div>
-              <div className="p-6 border-b border-[#eee]">
-                <div className="flex gap-4">
-                  <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-[#f5f5f5]">
-                    <Image src={course.image} alt={course.title} width={80} height={64} unoptimized className="w-full h-full object-contain" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-[#111] text-sm">{course.title}</h3>
-                    <p className="text-xs text-[#666] mt-1">Instant digital access</p>
-                    <div className="flex items-baseline gap-2 mt-2">
-                      <span className="font-bold text-[#111]">${course.price}</span>
-                      {course.originalPrice && <span className="text-xs line-through text-[#999]">${course.originalPrice}</span>}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-6 border-b border-[#eee]">
-                {!showEmailChange ? (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">{(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}</div>
-                      <div>
-                        <p className="font-medium text-[#111] text-sm">{customEmail || user?.email}</p>
-                        <p className="text-xs text-[#666]">Course will be sent to this email</p>
-                      </div>
-                    </div>
-                    <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]"><Edit3 size={12} />Change</button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <p className="text-sm font-medium text-[#111]">Send to a different email</p>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888]" size={16} />
-                      <input type="email" value={customEmail} onChange={(e) => setCustomEmail(e.target.value)} placeholder="Enter email address" className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none" />
-                    </div>
-                    <div className="flex gap-2">
-                      <button onClick={() => setShowEmailChange(false)} className="flex-1 py-2 text-sm font-medium rounded-lg bg-[#111] text-white">Confirm</button>
-                      <button onClick={() => { setCustomEmail(''); setShowEmailChange(false); }} className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-[#f5f5f5] text-[#666]">Cancel</button>
-                    </div>
+
+              {/* Cart Items */}
+              <div className="flex-1 overflow-y-auto">
+                {/* Add More Courses Link - At top */}
+                {availableToAdd.length > 0 && (
+                  <div className="px-6 pt-4">
+                    <button
+                      onClick={() => setShowAddCourses(true)}
+                      className="text-sm text-[#666] underline underline-offset-2 hover:text-[#111] transition-colors"
+                    >
+                      + Add more courses to your order
+                    </button>
                   </div>
                 )}
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[#666]">Total</span>
-                  <span className="text-2xl font-bold text-[#111]">${course.price}</span>
+
+                <div className="p-6 border-b border-[#eee] space-y-4">
+                  {cartItems.map((item) => (
+                    <div key={item.slug} className="flex gap-4">
+                      <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
+                        <Image src={item.image} alt={item.title} width={80} height={64} unoptimized className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-[#111] text-sm">{item.title}</h3>
+                        <p className="text-xs text-[#666] mt-1">Instant digital access</p>
+                        <div className="flex items-baseline gap-2 mt-2">
+                          <span className="font-bold text-[#111]">${item.price}</span>
+                          {item.originalPrice && <span className="text-xs line-through text-[#999]">${item.originalPrice}</span>}
+                        </div>
+                      </div>
+                      <button onClick={() => removeItem(item.slug)} className="p-1.5 h-fit rounded-lg hover:bg-[#f5f5f5] text-[#999] hover:text-red-500 transition-colors">
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <button onClick={handlePurchase} disabled={isProcessing} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
-                  {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase</>)}
+
+                {/* Email Section */}
+                <div className="p-6 border-b border-[#eee]">
+                  {!showEmailChange ? (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white bg-[#111]">{(customEmail || user?.email)?.charAt(0).toUpperCase() || 'U'}</div>
+                        <div>
+                          <p className="font-medium text-[#111] text-sm">{customEmail || user?.email}</p>
+                          <p className="text-xs text-[#666]">Courses will be sent to this email</p>
+                        </div>
+                      </div>
+                      <button onClick={() => setShowEmailChange(true)} className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#f5f5f5] text-[#666]"><Edit3 size={12} />Change</button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium text-[#111]">Send to a different email</p>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#888]" size={16} />
+                        <input type="email" value={customEmail} onChange={(e) => setCustomEmail(e.target.value)} placeholder="Enter email address" className="w-full h-11 pl-10 pr-4 rounded-lg text-sm border border-[#e5e5e5] focus:border-[#111] focus:outline-none" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => setShowEmailChange(false)} className="flex-1 py-2 text-sm font-medium rounded-lg bg-[#111] text-white">Confirm</button>
+                        <button onClick={() => { setCustomEmail(''); setShowEmailChange(false); }} className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-[#f5f5f5] text-[#666]">Cancel</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Total & Purchase */}
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[#666]">Subtotal ({cartItems.length} {cartItems.length === 1 ? 'course' : 'courses'})</span>
+                  <span className="font-medium text-[#111]">${getTotal()}</span>
+                </div>
+                {getOriginalTotal() > getTotal() && (
+                  <div className="flex items-center justify-between mb-2 text-sm">
+                    <span className="text-green-600">You save</span>
+                    <span className="text-green-600 font-medium">${getOriginalTotal() - getTotal()}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mb-4 pt-2 border-t border-[#eee]">
+                  <span className="font-semibold text-[#111]">Total</span>
+                  <span className="text-2xl font-bold text-[#111]">${getTotal()}</span>
+                </div>
+                <button onClick={handlePurchase} disabled={isProcessing || cartItems.length === 0} className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2" style={{ background: isProcessing || cartItems.length === 0 ? '#666' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
+                  {isProcessing ? (<><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</>) : (<><Lock size={18} />Complete Purchase - ${getTotal()}</>)}
                 </button>
                 <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#888]">
                   <span>30-day guarantee</span><span>•</span><span>Instant access</span><span>•</span><span>Lifetime updates</span>
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add More Courses Modal */}
+      <AnimatePresence>
+        {showAddCourses && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => setShowAddCourses(false)}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-lg rounded-2xl overflow-hidden bg-white max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="p-6 border-b border-[#eee]">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-[#111]">Add Courses</h2>
+                  <button onClick={() => setShowAddCourses(false)} className="p-2 rounded-full hover:bg-[#f5f5f5]"><X size={20} className="text-[#666]" /></button>
+                </div>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 space-y-3">
+                {availableToAdd.length === 0 ? (
+                  <p className="text-sm text-[#666] text-center py-8">All courses are already in your cart!</p>
+                ) : (
+                  availableToAdd.map((c) => (
+                    <div key={c.slug} className="flex items-center gap-4 p-4 rounded-xl border border-[#eee] hover:border-[#ccc] transition-colors">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-[#eee]">
+                        <Image src={c.image} alt={c.title} width={64} height={64} unoptimized className="w-full h-full object-contain" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-[#111] text-sm">{c.title}</h4>
+                        <p className="text-xs text-[#666] mt-1 line-clamp-2">{c.description}</p>
+                        <div className="flex items-baseline gap-2 mt-2">
+                          <span className="font-bold text-[#111]">${c.price}</span>
+                          {c.originalPrice && <span className="text-xs line-through text-[#999]">${c.originalPrice}</span>}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          addItem({ slug: c.slug, title: c.title, price: c.price, originalPrice: c.originalPrice, image: c.image });
+                        }}
+                        className="px-4 py-2 rounded-lg bg-[#111] text-white text-sm font-medium hover:bg-[#333] transition-colors flex-shrink-0"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                <button onClick={() => setShowAddCourses(false)} className="w-full py-3 rounded-xl font-medium text-white" style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}>
+                  Done
+                </button>
               </div>
             </motion.div>
           </motion.div>
@@ -5682,21 +5855,69 @@ export default function CourseDetailPage() {
 
         {/* Alternative Layouts - Priority: 1. localStorage, 2. code HTML blocks, 3. React components */}
         {useAlternativeLayout && (getStoredHTMLBlock(slug) || getCourseHTML(slug)) ? (
-          <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
-          <AIPhotographerAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <AIPhotographerAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
-          <AdCopyTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <AdCopyTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
-          <MetaAdTemplatesAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <MetaAdTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
-          <SubconsciousTrapAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <SubconsciousTrapAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'ltv-system' && useAlternativeLayout ? (
-          <LTVSystemAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <LTVSystemAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
-          <EmailMarketingAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <EmailMarketingAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : slug === 'abandoned-checkout' && useAlternativeLayout ? (
-          <AbandonedCheckoutAlternativeLayout course={course} onCheckout={() => setShowCheckout(true)} />
+          <>
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <div className="pb-24">
+              <AbandonedCheckoutAlternativeLayout course={course} onCheckout={handleGetAccess} />
+            </div>
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+          </>
         ) : (
           <>
         {/* Hero Section */}

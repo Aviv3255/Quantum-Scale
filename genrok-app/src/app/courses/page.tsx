@@ -28,8 +28,57 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useCartStore } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
+import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
+import { ShoppingCart, Trash2 as TrashIcon, X as CloseIcon, Lock } from 'lucide-react';
+import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
+
+// Small circular progress for course cards
+interface SmallCircularProgressProps {
+  progress: number;
+  size?: number;
+  strokeWidth?: number;
+}
+
+function SmallCircularProgress({ progress, size = 36, strokeWidth = 2.5 }: SmallCircularProgressProps) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg className="absolute" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#e5e5e5"
+          strokeWidth={strokeWidth}
+        />
+      </svg>
+      <svg className="absolute -rotate-90" width={size} height={size}>
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#000"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-[10px] font-semibold text-[#111]">{progress}%</span>
+      </div>
+    </div>
+  );
+}
 
 // Course Content Input Interface (URL-based for token efficiency)
 interface CourseContentInput {
@@ -413,16 +462,272 @@ const CourseContentInputForm = () => {
   );
 };
 
+// Cart Sidebar Component
+const CartSidebar = () => {
+  const { items, isOpen, closeCart, removeItem, getTotal, getOriginalTotal, clearCart } = useCartStore();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const handleCheckout = async () => {
+    setIsCheckingOut(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsCheckingOut(false);
+    clearCart();
+    closeCart();
+    alert('Purchase successful! You now have access to all courses in your cart.');
+  };
+
+  const savings = getOriginalTotal() - getTotal();
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeCart}
+            className="fixed inset-0 z-50 bg-black/50"
+          />
+
+          {/* Sidebar */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-[#eee]">
+              <div className="flex items-center gap-3">
+                <ShoppingCart size={24} className="text-[#111]" />
+                <h2 className="text-xl font-bold text-[#111]">Your Cart</h2>
+                <span className="px-2 py-1 rounded-full bg-[#111] text-white text-xs font-medium">
+                  {items.length}
+                </span>
+              </div>
+              <button
+                onClick={closeCart}
+                className="p-2 rounded-full hover:bg-[#f5f5f5] transition-colors"
+              >
+                <CloseIcon size={20} className="text-[#666]" />
+              </button>
+            </div>
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {items.length === 0 ? (
+                <div className="text-center py-12">
+                  <ShoppingCart size={48} className="text-[#ddd] mx-auto mb-4" />
+                  <p className="text-[#666]">Your cart is empty</p>
+                  <button
+                    onClick={closeCart}
+                    className="mt-4 text-sm font-medium text-[#111] underline"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div
+                      key={item.slug}
+                      className="flex gap-4 p-4 rounded-xl bg-[#fafafa] border border-[#eee]"
+                    >
+                      <div className="w-20 h-20 rounded-lg overflow-hidden bg-white flex-shrink-0 flex items-center justify-center">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={80}
+                          height={80}
+                          unoptimized
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-[#111] text-sm truncate">{item.title}</h3>
+                        <div className="flex items-baseline gap-2 mt-1">
+                          <span className="font-bold text-[#111]">${item.price}</span>
+                          {item.originalPrice && (
+                            <span className="text-xs line-through text-[#999]">${item.originalPrice}</span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => removeItem(item.slug)}
+                        className="p-2 rounded-lg hover:bg-red-50 text-red-500 self-start"
+                      >
+                        <TrashIcon size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className="p-6 border-t border-[#eee] bg-[#fafafa]">
+                {savings > 0 && (
+                  <div className="flex items-center justify-between mb-3 text-sm">
+                    <span className="text-[#666]">You're saving</span>
+                    <span className="font-semibold text-green-600">${savings}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[#666]">Total</span>
+                  <div className="text-right">
+                    <span className="text-2xl font-bold text-[#111]">${getTotal()}</span>
+                    {savings > 0 && (
+                      <span className="block text-xs line-through text-[#999]">${getOriginalTotal()}</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isCheckingOut}
+                  className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2 transition-all hover:opacity-90"
+                  style={{
+                    background: isCheckingOut
+                      ? '#666'
+                      : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)',
+                  }}
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Lock size={18} />
+                      Checkout - ${getTotal()}
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center justify-center gap-4 mt-3 text-xs text-[#888]">
+                  <span>30-day guarantee</span>
+                  <span>•</span>
+                  <span>Instant access</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Floating Cart Button
+const FloatingCartButton = () => {
+  const { openCart, getItemCount } = useCartStore();
+  const itemCount = getItemCount();
+
+  if (itemCount === 0) return null;
+
+  return (
+    <motion.button
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0, opacity: 0 }}
+      onClick={openCart}
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-5 py-3 rounded-full text-white font-medium shadow-lg hover:scale-105 transition-transform"
+      style={{ background: 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)' }}
+    >
+      <ShoppingCart size={20} />
+      <span>Cart ({itemCount})</span>
+    </motion.button>
+  );
+};
+
+// Cart Header Button - Clean button at top of page
+const CartHeaderButton = () => {
+  const { openCart, getItemCount, getTotal } = useCartStore();
+  const itemCount = getItemCount();
+  const total = getTotal();
+
+  if (itemCount === 0) return null;
+
+  return (
+    <button
+      onClick={openCart}
+      className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-[#e5e5e5] bg-white hover:border-[#111] transition-colors"
+    >
+      <ShoppingCart size={18} className="text-[#111]" />
+      <span className="text-sm font-medium text-[#111]">{itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
+      <span className="text-sm font-bold text-[#111]">${total}</span>
+    </button>
+  );
+};
+
 export default function CoursesPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { addItem, isInCart, openCart } = useCartStore();
   const courses = getAllCourses();
+  const [ownedCourses, setOwnedCourses] = useState<PurchasedCourse[]>([]);
+  const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
+
+  // Helper to get checklist progress from localStorage
+  const getChecklistProgressForCourse = (userId: string, courseSlug: string): number => {
+    try {
+      const storageKey = `checklist-${courseSlug}-${userId}`;
+      const stored = localStorage.getItem(storageKey);
+      if (!stored) return 0;
+      const completedItems = JSON.parse(stored) as string[];
+      const checklistItems = getDefaultChecklist(courseSlug);
+      const taskItems = checklistItems.filter(item => !item.isCategory);
+      if (taskItems.length === 0) return 0;
+      return Math.round((completedItems.length / taskItems.length) * 100);
+    } catch {
+      return 0;
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Load user's purchased courses and their progress
+  useEffect(() => {
+    const loadOwnedCourses = async () => {
+      if (user?.id) {
+        const purchasedCourses = await getUserCourses(user.id);
+        setOwnedCourses(purchasedCourses);
+
+        // Calculate checklist progress for each owned course
+        const progressMap: Record<string, number> = {};
+        purchasedCourses.forEach(course => {
+          progressMap[course.slug] = getChecklistProgressForCourse(user.id, course.slug);
+        });
+        setChecklistProgressMap(progressMap);
+      }
+    };
+    loadOwnedCourses();
+  }, [user?.id]);
+
+  const handleAddToCart = (e: React.MouseEvent, course: typeof courses[0]) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isInCart(course.slug)) {
+      openCart();
+    } else {
+      addItem({
+        slug: course.slug,
+        title: course.title,
+        price: course.price,
+        originalPrice: course.originalPrice,
+        image: course.image,
+      });
+      openCart();
+    }
+  };
 
   if (isLoading || !user) {
     return (
@@ -434,6 +739,12 @@ export default function CoursesPage() {
 
   return (
     <DashboardLayout>
+      {/* Cart Sidebar */}
+      <CartSidebar />
+
+      {/* Floating Cart Button */}
+      <FloatingCartButton />
+
       {/* Full-width wrapper - counteracts parent padding */}
       <div
         className="min-h-screen"
@@ -445,8 +756,14 @@ export default function CoursesPage() {
       >
         {/* Full Width Header */}
         <div className="w-full px-6 lg:px-10 pt-8 pb-6">
-          <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
-          <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
+              <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+            </div>
+            {/* Cart Button */}
+            <CartHeaderButton />
+          </div>
         </div>
 
         {/* Course Content Input Form (Dev Tool) */}
@@ -463,113 +780,175 @@ export default function CoursesPage() {
               animate="visible"
               className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
             >
-              {courses.map((course) => (
-                <motion.div key={course.slug} variants={itemVariants}>
-                  <Link
-                    href={`/courses/${course.slug}`}
-                    className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl"
-                    style={{
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #e5e5e5',
-                    }}
-                  >
-                    {/* Image Section */}
+              {courses.map((course) => {
+                const isOwned = ownedCourses.some(c => c.slug === course.slug);
+                const checklistProgress = checklistProgressMap[course.slug] || 0;
+
+                return (
+                  <motion.div key={course.slug} variants={itemVariants}>
                     <div
-                      className="relative w-full flex items-center justify-center p-10"
+                      className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl h-full flex flex-col"
                       style={{
-                        backgroundColor: '#f8f8f8',
-                        minHeight: '220px',
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e5e5',
+                        minHeight: '580px',
                       }}
                     >
-                      {course.image ? (
-                        <Image
-                          src={course.image}
-                          alt={course.title}
-                          width={200}
-                          height={160}
-                          unoptimized
-                          className="max-h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                      {/* Image Section - Link to course */}
+                      <Link href={`/courses/${course.slug}`}>
+                        <div
+                          className="relative w-full flex items-center justify-center"
                           style={{
-                            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))',
+                            backgroundColor: '#ffffff',
+                            height: '280px',
                           }}
-                        />
-                      ) : (
-                        <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
-                          <BookOpen className="w-10 h-10 text-[#999999]" />
-                        </div>
-                      )}
-                      {course.badge && (
-                        <div
-                          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
-                          style={{ backgroundColor: '#111111', color: '#ffffff' }}
                         >
-                          {course.badge}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-6">
-                      {/* Title */}
-                      <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
-                        {course.title}
-                      </h2>
-
-                      {/* Subtitle */}
-                      <p className="text-sm text-[#666666] mb-4 line-clamp-2">
-                        {course.subtitle}
-                      </p>
-
-                      {/* Stats Row */}
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm text-[#888888]">
-                        <div className="flex items-center gap-1.5">
-                          <BookOpen size={14} />
-                          <span>{course.stats[0]?.value} {course.stats[0]?.label}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Clock size={14} />
-                          <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
-                        </div>
-                      </div>
-
-                      {/* Bonuses indicator */}
-                      {course.bonuses && course.bonuses.length > 0 && (
-                        <div
-                          className="flex items-center gap-2 mb-5 p-3 rounded-xl"
-                          style={{ backgroundColor: '#f5f5f5' }}
-                        >
-                          <Gift className="w-4 h-4 text-[#666666]" />
-                          <span className="text-xs text-[#666666]">
-                            <strong className="text-[#111111]">{course.bonuses.length} bonuses</strong> worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Price and CTA */}
-                      <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-[#111111]">
-                            ${course.price}
-                          </span>
-                          {course.originalPrice && (
-                            <span className="text-sm line-through text-[#999999]">
-                              ${course.originalPrice}
-                            </span>
+                          {course.image ? (
+                            <Image
+                              src={course.image}
+                              alt={course.title}
+                              fill
+                              unoptimized
+                              className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
+                              <BookOpen className="w-10 h-10 text-[#999999]" />
+                            </div>
+                          )}
+                          {/* Progress Circles for Owned */}
+                          {isOwned && (
+                            <div
+                              className="absolute top-4 right-4 flex items-center gap-2 px-2 py-1.5 rounded-xl border"
+                              style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                borderColor: '#e5e5e5',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+                              }}
+                            >
+                              <div className="flex flex-col items-center">
+                                <SmallCircularProgress progress={0} size={32} strokeWidth={2} />
+                                <span className="text-[8px] text-[#666] mt-0.5">Read</span>
+                              </div>
+                              {hasChecklist(course.slug) && (
+                                <div className="flex flex-col items-center">
+                                  <SmallCircularProgress progress={checklistProgress} size={32} strokeWidth={2} />
+                                  <span className="text-[8px] text-[#666] mt-0.5">Tasks</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          {course.badge && !isOwned && (
+                            <div
+                              className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
+                              style={{ backgroundColor: '#111111', color: '#ffffff' }}
+                            >
+                              {course.badge}
+                            </div>
                           )}
                         </div>
+                      </Link>
 
-                        <div
-                          className="flex items-center gap-1 text-sm font-medium transition-all duration-200 group-hover:gap-2"
-                          style={{ color: '#111111' }}
-                        >
-                          View Course
-                          <ArrowRight className="w-4 h-4" />
+                      {/* Content Section */}
+                      <div className="p-6 flex flex-col flex-1">
+                        {/* Title - Link to course */}
+                        <Link href={`/courses/${course.slug}`}>
+                          <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
+                            {course.title}
+                          </h2>
+                        </Link>
+
+                        {/* Subtitle */}
+                        <p className="text-sm text-[#666666] mb-4 line-clamp-2">
+                          {course.subtitle}
+                        </p>
+
+                        {/* Stats Row */}
+                        <div className="flex flex-wrap gap-4 mb-4 text-sm text-[#888888]">
+                          <div className="flex items-center gap-1.5">
+                            <BookOpen size={14} />
+                            <span>{course.stats[0]?.value} {course.stats[0]?.label}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <Clock size={14} />
+                            <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
+                          </div>
+                        </div>
+
+                        {/* Bonuses indicator */}
+                        {course.bonuses && course.bonuses.length > 0 && (
+                          <div
+                            className="flex items-center gap-2 mb-5 p-3 rounded-xl"
+                            style={{ backgroundColor: '#f5f5f5' }}
+                          >
+                            <Gift className="w-4 h-4 text-[#666666]" />
+                            <span className="text-xs text-[#666666]">
+                              <strong className="text-[#111111]">{course.bonuses.length} bonuses</strong> worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Spacer to push footer to bottom */}
+                        <div className="flex-1" />
+
+                        {/* Price and CTA - Only show if not owned */}
+                        <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
+                          {isOwned ? (
+                            <Link
+                              href={`/my-courses/${course.slug}`}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105 w-full justify-center"
+                              style={{
+                                background: 'linear-gradient(150deg, #000 0%, #333 100%)',
+                                color: '#ffffff',
+                              }}
+                            >
+                              <ArrowRight size={16} />
+                              Go to Course
+                            </Link>
+                          ) : (
+                            <>
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-bold text-[#111111]">
+                                  ${course.price}
+                                </span>
+                                {course.originalPrice && (
+                                  <span className="text-sm line-through text-[#999999]">
+                                    ${course.originalPrice}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Add to Cart Button */}
+                              <button
+                                onClick={(e) => handleAddToCart(e, course)}
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                                style={{
+                                  background: isInCart(course.slug)
+                                    ? '#22c55e'
+                                    : 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
+                                  color: '#ffffff',
+                                }}
+                              >
+                                {isInCart(course.slug) ? (
+                                  <>
+                                    <Check size={16} />
+                                    In Cart
+                                  </>
+                                ) : (
+                                  <>
+                                    <Plus size={16} />
+                                    Add to Cart
+                                  </>
+                                )}
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </Link>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </motion.div>
           ) : (
             <div className="text-center py-16">
