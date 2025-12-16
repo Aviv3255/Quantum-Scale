@@ -1457,7 +1457,30 @@ This course gives you everything you need to start seeing results immediately. N
   }};
 
 export const getCourseBySlug = (slug: string): Course | undefined => {
-  return coursesData[slug];
+  // Direct lookup first
+  if (coursesData[slug]) {
+    return coursesData[slug];
+  }
+
+  // Try to find by matching slug property
+  const bySlugProp = Object.values(coursesData).find((c) => c.slug === slug);
+  if (bySlugProp) return bySlugProp;
+
+  // Try normalized slug (handle variations like "the-subconscious-trap" vs "subconscious-trap")
+  const normalizedSlug = slug.toLowerCase().replace(/^the-/, '');
+  if (coursesData[normalizedSlug]) {
+    return coursesData[normalizedSlug];
+  }
+
+  // Try to find by partial match
+  const byPartialMatch = Object.values(coursesData).find(
+    (c) =>
+      c.slug.includes(normalizedSlug) ||
+      normalizedSlug.includes(c.slug) ||
+      c.title.toLowerCase().replace(/\s+/g, '-').includes(normalizedSlug)
+  );
+
+  return byPartialMatch;
 };
 
 export const getAllCourses = (): Course[] => {
