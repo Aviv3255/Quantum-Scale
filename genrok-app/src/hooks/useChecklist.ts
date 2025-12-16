@@ -26,8 +26,9 @@ export function useChecklist(courseSlug: string, userId?: string): UseChecklistR
   const [completedItems, setCompletedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Calculate progress percentage
-  const progress = items.length > 0 ? Math.round((completedItems.length / items.length) * 100) : 0;
+  // Calculate progress percentage (excluding category headers)
+  const taskItems = items.filter((item) => !item.isCategory);
+  const progress = taskItems.length > 0 ? Math.round((completedItems.length / taskItems.length) * 100) : 0;
 
   // Load checklist items (from Supabase or defaults)
   useEffect(() => {

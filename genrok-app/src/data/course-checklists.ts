@@ -5,6 +5,9 @@ export interface ChecklistItem {
   id: string;
   title: string;
   description?: string;
+  link?: string;
+  linkText?: string;
+  isCategory?: boolean; // If true, this is a category header
 }
 
 export interface CourseChecklist {
@@ -17,11 +20,13 @@ const generateId = (slug: string, index: number) => `${slug}-item-${index}`;
 
 export const defaultChecklists: Record<string, ChecklistItem[]> = {
   'subconscious-trap': [
-    // Preparation
+    // Category: Preparation
+    { id: 'cat-prep', title: 'Preparation', isCategory: true },
     {
       id: generateId('subconscious-trap', 1),
       title: 'Install Shrine Theme on your store',
-      description: 'Get it here: https://shrinesolutions.com/?ref=0d9fe741',
+      link: 'https://shrinesolutions.com/?ref=0d9fe741',
+      linkText: 'Get Shrine Theme',
     },
     {
       id: generateId('subconscious-trap', 2),
@@ -31,19 +36,26 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 3),
       title: 'Install Post-Purchase Survey',
-      description: 'Know exactly what drives your audience. Get it: https://apps.shopify.com/grapevine?mref=lsbqcbva',
+      description: 'Know exactly what drives your audience',
+      link: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
+      linkText: 'Get Survey App',
     },
     {
       id: generateId('subconscious-trap', 4),
       title: 'Connect external analytics for accurate tracking (free)',
-      description: 'Track sales and creatives precisely: https://triplewhale.com/',
+      description: 'Track sales and creatives precisely',
+      link: 'https://triplewhale.com/',
+      linkText: 'Get Triple Whale',
     },
     {
       id: generateId('subconscious-trap', 5),
       title: 'Install free sections app (used throughout the course)',
-      description: 'Get it here: https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
-    // Colors and Fonts
+
+    // Category: Colors and Fonts
+    { id: 'cat-colors', title: 'Colors & Fonts', isCategory: true },
     {
       id: generateId('subconscious-trap', 6),
       title: 'Choose a color palette from the course tables',
@@ -59,11 +71,13 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
       title: 'Choose and apply a font set from the course',
       description: 'Apply it consistently across the entire site',
     },
-    // Hero Section
+
+    // Category: Hero Section
+    { id: 'cat-hero', title: 'Hero Section', isCategory: true },
     {
       id: generateId('subconscious-trap', 9),
       title: 'Choose Hero image that conveys emotion (not product)',
-      description: 'Use Freepik, Lummi, AI tools, or ChatGPT to find the right image',
+      description: 'Use Freepik, Lummi, AI tools, or ChatGPT',
     },
     {
       id: generateId('subconscious-trap', 10),
@@ -73,18 +87,24 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 11),
       title: 'Add Hero #1 Section and disable Parallax',
-      description: 'Using Section Factory: https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
-    // Homepage
+
+    // Category: Homepage
+    { id: 'cat-homepage', title: 'Homepage', isCategory: true },
     {
       id: generateId('subconscious-trap', 12),
       title: 'Add slider for 2 main collections (Slider #7 Section)',
-      description: 'E.g., Men/Women, Indoor/Outdoor. Settings per course instructions',
+      description: 'E.g., Men/Women, Indoor/Outdoor',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 13),
       title: 'Add Hero for popular/new collection (Hero #11 Section)',
-      description: 'Highlight your best-selling or newest collection',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 14),
@@ -94,18 +114,23 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 15),
       title: 'Add Featured Collection #18 Section',
-      description: 'Showcase a featured collection prominently',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 16),
       title: 'Add UGC area using Product Videos Section',
-      description: 'Display user-generated content videos',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
-    // Announcement Bar - The Heavy Gun
+
+    // Category: Announcement Bar
+    { id: 'cat-announcement', title: 'Announcement Bar (60-70% Conversion Boost)', isCategory: true },
     {
       id: generateId('subconscious-trap', 17),
       title: 'Add geo-location based Announcement Bar',
-      description: '60-70% avg increase in conversions! Get it: https://geo-convert.com/',
+      link: 'https://geo-convert.com/',
+      linkText: 'Get Geo Convert',
     },
     {
       id: generateId('subconscious-trap', 18),
@@ -115,25 +140,30 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 19),
       title: 'Create the coupon codes in Shopify admin',
-      description: 'Match codes from geo-targeting app in your Shopify discounts',
+      description: 'Match codes from geo-targeting app',
     },
     {
       id: generateId('subconscious-trap', 20),
       title: 'Add Square banner to homepage with background image',
       description: 'Place it relatively low on the homepage',
     },
-    // Footer
+
+    // Category: Footer
+    { id: 'cat-footer', title: 'Footer', isCategory: true },
     {
       id: generateId('subconscious-trap', 21),
       title: 'Build Footer menus via Shopify Menus',
-      description: 'Create organized navigation for your footer',
+      description: 'Create organized navigation',
     },
     {
       id: generateId('subconscious-trap', 22),
       title: 'Add Footer using Footer #7 Section',
-      description: 'Professional footer design from Section Factory',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
-    // Collection Page
+
+    // Category: Collection Page
+    { id: 'cat-collection', title: 'Collection Page', isCategory: true },
     {
       id: generateId('subconscious-trap', 23),
       title: 'Unify all product images to one visual style',
@@ -142,18 +172,23 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 24),
       title: 'Remove backgrounds from images if needed',
-      description: 'All or nothing - be consistent. Use: https://www.photoroom.com/',
+      description: 'All or nothing - be consistent',
+      link: 'https://www.photoroom.com/',
+      linkText: 'Use PhotoRoom',
     },
     {
       id: generateId('subconscious-trap', 25),
       title: 'Ensure all images have same angle, lighting and style',
       description: 'Visual consistency across entire catalog',
     },
-    // Product Page
+
+    // Category: Product Page
+    { id: 'cat-product', title: 'Product Page', isCategory: true },
     {
       id: generateId('subconscious-trap', 26),
       title: 'Add product reviews app',
-      description: 'Build social proof: https://loox.io/app/LASERCRO',
+      link: 'https://loox.io/app/LASERCRO',
+      linkText: 'Get Loox Reviews',
     },
     {
       id: generateId('subconscious-trap', 27),
@@ -168,132 +203,248 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('subconscious-trap', 29),
       title: 'Add Wishlist button above Add to Cart',
-      description: 'Get it: https://vitals.app/shopify/12548540',
+      link: 'https://vitals.app/shopify/12548540',
+      linkText: 'Get Vitals',
     },
     {
       id: generateId('subconscious-trap', 30),
       title: 'Add UGC videos below Add to Cart button',
-      description: 'Using Section Factory Product Videos section',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 31),
       title: 'Convert description to Tabs (Product Tabs #5 Pro)',
-      description: 'Organize product info into clean tabs',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 32),
       title: 'Add Product Features section (Product Features #19)',
-      description: 'Highlight key product features visually',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 33),
       title: 'Add Featured Collection section (#18)',
-      description: 'Cross-sell related products',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 34),
       title: 'Add 4-6 top recommended collections (Collections #5)',
-      description: 'Help customers discover more products',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('subconscious-trap', 35),
       title: 'Add Full Product Reviews section',
-      description: 'Display all reviews: https://loox.io/app/LASERCRO',
+      link: 'https://loox.io/app/LASERCRO',
+      linkText: 'Get Loox Reviews',
     },
-    // Checkout
+
+    // Category: Checkout
+    { id: 'cat-checkout', title: 'Checkout', isCategory: true },
     {
       id: generateId('subconscious-trap', 36),
       title: 'Upload minimal logo to Checkout',
       description: 'Must have transparent background!',
     },
-    // Optimization
+
+    // Category: Optimization
+    { id: 'cat-optimization', title: 'Optimization', isCategory: true },
     {
       id: generateId('subconscious-trap', 37),
       title: 'Install A/B Testing system',
-      description: 'Get it: https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel',
+      link: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel',
+      linkText: 'Get A/B Testing App',
     },
     {
       id: generateId('subconscious-trap', 38),
       title: 'Run A/B tests: one element at a time',
-      description: 'Let each test run for several days (thousands of sessions). Go with winner, then test next element.',
+      description: 'Let each test run several days (thousands of sessions), then go with winner',
     },
   ],
 
   'ltv-system': [
+    // Category: Mindset
+    { id: 'cat-mindset', title: 'Mindset', isCategory: true },
     {
       id: generateId('ltv-system', 1),
-      title: 'Understand the LTV Engine Blueprint',
-      description: 'Learn the psychological and technical system',
+      title: 'Define a clear store concept, product style, and customer journey',
+      description: 'Where the customer spends a lot on LTV to complete their personal process',
     },
+
+    // Category: Install 4 Free Tools (Required)
+    { id: 'cat-tools', title: 'Install 4 Free Tools (Required)', isCategory: true },
     {
       id: generateId('ltv-system', 2),
-      title: 'Map your current customer journey',
-      description: 'Identify gaps in retention',
+      title: 'Install LTV measurement tool and connect to your site (free)',
+      link: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+      linkText: 'Get LTV App',
     },
     {
       id: generateId('ltv-system', 3),
-      title: 'Study the Laws of Human Persuasion',
-      description: 'Master attention and craving triggers',
+      title: 'Connect Private Agent (5-7 day shipping, fast support, quality control)',
+      link: 'https://erp.matedropshipping.com/login?invite_id=915',
+      linkText: 'Get Mate Dropshipping',
     },
     {
       id: generateId('ltv-system', 4),
-      title: 'Build first automation loop',
-      description: 'Create self-sustaining customer system',
+      title: 'Connect email marketing tool (will use extensively later)',
+      link: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
+      linkText: 'Get Klaviyo',
     },
     {
       id: generateId('ltv-system', 5),
-      title: 'Set up email flow automations',
-      description: 'Configure 24/7 revenue generation',
+      title: 'Add Post Purchase Surveys after checkout',
+      link: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
+      linkText: 'Get Survey App',
     },
+
+    // Category: Increasing AOV
+    { id: 'cat-aov', title: 'Increasing AOV', isCategory: true },
     {
       id: generateId('ltv-system', 6),
-      title: 'Create loyalty system structure',
-      description: 'Build customer loyalty program',
+      title: 'Upload many products matching the concept',
+      description: 'High quality only, no compromises. 30+ orders and 4+ rating per product',
     },
     {
       id: generateId('ltv-system', 7),
-      title: 'Implement Rebuy Technology System',
-      description: 'Trigger automatic repeat purchases',
+      title: 'Create Inspiration page with 15+ looks (Shop the Look #5)',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('ltv-system', 8),
-      title: 'Design product upsell sequences',
-      description: 'Maximize cart value automatically',
+      title: 'Add the section to homepage as well',
     },
     {
       id: generateId('ltv-system', 9),
-      title: 'Configure post-purchase automation',
-      description: 'Set up follow-up sequences',
+      title: 'Create Bundle Builder page (Bundle Builder #2)',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('ltv-system', 10),
-      title: 'Apply Empire Growth Formula',
-      description: 'Scale using psychology and automation',
+      title: 'Set up tiered discounts by bundle quantity in admin',
+      description: 'Configure in Shopify or your platform',
     },
     {
       id: generateId('ltv-system', 11),
-      title: 'Calculate customer LTV metrics',
-      description: 'Track progress toward $1,000 per customer',
+      title: 'Add Bundle Builder page to main menu and footer',
     },
     {
       id: generateId('ltv-system', 12),
-      title: 'Optimize email timing and frequency',
-      description: 'Maximize open and click rates',
+      title: 'Add Hero on homepage linking to Bundle Builder (Hero #24)',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
     },
     {
       id: generateId('ltv-system', 13),
-      title: 'Test SMS sequence integration',
-      description: 'Add SMS to automation mix',
+      title: 'Add text on product pages showing discounted bundle price',
+      description: 'Code provided in the course',
     },
     {
       id: generateId('ltv-system', 14),
-      title: 'Review and refine after 30 days',
-      description: 'Analyze initial results',
+      title: 'Add Cart upsells',
+      link: 'https://platform.shoffi.app/r/rl_cm697iNI',
+      linkText: 'Get Cart Upsells',
     },
     {
       id: generateId('ltv-system', 15),
-      title: 'Scale winning automations',
-      description: 'Double down on best performers',
+      title: 'Add Wishlist to product pages',
+      link: 'https://vitals.app/shopify/12548540',
+      linkText: 'Get Vitals',
+    },
+    {
+      id: generateId('ltv-system', 16),
+      title: 'Optional: Add Product page cross-sell/addons (Product Addons #3)',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
+    },
+    {
+      id: generateId('ltv-system', 17),
+      title: 'Optional: Add Upsell & Cross-sell #2 section',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
+    },
+    {
+      id: generateId('ltv-system', 18),
+      title: 'Add Post Purchase upsells',
+      link: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva',
+      linkText: 'Get ReConvert',
+    },
+
+    // Category: Increasing LTV
+    { id: 'cat-ltv', title: 'Increasing LTV', isCategory: true },
+    {
+      id: generateId('ltv-system', 19),
+      title: 'Connect Private Agent (recommend connecting both, compare prices)',
+      link: 'https://erp.matedropshipping.com/login?invite_id=915',
+      linkText: 'Mate Dropshipping',
+    },
+    {
+      id: generateId('ltv-system', 20),
+      title: 'Alternative Private Agent',
+      link: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
+      linkText: 'Get HyperSKU',
+    },
+    {
+      id: generateId('ltv-system', 21),
+      title: 'Add branding/free gift to every order (up to $1 per gift)',
+    },
+    {
+      id: generateId('ltv-system', 22),
+      title: 'Add professional Contact Us page (Contact Form #5)',
+      link: 'https://apps.shopify.com/section-factory?mref=lsbqcbva',
+      linkText: 'Get Section Factory',
+    },
+    {
+      id: generateId('ltv-system', 23),
+      title: 'Respond to customer service within 24 hours',
+      description: 'Use AI prompt from course (pages 75-80)',
+    },
+    {
+      id: generateId('ltv-system', 24),
+      title: 'Connect and set up loyalty program (5-10% earning per purchase)',
+      link: 'https://smile.io/',
+      linkText: 'Get Smile.io',
+    },
+    {
+      id: generateId('ltv-system', 25),
+      title: 'Create Available Rewards reminder email in Klaviyo',
+    },
+
+    // Category: Post-Purchase Marketing
+    { id: 'cat-post-purchase', title: 'Post-Purchase Marketing', isCategory: true },
+    {
+      id: generateId('ltv-system', 26),
+      title: 'Create email FLOW as shown in course',
+    },
+    {
+      id: generateId('ltv-system', 27),
+      title: 'Disable Smart Sending on all emails',
+    },
+    {
+      id: generateId('ltv-system', 28),
+      title: 'Create New Releases / Best Sellers campaign (weekly)',
+    },
+    {
+      id: generateId('ltv-system', 29),
+      title: 'Create Flash Sale campaign (every 1-2 months)',
+    },
+    {
+      id: generateId('ltv-system', 30),
+      title: 'Create Sales Events campaigns (6-8 times per year)',
+    },
+    {
+      id: generateId('ltv-system', 31),
+      title: 'In Meta: Create Custom Audience of buyers from last 180 days',
+    },
+    {
+      id: generateId('ltv-system', 32),
+      title: 'Create ABO campaign with one adset, $3-15 daily budget, 15-20 varied creatives',
     },
   ],
 

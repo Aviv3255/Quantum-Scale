@@ -5,11 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2,
   Circle,
-  ChevronRight,
-  ChevronDown,
   RotateCcw,
   ListChecks,
   X,
+  ExternalLink,
 } from 'lucide-react';
 import { useChecklist } from '@/hooks/useChecklist';
 
@@ -32,19 +31,13 @@ export default function CourseChecklist({
   );
 
   const [showResetConfirm, setShowResetConfirm] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  const toggleExpand = (itemId: string) => {
-    setExpandedItems((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
-    });
-  };
+  // Filter out category headers for progress calculation
+  const taskItems = items.filter((item) => !item.isCategory);
+  const completedCount = taskItems.filter((item) => isItemCompleted(item.id)).length;
+
+  // Keep track of item numbering (excluding categories)
+  let taskNumber = 0;
 
   const handleReset = () => {
     resetProgress();
@@ -96,8 +89,7 @@ export default function CourseChecklist({
                 <div>
                   <h3 className="font-semibold text-[var(--text-primary)]">Course Checklist</h3>
                   <p className="text-sm text-[var(--text-muted)]">
-                    {items.filter((_, i) => isItemCompleted(items[i]?.id)).length} of {items.length}{' '}
-                    completed
+                    {completedCount} of {taskItems.length} completed
                   </p>
                 </div>
               </div>
@@ -139,80 +131,91 @@ export default function CourseChecklist({
               ) : (
                 <div className="space-y-2">
                   {items.map((item, index) => {
+                    // Category header
+                    if (item.isCategory) {
+                      return (
+                        <div
+                          key={item.id}
+                          className={`${index > 0 ? 'mt-4 pt-4 border-t border-[#eee]' : ''}`}
+                        >
+                          <h4 className="text-xs font-bold uppercase tracking-wide text-[var(--primary)] mb-2">
+                            {item.title}
+                          </h4>
+                        </div>
+                      );
+                    }
+
+                    // Regular task item
+                    taskNumber++;
+                    const currentTaskNumber = taskNumber;
                     const isCompleted = isItemCompleted(item.id);
-                    const isExpanded = expandedItems.has(item.id);
-                    const hasDescription = !!item.description;
 
                     return (
                       <motion.div
                         key={item.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.03 }}
+                        transition={{ delay: index * 0.02 }}
                         className={`rounded-xl border transition-all ${
                           isCompleted
                             ? 'border-green-200 bg-green-50'
                             : 'border-[#eee] bg-white hover:border-[#ddd]'
                         }`}
                       >
-                        <div className="flex items-start gap-3 p-3">
-                          {/* Checkbox */}
-                          <button
-                            onClick={() => toggleItem(item.id)}
-                            className="mt-0.5 flex-shrink-0"
-                          >
-                            {isCompleted ? (
-                              <CheckCircle2 size={22} className="text-green-500" />
-                            ) : (
-                              <Circle
-                                size={22}
-                                className="text-[#ccc] transition-colors hover:text-[#999]"
-                              />
-                            )}
-                          </button>
-
-                          {/* Content */}
-                          <div className="min-w-0 flex-1">
-                            <div
-                              className="flex cursor-pointer items-start justify-between gap-2"
-                              onClick={() => hasDescription && toggleExpand(item.id)}
+                        <div className="p-3">
+                          <div className="flex items-start gap-3">
+                            {/* Checkbox */}
+                            <button
+                              onClick={() => toggleItem(item.id)}
+                              className="mt-0.5 flex-shrink-0"
                             >
+                              {isCompleted ? (
+                                <CheckCircle2 size={22} className="text-green-500" />
+                              ) : (
+                                <Circle
+                                  size={22}
+                                  className="text-[#ccc] transition-colors hover:text-[#999]"
+                                />
+                              )}
+                            </button>
+
+                            {/* Content */}
+                            <div className="min-w-0 flex-1">
                               <span
-                                className={`text-sm font-medium leading-tight ${
+                                className={`text-sm font-medium leading-tight block ${
                                   isCompleted
                                     ? 'text-green-700 line-through'
                                     : 'text-[var(--text-primary)]'
                                 }`}
                               >
-                                {index + 1}. {item.title}
+                                {currentTaskNumber}. {item.title}
                               </span>
-                              {hasDescription && (
-                                <button className="flex-shrink-0 p-0.5">
-                                  {isExpanded ? (
-                                    <ChevronDown size={16} className="text-[var(--text-muted)]" />
-                                  ) : (
-                                    <ChevronRight size={16} className="text-[var(--text-muted)]" />
-                                  )}
-                                </button>
-                              )}
-                            </div>
 
-                            {/* Description (expandable) */}
-                            <AnimatePresence>
-                              {isExpanded && item.description && (
-                                <motion.p
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: 'auto', opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.2 }}
-                                  className={`mt-1 overflow-hidden text-xs ${
+                              {/* Description */}
+                              {item.description && (
+                                <p
+                                  className={`mt-1 text-xs ${
                                     isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'
                                   }`}
                                 >
                                   {item.description}
-                                </motion.p>
+                                </p>
                               )}
-                            </AnimatePresence>
+
+                              {/* Link Button */}
+                              {item.link && (
+                                <a
+                                  href={item.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <ExternalLink size={12} />
+                                  {item.linkText || 'Open Link'}
+                                </a>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </motion.div>
