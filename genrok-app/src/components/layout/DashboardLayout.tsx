@@ -30,6 +30,7 @@ import {
   Users,
   Podcast,
   Layers,
+  Database,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -72,7 +73,8 @@ const navigationItems: NavItem[] = [
     isCategory: true,
     subItems: [
       { title: "Private Agent", href: "/products/private-agent" },
-      { title: "AliExpress Stores", href: "/products/aliexpress" }
+      { title: "AliExpress Stores", href: "/products/aliexpress" },
+      { title: "Sell These Products", href: "/products/sell-these" }
     ]
   },
   {
@@ -126,6 +128,17 @@ const navigationItems: NavItem[] = [
       { title: "Explore Courses", href: "/courses" },
       { title: "My Courses", href: "/my-courses" }
     ]
+  },
+  {
+    title: "Data Center",
+    href: "/data-center",
+    icon: Database,
+  },
+  {
+    title: "Build a Bundle & Save 35%",
+    href: "https://quantum-scale.co/pages/bundle-builder",
+    icon: Package,
+    external: true
   },
 ];
 
@@ -204,19 +217,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
             </div>
             {/* Hover dropdown for collapsed state */}
-            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[180px]"
+            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
                  style={{
                    background: 'var(--bg-sidebar)',
                    border: '1px solid var(--border-subtle)',
-                   borderRadius: '10px',
+                   borderRadius: '12px',
                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
                  }}>
-              <div className="p-1.5 space-y-0.5">
+              <div className="p-2 space-y-1">
                 {item.subItems?.map((subItem, subIdx) => (
                   <Link
                     key={subIdx}
                     href={subItem.href}
-                    className={`block px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                    className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
                       isSubItemActive(subItem) ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
                     }`}
                   >
@@ -255,12 +268,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="pl-7 space-y-0.5 py-0.5">
+                <div className="pl-8 space-y-1 py-1">
                   {item.subItems?.map((subItem, subIdx) => (
                     <Link
                       key={subIdx}
                       href={subItem.href}
-                      className={`block px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
                           ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
                           : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
@@ -335,11 +348,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
         {/* Logo */}
-        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '8px 0' }}>
+        <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '12px 0' }}>
           <img
             src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-10 h-10 rounded-lg object-cover" : "w-16 h-16 rounded-lg object-cover"}
+            className={sidebarCollapsed ? "w-10 h-10 rounded-xl object-cover" : "w-20 h-20 rounded-xl object-cover"}
           />
         </div>
 
