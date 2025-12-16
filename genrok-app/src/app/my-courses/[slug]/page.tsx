@@ -26,6 +26,7 @@ import {
   CourseFile,
 } from '@/lib/course-access';
 import { supabase } from '@/lib/supabase';
+import CourseChecklist from '@/components/CourseChecklist';
 
 interface CourseData {
   id: string;
@@ -152,6 +153,7 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
   const [selectedFile, setSelectedFile] = useState<CourseFile | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
+  const [isChecklistOpen, setIsChecklistOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -372,6 +374,14 @@ export default function CourseViewerPage({ params }: { params: Promise<{ slug: s
           />
         )}
       </AnimatePresence>
+
+      {/* Course Checklist Panel */}
+      <CourseChecklist
+        courseSlug={resolvedParams.slug}
+        userId={user?.id}
+        isOpen={isChecklistOpen}
+        onToggle={() => setIsChecklistOpen(!isChecklistOpen)}
+      />
     </DashboardLayout>
   );
 }
