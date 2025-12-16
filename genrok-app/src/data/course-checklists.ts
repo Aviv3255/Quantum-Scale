@@ -839,80 +839,92 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
   ],
 
   'laser-targeting': [
+    // Category: Introduction
+    { id: 'cat-intro', title: 'Introduction', isCategory: true },
     {
       id: generateId('laser-targeting', 1),
-      title: 'Learn 0.001% Targeting Method',
-      description: 'Identify perfect buyers',
+      title: "Understand Meta's technology and algorithm structure",
     },
     {
       id: generateId('laser-targeting', 2),
-      title: 'Audit current targeting setup',
-      description: 'Review existing audiences',
+      title: 'Connect tracking pixel for 100% accuracy',
+      link: 'https://www.triplewhale.com/',
+      linkText: 'Get Triple Whale',
     },
+
+    // Category: Avatar Mapping
+    { id: 'cat-avatar', title: 'Avatar Mapping', isCategory: true },
     {
       id: generateId('laser-targeting', 3),
-      title: 'Implement Meta AI Injection System',
-      description: 'Train algorithm for you',
+      title: 'Understand the 3 characteristics of an avatar',
     },
     {
       id: generateId('laser-targeting', 4),
-      title: 'Configure data inputs',
-      description: 'Feed AI optimal signals',
+      title: 'Answer 30 avatar profiling questions',
     },
+
+    // Category: Signals
+    { id: 'cat-signals', title: 'Signals', isCategory: true },
     {
       id: generateId('laser-targeting', 5),
-      title: 'Build Multi-Angle Attack Strategy',
-      description: 'Target from multiple angles',
+      title: 'Understand the technological logic behind signals',
     },
     {
       id: generateId('laser-targeting', 6),
-      title: 'Combine AI for lower costs',
-      description: 'Optimize traffic costs',
+      title: 'Understand what a signal looks like',
     },
     {
       id: generateId('laser-targeting', 7),
-      title: 'Apply Avatar Mapping Protocol',
-      description: 'Target subconscious desires',
+      title: 'Understand how Meta reads creatives',
     },
+
+    // Category: Implementing 5 Emotional Signals in Ads
+    { id: 'cat-emotional', title: 'Implementing 5 Emotional Signals in Ads', isCategory: true },
     {
       id: generateId('laser-targeting', 8),
-      title: 'Create buyer personas',
-      description: 'Define ideal customers',
+      title: 'The Pain Signal',
     },
     {
       id: generateId('laser-targeting', 9),
-      title: 'Build Remarketing Mastery sequences',
-      description: 'Create compulsion-based retargeting',
+      title: 'The Desire Signal',
     },
     {
       id: generateId('laser-targeting', 10),
-      title: 'Set up remarketing audiences',
-      description: 'Configure pixel events',
+      title: 'The Identity Signal',
     },
     {
       id: generateId('laser-targeting', 11),
-      title: 'Implement Bloodhound System',
-      description: 'Automate customer hunting',
+      title: 'The Belonging Signal',
     },
     {
       id: generateId('laser-targeting', 12),
-      title: 'Launch test campaigns',
-      description: 'Test new targeting',
+      title: 'The Rejection Signal',
     },
+
+    // Category: Practice
+    { id: 'cat-practice', title: 'Practice', isCategory: true },
     {
       id: generateId('laser-targeting', 13),
-      title: 'Monitor ROAS metrics',
-      description: 'Track targeting performance',
+      title: 'Review examples of good vs bad copy and fully understand the differences',
     },
     {
       id: generateId('laser-targeting', 14),
-      title: 'Scale winning audiences',
-      description: 'Increase budget on winners',
+      title: 'Complete the questions table (see page 54)',
     },
+
+    // Category: Remarketing
+    { id: 'cat-remarketing', title: 'Remarketing', isCategory: true },
     {
       id: generateId('laser-targeting', 15),
-      title: 'Optimize underperformers',
-      description: 'Fix or pause losers',
+      title: 'Understand the logic and purpose of remarketing campaigns',
+    },
+    {
+      id: generateId('laser-targeting', 16),
+      title: 'Set up the correct audience (Custom Audience - 180D Visitors)',
+    },
+    {
+      id: generateId('laser-targeting', 17),
+      title: 'Use daily budget in campaign according to formula (see pages 62-63)',
     },
   ],
 

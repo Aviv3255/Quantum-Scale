@@ -748,11 +748,16 @@ export default function CoursesPage() {
                           {/* Already Owned Badge */}
                           {isOwned && (
                             <div
-                              className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5"
-                              style={{ backgroundColor: '#22c55e', color: '#ffffff' }}
+                              className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border"
+                              style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                color: '#111',
+                                borderColor: '#ddd',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                              }}
                             >
-                              <Check size={14} />
-                              Already Owned
+                              <Check size={12} className="text-[#22c55e]" />
+                              Owned
                             </div>
                           )}
                           {course.badge && !isOwned && (

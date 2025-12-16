@@ -131,15 +131,16 @@ export default function CourseChecklist({
               ) : (
                 <div className="space-y-2">
                   {items.map((item, index) => {
-                    // Category header
+                    // Category header - displayed as a simple header with colon
                     if (item.isCategory) {
                       return (
                         <div
                           key={item.id}
-                          className={`${index > 0 ? 'mt-4 pt-4 border-t border-[#eee]' : ''}`}
+                          className={`${index > 0 ? 'mt-5 pt-4 border-t border-[#e0e0e0]' : 'mb-1'}`}
                         >
-                          <h4 className="text-xs font-bold uppercase tracking-wide text-[var(--primary)] mb-2">
-                            {item.title}
+                          <h4 className="text-sm font-semibold text-[#333] flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" />
+                            {item.title}:
                           </h4>
                         </div>
                       );
