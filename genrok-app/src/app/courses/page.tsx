@@ -31,6 +31,7 @@ import { useAuthStore } from '@/store/auth';
 import { useCartStore } from '@/store/cart';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
+import { getUserCourses } from '@/lib/course-access';
 import { ShoppingCart, Trash2 as TrashIcon, X as CloseIcon, Lock } from 'lucide-react';
 
 // Course Content Input Interface (URL-based for token efficiency)
@@ -621,12 +622,24 @@ export default function CoursesPage() {
   const { user, isLoading } = useAuthStore();
   const { addItem, isInCart, openCart } = useCartStore();
   const courses = getAllCourses();
+  const [ownedCourseSlugs, setOwnedCourseSlugs] = useState<string[]>([]);
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Load user's purchased courses
+  useEffect(() => {
+    const loadOwnedCourses = async () => {
+      if (user?.id) {
+        const purchasedCourses = await getUserCourses(user.id);
+        setOwnedCourseSlugs(purchasedCourses.map((c) => c.slug));
+      }
+    };
+    loadOwnedCourses();
+  }, [user?.id]);
 
   const handleAddToCart = (e: React.MouseEvent, course: typeof courses[0]) => {
     e.preventDefault();
@@ -697,128 +710,165 @@ export default function CoursesPage() {
               animate="visible"
               className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
             >
-              {courses.map((course) => (
-                <motion.div key={course.slug} variants={itemVariants}>
-                  <div
-                    className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl"
-                    style={{
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #e5e5e5',
-                    }}
-                  >
-                    {/* Image Section - Link to course */}
-                    <Link href={`/courses/${course.slug}`}>
-                      <div
-                        className="relative w-full flex items-center justify-center"
-                        style={{
-                          backgroundColor: '#ffffff',
-                          height: '280px',
-                        }}
-                      >
-                        {course.image ? (
-                          <Image
-                            src={course.image}
-                            alt={course.title}
-                            fill
-                            unoptimized
-                            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
-                            <BookOpen className="w-10 h-10 text-[#999999]" />
-                          </div>
-                        )}
-                        {course.badge && (
-                          <div
-                            className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
-                            style={{ backgroundColor: '#111111', color: '#ffffff' }}
-                          >
-                            {course.badge}
-                          </div>
-                        )}
-                      </div>
-                    </Link>
+              {courses.map((course) => {
+                const isOwned = ownedCourseSlugs.includes(course.slug);
 
-                    {/* Content Section */}
-                    <div className="p-6">
-                      {/* Title - Link to course */}
+                return (
+                  <motion.div key={course.slug} variants={itemVariants}>
+                    <div
+                      className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl h-full flex flex-col"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e5e5',
+                        minHeight: '580px',
+                      }}
+                    >
+                      {/* Image Section - Link to course */}
                       <Link href={`/courses/${course.slug}`}>
-                        <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
-                          {course.title}
-                        </h2>
-                      </Link>
-
-                      {/* Subtitle */}
-                      <p className="text-sm text-[#666666] mb-4 line-clamp-2">
-                        {course.subtitle}
-                      </p>
-
-                      {/* Stats Row */}
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm text-[#888888]">
-                        <div className="flex items-center gap-1.5">
-                          <BookOpen size={14} />
-                          <span>{course.stats[0]?.value} {course.stats[0]?.label}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Clock size={14} />
-                          <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
-                        </div>
-                      </div>
-
-                      {/* Bonuses indicator */}
-                      {course.bonuses && course.bonuses.length > 0 && (
                         <div
-                          className="flex items-center gap-2 mb-5 p-3 rounded-xl"
-                          style={{ backgroundColor: '#f5f5f5' }}
-                        >
-                          <Gift className="w-4 h-4 text-[#666666]" />
-                          <span className="text-xs text-[#666666]">
-                            <strong className="text-[#111111]">{course.bonuses.length} bonuses</strong> worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Price and CTA */}
-                      <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-[#111111]">
-                            ${course.price}
-                          </span>
-                          {course.originalPrice && (
-                            <span className="text-sm line-through text-[#999999]">
-                              ${course.originalPrice}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Add to Cart Button */}
-                        <button
-                          onClick={(e) => handleAddToCart(e, course)}
-                          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                          className="relative w-full flex items-center justify-center"
                           style={{
-                            background: isInCart(course.slug)
-                              ? '#22c55e'
-                              : 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
-                            color: '#ffffff',
+                            backgroundColor: '#ffffff',
+                            height: '280px',
                           }}
                         >
-                          {isInCart(course.slug) ? (
+                          {course.image ? (
+                            <Image
+                              src={course.image}
+                              alt={course.title}
+                              fill
+                              unoptimized
+                              className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-24 h-32 bg-[#e5e5e5] rounded-lg flex items-center justify-center">
+                              <BookOpen className="w-10 h-10 text-[#999999]" />
+                            </div>
+                          )}
+                          {/* Already Owned Badge */}
+                          {isOwned && (
+                            <div
+                              className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5"
+                              style={{ backgroundColor: '#22c55e', color: '#ffffff' }}
+                            >
+                              <Check size={14} />
+                              Already Owned
+                            </div>
+                          )}
+                          {course.badge && !isOwned && (
+                            <div
+                              className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
+                              style={{ backgroundColor: '#111111', color: '#ffffff' }}
+                            >
+                              {course.badge}
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+
+                      {/* Content Section */}
+                      <div className="p-6 flex flex-col flex-1">
+                        {/* Title - Link to course */}
+                        <Link href={`/courses/${course.slug}`}>
+                          <h2 className="text-xl font-semibold text-[#111111] mb-2 group-hover:opacity-80 transition-opacity">
+                            {course.title}
+                          </h2>
+                        </Link>
+
+                        {/* Subtitle */}
+                        <p className="text-sm text-[#666666] mb-4 line-clamp-2">
+                          {course.subtitle}
+                        </p>
+
+                        {/* Stats Row */}
+                        <div className="flex flex-wrap gap-4 mb-4 text-sm text-[#888888]">
+                          <div className="flex items-center gap-1.5">
+                            <BookOpen size={14} />
+                            <span>{course.stats[0]?.value} {course.stats[0]?.label}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <Clock size={14} />
+                            <span>{course.stats[1]?.value} {course.stats[1]?.label}</span>
+                          </div>
+                        </div>
+
+                        {/* Bonuses indicator */}
+                        {course.bonuses && course.bonuses.length > 0 && (
+                          <div
+                            className="flex items-center gap-2 mb-5 p-3 rounded-xl"
+                            style={{ backgroundColor: '#f5f5f5' }}
+                          >
+                            <Gift className="w-4 h-4 text-[#666666]" />
+                            <span className="text-xs text-[#666666]">
+                              <strong className="text-[#111111]">{course.bonuses.length} bonuses</strong> worth ${course.bonuses.reduce((sum, b) => sum + b.value, 0)} included
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Spacer to push footer to bottom */}
+                        <div className="flex-1" />
+
+                        {/* Price and CTA - Only show if not owned */}
+                        <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
+                          {isOwned ? (
                             <>
-                              <Check size={16} />
-                              In Cart
+                              <Link
+                                href={`/my-courses/${course.slug}`}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                                style={{
+                                  background: 'linear-gradient(150deg, #22c55e 0%, #16a34a 100%)',
+                                  color: '#ffffff',
+                                }}
+                              >
+                                <ArrowRight size={16} />
+                                Go to Course
+                              </Link>
+                              <span className="text-sm text-[#22c55e] font-medium">Purchased ✓</span>
                             </>
                           ) : (
                             <>
-                              <Plus size={16} />
-                              Add to Cart
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-bold text-[#111111]">
+                                  ${course.price}
+                                </span>
+                                {course.originalPrice && (
+                                  <span className="text-sm line-through text-[#999999]">
+                                    ${course.originalPrice}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Add to Cart Button */}
+                              <button
+                                onClick={(e) => handleAddToCart(e, course)}
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                                style={{
+                                  background: isInCart(course.slug)
+                                    ? '#22c55e'
+                                    : 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
+                                  color: '#ffffff',
+                                }}
+                              >
+                                {isInCart(course.slug) ? (
+                                  <>
+                                    <Check size={16} />
+                                    In Cart
+                                  </>
+                                ) : (
+                                  <>
+                                    <Plus size={16} />
+                                    Add to Cart
+                                  </>
+                                )}
+                              </button>
                             </>
                           )}
-                        </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </motion.div>
           ) : (
             <div className="text-center py-16">
