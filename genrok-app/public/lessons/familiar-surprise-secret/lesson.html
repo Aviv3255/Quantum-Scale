@@ -3,72 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The "Familiar Surprise" Secret That Makes Anything Sell</title>
+  <title>The Familiar Surprise Secret</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             accent: '#2563eb',
-            'accent-light': '#3b82f6',
-            'accent-dark': '#1d4ed8',
           },
           fontSize: {
-            'xs': ['0.64rem', { lineHeight: '1.75' }],
-            'sm': ['0.8rem', { lineHeight: '1.625' }],
-            'base': ['1rem', { lineHeight: '1.625' }],
-            'lg': ['1.25rem', { lineHeight: '1.5' }],
-            'xl': ['1.563rem', { lineHeight: '1.35' }],
-            '2xl': ['1.953rem', { lineHeight: '1.25' }],
-            '3xl': ['2.441rem', { lineHeight: '1.2' }],
-            '4xl': ['3.052rem', { lineHeight: '1.15' }],
-            '5xl': ['3.815rem', { lineHeight: '1.1' }],
+            'xs': ['0.7rem', { lineHeight: '1.5' }],
+            'sm': ['0.8rem', { lineHeight: '1.5' }],
+            'base': ['0.875rem', { lineHeight: '1.6' }],
+            'lg': ['1rem', { lineHeight: '1.5' }],
+            'xl': ['1.125rem', { lineHeight: '1.4' }],
+            '2xl': ['1.25rem', { lineHeight: '1.3' }],
+            '3xl': ['1.5rem', { lineHeight: '1.2' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    * { font-family: 'Inter', -apple-system, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #2563eb; color: #fff; }
+    h1, h2, h3 { letter-spacing: -0.02em; }
 
-    /* Typography refinements */
-    h1, h2, h3 { letter-spacing: -0.025em; }
-    p { letter-spacing: 0; }
-    .caption { letter-spacing: 0.025em; }
+    .lesson-container { max-width: 720px; margin: 0 auto; }
 
-    /* Custom slider */
     input[type="range"] {
       -webkit-appearance: none;
-      height: 8px;
-      border-radius: 4px;
-      background: linear-gradient(to right, #e5e5e5 0%, #e5e5e5 30%, rgba(37,99,235,0.2) 30%, rgba(37,99,235,0.2) 70%, #e5e5e5 70%);
+      height: 6px;
+      border-radius: 3px;
+      background: #e5e5e5;
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 28px;
-      height: 28px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: #2563eb;
       cursor: grab;
-      border: 4px solid white;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.4);
-    }
-    input[type="range"]::-webkit-slider-thumb:active {
-      cursor: grabbing;
-      transform: scale(0.95);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
     }
   </style>
 </head>
@@ -76,113 +60,28 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence, useSpring, useTransform, useMotionValue } = window.Motion;
+    const { motion, useInView } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    // Spring config for physics-based animations
-    const springConfig = { stiffness: 400, damping: 25 };
-    const gentleSpring = { stiffness: 300, damping: 20 };
-    const snappySpring = { stiffness: 500, damping: 30 };
-
-    // Icons (Lucide-style)
-    const Icons = {
-      Lightbulb: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
-          <path d="M9 18h6"/><path d="M10 22h4"/>
-        </svg>
-      ),
-      Brain: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-          <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      Zap: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-        </svg>
-      ),
-      ArrowRight: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
-      ),
-      Check: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>
-      ),
-      Music: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-        </svg>
-      ),
-      ChevronDown: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m6 9 6 6 6-6"/>
-        </svg>
-      ),
-      TrendingUp: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
-        </svg>
-      ),
-      AlertCircle: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-      ),
-    };
-
-    // Stagger container for animations
-    const staggerContainer = {
-      hidden: { opacity: 0 },
-      show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-      }
-    };
-
-    const staggerItem = {
-      hidden: { opacity: 0, y: 30 },
-      show: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 400, damping: 25 }
-      }
-    };
-
-    // Fade with spring physics
+    // Compact fade animation
     function Fade({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
         <motion.div
           ref={ref}
           className={className}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 20,
-            delay
-          }}
+          transition={{ duration: 0.4, delay, ease: "easeOut" }}
         >
           {children}
         </motion.div>
       );
     }
 
-    // Animated Counter with spring
-    function Counter({ end, suffix = "", prefix = "", duration = 2 }) {
+    // Compact counter
+    function Counter({ end, suffix = "" }) {
       const [count, setCount] = useState(0);
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
@@ -190,664 +89,230 @@
       useEffect(() => {
         if (isInView) {
           let start = 0;
-          const increment = end / (duration * 60);
           const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 1000 / 60);
+            start += end / 40;
+            if (start >= end) { setCount(end); clearInterval(timer); }
+            else { setCount(Math.floor(start)); }
+          }, 25);
           return () => clearInterval(timer);
         }
-      }, [isInView, end, duration]);
+      }, [isInView, end]);
 
-      return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+      return <span ref={ref}>{count}{suffix}</span>;
     }
 
-    // Magnetic hover button
-    function MagneticButton({ children, className = "" }) {
-      const ref = useRef(null);
-      const x = useMotionValue(0);
-      const y = useMotionValue(0);
-      const springX = useSpring(x, { stiffness: 150, damping: 15 });
-      const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-      const handleMouseMove = (e) => {
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        x.set((e.clientX - centerX) * 0.15);
-        y.set((e.clientY - centerY) * 0.15);
-      };
-
-      const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-      };
-
-      return (
-        <motion.div
-          ref={ref}
-          className={className}
-          style={{ x: springX, y: springY }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    // Interactive MAYA Slider with enhanced physics
+    // Interactive MAYA Slider - Compact
     function MayaSlider() {
       const [value, setValue] = useState(50);
-      const [isDragging, setIsDragging] = useState(false);
 
       const getZone = () => {
-        if (value < 30) return {
-          label: 'Too Familiar',
-          emoji: '😴',
-          desc: 'They scroll past without a second thought. "Seen it. Boring."',
-          color: 'text-neutral-400',
-          bgColor: 'bg-neutral-50',
-          borderColor: 'border-neutral-200'
-        };
-        if (value > 70) return {
-          label: 'Too Novel',
-          emoji: '😰',
-          desc: 'They hesitate and leave. "This seems risky... I\'ll think about it."',
-          color: 'text-neutral-400',
-          bgColor: 'bg-neutral-50',
-          borderColor: 'border-neutral-200'
-        };
-        return {
-          label: 'The MAYA Zone',
-          emoji: '🎯',
-          desc: 'They lean forward, eyes wide. "Wait... this is exactly what I need. Tell me more."',
-          color: 'text-accent',
-          bgColor: 'bg-blue-50',
-          borderColor: 'border-accent'
-        };
+        if (value < 30) return { label: 'Too Familiar', emoji: '😴', desc: 'Boring. They scroll past.', color: 'text-neutral-400', bg: 'bg-neutral-50', border: 'border-neutral-200' };
+        if (value > 70) return { label: 'Too Novel', emoji: '😰', desc: 'Too risky. They hesitate and leave.', color: 'text-neutral-400', bg: 'bg-neutral-50', border: 'border-neutral-200' };
+        return { label: 'MAYA Zone', emoji: '🎯', desc: 'Perfect! They lean in and want more.', color: 'text-accent', bg: 'bg-blue-50', border: 'border-accent' };
       };
 
       const zone = getZone();
       const isInZone = value >= 30 && value <= 70;
 
       return (
-        <div className="py-8">
-          <div className="max-w-xl mx-auto">
-            {/* Visual gauge */}
-            <div className="relative h-4 mb-6 rounded-full overflow-hidden bg-neutral-100">
-              <motion.div
-                className="absolute left-[30%] right-[30%] h-full bg-accent/20"
-                animate={{ opacity: isInZone ? 1 : 0.3 }}
-              />
-              <motion.div
-                className="absolute h-full bg-accent rounded-full"
-                style={{ width: `${value}%` }}
-                animate={{
-                  backgroundColor: isInZone ? '#2563eb' : '#a3a3a3'
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              />
-            </div>
-
-            {/* Slider */}
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={value}
-              onChange={(e) => setValue(parseInt(e.target.value))}
-              onMouseDown={() => setIsDragging(true)}
-              onMouseUp={() => setIsDragging(false)}
-              className="w-full relative z-10 cursor-grab active:cursor-grabbing"
+        <div className="py-4">
+          <div className="relative h-2 mb-4 rounded-full overflow-hidden bg-neutral-100">
+            <div className="absolute left-[30%] right-[30%] h-full bg-accent/20" />
+            <motion.div
+              className="absolute h-full rounded-full"
+              style={{ width: `${value}%`, backgroundColor: isInZone ? '#2563eb' : '#a3a3a3' }}
             />
-
-            {/* Labels */}
-            <div className="flex justify-between text-sm mt-4 mb-8">
-              <span className="text-neutral-400 font-medium">Boring</span>
-              <motion.span
-                className="text-accent font-semibold"
-                animate={{ scale: isInZone ? 1.05 : 1 }}
-              >
-                Sweet Spot
-              </motion.span>
-              <span className="text-neutral-400 font-medium">Risky</span>
-            </div>
-
-            {/* Result Card */}
-            <motion.div
-              className={`p-8 rounded-2xl border-2 transition-colors ${zone.bgColor} ${zone.borderColor}`}
-              animate={{
-                scale: isDragging ? 1.02 : 1,
-                y: isInZone ? -4 : 0
-              }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              key={zone.label}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{zone.emoji}</span>
-                <p className={`text-xl font-bold ${zone.color}`}>{zone.label}</p>
-              </div>
-              <p className="text-neutral-600 text-lg leading-relaxed">{zone.desc}</p>
-            </motion.div>
           </div>
-        </div>
-      );
-    }
-
-    // Interactive card with spring physics
-    function InteractiveCard({ icon: Icon, title, content, index }) {
-      const [isHovered, setIsHovered] = useState(false);
-
-      return (
-        <motion.div
-          className="relative p-8 rounded-2xl border border-neutral-200 bg-white overflow-hidden cursor-pointer"
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          whileHover={{
-            y: -8,
-            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.1)"
-          }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          variants={staggerItem}
-        >
-          {/* Accent line */}
-          <motion.div
-            className="absolute top-0 left-0 right-0 h-1 bg-accent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isHovered ? 1 : 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          />
-
-          <div className="flex items-start gap-5">
-            <motion.div
-              className="p-3 rounded-xl bg-neutral-100 text-neutral-600"
-              animate={{
-                backgroundColor: isHovered ? '#2563eb' : '#f5f5f5',
-                color: isHovered ? '#ffffff' : '#525252'
-              }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            >
-              <Icon />
-            </motion.div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold mb-3">{title}</h3>
-              <p className="text-neutral-600 leading-relaxed">{content}</p>
-            </div>
+          <input type="range" min="0" max="100" value={value} onChange={(e) => setValue(parseInt(e.target.value))} className="w-full" />
+          <div className="flex justify-between text-xs mt-2 mb-4 text-neutral-400">
+            <span>Boring</span>
+            <span className={isInZone ? 'text-accent font-medium' : ''}>Sweet Spot</span>
+            <span>Risky</span>
           </div>
-        </motion.div>
-      );
-    }
-
-    // Before/After comparison
-    function BeforeAfter({ before, after }) {
-      const [showAfter, setShowAfter] = useState(false);
-
-      return (
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div
-            className={`p-8 rounded-2xl border-2 cursor-pointer transition-colors ${!showAfter ? 'border-neutral-300 bg-neutral-50' : 'border-neutral-200 bg-white'}`}
-            onClick={() => setShowAfter(false)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            <div className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">Before MAYA</div>
-            <p className="text-lg text-neutral-600">{before}</p>
-          </motion.div>
-
-          <motion.div
-            className={`p-8 rounded-2xl border-2 cursor-pointer transition-colors ${showAfter ? 'border-accent bg-blue-50' : 'border-neutral-200 bg-white'}`}
-            onClick={() => setShowAfter(true)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            <div className="text-sm font-semibold text-accent uppercase tracking-wider mb-4">After MAYA</div>
-            <p className="text-lg text-neutral-700 font-medium">{after}</p>
+          <motion.div className={`p-4 rounded-xl border ${zone.bg} ${zone.border}`} animate={{ scale: isInZone ? 1.02 : 1 }}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg">{zone.emoji}</span>
+              <span className={`text-sm font-semibold ${zone.color}`}>{zone.label}</span>
+            </div>
+            <p className="text-sm text-neutral-600">{zone.desc}</p>
           </motion.div>
         </div>
       );
     }
 
-    // Progress bar with animation
-    function AnimatedProgress({ label, value, color = "bg-accent" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      return (
-        <div ref={ref} className="mb-6">
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium text-neutral-700">{label}</span>
-            <span className="text-sm font-bold text-accent">{value}%</span>
-          </div>
-          <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
-            <motion.div
-              className={`h-full ${color} rounded-full`}
-              initial={{ width: 0 }}
-              animate={isInView ? { width: `${value}%` } : {}}
-              transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
-            />
-          </div>
-        </div>
-      );
-    }
-
-    // Main Lesson
+    // Lesson Content
     function Lesson() {
       return (
-        <div className="min-h-screen bg-white">
-          {/* Hero Section */}
-          <header className="relative bg-neutral-950 text-white overflow-hidden">
-            {/* Animated background */}
-            <div className="absolute inset-0">
-              <div className="absolute inset-0 opacity-30" style={{
-                backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(37,99,235,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(37,99,235,0.2) 0%, transparent 50%)'
-              }}/>
-              <motion.div
-                className="absolute inset-0"
-                animate={{
-                  backgroundPosition: ['0% 0%', '100% 100%'],
-                }}
-                transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
-                style={{
-                  backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(37,99,235,0.1) 0%, transparent 25%)',
-                  backgroundSize: '100% 100%'
-                }}
-              />
-            </div>
-
-            <div className="relative max-w-5xl mx-auto px-6 py-24 md:py-32">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              >
-                <motion.span
-                  className="inline-block px-4 py-1.5 bg-accent/20 text-accent-light text-sm font-semibold rounded-full mb-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Psychology of Persuasion
-                </motion.span>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-                  The "Familiar Surprise" Secret
-                  <span className="block text-neutral-400 mt-2">That Makes Anything Sell</span>
-                </h1>
-
-                <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl leading-relaxed mb-12">
-                  Why Spotify's engagement tanked with 100% new music discoveries. And the accidental bug that revealed the most powerful persuasion principle in marketing.
-                </p>
-
-                {/* Stats with stagger */}
-                <motion.div
-                  className="flex flex-wrap gap-12 pt-8 border-t border-neutral-800"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                >
-                  {[
-                    { value: 40, suffix: '%', label: 'Engagement increase' },
-                    { value: 8, suffix: ' min', label: 'Read time' },
-                    { value: 3, suffix: '', label: 'Key frameworks' }
-                  ].map((stat, i) => (
-                    <motion.div key={i} variants={staggerItem}>
-                      <p className="text-4xl font-bold text-accent-light">
-                        <Counter end={stat.value} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-sm text-neutral-400 mt-1">{stat.label}</p>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
+        <div className="bg-white min-h-screen">
+          {/* Compact Header - Black section (20%) */}
+          <header className="bg-neutral-950 text-white px-6 py-8">
+            <div className="lesson-container">
+              <span className="inline-block px-2 py-0.5 bg-accent/20 text-accent text-xs font-medium rounded mb-3">
+                Psychology of Persuasion
+              </span>
+              <h1 className="text-2xl font-bold mb-2">The "Familiar Surprise" Secret</h1>
+              <p className="text-sm text-neutral-400">Why we love the unexpected in familiar packages</p>
             </div>
           </header>
 
-          {/* Content */}
-          <main className="py-20 px-6">
-            <div className="max-w-3xl mx-auto">
+          {/* Main Content - White section (70%) */}
+          <main className="px-6 py-6">
+            <div className="lesson-container space-y-8">
 
-              {/* The Hook */}
+              {/* Opening Story */}
               <Fade>
-                <div className="mb-20">
-                  <p className="text-2xl leading-relaxed text-neutral-600 mb-8">
-                    Spotify's data scientists thought they had cracked the code.
+                <section>
+                  <p className="text-base text-neutral-700 leading-relaxed">
+                    In 2014, Spotify's algorithm team made a discovery that would change how they thought about recommendations forever. Their "Discover Weekly" playlist was serving users <strong>100% new music</strong>—and engagement was tanking.
                   </p>
-                  <p className="text-2xl leading-relaxed text-neutral-600 mb-8">
-                    Their algorithm could predict with 93% accuracy what songs you'd love—songs you'd never heard before. So they built <span className="font-semibold text-black">"Discover Weekly"</span>: a playlist of 100% fresh, personalized music recommendations.
-                  </p>
-                  <p className="text-2xl leading-relaxed font-semibold text-black">
-                    It should have been a home run.
-                  </p>
+                </section>
+              </Fade>
+
+              {/* Image: Balance Scale */}
+              <Fade delay={0.1}>
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/balance-scale.png" alt="Balance between familiar and novel" className="w-full h-auto rounded-lg" />
                 </div>
               </Fade>
 
-              {/* The Problem */}
+              {/* Key Insight Box */}
               <Fade delay={0.1}>
-                <motion.div
-                  className="bg-neutral-950 text-white rounded-3xl p-10 md:p-12 mb-20"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <div className="flex items-start gap-5 mb-6">
-                    <div className="p-3 bg-red-500/20 rounded-xl text-red-400">
-                      <Icons.AlertCircle />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold mb-4">The Problem</h2>
-                      <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                        Users weren't engaging. Skip rates were through the roof. People would listen for a few seconds, then abandon the playlist entirely.
-                      </p>
-                      <p className="text-neutral-400 text-lg leading-relaxed">
-                        The algorithm was right about what they'd <em>like</em>—but wrong about what they'd actually <em>listen to</em>.
-                      </p>
-                    </div>
-                  </div>
-
-                  <AnimatedProgress label="Skip rate on pure discovery" value={67} color="bg-red-500" />
-                </motion.div>
-              </Fade>
-
-              {/* The Bug */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-6">The Accidental Discovery</h2>
-
-                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-3xl p-10 border border-accent/20">
-                    <div className="flex items-start gap-5 mb-8">
-                      <div className="p-3 bg-accent rounded-xl text-white">
-                        <Icons.Music />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold mb-3">The Bug That Changed Everything</h3>
-                        <p className="text-neutral-600 text-lg leading-relaxed">
-                          A coding error accidentally mixed in familiar songs—tracks users had already played and loved. Songs they recognized. Songs that felt like old friends.
-                        </p>
-                      </div>
-                    </div>
-
-                    <motion.div
-                      className="p-6 bg-white rounded-2xl border-2 border-accent shadow-lg shadow-accent/10"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <p className="text-xl font-semibold text-center">
-                        Engagement jumped <span className="text-accent">40%</span> overnight.
-                      </p>
-                      <p className="text-neutral-500 text-center mt-2">The "bug" became the feature.</p>
-                    </motion.div>
-                  </div>
-                </div>
-              </Fade>
-
-              {/* The Science */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">The Science Behind The Magic</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    What Spotify accidentally discovered has a name. It's called the <span className="font-semibold text-black">MAYA principle</span>—and it explains why some products become instant hits while others die in obscurity.
+                <div className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">💡</span>
+                    The Discovery
+                  </h3>
+                  <p className="text-sm text-neutral-300">
+                    When they added <strong className="text-white">30% familiar songs</strong>, engagement skyrocketed. Users didn't want all-new or all-familiar—they wanted the <em>perfect blend</em>.
                   </p>
-
-                  <motion.div
-                    className="space-y-6"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-100px" }}
-                  >
-                    <InteractiveCard
-                      icon={Icons.Lightbulb}
-                      title="Neophilia: The Pull Toward New"
-                      content="Part of your brain craves novelty. It's the voice that says 'Ooh, that looks interesting!' This force drives curiosity, exploration, and the thrill of discovery. Without it, nothing new would ever capture attention."
-                      index={0}
-                    />
-                    <InteractiveCard
-                      icon={Icons.Brain}
-                      title="Neophobia: The Fear of Unknown"
-                      content="But another part screams 'Wait—this seems risky.' This ancient survival mechanism protects you from bad decisions. Too much novelty triggers anxiety, hesitation, and the urge to stick with what's safe."
-                      index={1}
-                    />
-                  </motion.div>
-
-                  <motion.p
-                    className="text-center text-xl font-semibold text-neutral-700 mt-10 p-6 bg-neutral-50 rounded-2xl"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    These two forces are at war in every customer's brain.
-                    <br />
-                    <span className="text-neutral-400 font-normal">The winner decides whether they buy or bounce.</span>
-                  </motion.p>
                 </div>
               </Fade>
 
               {/* MAYA Principle */}
               <Fade delay={0.1}>
-                <div className="mb-20 py-16 border-t border-b border-neutral-200">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-6 text-center">The Sweet Spot</h2>
+                <section>
+                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The MAYA Principle</h2>
+                  <p className="text-sm text-neutral-600 mb-4">
+                    Industrial designer Raymond Loewy called this <strong>MAYA</strong>: Most Advanced Yet Acceptable. It's why the best innovations look surprisingly familiar.
+                  </p>
 
-                  <motion.div
-                    className="text-center mb-8"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  >
-                    <p className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-                      <span className="text-accent">M</span>ost{' '}
-                      <span className="text-accent">A</span>dvanced{' '}
-                      <span className="text-accent">Y</span>et{' '}
-                      <span className="text-accent">A</span>cceptable
-                    </p>
-                    <p className="text-lg text-neutral-500 max-w-xl mx-auto">
-                      Industrial designer Raymond Loewy discovered this in the 1940s. The principle that made him design everything from Lucky Strike packaging to Air Force One.
-                    </p>
-                  </motion.div>
+                  {/* Image: Brain Comfort */}
+                  <div className="rounded-xl overflow-hidden bg-neutral-50 p-4 mb-4">
+                    <img src="images/brain-comfort.png" alt="Brain processing familiar vs novel" className="w-full h-auto rounded-lg" />
+                  </div>
+                </section>
+              </Fade>
 
+              {/* Interactive Slider */}
+              <Fade delay={0.1}>
+                <section className="bg-neutral-50 p-5 rounded-xl">
+                  <h3 className="text-lg font-semibold mb-1">Try It: Find the Sweet Spot</h3>
+                  <p className="text-xs text-neutral-500 mb-4">Drag the slider to see how familiarity and novelty affect response</p>
                   <MayaSlider />
-
-                  <motion.blockquote
-                    className="max-w-2xl mx-auto mt-10 p-8 bg-neutral-50 rounded-2xl border-l-4 border-accent"
-                    whileHover={{ x: 4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    <p className="text-xl italic text-neutral-700 mb-4 leading-relaxed">
-                      "To sell something surprising, make it familiar. To sell something familiar, make it surprising."
-                    </p>
-                    <cite className="text-sm text-neutral-500 font-medium">— Derek Thompson, Hit Makers</cite>
-                  </motion.blockquote>
-                </div>
+                </section>
               </Fade>
 
-              {/* The Formula */}
+              {/* Stats Row */}
               <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">The Formula In Action</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    Here's what this means for your marketing: <span className="font-semibold text-black">Every winning product wraps something NEW in something FAMILIAR.</span> Let's break down how the biggest brands do it.
-                  </p>
-
-                  <div className="space-y-4 mb-12">
-                    {[
-                      {
-                        familiar: "Water bottle",
-                        surprise: "Tracks your hydration via app",
-                        result: "HidrateSpark",
-                        metric: "+2M units sold"
-                      },
-                      {
-                        familiar: "Wallet",
-                        surprise: "Built-in phone charger",
-                        result: "Bellroy Power",
-                        metric: "$100M company"
-                      },
-                      {
-                        familiar: "Yoga mat",
-                        surprise: "Alignment guide system",
-                        result: "Liforme",
-                        metric: "Cult following"
-                      },
-                      {
-                        familiar: "Notebook",
-                        surprise: "Syncs to cloud automatically",
-                        result: "Rocketbook",
-                        metric: "$30M+ revenue"
-                      }
-                    ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        className="group flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-2xl border border-neutral-200 bg-white hover:border-accent hover:shadow-lg hover:shadow-accent/5 transition-all"
-                        whileHover={{ y: -4, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 text-base">
-                            <span className="px-3 py-1 bg-neutral-100 rounded-lg text-neutral-500 font-medium">{item.familiar}</span>
-                            <span className="text-accent font-bold">+</span>
-                            <span className="text-neutral-700">{item.surprise}</span>
-                          </div>
-                        </div>
-                        <motion.div
-                          className="flex items-center gap-4"
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 8 }}
-                        >
-                          <Icons.ArrowRight />
-                          <div className="text-right">
-                            <span className="font-bold text-lg">{item.result}</span>
-                            <span className="text-accent text-sm ml-3 font-medium">{item.metric}</span>
-                          </div>
-                        </motion.div>
-                      </motion.div>
-                    ))}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-neutral-50 p-4 rounded-xl text-center">
+                    <div className="text-2xl font-bold text-neutral-900"><Counter end={70} suffix="%" /></div>
+                    <div className="text-xs text-neutral-500">Familiar base</div>
+                  </div>
+                  <div className="bg-neutral-50 p-4 rounded-xl text-center">
+                    <div className="text-2xl font-bold text-neutral-900"><Counter end={30} suffix="%" /></div>
+                    <div className="text-xs text-neutral-500">Novel twist</div>
+                  </div>
+                  <div className="bg-accent/10 p-4 rounded-xl text-center border border-accent/20">
+                    <div className="text-2xl font-bold text-accent"><Counter end={100} suffix="%" /></div>
+                    <div className="text-xs text-accent/70">Engagement</div>
                   </div>
                 </div>
               </Fade>
 
-              {/* Your Ad Copy */}
+              {/* Real-World Examples */}
               <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">Apply It To Your Copy</h2>
+                <section>
+                  <h2 className="text-xl font-bold mb-3 text-neutral-900">MAYA in Action</h2>
 
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    The MAYA principle isn't just for products. It's the secret behind every high-converting ad, email, and landing page. Watch how it transforms bland copy into magnetic messaging:
-                  </p>
-
-                  <BeforeAfter
-                    before="Introducing our revolutionary new skincare system that uses advanced peptide technology to reduce wrinkles."
-                    after="Remember how your skin felt at 25? This little bottle brings it back. (Using the same peptides dermatologists have used for decades—just finally affordable.)"
-                  />
-
-                  <p className="text-neutral-500 text-center mt-8 text-lg">
-                    Click each card to compare. Notice how the "After" version anchors in something familiar (how your skin felt) before introducing the new solution.
-                  </p>
-                </div>
-              </Fade>
-
-              {/* Key Insight */}
-              <Fade delay={0.1}>
-                <MagneticButton className="mb-20">
-                  <div className="bg-accent text-white rounded-3xl p-10 md:p-14 text-center cursor-pointer">
-                    <p className="text-2xl md:text-3xl font-bold leading-relaxed">
-                      Stop asking "How do I make this seem new?"
-                    </p>
-                    <p className="text-xl md:text-2xl text-blue-100 mt-4 leading-relaxed">
-                      Start asking "What familiar thing can I connect this to?"
-                    </p>
-                  </div>
-                </MagneticButton>
-              </Fade>
-
-              {/* Takeaways */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">Key Takeaways</h2>
-
-                  <motion.div
-                    className="space-y-4"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                  >
-                    {[
-                      { text: "Too NEW = Fear", desc: "Your audience won't trust what they don't recognize. Pure novelty triggers the brain's threat response." },
-                      { text: "Too FAMILIAR = Invisible", desc: "They'll scroll past without a second thought. You blend into the noise of everything else." },
-                      { text: "MAYA = Magnetic", desc: "Wrap your innovation in something they already understand. New enough to intrigue, familiar enough to trust." },
-                      { text: "Lead with familiar, reveal the new", desc: "Anchor your pitch in what they know. Then show them the surprising twist that makes you different." }
-                    ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        className="flex items-start gap-5 p-6 rounded-2xl bg-neutral-50 hover:bg-blue-50 transition-colors"
-                        variants={staggerItem}
-                        whileHover={{ x: 8 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <div className="p-1.5 bg-accent text-white rounded-full flex-shrink-0 mt-0.5">
-                          <Icons.Check />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg text-neutral-800">{item.text}</p>
-                          <p className="text-neutral-600 mt-1">{item.desc}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </Fade>
-
-              {/* Action Step */}
-              <Fade delay={0.1}>
-                <motion.div
-                  className="p-10 rounded-3xl border-2 border-accent bg-gradient-to-br from-blue-50 to-white"
-                  whileHover={{ scale: 1.01, y: -4 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="p-3 bg-accent rounded-xl text-white">
-                      <Icons.Target />
+                  <div className="space-y-3">
+                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
+                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">📱</div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">iPhone</div>
+                        <div className="text-xs text-neutral-500">Familiar phone shape + Revolutionary touchscreen</div>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-xl font-bold mb-4">Your Action Step</h2>
-                      <p className="text-lg text-neutral-600 leading-relaxed mb-6">
-                        Open your best-performing ad or product page. Ask yourself:
-                      </p>
-                      <div className="space-y-3">
-                        <p className="text-lg font-semibold text-black">
-                          "What's the familiar thing my customer already knows and trusts?"
-                        </p>
-                        <p className="text-neutral-600">
-                          Lead with that. Anchor them in comfort. <em>Then</em> reveal the surprising twist that makes your offer irresistible.
-                        </p>
+                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
+                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">🚗</div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">Tesla</div>
+                        <div className="text-xs text-neutral-500">Familiar car form + Electric innovation</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
+                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">🎵</div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">Spotify</div>
+                        <div className="text-xs text-neutral-500">Familiar songs + New discoveries</div>
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </section>
               </Fade>
 
+              {/* Image: Evolution */}
+              <Fade delay={0.1}>
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/iphone-evolution.png" alt="Product evolution" className="w-full h-auto rounded-lg" />
+                  <p className="text-xs text-neutral-400 text-center mt-2">Innovation wrapped in familiarity</p>
+                </div>
+              </Fade>
+
+              {/* Application Framework */}
+              <Fade delay={0.1}>
+                <section className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-lg font-semibold mb-3">Apply MAYA to Your Copy</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                      <div>
+                        <div className="text-sm font-medium">Start with the familiar</div>
+                        <div className="text-xs text-neutral-400">Use language and concepts they already know</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                      <div>
+                        <div className="text-sm font-medium">Add the surprising twist</div>
+                        <div className="text-xs text-neutral-400">Introduce your unique angle or innovation</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                      <div>
+                        <div className="text-sm font-medium">Bridge with benefits</div>
+                        <div className="text-xs text-neutral-400">Show how the new serves familiar goals</div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </Fade>
+
+              {/* Key Takeaway */}
+              <Fade delay={0.1}>
+                <section className="border-l-4 border-accent pl-4 py-2">
+                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
+                  <p className="text-sm text-neutral-600">
+                    People don't want completely new. They want <strong>new wrapped in familiar</strong>. The sweet spot is 70% familiar, 30% novel.
+                  </p>
+                </section>
+              </Fade>
+
+              {/* Bottom spacing */}
+              <div className="h-8"></div>
             </div>
           </main>
-
-          {/* Footer */}
-          <footer className="py-16 border-t border-neutral-200">
-            <div className="max-w-3xl mx-auto px-6 text-center">
-              <p className="text-sm text-neutral-400 font-medium">Quantum Scale Learning Center</p>
-            </div>
-          </footer>
         </div>
       );
     }

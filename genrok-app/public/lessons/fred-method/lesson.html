@@ -3,740 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>How To Read Your Customer's Mind (The F.R.E.D. Method)</title>
+  <title>The F.R.E.D. Method</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            accent: '#059669',
-            'accent-light': '#10b981',
-            'accent-dark': '#047857',
-          },
+          colors: { accent: '#059669' },
           fontSize: {
-            'xs': ['0.64rem', { lineHeight: '1.75' }],
-            'sm': ['0.8rem', { lineHeight: '1.625' }],
-            'base': ['1rem', { lineHeight: '1.625' }],
-            'lg': ['1.25rem', { lineHeight: '1.5' }],
-            'xl': ['1.563rem', { lineHeight: '1.35' }],
-            '2xl': ['1.953rem', { lineHeight: '1.25' }],
-            '3xl': ['2.441rem', { lineHeight: '1.2' }],
-            '4xl': ['3.052rem', { lineHeight: '1.15' }],
-            '5xl': ['3.815rem', { lineHeight: '1.1' }],
+            'xs': ['0.7rem', { lineHeight: '1.5' }],
+            'sm': ['0.8rem', { lineHeight: '1.5' }],
+            'base': ['0.875rem', { lineHeight: '1.6' }],
+            'lg': ['1rem', { lineHeight: '1.5' }],
+            'xl': ['1.125rem', { lineHeight: '1.4' }],
+            '2xl': ['1.25rem', { lineHeight: '1.3' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    * { font-family: 'Inter', -apple-system, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #059669; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.025em; }
-    p { letter-spacing: 0; }
+    h1, h2, h3 { letter-spacing: -0.02em; }
+    .lesson-container { max-width: 720px; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence, useSpring, useMotionValue } = window.Motion;
+    const { motion, useInView } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    // Spring configs
-    const springConfig = { stiffness: 400, damping: 25 };
-    const gentleSpring = { stiffness: 300, damping: 20 };
-
-    // Stagger variants
-    const staggerContainer = {
-      hidden: { opacity: 0 },
-      show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-      }
-    };
-
-    const staggerItem = {
-      hidden: { opacity: 0, y: 30 },
-      show: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 400, damping: 25 }
-      }
-    };
-
-    // Icons
-    const Icons = {
-      Brain: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-        </svg>
-      ),
-      AlertTriangle: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-          <path d="M12 9v4"/><path d="M12 17h.01"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      Clock: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-      ),
-      Heart: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-      ),
-      Check: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>
-      ),
-      Search: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-        </svg>
-      ),
-      MessageSquare: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
-      ),
-      ArrowRight: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
-      ),
-      Quote: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/>
-          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/>
-        </svg>
-      ),
-    };
-
-    // Fade with spring physics
     function Fade({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ type: "spring", stiffness: 300, damping: 20, delay }}
-        >
+        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
           {children}
         </motion.div>
       );
     }
 
-    // Animated Counter
-    function Counter({ end, suffix = "", duration = 2 }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const increment = end / (duration * 60);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 1000 / 60);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end, duration]);
-
-      return <span ref={ref}>{count}{suffix}</span>;
-    }
-
-    // Magnetic hover
-    function MagneticButton({ children, className = "" }) {
-      const ref = useRef(null);
-      const x = useMotionValue(0);
-      const y = useMotionValue(0);
-      const springX = useSpring(x, { stiffness: 150, damping: 15 });
-      const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-      const handleMouseMove = (e) => {
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        x.set((e.clientX - centerX) * 0.15);
-        y.set((e.clientY - centerY) * 0.15);
-      };
+    // Interactive FRED Card
+    function FredCard({ letter, title, color, description, questions }) {
+      const [expanded, setExpanded] = useState(false);
+      const colorMap = { F: 'bg-red-500', R: 'bg-emerald-500', E: 'bg-blue-500', D: 'bg-amber-500' };
 
       return (
         <motion.div
-          ref={ref}
-          className={className}
-          style={{ x: springX, y: springY }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => { x.set(0); y.set(0); }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="p-4 bg-neutral-50 rounded-xl cursor-pointer"
+          onClick={() => setExpanded(!expanded)}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
         >
-          {children}
-        </motion.div>
-      );
-    }
-
-    // F.R.E.D. Interactive Explorer with enhanced physics
-    function FredExplorer() {
-      const [active, setActive] = useState(0);
-
-      const items = [
-        {
-          letter: 'F',
-          word: 'Fears',
-          icon: Icons.AlertTriangle,
-          color: 'bg-red-500',
-          description: 'What keeps them awake at 3am? Fear is the most powerful motivator in human psychology.',
-          questions: [
-            { q: 'What keeps them up at night?', why: 'Surface fears reveal deeper anxieties about status, security, or identity.' },
-            { q: 'What are they afraid will happen if they do nothing?', why: 'Inaction fear is often stronger than action fear.' },
-            { q: 'What have they tried before that failed?', why: 'Past failures create specific objections you need to address.' }
-          ],
-          example: '"I\'m terrified of wasting another $500 on ads that don\'t convert..."'
-        },
-        {
-          letter: 'R',
-          word: 'Results',
-          icon: Icons.Target,
-          color: 'bg-blue-500',
-          description: 'What specific, measurable outcomes do they dream about achieving?',
-          questions: [
-            { q: 'What specific outcomes do they want?', why: 'Vague goals like "more sales" need to become "10 sales per day."' },
-            { q: 'How will their daily life be different?', why: 'The lifestyle impact matters more than the metric.' },
-            { q: 'What metrics do they actually track?', why: 'Speak in the numbers they already obsess over.' }
-          ],
-          example: '"I want to hit $10k/month so I can finally quit my 9-5..."'
-        },
-        {
-          letter: 'E',
-          word: 'Expectations',
-          icon: Icons.Clock,
-          color: 'bg-amber-500',
-          description: 'What timeline and effort do they believe is realistic? (Often wildly miscalibrated.)',
-          questions: [
-            { q: 'What do they believe is possible?', why: 'Unrealistic expectations create disappointment. Set proper frames.' },
-            { q: 'What timeline do they expect?', why: 'Speed promises must match their mental model.' },
-            { q: 'What have others promised them before?', why: 'Know the competitor claims they\'ve been burned by.' }
-          ],
-          example: '"I\'ve been told I can make $10k in my first month... is that real?"'
-        },
-        {
-          letter: 'D',
-          word: 'Desires',
-          icon: Icons.Heart,
-          color: 'bg-pink-500',
-          description: 'Beyond the surface goal—what deeper identity or status are they chasing?',
-          questions: [
-            { q: 'What status are they secretly chasing?', why: 'The deepest motivation is often about how others perceive them.' },
-            { q: 'What would they brag about to friends?', why: 'Social proof desires reveal true motivations.' },
-            { q: 'What would finally make them feel "successful"?', why: 'Define their internal success metric.' }
-          ],
-          example: '"I just want my family to see that this business thing actually works..."'
-        }
-      ];
-
-      const current = items[active];
-      const Icon = current.icon;
-
-      return (
-        <div className="py-8">
-          {/* Letter Tabs with spring physics */}
-          <div className="flex justify-center gap-4 mb-10">
-            {items.map((item, i) => (
-              <motion.button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`relative w-20 h-20 rounded-2xl text-3xl font-bold transition-colors ${
-                  active === i
-                    ? 'bg-accent text-white shadow-xl shadow-emerald-500/30'
-                    : 'bg-neutral-100 text-neutral-400 hover:bg-neutral-200'
-                }`}
-                whileHover={{ scale: 1.1, y: -4 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                {active === i && (
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl bg-accent"
-                    layoutId="fredTab"
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  />
-                )}
-                <span className="relative z-10">{item.letter}</span>
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Content Card */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="bg-gradient-to-br from-emerald-50 to-white rounded-3xl p-8 md:p-10 border-2 border-accent/20"
-            >
-              <div className="flex items-center gap-5 mb-6">
-                <motion.div
-                  className={`p-4 ${current.color} rounded-2xl text-white`}
-                  initial={{ rotate: -10, scale: 0.8 }}
-                  animate={{ rotate: 0, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                >
-                  <Icon />
-                </motion.div>
-                <div>
-                  <h3 className="text-3xl font-bold">{current.word}</h3>
-                  <p className="text-neutral-500 mt-1">{current.description}</p>
-                </div>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                {current.questions.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1, type: "spring", stiffness: 400, damping: 25 }}
-                    className="p-5 bg-white rounded-2xl border border-neutral-200 hover:border-accent hover:shadow-lg hover:shadow-emerald-500/5 transition-all cursor-default"
-                  >
-                    <div className="flex items-start gap-4">
-                      <span className="text-accent font-bold text-lg">{i + 1}.</span>
-                      <div>
-                        <p className="text-neutral-800 font-semibold text-lg">{item.q}</p>
-                        <p className="text-neutral-500 mt-2">{item.why}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Example quote */}
-              <motion.div
-                className="p-5 bg-accent/10 rounded-2xl border-l-4 border-accent"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                <div className="flex items-start gap-3">
-                  <Icons.Quote />
-                  <p className="text-lg italic text-neutral-700">{current.example}</p>
-                </div>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      );
-    }
-
-    // Language Source Card with spring
-    function SourceCard({ icon: Icon, name, tip, isActive, onClick }) {
-      return (
-        <motion.div
-          onClick={onClick}
-          className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
-            isActive ? 'border-accent bg-emerald-50 shadow-lg shadow-emerald-500/10' : 'border-neutral-200 hover:border-neutral-300 bg-white'
-          }`}
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        >
-          <motion.div
-            className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${isActive ? 'bg-accent text-white' : 'bg-neutral-100 text-neutral-500'}`}
-            animate={{ rotate: isActive ? 360 : 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          >
-            <Icon />
-          </motion.div>
-          <p className={`font-semibold text-lg ${isActive ? 'text-accent' : 'text-neutral-700'}`}>{name}</p>
-          <AnimatePresence>
-            {isActive && (
-              <motion.p
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="text-sm text-neutral-600 mt-2 overflow-hidden"
-              >
-                {tip}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      );
-    }
-
-    // Progress bar
-    function AnimatedProgress({ label, value, color = "bg-accent" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      return (
-        <div ref={ref} className="mb-6">
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium text-neutral-300">{label}</span>
-            <span className="text-sm font-bold text-accent-light">{value}%</span>
-          </div>
-          <div className="h-3 bg-neutral-800 rounded-full overflow-hidden">
-            <motion.div
-              className={`h-full ${color} rounded-full`}
-              initial={{ width: 0 }}
-              animate={isInView ? { width: `${value}%` } : {}}
-              transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
-            />
-          </div>
-        </div>
-      );
-    }
-
-    // Main Lesson
-    function Lesson() {
-      const [activeSource, setActiveSource] = useState(null);
-
-      const sources = [
-        { name: 'Reddit threads', icon: Icons.MessageSquare, tip: 'Search "[niche] + frustrated/help/advice" for goldmine conversations' },
-        { name: 'Amazon reviews', icon: Icons.Search, tip: 'Read 3-star reviews—they explain what almost worked and what didn\'t' },
-        { name: 'Facebook groups', icon: Icons.MessageSquare, tip: 'Look for long complaint posts with lots of comments' },
-        { name: 'YouTube comments', icon: Icons.MessageSquare, tip: 'Comments under competitor videos reveal objections' },
-        { name: 'Support tickets', icon: Icons.MessageSquare, tip: 'Your own customer complaints are pure gold' },
-        { name: 'Sales calls', icon: Icons.MessageSquare, tip: 'Record and transcribe—the exact words matter' }
-      ];
-
-      return (
-        <div className="min-h-screen bg-white">
-          {/* Hero */}
-          <header className="relative bg-neutral-950 text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <div className="absolute inset-0 opacity-40" style={{
-                backgroundImage: 'radial-gradient(circle at 30% 70%, rgba(5,150,105,0.5) 0%, transparent 50%)'
-              }}/>
-              <motion.div
-                className="absolute inset-0"
-                animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
-                transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
-                style={{
-                  backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(5,150,105,0.1) 0%, transparent 25%)',
-                  backgroundSize: '100% 100%'
-                }}
-              />
+          <div className="flex items-center gap-3">
+            <div className={`w-8 h-8 ${colorMap[letter]} rounded-lg flex items-center justify-center text-white font-bold text-sm`}>
+              {letter}
             </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-neutral-900">{title}</div>
+              <div className="text-xs text-neutral-500">{description}</div>
+            </div>
+            <motion.div animate={{ rotate: expanded ? 180 : 0 }} className="text-neutral-400">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+            </motion.div>
+          </div>
+          {expanded && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-3 pt-3 border-t border-neutral-200">
+              <p className="text-xs text-neutral-500 mb-2">Questions to ask:</p>
+              <ul className="space-y-1">
+                {questions.map((q, i) => (
+                  <li key={i} className="text-xs text-neutral-600 flex items-start gap-2">
+                    <span className="text-accent">•</span> {q}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </motion.div>
+      );
+    }
 
-            <div className="relative max-w-5xl mx-auto px-6 py-24 md:py-32">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              >
-                <motion.span
-                  className="inline-block px-4 py-1.5 bg-accent/20 text-accent-light text-sm font-semibold rounded-full mb-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Audience Mastery
-                </motion.span>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-                  How To Read Your
-                  <span className="block">Customer's Mind</span>
-                  <span className="block text-neutral-400 mt-2">(The F.R.E.D. Method)</span>
-                </h1>
-
-                <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl leading-relaxed mb-12">
-                  The 4-letter framework that makes your customers feel like you're living inside their head. When you understand F.R.E.D., your copy practically writes itself.
-                </p>
-
-                <motion.div
-                  className="flex flex-wrap gap-12 pt-8 border-t border-neutral-800"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                >
-                  {[
-                    { value: 4, suffix: '', label: 'Dimensions to master' },
-                    { value: 8, suffix: ' min', label: 'Read time' },
-                    { value: 6, suffix: '', label: 'Research sources' }
-                  ].map((stat, i) => (
-                    <motion.div key={i} variants={staggerItem}>
-                      <p className="text-4xl font-bold text-accent-light">
-                        <Counter end={stat.value} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-sm text-neutral-400 mt-1">{stat.label}</p>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
+    function Lesson() {
+      return (
+        <div className="bg-white min-h-screen">
+          <header className="bg-neutral-950 text-white px-6 py-8">
+            <div className="lesson-container">
+              <span className="inline-block px-2 py-0.5 bg-accent/20 text-emerald-400 text-xs font-medium rounded mb-3">Psychology Framework</span>
+              <h1 className="text-2xl font-bold mb-2">The F.R.E.D. Method</h1>
+              <p className="text-sm text-neutral-400">A framework for understanding what your audience really wants</p>
             </div>
           </header>
 
-          {/* Content */}
-          <main className="py-20 px-6">
-            <div className="max-w-3xl mx-auto">
-
-              {/* Opening */}
+          <main className="px-6 py-6">
+            <div className="lesson-container space-y-8">
               <Fade>
-                <div className="mb-20">
-                  <p className="text-2xl leading-relaxed text-neutral-600 mb-8">
-                    "It's like you're reading my mind."
+                <section>
+                  <p className="text-base text-neutral-700 leading-relaxed">
+                    Every customer decision is driven by four psychological forces. Master copywriters don't guess what people want—they use <strong>F.R.E.D.</strong> to read minds.
                   </p>
-                  <p className="text-xl leading-relaxed text-neutral-600 mb-8">
-                    That's what customers say when your copy hits. When your ads feel personal. When your landing page speaks directly to them—as if you somehow knew exactly what they were thinking before they even said it.
-                  </p>
-                  <p className="text-2xl leading-relaxed font-semibold text-black">
-                    It's not magic. It's not talent. It's a system called F.R.E.D.
+                </section>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/four-quadrants.png" alt="FRED Framework" className="w-full h-auto rounded-lg" />
+                </div>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <div className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-sm font-semibold mb-2">What is F.R.E.D.?</h3>
+                  <p className="text-sm text-neutral-300">
+                    <strong className="text-white">F</strong>ears, <strong className="text-white">R</strong>esults, <strong className="text-white">E</strong>xpectations, <strong className="text-white">D</strong>esires—the four pillars that drive every buying decision.
                   </p>
                 </div>
               </Fade>
 
-              {/* The Problem */}
               <Fade delay={0.1}>
-                <motion.div
-                  className="bg-neutral-950 text-white rounded-3xl p-10 md:p-12 mb-20"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <h2 className="text-sm uppercase tracking-widest text-accent-light font-semibold mb-8">The Problem</h2>
-
-                  <p className="text-xl text-neutral-300 leading-relaxed mb-8">
-                    Most marketers write copy about <em>themselves</em>. Their features. Their history. Their technology. And customers couldn't care less.
-                  </p>
-
-                  <div className="space-y-4 mb-8">
-                    {[
-                      "Our product has 15 innovative features...",
-                      "We've been in business for 10 years...",
-                      "Our proprietary technology is state-of-the-art..."
-                    ].map((item, i) => (
-                      <motion.p
-                        key={i}
-                        className="text-neutral-500 italic pl-5 border-l-2 border-neutral-700"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1, type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        "{item}"
-                      </motion.p>
-                    ))}
+                <section>
+                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Four Forces</h2>
+                  <p className="text-xs text-neutral-500 mb-4">Click each card to reveal the questions</p>
+                  <div className="space-y-3">
+                    <FredCard letter="F" title="Fears" color="red" description="What keeps them up at night?"
+                      questions={["What's the worst that could happen?", "What are they afraid of losing?", "What embarrassment do they want to avoid?"]} />
+                    <FredCard letter="R" title="Results" color="green" description="What outcomes do they want?"
+                      questions={["What does success look like to them?", "What metrics matter?", "What would make them proud?"]} />
+                    <FredCard letter="E" title="Expectations" color="blue" description="What do they believe is possible?"
+                      questions={["What have they tried before?", "What do they think it takes?", "What's their timeline?"]} />
+                    <FredCard letter="D" title="Desires" color="amber" description="What do they secretly want?"
+                      questions={["What would they never admit wanting?", "What's their dream outcome?", "What status do they crave?"]} />
                   </div>
-
-                  <AnimatedProgress label="Copy that talks about the company" value={87} color="bg-red-500" />
-
-                  <p className="text-accent-light font-semibold text-lg">
-                    Customers don't care about you. They care about themselves.
-                  </p>
-                </motion.div>
+                </section>
               </Fade>
 
-              {/* Core Principle */}
               <Fade delay={0.1}>
-                <MagneticButton className="mb-20">
-                  <div className="bg-accent text-white rounded-3xl p-10 md:p-14 text-center cursor-pointer">
-                    <p className="text-2xl md:text-3xl font-bold leading-relaxed">
-                      The most persuasive messages are always about the audience.
-                    </p>
-                    <p className="text-xl md:text-2xl text-emerald-100 mt-4 leading-relaxed">
-                      Never about you.
-                    </p>
-                  </div>
-                </MagneticButton>
-              </Fade>
-
-              {/* F.R.E.D. Explorer */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-4 text-center">Meet F.R.E.D.</h2>
-                  <p className="text-center text-lg text-neutral-500 mb-10">Click each letter to explore the psychology behind it</p>
-                  <FredExplorer />
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/audience-avatar.png" alt="Understanding your audience" className="w-full h-auto rounded-lg" />
+                  <p className="text-xs text-neutral-400 text-center mt-2">See your customer as a complete person</p>
                 </div>
               </Fade>
 
-              {/* Mirror Language */}
               <Fade delay={0.1}>
-                <div className="mb-20 py-16 border-t border-b border-neutral-200">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">The Mind-Reading Hack</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-8">
-                    Here's the real secret: <span className="font-semibold text-black">The exact words your customers use reveal their entire mindset.</span>
-                  </p>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    When you use their language—the specific phrases they type into Reddit posts, Amazon reviews, and competitor comments—something magical happens. They don't feel like they're being marketed to. They feel like they're being <em>understood</em>.
-                  </p>
-
-                  <div className="grid md:grid-cols-2 gap-6 mb-10">
-                    <motion.div
-                      className="p-8 rounded-2xl border-2 border-neutral-200"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    >
-                      <p className="text-sm uppercase tracking-widest text-neutral-400 font-semibold mb-4">Your Language</p>
-                      <p className="text-lg text-neutral-400 italic">"Optimize your customer acquisition funnel for enhanced ROI metrics and improved conversion efficiency."</p>
-                    </motion.div>
-
-                    <motion.div
-                      className="p-8 rounded-2xl border-2 border-accent bg-emerald-50 shadow-lg shadow-emerald-500/10"
-                      whileHover={{ scale: 1.02, y: -4 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    >
-                      <p className="text-sm uppercase tracking-widest text-accent font-semibold mb-4">Their Language</p>
-                      <p className="text-lg text-neutral-700 font-medium italic">"Stop wasting money on ads that don't convert. I've burned through $2k with nothing to show for it."</p>
-                    </motion.div>
-                  </div>
-
-                  <p className="text-center text-neutral-500">
-                    Notice how the second one <em>feels</em> different? That's the power of mirrored language.
-                  </p>
-                </div>
-              </Fade>
-
-              {/* Where to Find */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-4">Where to Mine Their Language</h2>
-                  <p className="text-lg text-neutral-500 mb-10">Click each source to see the specific technique</p>
-
-                  <motion.div
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-100px" }}
-                  >
-                    {sources.map((source, i) => (
-                      <SourceCard
-                        key={i}
-                        {...source}
-                        isActive={activeSource === i}
-                        onClick={() => setActiveSource(activeSource === i ? null : i)}
-                      />
-                    ))}
-                  </motion.div>
-                </div>
-              </Fade>
-
-              {/* Key Insight */}
-              <Fade delay={0.1}>
-                <MagneticButton className="mb-20">
-                  <div className="bg-accent text-white rounded-3xl p-10 md:p-14 text-center cursor-pointer">
-                    <p className="text-2xl md:text-3xl font-bold leading-relaxed">
-                      When you use their exact words,
-                    </p>
-                    <p className="text-xl md:text-2xl text-emerald-100 mt-4 leading-relaxed">
-                      they don't think you're marketing to them. They think you understand them.
-                    </p>
-                  </div>
-                </MagneticButton>
-              </Fade>
-
-              {/* Key Takeaways */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">Key Takeaways</h2>
-
-                  <motion.div
-                    className="space-y-4"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                  >
-                    {[
-                      { text: "F.R.E.D. = Fears, Results, Expectations, Desires", desc: "Know all four dimensions before you write a single word of copy." },
-                      { text: "Go deeper than surface pain points", desc: "Understand the emotional impact on their life, relationships, and identity." },
-                      { text: "Mirror their exact language", desc: "Research Reddit, reviews, and comments. Use their specific phrases." },
-                      { text: "Understanding = Trust = Sales", desc: "When they feel understood, they lower their defenses. That's when persuasion happens." }
-                    ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        className="flex items-start gap-5 p-6 rounded-2xl bg-neutral-50 hover:bg-emerald-50 transition-colors"
-                        variants={staggerItem}
-                        whileHover={{ x: 8 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <div className="p-1.5 bg-accent text-white rounded-full flex-shrink-0 mt-0.5">
-                          <Icons.Check />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg text-neutral-800">{item.text}</p>
-                          <p className="text-neutral-600 mt-1">{item.desc}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </Fade>
-
-              {/* Action Step */}
-              <Fade delay={0.1}>
-                <motion.div
-                  className="p-10 rounded-3xl border-2 border-accent bg-gradient-to-br from-emerald-50 to-white"
-                  whileHover={{ scale: 1.01, y: -4 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="p-3 bg-accent rounded-xl text-white">
-                      <Icons.Search />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold mb-4">Your Action Step</h2>
-                      <p className="text-lg text-neutral-600 leading-relaxed mb-6">
-                        Spend 30 minutes doing customer language research:
-                      </p>
-                      <div className="space-y-3">
-                        <p className="font-semibold text-black">
-                          1. Go to Reddit, Amazon reviews, or Facebook groups in your niche
-                        </p>
-                        <p className="font-semibold text-black">
-                          2. Write down 10 exact phrases your ideal customers use
-                        </p>
-                        <p className="font-semibold text-black">
-                          3. Use those phrases in your next ad, email, or landing page
-                        </p>
+                <section className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-lg font-semibold mb-3">Apply F.R.E.D. to Your Copy</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                      <div>
+                        <div className="text-sm font-medium">Research deeply</div>
+                        <div className="text-xs text-neutral-400">Interviews, reviews, forums, support tickets</div>
                       </div>
-                      <p className="text-neutral-500 mt-6 text-base">
-                        Watch your engagement rates climb when customers feel like you "get it."
-                      </p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                      <div>
+                        <div className="text-sm font-medium">Map to F.R.E.D.</div>
+                        <div className="text-xs text-neutral-400">Categorize every insight into the four buckets</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                      <div>
+                        <div className="text-sm font-medium">Address all four</div>
+                        <div className="text-xs text-neutral-400">Great copy touches Fears, Results, Expectations, and Desires</div>
+                      </div>
                     </div>
                   </div>
-                </motion.div>
+                </section>
               </Fade>
 
+              <Fade delay={0.1}>
+                <section className="border-l-4 border-accent pl-4 py-2">
+                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
+                  <p className="text-sm text-neutral-600">
+                    You can't persuade someone until you understand their <strong>Fears, Results, Expectations, and Desires</strong>. F.R.E.D. is your cheat code for mind reading.
+                  </p>
+                </section>
+              </Fade>
+
+              <div className="h-8"></div>
             </div>
           </main>
-
-          {/* Footer */}
-          <footer className="py-16 border-t border-neutral-200">
-            <div className="max-w-3xl mx-auto px-6 text-center">
-              <p className="text-sm text-neutral-400 font-medium">Quantum Scale Learning Center</p>
-            </div>
-          </footer>
         </div>
       );
     }

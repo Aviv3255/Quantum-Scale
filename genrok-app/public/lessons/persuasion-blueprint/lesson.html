@@ -3,871 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Persuasion Blueprint: Build Your Messaging System</title>
+  <title>The Persuasion Blueprint</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            blueprint: '#1e3a5f',
-            'blueprint-light': '#2d5a87',
-            'blueprint-line': '#4a90c2',
-            accent: '#c4785c',
-            'accent-light': '#d4956a',
+          colors: { accent: '#1e3a5f' },
+          fontSize: {
+            'xs': ['0.7rem', { lineHeight: '1.5' }],
+            'sm': ['0.8rem', { lineHeight: '1.5' }],
+            'base': ['0.875rem', { lineHeight: '1.6' }],
+            'lg': ['1rem', { lineHeight: '1.5' }],
+            'xl': ['1.125rem', { lineHeight: '1.4' }],
+            '2xl': ['1.25rem', { lineHeight: '1.3' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    * { font-family: 'Inter', -apple-system, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #1e3a5f; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.025em; }
-
-    .blueprint-bg {
-      background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
-    }
-
-    .blueprint-grid {
-      background-image:
-        linear-gradient(rgba(74, 144, 194, 0.3) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74, 144, 194, 0.3) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
-
-    .tossed-salad {
-      animation: wobble 3s ease-in-out infinite;
-    }
-
-    @keyframes wobble {
-      0%, 100% { transform: rotate(-2deg); }
-      50% { transform: rotate(2deg); }
-    }
+    h1, h2, h3 { letter-spacing: -0.02em; }
+    .lesson-container { max-width: 720px; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence } = window.Motion;
-    const { useState, useRef } = React;
+    const { motion, useInView } = window.Motion;
+    const { useState, useRef, useEffect } = React;
 
-    // Icons
-    const Icons = {
-      Target: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      User: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-      ),
-      Layers: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
-        </svg>
-      ),
-      Home: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-      ),
-      Pencil: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-        </svg>
-      ),
-      ArrowRight: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      ),
-      Lightbulb: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
-          <path d="M9 18h6"/><path d="M10 22h4"/>
-        </svg>
-      ),
-      MessageCircle: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-        </svg>
-      ),
-      CheckCircle: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-      ),
-    };
-
-    // Section wrapper
-    function Section({ children, className = "", delay = 0 }) {
+    function Fade({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-100px" });
-
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.section
-          ref={ref}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
+        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
           {children}
-        </motion.section>
+        </motion.div>
       );
     }
 
-    // Hero Section
-    function HeroSection() {
+    // Blueprint Step Card
+    function StepCard({ number, title, subtitle, isActive, onClick }) {
       return (
-        <Section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 blueprint-bg blueprint-grid text-white">
-          <motion.p
-            className="text-sm font-semibold text-blueprint-line uppercase tracking-wider mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            Lesson 8: The Persuasion Blueprint
-          </motion.p>
-
-          <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-center max-w-4xl leading-tight mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            A Strategic Guide to Building a
-            <span className="text-accent-light"> World-Class Messaging System</span>
-          </motion.h1>
-
-          <motion.p
-            className="text-xl text-blue-200 mb-12 text-center max-w-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Synthesizing the frameworks of Hormozi, Miller, Cattoni, Edwards, Halbert, and more.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex items-center gap-2 text-blue-300"
-          >
-            <span>Scroll to explore the blueprint</span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              ↓
-            </motion.div>
-          </motion.div>
-        </Section>
-      );
-    }
-
-    // Tossed Salad Problem
-    function TossedSaladSection() {
-      const [showBlueprint, setShowBlueprint] = useState(false);
-
-      const buzzwords = ['SYNERGY', 'LOW-HANGING FRUIT', 'MOVE THE NEEDLE', 'THINK OUTSIDE THE BOX', 'BEST PRACTICES', 'VALUE-ADD', 'DISRUPT'];
-
-      return (
-        <Section className="py-24 px-6 bg-stone-50">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Why Most Marketing Fails
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12">
-              The "Tossed Salad" Approach
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              {/* Tossed Salad Side */}
-              <motion.div
-                className={`bg-white rounded-2xl p-8 border-2 transition-all ${!showBlueprint ? 'border-red-200 shadow-lg' : 'border-gray-100 opacity-50'}`}
-                onClick={() => setShowBlueprint(false)}
-              >
-                <div className="tossed-salad bg-gray-100 rounded-xl p-6 mb-6 relative overflow-hidden h-48 flex items-center justify-center">
-                  {buzzwords.map((word, i) => (
-                    <motion.span
-                      key={word}
-                      className="absolute text-xs font-bold text-gray-400"
-                      style={{
-                        top: `${15 + (i * 12) % 70}%`,
-                        left: `${10 + (i * 17) % 80}%`,
-                        transform: `rotate(${-15 + i * 10}deg)`
-                      }}
-                      animate={{ rotate: [-15 + i * 10, -10 + i * 10, -15 + i * 10] }}
-                      transition={{ repeat: Infinity, duration: 3, delay: i * 0.2 }}
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                  <span className="text-4xl">🥗</span>
-                </div>
-
-                <h3 className="text-xl font-bold text-red-600 mb-3">The Problem</h3>
-                <p className="text-gray-600 mb-4">
-                  Most marketing messages are a jumble of ideas thrown at a wall to see what sticks.
-                  Alex Hormozi calls this "tossed salad copy."
-                </p>
-                <p className="text-sm text-gray-500 italic">
-                  "You're so close to [your product], you no longer know how to talk about it simply.
-                  And that's what's costing you money." — Donald Miller
-                </p>
-              </motion.div>
-
-              {/* Blueprint Side */}
-              <motion.div
-                className={`bg-white rounded-2xl p-8 border-2 transition-all cursor-pointer ${showBlueprint ? 'border-blueprint shadow-lg' : 'border-gray-100'}`}
-                onClick={() => setShowBlueprint(true)}
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="blueprint-bg blueprint-grid rounded-xl p-6 mb-6 h-48 flex items-center justify-center">
-                  <motion.div
-                    className="w-24 h-20 border-2 border-blue-300 relative"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-4 border-2 border-blue-300 border-b-0"></div>
-                    <div className="absolute top-1/2 left-1/4 w-3 h-4 border border-blue-300"></div>
-                    <div className="absolute top-1/2 right-1/4 w-3 h-4 border border-blue-300"></div>
-                  </motion.div>
-                </div>
-
-                <h3 className="text-xl font-bold text-blueprint mb-3">The Solution</h3>
-                <p className="text-gray-600 mb-4">
-                  Not more ideas, but a more rigorous structure.
-                  <span className="font-semibold"> A blueprint.</span>
-                </p>
-                <p className="text-sm text-gray-500">
-                  The result is noise, not a signal. An unstable structure built on a weak foundation.
-                </p>
-              </motion.div>
+        <motion.div
+          className={`p-3 rounded-lg cursor-pointer transition-all ${isActive ? 'bg-accent text-white' : 'bg-neutral-100 hover:bg-neutral-200'}`}
+          onClick={onClick}
+          whileTap={{ scale: 0.98 }}
+        >
+          <div className="flex items-center gap-3">
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${isActive ? 'bg-white text-accent' : 'bg-accent text-white'}`}>
+              {number}
+            </div>
+            <div>
+              <div className="text-sm font-semibold">{title}</div>
+              <div className={`text-xs ${isActive ? 'text-blue-200' : 'text-neutral-500'}`}>{subtitle}</div>
             </div>
           </div>
-        </Section>
+        </motion.div>
       );
     }
 
-    // Step 1: Rule of One
-    function RuleOfOneSection() {
-      const pillars = [
-        { title: 'One Big Idea', desc: 'Your message must center on one core concept. Easy to understand, easy to believe, and unique.' },
-        { title: 'One Target Reader', desc: 'Who is the single person you are speaking to?' },
-        { title: 'One Core Promise', desc: 'What is the single most important outcome you can deliver?' },
-        { title: 'One Clear Offer', desc: 'What is the one action you want them to take?' },
-      ];
+    function Lesson() {
+      const [activeStep, setActiveStep] = useState(0);
 
-      return (
-        <Section className="py-24 px-6 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <span className="w-10 h-10 rounded-full bg-blueprint text-white flex items-center justify-center font-bold">1</span>
-              <p className="text-sm font-semibold text-blueprint uppercase tracking-wider">Step 1</p>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Lay the Foundation with The Rule of One
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              Every great structure is built on a single, solid foundation.
-              A single compelling message is more powerful than a dozen mediocre ones.
-            </p>
-
-            {/* Target visualization */}
-            <div className="relative flex justify-center mb-16">
-              <div className="relative">
-                {[0, 1, 2, 3].map((ring) => (
-                  <motion.div
-                    key={ring}
-                    className="absolute rounded-full border-2 border-blueprint/20"
-                    style={{
-                      width: `${200 + ring * 80}px`,
-                      height: `${200 + ring * 80}px`,
-                      top: `${-ring * 40}px`,
-                      left: `${-ring * 40}px`,
-                    }}
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: ring * 0.1 }}
-                  />
-                ))}
-                <motion.div
-                  className="w-12 h-12 bg-accent rounded-full flex items-center justify-center relative z-10"
-                  style={{ marginTop: '94px', marginLeft: '94px' }}
-                  whileInView={{ scale: [0, 1.2, 1] }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <Icons.Pencil className="w-6 h-6 text-white" />
-                </motion.div>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {pillars.map((pillar, i) => (
-                <motion.div
-                  key={pillar.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-stone-50 rounded-xl p-6"
-                >
-                  <div className="w-8 h-8 bg-blueprint text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">
-                    1
-                  </div>
-                  <h3 className="font-bold text-lg mb-2">{pillar.title}</h3>
-                  <p className="text-sm text-gray-600">{pillar.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <p className="text-center text-gray-500 mt-8 italic">
-              "The most compelling messages... all centered around a single concept." — Alex Hormozi
-            </p>
-          </div>
-        </Section>
-      );
-    }
-
-    // Step 2: Avatar Journey
-    function AvatarJourneySection() {
-      return (
-        <Section className="py-24 px-6 bg-stone-50">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <span className="w-10 h-10 rounded-full bg-blueprint text-white flex items-center justify-center font-bold">2</span>
-              <p className="text-sm font-semibold text-blueprint uppercase tracking-wider">Step 2</p>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Define Your 'Who' with the Avatar Journey
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              A focused idea aimed at the wrong person is a wasted effort.
-              Understand not just demographics, but their <span className="text-accent font-semibold">identity</span>.
-            </p>
-
-            {/* Journey visualization */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                {/* Current Identity */}
-                <motion.div
-                  className="flex-1 bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300"
-                  whileInView={{ x: [-20, 0], opacity: [0, 1] }}
-                >
-                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Starting Point</p>
-                  <h3 className="text-xl font-bold mb-3">Current Identity</h3>
-                  <p className="text-gray-600 italic mb-4">"Who do they see themselves as right now?"</p>
-                  <div className="bg-white rounded-lg p-3 text-sm text-gray-500">
-                    e.g., "A hard-working realtor"
-                  </div>
-                </motion.div>
-
-                {/* Arrow */}
-                <motion.div
-                  className="flex items-center justify-center"
-                  whileInView={{ scale: [0, 1] }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white">
-                    <Icons.ArrowRight />
-                  </div>
-                </motion.div>
-
-                {/* Ideal Identity */}
-                <motion.div
-                  className="flex-1 bg-blueprint/5 rounded-xl p-6 border-2 border-blueprint"
-                  whileInView={{ x: [20, 0], opacity: [0, 1] }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <p className="text-sm text-blueprint uppercase tracking-wider mb-2">Destination</p>
-                  <h3 className="text-xl font-bold mb-3">Ideal Identity</h3>
-                  <p className="text-gray-600 italic mb-4">"Who do they ultimately want to become?"</p>
-                  <div className="bg-white rounded-lg p-3 text-sm text-blueprint">
-                    e.g., "A top producer"
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-
-            <div className="bg-accent/10 rounded-xl p-6 border border-accent/20 max-w-2xl mx-auto">
-              <p className="text-accent font-medium mb-2">Key Principle:</p>
-              <p className="text-gray-700">
-                Your copy must enter the conversation already going on in their mind.
-                <span className="font-semibold"> Call them what they call themselves.</span>
-              </p>
-            </div>
-          </div>
-        </Section>
-      );
-    }
-
-    // Valley of Despair
-    function ValleyOfDespairSection() {
-      const challenges = [
-        { label: 'Problems', desc: 'What technical or logistical issues are they facing?', example: '"How do I get leads?"' },
-        { label: 'Pains', desc: 'What are the deep-seated emotional frustrations?', example: '"I\'m working 18 hours a day and can\'t compete."' },
-        { label: 'Questions', desc: 'What specific questions are they stuck on?', example: '"How do I use Facebook to get leads?"' },
-        { label: 'Roadblocks', desc: 'What limiting beliefs are holding them back?', example: '"I don\'t have a big advertising budget."' },
-      ];
-
-      return (
-        <Section className="py-24 px-6 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Mapping the "Valley of Despair"
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              The space between who your customer is and who they want to be is filled with challenges.
-              <span className="text-accent font-semibold"> Your product is the bridge.</span>
-            </p>
-
-            {/* Valley visualization */}
-            <div className="relative h-64 mb-12">
-              <svg className="w-full h-full" viewBox="0 0 800 200" preserveAspectRatio="none">
-                <path
-                  d="M 0 40 Q 150 40 200 150 Q 250 200 400 200 Q 550 200 600 150 Q 650 40 800 40"
-                  fill="none"
-                  stroke="#e5e5e5"
-                  strokeWidth="60"
-                />
-                <path
-                  d="M 0 40 Q 150 40 200 150 Q 250 200 400 200 Q 550 200 600 150 Q 650 40 800 40"
-                  fill="none"
-                  stroke="#1e3a5f"
-                  strokeWidth="3"
-                  strokeDasharray="8,8"
-                />
-              </svg>
-
-              {/* Start point */}
-              <div className="absolute left-4 top-4 bg-gray-100 rounded-lg p-3 text-sm">
-                <p className="font-bold">Current Identity</p>
-              </div>
-
-              {/* End point */}
-              <div className="absolute right-4 top-4 bg-blueprint/10 rounded-lg p-3 text-sm">
-                <p className="font-bold text-blueprint">Ideal Identity</p>
-              </div>
-
-              {/* Bridge */}
-              <motion.div
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 bg-accent text-white px-4 py-2 rounded-full text-sm font-medium"
-                whileInView={{ scale: [0, 1.1, 1] }}
-              >
-                Your Product = The Bridge
-              </motion.div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {challenges.map((item, i) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-stone-50 rounded-xl p-5"
-                >
-                  <h3 className="font-bold text-accent mb-2">"{item.label}"</h3>
-                  <p className="text-sm text-gray-600 mb-3">{item.desc}</p>
-                  <p className="text-xs text-gray-400 italic bg-white rounded p-2">{item.example}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <p className="text-center text-gray-500 mt-8 italic">
-              "Whatever it is you're selling is a bridge across this valley of despair." — Jim Edwards
-            </p>
-          </div>
-        </Section>
-      );
-    }
-
-    // Step 3: 5 Levels of Awareness
-    function AwarenessLevelsSection() {
-      const [activeLevel, setActiveLevel] = useState(0);
-
-      const levels = [
-        { name: 'Totally Unaware', thought: '"I don\'t even know I have a problem."', goal: 'Pull them into your world', strategy: 'Storytelling, education, social content', cta: 'Ask for engagement, not a sale' },
-        { name: 'Problem Aware', thought: '"I have a problem, but I\'m not sure there\'s a solution."', goal: 'Sell the idea of the solution category', strategy: 'Empathize with their pain, show a path exists', cta: 'Offer a free guide or resource' },
-        { name: 'Solution Aware', thought: '"I know a solution exists, but not which one is for me."', goal: 'Build trust and prove you\'re the right guide', strategy: 'Low-ticket training, masterclass, challenge', cta: 'Ask for a micro-commitment ($27 challenge)' },
-        { name: 'Product Aware', thought: '"I know about your product, but I\'m not sure it\'s the best choice."', goal: 'Convince them you\'re the best choice', strategy: 'Social proof, testimonials, case studies', cta: 'Direct selling ads' },
-        { name: 'Most Aware', thought: '"I want your product. I just need a reason to buy now."', goal: 'Give them a reason to buy right now', strategy: 'Short, direct copy with irresistible offer', cta: 'Time scarcity, limited quantity, discount' },
-      ];
-
-      return (
-        <Section className="py-24 px-6 bg-blueprint text-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <span className="w-10 h-10 rounded-full bg-white text-blueprint flex items-center justify-center font-bold">3</span>
-              <p className="text-sm font-semibold text-blue-300 uppercase tracking-wider">Step 3</p>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Pinpoint Their Mindset with the 5 Levels of Awareness
-            </h2>
-            <p className="text-xl text-center text-blue-200 mb-12 max-w-2xl mx-auto">
-              Your copy must meet people where they are mentally.
-              A message for a loyal fan will fail with a complete stranger.
-            </p>
-
-            {/* Pyramid visualization */}
-            <div className="flex justify-center mb-12">
-              <div className="relative">
-                {levels.map((level, i) => (
-                  <motion.div
-                    key={level.name}
-                    className={`cursor-pointer transition-all ${activeLevel === i ? 'opacity-100' : 'opacity-60 hover:opacity-80'}`}
-                    onClick={() => setActiveLevel(i)}
-                    style={{
-                      width: `${120 + (4 - i) * 50}px`,
-                      marginLeft: `${(4 - i) * -25}px`,
-                    }}
-                  >
-                    <div
-                      className={`h-12 flex items-center justify-center text-xs font-bold rounded-t ${
-                        activeLevel === i ? 'bg-accent' : 'bg-white/20'
-                      }`}
-                    >
-                      {i + 1}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Level Details */}
-            <motion.div
-              key={activeLevel}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white/10 backdrop-blur rounded-2xl p-8 max-w-2xl mx-auto"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center text-sm font-bold">
-                  {activeLevel + 1}
-                </span>
-                <h3 className="text-xl font-bold">{levels[activeLevel].name}</h3>
-              </div>
-
-              <p className="text-blue-200 italic mb-6 text-lg">{levels[activeLevel].thought}</p>
-
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-blue-300 mb-1">Goal:</p>
-                  <p className="text-white">{levels[activeLevel].goal}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-blue-300 mb-1">Strategy:</p>
-                  <p className="text-white">{levels[activeLevel].strategy}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-blue-300 mb-1">Call to Action:</p>
-                  <p className="text-accent-light font-medium">{levels[activeLevel].cta}</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <p className="text-center text-blue-300 mt-8 italic">
-              "Your copy needs to meet people where they are or else they will not take action." — Alex Cattoni
-            </p>
-          </div>
-        </Section>
-      );
-    }
-
-    // Step 4: 3-Phase Campaign
-    function ThreePhaseCampaignSection() {
-      const [activePhase, setActivePhase] = useState(0);
-
-      const phases = [
-        {
-          name: 'Curiosity',
-          icon: <Icons.Lightbulb className="w-6 h-6" />,
-          location: 'Front Steps',
-          desc: 'Your message must pique their interest enough to get them to walk up to the house.',
-          key: 'Lead with the problem, not the product. Your customer is the hero who fell into a hole.',
-          quote: '"When you actually call that problem out, they pay attention."'
-        },
-        {
-          name: 'Enlightenment',
-          icon: <Icons.MessageCircle className="w-6 h-6" />,
-          location: 'Front Porch',
-          desc: 'You have a conversation. Explain how your solution works and build authority.',
-          key: 'Deploy value-driven content: PDFs, videos, webinars, podcasts.',
-          quote: 'Answer: How it works, why it works, the science, the cost, how to buy.'
-        },
-        {
-          name: 'Commitment',
-          icon: <Icons.Home className="w-6 h-6" />,
-          location: 'Front Door',
-          desc: 'This is the final step, where you clearly ask them to come inside (make a purchase).',
-          key: 'Don\'t just say "Buy Now." Frame it as the solution to their problem.',
-          quote: '"If you are struggling with [Problem X], buying [Product Y] is the right decision."'
-        },
-      ];
-
-      return (
-        <Section className="py-24 px-6 bg-stone-50">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <span className="w-10 h-10 rounded-full bg-blueprint text-white flex items-center justify-center font-bold">4</span>
-              <p className="text-sm font-semibold text-blueprint uppercase tracking-wider">Step 4</p>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Architect Your Campaign with the 3-Phase Message
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              This isn't a single message, but a sequenced campaign that guides them from curiosity to commitment.
-            </p>
-
-            {/* House visualization */}
-            <div className="flex justify-center gap-4 mb-12">
-              {phases.map((phase, i) => (
-                <motion.div
-                  key={phase.name}
-                  className={`cursor-pointer p-4 rounded-xl transition-all ${
-                    activePhase === i
-                      ? 'bg-blueprint text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-600 hover:bg-gray-50'
-                  }`}
-                  onClick={() => setActivePhase(i)}
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    {phase.icon}
-                    <span className="font-medium text-sm">{phase.name}</span>
-                    <span className="text-xs opacity-70">{phase.location}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Phase Details */}
-            <motion.div
-              key={activePhase}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blueprint/10 rounded-full flex items-center justify-center text-blueprint">
-                  {phases[activePhase].icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Phase {activePhase + 1}: {phases[activePhase].name}</h3>
-                  <p className="text-sm text-gray-500">{phases[activePhase].location}</p>
-                </div>
-              </div>
-
-              <p className="text-gray-600 mb-6">{phases[activePhase].desc}</p>
-
-              <div className="bg-accent/10 rounded-xl p-4 border border-accent/20 mb-4">
-                <p className="text-accent font-medium text-sm mb-1">Key Principle:</p>
-                <p className="text-gray-700">{phases[activePhase].key}</p>
-              </div>
-
-              <p className="text-sm text-gray-500 italic">{phases[activePhase].quote}</p>
-            </motion.div>
-
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-8 max-w-2xl mx-auto">
-              <p className="text-yellow-800 text-sm">
-                <strong>Key Insight:</strong> Most businesses are missing the front steps.
-                They have a house 8 feet off the ground with no way for customers to get in.
-              </p>
-            </div>
-          </div>
-        </Section>
-      );
-    }
-
-    // Step 5: The Craft
-    function TheCraftSection() {
-      const writingProcess = [
-        { step: 'Copy Work', desc: 'Warm up by hand-copying writing you admire. This internalizes rhythm and flow.' },
-        { step: 'Draft', desc: 'Write the first version as fast as you can. It\'s supposed to be bad. Just get ideas out.' },
-        { step: 'Incubate', desc: 'Step away. Go for a walk. Let your passive thinking solve problems.' },
-        { step: 'Edit', desc: 'Come back with fresh eyes and be ruthless. "Killing your darlings."' },
-      ];
-
-      const rules = [
-        { rule: 'Write Like You Talk', desc: 'If you wouldn\'t say "utilize" in a conversation, don\'t write it.' },
-        { rule: 'Write at 6th-8th Grade Level', desc: 'The goal is clarity, not complexity.' },
-        { rule: 'Write Music, Not Just Words', desc: 'Vary your sentence length. Short sentences for punch. Longer ones for rhythm.' },
-      ];
-
-      return (
-        <Section className="py-24 px-6 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3 justify-center mb-4">
-              <span className="w-10 h-10 rounded-full bg-blueprint text-white flex items-center justify-center font-bold">5</span>
-              <p className="text-sm font-semibold text-blueprint uppercase tracking-wider">Step 5</p>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Master Your Craft and Polish the Words
-            </h2>
-            <p className="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              A great blueprint is nothing without skilled craftsmanship.
-              This is where good copy becomes <span className="text-accent font-semibold">great writing</span>.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              {/* 4-Step Process */}
-              <div className="bg-stone-50 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-6">The 4-Step Writing Process</h3>
-                <div className="space-y-4">
-                  {writingProcess.map((item, i) => (
-                    <motion.div
-                      key={item.step}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex gap-4"
-                    >
-                      <span className="w-8 h-8 bg-blueprint text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
-                        {i + 1}
-                      </span>
-                      <div>
-                        <p className="font-bold">{item.step}</p>
-                        <p className="text-sm text-gray-600">{item.desc}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Style Rules */}
-              <div className="bg-stone-50 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-6">Key Stylistic Rules</h3>
-                <div className="space-y-4">
-                  {rules.map((item, i) => (
-                    <motion.div
-                      key={item.rule}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="bg-white rounded-xl p-4"
-                    >
-                      <p className="font-bold text-accent mb-1">{item.rule}</p>
-                      <p className="text-sm text-gray-600">{item.desc}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Editor's Mindset */}
-            <div className="bg-blueprint text-white rounded-2xl p-8 text-center max-w-2xl mx-auto">
-              <h3 className="text-lg font-bold mb-4">The Editor's Mindset</h3>
-              <p className="text-3xl font-bold mb-4">"Edit as though your reader has to pee."</p>
-              <p className="text-blue-200">
-                This is the ultimate filter. If a sentence isn't compelling enough to make them hold it, cut it.
-              </p>
-            </div>
-          </div>
-        </Section>
-      );
-    }
-
-    // Complete Blueprint Summary
-    function BlueprintSummarySection() {
       const steps = [
-        { icon: <Icons.Target className="w-6 h-6" />, name: 'The Rule of One', subtitle: 'The Core Strategic Idea' },
-        { icon: <Icons.User className="w-6 h-6" />, name: 'The Avatar Journey', subtitle: "Defines Your Target 'Who'" },
-        { icon: <Icons.Layers className="w-6 h-6" />, name: '5 Levels of Awareness', subtitle: "Pinpoints Their 'Where'" },
-        { icon: <Icons.Home className="w-6 h-6" />, name: 'The 3-Phase Campaign', subtitle: "Architects the 'How'" },
-        { icon: <Icons.Pencil className="w-6 h-6" />, name: 'The Craft', subtitle: 'Polishes the Final Words' },
+        { title: 'Rule of One', subtitle: 'The Core Strategic Idea', desc: 'One Big Idea, One Target Reader, One Core Promise, One Clear Offer.' },
+        { title: 'Avatar Journey', subtitle: 'Define Your WHO', desc: 'Map Current Identity to Ideal Identity. Call them what they call themselves.' },
+        { title: '5 Levels of Awareness', subtitle: 'Pinpoint Their WHERE', desc: 'Unaware → Problem Aware → Solution Aware → Product Aware → Most Aware.' },
+        { title: '3-Phase Campaign', subtitle: 'Architect the HOW', desc: 'Curiosity (Front Steps) → Enlightenment (Porch) → Commitment (Door).' },
+        { title: 'The Craft', subtitle: 'Polish the Words', desc: 'Write like you talk. 6th-8th grade level. Edit ruthlessly.' },
       ];
 
       return (
-        <Section className="py-24 px-6 bg-gradient-to-b from-stone-50 to-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8">
-              The Complete Persuasion Blueprint
-            </h2>
-            <p className="text-xl text-gray-600 mb-12">
-              These are not isolated tactics, but an integrated system.
-              Each step logically builds upon the last.
-            </p>
-
-            <div className="space-y-4 mb-12">
-              {steps.map((step, i) => (
-                <motion.div
-                  key={step.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm max-w-md mx-auto"
-                >
-                  <div className="w-12 h-12 bg-blueprint/10 rounded-full flex items-center justify-center text-blueprint">
-                    {step.icon}
-                  </div>
-                  <div className="text-left">
-                    <p className="font-bold text-blueprint">{step.name}</p>
-                    <p className="text-sm text-gray-500">{step.subtitle}</p>
-                  </div>
-                  {i < steps.length - 1 && (
-                    <div className="ml-auto text-gray-300">↓</div>
-                  )}
-                </motion.div>
-              ))}
+        <div className="bg-white min-h-screen">
+          <header className="bg-neutral-950 text-white px-6 py-8">
+            <div className="lesson-container">
+              <span className="inline-block px-2 py-0.5 bg-accent/30 text-blue-300 text-xs font-medium rounded mb-3">Strategic Framework</span>
+              <h1 className="text-2xl font-bold mb-2">The Persuasion Blueprint</h1>
+              <p className="text-sm text-neutral-400">Build your world-class messaging system</p>
             </div>
+          </header>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="text-xl text-gray-700 font-medium max-w-2xl mx-auto mb-8"
-            >
-              This is how you engineer persuasion. You build it, piece by piece,
-              on a solid foundation of <span className="text-blueprint">strategy</span> and <span className="text-accent">empathy</span>.
-            </motion.p>
+          <main className="px-6 py-6">
+            <div className="lesson-container space-y-8">
+              <Fade>
+                <section>
+                  <p className="text-base text-neutral-700 leading-relaxed">
+                    Most marketing is a "tossed salad" of random ideas. This blueprint gives you <strong>structure</strong>—a 5-step system that synthesizes frameworks from Hormozi, Miller, Cattoni, Edwards, and Halbert.
+                  </p>
+                </section>
+              </Fade>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blueprint text-white rounded-full font-medium"
-            >
-              <Icons.CheckCircle className="w-5 h-5" />
-              Blueprint Complete
-            </motion.div>
-          </div>
-        </Section>
-      );
-    }
+              <Fade delay={0.1}>
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/blueprint-hologram.png" alt="Persuasion Blueprint" className="w-full h-auto rounded-lg" />
+                </div>
+              </Fade>
 
-    // Main App
-    function App() {
-      return (
-        <div className="min-h-screen">
-          <HeroSection />
-          <TossedSaladSection />
-          <RuleOfOneSection />
-          <AvatarJourneySection />
-          <ValleyOfDespairSection />
-          <AwarenessLevelsSection />
-          <ThreePhaseCampaignSection />
-          <TheCraftSection />
-          <BlueprintSummarySection />
+              <Fade delay={0.1}>
+                <div className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">🥗</span>
+                    The Tossed Salad Problem
+                  </h3>
+                  <p className="text-sm text-neutral-300">
+                    "You're so close to your product, you no longer know how to talk about it simply. <strong className="text-white">That's what's costing you money.</strong>" — Donald Miller
+                  </p>
+                </div>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <section>
+                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The 5-Step Blueprint</h2>
+                  <p className="text-xs text-neutral-500 mb-4">Click each step to explore</p>
+                  <div className="space-y-2 mb-4">
+                    {steps.map((step, i) => (
+                      <StepCard
+                        key={i}
+                        number={i + 1}
+                        title={step.title}
+                        subtitle={step.subtitle}
+                        isActive={activeStep === i}
+                        onClick={() => setActiveStep(i)}
+                      />
+                    ))}
+                  </div>
+                  <motion.div
+                    key={activeStep}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-accent/5 p-4 rounded-xl border border-accent/20"
+                  >
+                    <p className="text-sm text-neutral-700">{steps[activeStep].desc}</p>
+                  </motion.div>
+                </section>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
+                  <img src="images/journey-map.png" alt="Customer journey map" className="w-full h-auto rounded-lg" />
+                  <p className="text-xs text-neutral-400 text-center mt-2">Map the journey from pain to solution</p>
+                </div>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <section>
+                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Valley of Despair</h2>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-neutral-50 rounded-lg">
+                      <div className="text-sm font-semibold text-neutral-900">Problems</div>
+                      <div className="text-xs text-neutral-500">Technical or logistical issues they face</div>
+                    </div>
+                    <div className="p-3 bg-neutral-50 rounded-lg">
+                      <div className="text-sm font-semibold text-neutral-900">Pains</div>
+                      <div className="text-xs text-neutral-500">Deep emotional frustrations</div>
+                    </div>
+                    <div className="p-3 bg-neutral-50 rounded-lg">
+                      <div className="text-sm font-semibold text-neutral-900">Questions</div>
+                      <div className="text-xs text-neutral-500">Specific questions they're stuck on</div>
+                    </div>
+                    <div className="p-3 bg-neutral-50 rounded-lg">
+                      <div className="text-sm font-semibold text-neutral-900">Roadblocks</div>
+                      <div className="text-xs text-neutral-500">Limiting beliefs holding them back</div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-neutral-500 mt-3 italic text-center">"Your product is the bridge across this valley." — Jim Edwards</p>
+                </section>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <section className="bg-neutral-950 text-white p-5 rounded-xl">
+                  <h3 className="text-lg font-semibold mb-3">The Editor's Mindset</h3>
+                  <p className="text-base text-center font-medium mb-3">"Edit as though your reader has to pee."</p>
+                  <p className="text-sm text-neutral-400 text-center">If a sentence isn't compelling enough to make them hold it, cut it.</p>
+                </section>
+              </Fade>
+
+              <Fade delay={0.1}>
+                <section className="border-l-4 border-accent pl-4 py-2">
+                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
+                  <p className="text-sm text-neutral-600">
+                    <strong>Not more ideas, but more structure.</strong> Build your messaging on Foundation (WHY) → Pillars (WHO/HOW) → Execution (WHAT).
+                  </p>
+                </section>
+              </Fade>
+
+              <div className="h-8"></div>
+            </div>
+          </main>
         </div>
       );
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.render(<Lesson />, document.getElementById('root'));
   </script>
 </body>
 </html>
