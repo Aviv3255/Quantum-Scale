@@ -20,6 +20,7 @@ import {
   Circle,
   ChevronDown,
   RotateCcw,
+  ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
@@ -275,79 +276,114 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {items.map((item, index) => {
-                      const isCompleted = isItemCompleted(item.id);
-                      const isExpanded = expandedItems.has(item.id);
-                      const hasDescription = !!item.description;
-
-                      return (
-                        <div
-                          key={item.id}
-                          className={`rounded-lg border transition-all ${
-                            isCompleted
-                              ? 'border-green-200 bg-green-50'
-                              : 'border-[#eee] bg-white hover:border-[#ddd]'
-                          }`}
-                        >
-                          <div className="flex items-start gap-2 p-2.5">
-                            <button
-                              onClick={() => toggleItem(item.id)}
-                              className="mt-0.5 flex-shrink-0"
+                    {(() => {
+                      let taskNumber = 0;
+                      return items.map((item, index) => {
+                        // Category header - displayed as simple header
+                        if (item.isCategory) {
+                          return (
+                            <div
+                              key={item.id}
+                              className={`${index > 0 ? 'mt-4 pt-3 border-t border-[#e0e0e0]' : ''}`}
                             >
-                              {isCompleted ? (
-                                <CheckCircle2 size={18} className="text-green-500" />
-                              ) : (
-                                <Circle
-                                  size={18}
-                                  className="text-[#ccc] hover:text-[#999] transition-colors"
-                                />
-                              )}
-                            </button>
-                            <div className="min-w-0 flex-1">
-                              <div
-                                className={`flex items-start justify-between gap-1 ${
-                                  hasDescription ? 'cursor-pointer' : ''
-                                }`}
-                                onClick={() => hasDescription && toggleExpand(item.id)}
+                              <h4 className="text-xs font-semibold text-[#333] flex items-center gap-1.5">
+                                <span className="w-1 h-1 rounded-full bg-[var(--primary)]" />
+                                {item.title}:
+                              </h4>
+                            </div>
+                          );
+                        }
+
+                        // Regular task item
+                        taskNumber++;
+                        const currentTaskNumber = taskNumber;
+                        const isCompleted = isItemCompleted(item.id);
+                        const isExpanded = expandedItems.has(item.id);
+                        const hasExpandableContent = !!item.description || !!item.link;
+
+                        return (
+                          <div
+                            key={item.id}
+                            className={`rounded-lg border transition-all ${
+                              isCompleted
+                                ? 'border-green-200 bg-green-50'
+                                : 'border-[#eee] bg-white hover:border-[#ddd]'
+                            }`}
+                          >
+                            <div className="flex items-start gap-2 p-2.5">
+                              <button
+                                onClick={() => toggleItem(item.id)}
+                                className="mt-0.5 flex-shrink-0"
                               >
-                                <span
-                                  className={`text-xs font-medium leading-tight ${
-                                    isCompleted
-                                      ? 'text-green-700 line-through'
-                                      : 'text-[var(--text-primary)]'
-                                  }`}
-                                >
-                                  {index + 1}. {item.title}
-                                </span>
-                                {hasDescription && (
-                                  <ChevronDown
-                                    size={14}
-                                    className={`text-[var(--text-muted)] transition-transform flex-shrink-0 ${
-                                      isExpanded ? 'rotate-180' : ''
-                                    }`}
+                                {isCompleted ? (
+                                  <CheckCircle2 size={18} className="text-green-500" />
+                                ) : (
+                                  <Circle
+                                    size={18}
+                                    className="text-[#ccc] hover:text-[#999] transition-colors"
                                   />
                                 )}
-                              </div>
-                              <AnimatePresence>
-                                {isExpanded && item.description && (
-                                  <motion.p
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className={`mt-1 text-xs overflow-hidden ${
-                                      isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'
+                              </button>
+                              <div className="min-w-0 flex-1">
+                                <div
+                                  className={`flex items-start justify-between gap-1 ${
+                                    hasExpandableContent ? 'cursor-pointer' : ''
+                                  }`}
+                                  onClick={() => hasExpandableContent && toggleExpand(item.id)}
+                                >
+                                  <span
+                                    className={`text-xs font-medium leading-tight ${
+                                      isCompleted
+                                        ? 'text-green-700 line-through'
+                                        : 'text-[var(--text-primary)]'
                                     }`}
                                   >
-                                    {item.description}
-                                  </motion.p>
-                                )}
-                              </AnimatePresence>
+                                    {currentTaskNumber}. {item.title}
+                                  </span>
+                                  {hasExpandableContent && (
+                                    <ChevronDown
+                                      size={14}
+                                      className={`text-[var(--text-muted)] transition-transform flex-shrink-0 ${
+                                        isExpanded ? 'rotate-180' : ''
+                                      }`}
+                                    />
+                                  )}
+                                </div>
+                                <AnimatePresence>
+                                  {isExpanded && (item.description || item.link) && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: 'auto', opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ duration: 0.2 }}
+                                      className="overflow-hidden"
+                                    >
+                                      {item.description && (
+                                        <p className={`mt-1 text-xs ${isCompleted ? 'text-green-600' : 'text-[var(--text-muted)]'}`}>
+                                          {item.description}
+                                        </p>
+                                      )}
+                                      {item.link && (
+                                        <a
+                                          href={item.link}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="mt-2 inline-flex items-center gap-1 rounded-md bg-[var(--primary)] px-2 py-1 text-[10px] font-medium text-white transition-opacity hover:opacity-80"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                          <ExternalLink size={10} />
+                                          {item.linkText || 'Open Link'}
+                                        </a>
+                                      )}
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 )}
               </div>

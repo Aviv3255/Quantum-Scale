@@ -1466,10 +1466,58 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
   const bySlugProp = Object.values(coursesData).find((c) => c.slug === slug);
   if (bySlugProp) return bySlugProp;
 
-  // Try normalized slug (handle variations like "the-subconscious-trap" vs "subconscious-trap")
-  const normalizedSlug = slug.toLowerCase().replace(/^the-/, '');
+  // Normalize slug: remove prefixes, convert to lowercase
+  const normalizeSlug = (s: string) => s.toLowerCase()
+    .replace(/^the-/, '')
+    .replace(/-course$/, '')
+    .replace(/-system$/, '');
+
+  const normalizedSlug = normalizeSlug(slug);
+
+  // Try normalized lookup
   if (coursesData[normalizedSlug]) {
     return coursesData[normalizedSlug];
+  }
+
+  // Try adding common suffixes back
+  const withSystem = `${normalizedSlug}-system`;
+  if (coursesData[withSystem]) {
+    return coursesData[withSystem];
+  }
+
+  // Common slug mappings for edge cases
+  const slugMappings: Record<string, string> = {
+    'subconscious': 'subconscious-trap',
+    'trap': 'subconscious-trap',
+    'ltv': 'ltv-system',
+    'email': 'email-marketing',
+    'checkout': 'abandoned-checkout',
+    'finisher': 'abandoned-checkout',
+    'abandoned': 'abandoned-checkout',
+    'social': 'the-social-proof',
+    'proof': 'the-social-proof',
+    'mapping': 'product-mapping',
+    'product': 'product-mapping',
+    'photographer': 'ai-photographer',
+    'copy': 'ad-copy-templates',
+    'templates': 'meta-ad-templates',
+    'creative': 'meta-ad-templates',
+    'headlines': 'meta-headlines',
+    'targeting': 'laser-targeting',
+    'laser': 'laser-targeting',
+    'quiz': 'quiz-tactic',
+    'offer': 'offer-workshop',
+    'laws': '20-laws',
+    'ugly': 'ugly-ads',
+    'ab-test': 'ab-test-results',
+    'ab': 'ab-test-results',
+  };
+
+  // Check mappings
+  for (const [key, mappedSlug] of Object.entries(slugMappings)) {
+    if (normalizedSlug.includes(key) && coursesData[mappedSlug]) {
+      return coursesData[mappedSlug];
+    }
   }
 
   // Try to find by partial match
@@ -1477,6 +1525,8 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
     (c) =>
       c.slug.includes(normalizedSlug) ||
       normalizedSlug.includes(c.slug) ||
+      normalizeSlug(c.slug).includes(normalizedSlug) ||
+      normalizedSlug.includes(normalizeSlug(c.slug)) ||
       c.title.toLowerCase().replace(/\s+/g, '-').includes(normalizedSlug)
   );
 
