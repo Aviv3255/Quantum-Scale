@@ -18684,6 +18684,563 @@ body {
     </div>
 </div>
   `,
+
+  // ==================== 50+ AD COPY TEMPLATES ====================
+  'ad-copy-templates': `
+<style>
+body {
+margin: 0;
+padding: 0;
+background: #ffffff;
+}
+.landing-section {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 25px 5px 28px 5px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.landing-section::before,
+.landing-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+.landing-section::before {
+left: -100vw !important;
+}
+.landing-section::after {
+right: -100vw !important;
+}
+.landing-section * {
+box-sizing: border-box !important;
+}
+.content-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+}
+.intro-text {
+background: rgba(212, 177, 96, 0.15) !important;
+border: 1px solid #D4B160 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 10px !important;
+font-size: 13px !important;
+color: #ffffff !important;
+font-weight: 500 !important;
+margin: 0 0 32px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.pulse-dot {
+width: 8px !important;
+height: 8px !important;
+background: #D4B160 !important;
+border-radius: 50% !important;
+animation: pulse 2s infinite !important;
+box-shadow: 0 0 10px #D4B160 !important;
+display: block !important;
+}
+@keyframes pulse {
+0%, 100% {
+opacity: 1;
+transform: scale(1);
+}
+50% {
+opacity: 0.5;
+transform: scale(1.1);
+}
+}
+.main-headline {
+font-size: 37.4px !important;
+font-weight: 800 !important;
+line-height: 1.2 !important;
+color: #ffffff !important;
+margin: 0 0 12px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.highlight {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+font-size: inherit !important;
+}
+.sub-headline {
+font-size: 20.4px !important;
+color: #cccccc !important;
+margin: 0 0 28px 0 !important;
+font-weight: 400 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.screenshot-container {
+margin: 35px 0 !important;
+max-width: 720px !important;
+margin-left: auto !important;
+margin-right: auto !important;
+display: block !important;
+}
+.screenshot {
+width: 100% !important;
+height: auto !important;
+border-radius: 12px !important;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+display: block !important;
+}
+.pricing-section {
+margin: 28px 0 !important;
+display: block !important;
+}
+.price-text {
+font-size: 34.4px !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+margin: 0 0 5px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.original-price {
+color: #999999 !important;
+text-decoration: line-through !important;
+font-size: 26px !important;
+margin-right: 10px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.current-price {
+color: #D4B160 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+padding: 21px 76px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 550px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(212, 177, 96, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 25px auto 10px auto !important;
+}
+.cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(212, 177, 96, 0.6) !important;
+}
+.cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.cta-button span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+font-family: 'Open Sans', sans-serif !important;
+display: inline-block !important;
+line-height: 1.3 !important;
+}
+.bonus-section {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 20px !important;
+margin-top: 28px !important;
+padding: 0 20px !important;
+}
+.bundle-wrapper {
+text-align: center !important;
+margin: 12px 0 0 0 !important;
+display: block !important;
+}
+.bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.bundle-link {
+color: #D4B160 !important;
+text-decoration: underline !important;
+}
+.bundle-link:hover {
+text-decoration: none !important;
+}
+.secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15.44px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 10px !important;
+margin-bottom: 8px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.secure-payment-icon {
+width: 28.31px !important;
+height: 28.31px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+flex-shrink: 0 !important;
+display: block !important;
+}
+@media (max-width: 768px) {
+.landing-section {
+padding: 3px 3px 20px 3px !important;
+}
+.main-headline {
+font-size: 31.46px !important;
+}
+.price-text {
+font-size: 28.9px !important;
+}
+.original-price {
+font-size: 22px !important;
+}
+.current-price {
+font-size: 28.9px !important;
+}
+.cta-button {
+min-width: 340px !important;
+font-size: 19px !important;
+padding: 16px 30px !important;
+}
+.cta-button span {
+font-size: 19px !important;
+}
+}
+@media (max-width: 480px) {
+.landing-section {
+padding: 2px 2px 20px 2px !important;
+}
+.main-headline {
+font-size: 26.45px !important;
+}
+.sub-headline {
+font-size: 17px !important;
+}
+.cta-button {
+min-width: 340px !important;
+font-size: 19px !important;
+padding: 16px 30px !important;
+}
+.cta-button span {
+font-size: 19px !important;
+}
+}
+
+/* Problem Section Styles */
+.problem-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 60px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.problem-mega-section * {
+box-sizing: border-box !important;
+}
+.problem-mega-section::before,
+.problem-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.problem-mega-section::before {
+left: -100vw !important;
+}
+.problem-mega-section::after {
+right: -100vw !important;
+}
+.mega-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.mega-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 15px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-gold-text {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+}
+.mega-subtitle {
+text-align: center !important;
+font-size: 19px !important;
+color: #555555 !important;
+margin: 0 0 50px 0 !important;
+font-weight: 400 !important;
+line-height: 1.5 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-paragraph {
+font-size: 17px !important;
+line-height: 1.8 !important;
+color: #333333 !important;
+margin: 0 0 25px 0 !important;
+text-align: left !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.mega-paragraph strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+.centered-paragraph {
+text-align: center !important;
+}
+@media (max-width: 768px) {
+.problem-mega-section {
+padding: 40px 0 !important;
+}
+.mega-title {
+font-size: 30px !important;
+}
+.mega-subtitle {
+font-size: 17px !important;
+}
+.mega-paragraph {
+font-size: 16px !important;
+}
+}
+
+/* Results Section Styles */
+.isolated-section-wrapper {
+all: initial;
+}
+.isolated-section-wrapper * {
+all: unset;
+}
+.isolated-section {
+all: initial;
+display: block !important;
+position: relative !important;
+width: 100% !important;
+min-width: 100% !important;
+max-width: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
+color: #ffffff !important;
+isolation: isolate !important;
+}
+.isolated-section * {
+box-sizing: border-box !important;
+}
+.isolated-section::before,
+.isolated-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: inherit !important;
+z-index: -1 !important;
+}
+.isolated-section::before {
+left: -100vw !important;
+}
+.isolated-section::after {
+right: -100vw !important;
+}
+.isolated-container {
+max-width: 1100px !important;
+margin: 0 auto !important;
+padding: 60px 20px 60px 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.isolated-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 20px 0 !important;
+color: #ffffff !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.isolated-highlight {
+color: #D4B160 !important;
+}
+.isolated-subtitle {
+text-align: center !important;
+font-size: 20px !important;
+color: #cccccc !important;
+margin: 0 0 40px 0 !important;
+font-weight: 400 !important;
+line-height: 1.5 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.results-image-container {
+margin: 0 !important;
+text-align: center !important;
+display: block !important;
+}
+.results-image {
+width: 100% !important;
+max-width: 704px !important;
+height: auto !important;
+border-radius: 12px !important;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+display: inline-block !important;
+}
+@media (max-width: 768px) {
+.isolated-container {
+padding: 40px 20px 40px 20px !important;
+}
+.isolated-title {
+font-size: 32px !important;
+}
+.isolated-subtitle {
+font-size: 18px !important;
+margin: 0 0 30px 0 !important;
+}
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<div class="landing-section">
+<div class="content-container">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>From the world's greatest copywriters</span>
+</div>
+<h1 class="main-headline">
+50+ Proven Ad Templates That <span class="highlight">Stop The Scroll</span>
+</h1>
+<p class="sub-headline">
+(The same formulas used by copywriters charging $50,000 per letter)
+</p>
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_9.jpg?v=1760537010" alt="Ad Copy Templates Dashboard" class="screenshot">
+</div>
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$47</span> <span class="current-price">Only $19</span>
+</p>
+<button class="cta-button" id="ad-copy-templates-btn" data-variant-id="43533842382941">
+<span style="font-size: 16px !important; font-weight: 700 !important; line-height: 1.3 !important; color: white !important; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;">GET INSTANT ACCESS NOW!<br><small style="font-size: 10.7px !important; font-weight: 400 !important; text-transform: none !important; letter-spacing: 0.5px !important; margin-top: 3px !important; display: block !important;">one time payment, lifetime access</small></span>
+</button>
+<div class="bundle-wrapper">
+<span>$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+</div>
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure Payment • Instant Access</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="problem-mega-section">
+<div class="mega-container">
+<h2 class="mega-title">The secrets from the <span class="mega-gold-text">world's greatest copywriters</span>... in one file</h2>
+<p class="mega-subtitle">
+Compressed into plug-and-play templates you can use in seconds
+</p>
+<p class="mega-paragraph">
+The techniques that enabled Stefan Georgi to charge <strong>$50,000 for a single sales letter</strong>...
+</p>
+<p class="mega-paragraph">
+The formulas that helped Gary Halbert command <strong>$15,000 just to write a product page</strong>...
+</p>
+<p class="mega-paragraph">
+The proven ad angles tested with <strong>over $10 million in ad spend</strong>...
+</p>
+<p class="mega-paragraph centered-paragraph" style="font-size: 22px !important; font-weight: 600 !important; margin-top: 60px !important; margin-bottom: 60px !important;">
+All compressed into <span class="mega-gold-text">one simple file</span> with over <strong>50 plug-and-play templates</strong>.
+</p>
+<p class="mega-paragraph centered-paragraph" style="text-align: center !important; font-size: 18px !important; font-weight: 500 !important; margin-top: 45px !important;">
+No more staring at a blank screen wondering what to write.<br><br>
+No more testing dozens of angles hoping something sticks.<br><br>
+<strong>Just fill in the blanks and watch the clicks roll in.</strong>
+</p>
+</div>
+</div>
+
+<div class="isolated-section">
+<div class="isolated-container">
+<h2 class="isolated-title">
+Here are our personal <span class="isolated-highlight">results</span> with these templates
+</h2>
+<p class="isolated-subtitle">
+Tested with real campaigns and millions in ad spend
+</p>
+<div class="results-image-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Ad_Copy_that_SELLS_1.jpg?v=1752747093" alt="Ad Copy Results" class="results-image">
+</div>
+</div>
+</div>
+  `,
 };
 
 // Helper function to get HTML for a course
