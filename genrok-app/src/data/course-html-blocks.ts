@@ -19240,6 +19240,815 @@ Tested with real campaigns and millions in ad spend
 </div>
 </div>
 </div>
+
+<style>
+/* Benefits Section Styles */
+.benefits-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.benefits-mega-section * {
+box-sizing: border-box !important;
+}
+.benefits-mega-section::before,
+.benefits-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.benefits-mega-section::before {
+left: -100vw !important;
+}
+.benefits-mega-section::after {
+right: -100vw !important;
+}
+.benefits-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.benefits-title {
+font-size: 36px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.benefit-item {
+display: flex !important;
+align-items: flex-start !important;
+gap: 15px !important;
+margin: 0 0 22px 0 !important;
+padding: 0 !important;
+}
+.checkmark {
+color: #D4B160 !important;
+font-size: 22px !important;
+flex-shrink: 0 !important;
+margin-top: 2px !important;
+font-weight: 900 !important;
+font-family: Arial, sans-serif !important;
+}
+.checkmark::before {
+content: '✓' !important;
+display: inline-block !important;
+}
+.benefit-text {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+flex: 1 !important;
+}
+.benefit-text em {
+font-style: italic !important;
+}
+.benefit-text strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.benefits-mega-section {
+padding: 50px 0 !important;
+}
+.benefits-title {
+font-size: 28px !important;
+}
+.benefit-text {
+font-size: 16px !important;
+}
+}
+
+/* Speed Section Styles */
+.speed-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.speed-mega-section * {
+box-sizing: border-box !important;
+}
+.speed-mega-section::before,
+.speed-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.speed-mega-section::before {
+left: -100vw !important;
+}
+.speed-mega-section::after {
+right: -100vw !important;
+}
+.speed-container {
+max-width: 1000px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.speed-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 40px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.speed-highlight {
+color: #D4B160 !important;
+font-family: inherit !important;
+font-weight: inherit !important;
+}
+.speed-image-container {
+margin: 40px 0 !important;
+text-align: center !important;
+display: block !important;
+}
+.speed-image {
+width: 100% !important;
+max-width: 704px !important;
+height: auto !important;
+border-radius: 12px !important;
+display: inline-block !important;
+}
+@media (max-width: 768px) {
+.speed-mega-section {
+padding: 50px 0 !important;
+}
+.speed-title {
+font-size: 28px !important;
+}
+}
+
+/* Inside Section Styles */
+.inside-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.inside-mega-section * {
+box-sizing: border-box !important;
+}
+.inside-mega-section::before,
+.inside-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.inside-mega-section::before {
+left: -100vw !important;
+}
+.inside-mega-section::after {
+right: -100vw !important;
+}
+.inside-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.inside-title {
+font-size: 36px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.inside-item {
+display: flex !important;
+align-items: flex-start !important;
+gap: 15px !important;
+margin: 0 0 22px 0 !important;
+padding: 0 !important;
+}
+.trophy-icon {
+color: #D4B160 !important;
+font-size: 20px !important;
+flex-shrink: 0 !important;
+margin-top: 2px !important;
+font-weight: 700 !important;
+}
+.inside-text {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+flex: 1 !important;
+}
+.inside-text strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.inside-mega-section {
+padding: 50px 0 !important;
+}
+.inside-title {
+font-size: 28px !important;
+}
+.inside-text {
+font-size: 16px !important;
+}
+}
+
+/* FAQ Section Styles */
+.faq-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 70px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.faq-mega-section * {
+box-sizing: border-box !important;
+}
+.faq-mega-section::before,
+.faq-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.faq-mega-section::before {
+left: -100vw !important;
+}
+.faq-mega-section::after {
+right: -100vw !important;
+}
+.faq-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+}
+.faq-title {
+font-size: 38px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 50px 0 !important;
+color: #000000 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.faq-item {
+margin: 0 0 30px 0 !important;
+padding: 0 !important;
+border-bottom: 1px solid #e0e0e0 !important;
+padding-bottom: 30px !important;
+}
+.faq-question {
+font-size: 20px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 0 0 12px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.faq-answer {
+font-size: 17px !important;
+line-height: 1.7 !important;
+color: #333333 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+margin: 0 !important;
+}
+.faq-answer strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+@media (max-width: 768px) {
+.faq-mega-section {
+padding: 50px 0 !important;
+}
+.faq-title {
+font-size: 30px !important;
+}
+.faq-question {
+font-size: 18px !important;
+}
+.faq-answer {
+font-size: 16px !important;
+}
+}
+
+/* Final CTA Section Styles */
+.final-cta-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 90px 0 !important;
+background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+.final-cta-mega-section * {
+box-sizing: border-box !important;
+}
+.final-cta-mega-section::before,
+.final-cta-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: inherit !important;
+z-index: -2 !important;
+}
+.final-cta-mega-section::before {
+left: -100vw !important;
+}
+.final-cta-mega-section::after {
+right: -100vw !important;
+}
+.final-cta-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+position: relative !important;
+z-index: 1 !important;
+text-align: center !important;
+}
+.final-cta-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+text-align: center !important;
+margin: 0 0 25px 0 !important;
+color: #ffffff !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.final-cta-highlight {
+color: #D4B160 !important;
+}
+.final-cta-subtitle {
+text-align: center !important;
+font-size: 21px !important;
+color: #cccccc !important;
+margin: 0 0 40px 0 !important;
+font-weight: 400 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+max-width: 700px !important;
+margin-left: auto !important;
+margin-right: auto !important;
+}
+.urgency-text {
+background: rgba(255, 79, 3, 0.1) !important;
+border: 2px solid #ff4f03 !important;
+border-radius: 10px !important;
+padding: 20px 30px !important;
+margin: 30px auto !important;
+max-width: 600px !important;
+display: block !important;
+}
+.urgency-text p {
+font-size: 17px !important;
+color: #ffffff !important;
+margin: 0 !important;
+font-weight: 500 !important;
+line-height: 1.6 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.urgency-text strong {
+color: #ff4f03 !important;
+font-weight: 700 !important;
+}
+.final-price-box {
+background: rgba(212, 177, 96, 0.1) !important;
+border: 2px solid #D4B160 !important;
+border-radius: 15px !important;
+padding: 35px 40px !important;
+margin: 40px auto !important;
+max-width: 500px !important;
+display: block !important;
+}
+.final-price-text {
+font-size: 36px !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+margin: 0 0 5px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+.final-original-price {
+color: #999999 !important;
+text-decoration: line-through !important;
+font-size: 28px !important;
+margin-right: 10px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-current-price {
+color: #D4B160 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #F5D89A 0%, #D4B160 40%) !important;
+color: white !important;
+border-radius: 35px !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+padding: 21px 50px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+width: 100% !important;
+max-width: 420px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(212, 177, 96, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+min-height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+margin: 25px auto 10px auto !important;
+}
+.final-cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(212, 177, 96, 0.6) !important;
+}
+.final-cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+.final-cta-button span {
+position: relative !important;
+z-index: 999 !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+color: white !important;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+font-family: 'Open Sans', sans-serif !important;
+display: inline-block !important;
+line-height: 1.3 !important;
+}
+.final-bundle-wrapper {
+text-align: center !important;
+margin: 15px 0 0 0 !important;
+display: block !important;
+}
+.final-bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-bundle-link {
+color: #D4B160 !important;
+text-decoration: underline !important;
+}
+.final-bundle-link:hover {
+text-decoration: none !important;
+}
+.final-secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 15px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.final-secure-payment-icon {
+width: 28px !important;
+height: 28px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+flex-shrink: 0 !important;
+display: block !important;
+}
+@media (max-width: 768px) {
+.final-cta-mega-section {
+padding: 70px 0 !important;
+}
+.final-cta-title {
+font-size: 32px !important;
+}
+.final-cta-subtitle {
+font-size: 18px !important;
+}
+.final-price-box {
+padding: 25px 20px !important;
+}
+.final-price-text {
+font-size: 30px !important;
+}
+.final-cta-button {
+max-width: 100% !important;
+font-size: 18px !important;
+padding: 20px 30px !important;
+}
+.final-cta-button span {
+font-size: 18px !important;
+}
+.urgency-text {
+padding: 15px 20px !important;
+}
+.urgency-text p {
+font-size: 15px !important;
+}
+}
+</style>
+
+<div class="benefits-mega-section">
+<div class="benefits-container">
+<h2 class="benefits-title">
+What These Templates Will Do For You
+</h2>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Say the <em>right thing</em> to the <em>right people</em>: eliminate guesswork and stop wasting time on ads that don't convert.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Stop the scroll and ignite clicks, even without elaborate visuals or fancy graphics.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Save valuable hours by writing ads that <em>genuinely</em> convert instead of testing endless variations.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Utilize proven ad angles that compel attention, drive clicks and trigger purchases every single time.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Attract qualified leads and buyers across Facebook and Instagram with copy that speaks directly to their desires.</p>
+</div>
+<div class="benefit-item">
+<span class="checkmark"></span>
+<p class="benefit-text">Employ marketing strategies that are seen, read and acted upon-not scrolled past and forgotten.</p>
+</div>
+</div>
+</div>
+
+<div class="speed-mega-section">
+<div class="speed-container">
+<h2 class="speed-title">
+Within 20 seconds you'll have copy that <span class="speed-highlight">sells</span>…
+</h2>
+<div class="speed-image-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-07-17_131228.png?v=1752747174" alt="Template Screenshot" class="speed-image">
+</div>
+</div>
+</div>
+
+<div class="inside-mega-section">
+<div class="inside-container">
+<h2 class="inside-title">
+Here's what you'll get inside…
+</h2>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Lifetime access.</strong> One payment, yours forever. No subscriptions, no hidden fees.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>50+ fill-in-the-blank Meta advertising templates</strong> for Facebook and Instagram that you can use immediately.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Comprehensive coverage of all funnel stages:</strong> Attract, Nurture, Convert, Maximize and beyond-every stage of the customer journey covered.</p>
+</div>
+<div class="inside-item">
+<span class="trophy-icon">🏆</span>
+<p class="inside-text"><strong>Relevant for every niche and type of product possible.</strong> Whether you're selling physical products, digital courses, or services-these templates work.</p>
+</div>
+</div>
+</div>
+
+<div class="faq-mega-section">
+<div class="faq-container">
+<h2 class="faq-title">
+Frequently Asked Questions
+</h2>
+<div class="faq-item">
+<h3 class="faq-question">Will I get lifetime access?</h3>
+<p class="faq-answer">Yes. One-time payment, lifetime access. No subscriptions. No hidden fees.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">Do I need a team to apply this?</h3>
+<p class="faq-answer">Not at all. Every template was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">What if I've never written ad copy before?</h3>
+<p class="faq-answer">Perfect! These templates are specifically designed for beginners. Just fill in the blanks with your product details and you'll have professional-grade ad copy in seconds.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">Will this work for my niche?</h3>
+<p class="faq-answer">Yes. These templates are based on universal copywriting principles that work across all niches-whether you're selling physical products, digital courses, services, or anything else.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">How quickly can I start using these templates?</h3>
+<p class="faq-answer">Immediately after purchase, you'll get instant access. You can have your first high-converting ad written in under 20 seconds.</p>
+</div>
+<div class="faq-item">
+<h3 class="faq-question">What makes these templates different from free resources?</h3>
+<p class="faq-answer">These templates are based on the techniques used by the world's highest-paid copywriters-people who charge $15,000-$50,000 per piece. They've been tested with over $10 million in actual ad spend and proven to work in real campaigns.</p>
+</div>
+</div>
+</div>
+
+<div class="final-cta-mega-section">
+<div class="final-cta-container">
+<h2 class="final-cta-title">
+Stop Wasting Time on <span class="final-cta-highlight">Ads That Don't Convert</span>
+</h2>
+<p class="final-cta-subtitle">
+Every day without these templates is another day of testing random copy, burning ad budget, and watching your competitors pull ahead with proven formulas.
+</p>
+<div class="urgency-text">
+<p>While you're still trying to figure out what to write, your competitors are using these <strong>exact templates</strong> to stop the scroll and generate sales. Every minute you wait is money left on the table.</p>
+</div>
+<div class="final-price-box">
+<p class="final-price-text">
+<span class="final-original-price">$47</span> <span class="final-current-price">Only $19</span>
+</p>
+<button class="final-cta-button" id="ad-copy-final-btn" data-variant-id="43533842382941">
+<span style="font-size: 16px !important; font-weight: 700 !important; line-height: 1.3 !important; color: white !important; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;">YES! GIVE ME INSTANT ACCESS<br><small style="font-size: 10.7px !important; font-weight: 400 !important; text-transform: none !important; letter-spacing: 0.5px !important; margin-top: 3px !important; display: block !important;">one time payment, lifetime access</small></span>
+</button>
+<div class="final-bundle-wrapper">
+<span>$12.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="final-bundle-link">building a bundle</a></span>
+</div>
+<div class="final-secure-payment">
+<div class="final-secure-payment-icon"></div>
+<span>Secure Payment • Instant Access • Lifetime Updates</span>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const CONFIG = {
+        VARIANT_ID: '43533842382941',
+        DEBUG: true
+    };
+
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log('[Ad Copy] ' + msg, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log('[Ad Copy] ✅ ' + msg, data || ''),
+        error: (msg, data) => console.error('[Ad Copy] ❌ ' + msg, data || '')
+    };
+
+    async function addToCart(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] })
+        });
+        if (!response.ok) throw new Error('Failed to add to cart');
+        return await response.json();
+    }
+
+    async function refreshCart() {
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            document.querySelectorAll('.cart-count, .cart-count-bubble, [data-cart-count]').forEach(el => {
+                el.textContent = cart.item_count;
+            });
+            document.querySelectorAll('[href="/cart"], .cart-link, .header__icon--cart').forEach(el => el.click());
+        } catch (e) { log.error('Cart refresh failed', e); }
+    }
+
+    async function handleClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+
+        button.disabled = true;
+        button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">⏳ PROCESSING...</span>';
+
+        try {
+            await addToCart(variantId);
+            button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">✓ ADDED!</span>';
+            await refreshCart();
+            setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; }, 2000);
+        } catch (error) {
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 16px; font-weight: 700; color: white;">❌ ERROR</span>';
+            setTimeout(() => { button.innerHTML = originalContent; button.disabled = false; button.style.background = ''; }, 3000);
+        }
+    }
+
+    function init() {
+        ['ad-copy-templates-btn', 'ad-copy-final-btn'].forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', handleClick);
+                newBtn.style.position = 'relative';
+                newBtn.style.zIndex = '999999';
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    setTimeout(init, 500);
+})();
+</script>
   `,
 };
 
