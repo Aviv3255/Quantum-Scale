@@ -2916,6 +2916,289 @@ Brands that don't will continue fighting over prices and searching for "magic ta
         { text: '500 Ad Templates in Canva', url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates' },
         { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
       ]
+    },
+    // ==========================================
+    // COPYWRITING MASTERCLASS LESSONS
+    // ==========================================
+    {
+      id: 101,
+      thumbnail: '/images/lessons/familiar-surprise-secret.png',
+      title: 'The Familiar Surprise Secret',
+      intro: 'Why we love the unexpected in familiar packages - the MAYA principle that drives all successful marketing.',
+      specialFeatures: [
+        { value: 'MAYA', label: 'Most Advanced Yet Acceptable' },
+        { value: '2x', label: 'Engagement boost' }
+      ],
+      content: `## The Familiar Surprise Secret
+
+This interactive lesson teaches you the psychological principle behind why humans are drawn to things that feel both familiar AND surprising at the same time.
+
+### What You'll Learn:
+- The MAYA Principle (Most Advanced Yet Acceptable)
+- How to balance novelty with familiarity
+- Why too much of either kills engagement
+- Real-world examples from Apple, Netflix, and more
+
+### Key Concept:
+People want NEW things... but wrapped in FAMILIAR packages. This is the secret to viral content, bestselling products, and irresistible offers.
+
+**Open the interactive lesson to explore this concept in depth.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/familiar-surprise-secret/lesson.html' }
+      ]
+    },
+    {
+      id: 102,
+      thumbnail: '/images/lessons/red-button-effect.png',
+      title: 'The Red Button Effect',
+      intro: 'The psychology of "don\'t press this" - how restriction creates irresistible desire.',
+      specialFeatures: [
+        { value: 'Reactance', label: 'Psychological trigger' },
+        { value: '3x', label: 'Click-through boost' }
+      ],
+      content: `## The Red Button Effect
+
+This lesson reveals the psychological reactance principle - why telling someone NOT to do something makes them want to do it MORE.
+
+### What You'll Learn:
+- Psychological Reactance explained
+- Why "Don't click this" gets more clicks
+- How to ethically use restriction in copy
+- The forbidden fruit principle in marketing
+
+### Key Concept:
+When freedom is threatened, we want it MORE. Smart copywriters use this to create irresistible curiosity.
+
+**Open the interactive lesson to experience this effect firsthand.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/red-button-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 103,
+      thumbnail: '/images/lessons/fred-method.png',
+      title: 'The F.R.E.D. Method',
+      intro: 'Master the four dimensions of your audience\'s mind: Fears, Results, Expectations, Desires.',
+      specialFeatures: [
+        { value: 'F.R.E.D.', label: '4-part framework' },
+        { value: '100%', label: 'Audience insight' }
+      ],
+      content: `## The F.R.E.D. Method
+
+This framework gives you complete insight into your audience's psychology by mapping four critical dimensions.
+
+### What You'll Learn:
+- **F**ears: What keeps them up at night
+- **R**esults: What outcomes they desperately want
+- **E**xpectations: What they believe about solutions
+- **D**esires: The deeper emotional wants
+
+### Key Concept:
+Know these four dimensions and you'll know exactly what buttons to push in your copy.
+
+**Open the interactive lesson to map your audience's mind.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fred-method/lesson.html' }
+      ]
+    },
+    {
+      id: 104,
+      thumbnail: '/images/lessons/emotion-decides.png',
+      title: 'Emotion Decides, Logic Justifies',
+      intro: 'The hidden driver of every purchase decision and how to leverage it.',
+      specialFeatures: [
+        { value: '95%', label: 'Decisions are emotional' },
+        { value: '2 Systems', label: 'Brain processing' }
+      ],
+      content: `## Emotion Decides, Logic Justifies
+
+This lesson reveals the truth about human decision-making: emotions drive the choice, logic provides the alibi.
+
+### What You'll Learn:
+- System 1 vs System 2 thinking
+- Why features don't sell (but benefits do)
+- The emotional transformation framework
+- How to sell to emotions while satisfying logic
+
+### Key Concept:
+Every purchase is emotional first. Your copy must trigger the feeling, then provide the logical justification.
+
+**Open the interactive lesson to master emotional selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotion-decides/lesson.html' }
+      ]
+    },
+    {
+      id: 105,
+      thumbnail: '/images/lessons/gatekeeper-method.png',
+      title: 'The Gatekeeper Method',
+      intro: 'Four moves to bypass the brain\'s "ignore this" filter and capture attention.',
+      specialFeatures: [
+        { value: '4 Moves', label: 'Pattern interrupt system' },
+        { value: '10x', label: 'Attention capture' }
+      ],
+      content: `## The Gatekeeper Method
+
+This lesson teaches you the four-move sequence to bypass the brain's natural filtering system and capture attention.
+
+### What You'll Learn:
+- Move 1: Pattern Interrupt
+- Move 2: Relevance Hook
+- Move 3: Curiosity Gap
+- Move 4: Promise Preview
+
+### Key Concept:
+The brain filters out 99% of incoming information. These four moves help you be part of the 1% that gets through.
+
+**Open the interactive lesson to master the gatekeeper bypass.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gatekeeper-method/lesson.html' }
+      ]
+    },
+    {
+      id: 106,
+      thumbnail: '/images/lessons/three-second-rule.png',
+      title: 'The 3-Second Rule',
+      intro: 'Capture attention before they scroll - the critical window that determines everything.',
+      specialFeatures: [
+        { value: '3 Sec', label: 'Decision window' },
+        { value: 'First', label: 'Impression matters' }
+      ],
+      content: `## The 3-Second Rule
+
+This lesson reveals what happens in the critical three-second window when someone encounters your content.
+
+### What You'll Learn:
+- The neuroscience of first impressions
+- What the brain processes in 3 seconds
+- How to front-load value
+- The scroll-stopping formula
+
+### Key Concept:
+You have 3 seconds to prove you're worth their attention. Everything else is irrelevant if you fail this test.
+
+**Open the interactive lesson to master the 3-second window.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-second-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 107,
+      thumbnail: '/images/lessons/science-of-selling.png',
+      title: 'The Science of Selling',
+      intro: 'Prospect-centric marketing that converts - from Nissan vs Toyota to the Forever Rule.',
+      specialFeatures: [
+        { value: '5 Stages', label: 'Awareness levels' },
+        { value: 'Rule of 1', label: 'Focus principle' }
+      ],
+      content: `## The Science of Selling
+
+This comprehensive lesson covers the scientific principles behind high-converting copy.
+
+### What You'll Learn:
+- The Nissan vs Toyota case study
+- Company-centric vs Prospect-centric marketing
+- The Forever Rule
+- 5 Stages of Awareness
+- Cognitive biases in marketing
+- The emotional transformation spectrum
+- The Rule of One
+
+### Key Concept:
+Great copy isn't about you or your product - it's about the transformation your prospect experiences.
+
+**Open the interactive lesson for the complete science of selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/science-of-selling/lesson.html' }
+      ]
+    },
+    {
+      id: 108,
+      thumbnail: '/images/lessons/persuasion-blueprint.png',
+      title: 'The Persuasion Blueprint',
+      intro: 'Your complete conversion architecture - from the Tossed Salad approach to the 3-Phase Campaign.',
+      specialFeatures: [
+        { value: '3 Phases', label: 'Campaign structure' },
+        { value: 'Complete', label: 'Blueprint system' }
+      ],
+      content: `## The Persuasion Blueprint
+
+This lesson provides the complete architectural blueprint for persuasive marketing campaigns.
+
+### What You'll Learn:
+- The Tossed Salad Approach
+- The Rule of One (avatar, problem, solution)
+- The Avatar Journey
+- The Valley of Despair
+- 5 Levels of Awareness
+- The 3-Phase Campaign Structure
+- The Craft of refinement
+
+### Key Concept:
+Persuasion isn't random - it follows a precise architectural blueprint that guides prospects from stranger to buyer.
+
+**Open the interactive lesson for your complete persuasion blueprint.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/persuasion-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 109,
+      thumbnail: '/images/lessons/persuasion-stack.png',
+      title: 'The Persuasion Stack',
+      intro: 'Four layers of irresistible influence - from psychology to relentless refinement.',
+      specialFeatures: [
+        { value: '4 Layers', label: 'Persuasion system' },
+        { value: '10x', label: 'Effort principle' }
+      ],
+      content: `## The Persuasion Stack
+
+This lesson reveals the four-layer system that creates irresistible persuasion.
+
+### What You'll Learn:
+- Layer 1: Human Psychology (the foundation)
+- Layer 2: Message Architecture (pain levels)
+- Layer 3: Copywriter's Toolkit (PAS, AIDA frameworks)
+- Layer 4: Relentless Refinement
+- The 10x Effort Principle
+
+### Key Concept:
+Great copywriters don't just write - they build persuasion stacks that compound their influence.
+
+**Open the interactive lesson to build your persuasion stack.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/persuasion-stack/lesson.html' }
+      ]
+    },
+    {
+      id: 110,
+      thumbnail: '/images/lessons/architecture-of-influence.png',
+      title: 'Architecture of Influence',
+      intro: 'The structural blueprint that transforms words into irresistible persuasion engines.',
+      specialFeatures: [
+        { value: 'Pyramid', label: 'Persuasion structure' },
+        { value: '3 Principles', label: 'Guiding stars' }
+      ],
+      content: `## Architecture of Influence
+
+This masterclass reveals the complete architectural framework for building persuasive copy.
+
+### What You'll Learn:
+- The Pyramid of Persuasion (WHY → WHO/HOW → WHAT)
+- The MAYA Principle in action
+- The Red Button Effect (psychological reactance)
+- F.R.E.D. Framework deep dive
+- Engineering the Emotional Journey
+- The Gatekeeper Method
+- Three Guiding Principles of Influence
+
+### Key Concept:
+"Great copy isn't written... it's engineered." - Master the architecture and the influence follows.
+
+**Open the interactive lesson to architect your influence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/architecture-of-influence/lesson.html' }
+      ]
     }
   ];
 
@@ -2941,7 +3224,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {
