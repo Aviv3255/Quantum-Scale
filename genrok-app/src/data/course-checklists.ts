@@ -17,80 +17,205 @@ const generateId = (slug: string, index: number) => `${slug}-item-${index}`;
 
 export const defaultChecklists: Record<string, ChecklistItem[]> = {
   'subconscious-trap': [
+    // Preparation
     {
       id: generateId('subconscious-trap', 1),
-      title: 'Understand core buying psychology principles',
-      description: 'Learn what triggers the brain to buy',
+      title: 'Install Shrine Theme on your store',
+      description: 'Get it here: https://shrinesolutions.com/?ref=0d9fe741',
     },
     {
       id: generateId('subconscious-trap', 2),
-      title: 'Audit current store headlines and copy',
-      description: 'Identify areas for improvement',
+      title: 'Delete all default texts via Edit default theme content',
+      description: 'Clean slate for your store copy',
     },
     {
       id: generateId('subconscious-trap', 3),
-      title: 'Implement high-converting button text',
-      description: 'Apply the 39% conversion boost formula',
+      title: 'Install Post-Purchase Survey',
+      description: 'Know exactly what drives your audience. Get it: https://apps.shopify.com/grapevine?mref=lsbqcbva',
     },
     {
       id: generateId('subconscious-trap', 4),
-      title: 'Select trust-building fonts',
-      description: 'Choose fonts that increase perceived brand value',
+      title: 'Connect external analytics for accurate tracking (free)',
+      description: 'Track sales and creatives precisely: https://triplewhale.com/',
     },
     {
       id: generateId('subconscious-trap', 5),
-      title: 'Optimize page layout structure',
-      description: 'Implement data-backed page layouts',
+      title: 'Install free sections app (used throughout the course)',
+      description: 'Get it here: https://apps.shopify.com/section-factory?mref=lsbqcbva',
     },
+    // Colors and Fonts
     {
       id: generateId('subconscious-trap', 6),
-      title: 'Add CSS conversion hacks',
-      description: 'Implement tweaks that boost purchase rate',
+      title: 'Choose a color palette from the course tables',
+      description: 'Select based on the emotion you want to convey',
     },
     {
       id: generateId('subconscious-trap', 7),
-      title: 'Apply color psychology tactics',
-      description: 'Use colors that knock out the subconscious',
+      title: 'Set background color, primary color, and action color',
+      description: 'Apply your chosen palette to the theme settings',
     },
     {
       id: generateId('subconscious-trap', 8),
-      title: 'Position products for premium pricing',
-      description: 'Learn to charge double competitors',
+      title: 'Choose and apply a font set from the course',
+      description: 'Apply it consistently across the entire site',
     },
+    // Hero Section
     {
       id: generateId('subconscious-trap', 9),
-      title: 'Complete The Subconscious Switch tasks',
-      description: 'Work through 70+ implementation steps',
+      title: 'Choose Hero image that conveys emotion (not product)',
+      description: 'Use Freepik, Lummi, AI tools, or ChatGPT to find the right image',
     },
     {
       id: generateId('subconscious-trap', 10),
-      title: 'Set up Intelligence Agent bonus',
-      description: 'Configure AI agent for brand optimization',
+      title: 'Edit Hero image in Canva with text overlay',
+      description: 'Add compelling headline text to your hero image',
     },
     {
       id: generateId('subconscious-trap', 11),
-      title: 'Activate Einstein on Steroids bonus',
-      description: 'Use AI brain for business decisions',
+      title: 'Add Hero #1 Section and disable Parallax',
+      description: 'Using Section Factory: https://apps.shopify.com/section-factory?mref=lsbqcbva',
     },
+    // Homepage
     {
       id: generateId('subconscious-trap', 12),
-      title: 'Start Personal Conversion Map tracking',
-      description: 'Begin guided tracking system',
+      title: 'Add slider for 2 main collections (Slider #7 Section)',
+      description: 'E.g., Men/Women, Indoor/Outdoor. Settings per course instructions',
     },
     {
       id: generateId('subconscious-trap', 13),
-      title: 'Test and measure conversion changes',
-      description: 'Track your progress toward 6%+ conversion',
+      title: 'Add Hero for popular/new collection (Hero #11 Section)',
+      description: 'Highlight your best-selling or newest collection',
     },
     {
       id: generateId('subconscious-trap', 14),
-      title: 'A/B test headline variations',
-      description: 'Optimize main headlines',
+      title: 'Add Best Sellers Slider with real products only',
+      description: 'Only include actual best-selling products',
     },
     {
       id: generateId('subconscious-trap', 15),
-      title: 'Optimize mobile experience',
-      description: 'Ensure mobile conversion is optimized',
+      title: 'Add Featured Collection #18 Section',
+      description: 'Showcase a featured collection prominently',
+    },
+    {
+      id: generateId('subconscious-trap', 16),
+      title: 'Add UGC area using Product Videos Section',
+      description: 'Display user-generated content videos',
+    },
+    // Announcement Bar - The Heavy Gun
+    {
+      id: generateId('subconscious-trap', 17),
+      title: 'Add geo-location based Announcement Bar',
+      description: '60-70% avg increase in conversions! Get it: https://geo-convert.com/',
+    },
+    {
+      id: generateId('subconscious-trap', 18),
+      title: 'Set up different coupon codes by wealth groups',
+      description: 'Recommended discount range: 5-15%',
+    },
+    {
+      id: generateId('subconscious-trap', 19),
+      title: 'Create the coupon codes in Shopify admin',
+      description: 'Match codes from geo-targeting app in your Shopify discounts',
+    },
+    {
+      id: generateId('subconscious-trap', 20),
+      title: 'Add Square banner to homepage with background image',
+      description: 'Place it relatively low on the homepage',
+    },
+    // Footer
+    {
+      id: generateId('subconscious-trap', 21),
+      title: 'Build Footer menus via Shopify Menus',
+      description: 'Create organized navigation for your footer',
+    },
+    {
+      id: generateId('subconscious-trap', 22),
+      title: 'Add Footer using Footer #7 Section',
+      description: 'Professional footer design from Section Factory',
+    },
+    // Collection Page
+    {
+      id: generateId('subconscious-trap', 23),
+      title: 'Unify all product images to one visual style',
+      description: 'Consistency is key for professional appearance',
+    },
+    {
+      id: generateId('subconscious-trap', 24),
+      title: 'Remove backgrounds from images if needed',
+      description: 'All or nothing - be consistent. Use: https://www.photoroom.com/',
+    },
+    {
+      id: generateId('subconscious-trap', 25),
+      title: 'Ensure all images have same angle, lighting and style',
+      description: 'Visual consistency across entire catalog',
+    },
+    // Product Page
+    {
+      id: generateId('subconscious-trap', 26),
+      title: 'Add product reviews app',
+      description: 'Build social proof: https://loox.io/app/LASERCRO',
+    },
+    {
+      id: generateId('subconscious-trap', 27),
+      title: 'Add Low Stock Alert',
+      description: 'Create urgency with stock notifications',
+    },
+    {
+      id: generateId('subconscious-trap', 28),
+      title: 'Remove Buy Now button',
+      description: 'Simplify the purchase flow',
+    },
+    {
+      id: generateId('subconscious-trap', 29),
+      title: 'Add Wishlist button above Add to Cart',
+      description: 'Get it: https://vitals.app/shopify/12548540',
+    },
+    {
+      id: generateId('subconscious-trap', 30),
+      title: 'Add UGC videos below Add to Cart button',
+      description: 'Using Section Factory Product Videos section',
+    },
+    {
+      id: generateId('subconscious-trap', 31),
+      title: 'Convert description to Tabs (Product Tabs #5 Pro)',
+      description: 'Organize product info into clean tabs',
+    },
+    {
+      id: generateId('subconscious-trap', 32),
+      title: 'Add Product Features section (Product Features #19)',
+      description: 'Highlight key product features visually',
+    },
+    {
+      id: generateId('subconscious-trap', 33),
+      title: 'Add Featured Collection section (#18)',
+      description: 'Cross-sell related products',
+    },
+    {
+      id: generateId('subconscious-trap', 34),
+      title: 'Add 4-6 top recommended collections (Collections #5)',
+      description: 'Help customers discover more products',
+    },
+    {
+      id: generateId('subconscious-trap', 35),
+      title: 'Add Full Product Reviews section',
+      description: 'Display all reviews: https://loox.io/app/LASERCRO',
+    },
+    // Checkout
+    {
+      id: generateId('subconscious-trap', 36),
+      title: 'Upload minimal logo to Checkout',
+      description: 'Must have transparent background!',
+    },
+    // Optimization
+    {
+      id: generateId('subconscious-trap', 37),
+      title: 'Install A/B Testing system',
+      description: 'Get it: https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel',
+    },
+    {
+      id: generateId('subconscious-trap', 38),
+      title: 'Run A/B tests: one element at a time',
+      description: 'Let each test run for several days (thousands of sessions). Go with winner, then test next element.',
     },
   ],
 
