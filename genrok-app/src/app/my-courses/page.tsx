@@ -16,7 +16,7 @@ import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getUserCourses, PurchasedCourse } from '@/lib/course-access';
 import { useChecklist } from '@/hooks/useChecklist';
-import { getCourseBySlug } from '@/data/courses';
+import { getCourseBySlug, getCourseByTitle } from '@/data/courses';
 
 // Circular progress component
 interface CircularProgressProps {
@@ -96,7 +96,8 @@ function CourseCard({ course, userId }: CourseCardProps) {
   const readingProgress = 0;
 
   // Get mockup image from static course data if database image not available
-  const staticCourse = getCourseBySlug(course.slug);
+  // Try slug first, then title as fallback
+  const staticCourse = getCourseBySlug(course.slug) || getCourseByTitle(course.title);
   const courseImage = course.image_url || staticCourse?.image;
 
   return (

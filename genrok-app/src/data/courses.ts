@@ -1466,13 +1466,26 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
   const bySlugProp = Object.values(coursesData).find((c) => c.slug === slug);
   if (bySlugProp) return bySlugProp;
 
-  // Normalize slug: remove prefixes, convert to lowercase
+  // Normalize slug: remove prefixes, convert to lowercase, remove common suffixes
   const normalizeSlug = (s: string) => s.toLowerCase()
     .replace(/^the-/, '')
     .replace(/-course$/, '')
-    .replace(/-system$/, '');
+    .replace(/-system$/, '')
+    .replace(/-tactic$/, '')
+    .replace(/-trap$/, '')
+    .replace(/-marketing$/, '')
+    .replace(/-targeting$/, '')
+    .replace(/-checkout$/, '')
+    .replace(/-proof$/, '')
+    .replace(/-mapping$/, '')
+    .replace(/-templates$/, '')
+    .replace(/-results$/, '')
+    .replace(/-workshop$/, '')
+    .replace(/-ads$/, '')
+    .replace(/-photographer$/, '');
 
   const normalizedSlug = normalizeSlug(slug);
+  const slugLower = slug.toLowerCase();
 
   // Try normalized lookup
   if (coursesData[normalizedSlug]) {
@@ -1480,12 +1493,31 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
   }
 
   // Try adding common suffixes back
-  const withSystem = `${normalizedSlug}-system`;
-  if (coursesData[withSystem]) {
-    return coursesData[withSystem];
+  const suffixAttempts = [
+    `${normalizedSlug}-system`,
+    `${normalizedSlug}-trap`,
+    `${normalizedSlug}-tactic`,
+    `${normalizedSlug}-marketing`,
+    `${normalizedSlug}-targeting`,
+    `${normalizedSlug}-checkout`,
+    `${normalizedSlug}-proof`,
+    `${normalizedSlug}-mapping`,
+    `${normalizedSlug}-templates`,
+    `${normalizedSlug}-results`,
+    `${normalizedSlug}-workshop`,
+    `${normalizedSlug}-ads`,
+    `${normalizedSlug}-photographer`,
+    `the-${normalizedSlug}`,
+    `the-${normalizedSlug}-proof`,
+  ];
+
+  for (const attempt of suffixAttempts) {
+    if (coursesData[attempt]) {
+      return coursesData[attempt];
+    }
   }
 
-  // Common slug mappings for edge cases
+  // Common slug mappings for edge cases (keyword -> static slug)
   const slugMappings: Record<string, string> = {
     'subconscious': 'subconscious-trap',
     'trap': 'subconscious-trap',
@@ -1499,38 +1531,88 @@ export const getCourseBySlug = (slug: string): Course | undefined => {
     'mapping': 'product-mapping',
     'product': 'product-mapping',
     'photographer': 'ai-photographer',
+    'ai-photo': 'ai-photographer',
     'copy': 'ad-copy-templates',
     'templates': 'meta-ad-templates',
+    'meta-ad': 'meta-ad-templates',
     'creative': 'meta-ad-templates',
     'headlines': 'meta-headlines',
+    'hooks': 'meta-headlines',
     'targeting': 'laser-targeting',
     'laser': 'laser-targeting',
     'quiz': 'quiz-tactic',
+    'tactic': 'quiz-tactic',
     'offer': 'offer-workshop',
+    'workshop': 'offer-workshop',
     'laws': '20-laws',
+    '20-laws': '20-laws',
+    'twenty': '20-laws',
     'ugly': 'ugly-ads',
+    'simple': 'ugly-ads',
     'ab-test': 'ab-test-results',
     'ab': 'ab-test-results',
+    'a-b': 'ab-test-results',
+    'test-results': 'ab-test-results',
   };
 
   // Check mappings
   for (const [key, mappedSlug] of Object.entries(slugMappings)) {
-    if (normalizedSlug.includes(key) && coursesData[mappedSlug]) {
+    if ((normalizedSlug.includes(key) || slugLower.includes(key)) && coursesData[mappedSlug]) {
       return coursesData[mappedSlug];
     }
   }
 
-  // Try to find by partial match
+  // Try to find by partial match on slug
   const byPartialMatch = Object.values(coursesData).find(
     (c) =>
       c.slug.includes(normalizedSlug) ||
       normalizedSlug.includes(c.slug) ||
       normalizeSlug(c.slug).includes(normalizedSlug) ||
       normalizedSlug.includes(normalizeSlug(c.slug)) ||
-      c.title.toLowerCase().replace(/\s+/g, '-').includes(normalizedSlug)
+      slugLower.includes(c.slug) ||
+      c.slug.includes(slugLower.replace(/-/g, '')) ||
+      slugLower.replace(/-/g, '').includes(c.slug.replace(/-/g, ''))
   );
 
-  return byPartialMatch;
+  if (byPartialMatch) return byPartialMatch;
+
+  // Try to find by title match (convert title to slug-like format)
+  const byTitleMatch = Object.values(coursesData).find((c) => {
+    const titleSlug = c.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    return titleSlug.includes(normalizedSlug) ||
+           normalizedSlug.includes(titleSlug) ||
+           slugLower.includes(titleSlug) ||
+           titleSlug.includes(slugLower);
+  });
+
+  return byTitleMatch;
+};
+
+// Helper function to get course by title (for My Courses where we have title from DB)
+export const getCourseByTitle = (title: string): Course | undefined => {
+  const titleLower = title.toLowerCase();
+
+  // Direct title match
+  const directMatch = Object.values(coursesData).find(
+    (c) => c.title.toLowerCase() === titleLower
+  );
+  if (directMatch) return directMatch;
+
+  // Partial title match
+  const partialMatch = Object.values(coursesData).find(
+    (c) => c.title.toLowerCase().includes(titleLower) ||
+           titleLower.includes(c.title.toLowerCase())
+  );
+  if (partialMatch) return partialMatch;
+
+  // Keyword match in title
+  const keywords = titleLower.split(/\s+/);
+  const keywordMatch = Object.values(coursesData).find((c) => {
+    const courseTitle = c.title.toLowerCase();
+    return keywords.some(kw => kw.length > 3 && courseTitle.includes(kw));
+  });
+
+  return keywordMatch;
 };
 
 export const getAllCourses = (): Course[] => {
