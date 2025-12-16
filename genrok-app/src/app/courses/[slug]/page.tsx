@@ -3175,7 +3175,8 @@ const LTVSystemAlternativeLayout = ({ course, onCheckout }: LTVSystemAlternative
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             How to earn <span style={{ color: '#00bc0d' }}>$1,000</span> per customer
           </motion.h1>
@@ -3856,7 +3857,8 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+            className="text-4xl lg:text-6xl font-bold mb-6 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             Turn Email Marketing Into a <span style={{ color: '#D4B160', textShadow: '0 0 15px rgba(212, 177, 96, 0.5)' }}>Revenue Engine</span>
           </motion.h1>
@@ -4007,7 +4009,7 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>
               Here's What We're <span style={{ color: '#BD9B5E', textShadow: '0 0 20px rgba(189, 155, 94, 0.6)' }}>Combining</span>
             </h2>
             <p className="text-lg text-white/60">
@@ -4158,7 +4160,7 @@ const EmailMarketingAlternativeLayout = ({ course, onCheckout }: EmailMarketingA
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6" style={{ color: '#ffffff' }}>
               Ready to Build Your <span style={{ color: '#D4B160' }}>Revenue Engine</span>?
             </h2>
 
@@ -4256,7 +4258,8 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-5xl font-bold mb-4 text-white leading-tight"
+            className="text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+            style={{ color: '#ffffff' }}
           >
             How to Convert <span style={{ color: '#00ff88' }}>82%</span> of Your Lost Customers
           </motion.h1>
@@ -4601,7 +4604,7 @@ const AbandonedCheckoutAlternativeLayout = ({ course, onCheckout }: AbandonedChe
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6" style={{ color: '#ffffff' }}>
               Start <span style={{ color: '#00ff88' }}>Recovering Sales</span> Today
             </h2>
 

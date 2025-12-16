@@ -58,8 +58,8 @@ export const courseHTMLBlocks: Record<string, string> = {
 }
 
 .sp-hero-image {
-    width: 86%;
-    max-width: 516px;
+    width: 66%;
+    max-width: 397px;
     height: auto;
     display: block;
     margin: 20px auto;
@@ -471,7 +471,7 @@ export const courseHTMLBlocks: Record<string, string> = {
     <h1>In a world of Chaos...</h1>
     <p>Millions of marketers are fighting to break the creative that sinks money, just to be profitable - and finally see some sales...</p>
     <p><strong>Because their algorithm 'went crazy'...</strong></p>
-    <p><img height="365" width="310" alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802"></p>
+    <p style="text-align: center;"><img height="321" width="273" alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-25T135606.829.png?v=1742903802" style="display: block; margin: 0 auto;"></p>
 
     <h1>
         <span class="sp-highlight-box">We turn every ad into a money-printing machine</span><br>
@@ -487,19 +487,19 @@ export const courseHTMLBlocks: Record<string, string> = {
 
     <h2 style="font-size: 26px;"><strong>And here's the proof...</strong></h2>
     <p>On 27.02.2024, we started using the Social Proof Tactic on one of our brands, Before that, we had a <strong>lame ROAS of 3.16</strong>...</p>
-    <p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328" alt="" style="max-width: 100%;"></p>
+    <p style="text-align: center;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_5.png?v=1742904328" alt="" style="max-width: 88%; display: block; margin: 0 auto;"></p>
     <p style="margin-top: 40px;">And just a few days later... the <strong>ROAS skyrocketed to 27.13...</strong></p>
-    <p><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467" alt="" style="max-width: 100%;"></p>
+    <p style="text-align: center;"><img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Whatever_it_takes_We_got_you_6.png?v=1742904467" alt="" style="max-width: 88%; display: block; margin: 0 auto;"></p>
 
     <h1 style="font-size: 28px; margin-top: 40px;"><strong>"Ads give you exposure, social proof makes sure they pull out their <u>credit card</u>."</strong></h1>
     <p style="font-size: 14px; font-style: italic;">(and make them buy impulsively and extremely)</p>
-    <p style="margin-bottom: 60px;"><img src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif" alt="" style="max-width: 80%; border-radius: 15px;"></p>
+    <p style="margin-bottom: 60px; text-align: center;"><img src="https://media.tenor.com/m-eTuvb1LOgAAAAM/fifth-brother-star-wars.gif" alt="" style="max-width: 70%; border-radius: 15px; display: block; margin: 0 auto;"></p>
 
     <p style="font-size: 1.1em; line-height: 2; margin-bottom: 60px;"><strong>Pay attention...</strong><br>No reliance on Facebook algorithms,<br>No endless product testing...<br>No product page reviews,<br>No creatives that competitors can copy...</p>
 
     <div style="font-size: 26px; margin: 60px 0;">Creating social proof is a skill that can <span style="font-weight: bold;">print you money</span> In every ad, every hour</div>
     <div style="font-size: 14px; color: #555; font-style: italic;">(Without relying on Zuckerberg's mercy)</div>
-    <div><img alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888" style="max-width: 100%;"></div>
+    <div style="text-align: center;"><img alt="" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Zuckerberg-1.gif?v=1742904888" style="max-width: 88%; display: block; margin: 0 auto;"></div>
 
     <p style="margin-top: 20px;">Properly built social proof can turn every ad into a money-printing machine In scale, with no limit and without the need for endless testings.</p>
 
@@ -517,7 +517,7 @@ export const courseHTMLBlocks: Record<string, string> = {
     <h1 style="font-size: 26px; line-height: 1.1; margin-top: 5px; margin-bottom: 5px;"><span class="sp-highlight-box">to 1,500%</span></h1>
     <h2 style="font-size: 23.4px; line-height: 1.1; margin-top: 5px; margin-bottom: 30px;"><span style="font-style: italic;">(CTR, CPM, CPC, CPA)</span></h2>
 
-    <p style="margin-bottom: 40px;"><img src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif" alt="" style="max-width: 80%; border-radius: 15px;"></p>
+    <p style="margin-bottom: 40px; text-align: center;"><img src="https://media.tenor.com/tpOdbDAIhokAAAAM/cat-buy-more-roy.gif" alt="" style="max-width: 70%; border-radius: 15px; display: block; margin: 0 auto;"></p>
 
     <p style="margin-top: 160px;"><em>But the most important thing we've gained...</em></p>
     <p style="font-size: 28px; font-weight: bold; margin-top: 70px; margin-bottom: 60px;">Business Security</p>
@@ -866,7 +866,7 @@ display: block;
 }
 
 .landing-section-isolated .screenshot {
-max-width: 90%;
+max-width: 69%;
 height: auto;
 border-radius: 8px;
 box-shadow: 0 0 16px rgba(255, 79, 3, 0.9), 0 0 28px rgba(255, 79, 3, 0.6), 0 0 40px rgba(255, 79, 3, 0.3);
@@ -1152,7 +1152,7 @@ padding: 0 !important;
 }
 
 .profit-engines-mega-section .mega-meme-gif {
-max-width: 90% !important;
+max-width: 79% !important;
 height: auto !important;
 border-radius: 12px !important;
 display: block !important;
@@ -1161,8 +1161,8 @@ margin: 0 auto !important;
 
 @media (min-width: 768px) {
 .profit-engines-mega-section .mega-meme-gif {
-max-width: 600px !important;
-width: 600px !important;
+max-width: 528px !important;
+width: 528px !important;
 }
 .profit-engines-mega-section .ultra-bold-line {
 font-size: 26.7168px !important;
@@ -3920,8 +3920,8 @@ margin: 32px 0 !important;
 padding: 0 !important;
 }
 .landing-section .screenshot {
-width: 100% !important;
-max-width: 870px !important;
+width: 77% !important;
+max-width: 670px !important;
 height: auto !important;
 border-radius: 16px !important;
 display: block !important;
@@ -4097,7 +4097,7 @@ font-size: 11.385px !important;
 }
 @media (min-width: 769px) {
 .landing-section .screenshot {
-max-width: 75% !important;
+max-width: 58% !important;
 }
 .landing-section .cta-button {
 max-width: 850px !important;
@@ -4211,7 +4211,7 @@ background: none;
 #profit-engines-root-isolator .image-center {
 display: block;
 margin: 30px auto;
-max-width: 100%;
+max-width: 88%;
 width: auto;
 height: auto;
 border-radius: 4px;
@@ -4296,7 +4296,7 @@ font-size: 17px;
 font-size: 24px;
 }
 #profit-engines-root-isolator .image-center {
-max-width: 85%;
+max-width: 75%;
 }
 }
 
@@ -4314,7 +4314,7 @@ font-size: 16px;
 font-size: 22px;
 }
 #profit-engines-root-isolator .image-center {
-max-width: 90%;
+max-width: 79%;
 }
 }
 
@@ -5617,7 +5617,7 @@ See the transformation when you implement the billion-dollar system
         }
 
         .screenshot {
-            max-width: 100% !important;
+            max-width: 77% !important;
             height: auto !important;
             border-radius: 8px !important;
             box-shadow: 0 10px 40px rgba(0, 207, 255, 0.3) !important;
@@ -5759,7 +5759,7 @@ See the transformation when you implement the billion-dollar system
             }
 
             .screenshot {
-                max-width: 85% !important;
+                max-width: 65% !important;
             }
 
             .cta-button {
@@ -5808,7 +5808,7 @@ See the transformation when you implement the billion-dollar system
             }
 
             .screenshot {
-                max-width: 80% !important;
+                max-width: 62% !important;
             }
 
             .cta-button {
@@ -7732,7 +7732,7 @@ padding: 12px 20px !important;
 display: inline-flex !important;
 align-items: center !important;
 gap: 10px !important;
-font-size: 13px !important;
+font-size: 11.7px !important;
 color: #ffffff !important;
 font-weight: 500 !important;
 margin: 0 0 32px 0 !important;
@@ -7761,7 +7761,7 @@ transform: scale(1.1);
 }
 
 .main-headline {
-font-size: 49.94px;
+font-size: 44.95px;
 font-weight: 900;
 color: #ffffff;
 margin: 0 0 13px 0;
@@ -7774,7 +7774,7 @@ color: #ff0017;
 }
 
 .sub-headline {
-font-size: 21.75px;
+font-size: 19.58px;
 color: #e8e8e8;
 margin: 0 0 40px 0;
 font-weight: 400;
@@ -7790,7 +7790,7 @@ align-items: center;
 }
 
 .screenshot {
-max-width: 100%;
+max-width: 77%;
 height: auto;
 border-radius: 8px;
 box-shadow: 0 10px 30px rgba(255, 0, 23, 0.3);
@@ -7802,7 +7802,7 @@ margin: 0 0 20px 0;
 }
 
 .price-text {
-font-size: 36.25px;
+font-size: 32.63px;
 color: #ffffff;
 font-weight: 700;
 margin: 0 0 8px 0;
@@ -7812,7 +7812,7 @@ font-family: 'Open Sans', sans-serif;
 .original-price {
 color: #999999;
 text-decoration: line-through;
-font-size: 27.56px;
+font-size: 24.8px;
 margin-right: 10px;
 }
 
@@ -7826,7 +7826,7 @@ display: inline-flex !important;
 background: radial-gradient(ellipse at bottom, #FF9999 0%, #FF0000 50%) !important;
 color: #ffffff !important;
 border-radius: 35px !important;
-font-size: 17.38px !important;
+font-size: 15.64px !important;
 font-weight: 700 !important;
 padding: 21px 76px !important;
 cursor: pointer !important;
@@ -7834,12 +7834,12 @@ transition: all 0.3s ease !important;
 align-items: center !important;
 justify-content: center !important;
 text-decoration: none !important;
-min-width: 421px !important;
+min-width: 379px !important;
 font-family: 'Open Sans', sans-serif !important;
 box-shadow: 0 10px 30px rgba(255, 0, 23, 0.4) !important;
 text-transform: uppercase !important;
 letter-spacing: 1px !important;
-height: 81px !important;
+height: 73px !important;
 position: relative !important;
 border: none !important;
 overflow: hidden !important;
@@ -7858,7 +7858,7 @@ pointer-events: none !important;
 }
 
 .cta-button span {
-font-size: 17.38px !important;
+font-size: 15.64px !important;
 font-weight: 600 !important;
 color: #ffffff !important;
 font-family: 'Open Sans', sans-serif !important;
@@ -9999,7 +9999,7 @@ display: block !important;
 .hero-screenshot-container {
 margin: 40px auto !important;
 width: 100% !important;
-max-width: 540px !important;
+max-width: 416px !important;
 display: block !important;
 border-radius: 15px !important;
 overflow: hidden !important;
@@ -10173,7 +10173,7 @@ font-size: 31.46px !important;
 }
 
 .hero-screenshot-container {
-max-width: 380px !important;
+max-width: 293px !important;
 }
 
 .hero-price-text {
@@ -10229,7 +10229,7 @@ font-size: 26.45px !important;
 }
 
 .hero-screenshot-container {
-max-width: 300px !important;
+max-width: 231px !important;
 }
 
 .hero-sub-headline {
@@ -11929,10 +11929,11 @@ font-family: 'Open Sans', sans-serif !important;
 line-height: 1.4 !important;
 }
 .screenshot-container {
-margin: 40px 0 !important;
+margin: 40px auto !important;
 border-radius: 15px !important;
 overflow: hidden !important;
 box-shadow: 0 20px 60px rgba(255, 122, 0, 0.3) !important;
+max-width: 77% !important;
 }
 .screenshot {
 width: 100% !important;
@@ -13238,7 +13239,7 @@ body {
 
 .screenshot-container {
     margin: 40px auto !important;
-    max-width: 900px !important;
+    max-width: 693px !important;
     border-radius: 12px !important;
     overflow: hidden !important;
     box-shadow: 0 20px 60px rgba(30, 148, 19, 0.3) !important;
@@ -14949,7 +14950,7 @@ body {
 #isolated-hero-section .screenshot-container {
     display: block !important;
     margin: 0 auto !important;
-    max-width: 684px !important;
+    max-width: 527px !important;
     width: 100% !important;
 }
 
