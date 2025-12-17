@@ -158,6 +158,89 @@
       return <span ref={ref}>{prefix}{count}{suffix}</span>;
     }
 
+    // OCPB Flow Diagram
+    function OCPBFlowDiagram() {
+      const steps = [
+        { letter: "O", word: "Objection", color: "bg-accent-400" },
+        { letter: "C", word: "Claim", color: "bg-accent-500" },
+        { letter: "P", word: "Proof", color: "bg-accent-600" },
+        { letter: "B", word: "Benefit", color: "bg-accent-700" },
+      ];
+
+      return (
+        <div className="flex items-center justify-center gap-2 py-6 overflow-x-auto">
+          {steps.map((step, i) => (
+            <React.Fragment key={step.letter}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.12, duration: 0.4, type: "spring", stiffness: 300 }}
+                className="flex flex-col items-center"
+              >
+                <div className={`w-14 h-14 rounded-xl ${step.color} flex items-center justify-center text-white text-2xl font-bold shadow-lg hover:scale-110 transition-transform`}>
+                  {step.letter}
+                </div>
+                <span className="mt-2 text-xs text-neutral-600 font-medium">{step.word}</span>
+              </motion.div>
+              {i < steps.length - 1 && (
+                <motion.div
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  transition={{ delay: i * 0.12 + 0.2, duration: 0.2 }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-accent-300 mt-[-20px]">
+                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </motion.div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    // Trust Meter Animation
+    function TrustMeter() {
+      const [value, setValue] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      useEffect(() => {
+        if (isInView) {
+          const timer = setTimeout(() => setValue(156), 300);
+          return () => clearTimeout(timer);
+        }
+      }, [isInView]);
+
+      return (
+        <div ref={ref} className="max-w-xs mx-auto">
+          <div className="text-center mb-3">
+            <span className="text-xs text-neutral-500 uppercase tracking-wider">Trust Level After OCPB</span>
+          </div>
+          <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: "0%" }}
+              animate={{ width: isInView ? "100%" : "0%" }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="h-full bg-gradient-to-r from-accent-400 to-accent-600 rounded-full"
+            />
+          </div>
+          <div className="flex justify-between mt-2 text-xs text-neutral-500">
+            <span>Skeptic</span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isInView ? 1 : 0 }}
+              transition={{ delay: 1 }}
+              className="font-semibold text-accent-600"
+            >
+              +{value}% Trust
+            </motion.span>
+            <span>Believer</span>
+          </div>
+        </div>
+      );
+    }
+
     // Interactive OCPB Builder
     function OCPBBuilder() {
       const [activeStep, setActiveStep] = useState(0);
@@ -266,28 +349,10 @@
                 </section>
               </FadeUp>
 
-              {/* Hero Image */}
+              {/* Animated OCPB Flow */}
               <ScaleIn>
-                <div className="bg-neutral-950 -mx-6 md:-mx-0 md:rounded-2xl overflow-hidden">
-                  <img
-                    src="images/hero-image.jpg"
-                    alt="Lesson illustration"
-                    className="w-full h-auto"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
-                </div>
-              </ScaleIn>
-
-
-              {/* Hero Image */}
-              <ScaleIn>
-                <div className="rounded-2xl overflow-hidden bg-neutral-100 max-w-2xl mx-auto">
-                  <img
-                    src="images/ocpb-concept.png"
-                    alt="OCPB Formula visualization"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
+                <div className="py-8">
+                  <OCPBFlowDiagram />
                 </div>
               </ScaleIn>
 
@@ -384,15 +449,10 @@
                 </section>
               </FadeUp>
 
-              {/* Framework Image */}
+              {/* Animated Trust Meter */}
               <ScaleIn>
-                <div className="rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm max-w-xl mx-auto">
-                  <img
-                    src="images/ocpb-framework.png"
-                    alt="OCPB Framework flow"
-                    className="w-full h-auto"
-                    style={{ aspectRatio: '5/4', objectFit: 'contain', backgroundColor: '#fff' }}
-                  />
+                <div className="py-6">
+                  <TrustMeter />
                 </div>
               </ScaleIn>
 
