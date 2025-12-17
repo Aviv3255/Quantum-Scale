@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Three Levels of Change</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: {
+              DEFAULT: '#f43f5e',
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #FFFFFF; color: #1a1a1a; overflow-x: hidden; }
+    ::selection { background: #f43f5e; color: #fff; }
+    h1, h2, h3, h4 { letter-spacing: -0.025em; }
+    .lesson-container { max-width: 800px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, useInView, AnimatePresence } = window.Motion;
+    const { useState, useRef, useEffect } = React;
+
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    // Icons
+    const Icons = {
+      Eye: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      ),
+      Brain: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/>
+          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/>
+        </svg>
+      ),
+      Heart: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+      ),
+      Target: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      ),
+      Zap: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      ),
+      Layers: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+        </svg>
+      ),
+      ArrowRight: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      ),
+      ChevronDown: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      ),
+    };
+
+    // Animation components
+    function FadeUp({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-80px" });
+      return (
+        <motion.div
+          ref={ref}
+          className={className}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay, ease: smoothEase }}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          className={className}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function Counter({ end, suffix = "", prefix = "" }) {
+      const [count, setCount] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      useEffect(() => {
+        if (isInView) {
+          let start = 0;
+          const duration = 2000;
+          const increment = end / (duration / 16);
+          const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 16);
+          return () => clearInterval(timer);
+        }
+      }, [isInView, end]);
+
+      return <span ref={ref}>{prefix}{count}{suffix}</span>;
+    }
+
+    // Interactive Level Explorer
+    function LevelExplorer() {
+      const [activeLevel, setActiveLevel] = useState(0);
+
+      const levels = [
+        {
+          num: 1,
+          title: "Change in Attention",
+          subtitle: "The Hook",
+          desc: "Before any persuasion can happen, you must earn the right to be heard. The hook stops the scroll, breaks preoccupation, and creates enough curiosity to make them read the next sentence.",
+          tool: "Curiosity & Benefit",
+          color: "bg-accent-400"
+        },
+        {
+          num: 2,
+          title: "Change in Thinking",
+          subtitle: "The Strategy",
+          desc: "A great hook gets you in the door. A great strategy wins the war. This is where you move beyond formulas and start engineering the entire marketing argument.",
+          tool: "Differentiation & Reframing",
+          color: "bg-accent-500"
+        },
+        {
+          num: 3,
+          title: "Change in Belief",
+          subtitle: "The Psychology",
+          desc: "True mastery comes from understanding the deep, often irrational, psychological forces that govern choice. This is where you move from persuasion to profound influence.",
+          tool: "Identity & Self-Persuasion",
+          color: "bg-accent-600"
+        }
+      ];
+
+      return (
+        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
+          <div className="grid grid-cols-3">
+            {levels.map((level, i) => (
+              <button
+                key={level.num}
+                onClick={() => setActiveLevel(i)}
+                className={`py-4 px-3 text-center transition-all border-b-2 ${activeLevel === i ? 'border-accent-500 bg-accent-50' : 'border-transparent hover:bg-neutral-50'}`}
+              >
+                <span className={`text-xs font-semibold ${activeLevel === i ? 'text-accent-600' : 'text-neutral-400'}`}>LEVEL {level.num}</span>
+                <p className={`text-sm font-medium mt-1 ${activeLevel === i ? 'text-neutral-900' : 'text-neutral-600'}`}>{level.subtitle}</p>
+              </button>
+            ))}
+          </div>
+          <motion.div
+            key={activeLevel}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6"
+          >
+            <div className={`w-12 h-12 rounded-xl ${levels[activeLevel].color} flex items-center justify-center text-white text-xl font-bold mb-4`}>
+              {levels[activeLevel].num}
+            </div>
+            <h4 className="text-lg font-semibold text-neutral-900 mb-2">{levels[activeLevel].title}</h4>
+            <p className="text-sm text-neutral-600 leading-relaxed mb-4">{levels[activeLevel].desc}</p>
+            <div className="bg-neutral-50 rounded-lg p-3 border border-neutral-100">
+              <span className="text-xs text-neutral-500 uppercase tracking-wider">Primary Tool</span>
+              <p className="text-sm font-medium text-neutral-900 mt-1">{levels[activeLevel].tool}</p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    // Main Lesson Component
+    function Lesson() {
+      return (
+        <div className="bg-white min-h-screen overflow-x-hidden">
+          {/* Hero Section - Black with gradient accent */}
+          <header className="bg-neutral-950 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/10 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+
+            <div className="lesson-container px-6 py-20 relative z-10">
+              <FadeUp>
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
+                    Architecture of Belief
+                  </span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+                  The Three Levels of Change
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
+                  All great copywriting is "change work." Master the three levels where transformation happens: Attention, Thinking, and Belief.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
+                  <div className="flex items-center gap-2">
+                    <Icons.Layers />
+                    <span>3 mastery levels</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Icons.Zap />
+                    <span><Counter end={340} suffix="%" /> deeper engagement</span>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
+
+              {/* The Core Principle */}
+              <FadeUp>
+                <section>
+                  <p className="text-lg text-neutral-700 leading-relaxed">
+                    We often think we're in the business of words, sales, or even ideas. But at its core, <strong>our craft is about facilitating change.</strong> We don't just write copy; we engineer shifts in perspective, belief, and action.
+                  </p>
+                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
+                    This journey of mastery unfolds across three distinct levels. Each level builds on the previous, creating a pyramid of influence that separates amateur writers from elite persuaders.
+                  </p>
+                </section>
+              </FadeUp>
+
+              {/* Hero Image */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-100 max-w-2xl mx-auto">
+                  <img
+                    src="images/three-levels-pyramid.png"
+                    alt="Three Levels of Change pyramid"
+                    className="w-full h-auto object-cover"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
+                </div>
+              </ScaleIn>
+
+              {/* Interactive Level Explorer */}
+              <FadeUp>
+                <section>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">Explore Each Level</h2>
+                  <p className="text-neutral-600 mb-6">Click through to understand what each level demands of you as a copywriter.</p>
+                  <LevelExplorer />
+                </section>
+              </FadeUp>
+
+              {/* Level 1 Deep Dive - Black Section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white">
+                        <Icons.Eye />
+                      </div>
+                      <h2 className="text-2xl font-bold text-white">Level 1: The Hook</h2>
+                    </div>
+
+                    <p className="text-neutral-300 leading-relaxed mb-6">
+                      Before any persuasion can happen, you must earn the right to be heard. The hook is the gateway. Its sole purpose is to stop the scroll, break preoccupation, and create enough curiosity to make them read the next sentence.
+                    </p>
+
+                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 mb-6">
+                      <p className="text-accent-400 font-medium mb-2">The Universal Formula</p>
+                      <p className="text-2xl font-bold text-white">"How to [Benefit]"</p>
+                      <p className="text-sm text-neutral-400 mt-3">Jim Edwards identifies this as the number one script for hooky headlines. It works everywhere because it taps into the fundamental reason people pay attention: "What's in it for me?"</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-2">Requirement 1</p>
+                        <p className="text-sm text-white font-medium">Avatar Acuity</p>
+                        <p className="text-xs text-neutral-400 mt-1">The benefit must be the precise payoff your ideal customer craves.</p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-2">Requirement 2</p>
+                        <p className="text-sm text-white font-medium">Radical Simplicity</p>
+                        <p className="text-xs text-neutral-400 mt-1">If a third grader can understand it, your busy prospect can grasp it.</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Level 2 Deep Dive */}
+              <FadeUp>
+                <section>
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600">
+                      <Icons.Brain />
+                    </div>
+                    <h2 className="text-2xl font-bold text-neutral-900">Level 2: The Strategy</h2>
+                  </div>
+
+                  <p className="text-neutral-600 leading-relaxed mb-6">
+                    A great hook gets you in the door. A great strategy wins the war. This is where you move beyond formulas and start thinking like a grandmaster, engineering the entire marketing argument and differentiating yourself in a sea of sameness.
+                  </p>
+
+                  <div className="bg-neutral-50 rounded-2xl p-6 border border-neutral-200 mb-6">
+                    <p className="text-sm text-neutral-500 uppercase tracking-wider mb-3">The Paradigm Shift</p>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="text-center p-4">
+                        <p className="text-xs text-neutral-400 mb-2">CONTENT WRITER</p>
+                        <p className="text-sm text-neutral-600 italic">"I'm going to educate you or give you insight on a topic."</p>
+                        <p className="text-xs text-neutral-500 mt-2">Goal: Inform</p>
+                      </div>
+                      <div className="text-center p-4 bg-white rounded-xl border border-accent-200">
+                        <p className="text-xs text-accent-600 mb-2">COPYWRITER</p>
+                        <p className="text-sm text-neutral-800 italic">"I'm going to change who you are by the time you're done reading."</p>
+                        <p className="text-xs text-accent-600 mt-2">Goal: Transform</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-neutral-600 leading-relaxed">
+                    The strategic copywriter doesn't just share information. They architect a journey that reshapes how the reader sees themselves, their problem, and the solution. Every word serves the transformation.
+                  </p>
+                </section>
+              </FadeUp>
+
+              {/* Framework Image */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm max-w-xl mx-auto">
+                  <img
+                    src="images/change-framework.png"
+                    alt="Three Levels Framework"
+                    className="w-full h-auto"
+                    style={{ aspectRatio: '5/4', objectFit: 'contain', backgroundColor: '#fff' }}
+                  />
+                </div>
+              </ScaleIn>
+
+              {/* Level 3 Deep Dive - Black Section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-t from-accent-900/10 via-transparent to-transparent" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
+                        <Icons.Heart />
+                      </div>
+                      <h2 className="text-2xl font-bold text-white">Level 3: The Psychology</h2>
+                    </div>
+
+                    <p className="text-neutral-300 leading-relaxed mb-6">
+                      Strategy is powerful, but true mastery comes from understanding the deep, often irrational, psychological forces that govern choice. This is where you move from persuasion to profound influence, working with the fundamental truths of how the mind operates.
+                    </p>
+
+                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 mb-6">
+                      <p className="text-accent-400 italic text-lg mb-2">"There's this delusion we have as copywriters that we can convince somebody of something. We can't."</p>
+                      <p className="text-white font-medium">"All we can do is get them to convince themselves."</p>
+                      <p className="text-sm text-neutral-500 mt-3">- Alen Sultanic</p>
+                    </div>
+
+                    <p className="text-neutral-300 leading-relaxed">
+                      Your job is not to force a belief upon the reader. It is to engineer a story, create a frame, and provide the components that allow their own mind to build the conviction to act. You are an architect of self-persuasion.
+                    </p>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Why This Matters */}
+              <FadeUp>
+                <section>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Why Most Copywriters Stay Stuck at Level 1</h2>
+
+                  <div className="space-y-4">
+                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+                      <h3 className="font-semibold text-neutral-900 mb-2">Template Dependency</h3>
+                      <p className="text-sm text-neutral-600">
+                        Most courses teach formulas and templates that only address attention. They produce writers who can hook but cannot transform. The result is copy that gets clicks but not conversions.
+                      </p>
+                    </div>
+
+                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+                      <h3 className="font-semibold text-neutral-900 mb-2">Shallow Understanding</h3>
+                      <p className="text-sm text-neutral-600">
+                        Understanding Level 2 requires strategic thinking. Understanding Level 3 requires deep study of psychology and human behavior. Most writers never invest the time to reach these depths.
+                      </p>
+                    </div>
+
+                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+                      <h3 className="font-semibold text-neutral-900 mb-2">The AI Trap</h3>
+                      <p className="text-sm text-neutral-600">
+                        AI language models are trained on average copy, producing average output. Writers who rely on AI for Level 1 hooks without Level 2-3 strategy will never differentiate themselves.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* How to Progress */}
+              <FadeUp>
+                <section>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Progress Through the Levels</h2>
+                  <p className="text-neutral-600 leading-relaxed mb-6">
+                    Moving from Level 1 to Level 3 isn't about abandoning what works at lower levels. It's about integration. Each level amplifies the power of the levels below it.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
+                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 1 Mastery</p>
+                      <h3 className="font-semibold text-neutral-900 mb-2">Study Headlines</h3>
+                      <p className="text-sm text-neutral-600">Collect 100 headlines that stopped you. Analyze why they worked. Practice writing 10 variations daily.</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
+                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 2 Mastery</p>
+                      <h3 className="font-semibold text-neutral-900 mb-2">Map Belief Shifts</h3>
+                      <p className="text-sm text-neutral-600">Before writing, map the belief shifts your reader needs. What do they believe now? What must they believe to act?</p>
+                    </div>
+                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
+                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 3 Mastery</p>
+                      <h3 className="font-semibold text-neutral-900 mb-2">Study Psychology</h3>
+                      <p className="text-sm text-neutral-600">Read behavioral economics, cognitive bias research, and decision science. Deeper understanding means more powerful influence.</p>
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Key Takeaways - Black Section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10">
+                  <h2 className="text-2xl font-bold text-white mb-6">Key Takeaways</h2>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {[
+                      "Level 1 (Attention) uses curiosity and benefit to stop the scroll. The 'How to [Benefit]' formula is universally effective.",
+                      "Level 2 (Thinking) moves from templates to strategy. You're not informing—you're transforming how readers see themselves.",
+                      "Level 3 (Belief) is about self-persuasion. You can't convince anyone; you can only help them convince themselves.",
+                      "True mastery integrates all three levels. A simple hook is powered by deep psychology and strategic differentiation."
+                    ].map((point, i) => (
+                      <div key={i} className="flex gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
+                        <div className="w-6 h-6 rounded-full bg-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-bold text-white">{i + 1}</span>
+                        </div>
+                        <p className="text-sm text-neutral-300 leading-relaxed">{point}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </FadeUp>
+
+            </div>
+          </main>
+
+          {/* Footer */}
+          <footer className="py-10 bg-neutral-50">
+            <div className="lesson-container px-6 text-center">
+              <p className="text-sm text-neutral-400">Part of the Architecture of Belief Series</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Lesson />);
+  </script>
+</body>
+</html>

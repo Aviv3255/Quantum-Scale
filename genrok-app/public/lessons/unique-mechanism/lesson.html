@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Unique Mechanism | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#6366f1',
+            accentDark: '#4f46e5',
+            dark: '#0f0f0f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glow-card:hover {
+      box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-white text-dark overflow-x-hidden">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence, useInView } = Motion;
+    const { useState, useRef, useEffect } = React;
+
+    // SVG Icon Components
+    const Icon = ({ name, size = 20, className = "" }) => {
+      const icons = {
+        search: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />,
+        target: <><circle cx="12" cy="12" r="10" strokeWidth={2} /><circle cx="12" cy="12" r="6" strokeWidth={2} /><circle cx="12" cy="12" r="2" strokeWidth={2} /></>,
+        cog: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />,
+        sparkles: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />,
+        check: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />,
+        x: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />,
+        brain: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />,
+        lock: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />,
+        gem: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />,
+        chat: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />,
+        zap: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+        tag: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />,
+        flask: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />,
+      };
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
+          {icons[name]}
+        </svg>
+      );
+    };
+
+    // FadeUp Animation Component
+    function FadeUp({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    // Animated Counter
+    function AnimatedCounter({ end, duration = 2, suffix = "" }) {
+      const [count, setCount] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      useEffect(() => {
+        if (isInView) {
+          let start = 0;
+          const increment = end / (duration * 60);
+          const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 1000 / 60);
+          return () => clearInterval(timer);
+        }
+      }, [isInView, end, duration]);
+
+      return <span ref={ref}>{count}{suffix}</span>;
+    }
+
+    // Interactive Mechanism Builder
+    function MechanismBuilder() {
+      const [step, setStep] = useState(0);
+      const [completed, setCompleted] = useState([]);
+
+      const steps = [
+        { title: "Identify the Problem", icon: "search", desc: "What pain does your audience feel?" },
+        { title: "Find the Root Cause", icon: "target", desc: "Why do other solutions fail?" },
+        { title: "Create Your Mechanism", icon: "cog", desc: "What's your unique approach?" },
+        { title: "Name It Memorably", icon: "sparkles", desc: "Give it a proprietary name" },
+      ];
+
+      const handleNext = () => {
+        if (step < steps.length - 1) {
+          setCompleted([...completed, step]);
+          setStep(step + 1);
+        } else if (!completed.includes(step)) {
+          setCompleted([...completed, step]);
+        }
+      };
+
+      return (
+        <div className="bg-indigo-50 rounded-2xl p-6 md:p-8 border border-indigo-100">
+          <h4 className="text-lg font-semibold text-dark mb-6">Build Your Unique Mechanism</h4>
+
+          <div className="space-y-4 mb-6">
+            {steps.map((s, index) => (
+              <motion.div
+                key={s.title}
+                className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300
+                           ${index === step ? 'bg-white shadow-sm' : 'bg-transparent'}
+                           ${completed.includes(index) ? 'opacity-100' : index > step ? 'opacity-40' : 'opacity-100'}`}
+                animate={{
+                  scale: index === step ? 1.02 : 1,
+                  x: index === step ? 4 : 0
+                }}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center
+                               ${completed.includes(index) ? 'bg-accent text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                  {completed.includes(index) ? <Icon name="check" size={18} /> : <Icon name={s.icon} size={18} />}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-dark text-sm">{s.title}</p>
+                  <p className="text-xs text-neutral-500">{s.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={completed.length === steps.length}
+            className="w-full py-3 px-6 bg-dark text-white rounded-xl font-medium
+                       hover:bg-neutral-800 transition-all duration-300
+                       disabled:bg-accent disabled:cursor-default"
+          >
+            {completed.length === steps.length ? "Mechanism Complete!" : "Complete This Step"}
+          </button>
+        </div>
+      );
+    }
+
+    // Comparison Visualizer
+    function ComparisonVisualizer() {
+      const [showMechanism, setShowMechanism] = useState(false);
+
+      return (
+        <div className="bg-white rounded-2xl p-6 md:p-8 border border-neutral-100 shadow-sm">
+          <h4 className="text-lg font-semibold text-dark mb-6">With vs Without a Unique Mechanism</h4>
+
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <motion.div
+              className="bg-neutral-100 rounded-xl p-4 text-center"
+              animate={{ opacity: showMechanism ? 0.5 : 1 }}
+            >
+              <div className="w-10 h-10 bg-neutral-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Icon name="x" size={20} className="text-neutral-400" />
+              </div>
+              <p className="text-sm font-medium text-dark">Without</p>
+              <p className="text-xs text-neutral-500 mt-1">"We help you lose weight"</p>
+              <p className="text-xs text-red-500 mt-2">Competing on price</p>
+            </motion.div>
+
+            <motion.div
+              className="bg-indigo-50 rounded-xl p-4 text-center border-2 border-transparent"
+              animate={{
+                opacity: showMechanism ? 1 : 0.5,
+                borderColor: showMechanism ? '#6366f1' : 'transparent'
+              }}
+            >
+              <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Icon name="check" size={20} className="text-accent" />
+              </div>
+              <p className="text-sm font-medium text-dark">With Mechanism</p>
+              <p className="text-xs text-neutral-500 mt-1">"The Metabolic Reset Method"</p>
+              <p className="text-xs text-green-600 mt-2">Category of one</p>
+            </motion.div>
+          </div>
+
+          <button
+            onClick={() => setShowMechanism(!showMechanism)}
+            className="w-full py-3 px-6 bg-accent text-white rounded-xl font-medium
+                       hover:bg-accentDark transition-all duration-300"
+          >
+            {showMechanism ? "Show Without Mechanism" : "Show With Mechanism"}
+          </button>
+        </div>
+      );
+    }
+
+    // Main App
+    function App() {
+      const mechanisms = [
+        {
+          product: "Weight Loss Program",
+          generic: "Helps you lose weight fast",
+          mechanism: "The Hormone Reset Protocol",
+          why: "Positions the approach as scientific and specific"
+        },
+        {
+          product: "Business Course",
+          generic: "Learn to make money online",
+          mechanism: "The Compound Client System",
+          why: "Implies a unique, systematic approach"
+        },
+        {
+          product: "Productivity App",
+          generic: "Get more done in less time",
+          mechanism: "The Focus Flow Framework",
+          why: "Creates proprietary methodology"
+        },
+        {
+          product: "Marketing Service",
+          generic: "We'll grow your business",
+          mechanism: "The Audience Amplifier Engine",
+          why: "Sounds proprietary and technical"
+        }
+      ];
+
+      return (
+        <div className="min-h-screen bg-white overflow-x-hidden">
+          {/* Hero Section */}
+          <header className="relative overflow-hidden bg-gradient-to-b from-indigo-50/50 to-white">
+            <div className="max-w-6xl mx-auto px-6 py-20">
+              <FadeUp>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                  <span className="text-sm font-medium text-indigo-700">Persuasion Mastery</span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-5xl md:text-6xl font-bold text-dark leading-tight mb-6">
+                  The Unique <span className="gradient-text">Mechanism</span>
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-600 max-w-2xl leading-relaxed mb-8">
+                  The secret weapon that transforms you from "another option" into "the only choice."
+                  Make competition irrelevant by creating your own category.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                      <Icon name="target" size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-dark"><AnimatedCounter end={340} suffix="%" /></p>
+                      <p className="text-sm text-neutral-500">Higher Perceived Value</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                      <Icon name="gem" size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-dark"><AnimatedCounter end={67} suffix="%" /></p>
+                      <p className="text-sm text-neutral-500">Less Price Resistance</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+          </header>
+
+          <main className="max-w-6xl mx-auto px-6 py-16">
+            {/* What Is Section */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-6">What Is a Unique Mechanism?</h2>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.1}>
+                  <div className="prose prose-lg">
+                    <p className="text-neutral-600 leading-relaxed">
+                      A unique mechanism is your proprietary explanation for how your product or service
+                      delivers results. It's not just what you do—it's your special method, system, or
+                      approach that makes your solution fundamentally different from everything else.
+                    </p>
+                    <p className="text-neutral-600 leading-relaxed">
+                      When you have a unique mechanism, you stop competing. Instead of being compared
+                      to alternatives, you become incomparable. Prospects can't price-shop because
+                      there's nothing else like what you offer.
+                    </p>
+                    <p className="text-neutral-600 leading-relaxed">
+                      Think about it: every breakthrough product has a mechanism. Apple had "the
+                      ecosystem." Peloton has "the connected fitness experience." These aren't just
+                      marketing terms—they're frameworks that make comparison impossible.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="relative">
+                    <img
+                      src="images/mechanism-concept.png"
+                      alt="Unique Mechanism Concept"
+                      className="rounded-2xl shadow-lg w-full"
+                    />
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Interactive Demo */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Experience the Difference</h2>
+                <p className="text-neutral-500 mb-8">See how a unique mechanism transforms positioning</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.1}>
+                  <MechanismBuilder />
+                </FadeUp>
+                <FadeUp delay={0.2}>
+                  <ComparisonVisualizer />
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Examples */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Mechanism Transformations</h2>
+                <p className="text-neutral-500 mb-8">From generic claims to proprietary positioning</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {mechanisms.map((m, index) => (
+                  <FadeUp key={m.product} delay={index * 0.1}>
+                    <motion.div
+                      className="bg-white rounded-2xl p-6 border border-neutral-100
+                                 transition-all duration-500 glow-card cursor-pointer"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
+                          {m.product}
+                        </span>
+                      </div>
+
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-start gap-3">
+                          <Icon name="x" size={16} className="text-red-400 mt-0.5 flex-shrink-0" />
+                          <p className="text-neutral-500 text-sm line-through">{m.generic}</p>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Icon name="check" size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
+                          <p className="text-dark font-medium">{m.mechanism}</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-indigo-50 rounded-lg p-3">
+                        <p className="text-xs text-indigo-700">{m.why}</p>
+                      </div>
+                    </motion.div>
+                  </FadeUp>
+                ))}
+              </div>
+            </section>
+
+            {/* The Framework */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Creating Your Mechanism</h2>
+                <p className="text-neutral-500 mb-8">A proven framework for differentiation</p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="relative mb-8">
+                  <img
+                    src="images/mechanism-framework.png"
+                    alt="Mechanism Creation Framework"
+                    className="rounded-2xl shadow-lg w-full"
+                  />
+                </div>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <FadeUp delay={0.2}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="flask" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">1. Find the Failure Point</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      What causes other solutions to fail? Identify the specific breakdown point that
+                      your approach solves differently. This becomes the foundation of your mechanism story.
+                      Research competitor reviews to find common frustrations.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="zap" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">2. Articulate Your Approach</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      What do you do differently? Define your process, method, or technology that addresses
+                      the failure point. Be specific about what makes your approach work when others don't.
+                      Document every step of your unique process.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.4}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="tag" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">3. Name It Powerfully</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Give your mechanism a proprietary name that sounds unique and memorable. Use words
+                      like "System," "Method," "Protocol," or "Framework" to convey structure and credibility.
+                      Test names with your target audience for resonance.
+                    </p>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Why It Works */}
+            <section className="mb-20 bg-neutral-50 rounded-3xl p-8 md:p-10">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-6">Why Unique Mechanisms Work</h2>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.1}>
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="brain" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Cognitive Distinction</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          The brain categorizes information by recognizing patterns. A unique mechanism
+                          creates a new mental category, making your solution stand apart from everything
+                          else the prospect has encountered. You become memorable by being different.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="lock" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Competitive Immunity</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          When you own a mechanism, competitors can't easily copy it. Even if they try,
+                          they become imitators while you remain the original. This creates lasting
+                          differentiation and protects your market position long-term.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="gem" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Premium Positioning</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          A named mechanism implies research, development, and expertise. It elevates
+                          perceived value and justifies premium pricing because you're selling something
+                          that can't be found anywhere else. Uniqueness commands higher prices.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="chat" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Word-of-Mouth Catalyst</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          People share interesting concepts. A memorable mechanism name gives customers
+                          something specific to talk about. "I tried the Metabolic Reset" spreads faster
+                          than "I tried a diet program." Names create conversations.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Naming Tips */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-6">Mechanism Naming Formulas</h2>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <FadeUp delay={0.1}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <h3 className="font-semibold text-dark mb-4">The [Adjective] [Noun] [Type]</h3>
+                    <div className="space-y-2">
+                      <p className="text-sm text-neutral-600">The Rapid Revenue System</p>
+                      <p className="text-sm text-neutral-600">The Deep Clarity Method</p>
+                      <p className="text-sm text-neutral-600">The Core Strength Protocol</p>
+                    </div>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <h3 className="font-semibold text-dark mb-4">The [Number] [Noun] [Type]</h3>
+                    <div className="space-y-2">
+                      <p className="text-sm text-neutral-600">The 5-Phase Framework</p>
+                      <p className="text-sm text-neutral-600">The 3-Pillar Approach</p>
+                      <p className="text-sm text-neutral-600">The 7-Step Blueprint</p>
+                    </div>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Mechanism Mistakes to Avoid</h2>
+                <p className="text-neutral-500 mb-8">Even experienced marketers fall into these traps</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <FadeUp delay={0.1}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Being Too Vague</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      A mechanism that could apply to anyone isn't unique. "Our proven process" says nothing.
+                      Get specific about what makes your approach different. The more concrete, the more
+                      believable and memorable your mechanism becomes.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Over-Complicating</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      If you can't explain your mechanism in one sentence, it's too complex. Simplicity
+                      wins. Your prospect should immediately understand why your approach is different
+                      without needing a dictionary or PhD to decode it.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">No Real Substance</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      A clever name without real differentiation is just marketing fluff. Your mechanism
+                      must be backed by a genuine approach that delivers results. Prospects will see through
+                      empty branding. Substance must match the claim.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.4}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Copying Others</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Using someone else's mechanism format defeats the purpose. If your mechanism sounds
+                      like ten others in your industry, you've failed. Research what exists, then deliberately
+                      create something that stands apart from all of it.
+                    </p>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Key Takeaways */}
+            <section className="mb-16">
+              <FadeUp>
+                <div className="bg-dark rounded-3xl p-8 md:p-10 text-white">
+                  <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">1</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        A unique mechanism is your proprietary explanation for how your solution
+                        works—it transforms you from "an option" to "the only option."
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">2</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        Find the failure point of existing solutions, articulate your different
+                        approach, then name it with a proprietary, memorable term.
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">3</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        Mechanisms work because they create cognitive distinction, build competitive
+                        immunity, enable premium pricing, and catalyze word-of-mouth.
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">4</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        Avoid being vague, over-complicating, lacking substance, or copying others.
+                        Your mechanism must be specific, simple, real, and original.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            </section>
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-neutral-50 py-10">
+            <div className="max-w-6xl mx-auto px-6 text-center">
+              <p className="text-neutral-400 text-sm">
+                Part of the Persuasion Mastery Series
+              </p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

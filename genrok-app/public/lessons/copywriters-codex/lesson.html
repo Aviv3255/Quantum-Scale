@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Copywriter's Codex</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #000; }
+    .accent { color: #991b1b; }
+    .accent-bg { background: #991b1b; }
+    .glow { box-shadow: 0 0 60px rgba(153, 27, 27, 0.3); }
+    .glow-text { text-shadow: 0 0 40px rgba(153, 27, 27, 0.5); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, useInView, AnimatePresence } = Motion;
+
+    // Reusable Animation Components
+    function FadeUp({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    // The 5 Parts Navigator
+    function PathNavigator() {
+      const [activePart, setActivePart] = useState(0);
+
+      const parts = [
+        {
+          num: '1',
+          title: 'The Commandment',
+          subtitle: 'It\'s Not About You',
+          desc: 'Obsess over the reader. Always answer "What\'s In It For Me?" and use Structural Tension to pull them from Point A to Point B.',
+          key: 'WIIFM + 4-Line Rule',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          )
+        },
+        {
+          num: '2',
+          title: 'The Canons',
+          subtitle: 'Sentence Craft',
+          desc: 'Every sentence must pass three tests: Can I visualize it? Can I falsify it? Can nobody else say it? Point, don\'t just talk.',
+          key: 'Visual + Falsifiable + Unique',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          )
+        },
+        {
+          num: '3',
+          title: 'The Blueprint',
+          subtitle: 'Build Arguments',
+          desc: 'Build your argument from objections. Big Idea → Objection Audit → Organize → Reframe as Subheadings → Fill with Proof (CPPPB).',
+          key: '5-Step Copy-Boarding System',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          )
+        },
+        {
+          num: '4',
+          title: 'The Techniques',
+          subtitle: 'Elite Secrets',
+          desc: 'Build trust with Damaging Admissions. Sell the ultimate desire with Hidden Benefits. Guide action with Stealth Closes.',
+          key: 'Hormozi + Nicholas + Edwards',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          )
+        },
+        {
+          num: '5',
+          title: 'The Career',
+          subtitle: 'Build Your Foundation',
+          desc: 'Practice is your portfolio. Use writing prompts to build your skills and your book of work before you ever land a client.',
+          key: '30-Day Portfolio Builder',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          )
+        }
+      ];
+
+      return (
+        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+          <h4 className="text-xl font-bold text-white mb-8 text-center">The Path to Mastery</h4>
+
+          {/* Path Progress */}
+          <div className="flex justify-between mb-8 relative">
+            <div className="absolute top-5 left-0 right-0 h-0.5 bg-zinc-800" />
+            <div
+              className="absolute top-5 left-0 h-0.5 bg-red-800 transition-all duration-500"
+              style={{ width: `${(activePart / 4) * 100}%` }}
+            />
+            {parts.map((part, i) => (
+              <button
+                key={part.num}
+                onClick={() => setActivePart(i)}
+                className={`relative z-10 flex flex-col items-center transition-all ${
+                  i <= activePart ? 'text-red-400' : 'text-zinc-600'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                  i === activePart
+                    ? 'bg-red-800 text-white ring-4 ring-red-800/30'
+                    : i < activePart
+                    ? 'bg-red-900 text-red-300'
+                    : 'bg-zinc-800 text-zinc-500'
+                }`}>
+                  {part.num}
+                </div>
+                <span className="text-xs mt-2 hidden md:block">{part.title}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Part Details */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePart}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-zinc-800 rounded-xl p-6"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-16 h-16 bg-red-900/30 rounded-xl flex items-center justify-center text-red-400 flex-shrink-0">
+                  {parts[activePart].icon}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-red-400 text-sm font-medium">Part {parts[activePart].num}</span>
+                    <span className="text-zinc-600">|</span>
+                    <span className="text-zinc-400 text-sm">{parts[activePart].subtitle}</span>
+                  </div>
+                  <h5 className="text-xl font-bold text-white mb-3">{parts[activePart].title}</h5>
+                  <p className="text-zinc-400 mb-4">{parts[activePart].desc}</p>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-900/20 rounded-lg">
+                    <span className="text-red-400 text-sm font-medium">{parts[activePart].key}</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    // Three Canons Test Demo
+    function CanonsDemo() {
+      const [copy, setCopy] = useState('');
+      const [results, setResults] = useState(null);
+
+      const testCopy = () => {
+        // Simple heuristic tests
+        const hasConcreteWords = /\b(see|hear|feel|taste|touch|picture|imagine)\b/i.test(copy) ||
+          /\d+/.test(copy) || /\b(red|blue|green|loud|soft|sharp)\b/i.test(copy);
+        const hasSpecifics = /\d+%?|\$[\d,]+|\b(proven|study|research|data)\b/i.test(copy);
+        const isUnique = copy.length > 20 && !/\b(best|quality|great|amazing|revolutionary)\b/i.test(copy);
+
+        setResults({
+          visual: hasConcreteWords,
+          falsifiable: hasSpecifics,
+          unique: isUnique
+        });
+      };
+
+      return (
+        <div className="bg-white rounded-2xl p-8">
+          <h4 className="text-xl font-bold text-zinc-900 mb-6 text-center">Test Your Copy</h4>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-zinc-700 mb-2">Enter a headline or sentence:</label>
+            <textarea
+              value={copy}
+              onChange={(e) => setCopy(e.target.value)}
+              placeholder="e.g., 'Worn by supermodels in London and dads in Ohio.'"
+              className="w-full p-4 border border-zinc-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+              rows={3}
+            />
+          </div>
+
+          <button
+            onClick={testCopy}
+            disabled={copy.length < 10}
+            className="w-full py-3 bg-red-800 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Run The Three Canons Test
+          </button>
+
+          {results && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 grid grid-cols-3 gap-4"
+            >
+              {[
+                { key: 'visual', q: 'Can I visualize it?', desc: 'Concrete vs Abstract' },
+                { key: 'falsifiable', q: 'Can I falsify it?', desc: 'Provable vs Fluff' },
+                { key: 'unique', q: 'Can nobody else say it?', desc: 'Unique vs Generic' }
+              ].map((test, i) => (
+                <div
+                  key={test.key}
+                  className={`p-4 rounded-xl text-center ${
+                    results[test.key] ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
+                  }`}
+                >
+                  <div className={`text-2xl mb-2 ${results[test.key] ? 'text-green-500' : 'text-red-500'}`}>
+                    {results[test.key] ? (
+                      <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className={`text-sm font-medium ${results[test.key] ? 'text-green-700' : 'text-red-700'}`}>
+                    {test.q}
+                  </div>
+                  <div className="text-xs text-zinc-500 mt-1">{test.desc}</div>
+                </div>
+              ))}
+            </motion.div>
+          )}
+
+          <div className="mt-6 text-center text-sm text-zinc-500">
+            Tip: Great copy passes all three tests. New Balance's "Worn by supermodels in London and dads in Ohio" is a masterclass.
+          </div>
+        </div>
+      );
+    }
+
+    // Objection to Headline Transformer
+    function ObjectionDemo() {
+      const [activeObjection, setActiveObjection] = useState(0);
+
+      const objections = [
+        { objection: 'That sounds like too much work.', headline: 'Effortlessly integrate our system into your business in less than a day.' },
+        { objection: 'Why don\'t I just do X, Y, Z instead?', headline: 'Our system is proven to outperform X, Y, Z by 200%.' },
+        { objection: 'It\'s too expensive.', headline: 'Invest a dollar, gain a fortune.' },
+        { objection: 'I\'m too busy right now.', headline: 'In the time it takes to read this, you could be generating 300 new leads.' }
+      ];
+
+      return (
+        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+          <h4 className="text-xl font-bold text-white mb-6 text-center">Objection to Headline Transformer</h4>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mb-3">Customer Objections</div>
+              <div className="space-y-2">
+                {objections.map((item, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveObjection(i)}
+                    className={`w-full text-left p-4 rounded-xl transition-all ${
+                      activeObjection === i
+                        ? 'bg-red-900/30 border-2 border-red-800 text-red-300'
+                        : 'bg-zinc-800 border-2 border-transparent text-zinc-400 hover:bg-zinc-700'
+                    }`}
+                  >
+                    "{item.objection}"
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-sm text-zinc-500 uppercase tracking-wider mb-3">Reframed Headline</div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeObjection}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="bg-red-900/20 rounded-xl p-6 border border-red-800/30 h-full flex items-center"
+                >
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                      <span className="text-red-400 text-sm font-medium">Transforms Into</span>
+                    </div>
+                    <p className="text-xl text-white font-medium leading-relaxed">
+                      {objections[activeObjection].headline}
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-zinc-800 rounded-xl">
+            <p className="text-zinc-400 text-sm text-center">
+              <span className="text-red-400 font-medium">The Secret:</span> Your customer's doubts become your copy's structure. Each objection, reframed, becomes a compelling subheading.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // Three Elite Techniques
+    function TechniquesDemo() {
+      const [activeTechnique, setActiveTechnique] = useState(0);
+
+      const techniques = [
+        {
+          name: 'Damaging Admission',
+          author: 'Alex Hormozi',
+          structure: '[Negative], but [Positive]',
+          example: '"Yes, our software is ugly... but it\'ll make you $10,000/month."',
+          why: 'The word "but" acts as an amplifier. Owning negatives makes positives more believable.',
+          color: 'red'
+        },
+        {
+          name: 'Hidden Benefit',
+          author: 'Ted Nicholas',
+          structure: 'Sell the benefit OF the benefit',
+          example: '"How to Form Your Own Corporation" → "The Ultimate Tax Shelter"',
+          why: 'Don\'t sell the feature or obvious benefit. Sell the ultimate "god-like power" they desire.',
+          color: 'amber'
+        },
+        {
+          name: 'Stealth Close',
+          author: 'Jim Edwards',
+          structure: '"By the way..."',
+          example: '"By the way, it\'s not too late to sign up for the workshop..."',
+          why: 'A subtle, low-pressure way to direct someone to your offer. Feels like a friendly afterthought.',
+          color: 'emerald'
+        }
+      ];
+
+      const colors = {
+        red: 'bg-red-500/10 border-red-500/30 text-red-400',
+        amber: 'bg-amber-500/10 border-amber-500/30 text-amber-400',
+        emerald: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+      };
+
+      return (
+        <div className="bg-white rounded-2xl p-8">
+          <h4 className="text-xl font-bold text-zinc-900 mb-6 text-center">Three Secrets to Amplify Persuasion</h4>
+
+          <div className="flex gap-4 mb-8 justify-center flex-wrap">
+            {techniques.map((tech, i) => (
+              <button
+                key={tech.name}
+                onClick={() => setActiveTechnique(i)}
+                className={`px-4 py-2 rounded-xl font-medium transition-all ${
+                  activeTechnique === i
+                    ? 'bg-red-800 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                }`}
+              >
+                {tech.name}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTechnique}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <h5 className="text-xl font-bold text-zinc-900">{techniques[activeTechnique].name}</h5>
+                <span className="text-sm text-zinc-500">by {techniques[activeTechnique].author}</span>
+              </div>
+
+              <div className={`p-4 rounded-xl border-2 ${colors[techniques[activeTechnique].color]}`}>
+                <div className="text-sm font-medium mb-1">The Structure</div>
+                <div className="text-lg font-mono">{techniques[activeTechnique].structure}</div>
+              </div>
+
+              <div className="bg-zinc-50 p-4 rounded-xl">
+                <div className="text-sm text-zinc-500 mb-2">Example</div>
+                <p className="text-zinc-900 italic">{techniques[activeTechnique].example}</p>
+              </div>
+
+              <div className="p-4 bg-zinc-100 rounded-xl">
+                <div className="text-sm text-zinc-500 mb-1">Why It Works</div>
+                <p className="text-zinc-700">{techniques[activeTechnique].why}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="min-h-screen">
+          {/* Hero Section - Dark */}
+          <section className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-red-900/20 via-transparent to-transparent" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-900/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+              <FadeUp>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-900/20 border border-red-800/30 mb-8">
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  <span className="text-red-400 text-sm font-medium">Master Playbook</span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                  The <span className="accent glow-text">Copywriter's Codex</span>
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                  A synthesized playbook from the masters.
+                  <span className="text-white font-medium"> Five parts. One path to mastery.</span>
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="grid grid-cols-5 gap-4 max-w-3xl mx-auto">
+                  {[
+                    { num: '1', name: 'Commandment' },
+                    { num: '2', name: 'Canons' },
+                    { num: '3', name: 'Blueprint' },
+                    { num: '4', name: 'Techniques' },
+                    { num: '5', name: 'Career' }
+                  ].map((item, i) => (
+                    <ScaleIn key={item.num} delay={0.4 + i * 0.1}>
+                      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-4 glow">
+                        <div className="text-2xl font-bold text-red-500 mb-1">{item.num}</div>
+                        <div className="text-white text-sm font-medium">{item.name}</div>
+                      </div>
+                    </ScaleIn>
+                  ))}
+                </div>
+              </FadeUp>
+            </div>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-zinc-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Path Overview - White */}
+          <section className="py-24 bg-white">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-red-800 text-sm font-semibold uppercase tracking-wider">The Journey</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Five Parts to Mastery</h2>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <PathNavigator />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Part 1: The First Commandment - Dark */}
+          <section className="py-24 bg-zinc-950">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-red-400 text-sm font-semibold uppercase tracking-wider">Part 1</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">It's Not About You</h2>
+                  <p className="text-zinc-400 mt-4 text-lg">The single biggest mistake copywriters make: forgetting the reader</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+                    <h3 className="text-xl font-bold text-white mb-4">WIIFM</h3>
+                    <p className="text-zinc-400 mb-6">Your prospect is constantly asking one question: "What's In It For Me?"</p>
+                    <div className="p-4 bg-red-900/20 rounded-xl border border-red-800/30">
+                      <div className="text-red-400 font-bold text-lg mb-2">The 4-Line Rule</div>
+                      <p className="text-zinc-300 text-sm">You have 4-6 lines to answer this question. Fail, and you lose them.</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+                    <h3 className="text-xl font-bold text-white mb-4">Structural Tension</h3>
+                    <p className="text-zinc-400 mb-6">Great marketing pulls the reader forward through the gap between Point A and Point B.</p>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1 p-3 bg-zinc-800 rounded-lg text-center">
+                        <div className="text-zinc-500 text-xs mb-1">Point A</div>
+                        <div className="text-white font-medium">Current Pain</div>
+                      </div>
+                      <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                      <div className="flex-1 p-3 bg-red-900/30 rounded-lg text-center">
+                        <div className="text-red-400 text-xs mb-1">Point B</div>
+                        <div className="text-white font-medium">Desired Outcome</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Part 2: Three Canons - White */}
+          <section className="py-24 bg-white">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-red-800 text-sm font-semibold uppercase tracking-wider">Part 2</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">The Three Canons of Craft</h2>
+                  <p className="text-zinc-600 mt-4 text-lg">Every sentence must pass this three-part test</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <CanonsDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Part 3: The Blueprint - Dark */}
+          <section className="py-24 bg-zinc-950">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-red-400 text-sm font-semibold uppercase tracking-wider">Part 3</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">The Strategic Blueprint</h2>
+                  <p className="text-zinc-400 mt-4 text-lg">Turn your customer's objections into your copy's structure</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <ObjectionDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Part 4: Elite Techniques - White */}
+          <section className="py-24 bg-white">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-red-800 text-sm font-semibold uppercase tracking-wider">Part 4</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">The Master's Techniques</h2>
+                  <p className="text-zinc-600 mt-4 text-lg">Secrets from elite copywriters to amplify your message</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <TechniquesDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Holy Shit Moment */}
+          <section className="py-24 bg-gradient-to-b from-zinc-950 to-black">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-12">
+                  <span className="text-red-400 text-sm font-semibold uppercase tracking-wider">The Insight</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">Holy Shift Moment</h2>
+                </div>
+              </FadeUp>
+
+              <ScaleIn delay={0.2}>
+                <div className="bg-zinc-900 rounded-3xl p-10 border border-zinc-800 text-center">
+                  <div className="w-20 h-20 bg-red-900/30 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                    <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                    </svg>
+                  </div>
+                  <blockquote className="text-2xl md:text-3xl font-bold text-white leading-relaxed mb-6">
+                    "Write copy that <span className="text-red-500">can't be copied.</span>"
+                  </blockquote>
+                  <p className="text-zinc-500">- Harry Dry</p>
+
+                  <div className="mt-8 p-6 bg-zinc-800 rounded-xl text-left">
+                    <p className="text-zinc-300 leading-relaxed">
+                      The Codex isn't a collection of tricks. It's a <span className="text-red-400 font-medium">systematic approach</span> to persuasion: obsess over the reader, craft sentences that stick, build arguments from objections, deploy elite psychological triggers, and practice relentlessly.
+                    </p>
+                  </div>
+                </div>
+              </ScaleIn>
+            </div>
+          </section>
+
+          {/* Final Summary */}
+          <section className="py-24 bg-black">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-white">The Complete Path</h2>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="grid md:grid-cols-5 gap-4">
+                  {[
+                    { num: '1', title: 'Reader', verb: 'Obsess', key: 'WIIFM' },
+                    { num: '2', title: 'Sentences', verb: 'Test', key: '3 Canons' },
+                    { num: '3', title: 'Structure', verb: 'Build', key: 'Objections' },
+                    { num: '4', title: 'Persuasion', verb: 'Amplify', key: 'Techniques' },
+                    { num: '5', title: 'Skills', verb: 'Practice', key: '30 Days' }
+                  ].map((item, i) => (
+                    <ScaleIn key={item.num} delay={0.2 + i * 0.1}>
+                      <div className="bg-zinc-900 rounded-xl p-4 text-center border border-zinc-800 hover:border-red-800/50 transition-colors">
+                        <div className="text-red-500 font-bold text-2xl mb-2">{item.num}</div>
+                        <div className="text-white font-semibold">{item.verb}</div>
+                        <div className="text-zinc-500 text-sm">{item.title}</div>
+                        <div className="mt-3 text-xs text-red-400 bg-red-900/20 px-2 py-1 rounded">{item.key}</div>
+                      </div>
+                    </ScaleIn>
+                  ))}
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.6}>
+                <div className="mt-12 text-center">
+                  <p className="text-xl text-zinc-400 mb-8">
+                    Master these five parts and you'll write copy that
+                    <span className="text-red-400 font-semibold"> converts, persuades, and can't be copied.</span>
+                  </p>
+                </div>
+              </FadeUp>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

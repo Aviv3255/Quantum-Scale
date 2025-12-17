@@ -14,39 +14,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        .accent-gradient { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
-        .accent-text { color: #f43f5e; }
-        .accent-border { border-color: #f43f5e; }
+        .accent { color: #f43f5e; }
         .accent-bg { background-color: #f43f5e; }
-        .accent-bg-light { background-color: rgba(244, 63, 94, 0.1); }
+        .glow { box-shadow: 0 0 60px rgba(244, 63, 94, 0.3); }
     </style>
 </head>
 <body class="bg-white text-neutral-900">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
-        const { motion, AnimatePresence } = window.Motion;
+        const { useState, useRef, useEffect } = React;
+        const { motion, useInView, AnimatePresence } = window.Motion;
 
-        // Icon Components
-        const ShieldOffIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" />
-            </svg>
-        );
+        const smoothEase = [0.22, 1, 0.36, 1];
 
-        const HeartIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-        );
+        // Animation Components
+        function FadeUp({ children, delay = 0, className = "" }) {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-50px" });
+            return (
+                <motion.div
+                    ref={ref}
+                    className={className}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.7, delay, ease: smoothEase }}
+                >
+                    {children}
+                </motion.div>
+            );
+        }
 
-        const LightbulbIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-        );
+        function ScaleIn({ children, delay = 0, className = "" }) {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-50px" });
+            return (
+                <motion.div
+                    ref={ref}
+                    className={className}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.6, delay, ease: smoothEase }}
+                >
+                    {children}
+                </motion.div>
+            );
+        }
 
+        function Counter({ end, suffix = "", duration = 2 }) {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true });
+            const [count, setCount] = useState(0);
+
+            useEffect(() => {
+                if (!isInView) return;
+                let start = 0;
+                const step = end / (duration * 60);
+                const timer = setInterval(() => {
+                    start += step;
+                    if (start >= end) {
+                        setCount(end);
+                        clearInterval(timer);
+                    } else {
+                        setCount(Math.floor(start));
+                    }
+                }, 1000 / 60);
+                return () => clearInterval(timer);
+            }, [isInView, end, duration]);
+
+            return <span ref={ref}>{count}{suffix}</span>;
+        }
+
+        // Icons
         const CheckIcon = () => (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -59,7 +98,13 @@
             </svg>
         );
 
-        const ArrowRightIcon = () => (
+        const ShieldIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        );
+
+        const ArrowIcon = () => (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -69,84 +114,153 @@
         const examples = [
             {
                 without: "Our software is the most advanced on the market with cutting-edge AI and seamless integration.",
-                with: "Our software isn't for everyone. The learning curve is steep, and it takes about 2 weeks to see results. But for teams who stick with it, the productivity gains have been remarkable.",
-                analysis: "The admission of a learning curve and delayed results makes the productivity claim far more believable."
+                with: "Our software isn't for everyone. The learning curve is steep, and it takes 2 weeks to see results. But for teams who stick with it, productivity gains average 340%.",
+                why: "The admission of difficulty makes the 340% claim believable."
             },
             {
                 without: "Our coaching program will transform your business and skyrocket your revenue!",
-                with: "I'll be honest: this program requires 10+ hours per week. Most people won't make time for that. But for those who do, the average ROI is 340% in 6 months.",
-                analysis: "By admitting the time commitment and that most won't follow through, the specific ROI figure becomes credible."
+                with: "This program demands 10+ hours per week. Most people won't commit. But those who do see an average 3.2x revenue increase within 6 months.",
+                why: "Filtering out uncommitted buyers makes the revenue claim credible."
             },
             {
-                without: "Our restaurant serves the best Italian food in the city with authentic recipes.",
-                with: "We're not the fanciest restaurant on the block. The decor is dated, and we don't have a wine sommelier. But we use the same recipes my grandmother brought from Naples in 1962, and every sauce is made fresh daily.",
-                analysis: "The admission about decor makes the authenticity claim genuine rather than marketing-speak."
-            },
-            {
-                without: "Our agency delivers exceptional results for all our clients.",
-                with: "We turn away about 40% of potential clients because our methods don't work for every business. For the ones we take on, our average client sees 3.2x ROAS within 90 days.",
-                analysis: "Admitting you turn away clients makes the results claim for accepted clients much stronger."
+                without: "We're the best marketing agency in the industry with unmatched results.",
+                with: "We turn away 40% of potential clients because our methods don't work for every business. For the ones we take on, average ROI is 847%.",
+                why: "Being selective proves quality rather than just claiming it."
             }
         ];
 
-        // Interactive Before/After Comparison
-        const BeforeAfterDemo = () => {
-            const [currentIndex, setCurrentIndex] = useState(0);
-            const [showAfter, setShowAfter] = useState(false);
+        // Trust Transfer Visualization
+        const TrustDemo = () => {
+            const [stage, setStage] = useState(0);
+            const stages = [
+                { label: 'Skepticism', desc: 'Reader starts with walls up', color: 'red', percent: 100 },
+                { label: 'Admission', desc: '"This isn\'t for everyone..."', color: 'amber', percent: 100 },
+                { label: 'Trust Transfer', desc: 'Honesty signals authenticity', color: 'emerald', percent: 75 },
+                { label: 'Belief', desc: 'Claims now feel credible', color: 'emerald', percent: 25 }
+            ];
 
-            const handleNext = () => {
-                setShowAfter(false);
-                setCurrentIndex((prev) => (prev + 1) % examples.length);
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setStage(prev => (prev + 1) % 4);
+                }, 2500);
+                return () => clearInterval(timer);
+            }, []);
+
+            return (
+                <div className="bg-neutral-900 rounded-2xl p-8 glow">
+                    <div className="flex justify-between mb-8">
+                        {stages.map((s, i) => (
+                            <div
+                                key={i}
+                                className={`text-center flex-1 transition-opacity duration-500 ${stage >= i ? 'opacity-100' : 'opacity-30'}`}
+                            >
+                                <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center text-white font-bold mb-2 ${
+                                    s.color === 'red' ? 'bg-red-500' :
+                                    s.color === 'amber' ? 'bg-amber-500' : 'bg-emerald-500'
+                                }`}>
+                                    {i + 1}
+                                </div>
+                                <p className="text-xs text-neutral-400">{s.label}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="relative h-4 bg-neutral-800 rounded-full overflow-hidden mb-6">
+                        <motion.div
+                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500"
+                            animate={{ width: `${100 - stages[stage].percent}%` }}
+                            transition={{ duration: 0.5 }}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-xs text-white font-medium">Skepticism Level</span>
+                        </div>
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={stage}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="text-center"
+                        >
+                            <p className="text-lg text-white font-medium">{stages[stage].desc}</p>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            );
+        };
+
+        // Before/After Comparison
+        const ComparisonDemo = () => {
+            const [current, setCurrent] = useState(0);
+            const [revealed, setRevealed] = useState(false);
+
+            const next = () => {
+                setRevealed(false);
+                setCurrent(prev => (prev + 1) % examples.length);
             };
 
             return (
-                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
-                    <div className="p-4 border-b border-neutral-100 bg-neutral-50">
-                        <p className="text-sm text-neutral-500">Example {currentIndex + 1} of {examples.length}</p>
+                <div className="border border-neutral-200 rounded-2xl overflow-hidden">
+                    <div className="p-4 bg-neutral-50 border-b border-neutral-200 flex justify-between items-center">
+                        <span className="text-sm text-neutral-500">Example {current + 1} of {examples.length}</span>
+                        <div className="flex gap-1">
+                            {examples.map((_, i) => (
+                                <div
+                                    key={i}
+                                    className={`w-2 h-2 rounded-full ${i === current ? 'bg-rose-500' : 'bg-neutral-300'}`}
+                                />
+                            ))}
+                        </div>
                     </div>
 
                     <div className="p-6">
                         <div className="mb-6">
                             <div className="flex items-center gap-2 mb-3">
-                                <span className="text-red-500"><XIcon /></span>
-                                <h4 className="font-semibold text-red-700">Without Damaging Admission</h4>
+                                <span className="w-6 h-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center">
+                                    <XIcon />
+                                </span>
+                                <span className="font-medium text-red-700">Without Admission</span>
                             </div>
-                            <p className="text-neutral-600 italic bg-red-50 p-4 rounded-lg border border-red-100">
-                                "{examples[currentIndex].without}"
+                            <p className="text-neutral-600 italic p-4 bg-red-50 rounded-lg border border-red-100">
+                                "{examples[current].without}"
                             </p>
                         </div>
 
-                        {!showAfter ? (
+                        {!revealed ? (
                             <button
-                                onClick={() => setShowAfter(true)}
+                                onClick={() => setRevealed(true)}
                                 className="w-full py-3 bg-rose-500 text-white rounded-lg font-medium hover:bg-rose-600 transition-colors"
                             >
-                                Show With Damaging Admission
+                                Reveal With Damaging Admission
                             </button>
                         ) : (
                             <motion.div
-                                initial={{ opacity: 0, y: 10 }}
+                                initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
                                 <div className="mb-6">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <span className="text-emerald-500"><CheckIcon /></span>
-                                        <h4 className="font-semibold text-emerald-700">With Damaging Admission</h4>
+                                        <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center">
+                                            <CheckIcon />
+                                        </span>
+                                        <span className="font-medium text-emerald-700">With Admission</span>
                                     </div>
-                                    <p className="text-neutral-700 italic bg-emerald-50 p-4 rounded-lg border border-emerald-100">
-                                        "{examples[currentIndex].with}"
+                                    <p className="text-neutral-700 italic p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                                        "{examples[current].with}"
                                     </p>
                                 </div>
 
-                                <div className="p-4 bg-neutral-900 rounded-xl text-white mb-6">
-                                    <p className="text-sm"><strong>Why it works:</strong> {examples[currentIndex].analysis}</p>
+                                <div className="p-4 bg-neutral-900 rounded-xl text-white mb-4">
+                                    <p className="text-sm"><span className="text-rose-400 font-medium">Why it works:</span> {examples[current].why}</p>
                                 </div>
 
                                 <button
-                                    onClick={handleNext}
-                                    className="px-6 py-2 bg-neutral-200 text-neutral-700 rounded-lg font-medium hover:bg-neutral-300 transition-colors flex items-center gap-2"
+                                    onClick={next}
+                                    className="flex items-center gap-2 text-neutral-500 hover:text-neutral-700"
                                 >
-                                    Next Example <ArrowRightIcon />
+                                    Next example <ArrowIcon />
                                 </button>
                             </motion.div>
                         )}
@@ -155,94 +269,19 @@
             );
         };
 
-        // Types of Damaging Admissions
+        // Four Types
         const admissionTypes = [
-            {
-                title: "Time Investment",
-                description: "Admit how long it takes to see results. This filters for committed buyers and makes success claims credible.",
-                example: "\"This isn't a quick fix. Expect 90 days of consistent work before you see significant changes.\"",
-                icon: "clock"
-            },
-            {
-                title: "Effort Required",
-                description: "Be honest about the work involved. People respect honesty about difficulty.",
-                example: "\"You'll need to dedicate 5-10 hours per week. If you can't commit to that, this isn't for you.\"",
-                icon: "weight"
-            },
-            {
-                title: "Who It's Not For",
-                description: "Explicitly exclude people who won't succeed. This makes your ideal customer feel special.",
-                example: "\"This course is designed for intermediate marketers. Complete beginners will struggle.\"",
-                icon: "users"
-            },
-            {
-                title: "Product Limitations",
-                description: "Acknowledge what your product doesn't do well. This makes your strengths more believable.",
-                example: "\"Our tool isn't the prettiest. The UI is functional, not beautiful. But it's the fastest on the market.\"",
-                icon: "cog"
-            }
+            { title: 'Time Investment', desc: 'Admit how long results take', example: '"Results take 90 days minimum"' },
+            { title: 'Effort Required', desc: 'Be honest about the work', example: '"This requires 10+ hours per week"' },
+            { title: 'Who It\'s Not For', desc: 'Explicitly exclude poor fits', example: '"Not for complete beginners"' },
+            { title: 'Limitations', desc: 'Acknowledge what you don\'t do', example: '"We\'re not the cheapest option"' }
         ];
 
-        // Admission Type Card
-        const AdmissionCard = ({ type, index }) => {
-            const [isExpanded, setIsExpanded] = useState(false);
-
-            return (
-                <motion.div
-                    className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                >
-                    <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        className="w-full p-6 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl accent-bg text-white flex items-center justify-center font-bold">
-                                {index + 1}
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-lg">{type.title}</h3>
-                            </div>
-                        </div>
-                        <motion.span
-                            animate={{ rotate: isExpanded ? 180 : 0 }}
-                            className="text-neutral-400"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </motion.span>
-                    </button>
-
-                    <AnimatePresence>
-                        {isExpanded && (
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="overflow-hidden"
-                            >
-                                <div className="px-6 pb-6 pt-2 border-t border-neutral-100">
-                                    <p className="text-neutral-700 mb-4 leading-relaxed">{type.description}</p>
-                                    <div className="p-4 bg-rose-50 rounded-lg border border-rose-100">
-                                        <p className="text-sm text-rose-800 italic">{type.example}</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </motion.div>
-            );
-        };
-
-        // Main Lesson Component
+        // Main Lesson
         const Lesson = () => {
             return (
                 <div className="min-h-screen">
-                    {/* Hero Section - Black Background */}
+                    {/* Hero */}
                     <section className="bg-neutral-950 text-white py-20 relative overflow-hidden">
                         <div className="absolute inset-0 opacity-20">
                             <div className="absolute top-0 left-1/4 w-96 h-96 bg-rose-500 rounded-full blur-3xl"></div>
@@ -251,218 +290,206 @@
 
                         <div className="max-w-4xl mx-auto px-6 relative z-10">
                             <motion.div
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
+                                transition={{ duration: 0.8, ease: smoothEase }}
                             >
                                 <span className="inline-block px-4 py-1.5 bg-rose-500/20 text-rose-400 rounded-full text-sm font-medium mb-6">
-                                    Master Technique
+                                    Trust Accelerator
                                 </span>
                                 <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
                                     The Damaging Admission
                                 </h1>
-                                <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed">
-                                    The counterintuitive persuasion technique where revealing a weakness makes all your strengths more believable.
+                                <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed mb-10">
+                                    Reveal a weakness. Make every strength believable.
                                 </p>
-                            </motion.div>
-                        </div>
-                    </section>
 
-                    {/* Main Content - White Background */}
-                    <section className="py-16 px-6">
-                        <div className="max-w-4xl mx-auto">
-                            {/* Introduction */}
-                            <motion.div
-                                className="prose prose-lg max-w-none mb-16"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                            >
-                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
-                                    Every prospect you encounter has their defenses up. They've been burned by marketing promises before. They've bought the course that didn't work, hired the agency that underdelivered, trusted the product that failed. So when you make bold claims, their first instinct is disbelief. This is the credibility wall that most marketing crashes into and fails to penetrate.
-                                </p>
-                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
-                                    The damaging admission technique breaks through this wall by doing the unexpected: admitting a weakness or limitation before the prospect can discover it themselves. When you openly acknowledge a drawback, something remarkable happens psychologically. The prospect's skepticism meter recalibrates. If you're honest about what doesn't work, you must be honest about what does. This transfer of credibility is automatic and powerful.
-                                </p>
-                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
-                                    The technique works because it mirrors how we evaluate trustworthy people in real life. When a friend recommends a restaurant but mentions the service is slow, you trust the food recommendation more. When a colleague suggests a vendor but warns you about their pricing, you believe the quality claims. Admitting imperfection is how honest people communicate, and your copy can tap into this same trust mechanism.
-                                </p>
-                                <p className="text-lg text-neutral-700 leading-relaxed">
-                                    The key is choosing the right admission. You want to acknowledge something real but not fatal. The admitted weakness should actually reinforce your core promise, either by filtering for the right customers or by making your strengths stand in sharper relief. Done correctly, the damaging admission doesn't hurt your sales. It multiplies them by making everything else you say believable.
-                                </p>
-                            </motion.div>
-
-                            {/* The Psychology Section */}
-                            <motion.div
-                                className="mb-16 p-8 bg-rose-50 rounded-2xl border border-rose-100"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.25 }}
-                            >
-                                <h2 className="text-xl font-bold mb-4 text-rose-900">The Psychology Behind It</h2>
-                                <p className="text-neutral-700 leading-relaxed mb-4">
-                                    Research in behavioral psychology shows that two-sided arguments are more persuasive than one-sided ones. When you present only positives, audiences assume you're hiding something. When you present both positives and negatives, they process your message with less resistance. The admission signals completeness and honesty.
-                                </p>
-                                <p className="text-neutral-700 leading-relaxed">
-                                    Additionally, the admission creates what psychologists call a "contrast effect." When you follow a negative with a positive, the positive seems even more impressive. It's like how a small gift seems bigger when it follows a smaller one. The weakness you admit sets the stage for your strengths to shine brighter than they would alone.
-                                </p>
-                            </motion.div>
-
-                            {/* Types of Admissions */}
-                            <motion.div
-                                className="mb-16"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                <h2 className="text-2xl font-bold mb-4">Four Types of Damaging Admissions</h2>
-                                <p className="text-neutral-600 mb-8">Click each type to see examples of how to apply it:</p>
-                                <div className="space-y-4">
-                                    {admissionTypes.map((type, index) => (
-                                        <AdmissionCard key={index} type={type} index={index} />
-                                    ))}
-                                </div>
-                            </motion.div>
-
-                            {/* Interactive Before/After */}
-                            <motion.div
-                                className="mb-16"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4 }}
-                            >
-                                <h2 className="text-2xl font-bold mb-6">See the Difference</h2>
-                                <p className="text-neutral-600 mb-8">Compare copy without a damaging admission to copy that uses this technique. Notice how the admission makes the positive claims more believable:</p>
-                                <BeforeAfterDemo />
-                            </motion.div>
-                        </div>
-                    </section>
-
-                    {/* Dark Section - How to Apply */}
-                    <section className="bg-neutral-950 text-white py-16 px-6">
-                        <div className="max-w-4xl mx-auto">
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                            >
-                                <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                                    <span className="text-rose-400"><LightbulbIcon /></span>
-                                    How to Apply This Technique
-                                </h2>
-
-                                <div className="space-y-6">
-                                    <div className="flex gap-4">
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">1</div>
-                                        <div>
-                                            <h4 className="font-semibold mb-2 text-white">Identify Your Real Weaknesses</h4>
-                                            <p className="text-neutral-400 leading-relaxed">What do customers occasionally complain about? What limitations does your product genuinely have? What's the honest truth about who shouldn't buy? Make a list of real drawbacks, not manufactured ones. Fake admissions are transparent and backfire.</p>
+                                {/* Stats */}
+                                <div className="flex gap-12 flex-wrap">
+                                    <div>
+                                        <div className="text-4xl font-bold text-rose-400">
+                                            <Counter end={73} suffix="%" />
                                         </div>
+                                        <div className="text-neutral-500 text-sm">More Believable</div>
                                     </div>
-
-                                    <div className="flex gap-4">
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">2</div>
-                                        <div>
-                                            <h4 className="font-semibold mb-2 text-white">Choose a Strategic Admission</h4>
-                                            <p className="text-neutral-400 leading-relaxed">Pick a weakness that either filters for your ideal customer or creates contrast with your strength. A steep learning curve filters for serious users. Admitting you're not the cheapest sets up your quality positioning. The admission should serve your positioning, not undermine it.</p>
+                                    <div>
+                                        <div className="text-4xl font-bold text-rose-400">
+                                            2x
                                         </div>
-                                    </div>
-
-                                    <div className="flex gap-4">
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">3</div>
-                                        <div>
-                                            <h4 className="font-semibold mb-2 text-white">Place It Early in Your Copy</h4>
-                                            <p className="text-neutral-400 leading-relaxed">The damaging admission works best when it comes before your main claims. Put it in your headline, your opening paragraph, or your subhead. This establishes honesty upfront so everything that follows is processed with more trust and less skepticism.</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-4">
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">4</div>
-                                        <div>
-                                            <h4 className="font-semibold mb-2 text-white">Follow Immediately With Your Strength</h4>
-                                            <p className="text-neutral-400 leading-relaxed">Don't let the admission hang alone. Immediately pivot to your key benefit. "Yes, it takes 90 days. But the results last for years." The contrast between the admitted weakness and the asserted strength creates a persuasive rhythm.</p>
-                                        </div>
+                                        <div className="text-neutral-500 text-sm">Trust Transfer</div>
                                     </div>
                                 </div>
                             </motion.div>
                         </div>
                     </section>
 
-                    {/* Warning Section */}
-                    <section className="py-16 px-6">
+                    {/* Core Concept */}
+                    <section className="py-20 px-6 bg-white">
                         <div className="max-w-4xl mx-auto">
-                            <motion.div
-                                className="p-8 bg-amber-50 rounded-2xl border border-amber-200"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                            >
-                                <h2 className="text-xl font-bold mb-4 text-amber-900 flex items-center gap-2">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    What Not to Do
-                                </h2>
-                                <div className="space-y-4 text-neutral-700">
-                                    <p className="leading-relaxed">
-                                        <strong>Don't admit something fatal.</strong> Saying "Our product doesn't actually work for most people" is not a damaging admission, it's a business-ending confession. The admission should be a speed bump, not a roadblock.
-                                    </p>
-                                    <p className="leading-relaxed">
-                                        <strong>Don't manufacture fake weaknesses.</strong> "Our only problem is that we care too much" is transparent manipulation. People can smell inauthenticity, and fake admissions destroy more trust than they build.
-                                    </p>
-                                    <p className="leading-relaxed">
-                                        <strong>Don't bury your admission.</strong> If you hide it in the fine print, you lose the trust-building benefit. The technique only works when the admission feels voluntary and prominent, not reluctant and hidden.
-                                    </p>
+                            <FadeUp>
+                                <p className="text-xl text-neutral-700 leading-relaxed mb-6">
+                                    Every prospect has their defenses up. They've been burned before. They've bought the course that didn't work, hired the agency that underdelivered. When you make bold claims, their first instinct is doubt.
+                                </p>
+                            </FadeUp>
+                            <FadeUp delay={0.1}>
+                                <p className="text-xl text-neutral-700 leading-relaxed mb-6">
+                                    The damaging admission breaks through by doing the unexpected: admitting a weakness before they can discover it. When you acknowledge a drawback, something shifts. If you're honest about what <em>doesn't</em> work, you must be honest about what <em>does</em>.
+                                </p>
+                            </FadeUp>
+                            <FadeUp delay={0.2}>
+                                <p className="text-lg text-neutral-600 leading-relaxed">
+                                    This credibility transfer is automatic and powerful. One strategic admission can make every other claim land with twice the impact.
+                                </p>
+                            </FadeUp>
+                        </div>
+                    </section>
+
+                    {/* Trust Visualization */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="text-center mb-10">
+                                <h2 className="text-3xl font-bold mb-4">How Trust Transfers</h2>
+                                <p className="text-neutral-600">Watch skepticism dissolve as honesty signals authenticity</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <TrustDemo />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Holy Shit Moment */}
+                    <section className="py-20 px-6 bg-neutral-950 text-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp>
+                                <div className="text-center mb-12">
+                                    <span className="text-rose-400 text-sm font-medium uppercase tracking-wider">The Insight</span>
+                                    <h2 className="text-3xl md:text-4xl font-bold mt-4">
+                                        Why Weakness Creates Strength
+                                    </h2>
                                 </div>
-                            </motion.div>
+                            </FadeUp>
+
+                            <ScaleIn delay={0.2}>
+                                <div className="bg-neutral-900 rounded-2xl p-8 border border-neutral-800">
+                                    <p className="text-xl text-neutral-300 leading-relaxed mb-6">
+                                        When a friend recommends a restaurant but mentions the service is slow, you trust the food recommendation more.
+                                    </p>
+                                    <p className="text-xl text-neutral-300 leading-relaxed mb-6">
+                                        When a colleague suggests a vendor but warns about their pricing, you believe the quality claims.
+                                    </p>
+                                    <p className="text-xl text-neutral-300 leading-relaxed mb-6">
+                                        Admitting imperfection is how honest people communicate.
+                                    </p>
+                                    <div className="border-t border-neutral-800 pt-6 mt-6">
+                                        <p className="text-2xl font-bold text-white">
+                                            Your copy can tap into the same <span className="text-rose-400">trust mechanism</span>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Four Types */}
+                    <section className="py-20 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="mb-12">
+                                <h2 className="text-3xl font-bold mb-4">Four Types of Admissions</h2>
+                                <p className="text-neutral-600">Each creates a different kind of trust transfer</p>
+                            </FadeUp>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {admissionTypes.map((type, i) => (
+                                    <FadeUp key={i} delay={i * 0.1}>
+                                        <div className="p-6 rounded-xl bg-rose-50 border border-rose-100">
+                                            <div className="w-10 h-10 rounded-lg bg-rose-500 text-white flex items-center justify-center font-bold mb-4">
+                                                {i + 1}
+                                            </div>
+                                            <h3 className="font-bold text-lg mb-2">{type.title}</h3>
+                                            <p className="text-neutral-600 text-sm mb-3">{type.desc}</p>
+                                            <p className="text-rose-700 text-sm italic">{type.example}</p>
+                                        </div>
+                                    </FadeUp>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Comparison Demo */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="text-center mb-10">
+                                <h2 className="text-3xl font-bold mb-4">See the Difference</h2>
+                                <p className="text-neutral-600">Compare claims with and without admissions</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <ComparisonDemo />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Warning */}
+                    <section className="py-16 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp>
+                                <div className="p-8 bg-amber-50 rounded-2xl border border-amber-200">
+                                    <h2 className="text-xl font-bold mb-4 text-amber-900 flex items-center gap-2">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        What to Avoid
+                                    </h2>
+                                    <div className="space-y-3 text-neutral-700">
+                                        <p><strong>Fatal admissions:</strong> "Our product doesn't work for most people" is a confession, not a strategy.</p>
+                                        <p><strong>Fake weaknesses:</strong> "Our only problem is we care too much" is transparent and destroys trust.</p>
+                                        <p><strong>Buried admissions:</strong> Hidden in fine print loses the trust-building effect.</p>
+                                    </div>
+                                </div>
+                            </FadeUp>
                         </div>
                     </section>
 
                     {/* Key Takeaways */}
                     <section className="py-16 px-6 bg-neutral-50">
                         <div className="max-w-4xl mx-auto">
-                            <motion.div
-                                className="bg-white rounded-2xl p-8 shadow-sm border border-neutral-200"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                            >
-                                <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
-                                <div className="space-y-4">
-                                    {[
-                                        'The damaging admission breaks through skepticism by admitting a weakness upfront.',
-                                        'When you reveal a negative, your positive claims become more believable automatically.',
-                                        'Choose admissions that filter for ideal customers or contrast with your strengths.',
-                                        'Two-sided arguments are psychologically more persuasive than one-sided ones.',
-                                        'Place the admission early in your copy for maximum credibility transfer.',
-                                        'Always follow the admission immediately with your core strength or benefit.',
-                                        'The admission must be real but not fatal. Speed bump, not roadblock.',
-                                        'Fake or manufactured admissions destroy trust. Only admit genuine limitations.'
-                                    ].map((takeaway, index) => (
-                                        <motion.div
-                                            key={index}
-                                            className="flex items-start gap-3"
-                                            initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: index * 0.1 }}
-                                        >
-                                            <span className="flex-shrink-0 w-6 h-6 rounded-full accent-bg text-white flex items-center justify-center">
-                                                <CheckIcon />
-                                            </span>
-                                            <p className="text-neutral-700">{takeaway}</p>
-                                        </motion.div>
-                                    ))}
+                            <FadeUp>
+                                <div className="bg-white rounded-2xl p-8 border border-neutral-200">
+                                    <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                                    <div className="space-y-4">
+                                        {[
+                                            'Admitting a weakness makes your strengths more believable.',
+                                            'The admission must be real but not fatal. Speed bump, not roadblock.',
+                                            'Place the admission early for maximum credibility transfer.',
+                                            'Always follow with your core strength immediately.',
+                                            'Two-sided arguments are more persuasive than one-sided ones.',
+                                            'Choose admissions that filter for ideal customers.',
+                                            'Fake admissions destroy more trust than they build.'
+                                        ].map((item, i) => (
+                                            <motion.div
+                                                key={i}
+                                                className="flex items-start gap-3"
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: i * 0.05 }}
+                                            >
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center">
+                                                    <CheckIcon />
+                                                </span>
+                                                <p className="text-neutral-700">{item}</p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </motion.div>
+                            </FadeUp>
                         </div>
                     </section>
 
                     {/* Footer */}
                     <footer className="bg-neutral-950 text-white py-12 px-6">
                         <div className="max-w-4xl mx-auto text-center">
-                            <p className="text-neutral-400 text-sm">
-                                Part of the Master Techniques series from Quantum Scale
+                            <p className="text-neutral-500 text-sm">
+                                Trust Accelerator Series | Quantum Scale
                             </p>
                         </div>
                     </footer>

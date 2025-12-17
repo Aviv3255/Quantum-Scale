@@ -3352,6 +3352,468 @@ The difference between "worried" and "lying awake at 3am wondering if you'll mak
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/emotional-precision/lesson.html' }
       ]
+    },
+    {
+      id: 116,
+      thumbnail: '/images/lessons/blind-spot-effect.png',
+      title: 'The Blind Spot Effect',
+      intro: 'What your prospects can\'t see about themselves - and how to use it.',
+      directUrl: '/learn/lessons/blind-spot-effect',
+      specialFeatures: [
+        { value: 'Blind Spots', label: 'Hidden beliefs' },
+        { value: 'Mirror', label: 'Show them reality' }
+      ],
+      content: `## The Blind Spot Effect
+
+Every prospect has beliefs about themselves that aren't quite true. This lesson shows you how to gently reveal these blind spots and position your solution as the answer.
+
+### What You'll Learn:
+- The psychology of self-deception
+- How to surface hidden assumptions
+- Techniques for gentle revelation
+- Turning blind spots into buying triggers
+
+**Open the interactive lesson to master the blind spot technique.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/blind-spot-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 117,
+      thumbnail: '/images/lessons/customer-voice-mining.png',
+      title: 'Voice of Customer Mining',
+      intro: 'Extract the exact words your customers use - then sell with their own language.',
+      directUrl: '/learn/lessons/customer-voice-mining',
+      specialFeatures: [
+        { value: 'VOC', label: 'Voice of Customer' },
+        { value: 'Mining', label: 'Extract gold' }
+      ],
+      content: `## Voice of Customer Mining
+
+The best copy is written in your customer's own words. This lesson teaches you how to systematically mine reviews, surveys, and conversations for the language that converts.
+
+### What You'll Learn:
+- Where to find customer language
+- How to extract persuasive phrases
+- Building a VOC swipe file
+- Turning customer words into sales copy
+
+**Open the interactive lesson to mine customer gold.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/customer-voice-mining/lesson.html' }
+      ]
+    },
+    {
+      id: 118,
+      thumbnail: '/images/lessons/double-bind-of-fear.png',
+      title: 'The Double Bind of Fear',
+      intro: 'Leverage both action fears and inaction fears for maximum motivation.',
+      directUrl: '/learn/lessons/double-bind-of-fear',
+      specialFeatures: [
+        { value: 'Double Bind', label: 'Two fears' },
+        { value: 'Motivation', label: 'Push & pull' }
+      ],
+      content: `## The Double Bind of Fear
+
+Your prospect fears acting AND fears not acting. This lesson shows you how to ethically leverage both fears to create irresistible motivation.
+
+### What You'll Learn:
+- Fear of action vs fear of inaction
+- How to identify both fears
+- Ethical fear-based persuasion
+- Balancing push and pull
+
+**Open the interactive lesson to master the double bind.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/double-bind-of-fear/lesson.html' }
+      ]
+    },
+    {
+      id: 119,
+      thumbnail: '/images/lessons/emotion-spectrum.png',
+      title: 'The Emotion Spectrum',
+      intro: 'Map the full range of persuasive emotions from fear to hope.',
+      directUrl: '/learn/lessons/emotion-spectrum',
+      specialFeatures: [
+        { value: 'Spectrum', label: 'Full range' },
+        { value: 'Emotions', label: 'All 8 cores' }
+      ],
+      content: `## The Emotion Spectrum
+
+Different emotions drive different actions. This lesson maps the complete spectrum of persuasive emotions and when to use each one.
+
+### What You'll Learn:
+- The 8 core persuasive emotions
+- When to use each emotion
+- Emotional sequencing
+- Matching emotion to offer
+
+**Open the interactive lesson to explore the emotion spectrum.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotion-spectrum/lesson.html' }
+      ]
+    },
+    {
+      id: 120,
+      thumbnail: '/images/lessons/forty-forty-twenty-rule.png',
+      title: 'The 40/40/20 Rule',
+      intro: 'The marketing success formula that never fails: 40% list, 40% offer, 20% creative.',
+      directUrl: '/learn/lessons/forty-forty-twenty-rule',
+      specialFeatures: [
+        { value: '40/40/20', label: 'Success formula' },
+        { value: 'Priority', label: 'Where to focus' }
+      ],
+      content: `## The 40/40/20 Rule
+
+Marketing success is 40% who you reach, 40% what you offer, and 20% how you say it. This lesson shows you how to prioritize for maximum results.
+
+### What You'll Learn:
+- Why list quality matters most
+- Offer construction principles
+- Where creative actually matters
+- Allocating your marketing efforts
+
+**Open the interactive lesson to apply the 40/40/20 rule.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forty-forty-twenty-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 121,
+      thumbnail: '/images/lessons/four-primal-needs.png',
+      title: 'The Four Primal Needs',
+      intro: 'The deep drivers behind every purchase: safety, belonging, esteem, self-actualization.',
+      directUrl: '/learn/lessons/four-primal-needs',
+      specialFeatures: [
+        { value: '4 Needs', label: 'Primal drivers' },
+        { value: 'Psychology', label: 'Deep motivation' }
+      ],
+      content: `## The Four Primal Needs
+
+Every purchase satisfies one of four primal needs. This lesson teaches you to identify and speak to these deep motivations.
+
+### What You'll Learn:
+- The four primal needs hierarchy
+- How to identify dominant needs
+- Crafting need-specific appeals
+- Layering multiple needs
+
+**Open the interactive lesson to tap into primal needs.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/four-primal-needs/lesson.html' }
+      ]
+    },
+    {
+      id: 122,
+      thumbnail: '/images/lessons/ocpb-formula.png',
+      title: 'The OCPB Formula',
+      intro: 'Offer, Copy, Proof, Bonus - the complete conversion stack.',
+      directUrl: '/learn/lessons/ocpb-formula',
+      specialFeatures: [
+        { value: 'OCPB', label: '4-part formula' },
+        { value: 'Stack', label: 'Conversion layers' }
+      ],
+      content: `## The OCPB Formula
+
+A complete sales message needs four elements: Offer, Copy, Proof, and Bonus. This lesson shows you how to stack them for maximum conversion.
+
+### What You'll Learn:
+- Building irresistible offers
+- Copy that converts
+- Proof that overcomes skepticism
+- Bonuses that tip the scale
+
+**Open the interactive lesson to master the OCPB formula.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/ocpb-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 123,
+      thumbnail: '/images/lessons/sales-message-anatomy.png',
+      title: 'Sales Message Anatomy',
+      intro: 'Dissect what makes sales copy convert - every element explained.',
+      directUrl: '/learn/lessons/sales-message-anatomy',
+      specialFeatures: [
+        { value: 'Anatomy', label: 'Every element' },
+        { value: 'Structure', label: 'Complete map' }
+      ],
+      content: `## Sales Message Anatomy
+
+Great sales copy has specific structural elements. This lesson dissects each one so you can build high-converting messages from scratch.
+
+### What You'll Learn:
+- The anatomy of a sales page
+- Essential vs optional elements
+- Element sequencing
+- Common structural mistakes
+
+**Open the interactive lesson to study sales message anatomy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/sales-message-anatomy/lesson.html' }
+      ]
+    },
+    {
+      id: 124,
+      thumbnail: '/images/lessons/self-persuasion-architecture.png',
+      title: 'Self-Persuasion Architecture',
+      intro: 'Let prospects convince themselves to buy - the most powerful form of persuasion.',
+      directUrl: '/learn/lessons/self-persuasion-architecture',
+      specialFeatures: [
+        { value: 'Self', label: 'They convince' },
+        { value: 'Architecture', label: 'Build the path' }
+      ],
+      content: `## Self-Persuasion Architecture
+
+The most powerful persuasion is when prospects convince themselves. This lesson shows you how to build copy that guides them to their own conclusions.
+
+### What You'll Learn:
+- Why self-persuasion works best
+- Leading with questions
+- Creating "aha" moments
+- Guiding without pushing
+
+**Open the interactive lesson to architect self-persuasion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/self-persuasion-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 125,
+      thumbnail: '/images/lessons/structural-tension.png',
+      title: 'Structural Tension',
+      intro: 'Create irresistible forward momentum that pulls readers through your copy.',
+      directUrl: '/learn/lessons/structural-tension',
+      specialFeatures: [
+        { value: 'Tension', label: 'Forward pull' },
+        { value: 'Structure', label: 'Built-in momentum' }
+      ],
+      content: `## Structural Tension
+
+Great copy has built-in tension that pulls readers forward. This lesson teaches you to create structural tension that makes stopping impossible.
+
+### What You'll Learn:
+- What creates reading momentum
+- Open loops and curiosity gaps
+- Tension-release rhythms
+- Maintaining tension to the CTA
+
+**Open the interactive lesson to master structural tension.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/structural-tension/lesson.html' }
+      ]
+    },
+    {
+      id: 126,
+      thumbnail: '/images/lessons/three-growth-levers.png',
+      title: 'The Three Growth Levers',
+      intro: 'More customers, higher frequency, bigger transactions - pull all three.',
+      directUrl: '/learn/lessons/three-growth-levers',
+      specialFeatures: [
+        { value: '3 Levers', label: 'Growth formula' },
+        { value: 'Multiply', label: 'Compound gains' }
+      ],
+      content: `## The Three Growth Levers
+
+Business growth comes from three levers: more customers, more frequent purchases, and larger transactions. This lesson shows you how to pull all three.
+
+### What You'll Learn:
+- The three growth levers explained
+- Strategies for each lever
+- Compound growth effects
+- Prioritizing your efforts
+
+**Open the interactive lesson to master the growth levers.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-growth-levers/lesson.html' }
+      ]
+    },
+    {
+      id: 127,
+      thumbnail: '/images/lessons/three-levels-of-change.png',
+      title: 'The Three Levels of Change',
+      intro: 'Transform behavior, beliefs, and identity for lasting customer conversion.',
+      directUrl: '/learn/lessons/three-levels-of-change',
+      specialFeatures: [
+        { value: '3 Levels', label: 'Deep change' },
+        { value: 'Transform', label: 'Behavior to identity' }
+      ],
+      content: `## The Three Levels of Change
+
+Shallow change is behavior. Deep change is identity. This lesson shows you how to create messaging that transforms at all three levels.
+
+### What You'll Learn:
+- Behavior, beliefs, and identity
+- Why identity change sticks
+- Writing for each level
+- The transformation hierarchy
+
+**Open the interactive lesson to create deep change.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-levels-of-change/lesson.html' }
+      ]
+    },
+    {
+      id: 128,
+      thumbnail: '/images/lessons/trust-architecture.png',
+      title: 'The Trust Architecture',
+      intro: 'Build unshakeable credibility systematically, layer by layer.',
+      directUrl: '/learn/lessons/trust-architecture',
+      specialFeatures: [
+        { value: 'Trust', label: 'Credibility system' },
+        { value: 'Architecture', label: 'Layer by layer' }
+      ],
+      content: `## The Trust Architecture
+
+Trust isn't built with a single element - it's an architecture. This lesson shows you how to systematically construct unshakeable credibility.
+
+### What You'll Learn:
+- The trust architecture framework
+- Credibility building blocks
+- Trust sequence optimization
+- Common trust-killers to avoid
+
+**Open the interactive lesson to build your trust architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/trust-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 129,
+      thumbnail: '/images/lessons/unique-mechanism.png',
+      title: 'The Unique Mechanism',
+      intro: 'The proprietary reason your solution works - differentiation through explanation.',
+      directUrl: '/learn/lessons/unique-mechanism',
+      specialFeatures: [
+        { value: 'Mechanism', label: 'Why it works' },
+        { value: 'Unique', label: 'Only you' }
+      ],
+      content: `## The Unique Mechanism
+
+Your unique mechanism is the proprietary reason your solution works. This lesson shows you how to identify and communicate yours.
+
+### What You'll Learn:
+- What makes a unique mechanism
+- Finding your mechanism
+- Naming your mechanism
+- Communicating mechanism benefits
+
+**Open the interactive lesson to discover your unique mechanism.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/unique-mechanism/lesson.html' }
+      ]
+    },
+    {
+      id: 130,
+      thumbnail: '/images/lessons/master-key-framework.png',
+      title: 'The Master Key Framework',
+      intro: 'First-principles copywriting: your reader\'s mind is the lock, your copy is the key.',
+      directUrl: '/learn/lessons/master-key-framework',
+      specialFeatures: [
+        { value: 'Framework', label: 'First principles' },
+        { value: 'NESB', label: 'Mind blueprint' }
+      ],
+      content: `## The Master Key Framework
+
+A synthesis of insights from the world's leading copywriters. Learn the first-principles approach to copy that converts.
+
+### What You'll Learn:
+- The Action Equation: when people decide to act
+- The NESB Blueprint: New, Easy, Safe, Big
+- The Persuasion Palette: 6 emotional triggers
+- Text vs Subtext: what you write vs what they feel
+
+### Key Concept:
+It's impossible to craft the perfect key without first understanding the lock you're crafting it for.
+
+**Open the interactive lesson to master the framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/master-key-framework/lesson.html' }
+      ]
+    },
+    {
+      id: 131,
+      thumbnail: '/images/lessons/rule-of-one.png',
+      title: 'The Rule of One',
+      intro: 'One reader. One big idea. One offer. One action. The foundation of all persuasive copy.',
+      directUrl: '/learn/lessons/rule-of-one',
+      specialFeatures: [
+        { value: 'Focus', label: 'Laser clarity' },
+        { value: '4 Ones', label: 'Core framework' }
+      ],
+      content: `## The Rule of One
+
+The single most important principle in copywriting. When you try to speak to everyone, you speak to no one.
+
+### The Four Foundations:
+- **ONE Reader**: Write to a single, specific person
+- **ONE Big Idea**: A dominant concept that carries your message
+- **ONE Offer**: Present a single clear solution
+- **ONE Action**: Drive toward one specific next step
+
+### Key Insight:
+A confused mind always says no. The paradox of persuasion: narrow your focus to expand your impact.
+
+**Open the interactive lesson to master the Rule of One.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/rule-of-one/lesson.html' }
+      ]
+    },
+    {
+      id: 132,
+      thumbnail: '/images/lessons/architecture-of-belief.png',
+      title: 'The Architecture of Belief',
+      intro: 'All great copywriting is "change work". Engineer shifts in attention, thinking, and belief.',
+      directUrl: '/learn/lessons/architecture-of-belief',
+      specialFeatures: [
+        { value: '3 Levels', label: 'Mastery model' },
+        { value: 'Transform', label: 'Identity shift' }
+      ],
+      content: `## The Architecture of Belief
+
+A synthesis of elite-level persuasion for the modern copywriter. Move beyond words into engineering belief.
+
+### The Three Levels:
+- **Level 1 - The Hook**: Change in Attention (Curiosity & Benefit)
+- **Level 2 - The Strategy**: Change in Thinking (Differentiation & Reframing)
+- **Level 3 - The Psychology**: Change in Belief (Self-Persuasion & Choice)
+
+### Key Insight:
+You can't convince someone of something. All you can do is get them to convince themselves. You are an architect of belief.
+
+**Open the interactive lesson to master the architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/architecture-of-belief/lesson.html' }
+      ]
+    },
+    {
+      id: 133,
+      thumbnail: '/images/lessons/copywriters-codex.png',
+      title: 'The Copywriter\'s Codex',
+      intro: 'A synthesized playbook from the masters. Five parts. One path to mastery.',
+      directUrl: '/learn/lessons/copywriters-codex',
+      specialFeatures: [
+        { value: '5 Parts', label: 'Complete system' },
+        { value: 'Masters', label: 'Elite techniques' }
+      ],
+      content: `## The Copywriter's Codex
+
+Distilling the core frameworks and psychological secrets of the world's most effective copywriters into a single, actionable guide.
+
+### The Five Parts:
+1. **The Commandment**: It's not about you. WIIFM + Structural Tension
+2. **The Canons**: Visual, Falsifiable, Unique - three tests for every sentence
+3. **The Blueprint**: Build your argument from customer objections
+4. **The Techniques**: Damaging Admission, Hidden Benefit, Stealth Close
+5. **The Career**: Practice is your portfolio - 30-day builder
+
+### Key Quote:
+"Write copy that can't be copied." - Harry Dry
+
+**Open the interactive lesson to master the complete Codex.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/copywriters-codex/lesson.html' }
+      ]
     }
   ];
 

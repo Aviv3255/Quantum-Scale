@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Master Key Framework | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .accent { color: #d97706; }
+        .accent-bg { background-color: #d97706; }
+        .glow { box-shadow: 0 0 60px rgba(217, 119, 6, 0.3); }
+    </style>
+</head>
+<body class="bg-white text-neutral-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+        const { motion, useInView, AnimatePresence } = window.Motion;
+
+        const smoothEase = [0.22, 1, 0.36, 1];
+
+        // Animation Components
+        function FadeUp({ children, delay = 0, className = "" }) {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-50px" });
+            return (
+                <motion.div
+                    ref={ref}
+                    className={className}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.7, delay, ease: smoothEase }}
+                >
+                    {children}
+                </motion.div>
+            );
+        }
+
+        function ScaleIn({ children, delay = 0, className = "" }) {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-50px" });
+            return (
+                <motion.div
+                    ref={ref}
+                    className={className}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.6, delay, ease: smoothEase }}
+                >
+                    {children}
+                </motion.div>
+            );
+        }
+
+        // Icons
+        const CheckIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+        );
+
+        const KeyIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+        );
+
+        const LockIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+        );
+
+        // The Action Equation Visualizer
+        const ActionEquation = () => {
+            const [painInaction, setPainInaction] = useState(50);
+            const [painAction, setPainAction] = useState(30);
+            const [confidence, setConfidence] = useState(30);
+
+            const willAct = painInaction > (painAction + confidence);
+            const leftSide = painInaction;
+            const rightSide = painAction + confidence;
+
+            return (
+                <div className="bg-neutral-900 rounded-2xl p-8 glow">
+                    <h3 className="text-xl font-bold text-white mb-6 text-center">The Action Equation</h3>
+
+                    <div className="grid md:grid-cols-2 gap-8 mb-6">
+                        {/* Left side - Pain of Inaction */}
+                        <div className="text-center">
+                            <p className="text-amber-400 text-sm font-medium mb-2">Pain of Inaction</p>
+                            <p className="text-neutral-400 text-xs mb-4">(Staying the same)</p>
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={painInaction}
+                                onChange={(e) => setPainInaction(Number(e.target.value))}
+                                className="w-full"
+                            />
+                            <div className="text-4xl font-bold text-white mt-2">{painInaction}</div>
+                        </div>
+
+                        {/* Right side - Pain of Action + Confidence */}
+                        <div className="text-center">
+                            <div className="space-y-4">
+                                <div>
+                                    <p className="text-neutral-400 text-sm mb-2">Pain of Action (Change)</p>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="50"
+                                        value={painAction}
+                                        onChange={(e) => setPainAction(Number(e.target.value))}
+                                        className="w-full"
+                                    />
+                                    <span className="text-white">{painAction}</span>
+                                </div>
+                                <div>
+                                    <p className="text-neutral-400 text-sm mb-2">Confidence (Belief needed)</p>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="50"
+                                        value={confidence}
+                                        onChange={(e) => setConfidence(Number(e.target.value))}
+                                        className="w-full"
+                                    />
+                                    <span className="text-white">{confidence}</span>
+                                </div>
+                                <div className="pt-2 border-t border-neutral-700">
+                                    <span className="text-white">= {rightSide}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-center">
+                        <div className={`text-2xl font-bold py-4 px-6 rounded-xl inline-block ${willAct ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
+                            {leftSide} {willAct ? '>' : '<'} {rightSide}
+                        </div>
+                        <p className={`mt-4 text-lg font-medium ${willAct ? 'text-emerald-400' : 'text-red-400'}`}>
+                            {willAct ? 'ACTION UNLOCKED' : 'NO ACTION'}
+                        </p>
+                        <p className="text-neutral-400 text-sm mt-2">
+                            {willAct
+                                ? 'The pain of staying the same exceeds the effort + doubt. They will act.'
+                                : 'Change feels too hard or uncertain. They stay stuck.'}
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        // NESB Blueprint
+        const NESBBlueprint = () => {
+            const [active, setActive] = useState(null);
+
+            const elements = [
+                { key: 'N', title: 'NEW', desc: 'We crave novelty and the hope it brings.', color: 'amber', icon: '💡' },
+                { key: 'E', title: 'EASY', desc: 'We are wired to conserve energy and prefer cognitive ease.', color: 'blue', icon: '⬇️' },
+                { key: 'S', title: 'SAFE', desc: 'We fear loss more than we desire gain, driving risk aversion.', color: 'emerald', icon: '🛡️' },
+                { key: 'B', title: 'BIG', desc: 'We pay attention to things that feel important and fear missing out.', color: 'purple', icon: '📢' }
+            ];
+
+            const colorMap = {
+                amber: { bg: 'bg-amber-500', light: 'bg-amber-50', text: 'text-amber-500', border: 'border-amber-200' },
+                blue: { bg: 'bg-blue-500', light: 'bg-blue-50', text: 'text-blue-500', border: 'border-blue-200' },
+                emerald: { bg: 'bg-emerald-500', light: 'bg-emerald-50', text: 'text-emerald-500', border: 'border-emerald-200' },
+                purple: { bg: 'bg-purple-500', light: 'bg-purple-50', text: 'text-purple-500', border: 'border-purple-200' }
+            };
+
+            return (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {elements.map((el, i) => (
+                        <motion.div
+                            key={el.key}
+                            onClick={() => setActive(active === i ? null : i)}
+                            className={`p-6 rounded-xl cursor-pointer transition-all border-2 ${
+                                active === i
+                                    ? `${colorMap[el.color].light} ${colorMap[el.color].border}`
+                                    : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300'
+                            }`}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            <div className={`w-12 h-12 rounded-xl ${colorMap[el.color].bg} text-white flex items-center justify-center font-bold text-xl mb-3`}>
+                                {el.key}
+                            </div>
+                            <h4 className="font-bold text-lg mb-2">{el.title}</h4>
+                            <AnimatePresence>
+                                {active === i && (
+                                    <motion.p
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="text-neutral-600 text-sm"
+                                    >
+                                        {el.desc}
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    ))}
+                </div>
+            );
+        };
+
+        // Persuasion Palette
+        const PersuasionPalette = () => {
+            const emotions = [
+                { name: 'Pain', desc: 'The motivator. Taps into Safe (loss) & Big (urgency).', color: 'bg-red-200' },
+                { name: 'Skepticism', desc: 'The trust-builder. Addresses Safe by acknowledging doubt.', color: 'bg-neutral-200' },
+                { name: 'Hope', desc: 'The on-ramp. Taps into New & Easy.', color: 'bg-blue-200' },
+                { name: 'Excitement', desc: 'The energy for action. Taps into Big & New.', color: 'bg-yellow-200' },
+                { name: 'Flattery', desc: 'Builds rapport. Makes them feel seen and smart.', color: 'bg-purple-200' },
+                { name: 'Confidence', desc: 'Projects belief. Reinforces Safe & Easy.', color: 'bg-emerald-200' }
+            ];
+
+            return (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {emotions.map((emotion, i) => (
+                        <motion.div
+                            key={emotion.name}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className={`${emotion.color} p-5 rounded-xl`}
+                        >
+                            <h4 className="font-bold text-lg mb-2">{emotion.name}</h4>
+                            <p className="text-neutral-700 text-sm">{emotion.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            );
+        };
+
+        // Text vs Subtext Demo
+        const TextSubtextDemo = () => {
+            const [showSubtext, setShowSubtext] = useState(false);
+
+            const examples = [
+                { text: '"We\'ve developed a step-by-step system."', subtext: '"Wow, this feels EASY."' },
+                { text: '"What you\'re about to read will cause a fallout..."', subtext: '"This feels BIG. I have to pay attention."' },
+                { text: '"History is repeating itself."', subtext: '"This seems predictable and SAFE."' }
+            ];
+
+            return (
+                <div className="border border-neutral-200 rounded-2xl overflow-hidden">
+                    <div className="p-4 bg-neutral-50 border-b border-neutral-200 flex justify-between items-center">
+                        <span className="font-medium">Text vs. Subtext</span>
+                        <button
+                            onClick={() => setShowSubtext(!showSubtext)}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                showSubtext ? 'bg-amber-500 text-white' : 'bg-neutral-200 text-neutral-700'
+                            }`}
+                        >
+                            {showSubtext ? 'Hide Subtext' : 'Reveal Subtext'}
+                        </button>
+                    </div>
+                    <div className="p-6 space-y-6">
+                        {examples.map((ex, i) => (
+                            <div key={i} className="flex items-center gap-4">
+                                <div className="flex-1 p-4 bg-neutral-100 rounded-lg">
+                                    <span className="text-xs text-neutral-500 uppercase tracking-wider">What you write</span>
+                                    <p className="text-neutral-900 font-medium mt-1">{ex.text}</p>
+                                </div>
+                                <motion.div
+                                    animate={{ opacity: showSubtext ? 1 : 0.3 }}
+                                    className="text-amber-500 text-2xl"
+                                >
+                                    →
+                                </motion.div>
+                                <motion.div
+                                    className="flex-1 p-4 bg-amber-50 rounded-lg border border-amber-200"
+                                    animate={{ opacity: showSubtext ? 1 : 0.2 }}
+                                >
+                                    <span className="text-xs text-amber-600 uppercase tracking-wider">What they feel</span>
+                                    <p className="text-neutral-900 font-medium mt-1">{ex.subtext}</p>
+                                </motion.div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // Main Lesson
+        const Lesson = () => {
+            return (
+                <div className="min-h-screen">
+                    {/* Hero */}
+                    <section className="bg-neutral-950 text-white py-20 relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-600 rounded-full blur-3xl"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto px-6 relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: smoothEase }}
+                            >
+                                <span className="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-6">
+                                    First-Principles Copywriting
+                                </span>
+                                <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                                    The Master Key Framework
+                                </h1>
+                                <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed mb-10">
+                                    Your reader's mind is a lock. Your copy is the key. Learn to craft the perfect key for any lock.
+                                </p>
+
+                                <div className="flex gap-8 flex-wrap">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                                            <LockIcon />
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-white">The Lock</div>
+                                            <div className="text-neutral-400 text-sm">Their mind</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                                            <KeyIcon />
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-white">The Key</div>
+                                            <div className="text-neutral-400 text-sm">Your copy</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Core Equation */}
+                    <section className="py-20 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp>
+                                <p className="text-xl text-neutral-700 leading-relaxed mb-6">
+                                    All action begins with a simple equation. People only act when the pain of staying the same exceeds the combined weight of effort and uncertainty.
+                                </p>
+                            </FadeUp>
+                            <FadeUp delay={0.1}>
+                                <p className="text-lg text-neutral-600 leading-relaxed mb-8">
+                                    Your job as a copywriter isn't to force someone to buy. It's to force them to <strong>decide</strong>. We're okay with yes or no. We're never okay with maybe.
+                                </p>
+                            </FadeUp>
+                        </div>
+                    </section>
+
+                    {/* Action Equation Demo */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="text-center mb-10">
+                                <h2 className="text-3xl font-bold mb-4">The Action Equation</h2>
+                                <p className="text-neutral-600">Adjust the sliders to see when action becomes inevitable</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <ActionEquation />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* NESB Blueprint */}
+                    <section className="py-20 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="mb-12">
+                                <h2 className="text-3xl font-bold mb-4">The NESB Blueprint</h2>
+                                <p className="text-neutral-600">Every mind is built from the same four materials. Tap any to expand.</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <NESBBlueprint />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Holy Shit Moment */}
+                    <section className="py-20 px-6 bg-neutral-950 text-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp>
+                                <div className="text-center mb-12">
+                                    <span className="text-amber-400 text-sm font-medium uppercase tracking-wider">The Insight</span>
+                                    <h2 className="text-3xl md:text-4xl font-bold mt-4">
+                                        The Key Doesn't Change. The Lock Does.
+                                    </h2>
+                                </div>
+                            </FadeUp>
+
+                            <ScaleIn delay={0.2}>
+                                <div className="bg-neutral-900 rounded-2xl p-8 border border-neutral-800">
+                                    <p className="text-xl text-neutral-300 leading-relaxed mb-6">
+                                        It's impossible to craft the perfect key without first understanding the lock you're crafting it for.
+                                    </p>
+                                    <p className="text-xl text-neutral-300 leading-relaxed mb-6">
+                                        Bad copywriters hunt for tactics and frameworks. Great copywriters hunt for the <em>specific conditions</em> of the audience they're targeting.
+                                    </p>
+                                    <div className="border-t border-neutral-800 pt-6 mt-6">
+                                        <p className="text-2xl font-bold text-white">
+                                            First, <span className="text-amber-400">deconstruct the lock</span>. Then forge the key.
+                                        </p>
+                                    </div>
+                                </div>
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Persuasion Palette */}
+                    <section className="py-20 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="mb-12">
+                                <h2 className="text-3xl font-bold mb-4">The Persuasion Palette</h2>
+                                <p className="text-neutral-600">Six emotional triggers to shape your key. Each connects to the NESB conditions.</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <PersuasionPalette />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* Text vs Subtext */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="text-center mb-10">
+                                <h2 className="text-3xl font-bold mb-4">The Master's Technique</h2>
+                                <p className="text-neutral-600">The text is what you write. The subtext is what they feel.</p>
+                            </FadeUp>
+                            <ScaleIn>
+                                <TextSubtextDemo />
+                            </ScaleIn>
+                        </div>
+                    </section>
+
+                    {/* The Four Parts */}
+                    <section className="py-16 px-6 bg-white">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp className="mb-10">
+                                <h2 className="text-2xl font-bold">The Framework: 4 Parts</h2>
+                            </FadeUp>
+
+                            <div className="space-y-4">
+                                {[
+                                    { num: 1, title: 'Deconstruct the Lock', desc: 'Map their mind - Pains, Beliefs, Desires, and the specific language they use.' },
+                                    { num: 2, title: 'Forge the Key', desc: 'Wield the Persuasion Palette to speak their emotional language through text and subtext.' },
+                                    { num: 3, title: 'Unlock Action', desc: 'Guide them through the funnel (Ad → Advertorial → Sales Page) removing friction at every step.' },
+                                    { num: 4, title: 'Become the Master', desc: 'Use the Hyperlearning Cycle (Do, Learn, Study, Iterate) to refine your craft daily.' }
+                                ].map((step, i) => (
+                                    <FadeUp key={i} delay={i * 0.1}>
+                                        <div className="flex gap-4 p-6 bg-amber-50 rounded-xl border border-amber-100">
+                                            <div className="w-10 h-10 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                                                {step.num}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-lg mb-1">{step.title}</h3>
+                                                <p className="text-neutral-600">{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    </FadeUp>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Key Takeaways */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <FadeUp>
+                                <div className="bg-white rounded-2xl p-8 border border-neutral-200">
+                                    <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                                    <div className="space-y-4">
+                                        {[
+                                            'Action happens when Pain of Inaction > Pain of Action + Confidence needed.',
+                                            'Every mind responds to four conditions: New, Easy, Safe, Big.',
+                                            'Great copywriters study the lock before forging the key.',
+                                            'The Persuasion Palette has six emotional triggers that connect to NESB.',
+                                            'Text is what you write. Subtext is what they feel. Master both.',
+                                            'The framework: Deconstruct → Forge → Unlock → Master.'
+                                        ].map((item, i) => (
+                                            <motion.div
+                                                key={i}
+                                                className="flex items-start gap-3"
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: i * 0.05 }}
+                                            >
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center">
+                                                    <CheckIcon />
+                                                </span>
+                                                <p className="text-neutral-700">{item}</p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </FadeUp>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-neutral-950 text-white py-12 px-6">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <p className="text-neutral-500 text-sm">
+                                First-Principles Copywriting | Quantum Scale
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<Lesson />, document.getElementById('root'));
+    </script>
+</body>
+</html>

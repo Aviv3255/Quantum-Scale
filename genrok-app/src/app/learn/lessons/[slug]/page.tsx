@@ -69,6 +69,78 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
     title: 'Emotional Precision',
     description: 'Target precise emotions that drive action',
   },
+  'blind-spot-effect': {
+    title: 'The Blind Spot Effect',
+    description: 'What your prospects can\'t see about themselves',
+  },
+  'customer-voice-mining': {
+    title: 'Voice of Customer Mining',
+    description: 'Extract the exact words your customers use',
+  },
+  'double-bind-of-fear': {
+    title: 'The Double Bind of Fear',
+    description: 'Leverage both action and inaction fears',
+  },
+  'emotion-spectrum': {
+    title: 'The Emotion Spectrum',
+    description: 'Map the full range of persuasive emotions',
+  },
+  'forty-forty-twenty-rule': {
+    title: 'The 40/40/20 Rule',
+    description: 'The marketing success formula that never fails',
+  },
+  'four-primal-needs': {
+    title: 'The Four Primal Needs',
+    description: 'The deep drivers behind every purchase',
+  },
+  'ocpb-formula': {
+    title: 'The OCPB Formula',
+    description: 'Offer, Copy, Proof, Bonus - the conversion stack',
+  },
+  'sales-message-anatomy': {
+    title: 'Sales Message Anatomy',
+    description: 'Dissect what makes sales copy convert',
+  },
+  'self-persuasion-architecture': {
+    title: 'Self-Persuasion Architecture',
+    description: 'Let prospects convince themselves to buy',
+  },
+  'structural-tension': {
+    title: 'Structural Tension',
+    description: 'Create irresistible forward momentum in copy',
+  },
+  'three-growth-levers': {
+    title: 'The Three Growth Levers',
+    description: 'Customers, frequency, transaction size - pull all three',
+  },
+  'three-levels-of-change': {
+    title: 'The Three Levels of Change',
+    description: 'Transform behavior, beliefs, and identity',
+  },
+  'trust-architecture': {
+    title: 'The Trust Architecture',
+    description: 'Build unshakeable credibility systematically',
+  },
+  'unique-mechanism': {
+    title: 'The Unique Mechanism',
+    description: 'The proprietary reason your solution works',
+  },
+  'master-key-framework': {
+    title: 'The Master Key Framework',
+    description: 'First-principles guide to copy that converts',
+  },
+  'rule-of-one': {
+    title: 'The Rule of One',
+    description: 'One reader, one idea, one offer, one action',
+  },
+  'architecture-of-belief': {
+    title: 'The Architecture of Belief',
+    description: 'Three levels of mastery: hook, strategy, psychology',
+  },
+  'copywriters-codex': {
+    title: 'The Copywriter\'s Codex',
+    description: 'A synthesized playbook from the masters',
+  },
 };
 
 export default function LessonPage() {

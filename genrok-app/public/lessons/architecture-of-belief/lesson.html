@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Architecture of Belief</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #000; }
+    .accent { color: #f59e0b; }
+    .accent-bg { background: #f59e0b; }
+    .glow { box-shadow: 0 0 60px rgba(245, 158, 11, 0.3); }
+    .glow-text { text-shadow: 0 0 40px rgba(245, 158, 11, 0.5); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, useInView, AnimatePresence } = Motion;
+
+    // Reusable Animation Components
+    function FadeUp({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    // Interactive 3-Level Pyramid Demo
+    function PyramidDemo() {
+      const [activeLevel, setActiveLevel] = useState(0);
+
+      const levels = [
+        {
+          name: 'The Hook',
+          function: 'Change in Attention',
+          tool: 'Curiosity & Benefit',
+          color: 'from-amber-600 to-amber-500',
+          desc: 'Before any persuasion can happen, you must earn the right to be heard. The hook stops the scroll and creates curiosity.',
+          example: 'How to [Benefit] Without [Pain Point]'
+        },
+        {
+          name: 'The Strategy',
+          function: 'Change in Thinking',
+          tool: 'Differentiation & Reframing',
+          color: 'from-zinc-600 to-zinc-500',
+          desc: 'Move beyond formulas and think like a grandmaster. Engineer the entire marketing argument and differentiate in a sea of sameness.',
+          example: 'You\'re not a content writer. You\'re a copywriter.'
+        },
+        {
+          name: 'The Psychology',
+          function: 'Change in Belief',
+          tool: 'Self-Persuasion & Choice',
+          color: 'from-zinc-300 to-white',
+          desc: 'True mastery comes from understanding the deep, irrational forces that govern choice. You don\'t convince them - you get them to convince themselves.',
+          example: 'You\'re not paying to GET the feeling. You\'re paying to KEEP it.'
+        }
+      ];
+
+      return (
+        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+          <h4 className="text-xl font-bold text-white mb-8 text-center">The Three Levels of Mastery</h4>
+
+          {/* Pyramid Visualization */}
+          <div className="flex justify-center mb-8">
+            <div className="relative w-80 h-64">
+              {levels.map((level, i) => {
+                const width = 100 - i * 25;
+                const bottom = i * 70;
+                const isActive = activeLevel === i;
+                return (
+                  <motion.div
+                    key={level.name}
+                    onClick={() => setActiveLevel(i)}
+                    className={`absolute left-1/2 -translate-x-1/2 cursor-pointer transition-all ${
+                      isActive ? 'z-10' : 'z-0'
+                    }`}
+                    style={{ width: `${width}%`, bottom: `${bottom}px` }}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div
+                      className={`h-16 rounded-lg bg-gradient-to-r ${level.color} flex items-center justify-center ${
+                        isActive ? 'ring-2 ring-amber-400 ring-offset-2 ring-offset-zinc-900' : ''
+                      }`}
+                    >
+                      <span className={`font-bold ${i === 2 ? 'text-zinc-900' : 'text-white'}`}>
+                        Level {3 - i}: {level.name}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Level Details */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeLevel}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-zinc-800 rounded-xl p-6"
+            >
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <div className="text-center p-3 bg-zinc-700/50 rounded-lg">
+                  <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1">Function</div>
+                  <div className="text-amber-400 font-semibold">{levels[activeLevel].function}</div>
+                </div>
+                <div className="text-center p-3 bg-zinc-700/50 rounded-lg">
+                  <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1">Tool</div>
+                  <div className="text-amber-400 font-semibold">{levels[activeLevel].tool}</div>
+                </div>
+                <div className="text-center p-3 bg-zinc-700/50 rounded-lg">
+                  <div className="text-xs text-zinc-400 uppercase tracking-wider mb-1">Level</div>
+                  <div className="text-amber-400 font-semibold">{3 - activeLevel} of 3</div>
+                </div>
+              </div>
+              <p className="text-zinc-300 mb-4">{levels[activeLevel].desc}</p>
+              <div className="bg-zinc-900 rounded-lg p-4 border-l-4 border-amber-500">
+                <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Example</div>
+                <p className="text-white italic">"{levels[activeLevel].example}"</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    // Content Writer vs Copywriter Demo
+    function IdentityDemo() {
+      const [mode, setMode] = useState('writer');
+
+      const data = {
+        writer: {
+          title: 'Content Writer',
+          goal: 'Inform',
+          result: 'Education',
+          mindset: '"I\'m going to educate you or give you insight or information on a topic."',
+          icon: (
+            <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          )
+        },
+        copywriter: {
+          title: 'Copywriter',
+          goal: 'Transform',
+          result: 'A new, empowered identity',
+          mindset: '"I\'m going to change who you are by the time you\'re done reading this."',
+          icon: (
+            <svg className="w-12 h-12 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          )
+        }
+      };
+
+      const current = data[mode];
+
+      return (
+        <div className="bg-white rounded-2xl p-8">
+          <h4 className="text-xl font-bold text-zinc-900 mb-6 text-center">Your True Identity</h4>
+
+          <div className="flex gap-4 mb-8 justify-center">
+            <button
+              onClick={() => setMode('writer')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                mode === 'writer'
+                  ? 'bg-zinc-200 text-zinc-900'
+                  : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'
+              }`}
+            >
+              Content Writer
+            </button>
+            <button
+              onClick={() => setMode('copywriter')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                mode === 'copywriter'
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-zinc-100 text-zinc-500 hover:bg-amber-100'
+              }`}
+            >
+              Copywriter
+            </button>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={`p-8 rounded-xl text-center ${
+                mode === 'writer' ? 'bg-zinc-100' : 'bg-gradient-to-br from-amber-50 to-amber-100'
+              }`}
+            >
+              <div className="flex justify-center mb-4">{current.icon}</div>
+              <h5 className={`text-2xl font-bold mb-6 ${mode === 'writer' ? 'text-zinc-700' : 'text-amber-600'}`}>
+                {current.title}
+              </h5>
+
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className={`p-4 rounded-lg ${mode === 'writer' ? 'bg-white' : 'bg-white/80'}`}>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Goal</div>
+                  <div className={`font-bold text-lg ${mode === 'writer' ? 'text-zinc-700' : 'text-amber-600'}`}>
+                    {current.goal}
+                  </div>
+                </div>
+                <div className={`p-4 rounded-lg ${mode === 'writer' ? 'bg-white' : 'bg-white/80'}`}>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Result</div>
+                  <div className={`font-bold text-lg ${mode === 'writer' ? 'text-zinc-700' : 'text-amber-600'}`}>
+                    {current.result}
+                  </div>
+                </div>
+              </div>
+
+              <p className={`italic text-lg ${mode === 'writer' ? 'text-zinc-600' : 'text-amber-700'}`}>
+                {current.mindset}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    // Emotional Spending Demo - Get vs Keep
+    function EmotionalSpendingDemo() {
+      const [phase, setPhase] = useState('get');
+
+      return (
+        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+          <h4 className="text-xl font-bold text-white mb-6 text-center">The Emotional Spending Shift</h4>
+
+          <div className="flex gap-4 mb-8 justify-center">
+            <button
+              onClick={() => setPhase('get')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                phase === 'get'
+                  ? 'bg-zinc-700 text-white'
+                  : 'bg-zinc-800 text-zinc-500 hover:bg-zinc-700'
+              }`}
+            >
+              Before Reading
+            </button>
+            <button
+              onClick={() => setPhase('keep')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                phase === 'keep'
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-zinc-800 text-zinc-500 hover:bg-zinc-700'
+              }`}
+            >
+              After Reading
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={phase}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className={`p-6 rounded-xl ${phase === 'get' ? 'bg-zinc-800' : 'bg-amber-500/10 border border-amber-500/30'}`}
+              >
+                <div className="text-center">
+                  <div className={`text-4xl font-bold mb-2 ${phase === 'get' ? 'text-zinc-400' : 'text-amber-400'}`}>
+                    {phase === 'get' ? 'GET' : 'KEEP'}
+                  </div>
+                  <p className={`text-sm ${phase === 'get' ? 'text-zinc-500' : 'text-amber-300'}`}>
+                    {phase === 'get'
+                      ? 'Prospect is considering GAINING a new feeling'
+                      : 'Prospect is fighting to KEEP the feeling they already have'}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex flex-col justify-center">
+              <div className="bg-zinc-800 rounded-xl p-4 mb-4">
+                <p className="text-zinc-300 text-sm leading-relaxed">
+                  {phase === 'get'
+                    ? 'At the start, they\'re imagining what it would be like to have the outcome. The Rolex on their wrist. The success. The relief.'
+                    : 'By the time they reach your CTA, they\'ve already "tried on" the outcome emotionally. Not buying feels like LOSING something they already have.'}
+                </p>
+              </div>
+              <div className={`text-center p-4 rounded-xl ${phase === 'get' ? 'bg-zinc-800' : 'bg-amber-500/20'}`}>
+                <span className={`text-sm font-medium ${phase === 'get' ? 'text-zinc-500' : 'text-amber-400'}`}>
+                  {phase === 'get' ? 'Lower urgency to act' : 'Loss aversion kicks in'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-amber-400 font-medium italic">
+              "You're not paying to get the feeling. You're paying to keep the feeling."
+            </p>
+            <p className="text-zinc-500 text-sm mt-2">- Alen Sultanic</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Four Primal Needs
+    function PrimalNeedsDemo() {
+      const [activeNeed, setActiveNeed] = useState(null);
+
+      const needs = [
+        {
+          name: 'Survival',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          ),
+          desc: 'The foundational need. Think insurance, health, security.',
+          example: 'Protect your family\'s future'
+        },
+        {
+          name: 'Reproduction',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          ),
+          desc: 'The drive to attract and multiply. Powers luxury and beauty.',
+          example: 'Turn heads everywhere you go'
+        },
+        {
+          name: 'Safety',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          ),
+          desc: 'Protect oneself and family. Strong driver for women.',
+          example: 'Sleep soundly knowing you\'re covered'
+        },
+        {
+          name: 'Status',
+          icon: (
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          ),
+          desc: 'Hierarchy and social standing. Strong driver for men.',
+          example: 'Join the top 1% of performers'
+        }
+      ];
+
+      return (
+        <div className="bg-white rounded-2xl p-8">
+          <h4 className="text-xl font-bold text-zinc-900 mb-2 text-center">The Four Primal Needs</h4>
+          <p className="text-zinc-600 text-center mb-8">Every purchase decision traces back to one of these</p>
+
+          <div className="grid grid-cols-2 gap-4">
+            {needs.map((need, i) => (
+              <motion.div
+                key={need.name}
+                onClick={() => setActiveNeed(activeNeed === i ? null : i)}
+                whileHover={{ scale: 1.02 }}
+                className={`p-6 rounded-xl cursor-pointer transition-all ${
+                  activeNeed === i
+                    ? 'bg-amber-50 border-2 border-amber-400'
+                    : 'bg-zinc-50 border-2 border-transparent hover:bg-zinc-100'
+                }`}
+              >
+                <div className={`mb-3 ${activeNeed === i ? 'text-amber-500' : 'text-zinc-400'}`}>
+                  {need.icon}
+                </div>
+                <h5 className={`font-bold mb-2 ${activeNeed === i ? 'text-amber-600' : 'text-zinc-700'}`}>
+                  {need.name}
+                </h5>
+                <AnimatePresence>
+                  {activeNeed === i && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      <p className="text-zinc-600 text-sm mb-3">{need.desc}</p>
+                      <div className="bg-white rounded-lg p-3 border border-amber-200">
+                        <span className="text-xs text-amber-600 uppercase tracking-wider">Example Hook</span>
+                        <p className="text-amber-700 font-medium text-sm mt-1">"{need.example}"</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-6 text-center text-sm text-zinc-500">
+            Click each need to explore examples
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="min-h-screen">
+          {/* Hero Section - Dark */}
+          <section className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-transparent" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+              <FadeUp>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8">
+                  <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                  <span className="text-amber-400 text-sm font-medium">Elite Persuasion</span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                  The <span className="accent glow-text">Architecture of Belief</span>
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                  All great copywriting is <span className="text-white font-medium">"change work"</span>.
+                  <br />You don't just write words. You engineer shifts in perspective, belief, and action.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
+                  {[
+                    { level: '1', name: 'Attention', desc: 'The Hook' },
+                    { level: '2', name: 'Thinking', desc: 'The Strategy' },
+                    { level: '3', name: 'Belief', desc: 'The Psychology' }
+                  ].map((item, i) => (
+                    <ScaleIn key={item.level} delay={0.4 + i * 0.1}>
+                      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl p-6 glow">
+                        <div className="text-amber-400 text-sm font-medium mb-2">Level {item.level}</div>
+                        <div className="text-white font-bold text-lg">Change in</div>
+                        <div className="text-white font-bold text-lg">{item.name}</div>
+                        <div className="text-zinc-500 text-sm mt-2">{item.desc}</div>
+                      </div>
+                    </ScaleIn>
+                  ))}
+                </div>
+              </FadeUp>
+            </div>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-zinc-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* The Paradigm Shift - White */}
+          <section className="py-24 bg-white">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-amber-600 text-sm font-semibold uppercase tracking-wider">The Paradigm Shift</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">You're Not a Content Writer</h2>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-zinc-50 rounded-2xl p-8 mb-12">
+                  <blockquote className="text-xl text-zinc-700 italic text-center mb-6">
+                    "We're not in the word business. We're in the idea business.
+                    <br />We're shifting the beliefs that the audience needs shifted."
+                  </blockquote>
+                  <p className="text-center text-zinc-500">- Jason Fladlien</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <IdentityDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Three Levels Section - Dark */}
+          <section className="py-24 bg-zinc-950">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-amber-400 text-sm font-semibold uppercase tracking-wider">The Model</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">Three Levels of Mastery</h2>
+                  <p className="text-zinc-400 mt-4 text-lg">Click each level to explore</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <PyramidDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Emotional Spending - White */}
+          <section className="py-24 bg-white">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-amber-600 text-sm font-semibold uppercase tracking-wider">Psychology Insight</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">You Don't Sell the Feeling</h2>
+                  <p className="text-zinc-600 mt-4 text-lg">You sell KEEPING the feeling</p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <EmotionalSpendingDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Primal Needs - Dark */}
+          <section className="py-24 bg-zinc-950">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-16">
+                  <span className="text-amber-400 text-sm font-semibold uppercase tracking-wider">Deep Drivers</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">What Really Drives Decisions</h2>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <PrimalNeedsDemo />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Holy Shit Moment - White */}
+          <section className="py-24 bg-gradient-to-b from-white to-amber-50">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-12">
+                  <span className="text-amber-600 text-sm font-semibold uppercase tracking-wider">The Ultimate Truth</span>
+                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Holy Shift Moment</h2>
+                </div>
+              </FadeUp>
+
+              <ScaleIn delay={0.2}>
+                <div className="bg-white rounded-3xl p-10 shadow-xl border border-zinc-200 text-center">
+                  <div className="w-20 h-20 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                    <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                  </div>
+                  <blockquote className="text-2xl md:text-3xl font-bold text-zinc-900 leading-relaxed mb-6">
+                    "There's this delusion we have as copywriters that we can convince somebody of something.
+                    <span className="text-amber-600"> We can't.</span>
+                    <br /><br />
+                    All we can do is <span className="text-amber-600">get them to convince themselves.</span>"
+                  </blockquote>
+                  <p className="text-zinc-500">- Alen Sultanic</p>
+
+                  <div className="mt-8 p-6 bg-amber-50 rounded-xl">
+                    <p className="text-zinc-700">
+                      Your job is not to force a belief. It's to <span className="font-semibold text-amber-600">engineer a story, create a frame, and provide the components</span> that allow their own mind to build the conviction to act.
+                    </p>
+                  </div>
+                </div>
+              </ScaleIn>
+            </div>
+          </section>
+
+          {/* Your New Identity - Dark */}
+          <section className="py-24 bg-black">
+            <div className="max-w-4xl mx-auto px-6">
+              <FadeUp>
+                <div className="text-center mb-12">
+                  <span className="text-amber-400 text-sm font-semibold uppercase tracking-wider">Your Evolution</span>
+                  <h2 className="text-4xl font-bold text-white mt-4">Your New Identity</h2>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+                  <div className="grid md:grid-cols-3 gap-6 text-center">
+                    <div className="p-6 bg-zinc-800 rounded-xl">
+                      <div className="text-3xl mb-3">
+                        <svg className="w-8 h-8 mx-auto text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-bold mb-2">Architect of Belief</h4>
+                      <p className="text-zinc-400 text-sm">You construct the framework that shifts perspectives</p>
+                    </div>
+                    <div className="p-6 bg-zinc-800 rounded-xl">
+                      <div className="text-3xl mb-3">
+                        <svg className="w-8 h-8 mx-auto text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-bold mb-2">Facilitator of Choice</h4>
+                      <p className="text-zinc-400 text-sm">You create the conditions for their own decision</p>
+                    </div>
+                    <div className="p-6 bg-zinc-800 rounded-xl">
+                      <div className="text-3xl mb-3">
+                        <svg className="w-8 h-8 mx-auto text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-bold mb-2">Agent of Change</h4>
+                      <p className="text-zinc-400 text-sm">You transform who they are through words</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 text-center">
+                    <p className="text-xl text-zinc-300">
+                      That is where your true value lies.
+                      <br />
+                      <span className="text-amber-400 font-semibold">And your greatest leverage.</span>
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Final CTA */}
+          <section className="py-24 bg-gradient-to-b from-black to-zinc-900">
+            <div className="max-w-3xl mx-auto px-6 text-center">
+              <FadeUp>
+                <h2 className="text-4xl font-bold text-white mb-6">Remember</h2>
+                <p className="text-xl text-zinc-400 mb-12 leading-relaxed">
+                  True mastery isn't about choosing a level.
+                  <br />It's about <span className="text-amber-400 font-semibold">integrating all three</span>.
+                </p>
+              </FadeUp>
+
+              <ScaleIn delay={0.2}>
+                <div className="inline-flex flex-col items-center gap-2 px-8 py-6 bg-gradient-to-r from-amber-600 to-amber-500 rounded-2xl">
+                  <span className="text-white font-bold text-lg">HOOK + STRATEGY + PSYCHOLOGY</span>
+                  <span className="text-amber-100">= Belief Architecture</span>
+                </div>
+              </ScaleIn>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

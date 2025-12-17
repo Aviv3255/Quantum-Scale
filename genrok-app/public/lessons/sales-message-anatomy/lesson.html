@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Message Anatomy | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#14b8a6',
+            accentDark: '#0d9488',
+            dark: '#0f0f0f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    .gradient-text {
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body class="bg-white text-dark overflow-x-hidden">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence, useInView } = Motion;
+    const { useState, useRef, useEffect } = React;
+
+    // SVG Icon Components
+    const Icon = ({ name, size = 20, className = "" }) => {
+      const icons = {
+        hook: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />,
+        document: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />,
+        flag: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />,
+        eye: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></>,
+        heart: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />,
+        shield: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
+        gift: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />,
+        arrow: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />,
+        check: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />,
+        x: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />,
+        layers: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />,
+        target: <><circle cx="12" cy="12" r="10" strokeWidth={2} /><circle cx="12" cy="12" r="6" strokeWidth={2} /><circle cx="12" cy="12" r="2" strokeWidth={2} /></>,
+        clock: <><circle cx="12" cy="12" r="10" strokeWidth={2} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" /></>,
+      };
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
+          {icons[name]}
+        </svg>
+      );
+    };
+
+    // FadeUp Animation Component
+    function FadeUp({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+      return (
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className={className}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    // Animated Counter
+    function AnimatedCounter({ end, duration = 2, suffix = "" }) {
+      const [count, setCount] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      useEffect(() => {
+        if (isInView) {
+          let start = 0;
+          const increment = end / (duration * 60);
+          const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 1000 / 60);
+          return () => clearInterval(timer);
+        }
+      }, [isInView, end, duration]);
+
+      return <span ref={ref}>{count}{suffix}</span>;
+    }
+
+    // Interactive Anatomy Builder
+    function AnatomyBuilder() {
+      const [activeSection, setActiveSection] = useState('lead');
+
+      const sections = {
+        lead: {
+          title: "The Lead",
+          percentage: "40%",
+          color: "bg-teal-500",
+          desc: "Captures attention and creates desire to continue reading",
+          elements: ["Big Promise", "Problem Agitation", "Story Hook", "Curiosity Gap"]
+        },
+        body: {
+          title: "The Body",
+          percentage: "40%",
+          color: "bg-teal-400",
+          desc: "Builds belief and overcomes objections",
+          elements: ["Proof Elements", "Features & Benefits", "Social Proof", "Objection Handling"]
+        },
+        close: {
+          title: "The Close",
+          percentage: "20%",
+          color: "bg-teal-300",
+          desc: "Creates urgency and drives action",
+          elements: ["Offer Stack", "Risk Reversal", "Urgency/Scarcity", "Clear CTA"]
+        }
+      };
+
+      return (
+        <div className="bg-teal-50 rounded-2xl p-6 md:p-8 border border-teal-100">
+          <h4 className="text-lg font-semibold text-dark mb-6">Message Structure</h4>
+
+          <div className="flex gap-2 mb-6">
+            {Object.entries(sections).map(([key, section]) => (
+              <button
+                key={key}
+                onClick={() => setActiveSection(key)}
+                className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all
+                           ${activeSection === key
+                             ? 'bg-accent text-white shadow-lg'
+                             : 'bg-white text-neutral-600 hover:bg-neutral-50'}`}
+              >
+                {section.title}
+              </button>
+            ))}
+          </div>
+
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-xl p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h5 className="font-semibold text-dark">{sections[activeSection].title}</h5>
+              <span className="text-2xl font-bold text-accent">{sections[activeSection].percentage}</span>
+            </div>
+            <p className="text-sm text-neutral-600 mb-4">{sections[activeSection].desc}</p>
+            <div className="space-y-2">
+              {sections[activeSection].elements.map((element, i) => (
+                <div key={element} className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-accent/10 rounded-full flex items-center justify-center">
+                    <Icon name="check" size={14} className="text-accent" />
+                  </div>
+                  <span className="text-sm text-neutral-700">{element}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    // Visual Flow Diagram
+    function FlowDiagram() {
+      const [activeStep, setActiveStep] = useState(0);
+
+      const steps = [
+        { label: "Attention", desc: "Hook them in 3 seconds" },
+        { label: "Interest", desc: "Make them want more" },
+        { label: "Desire", desc: "Build emotional connection" },
+        { label: "Action", desc: "Make it easy to buy" }
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % steps.length);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="bg-white rounded-2xl p-6 md:p-8 border border-neutral-100 shadow-sm">
+          <h4 className="text-lg font-semibold text-dark mb-6">The AIDA Flow</h4>
+
+          <div className="space-y-4">
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.label}
+                className={`flex items-center gap-4 p-4 rounded-xl transition-all
+                           ${activeStep === index ? 'bg-teal-50 border border-teal-200' : 'bg-neutral-50'}`}
+                animate={{
+                  scale: activeStep === index ? 1.02 : 1,
+                  x: activeStep === index ? 8 : 0
+                }}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
+                               ${activeStep >= index ? 'bg-accent text-white' : 'bg-neutral-200 text-neutral-500'}`}>
+                  {index + 1}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-dark">{step.label}</p>
+                  <p className="text-xs text-neutral-500">{step.desc}</p>
+                </div>
+                {activeStep === index && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-3 h-3 bg-accent rounded-full"
+                  />
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Main App
+    function App() {
+      const leadTypes = [
+        {
+          name: "The Problem Lead",
+          desc: "Opens by identifying a painful problem the reader faces",
+          example: "Are you tired of waking up exhausted despite sleeping 8 hours?",
+          best: "Products solving obvious pain points"
+        },
+        {
+          name: "The Story Lead",
+          desc: "Begins with a narrative that draws readers in emotionally",
+          example: "Three years ago, I was $50,000 in debt and sleeping in my car...",
+          best: "Personal brands and transformation offers"
+        },
+        {
+          name: "The Secret Lead",
+          desc: "Promises insider information most people don't know",
+          example: "The hidden factor behind every 7-figure business...",
+          best: "Information products and courses"
+        },
+        {
+          name: "The Direct Lead",
+          desc: "Gets straight to the point with a clear offer",
+          example: "Get 50% off our best-selling course today only.",
+          best: "Established brands with warm audiences"
+        }
+      ];
+
+      return (
+        <div className="min-h-screen bg-white overflow-x-hidden">
+          {/* Hero Section */}
+          <header className="relative overflow-hidden bg-gradient-to-b from-teal-50/50 to-white">
+            <div className="max-w-6xl mx-auto px-6 py-20">
+              <FadeUp>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                  <span className="text-sm font-medium text-teal-700">Persuasion Mastery</span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-5xl md:text-6xl font-bold text-dark leading-tight mb-6">
+                  Sales Message <span className="gradient-text">Anatomy</span>
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-600 max-w-2xl leading-relaxed mb-8">
+                  Master the three-part structure that turns readers into buyers. Learn how
+                  the Lead, Body, and Close work together to create irresistible offers.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                      <Icon name="layers" size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-dark">3</p>
+                      <p className="text-sm text-neutral-500">Core Sections</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                      <Icon name="target" size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-dark"><AnimatedCounter end={127} suffix="%" /></p>
+                      <p className="text-sm text-neutral-500">Higher Conversion</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+          </header>
+
+          <main className="max-w-6xl mx-auto px-6 py-16">
+            {/* Overview Section */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-6">The Three-Part Structure</h2>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.1}>
+                  <div className="prose prose-lg">
+                    <p className="text-neutral-600 leading-relaxed">
+                      Every effective sales message follows a predictable structure. Whether it's an email,
+                      landing page, video script, or ad—the anatomy remains the same. Understanding this
+                      structure is like having a blueprint for persuasion.
+                    </p>
+                    <p className="text-neutral-600 leading-relaxed">
+                      The Lead captures attention and creates the desire to keep reading. It's arguably
+                      the most important part because if you lose them here, nothing else matters.
+                      Roughly 40% of your effort should go into crafting a compelling lead.
+                    </p>
+                    <p className="text-neutral-600 leading-relaxed">
+                      The Body builds belief through proof, benefits, and objection handling. This is where
+                      you convince readers that your solution is the right choice. Another 40% of your
+                      message lives here, systematically building the case for action.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="relative">
+                    <img
+                      src="images/anatomy-overview.png"
+                      alt="Sales Message Anatomy"
+                      className="rounded-2xl shadow-lg w-full"
+                    />
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Interactive Demo */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Explore the Structure</h2>
+                <p className="text-neutral-500 mb-8">Click each section to see what belongs inside</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.1}>
+                  <AnatomyBuilder />
+                </FadeUp>
+                <FadeUp delay={0.2}>
+                  <FlowDiagram />
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Lead Types */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Lead Types That Convert</h2>
+                <p className="text-neutral-500 mb-8">Choose the right opening for your audience</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {leadTypes.map((lead, index) => (
+                  <FadeUp key={lead.name} delay={index * 0.1}>
+                    <motion.div
+                      className="bg-white rounded-2xl p-6 border border-neutral-100 h-full"
+                      whileHover={{ scale: 1.02, boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.1)' }}
+                    >
+                      <h3 className="text-lg font-semibold text-dark mb-2">{lead.name}</h3>
+                      <p className="text-neutral-600 text-sm mb-4">{lead.desc}</p>
+
+                      <div className="bg-teal-50 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-teal-800 italic">"{lead.example}"</p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Icon name="check" size={16} className="text-accent" />
+                        <span className="text-xs text-neutral-500">Best for: {lead.best}</span>
+                      </div>
+                    </motion.div>
+                  </FadeUp>
+                ))}
+              </div>
+            </section>
+
+            {/* The Body Deep Dive */}
+            <section className="mb-20 bg-neutral-50 rounded-3xl p-8 md:p-10">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-6">Building the Body</h2>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="relative mb-8">
+                  <img
+                    src="images/body-structure.png"
+                    alt="Body Structure Framework"
+                    className="rounded-2xl shadow-lg w-full"
+                  />
+                </div>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <FadeUp delay={0.2}>
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="eye" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Proof Elements</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          Testimonials, case studies, data, and credentials build trust. Stack multiple
+                          proof types for maximum impact. The more specific your proof, the more
+                          believable it becomes to skeptical readers.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="gift" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Benefits Over Features</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          Features tell what your product does. Benefits explain why it matters to
+                          the reader. Always translate features into emotional benefits that resonate
+                          with your audience's deepest desires.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="shield" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Objection Handling</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          Address common concerns before readers voice them. "You might be thinking..."
+                          acknowledges skepticism and positions you as understanding their perspective.
+                          This builds trust and removes barriers.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                        <Icon name="heart" size={20} className="text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-dark mb-1">Future Pacing</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">
+                          Help readers visualize their life after using your solution. Paint vivid
+                          pictures of the transformation they'll experience. Make the desired outcome
+                          feel real and achievable in their minds.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* The Close */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Closing That Converts</h2>
+                <p className="text-neutral-500 mb-8">Turn interest into action with these elements</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <FadeUp delay={0.1}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="layers" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">The Offer Stack</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Bundle your core offer with bonuses that increase perceived value. List each
+                      component with its individual value, then reveal the total savings. Make the
+                      deal feel too good to pass up.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="shield" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">Risk Reversal</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Remove the fear of making a wrong decision. Guarantees, free trials, and
+                      easy refunds shift risk from buyer to seller. The stronger your guarantee,
+                      the more confident buyers become.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+                      <Icon name="clock" size={24} className="text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-dark mb-3">Urgency & Scarcity</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Give readers a reason to act now, not later. Limited time offers, limited
+                      quantities, or bonuses that expire create genuine urgency. But only use real
+                      deadlines—fake scarcity destroys trust.
+                    </p>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Common Mistakes */}
+            <section className="mb-20">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-dark mb-3">Anatomy Mistakes to Avoid</h2>
+                <p className="text-neutral-500 mb-8">These structural errors kill conversions</p>
+              </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <FadeUp delay={0.1}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Weak or Missing Lead</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Starting with background information or company history loses readers instantly.
+                      Your first few lines determine whether anyone reads the rest. Lead with impact,
+                      not with introduction.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.2}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Features Without Benefits</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Listing specifications without explaining why they matter leaves readers cold.
+                      Every feature needs a "so you can..." or "which means..." that connects to
+                      what the reader actually wants.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.3}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Premature Close</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      Asking for the sale before building sufficient desire and belief results in
+                      rejection. Make sure you've earned the right to ask by providing enough value
+                      and proof in the body first.
+                    </p>
+                  </div>
+                </FadeUp>
+
+                <FadeUp delay={0.4}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h3 className="text-lg font-semibold text-dark mb-3">Unclear Call to Action</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">
+                      If readers don't know exactly what to do next, they'll do nothing. Your CTA
+                      should be specific, prominent, and repeated. Tell them exactly what clicking
+                      the button will do for them.
+                    </p>
+                  </div>
+                </FadeUp>
+              </div>
+            </section>
+
+            {/* Key Takeaways */}
+            <section className="mb-16">
+              <FadeUp>
+                <div className="bg-dark rounded-3xl p-8 md:p-10 text-white">
+                  <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">1</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        Every sales message has three parts: Lead (40%), Body (40%), and Close (20%).
+                        Master this structure and you can write persuasive copy for any medium.
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">2</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        The Lead captures attention through problem, story, secret, or direct approaches.
+                        Choose based on your audience's awareness level and relationship with you.
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">3</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        The Body builds belief through proof, benefits, objection handling, and future
+                        pacing. Stack these elements to create an irresistible case for action.
+                      </p>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-sm">4</span>
+                      </div>
+                      <p className="text-neutral-300 text-sm leading-relaxed">
+                        The Close converts through offer stacking, risk reversal, urgency, and clear
+                        CTAs. Make it easy and safe for readers to take action now.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            </section>
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-neutral-50 py-10">
+            <div className="max-w-6xl mx-auto px-6 text-center">
+              <p className="text-neutral-400 text-sm">
+                Part of the Persuasion Mastery Series
+              </p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

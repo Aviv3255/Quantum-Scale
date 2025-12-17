@@ -9,29 +9,22 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { accent: '#b45a3c' },
-          fontSize: {
-            'xs': ['0.7rem', { lineHeight: '1.5' }],
-            'sm': ['0.8rem', { lineHeight: '1.5' }],
-            'base': ['0.875rem', { lineHeight: '1.6' }],
-            'lg': ['1rem', { lineHeight: '1.5' }],
-            'xl': ['1.125rem', { lineHeight: '1.4' }],
-            '2xl': ['1.25rem', { lineHeight: '1.3' }],
+          colors: {
+            accent: '#14b8a6',
+            dark: '#0a0a0a',
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; }
-    ::selection { background: #b45a3c; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #FFFFFF; color: #111827; }
     .lesson-container { max-width: 720px; margin: 0 auto; }
   </style>
 </head>
@@ -39,45 +32,172 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    function Fade({ children, delay = 0, className = "" }) {
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
     }
 
-    // Layer Card
-    function LayerCard({ number, title, subtitle, color, isActive, onClick }) {
-      const colors = {
-        1: 'bg-amber-900',
-        2: 'bg-amber-700',
-        3: 'bg-amber-600',
-        4: 'bg-amber-400 text-amber-900',
-      };
+    function Counter({ end, suffix = "", prefix = "" }) {
+      const [count, setCount] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+      useEffect(() => {
+        if (isInView) {
+          let start = 0;
+          const timer = setInterval(() => {
+            start += end / 40;
+            if (start >= end) { setCount(end); clearInterval(timer); }
+            else { setCount(Math.floor(start)); }
+          }, 30);
+          return () => clearInterval(timer);
+        }
+      }, [isInView, end]);
+      return <span ref={ref}>{prefix}{count}{suffix}</span>;
+    }
+
+    // Animated Layer Stack
+    function LayerStack({ activeLayer, onLayerClick }) {
+      const layers = [
+        { title: 'Relentless Refinement', subtitle: 'MASTERY', color: 'from-teal-300 to-teal-400' },
+        { title: "Copywriter's Toolkit", subtitle: 'EXECUTION', color: 'from-teal-400 to-teal-500' },
+        { title: 'Message Architecture', subtitle: 'STRATEGY', color: 'from-teal-500 to-teal-600' },
+        { title: 'Human Psychology', subtitle: 'FOUNDATION', color: 'from-teal-600 to-teal-700' },
+      ];
 
       return (
-        <motion.div
-          className={`p-3 rounded-lg cursor-pointer transition-all ${colors[number]} text-white`}
-          onClick={onClick}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          style={{ opacity: isActive ? 1 : 0.7 }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-xs opacity-80">Layer {number}</div>
-              <div className="text-sm font-semibold">{title}</div>
+        <div className="space-y-2">
+          {layers.map((layer, i) => {
+            const width = 100 - (i * 8);
+            return (
+              <motion.div
+                key={i}
+                className={`mx-auto rounded-xl p-4 cursor-pointer bg-gradient-to-r ${layer.color} text-white transition-all ${
+                  activeLayer === (3 - i) ? 'ring-2 ring-white ring-offset-2 ring-offset-dark' : ''
+                }`}
+                style={{ width: `${width}%` }}
+                onClick={() => onLayerClick(3 - i)}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <div className="text-center">
+                  <div className="text-xs opacity-75 mb-0.5">{layer.subtitle}</div>
+                  <div className="font-bold text-sm">{layer.title}</div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // Pain Level Meter
+    function PainMeter() {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      const levels = [
+        { level: 'Latent', desc: "They don't know they have a problem", color: 'bg-neutral-600', width: '30%' },
+        { level: 'Realized', desc: 'They know something is wrong', color: 'bg-orange-500', width: '60%' },
+        { level: 'Extreme', desc: 'A fire behind them, forcing action', color: 'bg-red-500', width: '100%' },
+      ];
+
+      return (
+        <div ref={ref} className="space-y-4">
+          {levels.map((item, i) => (
+            <div key={i} className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="font-medium text-white">{item.level} Pain</span>
+                <span className="text-neutral-400">{item.desc}</span>
+              </div>
+              <div className="h-2 bg-neutral-800 rounded-full overflow-hidden">
+                <motion.div
+                  className={`h-full ${item.color} rounded-full`}
+                  initial={{ width: 0 }}
+                  animate={isInView ? { width: item.width } : {}}
+                  transition={{ delay: 0.3 + i * 0.2, duration: 0.8, ease: smoothEase }}
+                />
+              </div>
             </div>
-            <div className="text-xs opacity-70">{subtitle}</div>
+          ))}
+        </div>
+      );
+    }
+
+    // Framework Toggle
+    function FrameworkToggle({ active, onChange }) {
+      return (
+        <div className="inline-flex bg-neutral-100 rounded-xl p-1">
+          {['PAS', 'AIDA'].map((fw) => (
+            <button
+              key={fw}
+              onClick={() => onChange(fw)}
+              className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
+                active === fw ? 'bg-accent text-white shadow-lg' : 'text-neutral-600 hover:text-neutral-900'
+              }`}
+            >
+              {fw}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    // Framework Step
+    function FrameworkStep({ letter, title, description, color, delay }) {
+      return (
+        <motion.div
+          className="flex items-start gap-4 p-4 bg-neutral-50 rounded-xl"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay }}
+        >
+          <div className={`w-12 h-12 ${color} text-white rounded-xl flex items-center justify-center text-xl font-bold flex-shrink-0`}>
+            {letter}
+          </div>
+          <div>
+            <div className="font-bold text-neutral-900">{title}</div>
+            <div className="text-sm text-neutral-600">{description}</div>
           </div>
         </motion.div>
+      );
+    }
+
+    // Draft Counter Animation
+    function DraftCounter() {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+      const [draft, setDraft] = useState(1);
+
+      useEffect(() => {
+        if (isInView) {
+          const timer = setInterval(() => {
+            setDraft(d => d < 19 ? d + 1 : d);
+          }, 150);
+          return () => clearInterval(timer);
+        }
+      }, [isInView]);
+
+      return (
+        <div ref={ref} className="text-center">
+          <div className="text-7xl font-extrabold text-accent mb-2">{draft}</div>
+          <div className="text-neutral-400">drafts for $100M Leads</div>
+        </div>
       );
     }
 
@@ -85,174 +205,252 @@
       const [activeLayer, setActiveLayer] = useState(0);
       const [activeFramework, setActiveFramework] = useState('PAS');
 
-      const layers = [
-        { title: 'Human Psychology', subtitle: 'Foundation', desc: 'Pain drives action. Pleasure follows. Mix both to move minds. Key drivers: Make money, save time, avoid effort, escape pain, get comfort.' },
-        { title: 'Message Architecture', subtitle: 'Strategy', desc: 'Every sale bridges painful reality to desired dream. Your job: amplify latent pain to extreme pain. The pain is the pitch.' },
-        { title: "Copywriter's Toolkit", subtitle: 'Execution', desc: 'Use PAS and AIDA frameworks. Headlines and bullets do 80% of the work. People want the output, not the process.' },
-        { title: 'Relentless Refinement', subtitle: 'Mastery', desc: 'Test for validity AND utility. A/B test everything. Apply 10x effort for 100x results. Hormozi wrote 19 drafts.' },
+      const layerDetails = [
+        {
+          title: 'Human Psychology',
+          content: 'At the core of all persuasion lies a simple truth: people move toward pleasure and away from pain. But here\'s what most miss - pain is the stronger motivator. Fear of loss outweighs promise of gain by 2:1. Your job isn\'t to sell dreams. It\'s to amplify pain until action becomes inevitable.',
+          drivers: ['Make Money', 'Save Time', 'Avoid Effort', 'Escape Pain', 'Gain Status']
+        },
+        {
+          title: 'Message Architecture',
+          content: 'Every sale bridges two points: their painful present and their desired future. The gap between these points? That\'s where your product lives. Your job is to make that gap feel unbearable. Take latent pain and turn it extreme. The pain is the pitch.',
+          drivers: ['Current Reality', 'Desired Dream', 'The Gap', 'Your Bridge', 'The Transformation']
+        },
+        {
+          title: "Copywriter's Toolkit",
+          content: 'Frameworks are your weapons. PAS for short-form. AIDA for long-form. But remember: headlines and bullets do 80% of the work. Everything else is supporting cast. People don\'t want the process - they want the output. Show them the result, not the journey.',
+          drivers: ['PAS Framework', 'AIDA Framework', 'Headlines', 'Bullets', 'CTAs']
+        },
+        {
+          title: 'Relentless Refinement',
+          content: 'The difference between good and legendary? Iteration. Alex Hormozi wrote 19 drafts of $100M Leads. The best returns come at the end - the 16th coat of paint, the 19th draft. Test for validity AND utility. A/B test everything. Apply 10x effort for 100x results.',
+          drivers: ['Test Everything', 'Iterate Relentlessly', '10x Effort', 'Measure Results', 'Never Settle']
+        },
       ];
 
       return (
-        <div className="bg-white min-h-screen">
-          <header className="bg-neutral-950 text-white px-6 py-8">
+        <div className="min-h-screen bg-white">
+          {/* Header */}
+          <header className="bg-dark text-white px-6 py-12">
             <div className="lesson-container">
-              <span className="inline-block px-2 py-0.5 bg-accent/30 text-amber-300 text-xs font-medium rounded mb-3">Masterclass</span>
-              <h1 className="text-2xl font-bold mb-2">The Persuasion Stack</h1>
-              <p className="text-sm text-neutral-400">Communication that sells</p>
+              <FadeUp>
+                <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full mb-4">MASTERCLASS</span>
+                <h1 className="text-3xl md:text-4xl font-extrabold mb-3 leading-tight">
+                  The Persuasion Stack
+                </h1>
+                <p className="text-neutral-400 text-lg">Communication that sells.</p>
+              </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-6">
-            <div className="lesson-container space-y-8">
-              <Fade>
-                <section>
-                  <p className="text-base text-neutral-700 leading-relaxed">
-                    "You are only one sales letter away from being rich." — Gary Halbert. People love to buy, but <strong>they hate to be sold</strong>. The difference isn't luck—it's structure.
-                  </p>
-                </section>
-              </Fade>
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/stacked-layers.png" alt="Persuasion stack layers" className="w-full h-auto rounded-lg" />
+              {/* Hook */}
+              <FadeUp>
+                <p className="text-xl text-neutral-700 leading-relaxed">
+                  "You are only one sales letter away from being rich." — Gary Halbert
+                </p>
+                <p className="text-lg text-neutral-600 mt-4 leading-relaxed">
+                  People love to buy. But they <strong>hate to be sold</strong>. The difference between the amateur who pushes and the master who pulls? Structure. A stack of skills, layered in the right order.
+                </p>
+                <p className="text-lg text-neutral-600 mt-4 leading-relaxed">
+                  Most copywriters throw tactics at the wall. Masters build from the foundation up. Each layer amplifies the one below it. Miss a layer? The whole stack crumbles.
+                </p>
+              </FadeUp>
+
+              {/* Stack Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/stack-layers.png" alt="The Persuasion Stack" className="w-full h-auto" />
                 </div>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Four Layers</h2>
-                  <p className="text-xs text-neutral-500 mb-4">Click each layer to explore</p>
-                  <div className="space-y-2 mb-4">
-                    {layers.map((layer, i) => (
-                      <LayerCard
-                        key={i}
-                        number={i + 1}
-                        title={layer.title}
-                        subtitle={layer.subtitle}
-                        isActive={activeLayer === i}
-                        onClick={() => setActiveLayer(i)}
-                      />
-                    ))}
-                  </div>
+              {/* The Four Layers */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-2">The Four Layers</h2>
+                <p className="text-neutral-600 mb-6">Click each layer to explore what it contains and why it matters.</p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-dark rounded-2xl p-8">
+                  <LayerStack activeLayer={activeLayer} onLayerClick={setActiveLayer} />
+                </div>
+              </FadeUp>
+
+              {/* Layer Detail */}
+              <FadeUp>
+                <AnimatePresence mode="wait">
                   <motion.div
                     key={activeLayer}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-accent/10 p-4 rounded-xl border border-accent/20"
+                    exit={{ opacity: 0, y: -20 }}
+                    className="bg-accent/5 border border-accent/20 rounded-2xl p-6"
                   >
-                    <p className="text-sm text-neutral-700">{layers[activeLayer].desc}</p>
+                    <h3 className="text-xl font-bold text-neutral-900 mb-3">{layerDetails[activeLayer].title}</h3>
+                    <p className="text-neutral-700 leading-relaxed mb-4">{layerDetails[activeLayer].content}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {layerDetails[activeLayer].drivers.map((driver, i) => (
+                        <span key={i} className="px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full">
+                          {driver}
+                        </span>
+                      ))}
+                    </div>
                   </motion.div>
-                </section>
-              </Fade>
+                </AnimatePresence>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <div className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">🔥</span>
-                    Pain Levels
-                  </h3>
-                  <div className="space-y-2 mt-3">
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <div className="text-xs text-neutral-300">Latent Pain</div>
-                      <div className="text-sm">They don't know they have a problem</div>
-                    </div>
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <div className="text-xs text-neutral-300">Realized Pain</div>
-                      <div className="text-sm">They know something is wrong</div>
-                    </div>
-                    <div className="p-2 bg-white/10 rounded-lg border border-red-500/30">
-                      <div className="text-xs text-red-400">Extreme Pain</div>
-                      <div className="text-sm">A fire behind them, forcing action</div>
-                    </div>
+              {/* Pain Section */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-2">The Pain Escalator</h2>
+                <p className="text-neutral-600 mb-6">
+                  Your job is to take latent pain and make it extreme. Not to create pain that doesn't exist - but to illuminate pain they've been ignoring.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-dark rounded-2xl p-6">
+                  <PainMeter />
+                </div>
+              </FadeUp>
+
+              {/* Pain Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/pain-amplifier.png" alt="Pain Amplification" className="w-full h-auto" />
+                  <p className="text-center text-sm text-neutral-500 mt-3">Amplify the pain until action becomes inevitable</p>
+                </div>
+              </FadeUp>
+
+              {/* Psychology Drivers */}
+              <FadeUp>
+                <div className="bg-neutral-50 rounded-2xl p-6">
+                  <h3 className="font-bold text-neutral-900 mb-4">The 5 Core Drivers</h3>
+                  <p className="text-neutral-600 mb-4">Every buying decision stems from one of these psychological drivers:</p>
+                  <div className="grid grid-cols-5 gap-3">
+                    {[
+                      { icon: '💰', label: 'Make Money' },
+                      { icon: '⏱️', label: 'Save Time' },
+                      { icon: '🛋️', label: 'Avoid Effort' },
+                      { icon: '🔥', label: 'Escape Pain' },
+                      { icon: '👑', label: 'Gain Status' },
+                    ].map((item, i) => (
+                      <motion.div
+                        key={i}
+                        className="text-center p-3 bg-white rounded-xl shadow-sm"
+                        whileHover={{ y: -2 }}
+                      >
+                        <div className="text-2xl mb-1">{item.icon}</div>
+                        <div className="text-xs font-medium text-neutral-700">{item.label}</div>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Frameworks</h2>
-                  <div className="flex gap-2 mb-4">
-                    <button
-                      onClick={() => setActiveFramework('PAS')}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeFramework === 'PAS' ? 'bg-accent text-white' : 'bg-neutral-100'}`}
-                    >
-                      PAS
-                    </button>
-                    <button
-                      onClick={() => setActiveFramework('AIDA')}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeFramework === 'AIDA' ? 'bg-accent text-white' : 'bg-neutral-100'}`}
-                    >
-                      AIDA
-                    </button>
-                  </div>
+              {/* Frameworks */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-6">The Frameworks</h2>
+                <div className="flex justify-center mb-6">
+                  <FrameworkToggle active={activeFramework} onChange={setActiveFramework} />
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <AnimatePresence mode="wait">
                   {activeFramework === 'PAS' ? (
-                    <div className="space-y-2">
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-sm">P</div>
-                        <div><span className="font-semibold">Pain</span> — Identify the problem</div>
-                      </div>
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
-                        <div><span className="font-semibold">Agitate</span> — Amplify the pain</div>
-                      </div>
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm">S</div>
-                        <div><span className="font-semibold">Solve</span> — Present your solution</div>
-                      </div>
-                    </div>
+                    <motion.div key="pas" className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <FrameworkStep letter="P" title="Pain" description="Identify the problem. Name it. Make them feel it." color="bg-red-500" delay={0} />
+                      <FrameworkStep letter="A" title="Agitate" description="Amplify the pain. What happens if they don't fix it?" color="bg-orange-500" delay={0.1} />
+                      <FrameworkStep letter="S" title="Solve" description="Present your solution as the obvious answer." color="bg-green-500" delay={0.2} />
+                    </motion.div>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
-                        <div><span className="font-semibold">Awareness</span> — Grab attention</div>
-                      </div>
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold text-sm">I</div>
-                        <div><span className="font-semibold">Interest</span> — Hold with substance</div>
-                      </div>
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold text-sm">D</div>
-                        <div><span className="font-semibold">Desire</span> — Create want</div>
-                      </div>
-                      <div className="p-3 bg-neutral-50 rounded-lg flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
-                        <div><span className="font-semibold">Action</span> — Call to action</div>
-                      </div>
-                    </div>
+                    <motion.div key="aida" className="space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <FrameworkStep letter="A" title="Attention" description="Stop the scroll. Interrupt their pattern." color="bg-accent" delay={0} />
+                      <FrameworkStep letter="I" title="Interest" description="Hook them with substance. Why should they care?" color="bg-teal-600" delay={0.1} />
+                      <FrameworkStep letter="D" title="Desire" description="Paint the transformation. Make them want it." color="bg-teal-700" delay={0.2} />
+                      <FrameworkStep letter="A" title="Action" description="Clear CTA. Remove friction. Make it easy." color="bg-teal-800" delay={0.3} />
+                    </motion.div>
                   )}
-                </section>
-              </Fade>
+                </AnimatePresence>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/building-foundation.png" alt="Building persuasion foundation" className="w-full h-auto rounded-lg" />
-                  <p className="text-xs text-neutral-400 text-center mt-2">Build layer by layer</p>
+              {/* Refinement Section */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The 10x Principle</h2>
+                <p className="text-neutral-600 mb-6">
+                  "The best returns come at the very end - the 16th coat of paint, the 19th draft." Most quit after draft 3. Masters keep going.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-dark rounded-2xl p-8">
+                  <DraftCounter />
                 </div>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-3">10x Effort = 100x Results</h3>
-                  <p className="text-sm text-neutral-300 mb-3">The best returns come at the very end—the 16th coat of paint, the 19th draft.</p>
-                  <div className="bg-white/10 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold">19</div>
-                    <div className="text-xs text-neutral-400">Drafts Hormozi wrote for $100M Leads</div>
-                  </div>
-                </section>
-              </Fade>
+              {/* Cycle Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/refinement-cycle.png" alt="Refinement Cycle" className="w-full h-auto" />
+                </div>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section className="border-l-4 border-accent pl-4 py-2">
-                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
-                  <p className="text-sm text-neutral-600">
-                    <strong>Build your persuasion layer by layer:</strong> Psychology → Architecture → Toolkit → Refinement. Test everything. Assume nothing. Apply 10x effort.
+              {/* Holy Shit Moment */}
+              <FadeUp>
+                <div className="bg-accent/10 border-l-4 border-accent rounded-r-xl p-6">
+                  <p className="text-lg font-bold text-neutral-900 mb-3">
+                    The Real Leverage
                   </p>
-                </section>
-              </Fade>
+                  <p className="text-neutral-700 leading-relaxed">
+                    Headlines and bullets do <strong>80% of the work</strong>. Everything else is supporting cast. If your headline doesn't stop them, nothing else matters. If your bullets don't sell, your body copy won't save you.
+                  </p>
+                  <p className="text-neutral-700 leading-relaxed mt-3">
+                    Master the 20% that drives 80% of results. <strong>That's the persuasion stack.</strong>
+                  </p>
+                </div>
+              </FadeUp>
 
-              <div className="h-8"></div>
+              {/* Key Takeaways */}
+              <FadeUp>
+                <div className="bg-dark text-white rounded-2xl p-8">
+                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Key Takeaways</h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">01</span>
+                      <span>Build layer by layer: Psychology → Architecture → Toolkit → Refinement</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">02</span>
+                      <span>Pain drives action more than pleasure - amplify it</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">03</span>
+                      <span>Use PAS for short-form, AIDA for long-form</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">04</span>
+                      <span>Headlines and bullets do 80% of the work</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">05</span>
+                      <span>Apply 10x effort - the magic is in draft 19, not draft 3</span>
+                    </li>
+                  </ul>
+                </div>
+              </FadeUp>
+
             </div>
           </main>
+
+          {/* Footer */}
+          <footer className="px-6 py-6 border-t border-neutral-100">
+            <div className="lesson-container flex justify-between text-sm text-neutral-400">
+              <span>Quantum Scale</span>
+              <span>Copywriting Series</span>
+            </div>
+          </footer>
         </div>
       );
     }

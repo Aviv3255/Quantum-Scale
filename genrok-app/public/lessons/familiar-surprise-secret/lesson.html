@@ -9,50 +9,68 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            accent: '#2563eb',
+            accent: {
+              DEFAULT: '#2563eb',
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
           },
           fontSize: {
-            'xs': ['0.7rem', { lineHeight: '1.5' }],
-            'sm': ['0.8rem', { lineHeight: '1.5' }],
-            'base': ['0.875rem', { lineHeight: '1.6' }],
-            'lg': ['1rem', { lineHeight: '1.5' }],
-            'xl': ['1.125rem', { lineHeight: '1.4' }],
-            '2xl': ['1.25rem', { lineHeight: '1.3' }],
-            '3xl': ['1.5rem', { lineHeight: '1.2' }],
+            'xs': ['0.75rem', { lineHeight: '1.5' }],
+            'sm': ['0.875rem', { lineHeight: '1.5' }],
+            'base': ['1rem', { lineHeight: '1.7' }],
+            'lg': ['1.125rem', { lineHeight: '1.6' }],
+            'xl': ['1.25rem', { lineHeight: '1.5' }],
+            '2xl': ['1.5rem', { lineHeight: '1.4' }],
+            '3xl': ['1.875rem', { lineHeight: '1.3' }],
+            '4xl': ['2.25rem', { lineHeight: '1.2' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, sans-serif; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #2563eb; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
-
-    .lesson-container { max-width: 720px; margin: 0 auto; }
+    h1, h2, h3, h4 { letter-spacing: -0.025em; }
+    .lesson-container { max-width: 800px; margin: 0 auto; }
+    .gradient-accent { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%); }
+    .glow-accent { box-shadow: 0 0 60px rgba(37,99,235,0.3); }
 
     input[type="range"] {
       -webkit-appearance: none;
-      height: 6px;
-      border-radius: 3px;
-      background: #e5e5e5;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #93c5fd 0%, #2563eb 50%, #f59e0b 100%);
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: #2563eb;
+      background: white;
       cursor: grab;
-      border: 3px solid white;
-      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      border: 3px solid #2563eb;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+    }
+    input[type="range"]::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -60,28 +78,109 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    // Compact fade animation
-    function Fade({ children, delay = 0, className = "" }) {
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    // Clean SVG Icons
+    const Icons = {
+      Brain: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+          <path d="M12 5v13"/>
+        </svg>
+      ),
+      Lightbulb: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+          <path d="M9 18h6"/><path d="M10 22h4"/>
+        </svg>
+      ),
+      Sparkles: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+        </svg>
+      ),
+      Target: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      ),
+      Zap: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      ),
+      Check: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      ),
+      X: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      ),
+      ArrowRight: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      ),
+      Music: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        </svg>
+      ),
+      Smartphone: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>
+        </svg>
+      ),
+      Car: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-3-5H9L6 10l-2.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2"/>
+          <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+        </svg>
+      ),
+    };
+
+    // Animation Components
+    function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const isInView = useInView(ref, { once: true, margin: "-80px" });
       return (
         <motion.div
           ref={ref}
           className={className}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay, ease: "easeOut" }}
+          transition={{ duration: 0.7, delay, ease: smoothEase }}
         >
           {children}
         </motion.div>
       );
     }
 
-    // Compact counter
-    function Counter({ end, suffix = "" }) {
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div
+          ref={ref}
+          className={className}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function Counter({ end, suffix = "", prefix = "" }) {
       const [count, setCount] = useState(0);
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
@@ -89,227 +188,475 @@
       useEffect(() => {
         if (isInView) {
           let start = 0;
+          const duration = 2000;
+          const increment = end / (duration / 16);
           const timer = setInterval(() => {
-            start += end / 40;
-            if (start >= end) { setCount(end); clearInterval(timer); }
-            else { setCount(Math.floor(start)); }
-          }, 25);
+            start += increment;
+            if (start >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 16);
           return () => clearInterval(timer);
         }
       }, [isInView, end]);
 
-      return <span ref={ref}>{count}{suffix}</span>;
+      return <span ref={ref}>{prefix}{count}{suffix}</span>;
     }
 
-    // Interactive MAYA Slider - Compact
+    // Animated Progress Bar
+    function AnimatedBar({ percentage, color = "#2563eb", delay = 0 }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+      return (
+        <div ref={ref} className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: color }}
+            initial={{ width: 0 }}
+            animate={isInView ? { width: `${percentage}%` } : {}}
+            transition={{ duration: 1.2, delay, ease: smoothEase }}
+          />
+        </div>
+      );
+    }
+
+    // Interactive MAYA Slider - Elite Version
     function MayaSlider() {
       const [value, setValue] = useState(50);
 
       const getZone = () => {
-        if (value < 30) return { label: 'Too Familiar', emoji: '😴', desc: 'Boring. They scroll past.', color: 'text-neutral-400', bg: 'bg-neutral-50', border: 'border-neutral-200' };
-        if (value > 70) return { label: 'Too Novel', emoji: '😰', desc: 'Too risky. They hesitate and leave.', color: 'text-neutral-400', bg: 'bg-neutral-50', border: 'border-neutral-200' };
-        return { label: 'MAYA Zone', emoji: '🎯', desc: 'Perfect! They lean in and want more.', color: 'text-accent', bg: 'bg-blue-50', border: 'border-accent' };
+        if (value < 30) return {
+          label: 'Too Familiar',
+          desc: 'Boring. They scroll past without a second thought. Zero emotional engagement.',
+          color: 'text-neutral-400',
+          bg: 'bg-neutral-50',
+          border: 'border-neutral-200',
+          icon: 'sleep'
+        };
+        if (value > 70) return {
+          label: 'Too Novel',
+          desc: 'Too risky. The brain flags it as "danger" and triggers avoidance behavior.',
+          color: 'text-amber-500',
+          bg: 'bg-amber-50',
+          border: 'border-amber-200',
+          icon: 'warning'
+        };
+        return {
+          label: 'MAYA Zone',
+          desc: 'Perfect balance. They lean in, curious and comfortable. This is where buying happens.',
+          color: 'text-accent-600',
+          bg: 'bg-accent-50',
+          border: 'border-accent-300',
+          icon: 'target'
+        };
       };
 
       const zone = getZone();
       const isInZone = value >= 30 && value <= 70;
 
       return (
-        <div className="py-4">
-          <div className="relative h-2 mb-4 rounded-full overflow-hidden bg-neutral-100">
-            <div className="absolute left-[30%] right-[30%] h-full bg-accent/20" />
+        <div className="py-6">
+          <div className="relative mb-6">
+            {/* Zone indicators */}
+            <div className="flex justify-between text-xs mb-2 px-1">
+              <span className={value < 30 ? 'text-neutral-600 font-medium' : 'text-neutral-400'}>Boring</span>
+              <span className={isInZone ? 'text-accent-600 font-bold' : 'text-neutral-400'}>Sweet Spot</span>
+              <span className={value > 70 ? 'text-amber-600 font-medium' : 'text-neutral-400'}>Risky</span>
+            </div>
+
+            {/* Track background with zones */}
+            <div className="relative h-3 rounded-full overflow-hidden bg-neutral-100">
+              <div className="absolute left-0 w-[30%] h-full bg-neutral-200" />
+              <div className="absolute left-[30%] w-[40%] h-full bg-gradient-to-r from-accent-200 via-accent-300 to-accent-200" />
+              <div className="absolute right-0 w-[30%] h-full bg-amber-100" />
+            </div>
+
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={value}
+              onChange={(e) => setValue(parseInt(e.target.value))}
+              className="absolute top-2 w-full opacity-0 cursor-pointer h-8"
+              style={{ zIndex: 10 }}
+            />
+
+            {/* Custom thumb indicator */}
             <motion.div
-              className="absolute h-full rounded-full"
-              style={{ width: `${value}%`, backgroundColor: isInZone ? '#2563eb' : '#a3a3a3' }}
+              className="absolute top-1 w-6 h-6 rounded-full bg-white border-3 border-accent-600 shadow-lg"
+              style={{ left: `calc(${value}% - 12px)` }}
+              animate={{ scale: isInZone ? 1.1 : 1 }}
             />
           </div>
-          <input type="range" min="0" max="100" value={value} onChange={(e) => setValue(parseInt(e.target.value))} className="w-full" />
-          <div className="flex justify-between text-xs mt-2 mb-4 text-neutral-400">
-            <span>Boring</span>
-            <span className={isInZone ? 'text-accent font-medium' : ''}>Sweet Spot</span>
-            <span>Risky</span>
+
+          {/* Value display */}
+          <div className="text-center mb-4">
+            <span className="text-4xl font-bold text-neutral-900">{value}%</span>
+            <span className="text-sm text-neutral-500 ml-2">novelty</span>
           </div>
-          <motion.div className={`p-4 rounded-xl border ${zone.bg} ${zone.border}`} animate={{ scale: isInZone ? 1.02 : 1 }}>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">{zone.emoji}</span>
-              <span className={`text-sm font-semibold ${zone.color}`}>{zone.label}</span>
+
+          {/* Zone result */}
+          <motion.div
+            className={`p-5 rounded-2xl border-2 ${zone.bg} ${zone.border}`}
+            animate={{ scale: isInZone ? 1.02 : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isInZone ? 'bg-accent-600 text-white' : 'bg-neutral-200 text-neutral-500'}`}>
+                <Icons.Target />
+              </div>
+              <span className={`text-lg font-bold ${zone.color}`}>{zone.label}</span>
             </div>
-            <p className="text-sm text-neutral-600">{zone.desc}</p>
+            <p className="text-sm text-neutral-600 leading-relaxed">{zone.desc}</p>
           </motion.div>
         </div>
       );
     }
 
-    // Lesson Content
+    // Main Lesson Component
     function Lesson() {
       return (
         <div className="bg-white min-h-screen">
-          {/* Compact Header - Black section (20%) */}
-          <header className="bg-neutral-950 text-white px-6 py-8">
-            <div className="lesson-container">
-              <span className="inline-block px-2 py-0.5 bg-accent/20 text-accent text-xs font-medium rounded mb-3">
-                Psychology of Persuasion
-              </span>
-              <h1 className="text-2xl font-bold mb-2">The "Familiar Surprise" Secret</h1>
-              <p className="text-sm text-neutral-400">Why we love the unexpected in familiar packages</p>
+          {/* Hero Section - Bigger, more dramatic */}
+          <header className="bg-neutral-950 text-white relative overflow-hidden">
+            {/* Gradient accents */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/15 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+
+            <div className="lesson-container px-6 py-20 relative z-10">
+              <FadeUp>
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
+                    Psychology of Persuasion
+                  </span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+                  The "Familiar Surprise" Secret
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
+                  Why the world's most successful products feel both instantly recognizable and refreshingly new - and how to engineer this paradox in your copy.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
+                  <div className="flex items-center gap-2">
+                    <Icons.Zap />
+                    <span>40% higher engagement</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Icons.Target />
+                    <span>70/30 optimal ratio</span>
+                  </div>
+                </div>
+              </FadeUp>
             </div>
           </header>
 
-          {/* Main Content - White section (70%) */}
-          <main className="px-6 py-6">
-            <div className="lesson-container space-y-8">
+          {/* Main Content */}
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
 
-              {/* Opening Story */}
-              <Fade>
+              {/* Opening Hook */}
+              <FadeUp>
                 <section>
-                  <p className="text-base text-neutral-700 leading-relaxed">
-                    In 2014, Spotify's algorithm team made a discovery that would change how they thought about recommendations forever. Their "Discover Weekly" playlist was serving users <strong>100% new music</strong>—and engagement was tanking.
+                  <p className="text-lg text-neutral-700 leading-relaxed">
+                    In 2014, Spotify's algorithm team made a discovery that would revolutionize recommendation engines forever. Their "Discover Weekly" playlist was serving users <strong>100% new music</strong> - songs they'd never heard, artists they'd never encountered.
+                  </p>
+                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
+                    The result? <strong>Engagement tanked.</strong> Users weren't clicking. They weren't saving. They weren't coming back. The algorithm was technically perfect - and completely wrong.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              {/* Image: Balance Scale */}
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/balance-scale.png" alt="Balance between familiar and novel" className="w-full h-auto rounded-lg" />
+              {/* Hero Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-xl">
+                  <img
+                    src="images/hero-maya-balance.png"
+                    alt="Balance between familiar and novel"
+                    className="w-full h-auto object-cover"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
                 </div>
-              </Fade>
+              </ScaleIn>
 
-              {/* Key Insight Box */}
-              <Fade delay={0.1}>
-                <div className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">💡</span>
-                    The Discovery
-                  </h3>
-                  <p className="text-sm text-neutral-300">
-                    When they added <strong className="text-white">30% familiar songs</strong>, engagement skyrocketed. Users didn't want all-new or all-familiar—they wanted the <em>perfect blend</em>.
-                  </p>
-                </div>
-              </Fade>
+              {/* The Discovery - Black section with gradient */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
 
-              {/* MAYA Principle */}
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The MAYA Principle</h2>
-                  <p className="text-sm text-neutral-600 mb-4">
-                    Industrial designer Raymond Loewy called this <strong>MAYA</strong>: Most Advanced Yet Acceptable. It's why the best innovations look surprisingly familiar.
-                  </p>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
+                        <Icons.Lightbulb />
+                      </div>
+                      <h2 className="text-2xl font-bold text-white">The Breakthrough</h2>
+                    </div>
 
-                  {/* Image: Brain Comfort */}
-                  <div className="rounded-xl overflow-hidden bg-neutral-50 p-4 mb-4">
-                    <img src="images/brain-comfort.png" alt="Brain processing familiar vs novel" className="w-full h-auto rounded-lg" />
+                    <p className="text-neutral-300 leading-relaxed mb-6">
+                      When Spotify's team added just <strong className="text-white">30% familiar songs</strong> - tracks users already knew and loved - engagement skyrocketed by 40%. Save rates tripled. Weekly return rates doubled.
+                    </p>
+
+                    <p className="text-neutral-300 leading-relaxed mb-8">
+                      Users didn't want all-new or all-familiar. They wanted something their brain could recognize quickly, wrapped around something that felt fresh. They wanted <strong className="text-accent-400">the familiar surprise</strong>.
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1"><Counter end={70} suffix="%" /></div>
+                        <div className="text-sm text-neutral-400">Familiar foundation</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1"><Counter end={30} suffix="%" /></div>
+                        <div className="text-sm text-neutral-400">Novel twist</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1"><Counter end={40} suffix="%" /></div>
+                        <div className="text-sm text-neutral-400">Engagement lift</div>
+                      </div>
+                    </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              {/* Interactive Slider */}
-              <Fade delay={0.1}>
-                <section className="bg-neutral-50 p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-1">Try It: Find the Sweet Spot</h3>
-                  <p className="text-xs text-neutral-500 mb-4">Drag the slider to see how familiarity and novelty affect response</p>
+              {/* Brain Science Section */}
+              <FadeUp>
+                <section>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">The Science: MAYA Principle</h2>
+
+                  <p className="text-base text-neutral-700 leading-relaxed mb-6">
+                    Industrial designer Raymond Loewy - the man behind everything from the Coca-Cola bottle to Air Force One - spent decades studying why some innovations succeed while others fail. His conclusion became the most important design principle ever discovered: <strong>MAYA - Most Advanced Yet Acceptable</strong>.
+                  </p>
+
+                  <p className="text-base text-neutral-700 leading-relaxed mb-6">
+                    Your brain processes familiar things 40% faster than novel ones. When something is familiar, your prefrontal cortex relaxes, allowing dopamine to flow. But when something is <em>only</em> familiar, there's no dopamine spike at all - nothing to signal "pay attention to this."
+                  </p>
+
+                  <p className="text-base text-neutral-700 leading-relaxed">
+                    The magic happens at the intersection: <strong>familiar enough to feel safe, novel enough to feel exciting</strong>. This is where purchase decisions happen. This is where brands are built.
+                  </p>
+                </section>
+              </FadeUp>
+
+              {/* Brain Image - 5:4 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm max-w-xl mx-auto">
+                  <img
+                    src="images/brain-sweetspot.png"
+                    alt="Brain's sweet spot between familiar and novel"
+                    className="w-full h-auto"
+                    style={{ aspectRatio: '5/4', objectFit: 'contain', backgroundColor: '#fff' }}
+                  />
+                </div>
+                <p className="text-xs text-neutral-400 text-center mt-3">The brain's "sweet spot" where comfort meets curiosity</p>
+              </ScaleIn>
+
+              {/* Interactive Demo */}
+              <FadeUp>
+                <section className="bg-neutral-50 rounded-3xl p-8 md:p-10">
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2">Experience the MAYA Zone</h3>
+                  <p className="text-sm text-neutral-500 mb-4">Drag the slider to see how the brain responds to different novelty levels</p>
                   <MayaSlider />
                 </section>
-              </Fade>
-
-              {/* Stats Row */}
-              <Fade delay={0.1}>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-neutral-50 p-4 rounded-xl text-center">
-                    <div className="text-2xl font-bold text-neutral-900"><Counter end={70} suffix="%" /></div>
-                    <div className="text-xs text-neutral-500">Familiar base</div>
-                  </div>
-                  <div className="bg-neutral-50 p-4 rounded-xl text-center">
-                    <div className="text-2xl font-bold text-neutral-900"><Counter end={30} suffix="%" /></div>
-                    <div className="text-xs text-neutral-500">Novel twist</div>
-                  </div>
-                  <div className="bg-accent/10 p-4 rounded-xl text-center border border-accent/20">
-                    <div className="text-2xl font-bold text-accent"><Counter end={100} suffix="%" /></div>
-                    <div className="text-xs text-accent/70">Engagement</div>
-                  </div>
-                </div>
-              </Fade>
+              </FadeUp>
 
               {/* Real-World Examples */}
-              <Fade delay={0.1}>
+              <FadeUp>
                 <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">MAYA in Action</h2>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">MAYA in the Wild</h2>
 
-                  <div className="space-y-3">
-                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
-                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">📱</div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium">iPhone</div>
-                        <div className="text-xs text-neutral-500">Familiar phone shape + Revolutionary touchscreen</div>
+                  <p className="text-base text-neutral-600 mb-8">
+                    The most successful products in history didn't reinvent the wheel - they made the wheel feel new again.
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-neutral-900 rounded-xl flex items-center justify-center text-white">
+                          <Icons.Smartphone />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-neutral-900">iPhone</h3>
+                          <p className="text-xs text-neutral-500">2007</p>
+                        </div>
                       </div>
+                      <p className="text-sm text-neutral-600 mb-3">
+                        <strong>Familiar:</strong> Rectangular phone shape, earpiece placement, app grid
+                      </p>
+                      <p className="text-sm text-neutral-600">
+                        <strong>Novel:</strong> Full touchscreen, no physical keyboard, gesture navigation
+                      </p>
                     </div>
-                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
-                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">🚗</div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium">Tesla</div>
-                        <div className="text-xs text-neutral-500">Familiar car form + Electric innovation</div>
+
+                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-neutral-900 rounded-xl flex items-center justify-center text-white">
+                          <Icons.Car />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-neutral-900">Tesla Model S</h3>
+                          <p className="text-xs text-neutral-500">2012</p>
+                        </div>
                       </div>
+                      <p className="text-sm text-neutral-600 mb-3">
+                        <strong>Familiar:</strong> Sedan body style, steering wheel, door handles
+                      </p>
+                      <p className="text-sm text-neutral-600">
+                        <strong>Novel:</strong> All-electric, tablet dashboard, over-the-air updates
+                      </p>
                     </div>
-                    <div className="flex gap-3 p-3 bg-neutral-50 rounded-lg">
-                      <div className="w-8 h-8 bg-neutral-200 rounded-lg flex items-center justify-center text-sm">🎵</div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium">Spotify</div>
-                        <div className="text-xs text-neutral-500">Familiar songs + New discoveries</div>
+
+                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-neutral-900 rounded-xl flex items-center justify-center text-white">
+                          <Icons.Music />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-neutral-900">Spotify</h3>
+                          <p className="text-xs text-neutral-500">2008</p>
+                        </div>
                       </div>
+                      <p className="text-sm text-neutral-600 mb-3">
+                        <strong>Familiar:</strong> Playlist structure, album art, shuffle button
+                      </p>
+                      <p className="text-sm text-neutral-600">
+                        <strong>Novel:</strong> Infinite library, AI recommendations, social sharing
+                      </p>
+                    </div>
+
+                    <div className="p-6 rounded-2xl bg-gradient-to-br from-accent-50 to-white border border-accent-200">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-accent-600 rounded-xl flex items-center justify-center text-white">
+                          <Icons.Sparkles />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-neutral-900">Your Copy</h3>
+                          <p className="text-xs text-accent-600">Apply today</p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-neutral-600 mb-3">
+                        <strong>Familiar:</strong> Language they use, problems they recognize
+                      </p>
+                      <p className="text-sm text-neutral-600">
+                        <strong>Novel:</strong> Your unique angle, unexpected benefit, fresh mechanism
+                      </p>
                     </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              {/* Image: Evolution */}
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/iphone-evolution.png" alt="Product evolution" className="w-full h-auto rounded-lg" />
-                  <p className="text-xs text-neutral-400 text-center mt-2">Innovation wrapped in familiarity</p>
+              {/* Evolution Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-lg">
+                  <img
+                    src="images/evolution-timeline.png"
+                    alt="Product evolution timeline"
+                    className="w-full h-auto"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
                 </div>
-              </Fade>
+                <p className="text-xs text-neutral-400 text-center mt-3">Innovation wrapped in familiar form - the key to mass adoption</p>
+              </ScaleIn>
 
-              {/* Application Framework */}
-              <Fade delay={0.1}>
-                <section className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-3">Apply MAYA to Your Copy</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
-                      <div>
-                        <div className="text-sm font-medium">Start with the familiar</div>
-                        <div className="text-xs text-neutral-400">Use language and concepts they already know</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
-                      <div>
-                        <div className="text-sm font-medium">Add the surprising twist</div>
-                        <div className="text-xs text-neutral-400">Introduce your unique angle or innovation</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
-                      <div>
-                        <div className="text-sm font-medium">Bridge with benefits</div>
-                        <div className="text-xs text-neutral-400">Show how the new serves familiar goals</div>
-                      </div>
+              {/* Implementation Framework - Black section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-accent-600/10 to-transparent rounded-full blur-3xl" />
+
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-bold text-white mb-8">Apply MAYA to Your Copy</h2>
+
+                    <div className="space-y-4">
+                      {[
+                        {
+                          num: '01',
+                          title: 'Start with Their Language',
+                          desc: 'Use words and phrases your audience already uses. Mirror their existing mental models. If they call it "getting leads," don\'t call it "prospect acquisition."'
+                        },
+                        {
+                          num: '02',
+                          title: 'Anchor to Known Problems',
+                          desc: 'Reference struggles they immediately recognize. "You know that feeling when ads stop converting?" creates instant familiarity before your solution.'
+                        },
+                        {
+                          num: '03',
+                          title: 'Introduce the Twist',
+                          desc: 'Once they\'re nodding along, reveal your unique mechanism. "But what if the problem isn\'t your ads - it\'s your landing page\'s first 3 seconds?"'
+                        },
+                        {
+                          num: '04',
+                          title: 'Bridge Old to New',
+                          desc: 'Show how your novel solution connects to their familiar goals. Same destination, surprising new path. This is where trust meets excitement.'
+                        },
+                      ].map((step, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1, ease: smoothEase }}
+                          viewport={{ once: true }}
+                          className="flex gap-5 p-5 bg-white/5 rounded-xl border border-white/10"
+                        >
+                          <div className="text-3xl font-bold text-accent-500/50">{step.num}</div>
+                          <div>
+                            <h3 className="font-semibold text-white mb-1">{step.title}</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed">{step.desc}</p>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              {/* Key Takeaway */}
-              <Fade delay={0.1}>
-                <section className="border-l-4 border-accent pl-4 py-2">
-                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
-                  <p className="text-sm text-neutral-600">
-                    People don't want completely new. They want <strong>new wrapped in familiar</strong>. The sweet spot is 70% familiar, 30% novel.
+              {/* Key Insight - Gradient accent */}
+              <FadeUp>
+                <section className="relative rounded-3xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-700 to-accent-800" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+                  <div className="relative z-10 p-8 md:p-10 text-white">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                        <Icons.Zap />
+                      </div>
+                      <span className="text-sm font-semibold uppercase tracking-wide text-white/80">Key Insight</span>
+                    </div>
+
+                    <p className="text-xl md:text-2xl font-bold leading-relaxed mb-4">
+                      People don't want completely new. They want new wrapped in familiar. The sweet spot is 70% recognition, 30% revelation.
+                    </p>
+
+                    <p className="text-white/80">
+                      Every breakthrough product, viral campaign, and beloved brand lives in this paradox. They feel like something you've always known, yet something you're discovering for the first time.
+                    </p>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Action Step */}
+              <FadeUp>
+                <section className="border-l-4 border-accent-500 pl-6 py-2">
+                  <h3 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                    <Icons.ArrowRight />
+                    Your Next Step
+                  </h3>
+                  <p className="text-neutral-600">
+                    Take your current landing page headline. Identify what's familiar (the problem, the desire). Now add the novel twist - your unique mechanism or unexpected angle. Test this 70/30 version against your original. Watch what happens when familiar meets surprising.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              {/* Bottom spacing */}
               <div className="h-8"></div>
             </div>
           </main>

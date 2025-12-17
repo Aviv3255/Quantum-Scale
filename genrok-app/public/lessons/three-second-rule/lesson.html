@@ -9,51 +9,129 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { accent: '#0891b2' },
+          colors: {
+            accent: {
+              DEFAULT: '#0891b2',
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+              800: '#155e75',
+              900: '#164e63',
+            }
+          },
           fontSize: {
-            'xs': ['0.7rem', { lineHeight: '1.5' }],
-            'sm': ['0.8rem', { lineHeight: '1.5' }],
-            'base': ['0.875rem', { lineHeight: '1.6' }],
-            'lg': ['1rem', { lineHeight: '1.5' }],
-            'xl': ['1.125rem', { lineHeight: '1.4' }],
-            '2xl': ['1.25rem', { lineHeight: '1.3' }],
+            'xs': ['0.75rem', { lineHeight: '1.5' }],
+            'sm': ['0.875rem', { lineHeight: '1.5' }],
+            'base': ['1rem', { lineHeight: '1.7' }],
+            'lg': ['1.125rem', { lineHeight: '1.6' }],
+            'xl': ['1.25rem', { lineHeight: '1.5' }],
+            '2xl': ['1.5rem', { lineHeight: '1.4' }],
+            '3xl': ['1.875rem', { lineHeight: '1.3' }],
+            '4xl': ['2.25rem', { lineHeight: '1.2' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, sans-serif; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #0891b2; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
-    .lesson-container { max-width: 720px; margin: 0 auto; }
+    h1, h2, h3, h4 { letter-spacing: -0.025em; }
+    .lesson-container { max-width: 800px; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    function Fade({ children, delay = 0, className = "" }) {
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    // Clean SVG Icons
+    const Icons = {
+      Clock: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      ),
+      Zap: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      ),
+      Target: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      ),
+      ArrowRight: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      ),
+      Eye: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      ),
+      Check: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      ),
+      X: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      ),
+      HelpCircle: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
+        </svg>
+      ),
+    };
+
+    // Animation Components
+    function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const isInView = useInView(ref, { once: true, margin: "-80px" });
       return (
-        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
     }
 
-    // Countdown Timer Demo
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}>
+          {children}
+        </motion.div>
+      );
+    }
+
+    // Interactive 3-Second Countdown Demo
     function CountdownDemo() {
       const [count, setCount] = useState(3);
       const [running, setRunning] = useState(false);
@@ -72,161 +150,355 @@
         }
         if (running && count === 0) {
           setRunning(false);
-          setMessage("Time's up! Did they scroll away?");
+          setMessage("Time's up! Did your message land?");
         }
       }, [running, count]);
 
       return (
-        <div className="py-6 text-center">
+        <div className="py-8 text-center">
           <motion.div
-            className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center text-4xl font-bold mb-4
-              ${running ? 'bg-accent text-white' : 'bg-neutral-100 text-neutral-400'}`}
-            animate={running ? { scale: [1, 1.1, 1] } : {}}
+            className={`w-32 h-32 mx-auto rounded-full flex items-center justify-center text-5xl font-bold mb-6 ${running ? 'bg-accent-600 text-white' : 'bg-neutral-100 text-neutral-400'}`}
+            animate={running ? { scale: [1, 1.1, 1] } : { scale: 1 }}
             transition={{ duration: 1, repeat: running ? Infinity : 0 }}
           >
             {running ? count : '3'}
           </motion.div>
           {!running && !message && (
-            <button onClick={startCountdown} className="px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg">
+            <motion.button
+              onClick={startCountdown}
+              className="px-6 py-3 bg-accent-600 text-white text-sm font-semibold rounded-xl hover:bg-accent-700 transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               Start 3-Second Test
-            </button>
+            </motion.button>
           )}
           {message && (
             <div>
-              <p className="text-sm text-neutral-600 mb-3">{message}</p>
-              <button onClick={startCountdown} className="text-accent text-sm font-medium">Try again</button>
+              <p className="text-lg font-semibold text-neutral-700 mb-4">{message}</p>
+              <button onClick={startCountdown} className="text-accent-600 text-sm font-medium hover:underline">
+                Try again
+              </button>
             </div>
           )}
         </div>
       );
     }
 
+    // Main Lesson Component
     function Lesson() {
       return (
         <div className="bg-white min-h-screen">
-          <header className="bg-neutral-950 text-white px-6 py-8">
-            <div className="lesson-container">
-              <span className="inline-block px-2 py-0.5 bg-accent/20 text-cyan-400 text-xs font-medium rounded mb-3">Attention Science</span>
-              <h1 className="text-2xl font-bold mb-2">The 3-Second Rule</h1>
-              <p className="text-sm text-neutral-400">The critical window that determines everything</p>
+          {/* Hero Section */}
+          <header className="bg-neutral-950 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/15 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+
+            <div className="lesson-container px-6 py-20 relative z-10">
+              <FadeUp>
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
+                    Attention Science
+                  </span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+                  The 3-Second Rule
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
+                  You have exactly 3 seconds to prove you're worth their attention. Win this window or lose them forever. Everything else depends on these 3 seconds.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
+                  <div className="flex items-center gap-2">
+                    <Icons.Clock />
+                    <span>3 seconds to convert</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Icons.Eye />
+                    <span>Win attention or lose it</span>
+                  </div>
+                </div>
+              </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-6">
-            <div className="lesson-container space-y-8">
-              <Fade>
+          {/* Main Content */}
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
+
+              {/* Opening Hook */}
+              <FadeUp>
                 <section>
-                  <p className="text-base text-neutral-700 leading-relaxed">
-                    You have <strong>3 seconds</strong> to prove you're worth their attention. In that tiny window, someone decides to engage or scroll away forever. Everything else is irrelevant if you fail this test.
+                  <p className="text-lg text-neutral-700 leading-relaxed">
+                    Right now, someone is looking at your landing page. Their thumb is hovering over the screen, ready to scroll. In their mind, a countdown has started: <strong>3... 2... 1...</strong>
+                  </p>
+                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
+                    In that tiny window, their brain is asking three questions: <strong>Is this relevant to me? Is this interesting? Is this worth my time?</strong> If you don't answer all three with a resounding "YES" - they're gone.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/stopwatch-frozen.png" alt="3 second timer" className="w-full h-auto rounded-lg" />
+              {/* Hero Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-xl">
+                  <img src="images/hero-stopwatch.png" alt="3 Second Timer"
+                    className="w-full h-auto object-cover" style={{ aspectRatio: '16/9', objectFit: 'cover' }} />
                 </div>
-              </Fade>
+              </ScaleIn>
 
-              <Fade delay={0.1}>
-                <section className="bg-neutral-50 p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-1">Feel the Pressure</h3>
-                  <p className="text-xs text-neutral-500 mb-2">Experience how fast 3 seconds really is</p>
+              {/* The Science - Black with gradient */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
+                        <Icons.Clock />
+                      </div>
+                      <h2 className="text-2xl font-bold text-white">The Science of Attention</h2>
+                    </div>
+
+                    <p className="text-neutral-300 leading-relaxed mb-6">
+                      Research from Microsoft and the Nielsen Norman Group confirms what copywriters have known for decades: <strong className="text-white">the average attention span for web content is 3-5 seconds</strong>. But that's just the average - for ads and landing pages, it's often less.
+                    </p>
+
+                    <p className="text-neutral-300 leading-relaxed mb-8">
+                      In those 3 seconds, your brain makes a snap judgment using primitive survival circuits. <strong className="text-accent-400">This isn't a conscious decision - it's automatic. And once the brain says "not relevant," no amount of great copy later will save you.</strong>
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1">3s</div>
+                        <div className="text-sm text-neutral-400">To capture attention</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1">80%</div>
+                        <div className="text-sm text-neutral-400">Bounce before scrolling</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
+                        <div className="text-3xl font-bold text-accent-400 mb-1">1x</div>
+                        <div className="text-sm text-neutral-400">Chance to make it count</div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Interactive Demo */}
+              <FadeUp>
+                <section className="bg-neutral-50 rounded-3xl p-8 md:p-10">
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2">Feel the Pressure</h3>
+                  <p className="text-sm text-neutral-500 mb-4">Experience how fast 3 seconds really is</p>
                   <CountdownDemo />
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <div className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">⚡</span>
-                    What Happens in 3 Seconds
-                  </h3>
-                  <p className="text-sm text-neutral-300">
-                    The brain makes a <strong className="text-white">snap judgment</strong>: Is this relevant? Is this interesting? Is this worth my time? Win all three, or lose them forever.
-                  </p>
+              {/* Scroll Thumb Image - 5:4 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm max-w-xl mx-auto">
+                  <img src="images/scroll-thumb.png" alt="Thumb ready to scroll"
+                    className="w-full h-auto" style={{ aspectRatio: '5/4', objectFit: 'contain', backgroundColor: '#fff' }} />
                 </div>
-              </Fade>
+                <p className="text-xs text-neutral-400 text-center mt-3">The thumb is always ready to scroll - your job is to stop it</p>
+              </ScaleIn>
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/scroll-thumb.png" alt="Thumb scrolling" className="w-full h-auto rounded-lg" />
-                  <p className="text-xs text-neutral-400 text-center mt-2">The thumb is always ready to scroll</p>
-                </div>
-              </Fade>
-
-              <Fade delay={0.1}>
+              {/* The 3-Second Checklist */}
+              <FadeUp>
                 <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The 3-Second Checklist</h2>
-                  <div className="space-y-3">
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-accent/20 rounded flex items-center justify-center text-accent text-xs font-bold">1</div>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">The 3-Second Checklist</h2>
+
+                  <p className="text-base text-neutral-700 leading-relaxed mb-8">
+                    Every element above the fold must answer these three questions instantly. If any answer is "no," you lose.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="p-6 rounded-2xl bg-neutral-50 border-2 border-neutral-200">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                          <span className="text-xl font-bold">1</span>
+                        </div>
                         <div>
-                          <div className="text-sm font-semibold text-neutral-900">Clear Value Proposition</div>
-                          <div className="text-xs text-neutral-500">What's in it for them?</div>
+                          <h3 className="text-lg font-semibold text-neutral-900 mb-2">Is This Relevant to Me?</h3>
+                          <p className="text-sm text-neutral-600 mb-3">The brain's first filter. Your headline must immediately signal who this is for and that it applies to their specific situation.</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="flex items-center gap-1 text-green-600"><Icons.Check /> "For Shopify store owners..."</span>
+                            <span className="flex items-center gap-1 text-red-500"><Icons.X /> "We provide solutions..."</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-accent/20 rounded flex items-center justify-center text-accent text-xs font-bold">2</div>
+
+                    <div className="p-6 rounded-2xl bg-neutral-50 border-2 border-neutral-200">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                          <span className="text-xl font-bold">2</span>
+                        </div>
                         <div>
-                          <div className="text-sm font-semibold text-neutral-900">Immediate Relevance</div>
-                          <div className="text-xs text-neutral-500">Does this apply to me?</div>
+                          <h3 className="text-lg font-semibold text-neutral-900 mb-2">Is This Interesting?</h3>
+                          <p className="text-sm text-neutral-600 mb-3">Does it create curiosity or challenge an assumption? Boring doesn't survive the 3-second test.</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="flex items-center gap-1 text-green-600"><Icons.Check /> "The $2.3M mistake..."</span>
+                            <span className="flex items-center gap-1 text-red-500"><Icons.X /> "Improve your marketing"</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 bg-accent/20 rounded flex items-center justify-center text-accent text-xs font-bold">3</div>
+
+                    <div className="p-6 rounded-2xl bg-neutral-50 border-2 border-neutral-200">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                          <span className="text-xl font-bold">3</span>
+                        </div>
                         <div>
-                          <div className="text-sm font-semibold text-neutral-900">Compelling Hook</div>
-                          <div className="text-xs text-neutral-500">Why should I keep reading?</div>
+                          <h3 className="text-lg font-semibold text-neutral-900 mb-2">Is This Worth My Time?</h3>
+                          <p className="text-sm text-neutral-600 mb-3">What will I gain by continuing? The value proposition must be crystal clear.</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="flex items-center gap-1 text-green-600"><Icons.Check /> "Add $10k/month in 90 days"</span>
+                            <span className="flex items-center gap-1 text-red-500"><Icons.X /> "Better business outcomes"</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-3">Win the First 3 Seconds</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
-                      <div>
-                        <div className="text-sm font-medium">Front-load value</div>
-                        <div className="text-xs text-neutral-400">Put your best hook first, not buried</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
-                      <div>
-                        <div className="text-sm font-medium">Be specific, not vague</div>
-                        <div className="text-xs text-neutral-400">"Save 3 hours/day" beats "save time"</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
-                      <div>
-                        <div className="text-sm font-medium">Create a curiosity gap</div>
-                        <div className="text-xs text-neutral-400">Make them need to know what's next</div>
-                      </div>
+              {/* Implementation Framework - Black section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-accent-600/10 to-transparent rounded-full blur-3xl" />
+
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-bold text-white mb-8">Win the First 3 Seconds</h2>
+
+                    <div className="space-y-4">
+                      {[
+                        { num: '01', title: 'Front-Load Your Value', desc: 'Put your best hook first, not buried. The most important word should be in the first 3 words of your headline. Don\'t save the good stuff for later - there is no later.' },
+                        { num: '02', title: 'Be Specific, Not Vague', desc: '"Save 3 hours per day" beats "save time." "Make $147 per sale" beats "increase revenue." Specificity signals credibility and creates mental pictures.' },
+                        { num: '03', title: 'Create a Curiosity Gap', desc: 'Open a loop the brain needs to close. "The counter-intuitive approach that..." or "Why 93% of marketers get this wrong..." creates cognitive tension that demands resolution.' },
+                        { num: '04', title: 'Use Pattern Interrupts', desc: 'Say something unexpected that stops the scroll. Challenge a common belief. State something seemingly contradictory. The brain can\'t ignore surprises.' },
+                      ].map((step, i) => (
+                        <motion.div key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1, ease: smoothEase }}
+                          viewport={{ once: true }}
+                          className="flex gap-5 p-5 bg-white/5 rounded-xl border border-white/10">
+                          <div className="text-3xl font-bold text-accent-500/50">{step.num}</div>
+                          <div>
+                            <h3 className="font-semibold text-white mb-1">{step.title}</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed">{step.desc}</p>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section className="border-l-4 border-accent pl-4 py-2">
-                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
-                  <p className="text-sm text-neutral-600">
-                    <strong>3 seconds.</strong> That's all you get. Front-load your value, be immediately relevant, and create a reason to keep reading.
+              {/* Hourglass Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-lg">
+                  <img src="images/attention-hourglass.png" alt="Time running out"
+                    className="w-full h-auto" style={{ aspectRatio: '16/9', objectFit: 'cover' }} />
+                </div>
+                <p className="text-xs text-neutral-400 text-center mt-3">Every second is precious - don't waste any of them</p>
+              </ScaleIn>
+
+              {/* Key Insight - Gradient accent */}
+              <FadeUp>
+                <section className="relative rounded-3xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-700 to-accent-800" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+                  <div className="relative z-10 p-8 md:p-10 text-white">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                        <Icons.Zap />
+                      </div>
+                      <span className="text-sm font-semibold uppercase tracking-wide text-white/80">Key Insight</span>
+                    </div>
+
+                    <p className="text-xl md:text-2xl font-bold leading-relaxed mb-4">
+                      3 seconds. That's all you get. Front-load your value, be immediately relevant, and create a reason to keep reading.
+                    </p>
+
+                    <p className="text-white/80">
+                      The best copy in the world is useless if no one reads it. Win the first 3 seconds, and you've earned the right to the next 30. Lose them, and nothing else matters.
+                    </p>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Common Mistakes */}
+              <FadeUp>
+                <section className="bg-neutral-50 rounded-3xl p-8 md:p-10">
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Common 3-Second Killers</h2>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="p-5 bg-white rounded-xl border border-neutral-200">
+                      <h4 className="font-semibold text-neutral-900 mb-2">Leading with Your Brand</h4>
+                      <p className="text-sm text-neutral-600">Nobody cares about your company name in the first 3 seconds. They care about their problem. Lead with them, not you.</p>
+                    </div>
+                    <div className="p-5 bg-white rounded-xl border border-neutral-200">
+                      <h4 className="font-semibold text-neutral-900 mb-2">Being Clever Over Clear</h4>
+                      <p className="text-sm text-neutral-600">Puns and wordplay force the brain to work. In 3 seconds, confusion equals abandonment. Clear always beats clever.</p>
+                    </div>
+                    <div className="p-5 bg-white rounded-xl border border-neutral-200">
+                      <h4 className="font-semibold text-neutral-900 mb-2">Generic Benefit Claims</h4>
+                      <p className="text-sm text-neutral-600">"Save time and money" is invisible because everyone says it. Specificity cuts through: "Cut 12 hours from your workweek."</p>
+                    </div>
+                    <div className="p-5 bg-white rounded-xl border border-neutral-200">
+                      <h4 className="font-semibold text-neutral-900 mb-2">Burying the Hook</h4>
+                      <p className="text-sm text-neutral-600">Your best insight belongs in the headline, not paragraph three. Front-load value. There is no "later" if they scroll away.</p>
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Key Takeaways */}
+              <FadeUp>
+                <section className="bg-white rounded-3xl p-8 md:p-10 border border-neutral-200">
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Key Takeaways</h2>
+                  <div className="space-y-4">
+                    {[
+                      'You have exactly 3 seconds to capture attention before readers scroll past. This is the brutal reality of modern marketing.',
+                      'The brain asks three instant questions: Is this relevant? Is this interesting? Is this worth my time? Answer all three or lose them.',
+                      'Front-load your value proposition. The most important words belong at the beginning, not buried in body copy.',
+                      'Specificity beats generality every time. Numbers, timeframes, and concrete outcomes create mental pictures that grab attention.',
+                      'Every subheading is another 3-second test. Create multiple entry points throughout your copy for scanners.'
+                    ].map((point, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full bg-accent-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Icons.Check />
+                        </div>
+                        <p className="text-neutral-700">{point}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Action Step */}
+              <FadeUp>
+                <section className="border-l-4 border-accent-500 pl-6 py-2">
+                  <h3 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                    <Icons.ArrowRight />
+                    Your Next Step
+                  </h3>
+                  <p className="text-neutral-600">
+                    Open your landing page right now. Set a 3-second timer. When it starts, look at your page with fresh eyes. What do you see? Is it immediately clear who it's for, why it's interesting, and what they'll get? If not, rewrite your above-the-fold content until it passes the test.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
               <div className="h-8"></div>
             </div>

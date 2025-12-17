@@ -9,187 +9,500 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { accent: '#059669' },
+          colors: {
+            accent: {
+              DEFAULT: '#059669',
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          },
           fontSize: {
-            'xs': ['0.7rem', { lineHeight: '1.5' }],
-            'sm': ['0.8rem', { lineHeight: '1.5' }],
-            'base': ['0.875rem', { lineHeight: '1.6' }],
-            'lg': ['1rem', { lineHeight: '1.5' }],
-            'xl': ['1.125rem', { lineHeight: '1.4' }],
-            '2xl': ['1.25rem', { lineHeight: '1.3' }],
+            'xs': ['0.75rem', { lineHeight: '1.5' }],
+            'sm': ['0.875rem', { lineHeight: '1.5' }],
+            'base': ['1rem', { lineHeight: '1.7' }],
+            'lg': ['1.125rem', { lineHeight: '1.6' }],
+            'xl': ['1.25rem', { lineHeight: '1.5' }],
+            '2xl': ['1.5rem', { lineHeight: '1.4' }],
+            '3xl': ['1.875rem', { lineHeight: '1.3' }],
+            '4xl': ['2.25rem', { lineHeight: '1.2' }],
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, sans-serif; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #059669; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
-    .lesson-container { max-width: 720px; margin: 0 auto; }
+    h1, h2, h3, h4 { letter-spacing: -0.025em; }
+    .lesson-container { max-width: 800px; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    function Fade({ children, delay = 0, className = "" }) {
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    // Clean SVG Icons
+    const Icons = {
+      AlertTriangle: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+      ),
+      Target: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      ),
+      Clock: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      ),
+      Star: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      ),
+      Brain: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+          <path d="M12 5v13"/>
+        </svg>
+      ),
+      ArrowRight: () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      ),
+      ChevronDown: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      ),
+      Zap: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      ),
+    };
+
+    // Animation Components
+    function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const isInView = useInView(ref, { once: true, margin: "-80px" });
       return (
-        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
+        <motion.div
+          ref={ref}
+          className={className}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay, ease: smoothEase }}
+        >
           {children}
         </motion.div>
       );
     }
 
-    // Interactive FRED Card
-    function FredCard({ letter, title, color, description, questions }) {
-      const [expanded, setExpanded] = useState(false);
-      const colorMap = { F: 'bg-red-500', R: 'bg-emerald-500', E: 'bg-blue-500', D: 'bg-amber-500' };
-
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
         <motion.div
-          className="p-4 bg-neutral-50 rounded-xl cursor-pointer"
-          onClick={() => setExpanded(!expanded)}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+          ref={ref}
+          className={className}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}
         >
-          <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 ${colorMap[letter]} rounded-lg flex items-center justify-center text-white font-bold text-sm`}>
-              {letter}
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold text-neutral-900">{title}</div>
-              <div className="text-xs text-neutral-500">{description}</div>
-            </div>
-            <motion.div animate={{ rotate: expanded ? 180 : 0 }} className="text-neutral-400">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
-            </motion.div>
-          </div>
-          {expanded && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-3 pt-3 border-t border-neutral-200">
-              <p className="text-xs text-neutral-500 mb-2">Questions to ask:</p>
-              <ul className="space-y-1">
-                {questions.map((q, i) => (
-                  <li key={i} className="text-xs text-neutral-600 flex items-start gap-2">
-                    <span className="text-accent">•</span> {q}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
+          {children}
         </motion.div>
       );
     }
 
+    // Interactive FRED Card - Elite Version
+    function FredCard({ letter, title, subtitle, description, questions, color, bgColor, borderColor, icon: Icon }) {
+      const [expanded, setExpanded] = useState(false);
+
+      return (
+        <motion.div
+          className={`rounded-2xl cursor-pointer transition-all border-2 overflow-hidden ${expanded ? bgColor + ' ' + borderColor : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300'}`}
+          onClick={() => setExpanded(!expanded)}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+        >
+          <div className="p-5">
+            <div className="flex items-start gap-4">
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${color} text-white`}>
+                <span className="text-2xl font-bold">{letter}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-bold text-neutral-900 mb-1">{title}</h3>
+                <p className="text-sm text-neutral-500">{subtitle}</p>
+              </div>
+              <motion.div
+                animate={{ rotate: expanded ? 180 : 0 }}
+                className={expanded ? 'text-neutral-700' : 'text-neutral-400'}
+              >
+                <Icons.ChevronDown />
+              </motion.div>
+            </div>
+
+            <AnimatePresence>
+              {expanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-5 pt-5 border-t border-neutral-200">
+                    <p className="text-sm text-neutral-700 leading-relaxed mb-4">{description}</p>
+                    <div className="bg-white rounded-xl p-4 border border-neutral-200">
+                      <p className="text-xs font-semibold text-neutral-500 mb-3 uppercase tracking-wide">Questions to Ask</p>
+                      <ul className="space-y-2">
+                        {questions.map((q, i) => (
+                          <li key={i} className="text-sm text-neutral-700 flex items-start gap-2">
+                            <span className={`mt-1 ${expanded ? 'text-neutral-600' : 'text-accent'}`}>-</span>
+                            {q}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      );
+    }
+
+    // Main Lesson Component
     function Lesson() {
       return (
         <div className="bg-white min-h-screen">
-          <header className="bg-neutral-950 text-white px-6 py-8">
-            <div className="lesson-container">
-              <span className="inline-block px-2 py-0.5 bg-accent/20 text-emerald-400 text-xs font-medium rounded mb-3">Psychology Framework</span>
-              <h1 className="text-2xl font-bold mb-2">The F.R.E.D. Method</h1>
-              <p className="text-sm text-neutral-400">A framework for understanding what your audience really wants</p>
+          {/* Hero Section */}
+          <header className="bg-neutral-950 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/15 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+
+            <div className="lesson-container px-6 py-20 relative z-10">
+              <FadeUp>
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
+                    Psychology Framework
+                  </span>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+                  The F.R.E.D. Method
+                </h1>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
+                  The mind-reading framework that reveals exactly what your audience wants before they even know it themselves. Four pillars, infinite persuasion power.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
+                  <div className="flex items-center gap-2">
+                    <Icons.Brain />
+                    <span>4 psychological drivers</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Icons.Target />
+                    <span>Deep customer insight</span>
+                  </div>
+                </div>
+              </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-6">
-            <div className="lesson-container space-y-8">
-              <Fade>
+          {/* Main Content */}
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
+
+              {/* Opening Hook */}
+              <FadeUp>
                 <section>
-                  <p className="text-base text-neutral-700 leading-relaxed">
-                    Every customer decision is driven by four psychological forces. Master copywriters don't guess what people want—they use <strong>F.R.E.D.</strong> to read minds.
+                  <p className="text-lg text-neutral-700 leading-relaxed">
+                    Master copywriters don't guess what their audience wants - they <strong>know</strong>. They have a system for decoding the hidden motivations that drive every decision. That system is <strong>F.R.E.D.</strong>
+                  </p>
+                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
+                    <strong>F</strong>ears. <strong>R</strong>esults. <strong>E</strong>xpectations. <strong>D</strong>esires. These four psychological forces shape every purchase, every click, every "yes." Understand them, and you can write copy that feels like mind reading.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/four-quadrants.png" alt="FRED Framework" className="w-full h-auto rounded-lg" />
+              {/* Hero Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-xl">
+                  <img
+                    src="images/hero-fred-framework.png"
+                    alt="F.R.E.D. Framework"
+                    className="w-full h-auto object-cover"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
                 </div>
-              </Fade>
+              </ScaleIn>
 
-              <Fade delay={0.1}>
-                <div className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-sm font-semibold mb-2">What is F.R.E.D.?</h3>
-                  <p className="text-sm text-neutral-300">
-                    <strong className="text-white">F</strong>ears, <strong className="text-white">R</strong>esults, <strong className="text-white">E</strong>xpectations, <strong className="text-white">D</strong>esires—the four pillars that drive every buying decision.
-                  </p>
-                </div>
-              </Fade>
+              {/* What is FRED - Black with gradient */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
 
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Four Forces</h2>
-                  <p className="text-xs text-neutral-500 mb-4">Click each card to reveal the questions</p>
-                  <div className="space-y-3">
-                    <FredCard letter="F" title="Fears" color="red" description="What keeps them up at night?"
-                      questions={["What's the worst that could happen?", "What are they afraid of losing?", "What embarrassment do they want to avoid?"]} />
-                    <FredCard letter="R" title="Results" color="green" description="What outcomes do they want?"
-                      questions={["What does success look like to them?", "What metrics matter?", "What would make them proud?"]} />
-                    <FredCard letter="E" title="Expectations" color="blue" description="What do they believe is possible?"
-                      questions={["What have they tried before?", "What do they think it takes?", "What's their timeline?"]} />
-                    <FredCard letter="D" title="Desires" color="amber" description="What do they secretly want?"
-                      questions={["What would they never admit wanting?", "What's their dream outcome?", "What status do they crave?"]} />
-                  </div>
-                </section>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/audience-avatar.png" alt="Understanding your audience" className="w-full h-auto rounded-lg" />
-                  <p className="text-xs text-neutral-400 text-center mt-2">See your customer as a complete person</p>
-                </div>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <section className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-3">Apply F.R.E.D. to Your Copy</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
-                      <div>
-                        <div className="text-sm font-medium">Research deeply</div>
-                        <div className="text-xs text-neutral-400">Interviews, reviews, forums, support tickets</div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
+                        <Icons.Brain />
                       </div>
+                      <h2 className="text-2xl font-bold text-white">What is F.R.E.D.?</h2>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
-                      <div>
-                        <div className="text-sm font-medium">Map to F.R.E.D.</div>
-                        <div className="text-xs text-neutral-400">Categorize every insight into the four buckets</div>
+
+                    <p className="text-neutral-300 leading-relaxed mb-8">
+                      Every customer has an internal conversation running in their head. F.R.E.D. helps you tune into that conversation by mapping the four core psychological drivers that influence all decisions. <strong className="text-accent-400">When you address all four, your copy becomes irresistible.</strong>
+                    </p>
+
+                    <div className="grid md:grid-cols-4 gap-4">
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-red-500/30">
+                        <div className="text-3xl font-bold text-red-400 mb-1">F</div>
+                        <div className="text-sm text-neutral-400">Fears</div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
-                      <div>
-                        <div className="text-sm font-medium">Address all four</div>
-                        <div className="text-xs text-neutral-400">Great copy touches Fears, Results, Expectations, and Desires</div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-emerald-500/30">
+                        <div className="text-3xl font-bold text-emerald-400 mb-1">R</div>
+                        <div className="text-sm text-neutral-400">Results</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-blue-500/30">
+                        <div className="text-3xl font-bold text-blue-400 mb-1">E</div>
+                        <div className="text-sm text-neutral-400">Expectations</div>
+                      </div>
+                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-amber-500/30">
+                        <div className="text-3xl font-bold text-amber-400 mb-1">D</div>
+                        <div className="text-sm text-neutral-400">Desires</div>
                       </div>
                     </div>
                   </div>
                 </section>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section className="border-l-4 border-accent pl-4 py-2">
-                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
-                  <p className="text-sm text-neutral-600">
-                    You can't persuade someone until you understand their <strong>Fears, Results, Expectations, and Desires</strong>. F.R.E.D. is your cheat code for mind reading.
+              {/* The Four Forces */}
+              <FadeUp>
+                <section>
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Four Psychological Forces</h2>
+                  <p className="text-base text-neutral-600 mb-8">
+                    Click each card to reveal the questions that unlock deep customer insight.
+                  </p>
+
+                  <div className="space-y-4">
+                    <FredCard
+                      letter="F"
+                      title="Fears"
+                      subtitle="What keeps them up at night?"
+                      description="Fear is the most powerful motivator. It's primal, urgent, and demands action. When you understand what your audience fears losing, failing at, or being exposed for, you can position your solution as the antidote."
+                      questions={[
+                        "What's the worst-case scenario they're trying to avoid?",
+                        "What are they afraid of losing - money, time, status, relationships?",
+                        "What embarrassment or judgment do they want to escape?",
+                        "What failure would devastate them?"
+                      ]}
+                      color="bg-red-500"
+                      bgColor="bg-red-50"
+                      borderColor="border-red-300"
+                      icon={Icons.AlertTriangle}
+                    />
+
+                    <FredCard
+                      letter="R"
+                      title="Results"
+                      subtitle="What specific outcomes do they want?"
+                      description="Results are the tangible, measurable outcomes your audience is chasing. These are the concrete metrics of success they can point to and say 'I did it.' The more specific you can be about results, the more believable your promise becomes."
+                      questions={[
+                        "What does success look like in numbers - revenue, followers, pounds lost?",
+                        "What milestone would make them feel they've 'made it'?",
+                        "What would they brag about to friends or colleagues?",
+                        "What metrics do they track obsessively?"
+                      ]}
+                      color="bg-emerald-500"
+                      bgColor="bg-emerald-50"
+                      borderColor="border-emerald-300"
+                      icon={Icons.Target}
+                    />
+
+                    <FredCard
+                      letter="E"
+                      title="Expectations"
+                      subtitle="What do they believe is possible?"
+                      description="Expectations are the mental models your audience has about what it takes to succeed. These beliefs - often limiting - shape what they're willing to try and what they dismiss as impossible. Your job is to reset expectations while remaining believable."
+                      questions={[
+                        "What have they already tried that didn't work?",
+                        "What do they believe success requires - time, money, talent?",
+                        "What objections or skepticism do they carry?",
+                        "What's their timeline for results?"
+                      ]}
+                      color="bg-blue-500"
+                      bgColor="bg-blue-50"
+                      borderColor="border-blue-300"
+                      icon={Icons.Clock}
+                    />
+
+                    <FredCard
+                      letter="D"
+                      title="Desires"
+                      subtitle="What do they secretly want?"
+                      description="Desires are the deeper, often unspoken wants that drive behavior. These go beyond the surface-level results into identity, status, and emotional fulfillment. People rarely admit these out loud, but they're the real fuel behind purchases."
+                      questions={[
+                        "What would they never publicly admit to wanting?",
+                        "What status or identity do they secretly crave?",
+                        "What would make them feel truly successful, not just look successful?",
+                        "What dream outcome feels almost too good to hope for?"
+                      ]}
+                      color="bg-amber-500"
+                      bgColor="bg-amber-50"
+                      borderColor="border-amber-300"
+                      icon={Icons.Star}
+                    />
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Mind Reading Image - 5:4 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm max-w-xl mx-auto">
+                  <img
+                    src="images/mind-reading.png"
+                    alt="Understanding your customer's mind"
+                    className="w-full h-auto"
+                    style={{ aspectRatio: '5/4', objectFit: 'contain', backgroundColor: '#fff' }}
+                  />
+                </div>
+                <p className="text-xs text-neutral-400 text-center mt-3">F.R.E.D. gives you a window into your customer's mind</p>
+              </ScaleIn>
+
+              {/* Implementation Framework - Black section */}
+              <FadeUp>
+                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-accent-600/10 to-transparent rounded-full blur-3xl" />
+
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-bold text-white mb-8">Apply F.R.E.D. to Your Copy</h2>
+
+                    <div className="space-y-4">
+                      {[
+                        {
+                          num: '01',
+                          title: 'Research Deep, Not Wide',
+                          desc: 'Talk to 5-10 customers in depth rather than surveying 100 superficially. Read Amazon reviews, support tickets, Reddit threads, forum posts. Capture their exact words - that\'s the language you\'ll use in your copy.'
+                        },
+                        {
+                          num: '02',
+                          title: 'Map Every Insight to F.R.E.D.',
+                          desc: 'Create four columns. As you research, categorize every insight into Fears, Results, Expectations, or Desires. Patterns will emerge. The most common themes become your headline, subhead, and bullet points.'
+                        },
+                        {
+                          num: '03',
+                          title: 'Address All Four in Your Copy',
+                          desc: 'Great copy touches all four psychological forces. Acknowledge fears, promise results, reset expectations, and speak to desires. Missing one creates a leak in your persuasion pipeline.'
+                        },
+                        {
+                          num: '04',
+                          title: 'Lead with the Dominant Force',
+                          desc: 'Which of the four is strongest for your audience right now? Lead with that. Fear-dominant audiences need safety. Result-focused audiences need specifics. Desire-driven audiences need transformation stories.'
+                        },
+                      ].map((step, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1, ease: smoothEase }}
+                          viewport={{ once: true }}
+                          className="flex gap-5 p-5 bg-white/5 rounded-xl border border-white/10"
+                        >
+                          <div className="text-3xl font-bold text-accent-500/50">{step.num}</div>
+                          <div>
+                            <h3 className="font-semibold text-white mb-1">{step.title}</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed">{step.desc}</p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Customer Avatar Image - 16:9 */}
+              <ScaleIn>
+                <div className="rounded-2xl overflow-hidden bg-neutral-900 max-w-2xl mx-auto shadow-lg">
+                  <img
+                    src="images/customer-avatar.png"
+                    alt="Understanding your customer completely"
+                    className="w-full h-auto"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
+                </div>
+                <p className="text-xs text-neutral-400 text-center mt-3">See your customer as a complete person, not just a demographic</p>
+              </ScaleIn>
+
+              {/* Key Insight - Gradient accent */}
+              <FadeUp>
+                <section className="relative rounded-3xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-700 to-accent-800" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+                  <div className="relative z-10 p-8 md:p-10 text-white">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                        <Icons.Zap />
+                      </div>
+                      <span className="text-sm font-semibold uppercase tracking-wide text-white/80">Key Insight</span>
+                    </div>
+
+                    <p className="text-xl md:text-2xl font-bold leading-relaxed mb-4">
+                      You can't persuade someone until you understand their Fears, Results, Expectations, and Desires. F.R.E.D. is your cheat code for mind reading.
+                    </p>
+
+                    <p className="text-white/80">
+                      The best copy doesn't feel like marketing - it feels like the customer wrote it themselves. That's because F.R.E.D.-based copy mirrors their internal dialogue perfectly.
+                    </p>
+                  </div>
+                </section>
+              </FadeUp>
+
+              {/* Action Step */}
+              <FadeUp>
+                <section className="border-l-4 border-accent-500 pl-6 py-2">
+                  <h3 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                    <Icons.ArrowRight />
+                    Your Next Step
+                  </h3>
+                  <p className="text-neutral-600">
+                    Pull up your last 10 customer reviews or testimonials. Create four columns labeled F, R, E, D. Categorize every meaningful statement into the right column. What patterns emerge? Use those patterns to rewrite your headline tomorrow.
                   </p>
                 </section>
-              </Fade>
+              </FadeUp>
 
               <div className="h-8"></div>
             </div>

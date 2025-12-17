@@ -9,249 +9,488 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { accent: '#3b82f6' },
-          fontSize: {
-            'xs': ['0.7rem', { lineHeight: '1.5' }],
-            'sm': ['0.8rem', { lineHeight: '1.5' }],
-            'base': ['0.875rem', { lineHeight: '1.6' }],
-            'lg': ['1rem', { lineHeight: '1.5' }],
-            'xl': ['1.125rem', { lineHeight: '1.4' }],
-            '2xl': ['1.25rem', { lineHeight: '1.3' }],
+          colors: {
+            accent: '#f59e0b',
+            dark: '#0a0a0a',
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Inter', -apple-system, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; }
-    ::selection { background: #3b82f6; color: #fff; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: #FFFFFF; color: #111827; }
     .lesson-container { max-width: 720px; margin: 0 auto; }
+    input[type="range"] { -webkit-appearance: none; background: transparent; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+      background: white; cursor: pointer; margin-top: -8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%; height: 4px; border-radius: 2px;
+    }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    function Fade({ children, delay = 0, className = "" }) {
+    const smoothEase = [0.25, 0.4, 0.25, 1];
+
+    function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.div ref={ref} className={className} initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay, ease: "easeOut" }}>
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
     }
 
-    // MAYA Slider
+    function Counter({ end, suffix = "", prefix = "" }) {
+      const [count, setCount] = useState(0);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+      useEffect(() => {
+        if (isInView) {
+          let start = 0;
+          const timer = setInterval(() => {
+            start += end / 40;
+            if (start >= end) { setCount(end); clearInterval(timer); }
+            else { setCount(Math.floor(start)); }
+          }, 30);
+          return () => clearInterval(timer);
+        }
+      }, [isInView, end]);
+      return <span ref={ref}>{prefix}{count}{suffix}</span>;
+    }
+
+    // Interactive MAYA Slider
     function MayaSlider() {
       const [balance, setBalance] = useState(50);
 
       const getZone = () => {
-        if (balance < 30) return { label: 'Too Familiar', color: 'text-red-500', desc: 'Boring. They\'ve seen it before.' };
-        if (balance > 70) return { label: 'Too Novel', color: 'text-red-500', desc: 'Scary. They don\'t trust it.' };
-        return { label: 'MAYA Zone', color: 'text-green-500', desc: 'Perfect balance!' };
+        if (balance < 25) return { label: 'Too Familiar', color: 'text-red-500', bg: 'bg-red-500/10', desc: 'Boring. They scroll past without a second glance.' };
+        if (balance > 75) return { label: 'Too Novel', color: 'text-red-500', bg: 'bg-red-500/10', desc: 'Scary. Their brain rejects what it can\'t categorize.' };
+        return { label: 'MAYA Zone', color: 'text-green-500', bg: 'bg-green-500/10', desc: 'Perfect. Familiar enough to trust, novel enough to notice.' };
       };
 
       const zone = getZone();
 
       return (
-        <div className="p-4 bg-neutral-50 rounded-xl">
-          <div className="text-center mb-3">
-            <div className={`text-sm font-bold ${zone.color}`}>{zone.label}</div>
-            <div className="text-xs text-neutral-500">{zone.desc}</div>
+        <div className="bg-dark rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs text-neutral-500 uppercase tracking-wider">MAYA Principle</span>
+            <span className={`text-sm font-bold ${zone.color}`}>{zone.label}</span>
           </div>
-          <div className="flex justify-between text-xs text-neutral-400 mb-1">
+
+          <div className="relative mb-4">
+            <div className="h-2 rounded-full" style={{
+              background: 'linear-gradient(to right, #ef4444 0%, #ef4444 25%, #22c55e 25%, #22c55e 75%, #ef4444 75%, #ef4444 100%)'
+            }}></div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={balance}
+              onChange={(e) => setBalance(parseInt(e.target.value))}
+              className="absolute inset-0 w-full cursor-pointer opacity-0"
+              style={{ height: '20px', marginTop: '-8px' }}
+            />
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-lg pointer-events-none"
+              style={{ left: `calc(${balance}% - 10px)` }}
+            ></div>
+          </div>
+
+          <div className="flex justify-between text-xs text-neutral-500 mb-4">
             <span>Familiar</span>
             <span>Novel</span>
           </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={balance}
-            onChange={(e) => setBalance(parseInt(e.target.value))}
-            className="w-full h-2 rounded-full appearance-none cursor-pointer"
-            style={{
-              background: `linear-gradient(to right, #ef4444 0%, #ef4444 30%, #22c55e 30%, #22c55e 70%, #ef4444 70%, #ef4444 100%)`
-            }}
-          />
+
+          <motion.div
+            key={zone.label}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`${zone.bg} rounded-xl p-4`}
+          >
+            <p className="text-sm text-neutral-300">{zone.desc}</p>
+          </motion.div>
         </div>
       );
     }
 
-    // Pyramid Level
-    function PyramidLevel({ level, title, subtitle, width, isActive, onClick }) {
+    // Pyramid Interactive Component
+    function PyramidExplorer() {
+      const [activeLevel, setActiveLevel] = useState(null);
+
+      const levels = [
+        {
+          title: 'Tactical Execution',
+          subtitle: 'THE WHAT',
+          width: '45%',
+          desc: 'Headlines that stop thumbs. Hooks that hold attention. Stories that stick. Proof that convinces. CTAs that convert. This is where most marketers start - but it\'s actually the last layer you should build.',
+          examples: ['Headlines', 'Hooks', 'Stories', 'Proof', 'CTAs']
+        },
+        {
+          title: 'Strategic Pillars',
+          subtitle: 'THE WHO & HOW',
+          width: '70%',
+          desc: 'Who exactly are you talking to? What do they believe? What do they fear? How will you reach them? Your strategy shapes every tactical decision. Without clear pillars, your tactics crumble.',
+          examples: ['Avatar', 'Awareness', 'Channel', 'Sequence', 'Offer']
+        },
+        {
+          title: 'Foundation',
+          subtitle: 'THE WHY',
+          width: '95%',
+          desc: 'Your core promise. The transformation you deliver. The problem you solve. This is the bedrock everything builds upon. A weak foundation means everything above it collapses.',
+          examples: ['Core Promise', 'Transformation', 'Problem', 'Solution', 'Proof']
+        },
+      ];
+
+      return (
+        <div className="space-y-3">
+          {levels.map((level, i) => (
+            <motion.div
+              key={i}
+              className={`mx-auto rounded-xl p-4 cursor-pointer transition-all ${
+                activeLevel === i
+                  ? 'bg-accent text-white'
+                  : 'bg-neutral-900 text-white hover:bg-neutral-800'
+              }`}
+              style={{ width: level.width }}
+              onClick={() => setActiveLevel(activeLevel === i ? null : i)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="text-center">
+                <div className="text-xs opacity-60 mb-1">{level.subtitle}</div>
+                <div className="font-bold">{level.title}</div>
+              </div>
+            </motion.div>
+          ))}
+
+          <AnimatePresence>
+            {activeLevel !== null && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="bg-accent/10 border border-accent/30 rounded-xl p-5 mt-4"
+              >
+                <p className="text-sm text-neutral-700 mb-4">{levels[activeLevel].desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {levels[activeLevel].examples.map((ex, j) => (
+                    <span key={j} className="px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full">
+                      {ex}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    // Principle Card Component
+    function PrincipleCard({ number, title, description, insight }) {
+      const [isExpanded, setIsExpanded] = useState(false);
+
       return (
         <motion.div
-          className={`mx-auto rounded-lg p-3 cursor-pointer transition-all ${isActive ? 'bg-accent text-white ring-2 ring-amber-400' : 'bg-neutral-800 text-white'}`}
-          style={{ width }}
-          onClick={onClick}
-          whileHover={{ scale: 1.02 }}
+          className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+          whileHover={{ y: -2 }}
         >
-          <div className="text-center">
-            <div className="text-xs opacity-70">{subtitle}</div>
-            <div className="text-sm font-semibold">{title}</div>
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-accent/10 text-accent rounded-xl flex items-center justify-center font-bold flex-shrink-0">
+              {number}
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-neutral-900 mb-1">{title}</h4>
+              <p className="text-sm text-neutral-600">{description}</p>
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-3 pt-3 border-t border-neutral-200"
+                  >
+                    <p className="text-sm text-accent font-medium">{insight}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            <div className={`text-neutral-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
           </div>
         </motion.div>
       );
     }
 
     function Lesson() {
-      const [activeLevel, setActiveLevel] = useState(null);
-
-      const levels = [
-        { title: 'Tactical Execution', subtitle: 'The WHAT', desc: 'Headlines, hooks, stories, proof, CTAs. The visible execution.', width: '50%' },
-        { title: 'Strategic Pillars', subtitle: 'The WHO & HOW', desc: 'Your audience understanding and strategic approach.', width: '70%' },
-        { title: 'Foundation', subtitle: 'The WHY', desc: 'Your core offer and promise. The bedrock everything builds upon.', width: '90%' },
-      ];
-
       return (
-        <div className="bg-white min-h-screen">
-          <header className="bg-neutral-950 text-white px-6 py-8">
+        <div className="min-h-screen bg-white">
+          {/* Header */}
+          <header className="bg-dark text-white px-6 py-12">
             <div className="lesson-container">
-              <span className="inline-block px-2 py-0.5 bg-accent/20 text-blue-400 text-xs font-medium rounded mb-3">Masterclass</span>
-              <h1 className="text-2xl font-bold mb-2">Architecture of Influence</h1>
-              <p className="text-sm text-neutral-400">Transform words into persuasion engines</p>
+              <FadeUp>
+                <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full mb-4">MASTERCLASS</span>
+                <h1 className="text-3xl md:text-4xl font-extrabold mb-3 leading-tight">
+                  Architecture of Influence
+                </h1>
+                <p className="text-neutral-400 text-lg">Transform words into persuasion engines.</p>
+              </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-6">
-            <div className="lesson-container space-y-8">
-              <Fade>
-                <section>
-                  <p className="text-base text-neutral-700 leading-relaxed">
-                    "Great copy isn't written... <strong>it's engineered.</strong>" Like a building needs a strong foundation before adding floors, persuasion requires layers built in the right order.
-                  </p>
-                </section>
-              </Fade>
+          <main className="px-6 py-12">
+            <div className="lesson-container space-y-16">
 
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/pyramid-structure.png" alt="Pyramid of persuasion" className="w-full h-auto rounded-lg" />
+              {/* Hook */}
+              <FadeUp>
+                <p className="text-xl text-neutral-700 leading-relaxed">
+                  "Great copy isn't written. <strong>It's engineered.</strong>"
+                </p>
+                <p className="text-lg text-neutral-600 mt-4 leading-relaxed">
+                  Like a building needs a strong foundation before adding floors, persuasion requires layers built in the right order. Most marketers start with tactics - headlines, hooks, and calls to action. They wonder why nothing works.
+                </p>
+                <p className="text-lg text-neutral-600 mt-4 leading-relaxed">
+                  The masters? They build from the ground up. Foundation first. Pillars second. Tactics last.
+                </p>
+              </FadeUp>
+
+              {/* Pyramid Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/pyramid-layers.png" alt="Pyramid of Persuasion" className="w-full h-auto" />
                 </div>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">The Pyramid of Persuasion</h2>
-                  <p className="text-xs text-neutral-500 mb-4">Click each level to explore</p>
-                  <div className="space-y-2 mb-4">
-                    {levels.map((level, i) => (
-                      <PyramidLevel
+              {/* The Pyramid Section */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-2">The Pyramid of Persuasion</h2>
+                <p className="text-neutral-600 mb-6">
+                  Every piece of persuasive content follows this hierarchy. Click each layer to explore what belongs there.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <div className="bg-dark rounded-2xl p-8">
+                  <PyramidExplorer />
+                </div>
+              </FadeUp>
+
+              {/* The Critical Mistake */}
+              <FadeUp>
+                <div className="bg-red-50 border-l-4 border-red-500 rounded-r-xl p-6">
+                  <h3 className="font-bold text-red-700 mb-2">The Critical Mistake</h3>
+                  <p className="text-neutral-700">
+                    Most marketers obsess over tactics. They A/B test headlines while their foundation crumbles. They swap CTAs while their strategy has holes. <strong>You can't optimize your way out of a weak foundation.</strong>
+                  </p>
+                </div>
+              </FadeUp>
+
+              {/* Stats Section */}
+              <FadeUp>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-dark rounded-xl p-5 text-center">
+                    <div className="text-3xl font-extrabold text-accent mb-1">
+                      <Counter end={80} suffix="%" />
+                    </div>
+                    <p className="text-xs text-neutral-400">of marketers start with tactics</p>
+                  </div>
+                  <div className="bg-dark rounded-xl p-5 text-center">
+                    <div className="text-3xl font-extrabold text-accent mb-1">
+                      <Counter end={3} suffix="x" />
+                    </div>
+                    <p className="text-xs text-neutral-400">better results with foundation first</p>
+                  </div>
+                  <div className="bg-dark rounded-xl p-5 text-center">
+                    <div className="text-3xl font-extrabold text-accent mb-1">
+                      <Counter end={1} />
+                    </div>
+                    <p className="text-xs text-neutral-400">clear promise beats 10 weak ones</p>
+                  </div>
+                </div>
+              </FadeUp>
+
+              {/* MAYA Section */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-2">The MAYA Principle</h2>
+                <p className="text-neutral-600 mb-2">
+                  <strong>M</strong>ost <strong>A</strong>dvanced <strong>Y</strong>et <strong>A</strong>cceptable
+                </p>
+                <p className="text-neutral-600 mb-6">
+                  Industrial designer Raymond Loewy discovered that humans are torn between two forces: neophilia (love of novelty) and neophobia (fear of the new). The sweet spot? Something familiar enough to feel safe, but novel enough to be interesting.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <MayaSlider />
+              </FadeUp>
+
+              {/* MAYA Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/maya-balance.png" alt="MAYA Balance Principle" className="w-full h-auto" />
+                </div>
+              </FadeUp>
+
+              {/* MAYA Application */}
+              <FadeUp>
+                <div className="bg-neutral-50 rounded-2xl p-6">
+                  <h3 className="font-bold text-neutral-900 mb-4">Applying MAYA to Your Copy</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <span className="text-accent font-bold">+</span>
+                      <p className="text-sm text-neutral-700"><strong>Headlines:</strong> Use a familiar format with an unexpected twist</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-accent font-bold">+</span>
+                      <p className="text-sm text-neutral-700"><strong>Offers:</strong> Present known solutions in novel packages</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-accent font-bold">+</span>
+                      <p className="text-sm text-neutral-700"><strong>Proof:</strong> Use recognizable social proof with surprising results</p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-accent font-bold">+</span>
+                      <p className="text-sm text-neutral-700"><strong>Design:</strong> Follow conventions but add one distinctive element</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+
+              {/* Three Principles */}
+              <FadeUp>
+                <h2 className="text-2xl font-bold text-neutral-900 mb-6">The Three Principles</h2>
+              </FadeUp>
+
+              <div className="space-y-4">
+                <FadeUp delay={0.1}>
+                  <PrincipleCard
+                    number="01"
+                    title="Balance New & Known"
+                    description="Too familiar and they're bored. Too novel and they're scared. Find the edge where curiosity meets comfort."
+                    insight="Test: Can they immediately categorize what you're offering? If yes, add novelty. If no, add familiarity."
+                  />
+                </FadeUp>
+                <FadeUp delay={0.2}>
+                  <PrincipleCard
+                    number="02"
+                    title="Select, Don't Sell"
+                    description="The best copy doesn't chase customers. It qualifies them. Let them prove they deserve what you're offering."
+                    insight="Flip the dynamic: Instead of 'Buy now!' try 'This isn't for everyone. Here's who it's for...'"
+                  />
+                </FadeUp>
+                <FadeUp delay={0.3}>
+                  <PrincipleCard
+                    number="03"
+                    title="Empathize, Then Frame"
+                    description="First show you understand their world. Then reshape how they see the problem. Understanding before influence."
+                    insight="Start with 'You probably...' before moving to 'What if instead...' Mirror first, then lead."
+                  />
+                </FadeUp>
+              </div>
+
+              {/* Network Image */}
+              <FadeUp delay={0.1}>
+                <div className="rounded-2xl overflow-hidden">
+                  <img src="images/influence-network.png" alt="Influence Network" className="w-full h-auto" />
+                  <p className="text-center text-sm text-neutral-500 mt-3">Everything connects. Each principle amplifies the others.</p>
+                </div>
+              </FadeUp>
+
+              {/* The Complete Framework */}
+              <FadeUp>
+                <div className="bg-dark text-white rounded-2xl p-8">
+                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">The Complete Framework</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {['Pyramid Structure', 'MAYA Principle', 'Red Button Effect', 'F.R.E.D. Method', 'Emotional Journey', 'Gatekeeper Bypass'].map((item, i) => (
+                      <motion.div
                         key={i}
-                        level={i}
-                        title={level.title}
-                        subtitle={level.subtitle}
-                        width={level.width}
-                        isActive={activeLevel === i}
-                        onClick={() => setActiveLevel(activeLevel === i ? null : i)}
-                      />
+                        className="bg-white/10 rounded-xl p-4 text-center"
+                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(245, 158, 11, 0.2)' }}
+                      >
+                        <span className="text-sm font-medium">{item}</span>
+                      </motion.div>
                     ))}
                   </div>
-                  {activeLevel !== null && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-amber-50 p-4 rounded-xl border border-amber-200"
-                    >
-                      <p className="text-sm text-neutral-700">{levels[activeLevel].desc}</p>
-                    </motion.div>
-                  )}
-                </section>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <div className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-5 h-5 bg-accent rounded flex items-center justify-center text-xs">🎨</span>
-                    The MAYA Principle
-                  </h3>
-                  <p className="text-sm text-neutral-300 mb-4">
-                    <strong className="text-white">M</strong>ost <strong className="text-white">A</strong>dvanced <strong className="text-white">Y</strong>et <strong className="text-white">A</strong>cceptable — Balance familiar with novel for maximum appeal.
-                  </p>
-                  <MayaSlider />
                 </div>
-              </Fade>
+              </FadeUp>
 
-              <Fade delay={0.1}>
-                <section>
-                  <h2 className="text-xl font-bold mb-3 text-neutral-900">Three Principles</h2>
-                  <div className="space-y-3">
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent/20 text-accent rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                        <div>
-                          <div className="text-sm font-semibold text-neutral-900">Balance New & Known</div>
-                          <div className="text-xs text-neutral-500">Too much of either kills engagement</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent/20 text-accent rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                        <div>
-                          <div className="text-sm font-semibold text-neutral-900">Select, Don't Sell</div>
-                          <div className="text-xs text-neutral-500">Let them prove they deserve it</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-neutral-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-accent/20 text-accent rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                        <div>
-                          <div className="text-sm font-semibold text-neutral-900">Empathize, Then Frame</div>
-                          <div className="text-xs text-neutral-500">First show you understand, then reshape</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <div className="rounded-xl overflow-hidden bg-neutral-50 p-4">
-                  <img src="images/influence-web.png" alt="Web of influence" className="w-full h-auto rounded-lg" />
-                  <p className="text-xs text-neutral-400 text-center mt-2">Everything connects</p>
-                </div>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <section className="bg-neutral-950 text-white p-5 rounded-xl">
-                  <h3 className="text-lg font-semibold mb-3">The Complete Blueprint</h3>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-white/10 p-2 rounded-lg">Pyramid of Persuasion</div>
-                    <div className="bg-white/10 p-2 rounded-lg">MAYA Principle</div>
-                    <div className="bg-white/10 p-2 rounded-lg">Red Button Effect</div>
-                    <div className="bg-white/10 p-2 rounded-lg">F.R.E.D. Framework</div>
-                    <div className="bg-white/10 p-2 rounded-lg">Emotional Journey</div>
-                    <div className="bg-white/10 p-2 rounded-lg">Gatekeeper Method</div>
-                  </div>
-                </section>
-              </Fade>
-
-              <Fade delay={0.1}>
-                <section className="border-l-4 border-accent pl-4 py-2">
-                  <h3 className="text-sm font-semibold text-neutral-900 mb-1">Key Takeaway</h3>
-                  <p className="text-sm text-neutral-600">
-                    <strong>Engineer your persuasion.</strong> Build Foundation (WHY) first, then Pillars (WHO/HOW), then Tactics (WHAT). Balance familiar with novel. Now go build something that converts.
+              {/* Holy Shit Moment */}
+              <FadeUp>
+                <div className="bg-accent/10 border-l-4 border-accent rounded-r-xl p-6">
+                  <p className="text-lg font-bold text-neutral-900 mb-3">
+                    The Real Secret
                   </p>
-                </section>
-              </Fade>
+                  <p className="text-neutral-700 leading-relaxed">
+                    Great persuasion doesn't feel like persuasion. It feels like the reader finally found someone who <strong>gets them</strong>. Someone who understands their problem, sees their potential, and knows the path forward.
+                  </p>
+                  <p className="text-neutral-700 leading-relaxed mt-3">
+                    Build the foundation. Establish the pillars. Then, and only then, execute the tactics. <strong>That's architecture of influence.</strong>
+                  </p>
+                </div>
+              </FadeUp>
 
-              <div className="h-8"></div>
+              {/* Key Takeaways */}
+              <FadeUp>
+                <div className="bg-dark text-white rounded-2xl p-8">
+                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Key Takeaways</h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">01</span>
+                      <span>Build foundation first, pillars second, tactics last</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">02</span>
+                      <span>Balance familiar with novel using MAYA</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">03</span>
+                      <span>Select your audience, don't chase them</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">04</span>
+                      <span>Empathize first, then frame the solution</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent font-bold">05</span>
+                      <span>Great persuasion feels like understanding</span>
+                    </li>
+                  </ul>
+                </div>
+              </FadeUp>
+
             </div>
           </main>
+
+          {/* Footer */}
+          <footer className="px-6 py-6 border-t border-neutral-100">
+            <div className="lesson-container flex justify-between text-sm text-neutral-400">
+              <span>Quantum Scale</span>
+              <span>Copywriting Series</span>
+            </div>
+          </footer>
         </div>
       );
     }
