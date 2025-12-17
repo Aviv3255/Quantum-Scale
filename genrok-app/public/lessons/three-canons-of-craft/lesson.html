@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Three Canons of Sentence Craft | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .accent-gradient { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .accent-text { color: #f59e0b; }
+        .accent-border { border-color: #f59e0b; }
+        .accent-bg { background-color: #f59e0b; }
+        .accent-bg-light { background-color: rgba(245, 158, 11, 0.1); }
+    </style>
+</head>
+<body class="bg-white text-neutral-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // Icon Components
+        const EyeIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+        );
+
+        const CheckCircleIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const FingerprintIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+            </svg>
+        );
+
+        const CheckIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+        );
+
+        const XIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        );
+
+        const TargetIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        );
+
+        // Canon Tester Component
+        const CanonTester = () => {
+            const [currentExample, setCurrentExample] = useState(0);
+            const [showResults, setShowResults] = useState(false);
+
+            const examples = [
+                {
+                    copy: "Don't just get a job, change an entire industry.",
+                    visualize: { pass: false, note: "Can't picture 'changing an industry'" },
+                    falsify: { pass: false, note: "Can't prove or disprove this claim" },
+                    unique: { pass: false, note: "Any company could say this" },
+                    verdict: "FAILS all three canons. Empty motivational fluff."
+                },
+                {
+                    copy: "Worn by supermodels in London and dads in Ohio.",
+                    visualize: { pass: true, note: "You can picture both scenes vividly" },
+                    falsify: { pass: true, note: "Supermodels wore them. Dads wear them. Provable." },
+                    unique: { pass: true, note: "Only New Balance can claim this juxtaposition" },
+                    verdict: "PASSES all three canons. Memorable and ownable."
+                },
+                {
+                    copy: "We provide innovative solutions for modern businesses.",
+                    visualize: { pass: false, note: "'Solutions' is invisible - can't drop it on your foot" },
+                    falsify: { pass: false, note: "What is 'innovative'? Says who?" },
+                    unique: { pass: false, note: "Every competitor says identical words" },
+                    verdict: "FAILS all three canons. Corporate nothing-speak."
+                },
+                {
+                    copy: "Go from couch to 5K in 8 weeks, even if you haven't run since high school gym class.",
+                    visualize: { pass: true, note: "Couch, 5K race, high school gym - all pictures" },
+                    falsify: { pass: true, note: "8 weeks is measurable, 5K is specific" },
+                    unique: { pass: true, note: "The 'high school gym class' detail is specific" },
+                    verdict: "PASSES all three canons. Concrete and believable."
+                }
+            ];
+
+            const handleNext = () => {
+                setShowResults(false);
+                setCurrentExample((prev) => (prev + 1) % examples.length);
+            };
+
+            return (
+                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
+                    <div className="p-6 border-b border-neutral-100">
+                        <p className="text-sm text-neutral-500 mb-2">Example {currentExample + 1} of {examples.length}</p>
+                        <p className="text-lg font-medium text-neutral-900 italic">"{examples[currentExample].copy}"</p>
+                    </div>
+
+                    {!showResults ? (
+                        <div className="p-6 bg-neutral-50">
+                            <p className="text-neutral-600 mb-4">Does this copy pass the three canons?</p>
+                            <button
+                                onClick={() => setShowResults(true)}
+                                className="px-6 py-2 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors"
+                            >
+                                Reveal Analysis
+                            </button>
+                        </div>
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="p-6"
+                        >
+                            <div className="space-y-4 mb-6">
+                                {[
+                                    { name: 'Can I visualize it?', result: examples[currentExample].visualize },
+                                    { name: 'Can I falsify it?', result: examples[currentExample].falsify },
+                                    { name: 'Can nobody else say it?', result: examples[currentExample].unique }
+                                ].map((canon, i) => (
+                                    <div key={i} className="flex items-start gap-3">
+                                        {canon.result.pass ? (
+                                            <span className="text-emerald-500 mt-0.5"><CheckIcon /></span>
+                                        ) : (
+                                            <span className="text-red-500 mt-0.5"><XIcon /></span>
+                                        )}
+                                        <div>
+                                            <p className={`font-medium ${canon.result.pass ? 'text-emerald-700' : 'text-red-700'}`}>
+                                                {canon.name}
+                                            </p>
+                                            <p className="text-sm text-neutral-600">{canon.result.note}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="p-4 bg-neutral-900 rounded-xl text-white mb-4">
+                                <p className="font-medium">{examples[currentExample].verdict}</p>
+                            </div>
+
+                            <button
+                                onClick={handleNext}
+                                className="px-6 py-2 bg-neutral-200 text-neutral-700 rounded-lg font-medium hover:bg-neutral-300 transition-colors"
+                            >
+                                Next Example
+                            </button>
+                        </motion.div>
+                    )}
+                </div>
+            );
+        };
+
+        // Canon Card Component
+        const CanonCard = ({ canon, index }) => {
+            const [isExpanded, setIsExpanded] = useState(false);
+
+            return (
+                <motion.div
+                    className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                >
+                    <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="w-full p-6 flex items-center justify-between hover:bg-neutral-50 transition-colors"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl accent-bg text-white flex items-center justify-center font-bold text-xl">
+                                {index + 1}
+                            </div>
+                            <div className="text-left">
+                                <h3 className="font-semibold text-lg">{canon.title}</h3>
+                                <p className="text-neutral-500 text-sm">{canon.subtitle}</p>
+                            </div>
+                        </div>
+                        <motion.span
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            className="text-neutral-400"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </motion.span>
+                    </button>
+
+                    <AnimatePresence>
+                        {isExpanded && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="px-6 pb-6 pt-2 border-t border-neutral-100">
+                                    <p className="text-neutral-700 mb-6 leading-relaxed">{canon.description}</p>
+
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        <div className="p-4 bg-red-50 rounded-lg border border-red-100">
+                                            <p className="text-xs font-medium text-red-600 uppercase tracking-wide mb-2">Bad Example</p>
+                                            <p className="text-neutral-700 italic">"{canon.bad}"</p>
+                                        </div>
+                                        <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                                            <p className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-2">Good Example</p>
+                                            <p className="text-neutral-700 italic">"{canon.good}"</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 p-4 bg-amber-50 rounded-lg">
+                                        <p className="text-sm text-amber-800"><strong>The Test:</strong> {canon.test}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
+            );
+        };
+
+        // Main Lesson Component
+        const Lesson = () => {
+            const canons = [
+                {
+                    title: 'Can I Visualize It?',
+                    subtitle: 'Concrete vs. Abstract',
+                    icon: <EyeIcon />,
+                    description: 'Abstract words are intangible and forgettable. You can\'t drop "a better way" or "seamless transition" on your foot. Your brain can\'t see them, so it can\'t remember them. But concrete words create mental pictures: a charging pitbull, a leg of lamb, a red Ferrari. The brain processes images far faster than concepts, and images stick in memory much longer. When New Balance writes "Worn by supermodels in London and dads in Ohio," you see both scenes instantly. That\'s visualization at work. When a corporate site writes "enabling digital transformation," your brain just glazes over.',
+                    bad: 'We offer seamless integration and better outcomes.',
+                    good: 'Connect your apps in 3 clicks. See results on your dashboard by tomorrow.',
+                    test: 'Can you draw it? If not, it\'s too abstract.'
+                },
+                {
+                    title: 'Can I Falsify It?',
+                    subtitle: 'Provable vs. Subjective Fluff',
+                    icon: <CheckCircleIcon />,
+                    description: 'Subjective claims like "we\'re the best" or "he\'s intelligent" are just talk. They\'re opinions disguised as facts, and readers have learned to ignore them. But falsifiable claims can be proven true or false: "We\'ve served 10,000 customers" or "Our clients average 34% revenue increase." The key insight here is that you can\'t just talk. You can only point to evidence. Show screenshots, share numbers, display testimonials, cite research. If someone could theoretically check your claim and prove it wrong, that\'s what makes it believable. Unfalsifiable claims provide no evidence because they make no real commitment.',
+                    bad: 'Gold is a great investment.',
+                    good: 'Gold has outperformed the S&P 500 over the last 20 years. Here\'s the chart.',
+                    test: 'Could someone prove you wrong? If not, it\'s just opinion.'
+                },
+                {
+                    title: 'Can Nobody Else Say It?',
+                    subtitle: 'Unique & Specific vs. Generic',
+                    icon: <FingerprintIcon />,
+                    description: 'If your competitor could swap their name into your copy and it would still work, you\'ve failed this canon. Great copy is so specific to your offer, your story, your unique proof that nobody else could legitimately claim it. This is what Harry Dry means by "write copy that can\'t be copied." Own your message completely by mining your unique details: your founder\'s background, your origin story, your specific methodology, your verifiable results. Generic claims are safe but forgettable. Specific, ownable claims are memorable and impossible to steal.',
+                    bad: 'We provide quality service at competitive prices.',
+                    good: 'The only CRM built by salespeople who\'ve closed $47M in deals ourselves.',
+                    test: 'Could a competitor say the exact same thing? If yes, start over.'
+                }
+            ];
+
+            return (
+                <div className="min-h-screen">
+                    {/* Hero Section - Black Background */}
+                    <section className="bg-neutral-950 text-white py-20 relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-600 rounded-full blur-3xl"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto px-6 relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <span className="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-6">
+                                    Sentence Craft
+                                </span>
+                                <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                                    The Three Canons of Craft
+                                </h1>
+                                <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed">
+                                    Every sentence you write must pass a three-part test. If you get three "yeses," you're onto something. Three "nos" means you've written rubbish.
+                                </p>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Main Content - White Background */}
+                    <section className="py-16 px-6">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Introduction */}
+                            <motion.div
+                                className="prose prose-lg max-w-none mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    Marketing mind Harry Dry developed a simple three-part test that separates memorable copy from forgettable fluff. Before you publish any sentence, it must answer "yes" to all three questions. This isn't about being clever or creative. It's about being concrete, credible, and uniquely yours. The best copywriters in the world use some version of this test, whether they realize it or not.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    Most corporate copy fails all three canons spectacularly. It's abstract ("innovative solutions"), unprovable ("industry-leading"), and generic ("trusted by businesses worldwide"). This language feels safe to the person writing it, but it communicates nothing to the person reading it. It's the verbal equivalent of beige wallpaper. Nobody notices it, nobody remembers it, and nobody acts on it. Yet companies pay millions to produce it.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    The three canons force you to write differently. They demand specificity where others default to vagueness. They require evidence where others hide behind subjective claims. They insist on ownership where others settle for copyable generics. When you commit to passing all three tests, your copy transforms from corporate-speak into language that creates mental pictures, builds genuine belief, and could only come from your company, your story, your proof.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed">
+                                    Here's the uncomfortable truth: most sentences you've written in your marketing probably fail at least two of these canons. That's not because you're a bad writer. It's because nobody taught you to test your words this way. The three canons aren't intuitive. They go against the "safe" corporate instinct to sound professional by saying nothing. But once you learn them, you can never unsee the difference between copy that passes and copy that fails.
+                                </p>
+                            </motion.div>
+
+                            {/* Why These Canons Work */}
+                            <motion.div
+                                className="mb-16 p-8 bg-amber-50 rounded-2xl border border-amber-100"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.25 }}
+                            >
+                                <h2 className="text-xl font-bold mb-4 text-amber-900">Why These Canons Work</h2>
+                                <p className="text-neutral-700 leading-relaxed mb-4">
+                                    The three canons aren't arbitrary rules invented by marketers. They're based on how the human brain actually processes information. Neuroscience shows that visual, concrete information activates more brain regions than abstract concepts, making it easier to understand and remember. Falsifiable claims trigger our natural skepticism detector differently than vague assertions, building genuine trust rather than passive acceptance.
+                                </p>
+                                <p className="text-neutral-700 leading-relaxed">
+                                    And specificity creates the "oddly specific detail" effect that researchers have found makes statements significantly more believable. When you say "47% increase" instead of "significant improvement," readers assume you must have measured it precisely. The canons work because they align with cognitive reality, not because they're clever marketing tricks.
+                                </p>
+                            </motion.div>
+
+                            {/* The Three Canons */}
+                            <motion.div
+                                className="mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-4">The Three Unbreakable Canons</h2>
+                                <p className="text-neutral-600 mb-8">Click each canon to explore it in detail with examples of what passes and what fails:</p>
+                                <div className="space-y-4">
+                                    {canons.map((canon, index) => (
+                                        <CanonCard key={index} canon={canon} index={index} />
+                                    ))}
+                                </div>
+                            </motion.div>
+
+                            {/* Interactive Tester */}
+                            <motion.div
+                                className="mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-6">Test Your Judgment</h2>
+                                <p className="text-neutral-600 mb-8">Analyze these real-world examples against the three canons. Before revealing the analysis, try to judge each sentence yourself. Can you visualize it? Can you falsify it? Could nobody else say it?</p>
+                                <CanonTester />
+                            </motion.div>
+
+                            {/* Common Mistakes Section */}
+                            <motion.div
+                                className="mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-6">Common Mistakes to Avoid</h2>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="p-6 bg-neutral-50 rounded-xl border border-neutral-200">
+                                        <h3 className="font-semibold text-lg mb-3 text-neutral-900">Thinking Abstract Sounds Professional</h3>
+                                        <p className="text-neutral-600 leading-relaxed">
+                                            Many writers believe that vague, formal language sounds more "professional." The opposite is true. Specificity signals expertise. Saying "increase revenue by 23%" demonstrates you actually measure things. Saying "improve outcomes" suggests you have nothing real to report.
+                                        </p>
+                                    </div>
+                                    <div className="p-6 bg-neutral-50 rounded-xl border border-neutral-200">
+                                        <h3 className="font-semibold text-lg mb-3 text-neutral-900">Avoiding Specifics for Fear of Being Wrong</h3>
+                                        <p className="text-neutral-600 leading-relaxed">
+                                            Writers stay vague because specific claims can be challenged. But this safety comes at a cost. Vague claims are unchallengeable because they say nothing. Readers instinctively know this. Better to make a specific claim you can back up than a vague claim nobody believes anyway.
+                                        </p>
+                                    </div>
+                                    <div className="p-6 bg-neutral-50 rounded-xl border border-neutral-200">
+                                        <h3 className="font-semibold text-lg mb-3 text-neutral-900">Copying Competitor Language</h3>
+                                        <p className="text-neutral-600 leading-relaxed">
+                                            When you copy what competitors say, you guarantee failure on the third canon. If they say "industry-leading solutions," so do you, so does everyone. Instead, find what makes your story uniquely yours. Your origin, your method, your specific results that no competitor can claim truthfully.
+                                        </p>
+                                    </div>
+                                    <div className="p-6 bg-neutral-50 rounded-xl border border-neutral-200">
+                                        <h3 className="font-semibold text-lg mb-3 text-neutral-900">Passing One Canon But Not All Three</h3>
+                                        <p className="text-neutral-600 leading-relaxed">
+                                            Sometimes copy passes one or two canons but not all three. A concrete image that any competitor could use fails the uniqueness test. A unique claim that cannot be verified fails the falsifiability test. All three canons must pass together for copy to truly work.
+                                        </p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Dark Section - Application */}
+                    <section className="bg-neutral-950 text-white py-16 px-6">
+                        <div className="max-w-4xl mx-auto">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                                    <span className="text-amber-400"><TargetIcon /></span>
+                                    How to Apply the Three Canons
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold">1</div>
+                                        <div>
+                                            <h4 className="font-semibold mb-2 text-white">Audit Your Existing Copy</h4>
+                                            <p className="text-neutral-400 leading-relaxed">Go through your website, emails, and ads sentence by sentence. Mark each one that fails any canon. You'll likely find most of your "professional" copy is abstract, unprovable, and generic. This is normal. Now fix it.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold">2</div>
+                                        <div>
+                                            <h4 className="font-semibold mb-2 text-white">Replace Abstract with Concrete</h4>
+                                            <p className="text-neutral-400 leading-relaxed">Every time you write an abstract word, ask "what does this look like?" Instead of "improve performance," write "cut your load time from 6 seconds to under 2." Instead of "better results," write "3x more leads without increasing ad spend."</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold">3</div>
+                                        <div>
+                                            <h4 className="font-semibold mb-2 text-white">Back Every Claim with Evidence</h4>
+                                            <p className="text-neutral-400 leading-relaxed">If you claim something, point to proof. Screenshots, numbers, testimonials, case studies, research citations. If you can't point to evidence, either find it or don't make the claim. "You can't talk, you can only point."</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold">4</div>
+                                        <div>
+                                            <h4 className="font-semibold mb-2 text-white">Find Your Unique Details</h4>
+                                            <p className="text-neutral-400 leading-relaxed">Mine your story for specifics only you can claim. Your founder's background, your methodology, your client results, your origin story. The more specific and verifiable, the more ownable your message becomes.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Key Takeaways */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <motion.div
+                                className="bg-white rounded-2xl p-8 shadow-sm border border-neutral-200"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                                <div className="space-y-4">
+                                    {[
+                                        'Every sentence must pass three tests: Can I visualize it? Can I falsify it? Can nobody else say it?',
+                                        'Three yeses means strong copy. Three nos means rubbish. Rewrite until you pass all three.',
+                                        'Concrete beats abstract. If you can\'t draw it, your reader can\'t remember it.',
+                                        'You can\'t talk, you can only point. Back every claim with evidence or don\'t make it.',
+                                        'If a competitor could swap their name into your copy, it\'s too generic. Own your message.',
+                                        'Most "professional" copy fails all three canons. That\'s why most marketing is forgettable.'
+                                    ].map((takeaway, index) => (
+                                        <motion.div
+                                            key={index}
+                                            className="flex items-start gap-3"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: index * 0.1 }}
+                                        >
+                                            <span className="flex-shrink-0 w-6 h-6 rounded-full accent-bg text-white flex items-center justify-center">
+                                                <CheckIcon />
+                                            </span>
+                                            <p className="text-neutral-700">{takeaway}</p>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-neutral-950 text-white py-12 px-6">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <p className="text-neutral-400 text-sm">
+                                Part of the Sentence Craft series from Quantum Scale
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<Lesson />, document.getElementById('root'));
+    </script>
+</body>
+</html>

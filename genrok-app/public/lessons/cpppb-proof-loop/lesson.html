@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The CPPPB Proof Loop | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .accent-gradient { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .accent-text { color: #8b5cf6; }
+        .accent-border { border-color: #8b5cf6; }
+        .accent-bg { background-color: #8b5cf6; }
+        .accent-bg-light { background-color: rgba(139, 92, 246, 0.1); }
+    </style>
+</head>
+<body class="bg-white text-neutral-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // Icon Components
+        const ShieldIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        );
+
+        const ChartIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+        );
+
+        const TargetIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        );
+
+        const AlertIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        );
+
+        const SparklesIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+        );
+
+        const CheckIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+        );
+
+        const ArrowRightIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+        );
+
+        const RefreshIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        );
+
+        // CPPPB Step Data
+        const cpppbSteps = [
+            {
+                letter: 'C',
+                title: 'Credibility',
+                description: 'Establish why you can be trusted before you say anything else. Credentials, experience, recognition, testimonials from respected sources. This must come first because everything after it depends on belief.',
+                examples: ['20 years as a direct response copywriter', 'Clients include Apple, Nike, and 500+ startups', 'Featured in Forbes, WSJ, and Harvard Business Review'],
+                color: 'violet'
+            },
+            {
+                letter: 'P',
+                title: 'Problem',
+                description: 'Articulate the reader\'s pain better than they can themselves. When you describe their problem perfectly, they assume you have the solution. Go deep into the frustration, the failed attempts, the real cost of staying stuck.',
+                examples: ['Spending hours on copy that doesn\'t convert', 'Watching competitors win with inferior products', 'Feeling like you\'re guessing instead of knowing'],
+                color: 'red'
+            },
+            {
+                letter: 'P',
+                title: 'Promise',
+                description: 'State clearly what transformation you offer. This isn\'t your product features. It\'s the outcome, the after state, what life looks like when the problem is solved. Make it specific and visualizable.',
+                examples: ['Write sales pages in 2 hours that convert at 5%+', 'Know exactly which words will move your prospect', 'Never stare at a blank page wondering what to write'],
+                color: 'emerald'
+            },
+            {
+                letter: 'P',
+                title: 'Proof',
+                description: 'Back up your promise with evidence. Case studies, testimonials, screenshots, data, before/after comparisons. The bigger the promise, the more proof required. Stack it until disbelief becomes impossible.',
+                examples: ['Screenshots of 6-figure campaigns', 'Video testimonials from recognizable names', 'Detailed case studies with real numbers'],
+                color: 'blue'
+            },
+            {
+                letter: 'B',
+                title: 'Benefits',
+                description: 'Translate everything into reader outcomes. Not what your product does, but what it means for them. Paint the picture of their transformed life. Make the benefits emotional, specific, and personally relevant.',
+                examples: ['More time with family instead of at the keyboard', 'Confidence that your marketing actually works', 'The freedom to charge what you\'re worth'],
+                color: 'amber'
+            }
+        ];
+
+        // Interactive CPPPB Builder
+        const CPPPBBuilder = () => {
+            const [activeStep, setActiveStep] = useState(0);
+            const [userInputs, setUserInputs] = useState({
+                credibility: '',
+                problem: '',
+                promise: '',
+                proof: '',
+                benefits: ''
+            });
+
+            const stepKeys = ['credibility', 'problem', 'promise', 'proof', 'benefits'];
+
+            const handleInputChange = (value) => {
+                setUserInputs(prev => ({
+                    ...prev,
+                    [stepKeys[activeStep]]: value
+                }));
+            };
+
+            return (
+                <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
+                    {/* Step Indicators */}
+                    <div className="flex border-b border-neutral-100">
+                        {cpppbSteps.map((step, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setActiveStep(index)}
+                                className={`flex-1 py-4 text-center font-bold text-lg transition-all ${
+                                    activeStep === index
+                                        ? 'bg-violet-500 text-white'
+                                        : 'bg-neutral-50 text-neutral-400 hover:bg-neutral-100'
+                                }`}
+                            >
+                                {step.letter}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Active Step Content */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeStep}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="p-6"
+                        >
+                            <h3 className="text-xl font-bold mb-2">{cpppbSteps[activeStep].title}</h3>
+                            <p className="text-neutral-600 mb-4">{cpppbSteps[activeStep].description}</p>
+
+                            <div className="mb-4">
+                                <p className="text-sm font-medium text-neutral-500 mb-2">Examples:</p>
+                                <ul className="space-y-1">
+                                    {cpppbSteps[activeStep].examples.map((ex, i) => (
+                                        <li key={i} className="text-sm text-neutral-600 flex items-center gap-2">
+                                            <span className="text-violet-500"><CheckIcon /></span>
+                                            {ex}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="flex gap-4 mt-6">
+                                {activeStep > 0 && (
+                                    <button
+                                        onClick={() => setActiveStep(prev => prev - 1)}
+                                        className="px-4 py-2 bg-neutral-100 text-neutral-600 rounded-lg hover:bg-neutral-200 transition-colors"
+                                    >
+                                        Previous
+                                    </button>
+                                )}
+                                {activeStep < 4 && (
+                                    <button
+                                        onClick={() => setActiveStep(prev => prev + 1)}
+                                        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition-colors flex items-center gap-2"
+                                    >
+                                        Next <ArrowRightIcon />
+                                    </button>
+                                )}
+                                {activeStep === 4 && (
+                                    <button
+                                        onClick={() => setActiveStep(0)}
+                                        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition-colors flex items-center gap-2"
+                                    >
+                                        Start Over <RefreshIcon />
+                                    </button>
+                                )}
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            );
+        };
+
+        // Visual Loop Diagram
+        const LoopDiagram = () => {
+            const [hoveredIndex, setHoveredIndex] = useState(null);
+
+            return (
+                <div className="relative py-8">
+                    <div className="flex justify-center items-center gap-2 md:gap-4 flex-wrap">
+                        {cpppbSteps.map((step, index) => (
+                            <React.Fragment key={index}>
+                                <motion.div
+                                    className="relative"
+                                    onHoverStart={() => setHoveredIndex(index)}
+                                    onHoverEnd={() => setHoveredIndex(null)}
+                                    whileHover={{ scale: 1.1 }}
+                                >
+                                    <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl md:text-3xl shadow-lg cursor-pointer ${
+                                        index === 0 ? 'bg-violet-500' :
+                                        index === 1 ? 'bg-red-500' :
+                                        index === 2 ? 'bg-emerald-500' :
+                                        index === 3 ? 'bg-blue-500' :
+                                        'bg-amber-500'
+                                    }`}>
+                                        {step.letter}
+                                    </div>
+                                    <AnimatePresence>
+                                        {hoveredIndex === index && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1.5 bg-neutral-900 text-white text-sm rounded-lg whitespace-nowrap z-10"
+                                            >
+                                                {step.title}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                                {index < 4 && (
+                                    <div className="text-neutral-300">
+                                        <ArrowRightIcon />
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <p className="text-center text-neutral-500 mt-6 text-sm">Hover over each letter to see its meaning</p>
+                </div>
+            );
+        };
+
+        // Main Lesson Component
+        const Lesson = () => {
+            return (
+                <div className="min-h-screen">
+                    {/* Hero Section - Black Background */}
+                    <section className="bg-neutral-950 text-white py-20 relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-600 rounded-full blur-3xl"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto px-6 relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <span className="inline-block px-4 py-1.5 bg-violet-500/20 text-violet-400 rounded-full text-sm font-medium mb-6">
+                                    Persuasion Framework
+                                </span>
+                                <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                                    The CPPPB Proof Loop
+                                </h1>
+                                <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed">
+                                    A five-element framework for building bulletproof persuasion. Each element feeds the next, creating an unbreakable chain of belief.
+                                </p>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Main Content - White Background */}
+                    <section className="py-16 px-6">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Introduction */}
+                            <motion.div
+                                className="prose prose-lg max-w-none mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    Most marketing fails because it puts elements in the wrong order. You can't make a promise before establishing credibility. You can't offer benefits before proving your claims. The CPPPB framework gives you the exact sequence that matches how human belief actually works. Each element builds on the previous one, creating compound persuasion that's far stronger than any single element alone.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    CPPPB stands for Credibility, Problem, Promise, Proof, and Benefits. This isn't just an acronym to remember. It's a complete system for structuring any piece of persuasive communication, from a sales page to a proposal to an email sequence. When you follow this sequence, you're working with psychology rather than against it. You're answering objections in the order they naturally arise in the reader's mind.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
+                                    The reason this framework works so well is that it mirrors the internal dialogue your prospect is already having. Before they can believe your solution works, they need to believe you understand their problem. Before they can trust your promise, they need to trust you're qualified to make it. The CPPPB sequence respects this reality and builds belief systematically rather than randomly.
+                                </p>
+                                <p className="text-lg text-neutral-700 leading-relaxed">
+                                    Think of CPPPB as a trust ladder. Each rung must be climbed before the next can bear weight. Skip a rung and the whole thing collapses. But climb them in order, and you'll reach heights of persuasion that scattered, unstructured copy never achieves.
+                                </p>
+                            </motion.div>
+
+                            {/* Visual Loop Diagram */}
+                            <motion.div
+                                className="mb-16 p-8 bg-neutral-50 rounded-2xl"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-4 text-center">The Sequence</h2>
+                                <LoopDiagram />
+                            </motion.div>
+
+                            {/* The Five Elements */}
+                            <motion.div
+                                className="mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-8">The Five Elements Explained</h2>
+                                <div className="space-y-6">
+                                    {cpppbSteps.map((step, index) => (
+                                        <motion.div
+                                            key={index}
+                                            className="border border-neutral-200 rounded-xl overflow-hidden"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.1 * index }}
+                                        >
+                                            <div className={`p-6 flex items-start gap-4 ${
+                                                index === 0 ? 'bg-violet-50' :
+                                                index === 1 ? 'bg-red-50' :
+                                                index === 2 ? 'bg-emerald-50' :
+                                                index === 3 ? 'bg-blue-50' :
+                                                'bg-amber-50'
+                                            }`}>
+                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0 ${
+                                                    index === 0 ? 'bg-violet-500' :
+                                                    index === 1 ? 'bg-red-500' :
+                                                    index === 2 ? 'bg-emerald-500' :
+                                                    index === 3 ? 'bg-blue-500' :
+                                                    'bg-amber-500'
+                                                }`}>
+                                                    {step.letter}
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
+                                                    <p className="text-neutral-700 leading-relaxed mb-4">{step.description}</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {step.examples.map((ex, i) => (
+                                                            <span key={i} className="text-xs px-3 py-1 bg-white rounded-full text-neutral-600 border border-neutral-200">
+                                                                {ex}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+
+                            {/* Interactive Builder */}
+                            <motion.div
+                                className="mb-16"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                <h2 className="text-2xl font-bold mb-6">Explore the Framework</h2>
+                                <p className="text-neutral-600 mb-8">Click through each element to understand how they work together in sequence:</p>
+                                <CPPPBBuilder />
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Dark Section - Why Order Matters */}
+                    <section className="bg-neutral-950 text-white py-16 px-6">
+                        <div className="max-w-4xl mx-auto">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                                    <span className="text-violet-400"><RefreshIcon /></span>
+                                    Why Sequence Matters
+                                </h2>
+
+                                <div className="grid md:grid-cols-2 gap-8 mb-8">
+                                    <div className="p-6 bg-neutral-900 rounded-xl">
+                                        <h3 className="font-semibold text-lg mb-3 text-red-400">Wrong Order</h3>
+                                        <p className="text-neutral-400 leading-relaxed mb-4">
+                                            "Double your sales! (Promise) Our tool has amazing features. (Benefits) Customers love us! (Proof) We've been in business 10 years. (Credibility) Sound familiar? (Problem)"
+                                        </p>
+                                        <p className="text-sm text-neutral-500">This feels like a typical pushy sales pitch. Readers are skeptical before they've even started.</p>
+                                    </div>
+                                    <div className="p-6 bg-neutral-900 rounded-xl">
+                                        <h3 className="font-semibold text-lg mb-3 text-emerald-400">Right Order (CPPPB)</h3>
+                                        <p className="text-neutral-400 leading-relaxed mb-4">
+                                            "After 10 years helping 500+ companies... (Credibility) I know you're frustrated with marketing that doesn't work. (Problem) There's a better way. (Promise) Here's proof. (Proof) Imagine what changes. (Benefits)"
+                                        </p>
+                                        <p className="text-sm text-neutral-500">This builds belief step by step. Each element makes the next more powerful.</p>
+                                    </div>
+                                </div>
+
+                                <p className="text-neutral-300 leading-relaxed">
+                                    The difference isn't subtle. The wrong order triggers immediate skepticism. The right order guides the reader through a natural progression of belief. By the time you reach your promise, they're already leaning forward. By the time you show proof, they're nodding along. By the time you paint the benefits, they're imagining themselves in that future state. That's the power of sequence.
+                                </p>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Common Applications */}
+                    <section className="py-16 px-6">
+                        <div className="max-w-4xl mx-auto">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-2xl font-bold mb-8">Where to Apply CPPPB</h2>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="p-6 bg-violet-50 rounded-xl border border-violet-100">
+                                        <h3 className="font-semibold mb-3">Sales Pages</h3>
+                                        <p className="text-sm text-neutral-600 leading-relaxed">
+                                            Use CPPPB as your main structure. Credibility section, problem section, big promise, proof stacking, then benefits-focused close.
+                                        </p>
+                                    </div>
+                                    <div className="p-6 bg-violet-50 rounded-xl border border-violet-100">
+                                        <h3 className="font-semibold mb-3">Email Sequences</h3>
+                                        <p className="text-sm text-neutral-600 leading-relaxed">
+                                            Spread CPPPB across multiple emails. Email 1: Credibility story. Email 2: Problem deep-dive. Email 3: Promise. And so on.
+                                        </p>
+                                    </div>
+                                    <div className="p-6 bg-violet-50 rounded-xl border border-violet-100">
+                                        <h3 className="font-semibold mb-3">Proposals & Pitches</h3>
+                                        <p className="text-sm text-neutral-600 leading-relaxed">
+                                            Structure client proposals with CPPPB. Lead with why you're qualified, show you understand their situation, then present your solution.
+                                        </p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Key Takeaways */}
+                    <section className="py-16 px-6 bg-neutral-50">
+                        <div className="max-w-4xl mx-auto">
+                            <motion.div
+                                className="bg-white rounded-2xl p-8 shadow-sm border border-neutral-200"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                            >
+                                <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
+                                <div className="space-y-4">
+                                    {[
+                                        'CPPPB stands for Credibility, Problem, Promise, Proof, Benefits - in that exact order.',
+                                        'Sequence matters because belief builds progressively. Skip a step and the chain breaks.',
+                                        'Credibility must come first. Without trust, nothing else matters.',
+                                        'Describe the problem better than they can describe it themselves. This proves you understand.',
+                                        'Your promise is the outcome, not your product. What changes in their life?',
+                                        'Stack proof until disbelief becomes impossible. The bigger the promise, the more proof required.',
+                                        'Benefits translate features into personal meaning. Not what it does, but what it means for them.',
+                                        'Use CPPPB for sales pages, email sequences, proposals, presentations, and any persuasive content.'
+                                    ].map((takeaway, index) => (
+                                        <motion.div
+                                            key={index}
+                                            className="flex items-start gap-3"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: index * 0.1 }}
+                                        >
+                                            <span className="flex-shrink-0 w-6 h-6 rounded-full accent-bg text-white flex items-center justify-center">
+                                                <CheckIcon />
+                                            </span>
+                                            <p className="text-neutral-700">{takeaway}</p>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-neutral-950 text-white py-12 px-6">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <p className="text-neutral-400 text-sm">
+                                Part of the Persuasion Framework series from Quantum Scale
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<Lesson />, document.getElementById('root'));
+    </script>
+</body>
+</html>
