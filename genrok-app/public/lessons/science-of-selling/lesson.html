@@ -15,7 +15,7 @@
       theme: {
         extend: {
           colors: {
-            accent: '#3b82f6',
+            accent: '#6366f1',
             dark: '#0a0a0a',
           }
         }
@@ -26,17 +26,92 @@
     * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #111827; }
     .lesson-container { max-width: 720px; margin: 0 auto; }
+    .glow-accent { box-shadow: 0 0 60px rgba(99, 102, 241, 0.3); }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView } = window.Motion;
+    const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    const smoothEase = [0.25, 0.1, 0.25, 1];
 
+    // SVG Icons
+    const Icons = {
+      trophy: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0016.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a9.996 9.996 0 01-5.52 1.772 9.996 9.996 0 01-5.52-1.772" />
+        </svg>
+      ),
+      trendUp: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+        </svg>
+      ),
+      trendDown: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181" />
+        </svg>
+      ),
+      target: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="6" />
+          <circle cx="12" cy="12" r="2" fill="currentColor" />
+        </svg>
+      ),
+      user: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+      ),
+      lightbulb: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+        </svg>
+      ),
+      cursor: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+        </svg>
+      ),
+      eye: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      search: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+      ),
+      check: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      ),
+      x: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      ),
+      spark: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+        </svg>
+      ),
+      fire: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+        </svg>
+      )
+    };
+
+    // Animation Components
     function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -45,6 +120,19 @@
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay, ease: smoothEase }}>
+          {children}
+        </motion.div>
+      );
+    }
+
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
@@ -68,281 +156,452 @@
       return <span ref={ref}>{prefix}{count}{suffix}</span>;
     }
 
-    // Toggle Switch Component (inspired by examples)
-    function ToggleRow({ label, isOn, color = "bg-green-500" }) {
+    // Sales Comparison Chart
+    function SalesChart() {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
       return (
-        <div className="flex items-center justify-between py-3 border-b border-neutral-800 last:border-0">
-          <span className="text-sm font-medium text-white uppercase tracking-wide">{label}</span>
-          <div className={`w-12 h-6 rounded-full relative ${isOn ? color : 'bg-neutral-700'} transition-colors`}>
-            <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${isOn ? 'right-1' : 'left-1'}`}></div>
+        <div ref={ref} className="grid grid-cols-2 gap-6">
+          {/* Nissan - Award Winner */}
+          <div className="bg-neutral-900 rounded-2xl p-6 border border-neutral-800">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="text-yellow-500">{Icons.trophy}</div>
+              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Award Winner</span>
+            </div>
+            <div className="text-2xl font-bold text-white mb-1">Nissan</div>
+            <svg className="w-full h-24" viewBox="0 0 120 60">
+              <defs>
+                <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#ef4444" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+              <motion.path
+                d="M 0 15 Q 30 20, 60 35 T 120 50"
+                fill="none"
+                stroke="url(#redGrad)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1.5, ease: smoothEase }}
+              />
+            </svg>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="text-red-500">{Icons.trendDown}</div>
+              <span className="text-2xl font-bold text-red-500">-<Counter end={37} suffix="%" /></span>
+            </div>
+            <p className="text-xs text-neutral-500 mt-1">Sales dropped after award</p>
+          </div>
+
+          {/* Toyota - "Boring" Ad */}
+          <div className="bg-neutral-900 rounded-2xl p-6 border border-neutral-800">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="text-neutral-500">{Icons.target}</div>
+              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Simple & Clear</span>
+            </div>
+            <div className="text-2xl font-bold text-white mb-1">Toyota</div>
+            <svg className="w-full h-24" viewBox="0 0 120 60">
+              <defs>
+                <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#22c55e" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#22c55e" stopOpacity="0.8" />
+                </linearGradient>
+              </defs>
+              <motion.path
+                d="M 0 50 Q 30 45, 60 30 T 120 10"
+                fill="none"
+                stroke="url(#greenGrad)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1.5, ease: smoothEase }}
+              />
+            </svg>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="text-green-500">{Icons.trendUp}</div>
+              <span className="text-2xl font-bold text-green-500">+<Counter end={350} suffix="K" /></span>
+            </div>
+            <p className="text-xs text-neutral-500 mt-1">Units sold with focused message</p>
           </div>
         </div>
       );
     }
 
-    // Stacked Cards Component (inspired by 4 Stages example)
-    function StackedCard({ number, title, description, isActive, onClick, totalCards }) {
-      const offset = (number - 1) * 24;
+    // Awareness Stage Navigator
+    function AwarenessNavigator() {
+      const [activeStage, setActiveStage] = useState(0);
+
+      const stages = [
+        {
+          title: "Unaware",
+          icon: Icons.eye,
+          color: "from-neutral-600 to-neutral-700",
+          description: "They don't even know they have a problem yet. Your job is to create curiosity and pattern-interrupt their daily scroll. Show them a symptom they recognize but never named.",
+          strategy: "Use intriguing headlines that make them pause. Lead with the symptom, not the solution."
+        },
+        {
+          title: "Problem Aware",
+          icon: Icons.search,
+          color: "from-red-600 to-red-700",
+          description: "They feel the pain but don't know solutions exist. They're searching, frustrated, and actively looking for answers. This is where empathy becomes your weapon.",
+          strategy: "Articulate their pain better than they can. Show you deeply understand their struggle."
+        },
+        {
+          title: "Solution Aware",
+          icon: Icons.lightbulb,
+          color: "from-amber-600 to-amber-700",
+          description: "They know solutions exist and are comparing options. They're educated and skeptical. Now you need to prove your approach is superior to every alternative.",
+          strategy: "Differentiate through mechanism. Explain WHY your solution works when others fail."
+        },
+        {
+          title: "Product Aware",
+          icon: Icons.target,
+          color: "from-blue-600 to-blue-700",
+          description: "They know who you are. They've visited your site, maybe even your checkout page. Something stopped them. Now handle objections and stack proof.",
+          strategy: "Address specific hesitations. Use testimonials and case studies heavily."
+        },
+        {
+          title: "Most Aware",
+          icon: Icons.fire,
+          color: "from-accent to-purple-600",
+          description: "They're ready to buy. They just need the right moment and the right offer. Don't oversell. Make it easy and urgent. Remove all friction.",
+          strategy: "Clear CTA, strong guarantee, limited-time offer. Make saying yes effortless."
+        }
+      ];
+
       return (
-        <motion.div
-          className={`absolute w-full cursor-pointer rounded-2xl p-5 transition-all ${isActive ? 'bg-accent' : 'bg-neutral-800'}`}
-          style={{
-            top: offset,
-            left: offset / 2,
-            zIndex: isActive ? 10 : number,
-          }}
-          onClick={onClick}
-          whileHover={{ scale: 1.02 }}
-        >
-          <div className="text-3xl font-bold text-white/40 mb-1">0{number}</div>
-          <div className="text-lg font-bold text-white mb-1">{title}</div>
-          {isActive && <div className="text-sm text-white/80">{description}</div>}
-        </motion.div>
+        <div className="space-y-6">
+          {/* Stage Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {stages.map((stage, i) => (
+              <motion.button
+                key={i}
+                onClick={() => setActiveStage(i)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl whitespace-nowrap transition-all ${
+                  activeStage === i
+                    ? 'bg-white text-black shadow-lg'
+                    : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="text-sm font-semibold">{i + 1}</span>
+                <span className="text-sm font-medium">{stage.title}</span>
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Active Stage Content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStage}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className={`bg-gradient-to-br ${stages[activeStage].color} rounded-2xl p-8`}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                  {stages[activeStage].icon}
+                </div>
+                <div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider">Stage {activeStage + 1}</div>
+                  <div className="text-2xl font-bold text-white">{stages[activeStage].title}</div>
+                </div>
+              </div>
+              <p className="text-white/90 leading-relaxed mb-6">
+                {stages[activeStage].description}
+              </p>
+              <div className="bg-black/20 rounded-xl p-4">
+                <div className="text-xs text-white/60 uppercase tracking-wider mb-2">Your Strategy</div>
+                <p className="text-white font-medium">{stages[activeStage].strategy}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       );
     }
 
-    // Animated Growth Line (inspired by gradient chart examples)
-    function GrowthChart({ isGood }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
+    // Rule of One Cards
+    function RuleOfOneCards() {
+      const rules = [
+        {
+          number: "1",
+          title: "One Reader",
+          description: "Write to a single specific person. Not a demographic. Not a segment. One human with a name, a face, and a problem that keeps them awake at night. Every word should feel like a personal letter.",
+          icon: Icons.user
+        },
+        {
+          number: "1",
+          title: "One Big Idea",
+          description: "Your copy needs one dominant thought that everything else supports. Not three good ideas. Not a clever combination. One concept so compelling it demands attention and can't be ignored.",
+          icon: Icons.lightbulb
+        },
+        {
+          number: "1",
+          title: "One Clear Offer",
+          description: "Give them one path forward. Multiple CTAs create confusion and kill conversions. One action, one button, one decision. Make the next step crystal clear and impossible to miss.",
+          icon: Icons.cursor
+        }
+      ];
 
       return (
-        <div ref={ref} className="relative h-32 bg-neutral-900 rounded-xl overflow-hidden">
-          <svg className="w-full h-full" viewBox="0 0 200 80" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id={isGood ? "goodGrad" : "badGrad"} x1="0%" y1="0%" x2="100%" y2="0%">
-                {isGood ? (
-                  <>
-                    <stop offset="0%" stopColor="#22c55e" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#22c55e" stopOpacity="1" />
-                  </>
-                ) : (
-                  <>
-                    <stop offset="0%" stopColor="#ef4444" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#ef4444" stopOpacity="0.3" />
-                  </>
-                )}
-              </linearGradient>
-            </defs>
-            <motion.path
-              d={isGood
-                ? "M 0 60 Q 50 55, 80 40 T 150 15 T 200 5"
-                : "M 0 20 Q 50 25, 80 45 T 150 65 T 200 70"
-              }
-              fill="none"
-              stroke={`url(#${isGood ? "goodGrad" : "badGrad"})`}
-              strokeWidth="3"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={isInView ? { pathLength: 1 } : {}}
-              transition={{ duration: 1.5, ease: smoothEase }}
-            />
-            <motion.circle
-              cx={isGood ? "200" : "200"}
-              cy={isGood ? "5" : "70"}
-              r="6"
-              fill="white"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 1.5 }}
-            />
-          </svg>
-          <div className="absolute bottom-2 right-3 text-xs text-neutral-500">
-            {isGood ? "Toyota" : "Nissan"} Sales
-          </div>
+        <div className="space-y-4">
+          {rules.map((rule, i) => (
+            <ScaleIn key={i} delay={i * 0.1}>
+              <motion.div
+                className="bg-white border border-neutral-200 rounded-2xl p-6 hover: transition-all"
+                whileHover={{ y: -4 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center">
+                    <span className="text-3xl font-extrabold text-accent">{rule.number}</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="text-accent">{rule.icon}</div>
+                      <h3 className="text-lg font-bold text-neutral-900">{rule.title}</h3>
+                    </div>
+                    <p className="text-neutral-600 leading-relaxed">{rule.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            </ScaleIn>
+          ))}
+        </div>
+      );
+    }
+
+    // Success vs Failure Checklist
+    function SuccessChecklist() {
+      const items = [
+        { label: "Focus entirely on the customer", success: true },
+        { label: "Lead with clear benefits", success: true },
+        { label: "Single compelling call-to-action", success: true },
+        { label: "Test results, not opinions", success: true },
+        { label: "Focus on company achievements", success: false },
+        { label: "Chase creative awards", success: false },
+        { label: "Multiple competing offers", success: false },
+        { label: "Entertain without selling", success: false }
+      ];
+
+      return (
+        <div className="grid grid-cols-2 gap-3">
+          {items.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: item.success ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className={`flex items-center gap-3 p-3 rounded-xl ${
+                item.success ? 'bg-neutral-900' : 'bg-neutral-100'
+              }`}
+            >
+              <div className={item.success ? 'text-white' : 'text-neutral-500'}>
+                {item.success ? Icons.check : Icons.x}
+              </div>
+              <span className={`text-sm font-medium ${
+                item.success ? 'text-white' : 'text-neutral-600'
+              }`}>
+                {item.label}
+              </span>
+            </motion.div>
+          ))}
         </div>
       );
     }
 
     function Lesson() {
-      const [activeStage, setActiveStage] = useState(1);
-
-      const stages = [
-        { title: "Unaware", description: "They don't know they have a problem. Create curiosity." },
-        { title: "Problem Aware", description: "They know the pain. Show you understand it deeply." },
-        { title: "Solution Aware", description: "They're looking. Prove your approach is best." },
-        { title: "Product Aware", description: "They know you. Beat the competition." },
-        { title: "Most Aware", description: "They're ready. Make the offer irresistible." },
-      ];
-
       return (
         <div className="min-h-screen bg-white">
-          {/* Header */}
-          <header className="bg-dark text-white px-6 py-12">
-            <div className="lesson-container">
+          {/* Hero Section - Dark */}
+          <header className="bg-dark text-white px-6 py-16 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
+            <div className="lesson-container relative">
               <FadeUp>
-                <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full mb-4">COPYWRITING</span>
-                <h1 className="text-3xl md:text-4xl font-extrabold mb-3 leading-tight">
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 text-xs font-semibold rounded-full mb-6 border border-white/10">
+                  {Icons.spark}
+                  CONVERSION FUNDAMENTALS
+                </span>
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
                   The Science of Selling
                 </h1>
-                <p className="text-neutral-400 text-lg">Why awards don't pay bills.</p>
+                <p className="text-xl text-neutral-400 max-w-lg">
+                  Why creativity wins awards but clarity wins wallets. The systematic approach to copy that converts.
+                </p>
+              </FadeUp>
+
+              {/* Lesson Illustration */}
+              <FadeUp>
+                <div className="my-8">
+                  <img
+                    src="images/hero-image.jpg"
+                    alt="Lesson illustration"
+                    className="w-full h-auto rounded-xl"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
+                </div>
               </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-12">
-            <div className="lesson-container space-y-16">
-
-              {/* Hook */}
+          {/* Section 1 - White: The $100 Million Lesson */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-12">
               <FadeUp>
-                <p className="text-xl text-neutral-700 leading-relaxed">
-                  In 1996, Nissan won "Commercial of the Year."<br/>
-                  Sales dropped <strong className="text-red-600">37%</strong>.
-                </p>
-                <p className="text-xl text-neutral-700 leading-relaxed mt-4">
-                  Toyota ran a "boring" ad.<br/>
-                  Sales jumped <strong className="text-green-600">350,000 units</strong>.
-                </p>
-                <p className="text-lg text-neutral-500 mt-6 italic">
-                  The lesson? An ad's only job is to sell. That's it.
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-bold text-neutral-900">The $100 Million Lesson</h2>
+                  <p className="text-lg text-neutral-600 leading-relaxed">
+                    In 1996, something remarkable happened in the automotive industry that every marketer should study. Nissan launched what advertising experts called the most creative campaign of the year. It won every award possible. Industry publications celebrated it as a masterpiece of modern marketing.
+                  </p>
+                  <p className="text-lg text-neutral-600 leading-relaxed">
+                    Meanwhile, Toyota ran what critics dismissed as a "boring" commercial. No fancy transitions. No clever metaphors. Just a clear message about what the car does and why you should buy it.
+                  </p>
+                  <p className="text-lg text-neutral-700 leading-relaxed font-medium">
+                    The result? Nissan's award-winning campaign drove sales down 37%. Toyota's "boring" ad generated 350,000 additional unit sales.
+                  </p>
+                </div>
+              </FadeUp>
+
+              {/* Sales Comparison Chart */}
+              <FadeUp delay={0.1}>
+                <SalesChart />
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <div className="bg-neutral-50 rounded-2xl p-6 border-l-4 border-accent">
+                  <p className="text-lg text-neutral-700 leading-relaxed">
+                    This isn't an anomaly. It's a pattern that repeats across industries and decades. <strong>Clarity beats creativity every single time.</strong> An advertisement has one job: to sell. Entertainment is a bonus. Memorability without conversion is just an expensive brand exercise.
+                  </p>
+                </div>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 2 - Dark: The 5 Stages of Awareness */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-12">
+              <FadeUp>
+                <h2 className="text-3xl font-bold">The 5 Stages of Awareness</h2>
+                <p className="text-neutral-400 text-lg max-w-2xl">
+                  Eugene Schwartz revolutionized copywriting with a simple insight: your prospect exists somewhere on a spectrum of awareness. Your job is to meet them exactly where they are and guide them forward.
                 </p>
               </FadeUp>
 
-              {/* Visual: Growth Charts */}
               <FadeUp delay={0.1}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <GrowthChart isGood={false} />
-                    <div className="mt-2 text-center">
-                      <span className="text-2xl font-bold text-red-500">-<Counter end={37} suffix="%" /></span>
-                      <p className="text-xs text-neutral-500">"Award Winner"</p>
+                <AwarenessNavigator />
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-neutral-300 leading-relaxed">
+                  The fatal mistake most marketers make is assuming everyone is at Stage 4 or 5. They jump straight to features and pricing when their audience hasn't even acknowledged the problem. Speaking to the wrong awareness level is like trying to close a sale before the customer walks in the door.
+                </p>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 3 - White: The Rule of One */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-12">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-neutral-900">The Rule of One</h2>
+                <p className="text-lg text-neutral-600 leading-relaxed">
+                  The most powerful principle in direct response copywriting is counterintuitive: <strong>less is exponentially more.</strong> Every additional idea, offer, or call-to-action dilutes your message and kills conversions. The masters of persuasion follow three sacred rules.
+                </p>
+              </FadeUp>
+
+              <RuleOfOneCards />
+
+              <FadeUp delay={0.3}>
+                <p className="text-neutral-600 leading-relaxed">
+                  When you try to say everything, you say nothing. When you offer everything, they choose nothing. The discipline to focus on one thing is what separates professionals from amateurs. Your copy should feel like a laser, not a floodlight.
+                </p>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 4 - Dark: Success Checklist */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-12">
+              <FadeUp>
+                <h2 className="text-3xl font-bold">The Selling Success Checklist</h2>
+                <p className="text-neutral-400 max-w-2xl">
+                  After decades of testing, tracking, and optimizing, the patterns become clear. Some approaches consistently drive sales. Others consistently burn budgets.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.1}>
+                <SuccessChecklist />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 5 - White: Holy Shit Moment */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container">
+              <FadeUp>
+                <div className="bg-gradient-to-br from-accent to-purple-600 rounded-3xl p-8 md:p-12 text-white glow-accent">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                      {Icons.spark}
                     </div>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-white/80">The Million-Dollar Question</span>
                   </div>
-                  <div>
-                    <GrowthChart isGood={true} />
-                    <div className="mt-2 text-center">
-                      <span className="text-2xl font-bold text-green-500">+<Counter end={350} suffix="K" /></span>
-                      <p className="text-xs text-neutral-500">"Boring Ad"</p>
-                    </div>
-                  </div>
+                  <p className="text-2xl md:text-3xl font-bold leading-tight mb-6">
+                    "What does my customer lie awake at 3 AM thinking about?"
+                  </p>
+                  <p className="text-white/80 text-lg leading-relaxed mb-6">
+                    This single question is worth more than any marketing course. Your customer doesn't care about your features, your awards, or your company story. They care about their problem and whether you can solve it.
+                  </p>
+                  <p className="text-white/90 leading-relaxed">
+                    <strong>Your answer to this question becomes the bridge</strong> between their deepest desire and your product. It's the foundation of every headline, every hook, and every call-to-action. Get this wrong, and nothing else matters. Get it right, and everything else becomes easier.
+                  </p>
                 </div>
               </FadeUp>
+            </div>
+          </section>
 
-              {/* The Fatal Focus */}
+          {/* Section 6 - Dark: Key Takeaways */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container">
               <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Fatal Focus</h2>
-                <p className="text-lg text-neutral-600 mb-6">
-                  Most marketing fails because it focuses on the <strong>wrong person</strong>.
-                  The company. Not the customer.
-                </p>
-              </FadeUp>
-
-              {/* Visual: Toggle Switches (inspired by examples) */}
-              <FadeUp delay={0.1}>
-                <div className="bg-dark rounded-2xl p-6">
-                  <div className="text-xs text-neutral-500 uppercase tracking-widest mb-4">SELLING SUCCESS</div>
-                  <ToggleRow label="Focus on Customer" isOn={true} color="bg-green-500" />
-                  <ToggleRow label="Clear Benefits" isOn={true} color="bg-green-500" />
-                  <ToggleRow label="Strong CTA" isOn={true} color="bg-green-500" />
-                  <ToggleRow label="Focus on Company" isOn={false} />
-                  <ToggleRow label="Fancy Creativity" isOn={false} />
-                  <ToggleRow label="Awards Hunting" isOn={false} />
-                </div>
-              </FadeUp>
-
-              {/* 5 Stages of Awareness */}
-              <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-2">5 Stages of Awareness</h2>
-                <p className="text-neutral-500 mb-6">Meet customers where they are. Click each stage.</p>
-              </FadeUp>
-
-              {/* Visual: Stacked Cards */}
-              <FadeUp delay={0.1}>
-                <div className="bg-dark rounded-2xl p-8">
-                  <div className="relative h-72">
-                    {stages.map((stage, i) => (
-                      <StackedCard
-                        key={i}
-                        number={i + 1}
-                        title={stage.title}
-                        description={stage.description}
-                        isActive={activeStage === i + 1}
-                        onClick={() => setActiveStage(i + 1)}
-                        totalCards={5}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </FadeUp>
-
-              {/* Rule of One */}
-              <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Rule of One</h2>
-                <p className="text-lg text-neutral-600 mb-6">
-                  The most powerful copy follows one simple rule:<br/>
-                  <strong>Less is exponentially more.</strong>
-                </p>
-              </FadeUp>
-
-              {/* Visual: Three Ones */}
-              <FadeUp delay={0.1}>
-                <div className="grid grid-cols-3 gap-4">
+                <h2 className="text-sm uppercase tracking-widest text-neutral-500 mb-8">Key Takeaways</h2>
+                <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    { num: "1", label: "Reader", desc: "Write to ONE specific person" },
-                    { num: "1", label: "Idea", desc: "ONE fully-believed concept" },
-                    { num: "1", label: "Offer", desc: "ONE crystal-clear action" },
-                  ].map((item, i) => (
+                    "Clarity always beats creativity in driving conversions",
+                    "Meet customers at their exact awareness stage",
+                    "One reader, one idea, one offer - never more",
+                    "Test results relentlessly, not opinions",
+                    "Customer focus trumps company focus every time",
+                    "The best copy feels like a personal conversation"
+                  ].map((takeaway, i) => (
                     <motion.div
                       key={i}
-                      className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 text-center"
-                      whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      className="flex items-start gap-3 p-4 bg-neutral-900 rounded-xl border border-neutral-800"
                     >
-                      <div className="text-4xl font-extrabold text-accent mb-2">{item.num}</div>
-                      <div className="font-bold text-neutral-900">{item.label}</div>
-                      <div className="text-xs text-neutral-500 mt-1">{item.desc}</div>
+                      <div className="text-accent mt-0.5">{Icons.check}</div>
+                      <span className="text-neutral-200">{takeaway}</span>
                     </motion.div>
                   ))}
                 </div>
               </FadeUp>
-
-              {/* Holy Shit Moment */}
-              <FadeUp>
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-6">
-                  <p className="text-lg font-semibold text-neutral-900 mb-2">
-                    The million-dollar question:
-                  </p>
-                  <p className="text-neutral-700">
-                    "What does my customer lie awake at night thinking about?"
-                  </p>
-                  <p className="text-sm text-neutral-500 mt-3 italic">
-                    Your answer is the bridge between their desire and your product.
-                  </p>
-                </div>
-              </FadeUp>
-
-              {/* Key Takeaways */}
-              <FadeUp>
-                <div className="bg-dark text-white rounded-2xl p-8">
-                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Key Takeaways</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 text-lg">+</span>
-                      <span>Focus on customer, not company</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 text-lg">+</span>
-                      <span>Meet them at their awareness stage</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 text-lg">+</span>
-                      <span>One reader, one idea, one offer</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 text-lg">+</span>
-                      <span>Test results, not creativity</span>
-                    </li>
-                  </ul>
-                </div>
-              </FadeUp>
-
             </div>
-          </main>
+          </section>
 
           {/* Footer */}
-          <footer className="px-6 py-6 border-t border-neutral-100">
-            <div className="lesson-container flex justify-between text-sm text-neutral-400">
+          <footer className="px-6 py-8 border-t border-neutral-100 bg-white">
+            <div className="lesson-container flex justify-between items-center text-sm text-neutral-400">
               <span>Quantum Scale</span>
-              <span>Copywriting Series</span>
+              <span>Conversion Fundamentals</span>
             </div>
           </footer>
         </div>

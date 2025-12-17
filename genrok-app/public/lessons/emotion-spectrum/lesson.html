@@ -16,8 +16,7 @@
         extend: {
           colors: {
             accent: '#f43f5e',
-            'accent-light': '#fda4af',
-            dark: '#0f0f0f',
+            dark: '#0a0a0a',
           }
         }
       }
@@ -27,6 +26,7 @@
     * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #111827; }
     .lesson-container { max-width: 720px; margin: 0 auto; }
+    .glow-accent { box-shadow: 0 0 60px rgba(244, 63, 94, 0.3); }
   </style>
 </head>
 <body>
@@ -36,8 +36,71 @@
     const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    const smoothEase = [0.25, 0.1, 0.25, 1];
 
+    // SVG Icons
+    const Icons = {
+      heart: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+        </svg>
+      ),
+      brain: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v13"/>
+        </svg>
+      ),
+      shield: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+        </svg>
+      ),
+      bolt: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+        </svg>
+      ),
+      fire: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"/>
+        </svg>
+      ),
+      star: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
+        </svg>
+      ),
+      check: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>
+      ),
+      arrow: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      ),
+      spark: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+        </svg>
+      ),
+      faceNegative: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"/>
+        </svg>
+      ),
+      facePositive: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"/>
+        </svg>
+      )
+    };
+
+    // Animation Components
     function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -51,21 +114,34 @@
       );
     }
 
-    // Animated Emotion Spectrum Slider
+    function ScaleIn({ children, delay = 0, className = "" }) {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      return (
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5, delay, ease: smoothEase }}>
+          {children}
+        </motion.div>
+      );
+    }
+
+    // Emotion Spectrum Visualization
     function EmotionSpectrum() {
-      const [position, setPosition] = useState(50);
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
+      const [position, setPosition] = useState(50);
 
       const emotions = [
-        { pain: 'Fear', pleasure: 'Security', icon: '😰 → 🛡️' },
-        { pain: 'Anger', pleasure: 'Revenge/Success', icon: '😤 → 💪' },
-        { pain: 'Shame', pleasure: 'Pride', icon: '😞 → 😊' },
-        { pain: 'Powerlessness', pleasure: 'Power', icon: '😔 → ⚡' },
+        { pain: 'Fear', pleasure: 'Security', painIcon: Icons.faceNegative, pleasureIcon: Icons.shield },
+        { pain: 'Anger', pleasure: 'Triumph', painIcon: Icons.fire, pleasureIcon: Icons.star },
+        { pain: 'Shame', pleasure: 'Pride', painIcon: Icons.faceNegative, pleasureIcon: Icons.facePositive },
+        { pain: 'Powerlessness', pleasure: 'Control', painIcon: Icons.faceNegative, pleasureIcon: Icons.bolt },
       ];
 
       return (
-        <div ref={ref} className="bg-dark rounded-2xl p-8 space-y-6">
+        <div ref={ref} className="bg-neutral-900 rounded-2xl p-8 space-y-6">
           {/* Main spectrum bar */}
           <div className="relative">
             <div className="h-3 bg-gradient-to-r from-accent via-neutral-600 to-emerald-500 rounded-full" />
@@ -97,15 +173,19 @@
             {emotions.map((em, i) => (
               <motion.div
                 key={i}
-                className="bg-white/5 rounded-xl p-4 text-center"
+                className="bg-white/5 rounded-xl p-4"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.3 + i * 0.1 }}
               >
-                <div className="text-2xl mb-2">{em.icon}</div>
-                <div className="text-xs text-neutral-400">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <div className="text-accent">{em.painIcon}</div>
+                  <div className="text-neutral-500">{Icons.arrow}</div>
+                  <div className="text-emerald-400">{em.pleasureIcon}</div>
+                </div>
+                <div className="text-xs text-center">
                   <span className="text-accent">{em.pain}</span>
-                  <span className="text-neutral-500 mx-2">→</span>
+                  <span className="text-neutral-500 mx-2">to</span>
                   <span className="text-emerald-400">{em.pleasure}</span>
                 </div>
               </motion.div>
@@ -115,70 +195,10 @@
       );
     }
 
-    // The Golden Insight - Tap Into Existing Emotion
-    function ExistingEmotionInsight() {
+    // Logic vs Emotion Comparison
+    function LogicVsEmotion() {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
-
-      return (
-        <div ref={ref} className="relative overflow-hidden rounded-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-emerald-500/20" />
-          <div className="relative bg-dark/95 rounded-2xl p-8">
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-            >
-              <div className="text-xs uppercase tracking-widest text-accent mb-4">The Golden Rule</div>
-              <p className="text-2xl font-bold text-white mb-4">
-                "You can't create desire from nothing..."
-              </p>
-              <p className="text-lg text-neutral-300">
-                You can only <span className="text-accent font-bold">connect</span> to desires that already exist.
-              </p>
-            </motion.div>
-
-            {/* Visual: Stream flowing into funnel */}
-            <motion.svg
-              className="w-full h-32 mt-6"
-              viewBox="0 0 400 100"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.5 }}
-            >
-              {/* Multiple streams converging */}
-              {[0, 1, 2, 3, 4].map((i) => (
-                <motion.path
-                  key={i}
-                  d={`M ${50 + i * 75} 10 Q ${200} ${30 + i * 10}, 200 90`}
-                  fill="none"
-                  stroke={i % 2 === 0 ? "#f43f5e" : "#10b981"}
-                  strokeWidth="2"
-                  strokeOpacity="0.5"
-                  initial={{ pathLength: 0 }}
-                  animate={isInView ? { pathLength: 1 } : {}}
-                  transition={{ delay: 0.5 + i * 0.1, duration: 1 }}
-                />
-              ))}
-              <circle cx="200" cy="90" r="8" fill="#f43f5e" />
-              <text x="200" y="95" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">YOU</text>
-            </motion.svg>
-          </div>
-        </div>
-      );
-    }
-
-    // Pain vs Logic Comparison
-    function PainVsLogic() {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-      const [showResult, setShowResult] = useState(false);
-
-      useEffect(() => {
-        if (isInView) {
-          setTimeout(() => setShowResult(true), 1500);
-        }
-      }, [isInView]);
 
       return (
         <div ref={ref} className="grid md:grid-cols-2 gap-4">
@@ -187,15 +207,14 @@
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
           >
-            <div className="text-4xl mb-3">🧠</div>
+            <div className="w-12 h-12 mx-auto mb-3 bg-neutral-200 rounded-xl flex items-center justify-center text-neutral-600">
+              {Icons.brain}
+            </div>
             <div className="font-bold text-neutral-900 mb-2">Logic</div>
             <p className="text-sm text-neutral-600 mb-4">Makes people THINK</p>
-            <motion.div
-              className="text-xs bg-neutral-200 rounded-full px-3 py-1 inline-block"
-              animate={showResult ? { opacity: 0.5 } : {}}
-            >
+            <div className="text-xs bg-neutral-200 rounded-full px-3 py-1 inline-block text-neutral-600">
               Consideration
-            </motion.div>
+            </div>
           </motion.div>
 
           <motion.div
@@ -203,12 +222,14 @@
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
           >
-            <div className="text-4xl mb-3">❤️</div>
+            <div className="w-12 h-12 mx-auto mb-3 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
+              {Icons.heart}
+            </div>
             <div className="font-bold text-neutral-900 mb-2">Emotion</div>
             <p className="text-sm text-neutral-600 mb-4">Makes people ACT</p>
             <motion.div
               className="text-xs bg-accent text-white rounded-full px-3 py-1 inline-block"
-              animate={showResult ? { scale: [1, 1.1, 1] } : {}}
+              animate={{ scale: [1, 1.05, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
             >
               Conversion
@@ -218,112 +239,49 @@
       );
     }
 
-    // The Dominant Emotion Concept
-    function DominantEmotion() {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-      const [activeEmotion, setActiveEmotion] = useState(null);
-
-      const emotions = [
-        { name: 'Fear', desc: 'Fear of missing out, fear of loss, fear of failure', color: '#f43f5e', intensity: 90 },
-        { name: 'Greed', desc: 'Desire for more money, status, success', color: '#f59e0b', intensity: 85 },
-        { name: 'Guilt', desc: 'Feeling of not doing enough, letting others down', color: '#8b5cf6', intensity: 70 },
-        { name: 'Exclusivity', desc: 'Wanting to be special, part of elite group', color: '#06b6d4', intensity: 65 },
-      ];
-
-      return (
-        <div ref={ref} className="space-y-4">
-          <p className="text-sm text-neutral-500 text-center mb-4">Click to explore each dominant emotion</p>
-          {emotions.map((em, i) => (
-            <motion.div
-              key={i}
-              className={`bg-neutral-50 rounded-xl p-4 cursor-pointer transition-all ${activeEmotion === i ? 'ring-2 ring-accent' : ''}`}
-              onClick={() => setActiveEmotion(activeEmotion === i ? null : i)}
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="font-bold text-neutral-900">{em.name}</div>
-                  <AnimatePresence>
-                    {activeEmotion === i && (
-                      <motion.p
-                        className="text-sm text-neutral-600 mt-2"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                      >
-                        {em.desc}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-                {/* Intensity bar */}
-                <div className="w-24 h-2 bg-neutral-200 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full"
-                    style={{ backgroundColor: em.color }}
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: `${em.intensity}%` } : {}}
-                    transition={{ delay: 0.5 + i * 0.1, duration: 0.8 }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      );
-    }
-
-    // The Brain's Decision Center
+    // Brain Decision Center
     function BrainDecisionCenter() {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
 
       return (
-        <div ref={ref} className="bg-dark rounded-2xl p-8 text-center">
+        <div ref={ref} className="bg-neutral-900 rounded-2xl p-8 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
           >
-            <div className="text-5xl mb-4">🧠</div>
-            <p className="text-neutral-400 text-sm mb-4">The brain makes decisions in its</p>
+            <div className="w-16 h-16 mx-auto mb-4 bg-accent/20 rounded-2xl flex items-center justify-center text-accent">
+              {Icons.brain}
+            </div>
+            <p className="text-neutral-400 text-sm mb-2">The brain makes decisions in its</p>
             <p className="text-2xl font-bold text-white mb-2">EMOTIONAL CENTER</p>
             <p className="text-neutral-400 text-sm">Without access to this center, no decision can be made.</p>
           </motion.div>
 
-          {/* Visual representation */}
           <motion.svg
-            className="w-full h-40 mt-6"
-            viewBox="0 0 400 120"
+            className="w-full h-32 mt-6"
+            viewBox="0 0 400 100"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ delay: 0.5 }}
           >
-            {/* Brain outline */}
-            <ellipse cx="200" cy="60" rx="80" ry="50" fill="none" stroke="#374151" strokeWidth="2" />
-
-            {/* Emotional center - pulsing */}
+            <ellipse cx="200" cy="50" rx="80" ry="40" fill="none" stroke="#374151" strokeWidth="2" />
             <motion.circle
               cx="200"
-              cy="60"
-              r="25"
+              cy="50"
+              r="20"
               fill="#f43f5e"
               fillOpacity="0.3"
-              animate={{ r: [25, 30, 25], opacity: [0.3, 0.6, 0.3] }}
+              animate={{ r: [20, 25, 20], opacity: [0.3, 0.6, 0.3] }}
               transition={{ repeat: Infinity, duration: 2 }}
             />
-            <circle cx="200" cy="60" r="15" fill="#f43f5e" />
-
-            {/* Arrows pointing in */}
+            <circle cx="200" cy="50" r="12" fill="#f43f5e" />
             {[0, 60, 120, 180, 240, 300].map((angle, i) => {
               const rad = (angle * Math.PI) / 180;
-              const x1 = 200 + Math.cos(rad) * 70;
-              const y1 = 60 + Math.sin(rad) * 45;
-              const x2 = 200 + Math.cos(rad) * 40;
-              const y2 = 60 + Math.sin(rad) * 25;
+              const x1 = 200 + Math.cos(rad) * 65;
+              const y1 = 50 + Math.sin(rad) * 35;
+              const x2 = 200 + Math.cos(rad) * 35;
+              const y2 = 50 + Math.sin(rad) * 18;
               return (
                 <motion.line
                   key={i}
@@ -337,9 +295,67 @@
                 />
               );
             })}
-
-            <text x="200" y="115" textAnchor="middle" fill="#9ca3af" fontSize="10">All signals must pass through here</text>
+            <text x="200" y="95" textAnchor="middle" fill="#9ca3af" fontSize="10">All signals must pass through here</text>
           </motion.svg>
+        </div>
+      );
+    }
+
+    // Dominant Emotions Explorer
+    function DominantEmotions() {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+      const [activeEmotion, setActiveEmotion] = useState(null);
+
+      const emotions = [
+        { name: 'Fear', desc: 'Fear of missing out, fear of loss, fear of failure. The most primal motivator. When activated correctly, fear creates immediate urgency and compels action faster than any other emotion.', color: '#f43f5e', intensity: 95 },
+        { name: 'Greed', desc: 'Desire for more - money, status, success, recognition. This emotion drives aspiration and ambition. People will pay premium prices when greed is properly activated.', color: '#f59e0b', intensity: 88 },
+        { name: 'Guilt', desc: 'Feeling of not doing enough for family, health, business. Guilt is a powerful motivator for self-improvement products and services aimed at "becoming better."', color: '#8b5cf6', intensity: 75 },
+        { name: 'Exclusivity', desc: 'Wanting to be special, part of an elite group, ahead of the crowd. This emotion drives luxury purchases and membership-based offers.', color: '#06b6d4', intensity: 70 },
+      ];
+
+      return (
+        <div ref={ref} className="space-y-4">
+          {emotions.map((em, i) => (
+            <motion.div
+              key={i}
+              className={`bg-neutral-50 rounded-xl p-5 cursor-pointer transition-all ${activeEmotion === i ? 'ring-2 ring-accent shadow-lg' : 'hover:bg-neutral-100'}`}
+              onClick={() => setActiveEmotion(activeEmotion === i ? null : i)}
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <div className="font-bold text-neutral-900 mb-1">{em.name}</div>
+                  <AnimatePresence>
+                    {activeEmotion === i && (
+                      <motion.p
+                        className="text-sm text-neutral-600 leading-relaxed"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        {em.desc}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <div className="w-24">
+                  <div className="text-xs text-neutral-400 mb-1">Power</div>
+                  <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: em.color }}
+                      initial={{ width: 0 }}
+                      animate={isInView ? { width: `${em.intensity}%` } : {}}
+                      transition={{ delay: 0.5 + i * 0.1, duration: 0.8 }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       );
     }
@@ -347,67 +363,92 @@
     function Lesson() {
       return (
         <div className="min-h-screen bg-white">
-          {/* Header */}
-          <header className="bg-dark text-white px-6 py-12">
-            <div className="lesson-container">
+          {/* Hero - Dark */}
+          <header className="bg-dark text-white px-6 py-16 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
+            <div className="lesson-container relative">
               <FadeUp>
-                <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full mb-4">EMOTIONAL PSYCHOLOGY</span>
-                <h1 className="text-3xl md:text-4xl font-extrabold mb-3 leading-tight">
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 text-xs font-semibold rounded-full mb-6 border border-white/10">
+                  {Icons.heart}
+                  EMOTIONAL PSYCHOLOGY
+                </span>
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
                   The Emotion Spectrum
                 </h1>
-                <p className="text-neutral-400 text-lg">Master the pain-to-pleasure transformation that drives all human behavior.</p>
+                <p className="text-xl text-neutral-400 max-w-lg">
+                  Master the pain-to-pleasure transformation that drives all human behavior.
+                </p>
+              </FadeUp>
+
+              {/* Lesson Illustration */}
+              <FadeUp>
+                <div className="my-8">
+                  <img
+                    src="images/hero-image.jpg"
+                    alt="Lesson illustration"
+                    className="w-full h-auto rounded-xl"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
+                </div>
               </FadeUp>
             </div>
           </header>
 
-          <main className="px-6 py-12">
-            <div className="lesson-container space-y-16">
-
-              {/* Hook */}
+          {/* Section 1 - White: Introduction */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <p className="text-xl text-neutral-700 leading-relaxed">
-                  Here's a truth that changes everything: <strong>Logic makes people think. Emotion makes people act.</strong>
+                <p className="text-lg text-neutral-700 leading-relaxed">
+                  Here's a truth that changes everything: <strong>Logic makes people think. Emotion makes people act.</strong> Every purchase, every click, every conversion happens because someone FELT something. Not because they were convinced rationally. Because they were moved emotionally.
                 </p>
-                <p className="text-lg text-neutral-500 mt-4">
-                  Every purchase, every click, every conversion happens because someone FELT something. Understanding this spectrum is the key to unlocking human behavior.
+                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
+                  Understanding the emotion spectrum is the key to unlocking human behavior. Your customer starts somewhere on this spectrum and wants to move. Your product is the vehicle that carries them from where they are to where they desperately want to be.
+                </p>
+                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
+                  This isn't manipulation. It's connection. When you understand the emotional journey your customer is on, you can meet them exactly where they are and guide them forward.
                 </p>
               </FadeUp>
+            </div>
+          </section>
 
-              {/* The Spectrum Visual */}
+          {/* Section 2 - Dark: The Spectrum */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Pain-Pleasure Spectrum</h2>
-                <p className="text-neutral-600 mb-6">
-                  Every emotion exists on a spectrum. Your customer starts in PAIN (negative state) and wants to move toward PLEASURE (positive state). Your product is the vehicle that gets them there.
+                <h2 className="text-3xl font-bold mb-2">The Pain-Pleasure Spectrum</h2>
+                <p className="text-neutral-400 max-w-2xl">
+                  Every emotion exists on a spectrum from PAIN (negative state) to PLEASURE (positive state). Drag the slider to explore. Your customer starts in pain and wants to move toward pleasure. Be the bridge.
                 </p>
               </FadeUp>
 
               <FadeUp delay={0.1}>
                 <EmotionSpectrum />
               </FadeUp>
+            </div>
+          </section>
 
-              {/* Generated Image: Pain-Pleasure Gradient */}
-              <FadeUp delay={0.2}>
-                <div className="rounded-2xl overflow-hidden">
-                  <img src="./images/pain-pleasure-gradient.jpg" alt="Pain-Pleasure Spectrum" className="w-full" />
-                </div>
-              </FadeUp>
-
-              {/* Pain vs Logic */}
+          {/* Section 3 - White: Logic vs Emotion */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Battle for Action</h2>
-                <p className="text-neutral-600 mb-6">
-                  Why do smart people make "irrational" purchases? Because the emotional brain always wins.
+                <h2 className="text-3xl font-bold text-neutral-900 mb-2">The Battle for Action</h2>
+                <p className="text-neutral-600">
+                  Why do smart people make "irrational" purchases? Because the emotional brain always wins. Neuroscience proves it: the rational brain can analyze, but only the emotional brain can decide.
                 </p>
               </FadeUp>
 
               <FadeUp delay={0.1}>
-                <PainVsLogic />
+                <LogicVsEmotion />
               </FadeUp>
+            </div>
+          </section>
 
-              {/* Brain Decision Center */}
+          {/* Section 4 - Dark: Brain Decision Center */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Brain's Hidden Gate</h2>
-                <p className="text-neutral-600 mb-6">
+                <h2 className="text-3xl font-bold mb-2">The Brain's Hidden Gate</h2>
+                <p className="text-neutral-400 max-w-2xl">
                   Neuroscience reveals something shocking: the brain literally cannot make decisions without emotional input. The emotional center is the gatekeeper of all action.
                 </p>
               </FadeUp>
@@ -415,94 +456,83 @@
               <FadeUp delay={0.1}>
                 <BrainDecisionCenter />
               </FadeUp>
+            </div>
+          </section>
 
-              {/* Generated Image: Brain Emotion Center */}
-              <FadeUp delay={0.2}>
-                <div className="rounded-2xl overflow-hidden">
-                  <img src="./images/brain-emotion-center.jpg" alt="Brain Emotion Center" className="w-full" />
-                </div>
-              </FadeUp>
-
-              {/* The Golden Insight */}
+          {/* Section 5 - White: Dominant Emotions */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Critical Insight</h2>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <ExistingEmotionInsight />
-              </FadeUp>
-
-              {/* Dominant Emotions */}
-              <FadeUp>
-                <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Dominant Emotions</h2>
-                <p className="text-neutral-600 mb-6">
-                  Every market has dominant emotions already swirling around. Your job is to identify them and tap into the stream. These are the most powerful conversion drivers.
+                <h2 className="text-3xl font-bold text-neutral-900 mb-2">The Dominant Emotions</h2>
+                <p className="text-neutral-600">
+                  Every market has dominant emotions already swirling around. Click each emotion to understand how to tap into these powerful conversion drivers.
                 </p>
               </FadeUp>
 
               <FadeUp delay={0.1}>
-                <DominantEmotion />
+                <DominantEmotions />
               </FadeUp>
-
-              {/* Clayton Makepeace Quote */}
-              <FadeUp>
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-6">
-                  <p className="text-lg italic text-neutral-700 mb-3">
-                    "You cannot create desire... you can only connect to desires that already exist in your market."
-                  </p>
-                  <p className="text-sm text-neutral-500">— Clayton Makepeace, Legendary Copywriter</p>
-                </div>
-              </FadeUp>
-
-              {/* The Transformation */}
-              <FadeUp>
-                <div className="bg-dark text-white rounded-2xl p-8">
-                  <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-6">Your Action Plan</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-4">
-                      <span className="text-accent text-xl font-bold">01</span>
-                      <div>
-                        <p className="font-medium">Identify the PAIN state</p>
-                        <p className="text-sm text-neutral-400">What negative emotion is your customer experiencing right now?</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <span className="text-accent text-xl font-bold">02</span>
-                      <div>
-                        <p className="font-medium">Define the PLEASURE state</p>
-                        <p className="text-sm text-neutral-400">What positive emotion do they desperately want to feel?</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <span className="text-accent text-xl font-bold">03</span>
-                      <div>
-                        <p className="font-medium">Be the BRIDGE</p>
-                        <p className="text-sm text-neutral-400">Position your product as the transformation vehicle between states.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </FadeUp>
-
-              {/* Key Takeaway */}
-              <FadeUp>
-                <div className="text-center py-8">
-                  <p className="text-xs uppercase tracking-widest text-neutral-400 mb-4">Remember</p>
-                  <p className="text-2xl font-bold text-neutral-900">
-                    Great marketing isn't about creating desire.<br/>
-                    <span className="text-accent">It's about connecting to desire that already exists.</span>
-                  </p>
-                </div>
-              </FadeUp>
-
             </div>
-          </main>
+          </section>
+
+          {/* Section 6 - Dark: Holy Shit Moment */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container">
+              <FadeUp>
+                <div className="bg-gradient-to-br from-accent to-rose-600 rounded-3xl p-8 md:p-12 glow-accent">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                      {Icons.spark}
+                    </div>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-white/80">The Critical Insight</span>
+                  </div>
+                  <p className="text-2xl md:text-3xl font-bold leading-tight mb-6">
+                    You can't create desire from nothing. You can only connect to desires that already exist.
+                  </p>
+                  <p className="text-white/80 text-lg leading-relaxed">
+                    Your market is already feeling emotions - fear, frustration, hope, ambition. Your job isn't to manufacture new emotions. It's to identify the dominant emotions and channel them toward your solution. The most powerful marketing doesn't persuade. It resonates.
+                  </p>
+                </div>
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 7 - White: Key Takeaways */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container">
+              <FadeUp>
+                <h2 className="text-sm uppercase tracking-widest text-neutral-400 mb-8">Key Takeaways</h2>
+                <div className="space-y-3">
+                  {[
+                    "Logic makes people think. Emotion makes people act.",
+                    "Every customer moves from PAIN toward PLEASURE - be the bridge",
+                    "The brain cannot decide without emotional input - it's neurological fact",
+                    "Fear is the most powerful motivator - use it ethically",
+                    "You can't create desire - only connect to existing desire",
+                    "Identify the dominant emotions in your market and tap into them"
+                  ].map((takeaway, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3 p-4 bg-neutral-50 rounded-xl"
+                    >
+                      <div className="text-accent mt-0.5">{Icons.check}</div>
+                      <span className="text-neutral-700">{takeaway}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </FadeUp>
+            </div>
+          </section>
 
           {/* Footer */}
-          <footer className="px-6 py-6 border-t border-neutral-100">
-            <div className="lesson-container flex justify-between text-sm text-neutral-400">
+          <footer className="px-6 py-8 border-t border-neutral-100 bg-white">
+            <div className="lesson-container flex justify-between items-center text-sm text-neutral-400">
               <span>Quantum Scale</span>
-              <span>Copywriting Series</span>
+              <span>Emotional Psychology</span>
             </div>
           </footer>
         </div>

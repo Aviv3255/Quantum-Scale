@@ -3,31 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The WIIFM Principle | Quantum Scale</title>
+  <title>The WIIFM Principle</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            accent: {
-              DEFAULT: '#06b6d4',
-              50: '#ecfeff',
-              100: '#cffafe',
-              200: '#a5f3fc',
-              300: '#67e8f9',
-              400: '#22d3ee',
-              500: '#06b6d4',
-              600: '#0891b2',
-              700: '#0e7490',
-              800: '#155e75',
-              900: '#164e63',
-            }
+            accent: '#06b6d4',
+            dark: '#0a0a0a',
           }
         }
       }
@@ -37,11 +26,8 @@
     * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     body { background: #FFFFFF; color: #1a1a1a; }
     ::selection { background: #06b6d4; color: #fff; }
-    h1, h2, h3, h4 { letter-spacing: -0.025em; }
-    .lesson-container { max-width: 800px; margin: 0 auto; }
-    .gradient-accent { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%); }
-    .gradient-accent-subtle { background: linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(8,145,178,0.05) 100%); }
-    .glow-accent { box-shadow: 0 0 60px rgba(6,182,212,0.3); }
+    .lesson-container { max-width: 720px; margin: 0 auto; }
+    .glow-accent { box-shadow: 0 0 60px rgba(6, 182, 212, 0.3); }
   </style>
 </head>
 <body>
@@ -51,54 +37,69 @@
     const { motion, useInView, AnimatePresence } = window.Motion;
     const { useState, useRef, useEffect } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    const smoothEase = [0.25, 0.1, 0.25, 1];
 
-    // Icons
+    // SVG Icons
     const Icons = {
-      User: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      user: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
         </svg>
       ),
-      Target: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+      target: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2" fill="currentColor"/>
         </svg>
       ),
-      Zap: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      bolt: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
         </svg>
       ),
-      Check: () => (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
+      clock: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2"/>
         </svg>
       ),
-      X: () => (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      check: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
         </svg>
       ),
-      Clock: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      x: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
         </svg>
       ),
+      arrow: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      ),
+      spark: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+        </svg>
+      ),
+      question: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/>
+        </svg>
+      )
     };
 
-    // Animation components
+    // Animation Components
     function FadeUp({ children, delay = 0, className = "" }) {
       const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay, ease: smoothEase }}
-        >
+          transition={{ duration: 0.6, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
@@ -108,13 +109,10 @@
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, scale: 0.95 }}
+        <motion.div ref={ref} className={className}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay, ease: smoothEase }}
-        >
+          transition={{ duration: 0.5, delay, ease: smoothEase }}>
           {children}
         </motion.div>
       );
@@ -124,32 +122,24 @@
       const [count, setCount] = useState(0);
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true });
-
       useEffect(() => {
         if (isInView) {
           let start = 0;
-          const duration = 2000;
-          const increment = end / (duration / 16);
           const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
+            start += end / 40;
+            if (start >= end) { setCount(end); clearInterval(timer); }
+            else { setCount(Math.floor(start)); }
+          }, 30);
           return () => clearInterval(timer);
         }
       }, [isInView, end]);
-
       return <span ref={ref}>{prefix}{count}{suffix}</span>;
     }
 
-    // Interactive 4-Line Demo
+    // 4-Line Demo
     function FourLineDemo() {
+      const [activeDemo, setActiveDemo] = useState(null);
       const [currentLine, setCurrentLine] = useState(0);
-      const [verdict, setVerdict] = useState(null);
 
       const badExample = [
         "Welcome to Acme Corp!",
@@ -165,73 +155,71 @@
         "No fluff. No theory. Just the copy that prints money."
       ];
 
-      const handleReveal = (type) => {
+      const handleDemo = (type) => {
+        setActiveDemo(type);
         setCurrentLine(0);
-        setVerdict(null);
         const lines = type === 'bad' ? badExample : goodExample;
-
         lines.forEach((_, i) => {
-          setTimeout(() => {
-            setCurrentLine(i + 1);
-            if (i === 3) {
-              setTimeout(() => setVerdict(type), 500);
-            }
-          }, i * 800);
+          setTimeout(() => setCurrentLine(i + 1), i * 600);
         });
       };
 
       return (
-        <div className="bg-neutral-900 rounded-2xl p-8 text-white">
+        <div className="bg-neutral-900 rounded-2xl p-8">
           <div className="text-center mb-8">
-            <p className="text-neutral-400 text-sm uppercase tracking-wider mb-2">The 4-Line Test</p>
-            <p className="text-xl font-semibold">Which copy keeps you reading?</p>
+            <p className="text-neutral-400 text-xs uppercase tracking-widest mb-2">The 4-Line Test</p>
+            <p className="text-xl font-semibold text-white">Which copy keeps you reading?</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <button
-              onClick={() => handleReveal('bad')}
-              className="p-4 bg-neutral-800 rounded-xl hover:bg-neutral-700 transition-colors text-left"
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <motion.button
+              onClick={() => handleDemo('bad')}
+              className={`p-4 rounded-xl transition-all ${activeDemo === 'bad' ? 'bg-red-500/20 border border-red-500/40' : 'bg-neutral-800 hover:bg-neutral-700'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <p className="text-red-400 text-sm font-medium mb-2">Example A</p>
-              <p className="text-neutral-300 text-sm">The "About Us" approach</p>
-            </button>
-            <button
-              onClick={() => handleReveal('good')}
-              className="p-4 bg-neutral-800 rounded-xl hover:bg-neutral-700 transition-colors text-left"
+              <p className="text-red-400 text-sm font-medium mb-1">Example A</p>
+              <p className="text-neutral-400 text-xs">The "About Us" approach</p>
+            </motion.button>
+            <motion.button
+              onClick={() => handleDemo('good')}
+              className={`p-4 rounded-xl transition-all ${activeDemo === 'good' ? 'bg-emerald-500/20 border border-emerald-500/40' : 'bg-neutral-800 hover:bg-neutral-700'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <p className="text-emerald-400 text-sm font-medium mb-2">Example B</p>
-              <p className="text-neutral-300 text-sm">The WIIFM approach</p>
-            </button>
+              <p className="text-emerald-400 text-sm font-medium mb-1">Example B</p>
+              <p className="text-neutral-400 text-xs">The WIIFM approach</p>
+            </motion.button>
           </div>
 
-          {currentLine > 0 && (
+          {activeDemo && currentLine > 0 && (
             <div className="space-y-3 mb-6">
-              {(verdict === 'bad' ? badExample : goodExample).slice(0, currentLine).map((line, i) => (
+              {(activeDemo === 'bad' ? badExample : goodExample).slice(0, currentLine).map((line, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="flex items-start gap-3"
                 >
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
                     {i + 1}
                   </span>
-                  <p className="text-neutral-200">{line}</p>
+                  <p className="text-neutral-200 leading-relaxed">{line}</p>
                 </motion.div>
               ))}
             </div>
           )}
 
-          {verdict && (
+          {activeDemo && currentLine >= 4 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-xl ${verdict === 'bad' ? 'bg-red-900/50 border border-red-700' : 'bg-emerald-900/50 border border-emerald-700'}`}
+              className={`p-4 rounded-xl ${activeDemo === 'bad' ? 'bg-red-900/30 border border-red-700/50' : 'bg-emerald-900/30 border border-emerald-700/50'}`}
             >
-              {verdict === 'bad' ? (
-                <p className="text-red-200"><strong>Result:</strong> Reader left after line 2. You talked about YOU. They wanted to know about THEM.</p>
+              {activeDemo === 'bad' ? (
+                <p className="text-red-200 text-sm"><strong>Result:</strong> Reader left after line 2. You talked about YOU. They wanted to know about THEM. This copy fails the WIIFM test completely.</p>
               ) : (
-                <p className="text-emerald-200"><strong>Result:</strong> Reader hooked by line 1, promised value by line 2, proof by line 3, commitment by line 4. That's WIIFM.</p>
+                <p className="text-emerald-200 text-sm"><strong>Result:</strong> Hooked by line 1, promised value by line 2, proof by line 3, commitment by line 4. Every line answers WIIFM. They keep reading.</p>
               )}
             </motion.div>
           )}
@@ -239,12 +227,13 @@
       );
     }
 
-    // Before/After Transformer
+    // Transform Demo
     function TransformDemo() {
       const examples = [
         { before: "We have 20 years of experience", after: "Get results from strategies tested over 20 years" },
         { before: "Our software has AI integration", after: "Cut your workload in half with AI that writes for you" },
         { before: "We offer 24/7 support", after: "Never wait more than 5 minutes for help, day or night" },
+        { before: "Our platform is enterprise-grade", after: "Handle 10x more customers without hiring anyone" },
       ];
 
       return (
@@ -258,17 +247,19 @@
               transition={{ delay: i * 0.1 }}
               className="grid md:grid-cols-2 gap-4"
             >
-              <div className="p-4 bg-red-50 rounded-xl border border-red-100">
-                <p className="text-xs text-red-500 font-medium uppercase tracking-wider mb-2 flex items-center gap-1">
-                  <Icons.X /> We-focused
-                </p>
+              <div className="p-5 bg-neutral-100 rounded-xl border border-neutral-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-neutral-500">{Icons.x}</div>
+                  <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider">We-focused</p>
+                </div>
                 <p className="text-neutral-700 text-sm">"{ex.before}"</p>
               </div>
-              <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-                <p className="text-xs text-emerald-500 font-medium uppercase tracking-wider mb-2 flex items-center gap-1">
-                  <Icons.Check /> You-focused
-                </p>
-                <p className="text-neutral-700 text-sm">"{ex.after}"</p>
+              <div className="p-5 bg-neutral-950 rounded-xl border border-neutral-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-white">{Icons.check}</div>
+                  <p className="text-xs text-neutral-400 font-semibold uppercase tracking-wider">You-focused</p>
+                </div>
+                <p className="text-neutral-300 text-sm">"{ex.after}"</p>
               </div>
             </motion.div>
           ))}
@@ -276,43 +267,92 @@
       );
     }
 
-    // Main Lesson
+    // The So What Test
+    function SoWhatTest() {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true });
+
+      return (
+        <div ref={ref} className="bg-neutral-900 rounded-2xl p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
+              {Icons.question}
+            </div>
+            <h3 className="text-xl font-bold text-white">The "So What?" Filter</h3>
+          </div>
+
+          <p className="text-neutral-300 leading-relaxed mb-6">
+            After you write any sentence, ask yourself: "So what? Who cares?" If your reader could reasonably respond with "so what?" to that line, it fails the test. Kill it and replace it with something that answers WIIFM.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              { bad: "We're the #1 rated platform.", good: "Join 50,000+ users who doubled their revenue." },
+              { bad: "Our team is passionate about quality.", good: "Every product inspected 3 times before shipping." },
+              { bad: "We use cutting-edge technology.", good: "Get reports 10x faster than industry standard." }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: i * 0.15 }}
+                className="flex items-center gap-4"
+              >
+                <div className="flex-1 p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                  <p className="text-red-300 text-sm line-through">{item.bad}</p>
+                </div>
+                <div className="text-neutral-500">{Icons.arrow}</div>
+                <div className="flex-1 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                  <p className="text-emerald-300 text-sm">{item.good}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     function Lesson() {
       return (
-        <div className="min-h-screen">
-          {/* Hero */}
-          <section className="bg-neutral-950 text-white py-20 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent-500 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent-600 rounded-full blur-3xl"></div>
-            </div>
-
-            <div className="lesson-container px-6 relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: smoothEase }}
-              >
-                <span className="inline-block px-3 py-1 bg-accent-500/20 text-accent-400 rounded-full text-sm font-medium mb-6">
-                  Copywriting Fundamental
+        <div className="min-h-screen bg-white">
+          {/* Hero - Dark */}
+          <header className="bg-dark text-white px-6 py-16 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
+            <div className="lesson-container relative">
+              <FadeUp>
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 text-xs font-semibold rounded-full mb-6 border border-white/10">
+                  {Icons.user}
+                  COPYWRITING FUNDAMENTAL
                 </span>
-                <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
                   The WIIFM Principle
                 </h1>
-                <p className="text-xl text-neutral-300 max-w-xl leading-relaxed">
+                <p className="text-xl text-neutral-400 max-w-lg">
                   The only question running through your reader's mind. Answer it or lose them forever.
                 </p>
-              </motion.div>
-            </div>
-          </section>
+              </FadeUp>
 
-          {/* Hook Section */}
-          <section className="py-16 px-6 bg-white">
-            <div className="lesson-container">
+              {/* Lesson Illustration */}
               <FadeUp>
-                <div className="text-center mb-12">
+                <div className="my-8">
+                  <img
+                    src="images/hero-image.jpg"
+                    alt="Lesson illustration"
+                    className="w-full h-auto rounded-xl"
+                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  />
+                </div>
+              </FadeUp>
+            </div>
+          </header>
+
+          {/* Section 1 - White: The Core Insight */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-8">
+              <FadeUp>
+                <div className="text-center mb-8">
                   <p className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-                    "What's In It For <span className="text-accent-500">Me</span>?"
+                    "What's In It For <span className="text-accent">Me</span>?"
                   </p>
                   <p className="text-lg text-neutral-500">
                     That's the only thought in your reader's head. Every. Single. Second.
@@ -321,21 +361,21 @@
               </FadeUp>
 
               <FadeUp delay={0.1}>
-                <div className="grid md:grid-cols-3 gap-6 mb-12">
+                <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent-500 mb-2">
+                    <div className="text-4xl font-bold text-accent mb-2">
                       <Counter end={4} />
                     </div>
                     <p className="text-neutral-600 text-sm">Lines to win or lose them</p>
                   </div>
                   <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent-500 mb-2">
+                    <div className="text-4xl font-bold text-accent mb-2">
                       <Counter end={3} />s
                     </div>
                     <p className="text-neutral-600 text-sm">Before they decide to stay</p>
                   </div>
                   <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent-500 mb-2">
+                    <div className="text-4xl font-bold text-accent mb-2">
                       <Counter end={95} />%
                     </div>
                     <p className="text-neutral-600 text-sm">Of copy fails this test</p>
@@ -344,113 +384,134 @@
               </FadeUp>
 
               <FadeUp delay={0.2}>
-                <p className="text-lg text-neutral-700 leading-relaxed mb-6">
-                  Your reader doesn't care about your company. Your awards. Your mission statement. They care about ONE thing: <strong>themselves</strong>.
-                </p>
                 <p className="text-lg text-neutral-700 leading-relaxed">
-                  Every line of your copy is a transaction. You're asking for their attention. What are you giving in return? If the answer isn't crystal clear, they're gone.
+                  Your reader doesn't care about your company. They don't care about your awards, your mission statement, your years in business, or how passionate your team is. They care about exactly one thing: <strong>themselves</strong>.
+                </p>
+                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
+                  Every line of your copy is a transaction. You're asking for their most precious resource - attention. What are you giving in return? If the answer isn't crystal clear within seconds, they're gone. Not coming back. Your fancy design and clever wordplay won't save you.
+                </p>
+                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
+                  WIIFM isn't just a principle - it's the filter through which your reader processes every word you write. Pass through that filter or get blocked.
                 </p>
               </FadeUp>
             </div>
           </section>
 
-          {/* The 4-Line Rule */}
-          <section className="py-16 px-6 bg-neutral-50">
-            <div className="lesson-container">
+          {/* Section 2 - Dark: The 4-Line Rule */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl gradient-accent text-white flex items-center justify-center">
-                    <Icons.Clock />
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
+                    {Icons.clock}
                   </div>
-                  <h2 className="text-2xl font-bold">The 4-Line Rule</h2>
+                  <h2 className="text-3xl font-bold">The 4-Line Rule</h2>
                 </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <p className="text-lg text-neutral-700 mb-8 leading-relaxed">
-                  In the first 4 lines of ANY copy, readers make their decision. Stay or scroll. Read or leave. You don't get a second chance.
+                <p className="text-neutral-400 max-w-2xl">
+                  In the first 4 lines of ANY copy, readers make their decision. Stay or scroll. Read or leave. This happens before conscious thought kicks in. You don't get a second chance at a first impression.
                 </p>
               </FadeUp>
 
-              <ScaleIn delay={0.2}>
+              <FadeUp delay={0.1}>
                 <FourLineDemo />
-              </ScaleIn>
+              </FadeUp>
             </div>
           </section>
 
-          {/* The Transformation */}
-          <section className="py-16 px-6 bg-white">
-            <div className="lesson-container">
+          {/* Section 3 - White: The Transformation */}
+          <section className="px-6 py-16 bg-white">
+            <div className="lesson-container space-y-8">
               <FadeUp>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl gradient-accent text-white flex items-center justify-center">
-                    <Icons.Zap />
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
+                    {Icons.bolt}
                   </div>
-                  <h2 className="text-2xl font-bold">The "We" to "You" Shift</h2>
+                  <h2 className="text-3xl font-bold text-neutral-900">The "We" to "You" Shift</h2>
                 </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <p className="text-lg text-neutral-700 mb-8 leading-relaxed">
-                  Most copy starts with "We." Winning copy starts with "You." Watch the transformation:
+                <p className="text-neutral-600">
+                  Most copy starts with "We." Winning copy starts with "You." This simple shift transforms self-centered messaging into customer-focused persuasion. Watch the difference:
                 </p>
               </FadeUp>
 
-              <TransformDemo />
+              <FadeUp delay={0.1}>
+                <TransformDemo />
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <p className="text-neutral-600 leading-relaxed">
+                  Notice the pattern? We-focused copy talks about what you have. You-focused copy talks about what they get. Features versus benefits. Information versus transformation. One bores, the other sells.
+                </p>
+              </FadeUp>
             </div>
           </section>
 
-          {/* Holy Shit Moment */}
-          <section className="py-16 px-6 bg-neutral-950 text-white">
+          {/* Section 4 - Dark: The So What Test */}
+          <section className="px-6 py-16 bg-dark text-white">
+            <div className="lesson-container space-y-8">
+              <FadeUp>
+                <SoWhatTest />
+              </FadeUp>
+            </div>
+          </section>
+
+          {/* Section 5 - White: Holy Shit Moment */}
+          <section className="px-6 py-16 bg-white">
             <div className="lesson-container">
               <FadeUp>
-                <div className="text-center">
-                  <p className="text-sm uppercase tracking-wider text-accent-400 mb-4">The Holy Shit Moment</p>
-                  <p className="text-3xl md:text-4xl font-bold mb-8 leading-tight">
-                    Every sentence should pass this test:<br/>
-                    <span className="text-accent-400">"So what? Who cares?"</span>
+                <div className="bg-gradient-to-br from-accent to-cyan-600 rounded-3xl p-8 md:p-12 text-white glow-accent">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                      {Icons.spark}
+                    </div>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-white/80">The Holy Shit Moment</span>
+                  </div>
+                  <p className="text-2xl md:text-3xl font-bold leading-tight mb-6">
+                    Every sentence should pass one test: "So what? Who cares?"
                   </p>
-                  <p className="text-neutral-400 text-lg max-w-xl mx-auto leading-relaxed">
-                    If your reader could say "so what?" to any line in your copy, that line needs to die. Replace it with something that answers WIIFM.
+                  <p className="text-white/80 text-lg leading-relaxed">
+                    If your reader could reasonably respond "so what?" to any line in your copy, that line needs to die. Replace it with something that directly answers WIIFM. No exceptions. No excuses. This ruthless editing is what separates copy that converts from copy that gets ignored.
                   </p>
                 </div>
               </FadeUp>
             </div>
           </section>
 
-          {/* Key Takeaways */}
-          <section className="py-16 px-6 bg-white">
+          {/* Section 6 - Dark: Key Takeaways */}
+          <section className="px-6 py-16 bg-dark text-white">
             <div className="lesson-container">
               <FadeUp>
-                <h2 className="text-2xl font-bold mb-8">Key Takeaways</h2>
+                <h2 className="text-sm uppercase tracking-widest text-neutral-500 mb-8">Key Takeaways</h2>
+                <div className="space-y-3">
+                  {[
+                    "WIIFM = What's In It For Me. The only question your reader is asking.",
+                    "You have 4 lines to hook them. Win or lose in the opening.",
+                    "Replace every 'We' with 'You.' Make it about THEM, not you.",
+                    "Every sentence must pass the 'So what?' test ruthlessly.",
+                    "Features bore. Benefits sell. Transformation converts.",
+                    "Attention is a transaction. Give value or get ignored."
+                  ].map((takeaway, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3 p-4 bg-neutral-900 rounded-xl border border-neutral-800"
+                    >
+                      <div className="text-accent mt-0.5">{Icons.check}</div>
+                      <span className="text-neutral-200">{takeaway}</span>
+                    </motion.div>
+                  ))}
+                </div>
               </FadeUp>
-
-              <div className="space-y-4">
-                {[
-                  "WIIFM = What's In It For Me. The only question your reader cares about.",
-                  "You have 4 lines to hook them. Win or lose in the opening.",
-                  "Replace every \"we\" with \"you.\" Make it about THEM.",
-                  "Every sentence must pass the \"So what?\" test.",
-                ].map((item, i) => (
-                  <FadeUp key={i} delay={i * 0.1}>
-                    <div className="flex items-start gap-4 p-4 bg-neutral-50 rounded-xl">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center">
-                        <Icons.Check />
-                      </span>
-                      <p className="text-neutral-700">{item}</p>
-                    </div>
-                  </FadeUp>
-                ))}
-              </div>
             </div>
           </section>
 
           {/* Footer */}
-          <footer className="py-8 px-6 bg-neutral-100 border-t border-neutral-200">
-            <div className="lesson-container text-center">
-              <p className="text-sm text-neutral-500">
-                Part of the Copywriting Fundamentals series
-              </p>
+          <footer className="px-6 py-8 border-t border-neutral-100 bg-white">
+            <div className="lesson-container flex justify-between items-center text-sm text-neutral-400">
+              <span>Quantum Scale</span>
+              <span>Copywriting Fundamentals</span>
             </div>
           </footer>
         </div>
