@@ -7,7 +7,7 @@ import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-// Lesson metadata for all 10 interactive lessons
+// Lesson metadata for all interactive lessons
 const lessonMeta: Record<string, { title: string; description: string }> = {
   'familiar-surprise-secret': {
     title: 'The Familiar Surprise Secret',
@@ -48,6 +48,26 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'architecture-of-influence': {
     title: 'Architecture of Influence',
     description: 'The structural framework of persuasive communication',
+  },
+  'wiifm-principle': {
+    title: 'The WIIFM Principle',
+    description: 'What\'s In It For Me - The only question your reader is asking',
+  },
+  'three-canons-of-craft': {
+    title: 'The Three Canons of Craft',
+    description: 'Three tests every sentence must pass',
+  },
+  'cpppb-proof-loop': {
+    title: 'The CPPPB Proof Loop',
+    description: 'Five-element framework for bulletproof persuasion',
+  },
+  'damaging-admission': {
+    title: 'The Damaging Admission',
+    description: 'Why revealing weakness makes strengths believable',
+  },
+  'emotional-precision': {
+    title: 'Emotional Precision',
+    description: 'Target precise emotions that drive action',
   },
 };
 

@@ -3211,6 +3211,147 @@ This masterclass reveals the complete architectural framework for building persu
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/architecture-of-influence/lesson.html' }
       ]
+    },
+    {
+      id: 111,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The WIIFM Principle',
+      intro: 'What\'s In It For Me? The only question your reader is asking - and how to answer it.',
+      directUrl: '/learn/lessons/wiifm-principle',
+      specialFeatures: [
+        { value: '4 Lines', label: 'Critical window' },
+        { value: '100%', label: 'Reader-focused' }
+      ],
+      content: `## The WIIFM Principle
+
+This lesson reveals the fundamental truth of all persuasion: your reader only cares about one thing - what's in it for them.
+
+### What You'll Learn:
+- The WIIFM mindset shift
+- The 4-Line Rule: Win or lose in the first 4 lines
+- How to transform "we" statements into "you" statements
+- The Reader-First Framework
+
+### Key Concept:
+Every line of your copy should answer WIIFM from the reader's perspective. Miss this and nothing else matters.
+
+**Open the interactive lesson to master reader-focused copy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/wiifm-principle/lesson.html' }
+      ]
+    },
+    {
+      id: 112,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The Three Canons of Craft',
+      intro: 'Every sentence must pass three tests. Three yeses means strong copy. Three nos means rubbish.',
+      directUrl: '/learn/lessons/three-canons-of-craft',
+      specialFeatures: [
+        { value: '3 Tests', label: 'Per sentence' },
+        { value: 'Harry Dry', label: 'Method origin' }
+      ],
+      content: `## The Three Canons of Craft
+
+This lesson teaches you Harry Dry's three-part test that separates memorable copy from forgettable fluff.
+
+### What You'll Learn:
+- Canon 1: Can I Visualize It? (Concrete vs Abstract)
+- Canon 2: Can I Falsify It? (Provable vs Subjective)
+- Canon 3: Can Nobody Else Say It? (Unique vs Generic)
+- How to audit and fix your existing copy
+
+### Key Concept:
+If your competitor could swap their name into your copy, you've failed. Great copy is concrete, provable, and uniquely yours.
+
+**Open the interactive lesson to test your sentences.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-canons-of-craft/lesson.html' }
+      ]
+    },
+    {
+      id: 113,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The CPPPB Proof Loop',
+      intro: 'A five-element framework for bulletproof persuasion. Each element feeds the next.',
+      directUrl: '/learn/lessons/cpppb-proof-loop',
+      specialFeatures: [
+        { value: 'CPPPB', label: '5-step sequence' },
+        { value: 'Order', label: 'Matters critically' }
+      ],
+      content: `## The CPPPB Proof Loop
+
+This masterclass reveals the exact sequence for building compound persuasion.
+
+### What You'll Learn:
+- C: Credibility - Why trust must come first
+- P: Problem - Describe pain better than they can
+- P: Promise - The outcome, not the product
+- P: Proof - Stack until disbelief is impossible
+- B: Benefits - Translate into personal meaning
+
+### Key Concept:
+Sequence matters. Skip a step and the chain breaks. Follow the order and persuasion compounds.
+
+**Open the interactive lesson to master the sequence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cpppb-proof-loop/lesson.html' }
+      ]
+    },
+    {
+      id: 114,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The Damaging Admission',
+      intro: 'The counterintuitive technique where revealing a weakness makes all your strengths believable.',
+      directUrl: '/learn/lessons/damaging-admission',
+      specialFeatures: [
+        { value: 'Trust', label: 'Instant credibility' },
+        { value: '2-Sided', label: 'Arguments win' }
+      ],
+      content: `## The Damaging Admission
+
+This lesson reveals why admitting a weakness is one of the most powerful persuasion tools.
+
+### What You'll Learn:
+- Why two-sided arguments beat one-sided ones
+- The psychology of credibility transfer
+- Four types of strategic admissions
+- What NOT to admit (fatal vs speed bump)
+
+### Key Concept:
+When you admit something negative, everything positive becomes believable. The admission breaks through skepticism walls.
+
+**Open the interactive lesson to master strategic honesty.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/damaging-admission/lesson.html' }
+      ]
+    },
+    {
+      id: 115,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'Emotional Precision',
+      intro: 'Generic emotions miss. Precise emotions hit the bullseye and drive action.',
+      directUrl: '/learn/lessons/emotional-precision',
+      specialFeatures: [
+        { value: 'Precision', label: 'Emotion targeting' },
+        { value: '10x', label: 'Impact multiplier' }
+      ],
+      content: `## Emotional Precision
+
+This lesson teaches you to move beyond generic emotions to the precise feelings that drive action.
+
+### What You'll Learn:
+- Why "happy" and "sad" are useless in copy
+- The Emotion Precision Ladder
+- How to find the exact emotional state
+- Before/After transformation examples
+
+### Key Concept:
+The difference between "worried" and "lying awake at 3am wondering if you'll make payroll" is the difference between copy that's ignored and copy that converts.
+
+**Open the interactive lesson to sharpen your emotional targeting.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotional-precision/lesson.html' }
+      ]
     }
   ];
 
