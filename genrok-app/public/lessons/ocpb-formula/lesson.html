@@ -22,8 +22,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #000;
-      overflow: hidden;
+      background: #FAFAFA;
       -webkit-font-smoothing: antialiased;
     }
     h1, h2, h3, .slide-title {
@@ -33,6 +32,10 @@
       line-height: 1.1;
     }
     ::selection { background: var(--accent); color: white; }
+
+    /* Hide scrollbar but allow scrolling */
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
@@ -59,15 +62,104 @@
 
     // Character placeholder system
     const CHARACTER_LIBRARY = {
-      welcome: { morning: [], afternoon: [], evening: [], night: [] },
+      welcome: { earlyDawn: [], earlyMorning: [], morningPeak: [], lateMorning: [], lunchBreak: [], afternoon: [], goldenHour: [], evening: [], lateNight: [], midnightGrind: [] },
       celebration: [],
-      empathy: [],
       victory: [],
       thinking: []
     };
 
     // ============================================
-    // SLIDE DATA - FRESH ENGAGING CONTENT
+    // SOPHISTICATED GREETING BANK (10 slots, 4 each)
+    // ============================================
+    const greetingBank = {
+      earlyDawn: [
+        "Hey {userName}! 5am? You're not human. You're a machine. Legend. Let's go!",
+        "What's up {userName}! While they dream, you build empires. This is why you'll win.",
+        "{userName}! The 1% starts at 4am. Welcome to the club, warrior.",
+        "Hey {userName}! Most people are asleep. You? Building your future. Respect. Let's get into it."
+      ],
+      earlyMorning: [
+        "{userName}! 6am hustler! Coffee's ready? Your competition is still sleeping. Let's start.",
+        "Morning {userName}! Early bird gets the million. Smart move starting now. Let's go.",
+        "Hey {userName}! You're already ahead of 90% of people. Morning champion! Let's go.",
+        "{userName}! Sunrise learner. This is how winners start their day. Let's go."
+      ],
+      morningPeak: [
+        "Morning {userName}! Ready to turn knowledge into profit?",
+        "{userName}! Perfect timing. Winners learn before the chaos starts.",
+        "Hey {userName}! Let's sharpen that competitive edge. Morning strategist!",
+        "{userName}! Smart. Learn now, dominate later. Let's go."
+      ],
+      lateMorning: [
+        "{userName}! Late morning grind! Most people are just waking up mentally.",
+        "Hey {userName}! 10am momentum builder! You're in the zone.",
+        "{userName}! While they scroll, you learn. This is the difference.",
+        "What's up {userName}! Mid-morning power hour. You get it. Let's build."
+      ],
+      lunchBreak: [
+        "{userName}! Lunch break learner! Most people waste this hour. Not you.",
+        "Hey {userName}! While they scroll Instagram, you're building skills. Elite move.",
+        "{userName}! Lunch break level-up! This is how pros use downtime.",
+        "Yo {userName}! Smart. 30 minutes of learning beats 3 hours of scrolling."
+      ],
+      afternoon: [
+        "{userName}! Afternoon warrior! While they crash, you climb.",
+        "Hey {userName}! 2pm and still grinding? You're built different.",
+        "{userName}! Post-lunch learner. Most quit now. You? Just getting started.",
+        "What's up {userName}! Afternoon edge. This is when winners separate from watchers."
+      ],
+      goldenHour: [
+        "{userName}! 5pm strategist! Most people are done. You're just warming up.",
+        "Hey {userName}! Golden hour builder! While they zone out, you zone in.",
+        "{userName}! Evening power move. This is when the 1% gets ahead.",
+        "Yo {userName}! Workday done? Nah. Winners learn when others rest."
+      ],
+      evening: [
+        "{userName}! Evening mastermind! This is YOUR time. Let's use it.",
+        "Hey {userName}! 7pm and leveling up? You're not playing games. I respect it.",
+        "{userName}! Prime time learner. While they binge Netflix, you're building.",
+        "What's up {userName}! Evening architect. This is when empires are designed."
+      ],
+      lateNight: [
+        "{userName}! Night owl in the building! Most are asleep. You? Hungry.",
+        "Hey {userName}! 9pm and still grinding? This is why you'll make it.",
+        "{userName}! Late night legend! While they dream, you're building dreams.",
+        "Yo {userName}! Night shift builder. The quiet hours are the profitable ones."
+      ],
+      midnightGrind: [
+        "{userName}! Midnight? You're possessed. I love it. Let's go.",
+        "Hey {userName}! After midnight and learning? You're not normal. You're elite.",
+        "{userName}! Midnight oil burner. This is the stuff legends are made of.",
+        "What's up {userName}! Can't sleep until you win? Same. Welcome home, builder."
+      ]
+    };
+
+    const getTimeSlot = () => {
+      const hour = new Date().getHours();
+      if (hour >= 4 && hour < 6) return 'earlyDawn';
+      if (hour >= 6 && hour < 7.5) return 'earlyMorning';
+      if (hour >= 7.5 && hour < 10) return 'morningPeak';
+      if (hour >= 10 && hour < 12) return 'lateMorning';
+      if (hour >= 12 && hour < 14) return 'lunchBreak';
+      if (hour >= 14 && hour < 17) return 'afternoon';
+      if (hour >= 17 && hour < 19) return 'goldenHour';
+      if (hour >= 19 && hour < 21) return 'evening';
+      if (hour >= 21 && hour < 24) return 'lateNight';
+      return 'midnightGrind';
+    };
+
+    const getGreeting = (userName = 'Builder') => {
+      const slot = getTimeSlot();
+      const greetings = greetingBank[slot];
+      const randomIndex = Math.floor(Math.random() * greetings.length);
+      return {
+        text: greetings[randomIndex].replace('{userName}', userName),
+        slot
+      };
+    };
+
+    // ============================================
+    // SLIDE DATA - ECOMMERCE FOCUSED, SSS COPY
     // ============================================
     const slides = [
       // Slide 1: Welcome
@@ -76,103 +168,135 @@
         learningGoals: [
           'Why objections are actually buying signals in disguise',
           'The 4-step sequence that dissolves doubt in seconds',
-          'How to turn "I\'m not sure" into "Where do I sign?"'
+          'How to turn "It\'s too expensive" into "Where do I pay?"'
         ]
       },
       // Slide 2: Hook
       {
-        type: 'content',
-        title: 'Your Prospect Just Said "But..."',
-        body: 'Most marketers panic. They argue. They discount. They beg. But that objection? It\'s not a wall. It\'s a door they just cracked open for you.'
+        type: 'hook',
+        title: 'Your Customer Just Said "But..."',
+        body: 'That moment when they hit you with "It\'s too expensive" or "I need to think about it." Most store owners panic. They discount. They beg. They lose the sale.',
+        punchline: 'But that objection? It\'s not a wall. It\'s a door.'
       },
-      // Slide 3: The Truth
+      // Slide 3: The Truth (Split Layout)
       {
-        type: 'content',
-        title: 'Objections Mean They Care',
-        body: 'Think about it. People who don\'t care just leave. People who object? They want you to convince them. They\'re practically begging you to help them say yes.',
-        highlight: {
-          label: 'The Mindset Shift',
-          text: 'Objection = Invitation to Close'
+        type: 'split',
+        left: {
+          type: 'visual',
+          content: 'door-open'
+        },
+        right: {
+          subtitle: 'The Mindset Shift',
+          title: 'Objections Mean They Care',
+          body: 'People who don\'t care just close the tab. People who object? They want you to convince them. They\'re practically begging you to help them say yes.',
+          highlight: 'Objection = Invitation to Close'
         }
       },
-      // Slide 4: Visual - OCPB Flow
+      // Slide 4: Visual - OCPB Flow (Full Visual)
       {
         type: 'visual',
         visualType: 'ocpb-flow'
       },
-      // Slide 5: O - Objection
+      // Slide 5: O - Objection (Split with Example)
       {
-        type: 'content',
-        title: 'O: Name the Elephant',
-        subtitle: 'Step 1 of 4',
-        body: 'Say the objection out loud before they do. "You\'re probably thinking this sounds too good to be true." This does two things:',
-        list: [
-          { title: 'Builds instant trust', desc: 'You\'re not hiding from the problem. You\'re addressing it head-on.' },
-          { title: 'Steals their ammo', desc: 'Hard to object when you just said their objection for them.' }
-        ]
+        type: 'split',
+        left: {
+          subtitle: 'Step 1',
+          title: 'O: Name the Elephant',
+          body: 'Say the objection out loud before they do. This builds instant trust and steals their ammo.',
+          callout: 'Hard to object when you just said their objection for them.'
+        },
+        right: {
+          type: 'example',
+          label: 'Product Page Example',
+          context: 'Selling a $297 course',
+          example: '"Look, $297 isn\'t cheap. I get it. That\'s probably what\'s holding you back right now."'
+        }
       },
       // Slide 6: C - Claim
       {
         type: 'content',
+        subtitle: 'Step 2',
         title: 'C: Make a Bold Counter',
-        subtitle: 'Step 2 of 4',
         body: 'Now flip the script. Don\'t disagree softly. Make a confident statement that reframes their concern completely.',
         highlight: {
-          label: 'Example',
-          text: '"Actually, the real risk is NOT taking action."'
+          label: 'The Counter',
+          text: '"But here\'s the thing - the real cost isn\'t the $297. It\'s the $10K+ you\'ll leave on the table this year without these skills."'
         }
       },
-      // Slide 7: P - Proof
+      // Slide 7: P - Proof (Split with Stats)
       {
-        type: 'content',
-        title: 'P: Back It With Receipts',
-        subtitle: 'Step 3 of 4',
-        body: 'Claims without proof are just opinions. Now you drop evidence. Numbers. Testimonials. Case studies. Screenshots. Anything that makes your claim undeniable.',
-        callout: 'The stronger your proof, the weaker their resistance.'
+        type: 'split',
+        left: {
+          subtitle: 'Step 3',
+          title: 'P: Back It With Receipts',
+          body: 'Claims without proof are just opinions. Now drop the evidence. Numbers. Screenshots. Results. Make your claim undeniable.',
+          callout: 'The stronger your proof, the weaker their resistance.'
+        },
+        right: {
+          type: 'stats',
+          stats: [
+            { value: '847', label: 'Students enrolled' },
+            { value: '$4.2M', label: 'Revenue generated' },
+            { value: '14 days', label: 'Avg. ROI timeline' }
+          ]
+        }
       },
       // Slide 8: B - Benefit
       {
         type: 'content',
+        subtitle: 'Step 4',
         title: 'B: Show the Upside',
-        subtitle: 'Step 4 of 4',
-        body: 'End with what they get when they believe you. Paint the picture. Make the benefit so vivid they can taste it. This is where doubt transforms into desire.'
+        body: 'End with what they get when they believe you. Paint the picture. Make the benefit so vivid they can taste it.',
+        highlight: {
+          label: 'The Payoff',
+          text: '"Imagine 90 days from now - your store doing $50K months while you work less. That\'s what this unlocks."'
+        }
       },
-      // Slide 9: Visual - Trust Meter
+      // Slide 9: Visual - Trust Meter (Full Visual)
       {
         type: 'visual',
         visualType: 'trust-meter'
       },
-      // Slide 10: Real Example
+      // Slide 10: Full Example (Cards Layout)
       {
-        type: 'content',
+        type: 'example-breakdown',
         title: 'OCPB in Action',
-        body: 'Watch how to handle "It\'s too expensive":',
-        example: {
-          steps: [
-            { letter: 'O', text: '"I know $497 feels like a lot right now."' },
-            { letter: 'C', text: '"But cheap tools cost you more in wasted time."' },
-            { letter: 'P', text: '"Our users save 12 hours per week on average."' },
-            { letter: 'B', text: '"That\'s 600+ hours back this year alone."' }
-          ]
-        }
+        subtitle: 'Handling "It\'s too expensive" on your product page:',
+        steps: [
+          { letter: 'O', label: 'Objection', text: '"I know $297 feels like a lot right now."' },
+          { letter: 'C', label: 'Claim', text: '"But cheap alternatives cost you more in wasted time and missed sales."' },
+          { letter: 'P', label: 'Proof', text: '"Our students see ROI in 14 days on average. Sarah made $1,247 her first week."' },
+          { letter: 'B', label: 'Benefit', text: '"That\'s 4X return before you even finish the course."' }
+        ]
       },
-      // Slide 11: Quiz
+      // Slide 11: Common Objections (Cards)
+      {
+        type: 'cards',
+        title: 'Use OCPB for Any Objection',
+        cards: [
+          { icon: 'price', title: '"Too expensive"', desc: 'Reframe as investment vs. cost of inaction' },
+          { icon: 'time', title: '"No time"', desc: 'Show how it saves time long-term' },
+          { icon: 'trust', title: '"Will it work for me?"', desc: 'Proof from similar customers' }
+        ]
+      },
+      // Slide 12: Quiz
       {
         type: 'quiz',
-        question: 'A prospect says "I need to think about it." What\'s the OCPB approach?',
+        question: 'A customer says "I need to think about it." What\'s the OCPB approach?',
         options: [
           'Give them time and follow up later',
           'Surface the real objection, counter it, prove it, show the benefit',
           'Offer a discount to speed up the decision',
-          'Add more features to increase value'
+          'Add more product features to increase value'
         ],
         correctIndex: 1,
         feedback: {
-          correct: 'Exactly. "Need to think about it" usually means they have an unspoken concern. Surface it, counter it, prove your point, show the benefit.',
-          incorrect: '"I need to think about it" is rarely about thinking. It\'s usually an unspoken objection. OCPB helps you surface and dissolve it.'
+          correct: 'Exactly. "Need to think about it" usually means they have an unspoken concern. Surface it, counter it, prove your point, show the benefit. OCPB turns hesitation into action.',
+          incorrect: '"I need to think about it" is rarely about thinking. It\'s an unspoken objection hiding underneath. OCPB helps you surface and dissolve it - right there on the page.'
         }
       },
-      // Slide 12: Completion
+      // Slide 13: Completion
       {
         type: 'completion'
       }
@@ -183,12 +307,12 @@
     // ============================================
     const Icons = {
       ArrowLeft: () => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="15 18 9 12 15 6"/>
         </svg>
       ),
       ArrowRight: () => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="9 18 15 12 9 6"/>
         </svg>
       ),
@@ -198,7 +322,7 @@
         </svg>
       ),
       Check: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       ),
@@ -213,35 +337,49 @@
         </svg>
       ),
       ChevronRight: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      ),
+      DoorOpen: () => (
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M13 4h3a2 2 0 0 1 2 2v14"/>
+          <path d="M2 20h3"/>
+          <path d="M13 20h9"/>
+          <path d="M10 12v.01"/>
+          <path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/>
+        </svg>
+      ),
+      Price: () => (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      ),
+      Time: () => (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      ),
+      Trust: () => (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
         </svg>
       )
     };
 
     // ============================================
-    // TIME-BASED GREETING
-    // ============================================
-    const getGreeting = () => {
-      const hour = new Date().getHours();
-      if (hour < 12) return { text: 'Good morning', period: 'morning' };
-      if (hour < 17) return { text: 'Good afternoon', period: 'afternoon' };
-      if (hour < 21) return { text: 'Good evening', period: 'evening' };
-      return { text: 'Hey night owl', period: 'night' };
-    };
-
-    // ============================================
     // CHARACTER PLACEHOLDER
     // ============================================
-    const CharacterPlaceholder = ({ type, emotion }) => {
-      const gifs = CHARACTER_LIBRARY[type]?.[emotion] || CHARACTER_LIBRARY[type] || [];
+    const CharacterPlaceholder = ({ slot }) => {
+      const gifs = CHARACTER_LIBRARY.welcome?.[slot] || [];
       if (!gifs.length) return null;
       const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
       return (
         <motion.img
           src={randomGif}
           alt="Character"
-          className="max-h-48"
+          className="max-h-40"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -263,41 +401,51 @@
       ];
 
       return (
-        <div className="bg-black rounded-2xl p-6 md:p-10 w-full max-w-2xl mx-auto">
-          <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-wider">The 4-Step Sequence</p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-3">
-            {steps.map((step, i) => (
-              <React.Fragment key={step.letter}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + i * 0.15, type: 'spring' }}
-                  className="flex flex-col items-center"
-                >
-                  <div
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-3"
-                    style={{
-                      background: `linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)`,
-                      boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.4), 0 8px 32px rgba(var(--accent-rgb), 0.2)`
-                    }}
-                  >
-                    <span className="text-white text-2xl md:text-3xl font-bold">{step.letter}</span>
-                  </div>
-                  <p className="text-white font-semibold text-sm">{step.word}</p>
-                  <p className="text-neutral-500 text-xs">{step.desc}</p>
-                </motion.div>
-                {i < steps.length - 1 && (
+        <div className="w-full h-full flex items-center justify-center px-4">
+          <div className="bg-black rounded-2xl p-6 md:p-10 w-full max-w-2xl">
+            <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">The 4-Step Sequence</p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-3">
+              {steps.map((step, i) => (
+                <React.Fragment key={step.letter}>
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 + i * 0.15 }}
-                    className="text-neutral-600 hidden md:block"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 + i * 0.15, type: 'spring' }}
+                    className="flex flex-col items-center"
                   >
-                    <Icons.ChevronRight />
+                    <div
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-3"
+                      style={{
+                        background: `linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)`,
+                        boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.4), 0 8px 32px rgba(var(--accent-rgb), 0.2)`
+                      }}
+                    >
+                      <span className="text-white text-2xl md:text-3xl font-bold">{step.letter}</span>
+                    </div>
+                    <p className="text-white font-semibold text-sm">{step.word}</p>
+                    <p className="text-neutral-500 text-xs">{step.desc}</p>
                   </motion.div>
-                )}
-              </React.Fragment>
-            ))}
+                  {i < steps.length - 1 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 + i * 0.15 }}
+                      className="text-neutral-600 hidden md:block"
+                    >
+                      <Icons.ChevronRight />
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-center text-neutral-500 text-sm mt-8"
+            >
+              Each step builds trust and dissolves doubt
+            </motion.p>
           </div>
         </div>
       );
@@ -306,50 +454,60 @@
     // Trust Meter Visual
     const TrustMeterVisual = () => {
       const stages = [
-        { label: 'Skeptical', percent: 20 },
-        { label: 'Curious', percent: 45 },
-        { label: 'Interested', percent: 70 },
-        { label: 'Convinced', percent: 100 }
+        { label: 'Skeptical', letter: 'O', percent: 25 },
+        { label: 'Curious', letter: 'C', percent: 50 },
+        { label: 'Interested', letter: 'P', percent: 75 },
+        { label: 'Ready to Buy', letter: 'B', percent: 100 }
       ];
 
       return (
-        <div className="bg-black rounded-2xl p-8 md:p-10 w-full max-w-lg mx-auto">
-          <p className="text-center text-neutral-400 text-sm mb-6 uppercase tracking-wider">Trust Level Through OCPB</p>
-          <div className="space-y-4">
-            {stages.map((stage, i) => (
-              <motion.div
-                key={stage.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 + i * 0.15 }}
-              >
-                <div className="flex justify-between mb-2">
-                  <span className="text-neutral-300 text-sm">{stage.label}</span>
-                  <span className="text-neutral-500 text-sm">{stage.percent}%</span>
-                </div>
-                <div className="h-3 bg-neutral-800 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${stage.percent}%` }}
-                    transition={{ delay: 0.4 + i * 0.2, duration: 0.8, ease: 'easeOut' }}
-                    className="h-full rounded-full"
-                    style={{
-                      background: `linear-gradient(90deg, var(--accent-dark), var(--accent))`,
-                      boxShadow: `0 0 12px rgba(var(--accent-rgb), 0.5)`
-                    }}
-                  />
-                </div>
-              </motion.div>
-            ))}
+        <div className="w-full h-full flex items-center justify-center px-4">
+          <div className="bg-black rounded-2xl p-8 md:p-10 w-full max-w-lg">
+            <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">Trust Level Through OCPB</p>
+            <div className="space-y-5">
+              {stages.map((stage, i) => (
+                <motion.div
+                  key={stage.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                >
+                  <div className="flex justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold text-white"
+                        style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+                      >
+                        {stage.letter}
+                      </span>
+                      <span className="text-neutral-300 text-sm">{stage.label}</span>
+                    </div>
+                    <span className="text-neutral-500 text-sm">{stage.percent}%</span>
+                  </div>
+                  <div className="h-3 bg-neutral-800 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${stage.percent}%` }}
+                      transition={{ delay: 0.4 + i * 0.2, duration: 0.8, ease: 'easeOut' }}
+                      className="h-full rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, var(--accent-dark), var(--accent))`,
+                        boxShadow: `0 0 12px rgba(var(--accent-rgb), 0.5)`
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4 }}
+              className="text-center text-neutral-500 text-sm mt-6"
+            >
+              Each step moves them closer to "Yes"
+            </motion.p>
           </div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="text-center text-neutral-500 text-sm mt-6"
-          >
-            Each step builds on the last
-          </motion.p>
         </div>
       );
     };
@@ -363,31 +521,40 @@
       const greeting = getGreeting();
 
       return (
-        <div className="h-full flex flex-col items-center justify-center text-center px-8">
-          <CharacterPlaceholder type="welcome" emotion={greeting.period} />
+        <div className="h-full flex flex-col items-center justify-center text-center px-6 md:px-8 py-8 slide-scroll overflow-y-auto">
+          <CharacterPlaceholder slot={greeting.slot} />
 
-          <motion.h1
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="slide-title text-4xl md:text-5xl text-black mb-4"
+            className="text-neutral-600 text-base md:text-lg mb-6 max-w-lg leading-relaxed"
           >
-            {greeting.text}!
-          </motion.h1>
+            {greeting.text}
+          </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-neutral-500 text-lg mb-8"
+            className="text-neutral-400 text-sm mb-2"
           >
-            Ready to master <span className="font-semibold text-black">{LESSON_CONFIG.title}</span>?
+            Today's lesson:
           </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-8"
+          >
+            {LESSON_CONFIG.title}
+          </motion.h1>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-black rounded-2xl p-6 mb-8 max-w-md w-full"
+            className="bg-black rounded-2xl p-6 mb-6 max-w-md w-full"
           >
             <p className="text-neutral-500 text-xs uppercase tracking-wider mb-4">In this lesson</p>
             <ul className="space-y-3">
@@ -400,7 +567,7 @@
                   className="flex items-start gap-3 text-left"
                 >
                   <span
-                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5"
                     style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
                   >
                     {i + 1}
@@ -440,10 +607,223 @@
       );
     };
 
+    // Hook Slide
+    const HookSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-6"
+          >
+            {data.title}
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-neutral-600 text-lg leading-relaxed mb-8"
+          >
+            {data.body}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-black rounded-2xl p-6 md:p-8"
+          >
+            <p
+              className="text-2xl md:text-3xl font-bold text-center"
+              style={{ color: 'var(--accent)' }}
+            >
+              {data.punchline}
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Split Layout Slide
+    const SplitSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col md:flex-row slide-scroll overflow-y-auto">
+          {/* Left Side */}
+          <div className="md:w-2/5 flex items-center justify-center p-6 md:p-8 bg-neutral-50">
+            {data.left.type === 'visual' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)',
+                  boxShadow: `0 8px 32px rgba(var(--accent-rgb), 0.3)`
+                }}
+              >
+                <div className="text-white">
+                  <Icons.DoorOpen />
+                </div>
+              </motion.div>
+            )}
+            {data.left.type === 'example' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl p-5 w-full shadow-lg border border-neutral-100"
+              >
+                <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">{data.left.label}</p>
+                <p className="text-xs text-neutral-500 mb-4">{data.left.context}</p>
+                <div
+                  className="p-4 rounded-xl border-2"
+                  style={{ background: 'rgba(217,70,239,0.05)', borderColor: 'var(--accent)' }}
+                >
+                  <p className="text-neutral-800 text-sm italic leading-relaxed">
+                    {data.left.example}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+            {data.left.type === 'stats' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-black rounded-2xl p-5 w-full"
+              >
+                <p className="text-xs uppercase tracking-wider text-neutral-500 mb-4">The Proof</p>
+                <div className="space-y-4">
+                  {data.left.stats.map((stat, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 + i * 0.1 }}
+                      className="text-center"
+                    >
+                      <p
+                        className="text-2xl md:text-3xl font-bold"
+                        style={{ color: 'var(--accent)' }}
+                      >
+                        {stat.value}
+                      </p>
+                      <p className="text-neutral-400 text-xs">{stat.label}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Right Side */}
+          <div className="md:w-3/5 flex flex-col justify-center p-6 md:p-10">
+            {data.right?.subtitle && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm font-medium uppercase tracking-wider mb-2"
+                style={{ color: 'var(--accent)' }}
+              >
+                {data.right.subtitle}
+              </motion.p>
+            )}
+
+            {data.right?.title && (
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="slide-title text-2xl md:text-3xl text-black mb-4"
+              >
+                {data.right.title}
+              </motion.h2>
+            )}
+
+            {data.right?.body && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-neutral-600 text-base leading-relaxed mb-4"
+              >
+                {data.right.body}
+              </motion.p>
+            )}
+
+            {data.right?.callout && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-neutral-500 text-sm italic mb-4"
+              >
+                {data.right.callout}
+              </motion.p>
+            )}
+
+            {data.right?.highlight && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-black rounded-xl p-5"
+              >
+                <p
+                  className="text-lg md:text-xl font-bold"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  {data.right.highlight}
+                </p>
+              </motion.div>
+            )}
+
+            {/* If left has subtitle/title (for swapped layout) */}
+            {data.left?.subtitle && !data.right?.title && (
+              <>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm font-medium uppercase tracking-wider mb-2"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  {data.left.subtitle}
+                </motion.p>
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="slide-title text-2xl md:text-3xl text-black mb-4"
+                >
+                  {data.left.title}
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-neutral-600 text-base leading-relaxed mb-4"
+                >
+                  {data.left.body}
+                </motion.p>
+                {data.left.callout && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-neutral-500 text-sm italic"
+                  >
+                    {data.left.callout}
+                  </motion.p>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      );
+    };
+
     // Content Slide
     const ContentSlide = ({ data }) => {
       return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-12">
           {data.subtitle && (
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -475,82 +855,20 @@
             </motion.p>
           )}
 
-          {data.callout && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-neutral-500 text-base italic"
-            >
-              {data.callout}
-            </motion.p>
-          )}
-
           {data.highlight && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-black rounded-2xl p-6 mt-2"
+              className="bg-black rounded-2xl p-6"
             >
               <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
               <p
-                className="text-xl md:text-2xl font-bold"
+                className="text-lg md:text-xl leading-relaxed"
                 style={{ color: 'var(--accent)' }}
               >
                 {data.highlight.text}
               </p>
-            </motion.div>
-          )}
-
-          {data.list && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="space-y-3"
-            >
-              {data.list.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + i * 0.1 }}
-                  className="bg-neutral-50 rounded-xl p-5 border border-neutral-100"
-                >
-                  <h4 className="font-semibold text-black mb-1">{item.title}</h4>
-                  <p className="text-neutral-600 text-sm">{item.desc}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-
-          {data.example && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-black rounded-2xl p-6 mt-2"
-            >
-              <div className="space-y-3">
-                {data.example.steps.map((step, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + i * 0.1 }}
-                    className="flex items-start gap-3"
-                  >
-                    <span
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                      style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
-                    >
-                      {step.letter}
-                    </span>
-                    <p className="text-neutral-300 text-sm leading-relaxed pt-1">{step.text}</p>
-                  </motion.div>
-                ))}
-              </div>
             </motion.div>
           )}
         </div>
@@ -560,9 +878,108 @@
     // Visual Slide
     const VisualSlide = ({ data }) => {
       return (
-        <div className="h-full flex items-center justify-center px-4">
+        <div className="h-full flex items-center justify-center">
           {data.visualType === 'ocpb-flow' && <OCPBFlowVisual />}
           {data.visualType === 'trust-meter' && <TrustMeterVisual />}
+        </div>
+      );
+    };
+
+    // Example Breakdown Slide
+    const ExampleBreakdownSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 slide-scroll overflow-y-auto py-12">
+          <div className="text-center mb-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="slide-title text-2xl md:text-3xl text-black mb-2"
+            >
+              {data.title}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-neutral-500 text-sm"
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          <div className="bg-black rounded-2xl p-6 max-w-2xl mx-auto w-full">
+            <div className="space-y-4">
+              {data.steps.map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                  className="flex items-start gap-4"
+                >
+                  <div
+                    className="w-10 h-10 rounded-lg flex-shrink-0 flex flex-col items-center justify-center"
+                    style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+                  >
+                    <span className="text-white text-sm font-bold">{step.letter}</span>
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">{step.label}</p>
+                    <p className="text-neutral-200 text-sm leading-relaxed">{step.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Cards Slide
+    const CardsSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = {
+          price: Icons.Price,
+          time: Icons.Time,
+          trust: Icons.Trust
+        };
+        const IconComp = icons[iconName];
+        return IconComp ? <IconComp /> : null;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 slide-scroll overflow-y-auto py-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {data.cards.map((card, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="bg-white rounded-2xl p-5 border border-neutral-100 shadow-sm hover:shadow-md hover:border-neutral-200 transition-all"
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`,
+                    color: 'var(--accent)'
+                  }}
+                >
+                  {getIcon(card.icon)}
+                </div>
+                <h4 className="font-semibold text-black mb-2">{card.title}</h4>
+                <p className="text-neutral-600 text-sm leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       );
     };
@@ -581,14 +998,14 @@
       const isCorrect = selected === data.correctIndex;
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8"
           >
             <p className="text-sm uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-            <h2 className="slide-title text-2xl md:text-3xl text-black leading-tight">{data.question}</h2>
+            <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
           </motion.div>
 
           <div className="space-y-3 mb-6">
@@ -652,14 +1069,12 @@
     // Completion Slide
     const CompletionSlide = () => {
       return (
-        <div className="h-full flex flex-col items-center justify-center text-center px-8">
-          <CharacterPlaceholder type="victory" />
-
+        <div className="h-full flex flex-col items-center justify-center text-center px-6 md:px-8 slide-scroll overflow-y-auto py-12">
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', duration: 0.6 }}
-            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 text-white"
             style={{
               background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
               boxShadow: `0 8px 32px rgba(var(--accent-rgb), 0.4)`
@@ -683,7 +1098,7 @@
             transition={{ delay: 0.3 }}
             className="text-neutral-600 text-lg mb-8 max-w-md leading-relaxed"
           >
-            You now have a 4-letter cheat code for dissolving doubt. O-C-P-B. Memorize it. Use it. Watch objections melt.
+            You now have a 4-letter cheat code for dissolving doubt. O-C-P-B. Use it on your product pages, emails, and ads. Watch objections melt.
           </motion.p>
 
           <motion.div
@@ -707,29 +1122,41 @@
     const NavigationArrow = ({ direction, onClick }) => (
       <button
         onClick={onClick}
-        className={`absolute top-1/2 -translate-y-1/2 ${direction === 'left' ? 'left-2 md:left-4' : 'right-2 md:right-4'}
-          w-10 h-20 md:w-14 md:h-28 rounded-xl flex items-center justify-center
-          transition-all opacity-30 hover:opacity-70 hover:bg-white/10`}
-        style={{ color: 'white' }}
+        className={`fixed top-1/2 -translate-y-1/2 ${direction === 'left' ? 'left-3 md:left-5' : 'right-3 md:right-5'}
+          w-14 h-28 md:w-20 md:h-40 rounded-xl flex items-center justify-center
+          transition-all z-[200] cursor-pointer`}
+        style={{
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(4px)',
+          color: 'white'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
+          e.currentTarget.style.boxShadow = `0 0 20px rgba(var(--accent-rgb), 0.3)`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       >
         {direction === 'left' ? <Icons.ArrowLeft /> : <Icons.ArrowRight />}
       </button>
     );
 
     const ProgressDots = ({ total, current }) => (
-      <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-2 bg-black/40 backdrop-blur-md rounded-full">
+      <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-4 py-2.5 bg-black/50 backdrop-blur-md rounded-full z-[200]">
         {Array.from({ length: total }).map((_, i) => (
           <motion.div
             key={i}
-            className="h-1.5 rounded-full"
+            className="h-2 rounded-full"
             style={{
-              width: i === current ? 20 : 6,
+              width: i === current ? 24 : 8,
               background: i === current
                 ? `linear-gradient(135deg, var(--accent), var(--accent-dark))`
-                : 'rgba(255,255,255,0.25)',
-              boxShadow: i === current ? `0 0 8px rgba(var(--accent-rgb), 0.5)` : 'none'
+                : 'rgba(255,255,255,0.3)',
+              boxShadow: i === current ? `0 0 12px rgba(var(--accent-rgb), 0.6)` : 'none'
             }}
-            animate={{ width: i === current ? 20 : 6 }}
+            animate={{ width: i === current ? 24 : 8 }}
             transition={{ duration: 0.2 }}
           />
         ))}
@@ -777,8 +1204,12 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'split': return <SplitSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
+          case 'example-breakdown': return <ExampleBreakdownSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -786,14 +1217,37 @@
       };
 
       return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black">
-          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-900" />
-
-          {/* Slide Container */}
+        <div className="fixed inset-0">
+          {/* Cinema Overlay - Dimmed + Blurred Background */}
           <div
-            className="relative w-[94%] md:w-[88%] max-w-5xl h-[88%] md:h-[82%] bg-white rounded-2xl md:rounded-3xl overflow-hidden z-10"
-            style={{ boxShadow: '0 25px 100px rgba(0,0,0,0.5)' }}
+            className="absolute inset-0 z-[100]"
+            style={{
+              background: 'rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(8px)'
+            }}
+          />
+
+          {/* Floating Slide Container */}
+          <div
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] md:w-[85vw] max-w-[1400px] h-[85vh] max-h-[800px] bg-white rounded-[20px] overflow-hidden z-[101]"
+            style={{
+              boxShadow: '0 40px 100px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset'
+            }}
           >
+            {/* Accent Gradient Border */}
+            <div
+              className="absolute inset-[-2px] rounded-[22px] pointer-events-none"
+              style={{
+                padding: '2px',
+                background: `linear-gradient(135deg, var(--accent) 0%, transparent 50%, var(--accent) 100%)`,
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                opacity: 0.4
+              }}
+            />
+
+            {/* Slide Content */}
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentSlide}
@@ -810,13 +1264,13 @@
             </AnimatePresence>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation Arrows */}
           {currentSlide > 0 && <NavigationArrow direction="left" onClick={prevSlide} />}
           {currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome' && (
             <NavigationArrow direction="right" onClick={nextSlide} />
           )}
 
-          {/* Progress */}
+          {/* Progress Dots */}
           <ProgressDots total={slides.length} current={currentSlide} />
         </div>
       );
