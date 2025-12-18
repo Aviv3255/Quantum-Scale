@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent: #f43f5e;
@@ -22,8 +22,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #FAFAFA;
+      background: transparent;
       -webkit-font-smoothing: antialiased;
+    }
+    .title-font {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
     h1, h2, h3, .slide-title {
       font-family: 'Fraunces', serif;
@@ -43,7 +49,15 @@
 
   <script type="text/babel">
     const { motion, AnimatePresence } = window.Motion;
-    const { useState, useEffect, useCallback } = React;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    // ============================================
+    // GET USER NAME FROM URL PARAM
+    // ============================================
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
 
     // ============================================
     // LESSON CONFIGURATION
@@ -66,64 +80,64 @@
     // ============================================
     const greetingBank = {
       earlyDawn: [
-        "Hey {userName}! 5am? You're not human. You're a machine. Legend. Let's go!",
-        "What's up {userName}! While they dream, you build empires. This is why you'll win.",
-        "{userName}! The 1% starts at 4am. Welcome to the club, warrior.",
-        "Hey {userName}! Most people are asleep. You? Building your future. Respect."
+        "5am? You're not human. You're a machine. Legend.",
+        "While they dream, you build empires. This is why you'll win.",
+        "The 1% starts at 4am. Welcome to the club, warrior.",
+        "Most people are asleep. You? Building your future. Respect."
       ],
       earlyMorning: [
-        "{userName}! 6am hustler! Coffee's ready? Your competition is still sleeping.",
-        "Morning {userName}! Early bird gets the million. Smart move starting now.",
-        "Hey {userName}! You're already ahead of 90% of people. Morning champion!",
-        "{userName}! Sunrise learner. This is how winners start their day."
+        "6am hustler! Coffee's ready? Your competition is still sleeping.",
+        "Early bird gets the million. Smart move starting now.",
+        "You're already ahead of 90% of people. Morning champion!",
+        "Sunrise learner. This is how winners start their day."
       ],
       morningPeak: [
-        "Morning {userName}! Ready to turn knowledge into profit?",
-        "{userName}! Perfect timing. Winners learn before the chaos starts.",
-        "Hey {userName}! Let's sharpen that competitive edge. Morning strategist!",
-        "{userName}! Smart. Learn now, dominate later."
+        "Ready to turn knowledge into profit?",
+        "Perfect timing. Winners learn before the chaos starts.",
+        "Let's sharpen that competitive edge. Morning strategist!",
+        "Smart. Learn now, dominate later."
       ],
       lateMorning: [
-        "{userName}! Late morning grind! Most people are just waking up mentally.",
-        "Hey {userName}! 10am momentum builder! You're in the zone.",
-        "{userName}! While they scroll, you learn. This is the difference.",
-        "What's up {userName}! Mid-morning power hour. You get it."
+        "Late morning grind! Most people are just waking up mentally.",
+        "10am momentum builder! You're in the zone.",
+        "While they scroll, you learn. This is the difference.",
+        "Mid-morning power hour. You get it."
       ],
       lunchBreak: [
-        "{userName}! Lunch break learner! Most people waste this hour. Not you.",
-        "Hey {userName}! While they scroll Instagram, you're building skills. Elite move.",
-        "{userName}! Lunch break level-up! This is how pros use downtime.",
-        "Yo {userName}! Smart. 30 minutes of learning beats 3 hours of scrolling."
+        "Lunch break learner! Most people waste this hour. Not you.",
+        "While they scroll Instagram, you're building skills. Elite move.",
+        "Lunch break level-up! This is how pros use downtime.",
+        "Smart. 30 minutes of learning beats 3 hours of scrolling."
       ],
       afternoon: [
-        "{userName}! Afternoon warrior! While they crash, you climb.",
-        "Hey {userName}! 2pm and still grinding? You're built different.",
-        "{userName}! Post-lunch learner. Most quit now. You? Just getting started.",
-        "What's up {userName}! Afternoon edge. This is when winners separate."
+        "Afternoon warrior! While they crash, you climb.",
+        "2pm and still grinding? You're built different.",
+        "Post-lunch learner. Most quit now. You? Just getting started.",
+        "Afternoon edge. This is when winners separate."
       ],
       goldenHour: [
-        "{userName}! 5pm strategist! Most people are done. You're just warming up.",
-        "Hey {userName}! Golden hour builder! While they zone out, you zone in.",
-        "{userName}! Evening power move. This is when the 1% gets ahead.",
-        "Yo {userName}! Workday done? Nah. Winners learn when others rest."
+        "5pm strategist! Most people are done. You're just warming up.",
+        "Golden hour builder! While they zone out, you zone in.",
+        "Evening power move. This is when the 1% gets ahead.",
+        "Workday done? Nah. Winners learn when others rest."
       ],
       evening: [
-        "{userName}! Evening mastermind! This is YOUR time. Let's use it.",
-        "Hey {userName}! 7pm and leveling up? You're not playing games. Respect.",
-        "{userName}! Prime time learner. While they binge Netflix, you're building.",
-        "What's up {userName}! Evening architect. This is when empires are designed."
+        "Evening mastermind! This is YOUR time. Let's use it.",
+        "7pm and leveling up? You're not playing games. Respect.",
+        "Prime time learner. While they binge Netflix, you're building.",
+        "Evening architect. This is when empires are designed."
       ],
       lateNight: [
-        "{userName}! Night owl in the building! Most are asleep. You? Hungry.",
-        "Hey {userName}! 9pm and still grinding? This is why you'll make it.",
-        "{userName}! Late night legend! While they dream, you're building dreams.",
-        "Yo {userName}! Night shift builder. The quiet hours are the profitable ones."
+        "Night owl in the building! Most are asleep. You? Hungry.",
+        "9pm and still grinding? This is why you'll make it.",
+        "Late night legend! While they dream, you're building dreams.",
+        "Night shift builder. The quiet hours are the profitable ones."
       ],
       midnightGrind: [
-        "{userName}! Midnight? You're possessed. I love it. Let's go.",
-        "Hey {userName}! After midnight and learning? You're not normal. You're elite.",
-        "{userName}! Midnight oil burner. This is the stuff legends are made of.",
-        "What's up {userName}! Can't sleep until you win? Same. Welcome home, builder."
+        "Midnight? You're possessed. I love it.",
+        "After midnight and learning? You're not normal. You're elite.",
+        "Midnight oil burner. This is the stuff legends are made of.",
+        "Can't sleep until you win? Same. Welcome home, builder."
       ]
     };
 
@@ -141,11 +155,11 @@
       return 'midnightGrind';
     };
 
-    const getGreeting = (userName = 'Builder') => {
+    const getGreeting = () => {
       const slot = getTimeSlot();
       const greetings = greetingBank[slot];
       const randomIndex = Math.floor(Math.random() * greetings.length);
-      return greetings[randomIndex].replace('{userName}', userName);
+      return greetings[randomIndex];
     };
 
     // ============================================
@@ -410,7 +424,7 @@
       );
     };
 
-    // Premium Comparison Visual (Redesigned)
+    // Premium Comparison Visual
     const ComparisonVisual = () => {
       return (
         <div className="w-full h-full flex items-center justify-center p-4 md:p-6">
@@ -485,24 +499,35 @@
     // SLIDE COMPONENTS
     // ============================================
 
-    // Welcome Slide
-    const WelcomeSlide = ({ data, onStart }) => {
-      const greeting = getGreeting();
+    // Welcome Slide with TITLE and USER NAME
+    const WelcomeSlide = ({ data, onStart, userName }) => {
+      const greeting = useMemo(() => getGreeting(), []);
 
       return (
         <div className="h-full flex flex-col items-center justify-center text-center px-6 py-6 slide-scroll overflow-y-auto">
+          {/* Lesson Title in Fraunces font */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="title-font text-3xl md:text-4xl text-black mb-4"
+          >
+            {LESSON_CONFIG.title}
+          </motion.h1>
+
+          {/* Personalized greeting with user name */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
             className="text-neutral-500 text-sm md:text-base mb-4 max-w-md leading-relaxed"
           >
-            {greeting}
+            Hey <span className="font-semibold text-neutral-700">{userName}</span>! {greeting}
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.15 }}
             className="flex items-center gap-2 text-neutral-400 text-xs mb-6"
           >
             <Icons.Clock />
@@ -512,7 +537,7 @@
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
+            transition={{ delay: 0.2 }}
             className="bg-neutral-900 rounded-2xl p-5 mb-6 max-w-sm w-full"
           >
             <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-3">In this lesson</p>
@@ -522,7 +547,7 @@
                   key={i}
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.25 + i * 0.08 }}
+                  transition={{ delay: 0.3 + i * 0.08 }}
                   className="flex items-start gap-2.5 text-left"
                 >
                   <span
@@ -540,7 +565,7 @@
           <motion.button
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.55 }}
             onClick={onStart}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -893,6 +918,7 @@
     const App = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(0);
+      const userName = useMemo(() => getUserName(), []);
 
       const goToSlide = useCallback((newSlide) => {
         if (newSlide < 0 || newSlide >= slides.length) return;
@@ -927,7 +953,7 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} />;
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
@@ -940,22 +966,31 @@
         }
       };
 
-      // Navigation arrows - ALWAYS visible when applicable, even on quiz
+      // Navigation arrows - ALWAYS visible when applicable
       const showPrev = currentSlide > 0;
       const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="fixed inset-0">
-          {/* Cinema Overlay */}
-          <div className="absolute inset-0 z-[100]" style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(12px)' }} />
-
-          {/* Floating Lesson Container - 85% of screen */}
+        <div className="fixed inset-0 z-[9999]">
+          {/* Full screen overlay - covers EVERYTHING including sidebar */}
           <div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] md:w-[85vw] max-w-[1200px] h-[85vh] max-h-[750px] bg-white rounded-2xl overflow-hidden z-[101] flex flex-col"
-            style={{ boxShadow: '0 25px 80px rgba(0, 0, 0, 0.4)' }}
+            className="absolute inset-0"
+            style={{ background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(16px)' }}
+          />
+
+          {/* Floating Lesson Container - 85% of TOTAL screen */}
+          <div
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl overflow-hidden flex flex-col"
+            style={{
+              width: '85vw',
+              height: '85vh',
+              maxWidth: '1400px',
+              maxHeight: '900px',
+              boxShadow: '0 25px 100px rgba(0, 0, 0, 0.5)'
+            }}
           >
             {/* Header - Back + Title */}
-            <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-neutral-100 flex-shrink-0">
+            <div className="flex items-center justify-between px-5 md:px-6 py-3.5 border-b border-neutral-100 flex-shrink-0">
               <a
                 href="/learn"
                 className="flex items-center gap-1.5 text-neutral-400 hover:text-neutral-600 transition-colors text-xs"
@@ -965,7 +1000,7 @@
               </a>
               <div className="text-right">
                 <p className="text-neutral-900 font-semibold text-sm">{LESSON_CONFIG.title}</p>
-                <p className="text-neutral-400 text-[10px]">{LESSON_CONFIG.duration}</p>
+                <p className="text-neutral-400 text-[10px]">{LESSON_CONFIG.description}</p>
               </div>
             </div>
 
@@ -986,11 +1021,11 @@
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navigation Arrows - INSIDE the slide, minimal */}
+              {/* Navigation Arrows - INSIDE the slide */}
               {showPrev && (
                 <button
                   onClick={prevSlide}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"
                 >
                   <Icons.ArrowLeft />
                 </button>
@@ -998,32 +1033,28 @@
               {showNext && (
                 <button
                   onClick={nextSlide}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"
                 >
                   <Icons.ArrowRight />
                 </button>
               )}
             </div>
 
-            {/* Progress Bar */}
-            <div className="px-4 md:px-6 py-3 border-t border-neutral-100 flex-shrink-0">
-              <div className="flex items-center gap-1.5">
+            {/* Progress Dots - Gray dots, accent for current */}
+            <div className="px-5 md:px-6 py-4 border-t border-neutral-100 flex-shrink-0">
+              <div className="flex items-center justify-center gap-2">
                 {slides.map((_, i) => (
-                  <div
+                  <button
                     key={i}
-                    className="h-1 rounded-full transition-all duration-300"
+                    onClick={() => goToSlide(i)}
+                    className="w-2 h-2 rounded-full transition-all duration-300"
                     style={{
-                      flex: i === currentSlide ? 3 : 1,
-                      background: i <= currentSlide
-                        ? `linear-gradient(90deg, var(--accent), var(--accent-dark))`
-                        : '#e5e5e5'
+                      background: i === currentSlide ? 'var(--accent)' : '#d4d4d4',
+                      transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)'
                     }}
                   />
                 ))}
               </div>
-              <p className="text-neutral-400 text-[10px] text-center mt-2">
-                {currentSlide + 1} of {slides.length}
-              </p>
             </div>
           </div>
         </div>

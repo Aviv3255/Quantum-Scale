@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { getUserProfile } from '@/lib/supabase';
 
 // Lesson metadata for all interactive lessons
 const lessonMeta: Record<string, { title: string; description: string }> = {
@@ -149,6 +150,7 @@ export default function LessonPage() {
   const slug = params.slug as string;
   const { user, isLoading } = useAuthStore();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [userName, setUserName] = useState<string>('Builder');
 
   // Derive lesson data from slug - no need for state
   const lesson = useMemo(() => lessonMeta[slug], [slug]);
@@ -159,6 +161,28 @@ export default function LessonPage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Fetch user's name from profile or user metadata
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (!user) return;
+
+      // First try user_metadata
+      const metaName = user.user_metadata?.full_name;
+      if (metaName) {
+        setUserName(metaName.split(' ')[0]);
+        return;
+      }
+
+      // Fallback to profile
+      const { data: profile } = await getUserProfile(user.id);
+      if (profile?.full_name) {
+        setUserName(profile.full_name.split(' ')[0]);
+      }
+    };
+
+    fetchUserName();
+  }, [user]);
 
   if (isLoading || !user) {
     return (
@@ -184,7 +208,8 @@ export default function LessonPage() {
     );
   }
 
-  const lessonUrl = `/lessons/${slug}/lesson.html`;
+  // Pass user's first name to the lesson via URL param
+  const lessonUrl = `/lessons/${slug}/lesson.html?userName=${encodeURIComponent(userName)}`;
 
   return (
     <DashboardLayout>
