@@ -3,6 +3,36 @@ const path = require('path');
 
 const lessons = [
   {
+    name: 'Familiar Surprise Secret',
+    path: 'genrok-app/public/lessons/familiar-surprise-secret/lesson.html',
+    totalSlides: 14
+  },
+  {
+    name: 'Red Button Effect',
+    path: 'genrok-app/public/lessons/red-button-effect/lesson.html',
+    totalSlides: 14
+  },
+  {
+    name: 'FRED Method',
+    path: 'genrok-app/public/lessons/fred-method/lesson.html',
+    totalSlides: 14
+  },
+  {
+    name: 'Gatekeeper Method',
+    path: 'genrok-app/public/lessons/gatekeeper-method/lesson.html',
+    totalSlides: 15
+  },
+  {
+    name: 'Three Second Rule',
+    path: 'genrok-app/public/lessons/three-second-rule/lesson.html',
+    totalSlides: 15
+  },
+  {
+    name: 'Science of Selling',
+    path: 'genrok-app/public/lessons/science-of-selling/lesson.html',
+    totalSlides: 15
+  },
+  {
     name: 'Three Levels of Change',
     path: 'genrok-app/public/lessons/three-levels-of-change/lesson.html',
     totalSlides: 14
