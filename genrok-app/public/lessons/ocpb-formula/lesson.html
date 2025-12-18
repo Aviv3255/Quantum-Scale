@@ -564,8 +564,8 @@
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Quiz content - z-20 to stay above GIF */}
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-20">
+          {/* Quiz content - z-30 to stay above GIF (z-15) */}
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
@@ -619,6 +619,7 @@
 
       // GIF state - managed at app level so it can render outside slide area
       const [gifConfig, setGifConfig] = useState(null); // { url, height, side }
+      const [isAnimating, setIsAnimating] = useState(false); // Prevent rapid clicks during animation
 
       const showGif = useCallback((url, height, side) => {
         setGifConfig({ url, height, side });
@@ -631,10 +632,11 @@
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
-        if (newSlide < 0 || newSlide >= slides.length) return;
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
         setDirection(newSlide > currentSlideRef.current ? 1 : -1);
         setCurrentSlide(newSlide);
-      }, []);
+      }, [isAnimating]);
 
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
       const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
@@ -675,7 +677,7 @@
       return (
         <div className="w-full h-screen bg-white flex flex-col relative">
           <div className="flex-1 relative overflow-hidden">
-            <AnimatePresence mode="wait" custom={direction}>
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
               </motion.div>
