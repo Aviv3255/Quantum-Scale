@@ -3,595 +3,853 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Three Levels of Change</title>
+  <title>The Three Levels of Change | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: {
-              DEFAULT: '#f43f5e',
-              50: '#fff1f2',
-              100: '#ffe4e6',
-              200: '#fecdd3',
-              300: '#fda4af',
-              400: '#fb7185',
-              500: '#f43f5e',
-              600: '#e11d48',
-              700: '#be123c',
-              800: '#9f1239',
-              900: '#881337',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; overflow-x: hidden; }
-    ::selection { background: #f43f5e; color: #fff; }
-    h1, h2, h3, h4 { letter-spacing: -0.025em; }
-    .lesson-container { max-width: 800px; margin: 0 auto; }
+    :root {
+      --accent: #f43f5e;
+      --accent-dark: #e11d48;
+      --accent-light: #fb7185;
+      --accent-rgb: 244, 63, 94;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .slide-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    ::selection { background: var(--accent); color: white; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence } = window.Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    // ============================================
+    // LESSON CONFIGURATION
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'three-levels-of-change',
+      title: 'The Three Levels of Change',
+      accentColor: '#f43f5e',
+      duration: '4 min',
+      nextLesson: {
+        id: 'ocpb-formula',
+        title: 'The OCPB Formula',
+        teaser: 'The 4-letter sequence that turns "maybe" into "shut up and take my money."'
+      }
+    };
 
-    // Icons
+    // Character placeholder system (invisible until GIFs provided)
+    const CHARACTER_LIBRARY = {
+      welcome: { morning: [], afternoon: [], evening: [], night: [] },
+      celebration: [],
+      empathy: [],
+      victory: [],
+      thinking: []
+    };
+
+    // ============================================
+    // SLIDE DATA - FRESH ENGAGING CONTENT
+    // ============================================
+    const slides = [
+      // Slide 1: Welcome
+      {
+        type: 'welcome',
+        learningGoals: [
+          'Why 95% of copy fails before it even gets read',
+          'The invisible ladder every customer climbs before buying',
+          'How to write at the level your competition can\'t touch'
+        ]
+      },
+      // Slide 2: Pattern Interrupt Hook
+      {
+        type: 'content',
+        title: 'Here\'s an Uncomfortable Truth',
+        body: 'You could have the most beautiful headline ever written. Perfect rhythm. Punchy verbs. Emotional triggers firing on all cylinders. And it still won\'t matter.'
+      },
+      // Slide 3: The Reveal
+      {
+        type: 'content',
+        title: 'Because Attention is Just the Door',
+        body: 'Getting someone to look is easy. Getting them to think differently? Harder. Getting them to believe something new about themselves? That\'s where the money lives.',
+        highlight: {
+          label: 'The Real Game',
+          text: 'Change their identity, change their wallet.'
+        }
+      },
+      // Slide 4: Visual - Pyramid
+      {
+        type: 'visual',
+        visualType: 'pyramid'
+      },
+      // Slide 5: Level 1 - Attention
+      {
+        type: 'content',
+        title: 'Level 1: Stop the Scroll',
+        subtitle: 'The Attention Game',
+        body: 'This is where everyone plays. Headlines. Hooks. Subject lines. It\'s crowded down here because it\'s the easiest skill to learn.',
+        callout: 'The problem? Your competitors are here too. All of them.'
+      },
+      // Slide 6: Level 1 Weapon
+      {
+        type: 'content',
+        title: 'Your Level 1 Weapon',
+        body: 'Jim Edwards tested thousands of headlines. One pattern crushed everything else:',
+        highlight: {
+          label: 'The Undefeated Champion',
+          text: '"How to [Get Desired Result]"'
+        },
+        note: 'Simple? Yes. Boring? Maybe. But boring that works beats clever that doesn\'t.'
+      },
+      // Slide 7: Level 2 - Thinking
+      {
+        type: 'content',
+        title: 'Level 2: Shift Their Lens',
+        subtitle: 'The Strategy Game',
+        body: 'Now you\'re not just grabbing attention. You\'re reorganizing how they see their problem. You\'re making them think: "Wait... I\'ve been looking at this all wrong."'
+      },
+      // Slide 8: Visual - Comparison
+      {
+        type: 'visual',
+        visualType: 'comparison'
+      },
+      // Slide 9: Level 3 - Belief
+      {
+        type: 'content',
+        title: 'Level 3: Rewrite Their Story',
+        subtitle: 'The Identity Game',
+        body: 'This is the black belt level. You\'re not selling a product anymore. You\'re selling them a new version of themselves. And people will pay almost anything to become who they want to be.'
+      },
+      // Slide 10: Quote
+      {
+        type: 'quote',
+        quote: 'There\'s this delusion we have as copywriters that we can convince somebody of something. We can\'t. All we can do is help them convince themselves.',
+        attribution: 'Alen Sultanic'
+      },
+      // Slide 11: The Real Difference
+      {
+        type: 'content',
+        title: 'Why This Matters for Your Bank Account',
+        list: [
+          { title: 'Level 1 writers', desc: 'Get $50-200 per project. Easily replaced by AI.' },
+          { title: 'Level 2 writers', desc: 'Command $2,000-5,000. Hired for strategy.' },
+          { title: 'Level 3 writers', desc: 'Charge $10,000+. Become irreplaceable partners.' }
+        ]
+      },
+      // Slide 12: Quiz
+      {
+        type: 'quiz',
+        question: 'A customer says "I finally feel like a real entrepreneur." Which level did the copy hit?',
+        options: [
+          'Level 1 - They noticed the ad',
+          'Level 2 - They understood the offer',
+          'Level 3 - Their identity shifted',
+          'None of the above'
+        ],
+        correctIndex: 2,
+        feedback: {
+          correct: 'Exactly. "Feel like a real entrepreneur" = identity shift. That\'s Level 3 mastery.',
+          incorrect: 'Look at the language: "I finally feel like..." This is identity. They see themselves differently now. That\'s Level 3.'
+        }
+      },
+      // Slide 13: Completion
+      {
+        type: 'completion'
+      }
+    ];
+
+    // ============================================
+    // ICONS (Minimalist SVG)
+    // ============================================
     const Icons = {
-      Eye: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-        </svg>
-      ),
-      Brain: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/>
-          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/>
-        </svg>
-      ),
-      Heart: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      Zap: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-        </svg>
-      ),
-      Layers: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+      ArrowLeft: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
         </svg>
       ),
       ArrowRight: () => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
         </svg>
       ),
-      ChevronDown: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
+      Clock: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
         </svg>
       ),
+      Check: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      ),
+      X: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      ),
+      Sparkles: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        </svg>
+      )
     };
 
-    // Animation components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+    // ============================================
+    // TIME-BASED GREETING
+    // ============================================
+    const getGreeting = () => {
+      const hour = new Date().getHours();
+      if (hour < 12) return { text: 'Good morning', period: 'morning' };
+      if (hour < 17) return { text: 'Good afternoon', period: 'afternoon' };
+      if (hour < 21) return { text: 'Good evening', period: 'evening' };
+      return { text: 'Hey night owl', period: 'night' };
+    };
+
+    // ============================================
+    // CHARACTER PLACEHOLDER
+    // ============================================
+    const CharacterPlaceholder = ({ type, emotion }) => {
+      const gifs = CHARACTER_LIBRARY[type]?.[emotion] || CHARACTER_LIBRARY[type] || [];
+      if (!gifs.length) return null;
+      const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
+        <motion.img
+          src={randomGif}
+          alt="Character"
+          className="max-h-48"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        />
       );
-    }
+    };
 
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
+    // ============================================
+    // VISUAL COMPONENTS
+    // ============================================
 
-    function Counter({ end, suffix = "", prefix = "" }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const duration = 2000;
-          const increment = end / (duration / 16);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end]);
-
-      return <span ref={ref}>{prefix}{count}{suffix}</span>;
-    }
-
-    // Animated Three Levels Pyramid
-    function ThreeLevelsPyramid() {
+    // Animated Pyramid
+    const PyramidVisual = () => {
       const levels = [
-        { level: 3, label: "Belief", sublabel: "Psychology", width: "40%" },
-        { level: 2, label: "Thinking", sublabel: "Strategy", width: "65%" },
-        { level: 1, label: "Attention", sublabel: "Hook", width: "90%" },
+        { label: 'Level 3', name: 'Identity', sublabel: 'They become someone new', width: '45%' },
+        { label: 'Level 2', name: 'Thinking', sublabel: 'They see it differently', width: '65%' },
+        { label: 'Level 1', name: 'Attention', sublabel: 'They stop scrolling', width: '85%' }
       ];
 
       return (
-        <div className="flex flex-col items-center gap-2 py-6">
-          {levels.map((item, i) => (
-            <motion.div
-              key={item.level}
-              initial={{ opacity: 0, scale: 0.8, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: i * 0.2, duration: 0.5, type: "spring", stiffness: 200 }}
-              style={{ width: item.width }}
-              className="relative"
-            >
-              <div className="bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg py-3 px-4 text-center text-white shadow-lg hover:scale-105 transition-transform cursor-default">
-                <div className="text-xs opacity-80 uppercase tracking-wider">Level {item.level}</div>
-                <div className="font-semibold">{item.label}</div>
-                <div className="text-xs opacity-70">{item.sublabel}</div>
-              </div>
-            </motion.div>
-          ))}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="mt-4 text-xs text-neutral-400 uppercase tracking-wider"
-          >
-            Mastery Builds Upward
-          </motion.div>
-        </div>
-      );
-    }
-
-    // Change Flow Diagram
-    function ChangeFlowDiagram() {
-      const stages = [
-        { label: "Attention", desc: "Stop the scroll" },
-        { label: "Thinking", desc: "Shift perspective" },
-        { label: "Belief", desc: "Create conviction" },
-      ];
-
-      const StageIcon = ({ index }) => {
-        const icons = [
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>,
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
-        ];
-        return icons[index];
-      };
-
-      return (
-        <div className="flex items-center justify-center gap-4 py-6 overflow-x-auto">
-          {stages.map((stage, i) => (
-            <React.Fragment key={stage.label}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15, duration: 0.4 }}
-                className="flex flex-col items-center text-center min-w-[80px]"
-              >
-                <div className="w-12 h-12 rounded-full bg-white border border-accent-200 flex items-center justify-center text-accent-500 mb-2">
-                  <StageIcon index={i} />
-                </div>
-                <div className="text-sm font-medium text-neutral-800">{stage.label}</div>
-                <div className="text-xs text-neutral-500">{stage.desc}</div>
-              </motion.div>
-              {i < stages.length - 1 && (
-                <motion.div
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={{ opacity: 1, scaleX: 1 }}
-                  transition={{ delay: i * 0.15 + 0.3, duration: 0.3 }}
-                  className="flex-shrink-0"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-accent-400">
-                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </motion.div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      );
-    }
-
-    // Interactive Level Explorer
-    function LevelExplorer() {
-      const [activeLevel, setActiveLevel] = useState(0);
-
-      const levels = [
-        {
-          num: 1,
-          title: "Change in Attention",
-          subtitle: "The Hook",
-          desc: "Before any persuasion can happen, you must earn the right to be heard. The hook stops the scroll, breaks preoccupation, and creates enough curiosity to make them read the next sentence.",
-          tool: "Curiosity & Benefit",
-          color: "bg-accent-400"
-        },
-        {
-          num: 2,
-          title: "Change in Thinking",
-          subtitle: "The Strategy",
-          desc: "A great hook gets you in the door. A great strategy wins the war. This is where you move beyond formulas and start engineering the entire marketing argument.",
-          tool: "Differentiation & Reframing",
-          color: "bg-accent-500"
-        },
-        {
-          num: 3,
-          title: "Change in Belief",
-          subtitle: "The Psychology",
-          desc: "True mastery comes from understanding the deep, often irrational, psychological forces that govern choice. This is where you move from persuasion to profound influence.",
-          tool: "Identity & Self-Persuasion",
-          color: "bg-accent-600"
-        }
-      ];
-
-      return (
-        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
-          <div className="grid grid-cols-3">
+        <div className="bg-black rounded-2xl p-8 md:p-12 w-full max-w-lg mx-auto">
+          <p className="text-center text-neutral-400 text-sm mb-6 uppercase tracking-wider">The Change Hierarchy</p>
+          <div className="flex flex-col items-center gap-3">
             {levels.map((level, i) => (
-              <button
-                key={level.num}
-                onClick={() => setActiveLevel(i)}
-                className={`py-4 px-3 text-center transition-all border-b-2 ${activeLevel === i ? 'border-accent-500 bg-accent-50' : 'border-transparent hover:bg-neutral-50'}`}
+              <motion.div
+                key={level.label}
+                initial={{ opacity: 0, scale: 0.8, y: -20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.2, duration: 0.5, type: 'spring' }}
+                style={{ width: level.width }}
               >
-                <span className={`text-xs font-semibold ${activeLevel === i ? 'text-accent-600' : 'text-neutral-400'}`}>LEVEL {level.num}</span>
-                <p className={`text-sm font-medium mt-1 ${activeLevel === i ? 'text-neutral-900' : 'text-neutral-600'}`}>{level.subtitle}</p>
-              </button>
+                <div
+                  className="py-4 px-6 rounded-xl text-center text-white"
+                  style={{
+                    background: `linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)`,
+                    boxShadow: `0 4px 24px rgba(var(--accent-rgb), 0.35), 0 8px 32px rgba(var(--accent-rgb), 0.15)`
+                  }}
+                >
+                  <div className="text-xs opacity-60 uppercase tracking-wider mb-1">{level.label}</div>
+                  <div className="text-xl font-bold">{level.name}</div>
+                  <div className="text-xs opacity-70 mt-1">{level.sublabel}</div>
+                </div>
+              </motion.div>
             ))}
           </div>
           <motion.div
-            key={activeLevel}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="text-center mt-8"
           >
-            <div className={`w-12 h-12 rounded-xl ${levels[activeLevel].color} flex items-center justify-center text-white text-xl font-bold mb-4`}>
-              {levels[activeLevel].num}
+            <p className="text-neutral-500 text-sm">Higher levels = Higher value = Higher fees</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Comparison Visual
+    const ComparisonVisual = () => {
+      return (
+        <div className="flex flex-col md:flex-row gap-5 w-full max-w-2xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex-1 bg-neutral-900 rounded-2xl p-6 border-2 border-neutral-700"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-neutral-800 flex items-center justify-center text-neutral-400">
+                <Icons.X />
+              </div>
+              <div>
+                <span className="text-neutral-400 text-xs font-medium uppercase tracking-wider">Level 1 Mindset</span>
+                <p className="text-white font-semibold">Content Creator</p>
+              </div>
             </div>
-            <h4 className="text-lg font-semibold text-neutral-900 mb-2">{levels[activeLevel].title}</h4>
-            <p className="text-sm text-neutral-600 leading-relaxed mb-4">{levels[activeLevel].desc}</p>
-            <div className="bg-neutral-50 rounded-lg p-3 border border-neutral-100">
-              <span className="text-xs text-neutral-500 uppercase tracking-wider">Primary Tool</span>
-              <p className="text-sm font-medium text-neutral-900 mt-1">{levels[activeLevel].tool}</p>
+            <p className="text-neutral-400 text-sm italic leading-relaxed mb-4">
+              "Let me give you useful information about this topic..."
+            </p>
+            <div className="pt-4 border-t border-neutral-800">
+              <p className="text-neutral-500 text-xs">Result: They learned something</p>
+              <p className="text-neutral-600 text-xs mt-1">Then forgot it 10 minutes later</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex-1 rounded-2xl p-6 border-2"
+            style={{
+              background: 'linear-gradient(135deg, rgba(244,63,94,0.1) 0%, rgba(0,0,0,1) 100%)',
+              borderColor: 'var(--accent)',
+              boxShadow: `0 0 40px rgba(var(--accent-rgb), 0.15)`
+            }}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+              >
+                <Icons.Check />
+              </div>
+              <div>
+                <span style={{ color: 'var(--accent)' }} className="text-xs font-medium uppercase tracking-wider">Level 3 Mindset</span>
+                <p className="text-white font-semibold">Identity Architect</p>
+              </div>
+            </div>
+            <p className="text-neutral-200 text-sm italic leading-relaxed mb-4">
+              "By the time you finish reading, you'll see yourself differently..."
+            </p>
+            <div className="pt-4 border-t border-white/10">
+              <p style={{ color: 'var(--accent)' }} className="text-xs">Result: They transformed</p>
+              <p className="text-neutral-400 text-xs mt-1">And they'll never go back</p>
             </div>
           </motion.div>
         </div>
       );
-    }
+    };
 
-    // Main Lesson Component
-    function Lesson() {
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
+
+    // Welcome Slide
+    const WelcomeSlide = ({ data, onStart }) => {
+      const greeting = getGreeting();
+
       return (
-        <div className="bg-white min-h-screen overflow-x-hidden">
-          {/* Hero Section - Black with gradient accent */}
-          <header className="bg-neutral-950 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/10 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          <CharacterPlaceholder type="welcome" emotion={greeting.period} />
 
-            <div className="lesson-container px-6 py-20 relative z-10">
-              <FadeUp>
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
-                    Architecture of Belief
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-4xl md:text-5xl text-black mb-4"
+          >
+            {greeting.text}!
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-neutral-500 text-lg mb-8"
+          >
+            Ready to learn <span className="font-semibold text-black">{LESSON_CONFIG.title}</span>?
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-black rounded-2xl p-6 mb-8 max-w-md w-full"
+          >
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-4">In this lesson</p>
+            <ul className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-start gap-3 text-left"
+                >
+                  <span
+                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                    style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+                  >
+                    {i + 1}
                   </span>
-                </div>
-              </FadeUp>
+                  <span className="text-neutral-300 text-sm leading-relaxed">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
 
-              <FadeUp delay={0.1}>
-                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
-                  The Three Levels of Change
-                </h1>
-              </FadeUp>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center gap-2 text-neutral-400 text-sm mb-6"
+          >
+            <Icons.Clock />
+            <span>{LESSON_CONFIG.duration}</span>
+          </motion.div>
 
-              <FadeUp delay={0.2}>
-                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
-                  All great copywriting is "change work." Master the three levels where transformation happens: Attention, Thinking, and Belief.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
-                  <div className="flex items-center gap-2">
-                    <Icons.Layers />
-                    <span>3 mastery levels</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icons.Zap />
-                    <span><Counter end={340} suffix="%" /> deeper engagement</span>
-                  </div>
-                </div>
-              </FadeUp>
-            </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="px-6 py-12">
-            <div className="lesson-container space-y-16">
-
-              {/* The Core Principle */}
-              <FadeUp>
-                <section>
-                  <p className="text-lg text-neutral-700 leading-relaxed">
-                    We often think we're in the business of words, sales, or even ideas. But at its core, <strong>our craft is about facilitating change.</strong> We don't just write copy; we engineer shifts in perspective, belief, and action.
-                  </p>
-                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
-                    This journey of mastery unfolds across three distinct levels. Each level builds on the previous, creating a pyramid of influence that separates amateur writers from elite persuaders.
-                  </p>
-                </section>
-              </FadeUp>
-
-              {/* Animated Three Levels Pyramid */}
-              <ScaleIn>
-                <div className="py-8">
-                  <ThreeLevelsPyramid />
-                </div>
-              </ScaleIn>
-
-              {/* Interactive Level Explorer */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">Explore Each Level</h2>
-                  <p className="text-neutral-600 mb-6">Click through to understand what each level demands of you as a copywriter.</p>
-                  <LevelExplorer />
-                </section>
-              </FadeUp>
-
-              {/* Level 1 Deep Dive - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white">
-                        <Icons.Eye />
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">Level 1: The Hook</h2>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed mb-6">
-                      Before any persuasion can happen, you must earn the right to be heard. The hook is the gateway. Its sole purpose is to stop the scroll, break preoccupation, and create enough curiosity to make them read the next sentence.
-                    </p>
-
-                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 mb-6">
-                      <p className="text-accent-400 font-medium mb-2">The Universal Formula</p>
-                      <p className="text-2xl font-bold text-white">"How to [Benefit]"</p>
-                      <p className="text-sm text-neutral-400 mt-3">Jim Edwards identifies this as the number one script for hooky headlines. It works everywhere because it taps into the fundamental reason people pay attention: "What's in it for me?"</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
-                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-2">Requirement 1</p>
-                        <p className="text-sm text-white font-medium">Avatar Acuity</p>
-                        <p className="text-xs text-neutral-400 mt-1">The benefit must be the precise payoff your ideal customer craves.</p>
-                      </div>
-                      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
-                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-2">Requirement 2</p>
-                        <p className="text-sm text-white font-medium">Radical Simplicity</p>
-                        <p className="text-xs text-neutral-400 mt-1">If a third grader can understand it, your busy prospect can grasp it.</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Level 2 Deep Dive */}
-              <FadeUp>
-                <section>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600">
-                      <Icons.Brain />
-                    </div>
-                    <h2 className="text-2xl font-bold text-neutral-900">Level 2: The Strategy</h2>
-                  </div>
-
-                  <p className="text-neutral-600 leading-relaxed mb-6">
-                    A great hook gets you in the door. A great strategy wins the war. This is where you move beyond formulas and start thinking like a grandmaster, engineering the entire marketing argument and differentiating yourself in a sea of sameness.
-                  </p>
-
-                  <div className="bg-neutral-50 rounded-2xl p-6 border border-neutral-200 mb-6">
-                    <p className="text-sm text-neutral-500 uppercase tracking-wider mb-3">The Paradigm Shift</p>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="text-center p-4">
-                        <p className="text-xs text-neutral-400 mb-2">CONTENT WRITER</p>
-                        <p className="text-sm text-neutral-600 italic">"I'm going to educate you or give you insight on a topic."</p>
-                        <p className="text-xs text-neutral-500 mt-2">Goal: Inform</p>
-                      </div>
-                      <div className="text-center p-4 bg-white rounded-xl border border-accent-200">
-                        <p className="text-xs text-accent-600 mb-2">COPYWRITER</p>
-                        <p className="text-sm text-neutral-800 italic">"I'm going to change who you are by the time you're done reading."</p>
-                        <p className="text-xs text-accent-600 mt-2">Goal: Transform</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-neutral-600 leading-relaxed">
-                    The strategic copywriter doesn't just share information. They architect a journey that reshapes how the reader sees themselves, their problem, and the solution. Every word serves the transformation.
-                  </p>
-                </section>
-              </FadeUp>
-
-              {/* Animated Change Flow */}
-              <ScaleIn>
-                <div className="py-6">
-                  <ChangeFlowDiagram />
-                </div>
-              </ScaleIn>
-
-              {/* Level 3 Deep Dive - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-accent-900/10 via-transparent to-transparent" />
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
-                        <Icons.Heart />
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">Level 3: The Psychology</h2>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed mb-6">
-                      Strategy is powerful, but true mastery comes from understanding the deep, often irrational, psychological forces that govern choice. This is where you move from persuasion to profound influence, working with the fundamental truths of how the mind operates.
-                    </p>
-
-                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 mb-6">
-                      <p className="text-accent-400 italic text-lg mb-2">"There's this delusion we have as copywriters that we can convince somebody of something. We can't."</p>
-                      <p className="text-white font-medium">"All we can do is get them to convince themselves."</p>
-                      <p className="text-sm text-neutral-500 mt-3">- Alen Sultanic</p>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed">
-                      Your job is not to force a belief upon the reader. It is to engineer a story, create a frame, and provide the components that allow their own mind to build the conviction to act. You are an architect of self-persuasion.
-                    </p>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Why This Matters */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Why Most Copywriters Stay Stuck at Level 1</h2>
-
-                  <div className="space-y-4">
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Template Dependency</h3>
-                      <p className="text-sm text-neutral-600">
-                        Most courses teach formulas and templates that only address attention. They produce writers who can hook but cannot transform. The result is copy that gets clicks but not conversions.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Shallow Understanding</h3>
-                      <p className="text-sm text-neutral-600">
-                        Understanding Level 2 requires strategic thinking. Understanding Level 3 requires deep study of psychology and human behavior. Most writers never invest the time to reach these depths.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">The AI Trap</h3>
-                      <p className="text-sm text-neutral-600">
-                        AI language models are trained on average copy, producing average output. Writers who rely on AI for Level 1 hooks without Level 2-3 strategy will never differentiate themselves.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* How to Progress */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">How to Progress Through the Levels</h2>
-                  <p className="text-neutral-600 leading-relaxed mb-6">
-                    Moving from Level 1 to Level 3 isn't about abandoning what works at lower levels. It's about integration. Each level amplifies the power of the levels below it.
-                  </p>
-
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 1 Mastery</p>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Study Headlines</h3>
-                      <p className="text-sm text-neutral-600">Collect 100 headlines that stopped you. Analyze why they worked. Practice writing 10 variations daily.</p>
-                    </div>
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 2 Mastery</p>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Map Belief Shifts</h3>
-                      <p className="text-sm text-neutral-600">Before writing, map the belief shifts your reader needs. What do they believe now? What must they believe to act?</p>
-                    </div>
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <p className="text-xs text-accent-600 uppercase tracking-wider mb-2">Level 3 Mastery</p>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Study Psychology</h3>
-                      <p className="text-sm text-neutral-600">Read behavioral economics, cognitive bias research, and decision science. Deeper understanding means more powerful influence.</p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Key Takeaways - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10">
-                  <h2 className="text-2xl font-bold text-white mb-6">Key Takeaways</h2>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {[
-                      "Level 1 (Attention) uses curiosity and benefit to stop the scroll. The 'How to [Benefit]' formula is universally effective.",
-                      "Level 2 (Thinking) moves from templates to strategy. You're not informing—you're transforming how readers see themselves.",
-                      "Level 3 (Belief) is about self-persuasion. You can't convince anyone; you can only help them convince themselves.",
-                      "True mastery integrates all three levels. A simple hook is powered by deep psychology and strategic differentiation."
-                    ].map((point, i) => (
-                      <div key={i} className="flex gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
-                        <div className="w-6 h-6 rounded-full bg-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-bold text-white">{i + 1}</span>
-                        </div>
-                        <p className="text-sm text-neutral-300 leading-relaxed">{point}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </FadeUp>
-
-            </div>
-          </main>
-
-          {/* Footer */}
-          <footer className="py-10 bg-neutral-50">
-            <div className="lesson-container px-6 text-center">
-              <p className="text-sm text-neutral-400">Part of the Architecture of Belief Series</p>
-            </div>
-          </footer>
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            onClick={onStart}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-10 py-4 rounded-xl text-white font-semibold text-lg"
+            style={{
+              background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+              boxShadow: `0 4px 24px rgba(var(--accent-rgb), 0.4)`
+            }}
+          >
+            Let's Go
+          </motion.button>
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<Lesson />);
+    // Content Slide
+    const ContentSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          {data.subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm font-medium uppercase tracking-wider mb-3"
+              style={{ color: 'var(--accent)' }}
+            >
+              {data.subtitle}
+            </motion.p>
+          )}
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-6"
+          >
+            {data.title}
+          </motion.h2>
+
+          {data.body && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-neutral-600 text-lg leading-relaxed mb-6"
+            >
+              {data.body}
+            </motion.p>
+          )}
+
+          {data.callout && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-neutral-500 text-base italic"
+            >
+              {data.callout}
+            </motion.p>
+          )}
+
+          {data.highlight && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-black rounded-2xl p-6 mt-2"
+            >
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+              <p
+                className="text-2xl md:text-3xl font-bold"
+                style={{ color: 'var(--accent)' }}
+              >
+                {data.highlight.text}
+              </p>
+            </motion.div>
+          )}
+
+          {data.note && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-neutral-400 text-sm mt-4 italic"
+            >
+              {data.note}
+            </motion.p>
+          )}
+
+          {data.list && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="space-y-3"
+            >
+              {data.list.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="bg-neutral-50 rounded-xl p-5 border border-neutral-100"
+                >
+                  <h4 className="font-semibold text-black mb-1">{item.title}</h4>
+                  <p className="text-neutral-600 text-sm">{item.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // Visual Slide
+    const VisualSlide = ({ data }) => {
+      return (
+        <div className="h-full flex items-center justify-center px-4">
+          {data.visualType === 'pyramid' && <PyramidVisual />}
+          {data.visualType === 'comparison' && <ComparisonVisual />}
+        </div>
+      );
+    };
+
+    // Quote Slide
+    const QuoteSlide = ({ data }) => {
+      return (
+        <div className="h-full flex items-center justify-center px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-black rounded-2xl p-8 md:p-12 max-w-2xl text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-8"
+              style={{
+                background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+                boxShadow: `0 4px 24px rgba(var(--accent-rgb), 0.4)`
+              }}
+            >
+              <Icons.Sparkles />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-white text-xl md:text-2xl leading-relaxed mb-6"
+            >
+              "{data.quote}"
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              style={{ color: 'var(--accent)' }}
+              className="text-sm font-medium"
+            >
+              {data.attribution}
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Quiz Slide
+    const QuizSlide = ({ data }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setShowFeedback(true);
+      };
+
+      const isCorrect = selected === data.correctIndex;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <p className="text-sm uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+            <h2 className="slide-title text-2xl md:text-3xl text-black leading-tight">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.08 }}
+                onClick={() => handleSelect(i)}
+                disabled={showFeedback}
+                className={`w-full p-4 rounded-xl text-left transition-all border-2 ${
+                  showFeedback
+                    ? i === data.correctIndex
+                      ? 'border-green-500 bg-green-50'
+                      : i === selected
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-neutral-200 bg-white opacity-40'
+                    : 'border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${
+                    showFeedback && i === data.correctIndex
+                      ? 'bg-green-500 text-white'
+                      : showFeedback && i === selected && !isCorrect
+                        ? 'bg-red-400 text-white'
+                        : 'bg-neutral-100 text-neutral-500'
+                  }`}>
+                    {showFeedback && i === data.correctIndex ? (
+                      <Icons.Check />
+                    ) : showFeedback && i === selected && !isCorrect ? (
+                      <Icons.X />
+                    ) : (
+                      String.fromCharCode(65 + i)
+                    )}
+                  </span>
+                  <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}
+              >
+                <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => {
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          <CharacterPlaceholder type="victory" />
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', duration: 0.6 }}
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
+            style={{
+              background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+              boxShadow: `0 8px 32px rgba(var(--accent-rgb), 0.4)`
+            }}
+          >
+            <Icons.Check />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-4"
+          >
+            Lesson Complete
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-neutral-600 text-lg mb-8 max-w-md leading-relaxed"
+          >
+            You now see what separates $200 writers from $20,000 writers. It's not talent. It's the level they operate on.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-black rounded-2xl p-6 max-w-md w-full"
+          >
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+            <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============================================
+    // NAVIGATION
+    // ============================================
+
+    const NavigationArrow = ({ direction, onClick }) => (
+      <button
+        onClick={onClick}
+        className={`absolute top-1/2 -translate-y-1/2 ${direction === 'left' ? 'left-2 md:left-4' : 'right-2 md:right-4'}
+          w-10 h-20 md:w-14 md:h-28 rounded-xl flex items-center justify-center
+          transition-all opacity-30 hover:opacity-70 hover:bg-white/10`}
+        style={{ color: 'white' }}
+      >
+        {direction === 'left' ? <Icons.ArrowLeft /> : <Icons.ArrowRight />}
+      </button>
+    );
+
+    const ProgressDots = ({ total, current }) => (
+      <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-2 bg-black/40 backdrop-blur-md rounded-full">
+        {Array.from({ length: total }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="h-1.5 rounded-full"
+            style={{
+              width: i === current ? 20 : 6,
+              background: i === current
+                ? `linear-gradient(135deg, var(--accent), var(--accent-dark))`
+                : 'rgba(255,255,255,0.25)',
+              boxShadow: i === current ? `0 0 8px rgba(var(--accent-rgb), 0.5)` : 'none'
+            }}
+            animate={{ width: i === current ? 20 : 6 }}
+            transition={{ duration: 0.2 }}
+          />
+        ))}
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (newSlide < 0 || newSlide >= slides.length) return;
+        setDirection(newSlide > currentSlide ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [currentSlide]);
+
+      const nextSlide = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
+      const prevSlide = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
+
+      // Keyboard navigation
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+          }
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black">
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-900" />
+
+          {/* Slide Container */}
+          <div
+            className="relative w-[94%] md:w-[88%] max-w-5xl h-[88%] md:h-[82%] bg-white rounded-2xl md:rounded-3xl overflow-hidden z-10"
+            style={{ boxShadow: '0 25px 100px rgba(0,0,0,0.5)' }}
+          >
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute inset-0"
+              >
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation */}
+          {currentSlide > 0 && <NavigationArrow direction="left" onClick={prevSlide} />}
+          {currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome' && (
+            <NavigationArrow direction="right" onClick={nextSlide} />
+          )}
+
+          {/* Progress */}
+          <ProgressDots total={slides.length} current={currentSlide} />
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>

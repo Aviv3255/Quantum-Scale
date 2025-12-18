@@ -3,594 +3,826 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The OCPB Formula</title>
+  <title>The OCPB Formula | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: {
-              DEFAULT: '#d946ef',
-              50: '#fdf4ff',
-              100: '#fae8ff',
-              200: '#f5d0fe',
-              300: '#f0abfc',
-              400: '#e879f9',
-              500: '#d946ef',
-              600: '#c026d3',
-              700: '#a21caf',
-              800: '#86198f',
-              900: '#701a75',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; }
-    ::selection { background: #d946ef; color: #fff; }
-    h1, h2, h3, h4 { letter-spacing: -0.025em; }
-    .lesson-container { max-width: 800px; margin: 0 auto; }
+    :root {
+      --accent: #d946ef;
+      --accent-dark: #c026d3;
+      --accent-light: #e879f9;
+      --accent-rgb: 217, 70, 239;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .slide-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    ::selection { background: var(--accent); color: white; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence } = window.Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    // ============================================
+    // LESSON CONFIGURATION
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'ocpb-formula',
+      title: 'The OCPB Formula',
+      accentColor: '#d946ef',
+      duration: '4 min',
+      nextLesson: {
+        id: 'self-persuasion-architecture',
+        title: 'Self-Persuasion Architecture',
+        teaser: 'Why convincing people doesn\'t work. And what does.'
+      }
+    };
 
-    // Icons
+    // Character placeholder system
+    const CHARACTER_LIBRARY = {
+      welcome: { morning: [], afternoon: [], evening: [], night: [] },
+      celebration: [],
+      empathy: [],
+      victory: [],
+      thinking: []
+    };
+
+    // ============================================
+    // SLIDE DATA - FRESH ENGAGING CONTENT
+    // ============================================
+    const slides = [
+      // Slide 1: Welcome
+      {
+        type: 'welcome',
+        learningGoals: [
+          'Why objections are actually buying signals in disguise',
+          'The 4-step sequence that dissolves doubt in seconds',
+          'How to turn "I\'m not sure" into "Where do I sign?"'
+        ]
+      },
+      // Slide 2: Hook
+      {
+        type: 'content',
+        title: 'Your Prospect Just Said "But..."',
+        body: 'Most marketers panic. They argue. They discount. They beg. But that objection? It\'s not a wall. It\'s a door they just cracked open for you.'
+      },
+      // Slide 3: The Truth
+      {
+        type: 'content',
+        title: 'Objections Mean They Care',
+        body: 'Think about it. People who don\'t care just leave. People who object? They want you to convince them. They\'re practically begging you to help them say yes.',
+        highlight: {
+          label: 'The Mindset Shift',
+          text: 'Objection = Invitation to Close'
+        }
+      },
+      // Slide 4: Visual - OCPB Flow
+      {
+        type: 'visual',
+        visualType: 'ocpb-flow'
+      },
+      // Slide 5: O - Objection
+      {
+        type: 'content',
+        title: 'O: Name the Elephant',
+        subtitle: 'Step 1 of 4',
+        body: 'Say the objection out loud before they do. "You\'re probably thinking this sounds too good to be true." This does two things:',
+        list: [
+          { title: 'Builds instant trust', desc: 'You\'re not hiding from the problem. You\'re addressing it head-on.' },
+          { title: 'Steals their ammo', desc: 'Hard to object when you just said their objection for them.' }
+        ]
+      },
+      // Slide 6: C - Claim
+      {
+        type: 'content',
+        title: 'C: Make a Bold Counter',
+        subtitle: 'Step 2 of 4',
+        body: 'Now flip the script. Don\'t disagree softly. Make a confident statement that reframes their concern completely.',
+        highlight: {
+          label: 'Example',
+          text: '"Actually, the real risk is NOT taking action."'
+        }
+      },
+      // Slide 7: P - Proof
+      {
+        type: 'content',
+        title: 'P: Back It With Receipts',
+        subtitle: 'Step 3 of 4',
+        body: 'Claims without proof are just opinions. Now you drop evidence. Numbers. Testimonials. Case studies. Screenshots. Anything that makes your claim undeniable.',
+        callout: 'The stronger your proof, the weaker their resistance.'
+      },
+      // Slide 8: B - Benefit
+      {
+        type: 'content',
+        title: 'B: Show the Upside',
+        subtitle: 'Step 4 of 4',
+        body: 'End with what they get when they believe you. Paint the picture. Make the benefit so vivid they can taste it. This is where doubt transforms into desire.'
+      },
+      // Slide 9: Visual - Trust Meter
+      {
+        type: 'visual',
+        visualType: 'trust-meter'
+      },
+      // Slide 10: Real Example
+      {
+        type: 'content',
+        title: 'OCPB in Action',
+        body: 'Watch how to handle "It\'s too expensive":',
+        example: {
+          steps: [
+            { letter: 'O', text: '"I know $497 feels like a lot right now."' },
+            { letter: 'C', text: '"But cheap tools cost you more in wasted time."' },
+            { letter: 'P', text: '"Our users save 12 hours per week on average."' },
+            { letter: 'B', text: '"That\'s 600+ hours back this year alone."' }
+          ]
+        }
+      },
+      // Slide 11: Quiz
+      {
+        type: 'quiz',
+        question: 'A prospect says "I need to think about it." What\'s the OCPB approach?',
+        options: [
+          'Give them time and follow up later',
+          'Surface the real objection, counter it, prove it, show the benefit',
+          'Offer a discount to speed up the decision',
+          'Add more features to increase value'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly. "Need to think about it" usually means they have an unspoken concern. Surface it, counter it, prove your point, show the benefit.',
+          incorrect: '"I need to think about it" is rarely about thinking. It\'s usually an unspoken objection. OCPB helps you surface and dissolve it.'
+        }
+      },
+      // Slide 12: Completion
+      {
+        type: 'completion'
+      }
+    ];
+
+    // ============================================
+    // ICONS (Minimalist SVG)
+    // ============================================
     const Icons = {
-      Shield: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      Check: () => (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      ),
-      Award: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
-        </svg>
-      ),
-      Gift: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-        </svg>
-      ),
-      AlertCircle: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-      ),
-      FileText: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-        </svg>
-      ),
-      Zap: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      ArrowLeft: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
         </svg>
       ),
       ArrowRight: () => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
         </svg>
       ),
+      Clock: () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      ),
+      Check: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      ),
+      X: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      ),
+      Sparkles: () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        </svg>
+      ),
+      ChevronRight: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      )
     };
 
-    // Animation components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+    // ============================================
+    // TIME-BASED GREETING
+    // ============================================
+    const getGreeting = () => {
+      const hour = new Date().getHours();
+      if (hour < 12) return { text: 'Good morning', period: 'morning' };
+      if (hour < 17) return { text: 'Good afternoon', period: 'afternoon' };
+      if (hour < 21) return { text: 'Good evening', period: 'evening' };
+      return { text: 'Hey night owl', period: 'night' };
+    };
+
+    // ============================================
+    // CHARACTER PLACEHOLDER
+    // ============================================
+    const CharacterPlaceholder = ({ type, emotion }) => {
+      const gifs = CHARACTER_LIBRARY[type]?.[emotion] || CHARACTER_LIBRARY[type] || [];
+      if (!gifs.length) return null;
+      const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
+        <motion.img
+          src={randomGif}
+          alt="Character"
+          className="max-h-48"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        />
       );
-    }
+    };
 
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function Counter({ end, suffix = "", prefix = "" }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const duration = 2000;
-          const increment = end / (duration / 16);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end]);
-
-      return <span ref={ref}>{prefix}{count}{suffix}</span>;
-    }
+    // ============================================
+    // VISUAL COMPONENTS
+    // ============================================
 
     // OCPB Flow Diagram
-    function OCPBFlowDiagram() {
+    const OCPBFlowVisual = () => {
       const steps = [
-        { letter: "O", word: "Objection", color: "bg-accent-400" },
-        { letter: "C", word: "Claim", color: "bg-accent-500" },
-        { letter: "P", word: "Proof", color: "bg-accent-600" },
-        { letter: "B", word: "Benefit", color: "bg-accent-700" },
+        { letter: 'O', word: 'Objection', desc: 'Name it' },
+        { letter: 'C', word: 'Claim', desc: 'Counter it' },
+        { letter: 'P', word: 'Proof', desc: 'Prove it' },
+        { letter: 'B', word: 'Benefit', desc: 'Reward them' }
       ];
 
       return (
-        <div className="flex items-center justify-center gap-2 py-6 overflow-x-auto">
-          {steps.map((step, i) => (
-            <React.Fragment key={step.letter}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.12, duration: 0.4, type: "spring", stiffness: 300 }}
-                className="flex flex-col items-center"
-              >
-                <div className={`w-14 h-14 rounded-xl ${step.color} flex items-center justify-center text-white text-2xl font-bold shadow-lg hover:scale-110 transition-transform`}>
-                  {step.letter}
-                </div>
-                <span className="mt-2 text-xs text-neutral-600 font-medium">{step.word}</span>
-              </motion.div>
-              {i < steps.length - 1 && (
-                <motion.div
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={{ opacity: 1, scaleX: 1 }}
-                  transition={{ delay: i * 0.12 + 0.2, duration: 0.2 }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-accent-300 mt-[-20px]">
-                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </motion.div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      );
-    }
-
-    // Trust Meter Animation
-    function TrustMeter() {
-      const [value, setValue] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          const timer = setTimeout(() => setValue(156), 300);
-          return () => clearTimeout(timer);
-        }
-      }, [isInView]);
-
-      return (
-        <div ref={ref} className="max-w-xs mx-auto">
-          <div className="text-center mb-3">
-            <span className="text-xs text-neutral-500 uppercase tracking-wider">Trust Level After OCPB</span>
-          </div>
-          <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: "0%" }}
-              animate={{ width: isInView ? "100%" : "0%" }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-accent-400 to-accent-600 rounded-full"
-            />
-          </div>
-          <div className="flex justify-between mt-2 text-xs text-neutral-500">
-            <span>Skeptic</span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isInView ? 1 : 0 }}
-              transition={{ delay: 1 }}
-              className="font-semibold text-accent-600"
-            >
-              +{value}% Trust
-            </motion.span>
-            <span>Believer</span>
-          </div>
-        </div>
-      );
-    }
-
-    // Interactive OCPB Builder
-    function OCPBBuilder() {
-      const [activeStep, setActiveStep] = useState(0);
-
-      const steps = [
-        { letter: "O", title: "Objection", desc: "Surface the reader's doubt", example: '"You might be thinking this sounds too good to be true..."' },
-        { letter: "C", title: "Claim", desc: "Make a bold counter-statement", example: '"But what if I told you it\'s actually based on neuroscience?"' },
-        { letter: "P", title: "Proof", desc: "Back it up with evidence", example: '"A Harvard study found that 73% of participants..."' },
-        { letter: "B", title: "Benefit", desc: "Show what\'s in it for them", example: '"Which means you can finally stop second-guessing and start converting."' }
-      ];
-
-      useEffect(() => {
-        const timer = setInterval(() => {
-          setActiveStep(prev => (prev + 1) % 4);
-        }, 3000);
-        return () => clearInterval(timer);
-      }, []);
-
-      return (
-        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
-          <div className="grid grid-cols-4 border-b border-neutral-200">
+        <div className="bg-black rounded-2xl p-6 md:p-10 w-full max-w-2xl mx-auto">
+          <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-wider">The 4-Step Sequence</p>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-3">
             {steps.map((step, i) => (
-              <button
-                key={step.letter}
-                onClick={() => setActiveStep(i)}
-                className={`py-4 text-center transition-all ${activeStep === i ? 'bg-accent-500 text-white' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}
-              >
-                <span className="text-2xl font-bold">{step.letter}</span>
-              </button>
+              <React.Fragment key={step.letter}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 + i * 0.15, type: 'spring' }}
+                  className="flex flex-col items-center"
+                >
+                  <div
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-3"
+                    style={{
+                      background: `linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)`,
+                      boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.4), 0 8px 32px rgba(var(--accent-rgb), 0.2)`
+                    }}
+                  >
+                    <span className="text-white text-2xl md:text-3xl font-bold">{step.letter}</span>
+                  </div>
+                  <p className="text-white font-semibold text-sm">{step.word}</p>
+                  <p className="text-neutral-500 text-xs">{step.desc}</p>
+                </motion.div>
+                {i < steps.length - 1 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 + i * 0.15 }}
+                    className="text-neutral-600 hidden md:block"
+                  >
+                    <Icons.ChevronRight />
+                  </motion.div>
+                )}
+              </React.Fragment>
             ))}
           </div>
-          <motion.div
-            key={activeStep}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-6"
+        </div>
+      );
+    };
+
+    // Trust Meter Visual
+    const TrustMeterVisual = () => {
+      const stages = [
+        { label: 'Skeptical', percent: 20 },
+        { label: 'Curious', percent: 45 },
+        { label: 'Interested', percent: 70 },
+        { label: 'Convinced', percent: 100 }
+      ];
+
+      return (
+        <div className="bg-black rounded-2xl p-8 md:p-10 w-full max-w-lg mx-auto">
+          <p className="text-center text-neutral-400 text-sm mb-6 uppercase tracking-wider">Trust Level Through OCPB</p>
+          <div className="space-y-4">
+            {stages.map((stage, i) => (
+              <motion.div
+                key={stage.label}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + i * 0.15 }}
+              >
+                <div className="flex justify-between mb-2">
+                  <span className="text-neutral-300 text-sm">{stage.label}</span>
+                  <span className="text-neutral-500 text-sm">{stage.percent}%</span>
+                </div>
+                <div className="h-3 bg-neutral-800 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${stage.percent}%` }}
+                    transition={{ delay: 0.4 + i * 0.2, duration: 0.8, ease: 'easeOut' }}
+                    className="h-full rounded-full"
+                    style={{
+                      background: `linear-gradient(90deg, var(--accent-dark), var(--accent))`,
+                      boxShadow: `0 0 12px rgba(var(--accent-rgb), 0.5)`
+                    }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="text-center text-neutral-500 text-sm mt-6"
           >
-            <h4 className="text-lg font-semibold text-neutral-900 mb-2">{steps[activeStep].title}</h4>
-            <p className="text-sm text-neutral-600 mb-4">{steps[activeStep].desc}</p>
-            <div className="bg-accent-50 rounded-lg p-4 border-l-4 border-accent-500">
-              <p className="text-sm text-accent-800 italic">{steps[activeStep].example}</p>
-            </div>
+            Each step builds on the last
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
+
+    // Welcome Slide
+    const WelcomeSlide = ({ data, onStart }) => {
+      const greeting = getGreeting();
+
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          <CharacterPlaceholder type="welcome" emotion={greeting.period} />
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-4xl md:text-5xl text-black mb-4"
+          >
+            {greeting.text}!
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-neutral-500 text-lg mb-8"
+          >
+            Ready to master <span className="font-semibold text-black">{LESSON_CONFIG.title}</span>?
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-black rounded-2xl p-6 mb-8 max-w-md w-full"
+          >
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-4">In this lesson</p>
+            <ul className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-start gap-3 text-left"
+                >
+                  <span
+                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                    style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="text-neutral-300 text-sm leading-relaxed">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center gap-2 text-neutral-400 text-sm mb-6"
+          >
+            <Icons.Clock />
+            <span>{LESSON_CONFIG.duration}</span>
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            onClick={onStart}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-10 py-4 rounded-xl text-white font-semibold text-lg"
+            style={{
+              background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+              boxShadow: `0 4px 24px rgba(var(--accent-rgb), 0.4)`
+            }}
+          >
+            Let's Go
+          </motion.button>
+        </div>
+      );
+    };
+
+    // Content Slide
+    const ContentSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          {data.subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm font-medium uppercase tracking-wider mb-3"
+              style={{ color: 'var(--accent)' }}
+            >
+              {data.subtitle}
+            </motion.p>
+          )}
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-6"
+          >
+            {data.title}
+          </motion.h2>
+
+          {data.body && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-neutral-600 text-lg leading-relaxed mb-6"
+            >
+              {data.body}
+            </motion.p>
+          )}
+
+          {data.callout && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-neutral-500 text-base italic"
+            >
+              {data.callout}
+            </motion.p>
+          )}
+
+          {data.highlight && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-black rounded-2xl p-6 mt-2"
+            >
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+              <p
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: 'var(--accent)' }}
+              >
+                {data.highlight.text}
+              </p>
+            </motion.div>
+          )}
+
+          {data.list && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="space-y-3"
+            >
+              {data.list.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="bg-neutral-50 rounded-xl p-5 border border-neutral-100"
+                >
+                  <h4 className="font-semibold text-black mb-1">{item.title}</h4>
+                  <p className="text-neutral-600 text-sm">{item.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {data.example && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-black rounded-2xl p-6 mt-2"
+            >
+              <div className="space-y-3">
+                {data.example.steps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+                      style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+                    >
+                      {step.letter}
+                    </span>
+                    <p className="text-neutral-300 text-sm leading-relaxed pt-1">{step.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // Visual Slide
+    const VisualSlide = ({ data }) => {
+      return (
+        <div className="h-full flex items-center justify-center px-4">
+          {data.visualType === 'ocpb-flow' && <OCPBFlowVisual />}
+          {data.visualType === 'trust-meter' && <TrustMeterVisual />}
+        </div>
+      );
+    };
+
+    // Quiz Slide
+    const QuizSlide = ({ data }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setShowFeedback(true);
+      };
+
+      const isCorrect = selected === data.correctIndex;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <p className="text-sm uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+            <h2 className="slide-title text-2xl md:text-3xl text-black leading-tight">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.08 }}
+                onClick={() => handleSelect(i)}
+                disabled={showFeedback}
+                className={`w-full p-4 rounded-xl text-left transition-all border-2 ${
+                  showFeedback
+                    ? i === data.correctIndex
+                      ? 'border-green-500 bg-green-50'
+                      : i === selected
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-neutral-200 bg-white opacity-40'
+                    : 'border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${
+                    showFeedback && i === data.correctIndex
+                      ? 'bg-green-500 text-white'
+                      : showFeedback && i === selected && !isCorrect
+                        ? 'bg-red-400 text-white'
+                        : 'bg-neutral-100 text-neutral-500'
+                  }`}>
+                    {showFeedback && i === data.correctIndex ? (
+                      <Icons.Check />
+                    ) : showFeedback && i === selected && !isCorrect ? (
+                      <Icons.X />
+                    ) : (
+                      String.fromCharCode(65 + i)
+                    )}
+                  </span>
+                  <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}
+              >
+                <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => {
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          <CharacterPlaceholder type="victory" />
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', duration: 0.6 }}
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
+            style={{
+              background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+              boxShadow: `0 8px 32px rgba(var(--accent-rgb), 0.4)`
+            }}
+          >
+            <Icons.Check />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="slide-title text-3xl md:text-4xl text-black mb-4"
+          >
+            Lesson Complete
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-neutral-600 text-lg mb-8 max-w-md leading-relaxed"
+          >
+            You now have a 4-letter cheat code for dissolving doubt. O-C-P-B. Memorize it. Use it. Watch objections melt.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-black rounded-2xl p-6 max-w-md w-full"
+          >
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+            <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
           </motion.div>
         </div>
       );
-    }
+    };
 
-    // Main Lesson Component
-    function Lesson() {
+    // ============================================
+    // NAVIGATION
+    // ============================================
+
+    const NavigationArrow = ({ direction, onClick }) => (
+      <button
+        onClick={onClick}
+        className={`absolute top-1/2 -translate-y-1/2 ${direction === 'left' ? 'left-2 md:left-4' : 'right-2 md:right-4'}
+          w-10 h-20 md:w-14 md:h-28 rounded-xl flex items-center justify-center
+          transition-all opacity-30 hover:opacity-70 hover:bg-white/10`}
+        style={{ color: 'white' }}
+      >
+        {direction === 'left' ? <Icons.ArrowLeft /> : <Icons.ArrowRight />}
+      </button>
+    );
+
+    const ProgressDots = ({ total, current }) => (
+      <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-2 bg-black/40 backdrop-blur-md rounded-full">
+        {Array.from({ length: total }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="h-1.5 rounded-full"
+            style={{
+              width: i === current ? 20 : 6,
+              background: i === current
+                ? `linear-gradient(135deg, var(--accent), var(--accent-dark))`
+                : 'rgba(255,255,255,0.25)',
+              boxShadow: i === current ? `0 0 8px rgba(var(--accent-rgb), 0.5)` : 'none'
+            }}
+            animate={{ width: i === current ? 20 : 6 }}
+            transition={{ duration: 0.2 }}
+          />
+        ))}
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (newSlide < 0 || newSlide >= slides.length) return;
+        setDirection(newSlide > currentSlide ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [currentSlide]);
+
+      const nextSlide = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
+      const prevSlide = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
+
+      // Keyboard navigation
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+          }
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
       return (
-        <div className="bg-white min-h-screen">
-          {/* Hero Section - Black with gradient accent */}
-          <header className="bg-neutral-950 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/10 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
+        <div className="fixed inset-0 flex items-center justify-center bg-black">
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-900" />
 
-            <div className="lesson-container px-6 py-20 relative z-10">
-              <FadeUp>
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
-                    Persuasion Mastery
-                  </span>
-                </div>
-              </FadeUp>
+          {/* Slide Container */}
+          <div
+            className="relative w-[94%] md:w-[88%] max-w-5xl h-[88%] md:h-[82%] bg-white rounded-2xl md:rounded-3xl overflow-hidden z-10"
+            style={{ boxShadow: '0 25px 100px rgba(0,0,0,0.5)' }}
+          >
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute inset-0"
+              >
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-              <FadeUp delay={0.1}>
-                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
-                  The OCPB Formula
-                </h1>
-              </FadeUp>
+          {/* Navigation */}
+          {currentSlide > 0 && <NavigationArrow direction="left" onClick={prevSlide} />}
+          {currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome' && (
+            <NavigationArrow direction="right" onClick={nextSlide} />
+          )}
 
-              <FadeUp delay={0.2}>
-                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
-                  The four-step framework that transforms skeptics into believers. Master the art of addressing objections before they become obstacles.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
-                  <div className="flex items-center gap-2">
-                    <Icons.Zap />
-                    <span><Counter end={156} suffix="%" /> higher trust</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icons.Target />
-                    <span><Counter end={89} suffix="%" /> objection rate reduction</span>
-                  </div>
-                </div>
-              </FadeUp>
-            </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="px-6 py-12">
-            <div className="lesson-container space-y-16">
-
-              {/* The Hook */}
-              <FadeUp>
-                <section>
-                  <p className="text-lg text-neutral-700 leading-relaxed">
-                    Here's a truth that separates amateurs from professionals: <strong>your prospect's objections aren't obstacles—they're opportunities.</strong>
-                  </p>
-                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
-                    Every doubt, every "but what about," every silent hesitation is a chance to build deeper trust. The OCPB Formula turns skepticism into your greatest selling tool.
-                  </p>
-                </section>
-              </FadeUp>
-
-              {/* Animated OCPB Flow */}
-              <ScaleIn>
-                <div className="py-8">
-                  <OCPBFlowDiagram />
-                </div>
-              </ScaleIn>
-
-              {/* The Formula Breakdown - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white">
-                        <Icons.FileText />
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">What OCPB Stands For</h2>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed mb-8">
-                      OCPB is a persuasion sequence that acknowledges doubt, makes a claim, proves it, and shows the benefit. It works because it <strong className="text-white">mirrors how skeptical minds naturally process information</strong>.
-                    </p>
-
-                    <div className="grid md:grid-cols-4 gap-4">
-                      {[
-                        { letter: "O", word: "Objection", desc: "Acknowledge the doubt" },
-                        { letter: "C", word: "Claim", desc: "Counter with confidence" },
-                        { letter: "P", word: "Proof", desc: "Back it with evidence" },
-                        { letter: "B", word: "Benefit", desc: "Show the reward" }
-                      ].map((item, i) => (
-                        <div key={item.letter} className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10 text-center">
-                          <div className="text-3xl font-bold text-accent-400 mb-2">{item.letter}</div>
-                          <div className="text-sm font-medium text-white mb-1">{item.word}</div>
-                          <div className="text-xs text-neutral-400">{item.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Interactive Demo */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">See OCPB in Action</h2>
-                  <p className="text-neutral-600 mb-6">Watch how each element flows into the next</p>
-                  <OCPBBuilder />
-                </section>
-              </FadeUp>
-
-              {/* Why It Works */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">The Psychology Behind OCPB</h2>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Shield />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Defuses Defensive Walls</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        When you voice an objection first, you demonstrate understanding. The reader's guard drops because they feel heard. This psychological phenomenon is called "cognitive offloading"—once an objection is acknowledged externally, the brain stops dwelling on it internally.
-                      </p>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Award />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Builds Credibility Fast</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        By proactively addressing weaknesses, you signal confidence and honesty. Studies show that "two-sided arguments"—those that acknowledge counterpoints—are perceived as 23% more trustworthy than one-sided pitches.
-                      </p>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Target />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Creates Logical Flow</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        OCPB guides the reader through a natural thinking sequence. Each step answers the implicit question raised by the previous one. Objection asks "why shouldn't I?" Claim answers. Proof validates. Benefit motivates.
-                      </p>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Gift />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Ends on Positive Note</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        The "recency effect" means people remember what they read last. By ending with a benefit, you ensure the reader leaves thinking about what they'll gain—not what might go wrong. This primes them for action.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Animated Trust Meter */}
-              <ScaleIn>
-                <div className="py-6">
-                  <TrustMeter />
-                </div>
-              </ScaleIn>
-
-              {/* When to Use OCPB */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">When to Deploy OCPB</h2>
-                  <p className="text-neutral-600 leading-relaxed mb-6">
-                    OCPB isn't just for sales pages. This framework works anywhere you need to persuade someone past their doubts. Understanding when to use it maximizes its impact.
-                  </p>
-
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Sales Copy</h3>
-                      <p className="text-sm text-neutral-600">Use OCPB in long-form sales letters, product descriptions, and checkout pages where buyer hesitation is highest.</p>
-                    </div>
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Email Sequences</h3>
-                      <p className="text-sm text-neutral-600">Dedicate one email per element or compress the formula into a single conversion-focused email.</p>
-                    </div>
-                    <div className="p-5 rounded-xl bg-accent-50 border border-accent-100">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Video Scripts</h3>
-                      <p className="text-sm text-neutral-600">Structure VSLs and webinars around OCPB to keep viewers engaged through logical progression.</p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Real Examples - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-accent-900/10 via-transparent to-transparent" />
-
-                  <div className="relative z-10">
-                    <h2 className="text-2xl font-bold text-white mb-6">OCPB in the Wild</h2>
-                    <p className="text-neutral-400 leading-relaxed mb-6">
-                      See how the formula translates into real copy across different industries. Notice how each element flows naturally into the next.
-                    </p>
-
-                    <div className="space-y-6">
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10">
-                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-3">Software Product</p>
-                        <div className="space-y-3">
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">O:</span> "You're probably wondering if yet another productivity app will actually make a difference..."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">C:</span> "This isn't another app—it's the only system designed around how your brain actually works."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">P:</span> "In controlled tests, users completed 47% more tasks with 31% less stress."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">B:</span> "Imagine ending each day knowing everything important got done—without the burnout."</p>
-                        </div>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10">
-                        <p className="text-xs text-accent-400 uppercase tracking-wider mb-3">Online Course</p>
-                        <div className="space-y-3">
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">O:</span> "I know what you're thinking—courses are expensive and most don't deliver."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">C:</span> "That's exactly why we built in accountability coaching and a results guarantee."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">P:</span> "Students who completed the program saw an average 312% ROI within 90 days."</p>
-                          <p className="text-neutral-300"><span className="text-accent-400 font-semibold">B:</span> "You'll have a proven system that pays for itself many times over."</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Common Mistakes */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">OCPB Mistakes to Avoid</h2>
-
-                  <div className="space-y-4">
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Weak Objections</h3>
-                      <p className="text-sm text-neutral-600">
-                        Addressing objections nobody has makes you look insecure. Only surface real concerns your prospects actually face. If you're not sure what they're thinking, ask them—or read their reviews of competitors.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Unsubstantiated Claims</h3>
-                      <p className="text-sm text-neutral-600">
-                        Making bold claims without proof destroys credibility. Every claim needs specific, verifiable evidence. Numbers, case studies, testimonials, research—stack your proof to make doubt impossible.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Generic Benefits</h3>
-                      <p className="text-sm text-neutral-600">
-                        "You'll love it" isn't a benefit. Paint specific pictures of transformation. Show the reader exactly what changes in their daily life, their results, their feelings. Specificity sells.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Breaking the Sequence</h3>
-                      <p className="text-sm text-neutral-600">
-                        OCPB works because of its order. Skipping steps or rearranging them breaks the psychological flow. Always start with objection, always end with benefit. The sequence is the strategy.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Key Takeaways - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10">
-                  <h2 className="text-2xl font-bold text-white mb-6">Key Takeaways</h2>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {[
-                      "OCPB stands for Objection, Claim, Proof, Benefit—a four-step sequence that converts skeptics into buyers.",
-                      "Voice objections first to demonstrate understanding and lower defensive walls. Readers trust those who acknowledge doubts.",
-                      "Every claim needs proof. Stack evidence types (data, testimonials, case studies) for maximum credibility.",
-                      "Always end with specific, vivid benefits. The last thing readers see shapes their decision to act."
-                    ].map((point, i) => (
-                      <div key={i} className="flex gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
-                        <div className="w-6 h-6 rounded-full bg-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-bold text-white">{i + 1}</span>
-                        </div>
-                        <p className="text-sm text-neutral-300 leading-relaxed">{point}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </FadeUp>
-
-            </div>
-          </main>
-
-          {/* Footer */}
-          <footer className="py-10 bg-neutral-50">
-            <div className="lesson-container px-6 text-center">
-              <p className="text-sm text-neutral-400">Part of the Persuasion Mastery Series</p>
-            </div>
-          </footer>
+          {/* Progress */}
+          <ProgressDots total={slides.length} current={currentSlide} />
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<Lesson />);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
