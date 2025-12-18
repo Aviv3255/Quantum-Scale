@@ -173,6 +173,26 @@
     };
 
     // ============================================
+    // EMPATHY GIFS (Quiz Incorrect Answer)
+    // Same settings as celebration GIFs: 60% height, bottom, behind content
+    // ============================================
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', // Thumbs Down
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4', // Sad Head Shake
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4', // Facepalm
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4', // Looking Down Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4', // Tear Wipe
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4', // Sad Sigh
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4', // Disappointed Slouch
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4', // Hand on Forehead Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4' // Slow Sad Nod
+    ];
+
+    const getRandomEmpathyGif = () => {
+      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    };
+
+    // ============================================
     // SLIDE DATA - ECOMMERCE FOCUSED
     // ============================================
     const slides = [
@@ -311,8 +331,8 @@
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Main content - centered */}
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-10">
+          {/* Main content - centered, z-20 to stay above GIF */}
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             {/* Lesson Title */}
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
               {LESSON_CONFIG.title}
@@ -445,21 +465,26 @@
       </div>
     );
 
-    // Quiz Slide - GIF rendered at app level on correct answer
+    // Quiz Slide - GIF rendered at app level on answer (celebration or empathy)
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
       const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      // Show celebration GIF when correct answer selected
+      // Show GIF when answer selected (celebration for correct, empathy for incorrect)
       useEffect(() => {
-        if (showFeedback && isCorrect) {
-          onShowGif(celebrationGif, '60%', gifSide);
+        if (showFeedback) {
+          if (isCorrect) {
+            onShowGif(celebrationGif, '60%', gifSide);
+          } else {
+            onShowGif(empathyGif, '60%', gifSide);
+          }
         }
-      }, [showFeedback, isCorrect, celebrationGif, gifSide, onShowGif]);
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
 
       // Hide GIF on unmount
       useEffect(() => {
@@ -468,8 +493,8 @@
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Quiz content */}
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          {/* Quiz content - z-20 to stay above GIF */}
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-20">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
@@ -593,7 +618,7 @@
             </div>
           </div>
 
-          {/* GIF - absolute positioned at bottom of entire card, extends through dots panel */}
+          {/* GIF - absolute positioned at bottom, z-15 to cover separator line */}
           <AnimatePresence>
             {gifConfig && (
               <motion.div
@@ -602,7 +627,7 @@
                 exit={{ opacity: 0, y: 30 }}
                 transition={{ type: 'spring', stiffness: 100 }}
                 className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
-                style={{ zIndex: 5, height: gifConfig.height }}
+                style={{ zIndex: 15, height: gifConfig.height }}
               >
                 <video
                   autoPlay
