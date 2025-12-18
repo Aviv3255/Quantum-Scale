@@ -41,6 +41,26 @@ const lessons = [
     name: 'OCPB Formula',
     path: 'genrok-app/public/lessons/ocpb-formula/lesson.html',
     totalSlides: 14
+  },
+  {
+    name: 'Persuasion Stack',
+    path: 'genrok-app/public/lessons/persuasion-stack/lesson.html',
+    totalSlides: 17
+  },
+  {
+    name: 'WIIFM Principle',
+    path: 'genrok-app/public/lessons/wiifm-principle/lesson.html',
+    totalSlides: 14
+  },
+  {
+    name: 'CPPPB Proof Loop',
+    path: 'genrok-app/public/lessons/cpppb-proof-loop/lesson.html',
+    totalSlides: 19
+  },
+  {
+    name: 'Emotional Precision',
+    path: 'genrok-app/public/lessons/emotional-precision/lesson.html',
+    totalSlides: 15
   }
 ];
 

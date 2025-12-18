@@ -3,522 +3,622 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The WIIFM Principle</title>
+  <title>The WIIFM Principle | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#06b6d4',
-            dark: '#0a0a0a',
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; }
-    ::selection { background: #06b6d4; color: #fff; }
-    .lesson-container { max-width: 720px; margin: 0 auto; }
-    .glow-accent { box-shadow: 0 0 60px rgba(6, 182, 212, 0.3); }
+    :root {
+      --accent: #0891b2;
+      --accent-dark: #0e7490;
+      --accent-light: #06b6d4;
+      --accent-rgb: 8, 145, 178;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+    .title-font {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    h1, h2, h3, .slide-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence } = window.Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    const smoothEase = [0.25, 0.1, 0.25, 1];
-
-    // SVG Icons
-    const Icons = {
-      user: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-        </svg>
-      ),
-      target: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2" fill="currentColor"/>
-        </svg>
-      ),
-      bolt: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
-        </svg>
-      ),
-      clock: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2"/>
-        </svg>
-      ),
-      check: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-        </svg>
-      ),
-      x: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      ),
-      arrow: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-        </svg>
-      ),
-      spark: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
-        </svg>
-      ),
-      question: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/>
-        </svg>
-      )
+    // ============================================
+    // GET USER NAME FROM URL PARAM
+    // ============================================
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
     };
 
-    // Animation Components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div ref={ref} className={className}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay, ease: smoothEase }}>
-          {children}
-        </motion.div>
-      );
-    }
+    // ============================================
+    // LESSON CONFIGURATION
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'wiifm-principle',
+      title: 'The WIIFM Principle',
+      description: 'The only question running through your reader\'s mind. Answer it or lose them forever.',
+      accentColor: '#0891b2',
+      duration: '5 min',
+      nextLesson: {
+        id: 'red-button-effect',
+        title: 'The Red Button Effect',
+        teaser: 'Why customers resist the obvious solution and how to fix it.'
+      }
+    };
 
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div ref={ref} className={className}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay, ease: smoothEase }}>
-          {children}
-        </motion.div>
-      );
-    }
-
-    function Counter({ end, suffix = "", prefix = "" }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const timer = setInterval(() => {
-            start += end / 40;
-            if (start >= end) { setCount(end); clearInterval(timer); }
-            else { setCount(Math.floor(start)); }
-          }, 30);
-          return () => clearInterval(timer);
+    // ============================================
+    // TIME-BASED WELCOME ANIMATIONS (GIF + Greeting pairs)
+    // ============================================
+    const welcomeAnimations = {
+      morning: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4',
+          greeting: "Coffee's ready? Your competition is still sleeping. Let's go."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4',
+          greeting: "Early bird gets the million. You're already ahead of 90% of people!"
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4',
+          greeting: "Morning champion! This is how winners start their day."
         }
-      }, [isInView, end]);
-      return <span ref={ref}>{prefix}{count}{suffix}</span>;
-    }
+      ],
+      afternoon: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4',
+          greeting: "Afternoon warrior! While they crash, you climb. Serious mode activated."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4',
+          greeting: "Post-lunch learner. Most quit now. You? Let's do this."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4',
+          greeting: "We have work to do. This is when winners separate from watchers."
+        }
+      ],
+      evening: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4',
+          greeting: "Evening mastermind! Relaxed but ready. This is YOUR time."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4',
+          greeting: "Prime time learner. While they binge Netflix, you're building empires."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4',
+          greeting: "Respect for being here. Evening architect mode activated."
+        }
+      ],
+      night: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4',
+          greeting: "Night owl energy! While they sleep, you're building dreams."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4',
+          greeting: "Midnight grind mode. The quiet hours are the profitable ones."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4',
+          greeting: "You're one of us. Can't sleep until you win? Welcome home, builder."
+        }
+      ]
+    };
 
-    // 4-Line Demo
-    function FourLineDemo() {
-      const [activeDemo, setActiveDemo] = useState(null);
-      const [currentLine, setCurrentLine] = useState(0);
+    const getTimeBasedWelcome = () => {
+      const hour = new Date().getHours();
+      let slot;
+      if (hour >= 5 && hour < 12) slot = 'morning';
+      else if (hour >= 12 && hour < 17) slot = 'afternoon';
+      else if (hour >= 17 && hour < 21) slot = 'evening';
+      else slot = 'night';
 
-      const badExample = [
-        "Welcome to Acme Corp!",
-        "We are industry leaders since 1985.",
-        "Our team has 50+ years of experience.",
-        "Contact us to learn about our solutions."
-      ];
+      const options = welcomeAnimations[slot];
+      const randomIndex = Math.floor(Math.random() * options.length);
+      return options[randomIndex];
+    };
 
-      const goodExample = [
-        "Tired of ads that burn cash and bring nothing?",
-        "In the next 5 minutes, you'll learn the exact formula",
-        "that turned $500 into $12,000 for 147 store owners.",
-        "No fluff. No theory. Just the copy that prints money."
-      ];
+    // ============================================
+    // CELEBRATION GIFS (Quiz Correct Answer)
+    // ============================================
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
 
-      const handleDemo = (type) => {
-        setActiveDemo(type);
-        setCurrentLine(0);
-        const lines = type === 'bad' ? badExample : goodExample;
-        lines.forEach((_, i) => {
-          setTimeout(() => setCurrentLine(i + 1), i * 600);
-        });
+    const getRandomCelebrationGif = () => {
+      return celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    };
+
+    // ============================================
+    // EMPATHY GIFS (Quiz Incorrect Answer)
+    // ============================================
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+
+    const getRandomEmpathyGif = () => {
+      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    };
+
+    // ============================================
+    // SLIDE DATA - ECOMMERCE FOCUSED
+    // ============================================
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why 95% of Shopify product pages talk about themselves (and lose sales)',
+        'The 4-line rule that decides if your customer stays or scrolls',
+        'How to transform "We" copy into "You" copy that converts'
+      ]},
+      { type: 'hook', title: 'Your Customer Has One Question', body: 'Every word you write. Every headline. Every bullet point. Your customer is asking the exact same question.', punchline: '"What\'s In It For Me?"' },
+      { type: 'content', subtitle: 'The Truth', title: 'They Don\'t Care About You', body: 'Your awards? Your mission? Your 20 years of experience? Your passionate team? None of it matters. They care about one thing: themselves.', highlight: { label: 'The Filter', text: 'Every line of your copy is judged through the WIIFM filter. Pass through or get blocked.' }},
+      { type: 'visual', visualType: 'stats' },
+      { type: 'content', subtitle: 'The 4-Line Rule', title: 'Win or Lose in Seconds', body: 'You have 4 lines. That\'s it. In those first 4 lines, your customer makes their decision: stay or scroll. Read or leave. Buy or bounce.', callout: 'This happens before conscious thought kicks in.' },
+      { type: 'example', subtitle: 'The Difference', bad: { label: 'We-Focused', text: '"We have 20 years of experience in premium yoga equipment"' }, good: { label: 'You-Focused', text: '"Get results from strategies tested over 20 years of real customer data"' }, insight: '67% of Shopify stores fail this test in the first 2 lines. Don\'t be one of them.' },
+      { type: 'cards', title: 'The "We" to "You" Shift', subtitle: 'Transform self-centered copy into customer-focused persuasion:', cards: [
+        { icon: 'before', title: 'We have AI integration', desc: 'Feature-focused. Who cares?' },
+        { icon: 'after', title: 'Cut your workload in half', desc: 'Benefit-focused. Now I\'m listening.' },
+        { icon: 'result', title: 'Never wait for support', desc: 'Transformation-focused. Take my money.' }
+      ]},
+      { type: 'content', subtitle: 'The So What Test', title: 'Ruthless Editing', body: 'After writing any sentence, ask: "So what? Who cares?" If your reader could reasonably respond with "so what?" to that line, it fails. Kill it. Replace it.', callout: 'This is what separates copy that converts from copy that gets ignored.' },
+      { type: 'visual', visualType: 'comparison' },
+      { type: 'example', subtitle: 'Real Shopify Examples', bad: { label: 'About Us Approach', text: '"Welcome to our store! We\'re industry leaders since 2010..."' }, good: { label: 'WIIFM Approach', text: '"Stop wasting $2,000/month on Facebook ads that bring zero sales..."' }, insight: 'Example A: Customer leaves after line 2. Example B: Customer reads until the end. The difference? WIIFM from line 1.' },
+      { type: 'cards', title: 'Every Line Must Answer', cards: [
+        { icon: 'time', title: 'What do I get?', desc: 'Specific outcome, not vague promise' },
+        { icon: 'money', title: 'How much time/money do I save?', desc: 'Quantify the value or they won\'t believe it' },
+        { icon: 'proof', title: 'Why should I trust you?', desc: 'Proof, not claims. Show, don\'t tell.' }
+      ]},
+      { type: 'quote', quote: 'Features bore. Benefits sell. Transformation converts. Stop talking about your product. Start talking about their life after buying it.', attribution: 'The WIIFM Principle' },
+      { type: 'quiz', question: 'A product page starts: "We\'re a family-owned business with 15 years of experience." What\'s wrong?', options: ['Nothing, it builds trust through credibility', 'It\'s "We" focused, not "You" focused - fails WIIFM immediately', 'It needs more specific numbers', 'It should mention the product name first'], correctIndex: 1, feedback: { correct: 'Exactly! The first line talks about "We" (the business), not "You" (the customer). They don\'t care about your history until you\'ve shown them what\'s in it for them. Lead with benefits, prove credibility later.', incorrect: 'The problem is the "We" focus. Opening with "We\'re a family business..." immediately fails the WIIFM test. The customer is asking "What\'s in it for ME?" and you\'re talking about yourself. Lead with their benefit, not your backstory. Trust comes after value.' }},
+      { type: 'completion' }
+    ];
+
+    // ============================================
+    // ICONS (Minimalist SVG)
+    // ============================================
+    const Icons = {
+      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Sparkles: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Before: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      After: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      Result: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
+      Time: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Money: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Proof: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+    };
+
+    // ============================================
+    // VISUAL COMPONENTS
+    // ============================================
+    const StatsVisual = () => (
+      <div className="w-full h-full flex items-center justify-center p-6 md:p-8">
+        <div className="w-full max-w-3xl">
+          <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">The Reality</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="text-5xl font-black mb-3" style={{ color: 'var(--accent)' }}>4</motion.div>
+              <p className="text-neutral-400 text-sm">Lines to win or lose them</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: 'spring' }} className="text-5xl font-black mb-3" style={{ color: 'var(--accent)' }}>3s</motion.div>
+              <p className="text-neutral-400 text-sm">Before they decide to stay</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }} className="text-5xl font-black mb-3" style={{ color: 'var(--accent)' }}>95%</motion.div>
+              <p className="text-neutral-400 text-sm">Of copy fails this test</p>
+            </motion.div>
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-500 text-sm mt-8">
+            You don't get a second chance at a first impression.
+          </motion.p>
+        </div>
+      </div>
+    );
+
+    const ComparisonVisual = () => (
+      <div className="w-full h-full flex items-center justify-center p-6 md:p-8">
+        <div className="w-full max-w-3xl">
+          <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">Same Product, Different Copy</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl bg-neutral-200 flex items-center justify-center text-neutral-400"><Icons.X /></div>
+                <div>
+                  <span className="text-neutral-400 text-xs font-medium uppercase tracking-wider">Feature Pusher</span>
+                  <p className="text-neutral-700 font-semibold text-lg">We-Focused</p>
+                </div>
+              </div>
+              <p className="text-neutral-500 text-sm mb-2">"We're #1 rated platform"</p>
+              <p className="text-neutral-500 text-sm mb-2">"Our team is passionate"</p>
+              <p className="text-neutral-500 text-sm mb-5">"We use cutting-edge tech"</p>
+              <div className="pt-4 border-t border-neutral-200">
+                <p className="text-red-400 text-sm font-medium">Customer response: "So what?"</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }} className="rounded-2xl p-6 border-2" style={{ background: 'white', borderColor: 'var(--accent)' }}>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></div>
+                <div>
+                  <span style={{ color: 'var(--accent)' }} className="text-xs font-medium uppercase tracking-wider">Value Demonstrator</span>
+                  <p className="text-neutral-900 font-semibold text-lg">You-Focused</p>
+                </div>
+              </div>
+              <p className="text-neutral-700 text-sm mb-2">"Join 50K who doubled revenue"</p>
+              <p className="text-neutral-700 text-sm mb-2">"Every product inspected 3X"</p>
+              <p className="text-neutral-700 text-sm mb-5">"Get reports 10X faster"</p>
+              <div className="pt-4 border-t border-neutral-100">
+                <p className="text-green-500 text-sm font-medium">Customer response: "Tell me more"</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
+              {LESSON_CONFIG.title}
+            </motion.h1>
+
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">
+              Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
+              <Icons.Clock />
+              <span>{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              Let's Go
+            </motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-8">{data.body}</motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-6">
+          <p className="text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--accent)' }}>{data.punchline}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-3xl md:text-4xl text-black mb-5">{data.title}</motion.h2>
+        {data.body && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-5">{data.body}</motion.p>}
+        {data.callout && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="text-neutral-500 text-base italic">{data.callout}</motion.p>}
+        {data.highlight && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+            <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-5" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-100 rounded-xl p-5 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded bg-neutral-300 flex items-center justify-center text-neutral-500"><Icons.X /></div>
+              <span className="text-neutral-400 text-xs font-medium uppercase">{data.bad.label}</span>
+            </div>
+            <p className="text-neutral-500 text-base italic">{data.bad.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+              <span className="text-xs font-medium uppercase" style={{ color: 'var(--accent)' }}>{data.good.label}</span>
+            </div>
+            <p className="text-neutral-800 text-base italic font-medium">{data.good.text}</p>
+          </motion.div>
+        </div>
+        {data.insight && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-500 text-sm italic">{data.insight}</motion.p>}
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center">
+        {data.visualType === 'stats' && <StatsVisual />}
+        {data.visualType === 'comparison' && <ComparisonVisual />}
+      </div>
+    );
+
+    const CardsSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = { before: Icons.Before, after: Icons.After, result: Icons.Result, time: Icons.Time, money: Icons.Money, proof: Icons.Proof };
+        const IconComp = icons[iconName];
+        return IconComp ? <IconComp /> : null;
       };
-
       return (
-        <div className="bg-neutral-900 rounded-2xl p-8">
-          <div className="text-center mb-8">
-            <p className="text-neutral-400 text-xs uppercase tracking-widest mb-2">The 4-Line Test</p>
-            <p className="text-xl font-semibold text-white">Which copy keeps you reading?</p>
+        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
+          <div className="text-center mb-6">
+            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
           </div>
-
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <motion.button
-              onClick={() => handleDemo('bad')}
-              className={`p-4 rounded-xl transition-all ${activeDemo === 'bad' ? 'bg-red-500/20 border border-red-500/40' : 'bg-neutral-800 hover:bg-neutral-700'}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <p className="text-red-400 text-sm font-medium mb-1">Example A</p>
-              <p className="text-neutral-400 text-xs">The "About Us" approach</p>
-            </motion.button>
-            <motion.button
-              onClick={() => handleDemo('good')}
-              className={`p-4 rounded-xl transition-all ${activeDemo === 'good' ? 'bg-emerald-500/20 border border-emerald-500/40' : 'bg-neutral-800 hover:bg-neutral-700'}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <p className="text-emerald-400 text-sm font-medium mb-1">Example B</p>
-              <p className="text-neutral-400 text-xs">The WIIFM approach</p>
-            </motion.button>
-          </div>
-
-          {activeDemo && currentLine > 0 && (
-            <div className="space-y-3 mb-6">
-              {(activeDemo === 'bad' ? badExample : goodExample).slice(0, currentLine).map((line, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-start gap-3"
-                >
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
-                    {i + 1}
-                  </span>
-                  <p className="text-neutral-200 leading-relaxed">{line}</p>
-                </motion.div>
-              ))}
-            </div>
-          )}
-
-          {activeDemo && currentLine >= 4 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-xl ${activeDemo === 'bad' ? 'bg-red-900/30 border border-red-700/50' : 'bg-emerald-900/30 border border-emerald-700/50'}`}
-            >
-              {activeDemo === 'bad' ? (
-                <p className="text-red-200 text-sm"><strong>Result:</strong> Reader left after line 2. You talked about YOU. They wanted to know about THEM. This copy fails the WIIFM test completely.</p>
-              ) : (
-                <p className="text-emerald-200 text-sm"><strong>Result:</strong> Hooked by line 1, promised value by line 2, proof by line 3, commitment by line 4. Every line answers WIIFM. They keep reading.</p>
-              )}
-            </motion.div>
-          )}
-        </div>
-      );
-    }
-
-    // Transform Demo
-    function TransformDemo() {
-      const examples = [
-        { before: "We have 20 years of experience", after: "Get results from strategies tested over 20 years" },
-        { before: "Our software has AI integration", after: "Cut your workload in half with AI that writes for you" },
-        { before: "We offer 24/7 support", after: "Never wait more than 5 minutes for help, day or night" },
-        { before: "Our platform is enterprise-grade", after: "Handle 10x more customers without hiring anyone" },
-      ];
-
-      return (
-        <div className="space-y-4">
-          {examples.map((ex, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="grid md:grid-cols-2 gap-4"
-            >
-              <div className="p-5 bg-neutral-100 rounded-xl border border-neutral-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="text-neutral-500">{Icons.x}</div>
-                  <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider">We-focused</p>
-                </div>
-                <p className="text-neutral-700 text-sm">"{ex.before}"</p>
-              </div>
-              <div className="p-5 bg-neutral-950 rounded-xl border border-neutral-800">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="text-white">{Icons.check}</div>
-                  <p className="text-xs text-neutral-400 font-semibold uppercase tracking-wider">You-focused</p>
-                </div>
-                <p className="text-neutral-300 text-sm">"{ex.after}"</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      );
-    }
-
-    // The So What Test
-    function SoWhatTest() {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      return (
-        <div ref={ref} className="bg-neutral-900 rounded-2xl p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
-              {Icons.question}
-            </div>
-            <h3 className="text-xl font-bold text-white">The "So What?" Filter</h3>
-          </div>
-
-          <p className="text-neutral-300 leading-relaxed mb-6">
-            After you write any sentence, ask yourself: "So what? Who cares?" If your reader could reasonably respond with "so what?" to that line, it fails the test. Kill it and replace it with something that answers WIIFM.
-          </p>
-
-          <div className="space-y-4">
-            {[
-              { bad: "We're the #1 rated platform.", good: "Join 50,000+ users who doubled their revenue." },
-              { bad: "Our team is passionate about quality.", good: "Every product inspected 3 times before shipping." },
-              { bad: "We use cutting-edge technology.", good: "Get reports 10x faster than industry standard." }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: i * 0.15 }}
-                className="flex items-center gap-4"
-              >
-                <div className="flex-1 p-3 bg-red-500/10 rounded-lg border border-red-500/20">
-                  <p className="text-red-300 text-sm line-through">{item.bad}</p>
-                </div>
-                <div className="text-neutral-500">{Icons.arrow}</div>
-                <div className="flex-1 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                  <p className="text-emerald-300 text-sm">{item.good}</p>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {data.cards.map((card, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
+                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
+                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       );
-    }
+    };
 
-    function Lesson() {
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 max-w-xl text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15, type: 'spring' }} className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-8 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Sparkles /></motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-white text-xl md:text-2xl leading-relaxed mb-5">"{data.quote}"</motion.p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={{ color: 'var(--accent)' }} className="text-sm font-medium">{data.attribution}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) {
+            onShowGif(celebrationGif, '60%', gifSide);
+          } else {
+            onShowGif(empathyGif, '60%', gifSide);
+          }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => {
+        return () => onHideGif();
+      }, [onHideGif]);
+
       return (
-        <div className="min-h-screen bg-white">
-          {/* Hero - Dark */}
-          <header className="bg-dark text-white px-6 py-16 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
-            <div className="lesson-container relative">
-              <FadeUp>
-                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 text-xs font-semibold rounded-full mb-6 border border-white/10">
-                  {Icons.user}
-                  COPYWRITING FUNDAMENTAL
-                </span>
-                <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-                  The WIIFM Principle
-                </h1>
-                <p className="text-xl text-neutral-400 max-w-lg">
-                  The only question running through your reader's mind. Answer it or lose them forever.
-                </p>
-              </FadeUp>
-
-              {/* Lesson Illustration */}
-              <FadeUp>
-                <div className="my-8">
-                  <img
-                    src="images/hero-image.jpg"
-                    alt="Lesson illustration"
-                    className="w-full h-auto rounded-xl"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
-                </div>
-              </FadeUp>
-            </div>
-          </header>
-
-          {/* Section 1 - White: The Core Insight */}
-          <section className="px-6 py-16 bg-white">
-            <div className="lesson-container space-y-8">
-              <FadeUp>
-                <div className="text-center mb-8">
-                  <p className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-                    "What's In It For <span className="text-accent">Me</span>?"
-                  </p>
-                  <p className="text-lg text-neutral-500">
-                    That's the only thought in your reader's head. Every. Single. Second.
-                  </p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent mb-2">
-                      <Counter end={4} />
-                    </div>
-                    <p className="text-neutral-600 text-sm">Lines to win or lose them</p>
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-base">{option}</span>
                   </div>
-                  <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent mb-2">
-                      <Counter end={3} />s
-                    </div>
-                    <p className="text-neutral-600 text-sm">Before they decide to stay</p>
-                  </div>
-                  <div className="text-center p-6 bg-neutral-50 rounded-2xl">
-                    <div className="text-4xl font-bold text-accent mb-2">
-                      <Counter end={95} />%
-                    </div>
-                    <p className="text-neutral-600 text-sm">Of copy fails this test</p>
-                  </div>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-lg text-neutral-700 leading-relaxed">
-                  Your reader doesn't care about your company. They don't care about your awards, your mission statement, your years in business, or how passionate your team is. They care about exactly one thing: <strong>themselves</strong>.
-                </p>
-                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
-                  Every line of your copy is a transaction. You're asking for their most precious resource - attention. What are you giving in return? If the answer isn't crystal clear within seconds, they're gone. Not coming back. Your fancy design and clever wordplay won't save you.
-                </p>
-                <p className="text-lg text-neutral-600 leading-relaxed mt-4">
-                  WIIFM isn't just a principle - it's the filter through which your reader processes every word you write. Pass through that filter or get blocked.
-                </p>
-              </FadeUp>
+                </motion.button>
+              ))}
             </div>
-          </section>
-
-          {/* Section 2 - Dark: The 4-Line Rule */}
-          <section className="px-6 py-16 bg-dark text-white">
-            <div className="lesson-container space-y-8">
-              <FadeUp>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
-                    {Icons.clock}
-                  </div>
-                  <h2 className="text-3xl font-bold">The 4-Line Rule</h2>
-                </div>
-                <p className="text-neutral-400 max-w-2xl">
-                  In the first 4 lines of ANY copy, readers make their decision. Stay or scroll. Read or leave. This happens before conscious thought kicks in. You don't get a second chance at a first impression.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <FourLineDemo />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Section 3 - White: The Transformation */}
-          <section className="px-6 py-16 bg-white">
-            <div className="lesson-container space-y-8">
-              <FadeUp>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                    {Icons.bolt}
-                  </div>
-                  <h2 className="text-3xl font-bold text-neutral-900">The "We" to "You" Shift</h2>
-                </div>
-                <p className="text-neutral-600">
-                  Most copy starts with "We." Winning copy starts with "You." This simple shift transforms self-centered messaging into customer-focused persuasion. Watch the difference:
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <TransformDemo />
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-neutral-600 leading-relaxed">
-                  Notice the pattern? We-focused copy talks about what you have. You-focused copy talks about what they get. Features versus benefits. Information versus transformation. One bores, the other sells.
-                </p>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Section 4 - Dark: The So What Test */}
-          <section className="px-6 py-16 bg-dark text-white">
-            <div className="lesson-container space-y-8">
-              <FadeUp>
-                <SoWhatTest />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Section 5 - White: Holy Shit Moment */}
-          <section className="px-6 py-16 bg-white">
-            <div className="lesson-container">
-              <FadeUp>
-                <div className="bg-gradient-to-br from-accent to-cyan-600 rounded-3xl p-8 md:p-12 text-white glow-accent">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                      {Icons.spark}
-                    </div>
-                    <span className="text-sm font-semibold uppercase tracking-wider text-white/80">The Holy Shit Moment</span>
-                  </div>
-                  <p className="text-2xl md:text-3xl font-bold leading-tight mb-6">
-                    Every sentence should pass one test: "So what? Who cares?"
-                  </p>
-                  <p className="text-white/80 text-lg leading-relaxed">
-                    If your reader could reasonably respond "so what?" to any line in your copy, that line needs to die. Replace it with something that directly answers WIIFM. No exceptions. No excuses. This ruthless editing is what separates copy that converts from copy that gets ignored.
-                  </p>
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Section 6 - Dark: Key Takeaways */}
-          <section className="px-6 py-16 bg-dark text-white">
-            <div className="lesson-container">
-              <FadeUp>
-                <h2 className="text-sm uppercase tracking-widest text-neutral-500 mb-8">Key Takeaways</h2>
-                <div className="space-y-3">
-                  {[
-                    "WIIFM = What's In It For Me. The only question your reader is asking.",
-                    "You have 4 lines to hook them. Win or lose in the opening.",
-                    "Replace every 'We' with 'You.' Make it about THEM, not you.",
-                    "Every sentence must pass the 'So what?' test ruthlessly.",
-                    "Features bore. Benefits sell. Transformation converts.",
-                    "Attention is a transaction. Give value or get ignored."
-                  ].map((takeaway, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3 p-4 bg-neutral-900 rounded-xl border border-neutral-800"
-                    >
-                      <div className="text-accent mt-0.5">{Icons.check}</div>
-                      <span className="text-neutral-200">{takeaway}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className="px-6 py-8 border-t border-neutral-100 bg-white">
-            <div className="lesson-container flex justify-between items-center text-sm text-neutral-400">
-              <span>Quantum Scale</span>
-              <span>Copywriting Fundamentals</span>
-            </div>
-          </footer>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       );
-    }
+    };
 
-    ReactDOM.render(<Lesson />, document.getElementById('root'));
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now know the filter every customer uses. Make every line answer WIIFM, or watch them leave. It's that simple.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => {
+        setGifConfig({ url, height, side });
+      }, []);
+
+      const hideGif = useCallback(() => {
+        setGifConfig(null);
+      }, []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ type: 'spring', stiffness: 100 }}
+                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
+                style={{ zIndex: 15, height: gifConfig.height }}
+              >
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-auto object-contain object-bottom"
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+                >
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
