@@ -58,6 +58,21 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'rule-of-one': { title: 'The Rule of One', description: 'One reader, one idea, one offer, one action' },
   'architecture-of-belief': { title: 'The Architecture of Belief', description: 'Three levels of mastery' },
   'copywriters-codex': { title: 'The Copywriter\'s Codex', description: 'A synthesized playbook from the masters' },
+  // Article-based lessons
+  'best-private-agent': { title: 'Who Is the Best Private Agent', description: '5-7 day shipping, 18/6 WhatsApp support' },
+  'stop-aliexpress': { title: 'Stop Using AliExpress Now', description: 'Why AliExpress destroys your brand' },
+  'product-reviews-test': { title: 'Do Product Reviews Increase Conversion?', description: 'A/B test results: 12.7% impact' },
+  'ltv-cheat-code': { title: 'The LTV Cheat Code', description: 'How 5% of customers generate 95% of revenue' },
+  'million-dollar-roadmap': { title: 'The Roadmap to $1M/Month', description: '33 customers per day formula' },
+  'geo-announcement-bar': { title: 'GEO-Location Announcement Bar', description: '67% conversion rate increase' },
+  'wishlist-effect': { title: 'The Wishlist Effect', description: 'Endowment Effect psychology (+8% CVR)' },
+  'email-vs-sms': { title: 'Email vs SMS Revenue', description: 'Which generates more revenue?' },
+  'abandoned-cart-recovery': { title: 'Abandoned Cart Recovery', description: 'AI SMS vs Email: 85% vs 60%' },
+  'pareto-law-ecommerce': { title: 'The Pareto Law in eCommerce', description: '5% customers = 95% revenue' },
+  'whatsapp-support': { title: 'Should You Add WhatsApp Support?', description: 'Why email-only is better' },
+  'meta-attribution-test': { title: 'Is Meta Lying About Creatives?', description: 'Meta only tracks 67% of purchases' },
+  'post-purchase-surveys': { title: 'Post Purchase Surveys', description: 'Know your customers with data' },
+  'fonts-psychology': { title: 'The Truth About Fonts', description: 'How fonts affect trust and conversions' },
 };
 
 // Categories for filtering
