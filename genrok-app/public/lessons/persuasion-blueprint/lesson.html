@@ -3,620 +3,636 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Persuasion Blueprint</title>
+  <title>The Persuasion Blueprint | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.umd.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #000; }
-    .accent { color: #6366f1; }
-    .accent-bg { background: #6366f1; }
-    .glow { box-shadow: 0 0 60px rgba(99, 102, 241, 0.3); }
-    .glow-text { text-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+    :root {
+      --accent: #f59e0b;
+      --accent-dark: #d97706;
+      --accent-light: #fbbf24;
+      --accent-rgb: 245, 158, 11;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+    .title-font {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    h1, h2, h3, .slide-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-    const { motion, useInView, AnimatePresence } = Motion;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Reusable Animation Components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function Counter({ end, suffix = "", duration = 2 }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (!isInView) return;
-        let start = 0;
-        const increment = end / (duration * 60);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= end) {
-            setCount(end);
-            clearInterval(timer);
-          } else {
-            setCount(Math.floor(start));
-          }
-        }, 1000 / 60);
-        return () => clearInterval(timer);
-      }, [isInView, end, duration]);
-
-      return <span ref={ref}>{count}{suffix}</span>;
-    }
-
-    // SVG Icons
-    const Icons = {
-      target: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" strokeWidth="1.5"/>
-          <circle cx="12" cy="12" r="6" strokeWidth="1.5"/>
-          <circle cx="12" cy="12" r="2" fill="currentColor"/>
-        </svg>
-      ),
-      user: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-        </svg>
-      ),
-      layers: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-        </svg>
-      ),
-      route: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-        </svg>
-      ),
-      edit: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-        </svg>
-      ),
-      alert: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-        </svg>
-      ),
-      heart: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-        </svg>
-      ),
-      question: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      ),
-      block: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
-        </svg>
-      ),
-      check: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
-        </svg>
-      ),
-      arrow: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-        </svg>
-      ),
-      lightning: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-        </svg>
-      )
+    // ============================================
+    // GET USER NAME FROM URL PARAM
+    // ============================================
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
     };
 
-    // Interactive Blueprint Step Navigator
-    function BlueprintNavigator() {
-      const [activeStep, setActiveStep] = useState(0);
+    // ============================================
+    // LESSON CONFIGURATION
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'persuasion-blueprint',
+      title: 'The Persuasion Blueprint',
+      description: 'The 5-step system that turns chaos into conversions.',
+      accentColor: '#f59e0b',
+      duration: '5 min',
+      nextLesson: {
+        id: 'persuasion-stack',
+        title: 'The Persuasion Stack',
+        teaser: 'Layer your skills from foundation to mastery - each level amplifies the one below.'
+      }
+    };
 
-      const steps = [
+    // ============================================
+    // TIME-BASED WELCOME ANIMATIONS (GIF + Greeting pairs)
+    // Each time slot has matched GIF + greeting combinations
+    // ============================================
+    const welcomeAnimations = {
+      // Morning (5:00am - 11:59am)
+      morning: [
         {
-          num: '01',
-          title: 'Rule of One',
-          subtitle: 'The Core Strategy',
-          icon: Icons.target,
-          content: 'One Big Idea. One Target Reader. One Core Promise. One Clear Offer. The moment you try to say everything, you say nothing. Focus creates power. Dilution creates weakness. Your reader should finish your copy knowing exactly ONE thing you want them to believe, feel, and do.',
-          example: 'Instead of "Our software helps with marketing, sales, and operations" → "Double your leads in 30 days or your money back."'
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4',
+          greeting: "Coffee's ready? Your competition is still sleeping. Let's go."
         },
         {
-          num: '02',
-          title: 'Avatar Journey',
-          subtitle: 'Define Your WHO',
-          icon: Icons.user,
-          content: 'Map their Current Identity to their Ideal Identity. Call them what THEY call themselves, not what you call them. Understand their language, their fears, their dreams. The gap between who they are and who they want to become is where your copy lives.',
-          example: 'Current: "Overwhelmed store owner working 80 hours" → Ideal: "Successful entrepreneur with freedom and control"'
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4',
+          greeting: "Early bird gets the million. You're already ahead of 90% of people!"
         },
         {
-          num: '03',
-          title: '5 Levels of Awareness',
-          subtitle: 'Pinpoint Their WHERE',
-          icon: Icons.layers,
-          content: 'Eugene Schwartz identified five stages: Unaware (don\'t know they have a problem), Problem Aware (know the problem, not solutions), Solution Aware (know solutions exist, not yours), Product Aware (know your product, not convinced), Most Aware (ready to buy). Your copy MUST meet them where they are.',
-          example: 'Problem Aware headline: "Tired of ads that drain your budget?" vs Most Aware: "Get 50% off DataDrew this week only."'
-        },
-        {
-          num: '04',
-          title: '3-Phase Campaign',
-          subtitle: 'Architect the HOW',
-          icon: Icons.route,
-          content: 'Think of your copy as a house. Phase 1: Curiosity (Front Steps) - Stop them, make them look. Phase 2: Enlightenment (Porch) - Educate them, build trust, show the transformation. Phase 3: Commitment (Door) - Make the offer irresistible, remove risk, create urgency.',
-          example: 'Ad (Curiosity) → Landing Page (Enlightenment) → Checkout (Commitment)'
-        },
-        {
-          num: '05',
-          title: 'The Craft',
-          subtitle: 'Polish the Words',
-          icon: Icons.edit,
-          content: 'Write like you talk to a smart friend. 6th-8th grade reading level. Short sentences punch harder. Edit ruthlessly - if a word doesn\'t sell, cut it. Read aloud. If you stumble, your reader will too. Every sentence must earn its place.',
-          example: '"Edit as though your reader has to pee." If a sentence isn\'t compelling enough to make them hold it, delete it.'
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4',
+          greeting: "Morning champion! This is how winners start their day."
         }
+      ],
+      // Afternoon (12:00pm - 5:00pm)
+      afternoon: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4',
+          greeting: "Afternoon warrior! While they crash, you climb. Serious mode activated."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4',
+          greeting: "Post-lunch learner. Most quit now. You? Let's do this."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4',
+          greeting: "We have work to do. This is when winners separate from watchers."
+        }
+      ],
+      // Evening (5:00pm - 9:00pm)
+      evening: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4',
+          greeting: "Evening mastermind! Relaxed but ready. This is YOUR time."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4',
+          greeting: "Prime time learner. While they binge Netflix, you're building empires."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4',
+          greeting: "Respect for being here. Evening architect mode activated."
+        }
+      ],
+      // Night (9:00pm - 4:59am)
+      night: [
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4',
+          greeting: "Night owl energy! While they sleep, you're building dreams."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4',
+          greeting: "Midnight grind mode. The quiet hours are the profitable ones."
+        },
+        {
+          gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4',
+          greeting: "You're one of us. Can't sleep until you win? Welcome home, builder."
+        }
+      ]
+    };
+
+    const getTimeBasedWelcome = () => {
+      const hour = new Date().getHours();
+      let slot;
+      if (hour >= 5 && hour < 12) slot = 'morning';
+      else if (hour >= 12 && hour < 17) slot = 'afternoon';
+      else if (hour >= 17 && hour < 21) slot = 'evening';
+      else slot = 'night';
+
+      const options = welcomeAnimations[slot];
+      const randomIndex = Math.floor(Math.random() * options.length);
+      return options[randomIndex];
+    };
+
+    // ============================================
+    // CELEBRATION GIFS (Quiz Correct Answer)
+    // 50% height, bottom, behind content
+    // ============================================
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', // Victory Dance
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4', // Jump Celebration
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4', // Air Guitar
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4', // Running Man
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4', // Standing Ovation
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4', // Fast Clap
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4', // Clap Above Head
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4' // Slow to Fast Clap
+    ];
+
+    const getRandomCelebrationGif = () => {
+      return celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    };
+
+    // ============================================
+    // EMPATHY GIFS (Quiz Incorrect Answer)
+    // Same settings as celebration GIFs: 60% height, bottom, behind content
+    // ============================================
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', // Thumbs Down
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4', // Sad Head Shake
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4', // Facepalm
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4', // Looking Down Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4', // Tear Wipe
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4', // Sad Sigh
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4', // Disappointed Slouch
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4', // Hand on Forehead Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4' // Slow Sad Nod
+    ];
+
+    const getRandomEmpathyGif = () => {
+      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    };
+
+    // ============================================
+    // SLIDE DATA - ECOMMERCE FOCUSED
+    // ============================================
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why 97% of store owners write "tossed salad" marketing that converts nobody',
+        'The 5-step blueprint used by every high-converting Shopify store',
+        'How to turn random tactics into a structured system that prints money'
+      ]},
+      { type: 'hook', title: 'Most Marketing is Random', body: 'Random messages. Random people. Random timing. You post on Instagram because everyone else does. You write product descriptions that "sound good." You run ads hoping something sticks.', punchline: 'Random inputs = Random results. Always.' },
+      { type: 'content', subtitle: 'The Problem', title: 'What Chaos Looks Like', body: 'Without a system, your marketing is a guessing game. You throw tactics at the wall. Sometimes something works. Usually nothing does. And you never know why.', callout: 'The difference between $3K/month and $30K/month? Structure.' },
+      { type: 'visual', visualType: 'blueprint' },
+      { type: 'content', subtitle: 'Step 1', title: 'The Rule of One', body: 'One Big Idea. One Target Reader. One Core Promise. One Clear Offer. The moment you try to say everything, you say nothing. Focus creates power. Dilution creates confusion.', highlight: { label: 'The Law', text: 'If your customer can\'t repeat your message in 5 words, you lost them.' }},
+      { type: 'example', subtitle: 'Rule of One in Action', bad: { label: 'Unfocused', text: '"Our software helps with marketing, sales, operations, customer service, and reporting"' }, good: { label: 'One Promise', text: '"Double your Shopify sales in 30 days or get your money back"' }, insight: 'One clear promise beats five vague benefits every single time.' },
+      { type: 'content', subtitle: 'Step 2', title: 'Define Your Avatar', body: 'Who are they TODAY? Who do they WANT to become? Call them what THEY call themselves. Speak their language. Understand their fears, dreams, and the gap between where they are and where they want to be.', callout: 'The gap between Current Identity and Ideal Identity is where your product lives.' },
+      { type: 'example', subtitle: 'Avatar Journey', bad: { label: 'Generic', text: '"For entrepreneurs who want to grow their business"' }, good: { label: 'Specific Identity', text: '"For exhausted Shopify owners working 80-hour weeks who dream of hitting $50K months while working 20 hours"' }, insight: 'Specificity creates resonance. Generic language creates indifference.' },
+      { type: 'visual', visualType: 'awareness' },
+      { type: 'content', subtitle: 'Step 3', title: 'The 5 Awareness Levels', body: 'Eugene Schwartz nailed this decades ago. Your customer is at ONE of these levels: Unaware, Problem Aware, Solution Aware, Product Aware, or Most Aware. Your copy MUST meet them where they are.', highlight: { label: 'The Mistake', text: 'Writing "Most Aware" copy for "Problem Aware" audiences kills conversions.' }},
+      { type: 'content', subtitle: 'Step 4', title: 'The 3-Phase Campaign', body: 'Think of your funnel as a house. Phase 1: Curiosity (Front Steps) - Stop them scrolling. Phase 2: Enlightenment (Porch) - Educate and build trust. Phase 3: Commitment (Door) - Make the offer irresistible.', callout: 'Ad → Landing Page → Checkout. Each phase has a different job.' },
+      { type: 'cards', title: 'Campaign Architecture', subtitle: 'The three phases that convert:', cards: [
+        { icon: 'curiosity', title: 'Curiosity', desc: 'Stop the scroll. Create a pattern interrupt. Make them look.' },
+        { icon: 'enlighten', title: 'Enlightenment', desc: 'Educate them. Show the transformation. Build trust.' },
+        { icon: 'commit', title: 'Commitment', desc: 'Remove risk. Create urgency. Make buying easy.' }
+      ]},
+      { type: 'content', subtitle: 'Step 5', title: 'Polish the Craft', body: 'Write like you talk to a smart friend. 6th-8th grade reading level. Short sentences punch harder. Edit ruthlessly - if a word doesn\'t sell, cut it. Read aloud. If you stumble, your reader will too.', highlight: { label: 'The Rule', text: '"Edit as though your reader has to pee. If a sentence isn\'t compelling enough to make them hold it, delete it."' }},
+      { type: 'example', subtitle: 'Craft Example', bad: { label: 'Complex', text: '"Our comprehensive solution leverages cutting-edge technology to optimize your workflow efficiency through advanced automation capabilities"' }, good: { label: 'Clear', text: '"Get 4 hours back every day. We automate the boring stuff so you can focus on making money"' }, insight: 'Clarity beats cleverness. Simple beats sophisticated. Every time.' },
+      { type: 'cards', title: 'The Blueprint in Action', subtitle: 'Real stores using this:', cards: [
+        { icon: 'store1', title: '$8K to $47K/month', desc: 'Applied Rule of One. Focused on exhausted moms. 5.9X growth in 90 days.' },
+        { icon: 'store2', title: '1.2% to 6.7% conversion', desc: 'Matched awareness level. Rewrote entire funnel. 5.6X conversion rate.' },
+        { icon: 'store3', title: '$120K saved in ad spend', desc: 'Fixed campaign architecture. Same traffic, 4X more sales.' }
+      ]},
+      { type: 'quiz', question: 'What\'s the biggest mistake store owners make with their marketing?', options: ['Not spending enough on ads', 'Trying to say everything to everyone instead of one thing to one person', 'Using the wrong social media platforms', 'Not having professional product photos'], correctIndex: 1, feedback: { correct: 'Exactly. The Rule of One is the foundation. Focus on ONE reader, ONE promise, ONE offer. Everything else is noise. That\'s why 97% of stores struggle - they dilute their message trying to appeal to everyone.', incorrect: 'The answer is focus. The Rule of One: One reader, one promise, one offer. The moment you try to say everything to everyone, you say nothing to anyone. Dilution kills conversion.' }},
+      { type: 'completion' }
+    ];
+
+    // ============================================
+    // ICONS (Minimalist SVG)
+    // ============================================
+    const Icons = {
+      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Sparkles: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Curiosity: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>,
+      Enlighten: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-3.18 4 4 0 0 0-2.58 3.6c0 1.24.48 2.38 1.27 3.25.79.87 1.27 2.01 1.27 3.23v.5"/><circle cx="12" cy="19" r="2"/></svg>,
+      Commit: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Store1: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      Store2: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
+      Store3: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    };
+
+    // ============================================
+    // VISUAL COMPONENTS (25% larger)
+    // ============================================
+    const BlueprintVisual = () => {
+      const steps = [
+        { num: '1', label: 'Rule of One', color: 'bg-amber-600' },
+        { num: '2', label: 'Avatar', color: 'bg-amber-500' },
+        { num: '3', label: 'Awareness', color: 'bg-amber-400' },
+        { num: '4', label: 'Campaign', color: 'bg-amber-300' },
+        { num: '5', label: 'Craft', color: 'bg-amber-200' }
       ];
+      return (
+        <div className="w-full h-full flex items-center justify-center p-8">
+          <div className="bg-neutral-900 rounded-3xl p-8 md:p-12 w-full max-w-xl">
+            <p className="text-center text-neutral-500 text-sm mb-8 uppercase tracking-widest">The 5-Step System</p>
+            <div className="grid grid-cols-5 gap-4">
+              {steps.map((step, i) => (
+                <motion.div key={step.num} initial={{ opacity: 0, scale: 0.8, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1, duration: 0.4, type: 'spring' }} className="text-center">
+                  <div className={`w-16 h-16 mx-auto ${step.color} rounded-2xl flex items-center justify-center mb-3`} style={{ boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.3)` }}>
+                    <div className="text-2xl font-bold text-neutral-900">{step.num}</div>
+                  </div>
+                  <div className="text-xs text-neutral-400 font-medium">{step.label}</div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="text-center text-neutral-600 text-sm mt-8">
+              Each step builds on the last. Skip one, the system breaks.
+            </motion.p>
+          </div>
+        </div>
+      );
+    };
+
+    const AwarenessVisual = () => {
+      const levels = [
+        { level: 'Most Aware', desc: 'Ready to buy NOW', width: '100%', color: 'bg-amber-600' },
+        { level: 'Product Aware', desc: 'Know YOUR solution', width: '80%', color: 'bg-amber-500' },
+        { level: 'Solution Aware', desc: 'Know solutions exist', width: '60%', color: 'bg-amber-400' },
+        { level: 'Problem Aware', desc: 'Know the problem', width: '40%', color: 'bg-amber-300' },
+        { level: 'Unaware', desc: "Don't know problem exists", width: '20%', color: 'bg-neutral-600' }
+      ];
+      return (
+        <div className="w-full h-full flex items-center justify-center p-8">
+          <div className="w-full max-w-3xl">
+            <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">Eugene Schwartz's Framework</p>
+            <div className="space-y-3">
+              {levels.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4">
+                  <div className="w-32 text-right">
+                    <span className="text-sm font-semibold text-neutral-700">{item.level}</span>
+                  </div>
+                  <div className="flex-1">
+                    <motion.div className={`h-12 ${item.color} rounded-xl flex items-center px-4`} initial={{ width: 0 }} animate={{ width: item.width }} transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}>
+                      <span className="text-white text-sm font-medium">{item.desc}</span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="text-center text-neutral-500 text-sm mt-8">
+              Match your message to their awareness level. Wrong match = zero conversions.
+            </motion.p>
+          </div>
+        </div>
+      );
+    };
+
+    // ============================================
+    // SLIDE COMPONENTS (25% larger content)
+    // ============================================
+
+    // Welcome Slide - GIF rendered at app level
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      // Show GIF on mount, hide on unmount
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
-        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
-          {/* Step Tabs */}
-          <div className="flex border-b border-zinc-800 overflow-x-auto">
-            {steps.map((step, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveStep(i)}
-                className={`flex-1 min-w-max px-6 py-4 text-left transition-all ${
-                  activeStep === i
-                    ? 'bg-indigo-600/20 border-b-2 border-indigo-500'
-                    : 'hover:bg-zinc-800/50'
-                }`}
-              >
-                <div className={`text-xs font-mono ${activeStep === i ? 'text-indigo-400' : 'text-zinc-500'}`}>
-                  {step.num}
-                </div>
-                <div className={`font-semibold ${activeStep === i ? 'text-white' : 'text-zinc-400'}`}>
-                  {step.title}
-                </div>
-              </button>
+        <div className="h-full w-full relative overflow-hidden">
+          {/* Main content - centered, z-20 to stay above GIF */}
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            {/* Lesson Title */}
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
+              {LESSON_CONFIG.title}
+            </motion.h1>
+
+            {/* Personalized greeting */}
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">
+              Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
+              <Icons.Clock />
+              <span>{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            {/* In This Lesson - 15% bigger */}
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Button - 10% bigger, no glow */}
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              Let's Go
+            </motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    // Hook Slide (25% larger)
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-8">{data.body}</motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-6">
+          <p className="text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--accent)' }}>{data.punchline}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Content Slide (25% larger)
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-3xl md:text-4xl text-black mb-5">{data.title}</motion.h2>
+        {data.body && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-5">{data.body}</motion.p>}
+        {data.callout && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="text-neutral-500 text-base italic">{data.callout}</motion.p>}
+        {data.highlight && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+            <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    // Example Slide (25% larger)
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-5" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-100 rounded-xl p-5 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded bg-neutral-300 flex items-center justify-center text-neutral-500"><Icons.X /></div>
+              <span className="text-neutral-400 text-xs font-medium uppercase">{data.bad.label}</span>
+            </div>
+            <p className="text-neutral-500 text-base italic">{data.bad.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+              <span className="text-xs font-medium uppercase" style={{ color: 'var(--accent)' }}>{data.good.label}</span>
+            </div>
+            <p className="text-neutral-800 text-base italic font-medium">{data.good.text}</p>
+          </motion.div>
+        </div>
+        {data.insight && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-500 text-sm italic">{data.insight}</motion.p>}
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center">
+        {data.visualType === 'blueprint' && <BlueprintVisual />}
+        {data.visualType === 'awareness' && <AwarenessVisual />}
+      </div>
+    );
+
+    // Cards Slide (25% larger)
+    const CardsSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = { curiosity: Icons.Curiosity, enlighten: Icons.Enlighten, commit: Icons.Commit, store1: Icons.Store1, store2: Icons.Store2, store3: Icons.Store3 };
+        const IconComp = icons[iconName];
+        return IconComp ? <IconComp /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
+          <div className="text-center mb-6">
+            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {data.cards.map((card, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
+                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
+                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
+              </motion.div>
             ))}
           </div>
+        </div>
+      );
+    };
 
-          {/* Step Content */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeStep}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="p-8"
-            >
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center text-indigo-400">
-                  {steps[activeStep].icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">{steps[activeStep].title}</h3>
-                  <p className="text-zinc-400">{steps[activeStep].subtitle}</p>
-                </div>
-              </div>
+    // Quiz Slide - GIF rendered at app level on answer (celebration or empathy)
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
 
-              <p className="text-zinc-300 leading-relaxed mb-6">
-                {steps[activeStep].content}
-              </p>
+      // Show GIF when answer selected (celebration for correct, empathy for incorrect)
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) {
+            onShowGif(celebrationGif, '60%', gifSide);
+          } else {
+            onShowGif(empathyGif, '60%', gifSide);
+          }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
 
-              <div className="bg-zinc-800/50 rounded-xl p-4 border-l-4 border-indigo-500">
-                <div className="text-xs text-indigo-400 uppercase tracking-wider mb-2">Example</div>
-                <p className="text-zinc-300 text-sm">{steps[activeStep].example}</p>
-              </div>
+      // Hide GIF on unmount
+      useEffect(() => {
+        return () => onHideGif();
+      }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          {/* Quiz content - z-30 to stay above GIF (z-15) */}
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    // Completion Slide (25% larger)
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the blueprint. Five steps. One system. No more random tactics. Time to build a store that converts.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+
+      // GIF state - managed at app level so it can render outside slide area
+      const [gifConfig, setGifConfig] = useState(null); // { url, height, side }
+      const [isAnimating, setIsAnimating] = useState(false); // Prevent rapid clicks during animation
+
+      const showGif = useCallback((url, height, side) => {
+        setGifConfig({ url, height, side });
+      }, []);
+
+      const hideGif = useCallback(() => {
+        setGifConfig(null);
+      }, []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+
+          {/* GIF - absolute positioned at bottom, z-15 to cover separator line */}
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ type: 'spring', stiffness: 100 }}
+                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
+                style={{ zIndex: 15, height: gifConfig.height }}
+              >
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-auto object-contain object-bottom"
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+                >
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       );
-    }
-
-    // Valley of Despair Visualization
-    function ValleyVisualization() {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      const valleyItems = [
-        { icon: Icons.alert, label: 'Problems', desc: 'Technical issues blocking their path' },
-        { icon: Icons.heart, label: 'Pains', desc: 'Deep emotional frustrations' },
-        { icon: Icons.question, label: 'Questions', desc: 'Doubts keeping them stuck' },
-        { icon: Icons.block, label: 'Roadblocks', desc: 'Limiting beliefs holding them back' }
-      ];
-
-      return (
-        <div ref={ref} className="space-y-8">
-          {/* SVG Valley Path */}
-          <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
-            <svg className="w-full h-48" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="valleyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-
-              {/* Valley Path */}
-              <motion.path
-                d="M 0 60 Q 150 60, 250 140 Q 400 180, 550 140 Q 650 60, 800 60"
-                fill="none"
-                stroke="#6366f1"
-                strokeWidth="3"
-                initial={{ pathLength: 0 }}
-                animate={isInView ? { pathLength: 1 } : {}}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-
-              {/* Fill */}
-              <motion.path
-                d="M 0 60 Q 150 60, 250 140 Q 400 180, 550 140 Q 650 60, 800 60 L 800 200 L 0 200 Z"
-                fill="url(#valleyGrad)"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 1.5, duration: 0.5 }}
-              />
-
-              {/* Start Point */}
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.5 }}
-              >
-                <circle cx="50" cy="60" r="8" fill="#ef4444" />
-                <text x="50" y="35" textAnchor="middle" fill="#ef4444" fontSize="12" fontWeight="600">PAIN</text>
-              </motion.g>
-
-              {/* Valley Bottom */}
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 1.2 }}
-              >
-                <text x="400" y="170" textAnchor="middle" fill="#6366f1" fontSize="14" fontWeight="600">VALLEY OF DESPAIR</text>
-              </motion.g>
-
-              {/* End Point */}
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 2 }}
-              >
-                <circle cx="750" cy="60" r="8" fill="#22c55e" />
-                <text x="750" y="35" textAnchor="middle" fill="#22c55e" fontSize="12" fontWeight="600">TRANSFORMATION</text>
-              </motion.g>
-            </svg>
-          </div>
-
-          {/* Valley Components */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {valleyItems.map((item, i) => (
-              <ScaleIn key={i} delay={i * 0.1}>
-                <div className="bg-white rounded-xl p-5 border border-zinc-200 hover:border-indigo-300 transition-colors">
-                  <div className="text-indigo-600 mb-3">{item.icon}</div>
-                  <h4 className="font-bold text-zinc-900 mb-1">{item.label}</h4>
-                  <p className="text-sm text-zinc-500">{item.desc}</p>
-                </div>
-              </ScaleIn>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Awareness Levels Visualization
-    function AwarenessLevels() {
-      const levels = [
-        { level: 'Unaware', desc: 'Don\'t know they have a problem', width: '100%', color: 'bg-zinc-700' },
-        { level: 'Problem Aware', desc: 'Know the problem exists', width: '80%', color: 'bg-zinc-600' },
-        { level: 'Solution Aware', desc: 'Know solutions exist', width: '60%', color: 'bg-indigo-700' },
-        { level: 'Product Aware', desc: 'Know YOUR solution', width: '40%', color: 'bg-indigo-600' },
-        { level: 'Most Aware', desc: 'Ready to buy NOW', width: '20%', color: 'bg-indigo-500' }
-      ];
-
-      return (
-        <div className="space-y-3">
-          {levels.map((item, i) => (
-            <FadeUp key={i} delay={i * 0.1}>
-              <div className="flex items-center gap-4">
-                <div className="w-32 text-right">
-                  <span className="text-sm font-medium text-zinc-700">{item.level}</span>
-                </div>
-                <div className="flex-1">
-                  <motion.div
-                    className={`h-10 ${item.color} rounded-lg flex items-center px-4`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: item.width }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: i * 0.1 }}
-                  >
-                    <span className="text-white text-xs">{item.desc}</span>
-                  </motion.div>
-                </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      );
-    }
-
-    function App() {
-      return (
-        <div className="min-h-screen">
-          {/* Hero Section - Dark */}
-          <section className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/20 via-transparent to-transparent" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-              <FadeUp>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-8">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" />
-                  <span className="text-indigo-400 text-sm font-medium">Strategic Framework</span>
-                </div>
-              </FadeUp>
-
-              {/* Lesson Illustration */}
-              <FadeUp>
-                <div className="my-8">
-                  <img
-                    src="images/hero-image.jpg"
-                    alt="Lesson illustration"
-                    className="w-full h-auto rounded-xl"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                  The <span className="accent glow-text">Persuasion Blueprint</span>
-                </h1>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-                  Most marketing is a <span className="text-white font-medium">"tossed salad"</span> of random ideas.
-                  <br />This is the <span className="text-indigo-400 font-medium">5-step system</span> that turns chaos into conversions.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="grid grid-cols-5 gap-4 max-w-3xl mx-auto">
-                  {['Rule of One', 'Avatar', 'Awareness', 'Campaign', 'Craft'].map((step, i) => (
-                    <ScaleIn key={step} delay={0.4 + i * 0.1}>
-                      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-4 glow">
-                        <div className="text-2xl font-bold text-indigo-400 mb-1">{i + 1}</div>
-                        <div className="text-white text-sm font-medium">{step}</div>
-                      </div>
-                    </ScaleIn>
-                  ))}
-                </div>
-              </FadeUp>
-            </div>
-
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-zinc-600"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-              </motion.div>
-            </div>
-          </section>
-
-          {/* The Problem Section - White */}
-          <section className="py-24 bg-white">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-indigo-600 text-sm font-semibold uppercase tracking-wider">The Problem</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">What's Costing You Money</h2>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <p className="text-lg text-zinc-600 leading-relaxed mb-12 text-center max-w-2xl mx-auto">
-                  Without a system, your marketing is random. Random messages to random people at random times.
-                  The result? Random results. Here's what that looks like:
-                </p>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {[
-                  { icon: Icons.target, title: 'No Clear Target', desc: 'Trying to speak to everyone means connecting with no one' },
-                  { icon: Icons.layers, title: 'Competing Ideas', desc: 'Multiple messages dilute your impact and confuse readers' },
-                  { icon: Icons.question, title: 'Vague Promises', desc: 'Generic benefits that could apply to any product' },
-                  { icon: Icons.edit, title: 'Complex Language', desc: 'Jargon and complexity that loses readers in seconds' }
-                ].map((item, i) => (
-                  <ScaleIn key={i} delay={i * 0.1}>
-                    <div className="bg-zinc-50 rounded-xl p-6 border border-zinc-200">
-                      <div className="text-zinc-400 mb-4">{item.icon}</div>
-                      <h3 className="font-bold text-zinc-900 mb-2">{item.title}</h3>
-                      <p className="text-zinc-600 text-sm">{item.desc}</p>
-                    </div>
-                  </ScaleIn>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* The 5-Step Blueprint - Dark */}
-          <section className="py-24 bg-zinc-950">
-            <div className="max-w-5xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-indigo-400 text-sm font-semibold uppercase tracking-wider">The System</span>
-                  <h2 className="text-4xl font-bold text-white mt-4">The 5-Step Blueprint</h2>
-                  <p className="text-zinc-400 mt-4 text-lg">Click each step to explore the framework</p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <BlueprintNavigator />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Awareness Levels - White */}
-          <section className="py-24 bg-white">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-indigo-600 text-sm font-semibold uppercase tracking-wider">Deep Dive</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">The 5 Levels of Awareness</h2>
-                  <p className="text-zinc-600 mt-4 text-lg">Your copy must meet readers where they are</p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <AwarenessLevels />
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="mt-12 bg-zinc-50 rounded-xl p-6 border border-zinc-200">
-                  <p className="text-zinc-700 text-center">
-                    <span className="font-semibold">The mistake:</span> Writing "Most Aware" copy for "Problem Aware" audiences.
-                    <br />
-                    <span className="text-indigo-600 font-medium">Match your message to their awareness level.</span>
-                  </p>
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* The Valley - Dark */}
-          <section className="py-24 bg-zinc-950">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-indigo-400 text-sm font-semibold uppercase tracking-wider">The Journey</span>
-                  <h2 className="text-4xl font-bold text-white mt-4">The Valley of Despair</h2>
-                  <p className="text-zinc-400 mt-4 text-lg">Your customer is stuck. Your product is the bridge.</p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <ValleyVisualization />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Holy Shit Moment - White */}
-          <section className="py-24 bg-gradient-to-b from-white to-indigo-50">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-12">
-                  <span className="text-indigo-600 text-sm font-semibold uppercase tracking-wider">The Insight</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Holy Shift Moment</h2>
-                </div>
-              </FadeUp>
-
-              <ScaleIn delay={0.2}>
-                <div className="bg-white rounded-3xl p-10  border border-zinc-200 text-center">
-                  <div className="w-20 h-20 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
-                    {Icons.lightning}
-                  </div>
-                  <blockquote className="text-2xl md:text-3xl font-bold text-zinc-900 leading-relaxed mb-6">
-                    "Edit as though your reader <span className="text-indigo-600">has to pee.</span>"
-                  </blockquote>
-                  <p className="text-zinc-600 text-lg mb-8">
-                    If a sentence isn't compelling enough to make them hold it, cut it.
-                    <br />Every word must earn its place.
-                  </p>
-                  <div className="bg-indigo-50 rounded-xl p-6">
-                    <p className="text-zinc-700">
-                      <span className="font-semibold">The principle:</span> Not more ideas, but more <span className="text-indigo-600 font-bold">structure</span>.
-                      <br />Foundation (WHY) → Pillars (WHO/HOW) → Execution (WHAT)
-                    </p>
-                  </div>
-                </div>
-              </ScaleIn>
-            </div>
-          </section>
-
-          {/* Key Takeaways - Dark */}
-          <section className="py-24 bg-black">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-white">Key Takeaways</h2>
-                </div>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {[
-                  { num: '01', text: 'One reader, one idea, one offer - focus creates power' },
-                  { num: '02', text: 'Map their current identity to their ideal identity' },
-                  { num: '03', text: 'Match your message to their awareness level' },
-                  { num: '04', text: 'Build the bridge across their valley of despair' },
-                  { num: '05', text: 'Write at 6th-8th grade level - clarity over cleverness' },
-                  { num: '06', text: 'Edit ruthlessly - every word must earn its place' }
-                ].map((item, i) => (
-                  <ScaleIn key={i} delay={i * 0.1}>
-                    <div className="flex items-start gap-4 bg-zinc-900 rounded-xl p-5 border border-zinc-800">
-                      <span className="text-indigo-400 font-mono font-bold">{item.num}</span>
-                      <span className="text-zinc-300">{item.text}</span>
-                    </div>
-                  </ScaleIn>
-                ))}
-              </div>
-
-              <FadeUp delay={0.5}>
-                <div className="mt-12 text-center">
-                  <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-2xl">
-                    <span className="text-white font-bold text-lg">Structure beats chaos. Every time.</span>
-                  </div>
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-        </div>
-      );
-    }
+    };
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
