@@ -70,7 +70,8 @@ We ran two independent tests to create a realistic comparison.
 With pricing nearly identical, the deciding factors were speed, scale readiness, and service efficiency. The winning agent delivered faster shipping, more stable performance, and significantly better support, making it the strongest choice for long-term scaling.`,
       buttons: [
         { text: 'Connect the winning agent to your store', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
+      ],
+      directUrl: '/learn/lessons/best-private-agent'
     },
     {
       id: 2,
@@ -138,7 +139,8 @@ AliExpress might look simple, but it destroys customer experience and eliminates
 A private agent fixes every weakness and gives your brand the foundation required for real scale.`,
       buttons: [
         { text: 'Connect Private agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
+      ],
+      directUrl: '/learn/lessons/stop-aliexpress'
     },
     {
       id: 3,
@@ -182,7 +184,8 @@ Removing them creates a measurable drop of 12.7%.`,
       buttons: [
         { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
         { text: 'Social Proof course', url: 'https://quantum-scale.co/pages/the-social-proof?_pos=1&_psq=social&_ss=e&_v=1.0' }
-      ]
+      ],
+      directUrl: '/learn/lessons/product-reviews-test'
     },
     {
       id: 4,
@@ -234,7 +237,8 @@ The same process can be applied to the top 10%, top 5% and additional segments.
       buttons: [
         { text: 'Connect app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
         { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
+      ],
+      directUrl: '/learn/lessons/ltv-cheat-code'
     },
     {
       id: 5,
@@ -331,7 +335,8 @@ From here, your business becomes a machine that cannot be stopped.`,
         { text: 'The Automatic System That Earn 1,000 Dollars per Customer', url: 'https://quantum-scale.co/pages/test1' },
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
         { text: 'Abandoned Checkout Finisher', url: 'https://quantum-scale.co/pages/test3' }
-      ]
+      ],
+      directUrl: '/learn/lessons/million-dollar-roadmap'
     },
     {
       id: 6,
@@ -419,7 +424,8 @@ And in three stores, AOV increased by 7% to 22%, likely due to the personal conn
 Since discovering this method, we have implemented it in every brand we manage, and the results have been consistent and clear.`,
       buttons: [
         { text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/geo-announcement-bar'
     },
     {
       id: 7,
@@ -457,7 +463,8 @@ It is a layer of consumer behavior that deepens buying intention, increases posi
 It is one of the simplest features to install, yet one of the most impactful for Rev/Visit, AOV, and overall conversions.`,
       buttons: [
         { text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }
-      ]
+      ],
+      directUrl: '/learn/lessons/wishlist-effect'
     },
     {
       id: 8,
@@ -505,7 +512,8 @@ https://quantum-scale.co/pages/categories`,
       buttons: [
         { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
         { text: 'The Email marketing platform we use', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-      ]
+      ],
+      directUrl: '/learn/lessons/email-vs-sms'
     },
     {
       id: 9,
@@ -543,7 +551,8 @@ But, **use both**. Never leave money on the floor.
 However, it is important to choose the correct tactic for SMS automation, one that does not expose you to legal risk.`,
       buttons: [
         { text: 'Copy our method that recovers 82% of abandoned checkouts', url: 'https://quantum-scale.co/pages/test3' }
-      ]
+      ],
+      directUrl: '/learn/lessons/abandoned-cart-recovery'
     },
     {
       id: 10,
@@ -650,7 +659,8 @@ The same tactic works identically for the Top 10% and the Top 5%.
 ![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
       buttons: [
         { text: 'Connect the app to your store', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/pareto-law-ecommerce'
     },
     {
       id: 11,
@@ -704,7 +714,8 @@ We personally like adding this section on the Contact Us form to still provide a
 ![Contact Form Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/56.jpg?v=1763062329)`,
       buttons: [
         { text: 'Add This Contact form to your store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
-      ]
+      ],
+      directUrl: '/learn/lessons/whatsapp-support'
     },
     {
       id: 12,
@@ -795,7 +806,8 @@ We personally use an outstanding tool (#1 in the world) for external attribution
 We arranged a discount link for our community if you choose to install through it.`,
       buttons: [
         { text: 'Connect the Pixel to your store', url: 'https://www.triplewhale.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/meta-attribution-test'
     },
     {
       id: 13,
@@ -887,7 +899,8 @@ The result is simple. From now on you acquire only customers who are worth a lot
 You attract customers who within half a year are worth $1,000 each, and within two years $3,000.`,
       buttons: [
         { text: 'Add Post Purchase Surveys to your store', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/post-purchase-surveys'
     },
     {
       id: 14,
@@ -981,7 +994,8 @@ Do not mix fonts.
 And your conversions will rise naturally.
 
 If you want, I can prepare a font recommendation list tailored to specific niches like jewelry, men's fashion, cosmetics, sports, and more.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/fonts-psychology'
     },
     {
       id: 15,
