@@ -340,68 +340,68 @@
     // SLIDE COMPONENTS (25% larger content)
     // ============================================
 
-    // Welcome Slide with GIF - single GIF, bottom-anchored, side position
+    // Welcome Slide with GIF - bottom-anchored (below dots), 45% height, side position
     const WelcomeSlide = ({ data, onStart, userName }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      // Alternate GIF position based on random seed
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
       return (
-        <div className="h-full flex flex-col relative overflow-hidden">
-          {/* Main content - centered, compressed to fit */}
-          <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-4 md:px-8 md:py-6 min-h-0">
-            {/* Lesson Title */}
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black mb-2 md:mb-4">
-              {LESSON_CONFIG.title}
-            </motion.h1>
-
-            {/* Personalized greeting */}
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base lg:text-lg mb-2 md:mb-3 max-w-md leading-relaxed px-2">
-              Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}
-            </motion.p>
-
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-2 text-neutral-400 text-xs mb-3 md:mb-5">
-              <Icons.Clock />
-              <span>{LESSON_CONFIG.duration}</span>
-            </motion.div>
-
-            {/* In This Lesson - centered */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-5 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[10px] md:text-xs uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.06 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-xs leading-relaxed">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-8 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.35)` }}>
-              Let's Go
-            </motion.button>
-          </div>
-
-          {/* GIF - anchored to bottom, on side, above dots */}
+        <div className="h-full w-full relative overflow-hidden">
+          {/* GIF - absolute bottom (below dots), 45% height of card, on side */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, type: 'spring' }}
-            className={`absolute bottom-0 ${gifSide === 'left' ? 'left-0 md:left-4' : 'right-0 md:right-4'} pointer-events-none`}
-            style={{ zIndex: 20 }}
+            transition={{ delay: 0.3, type: 'spring', stiffness: 100 }}
+            className={`absolute ${gifSide === 'left' ? 'left-0' : 'right-0'} pointer-events-none`}
+            style={{ bottom: 0, zIndex: 5, height: '45%' }}
           >
             <video
               autoPlay
               loop
               muted
               playsInline
-              className="h-24 sm:h-28 md:h-36 lg:h-44 w-auto object-contain"
+              className="h-full w-auto object-contain object-bottom"
               style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
             >
               <source src={welcomeData.gif} type="video/mp4" />
             </video>
           </motion.div>
+
+          {/* Main content - centered */}
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-10">
+            {/* Lesson Title - SAME SIZE */}
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
+              {LESSON_CONFIG.title}
+            </motion.h1>
+
+            {/* Personalized greeting - SAME SIZE */}
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">
+              Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
+              <Icons.Clock />
+              <span>{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            {/* In This Lesson - SMALLER */}
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-lg md:rounded-xl p-2.5 md:p-4 mb-2 md:mb-3 max-w-xs w-full mx-auto">
+              <p className="text-neutral-500 text-[8px] md:text-[10px] uppercase tracking-wider mb-1.5 md:mb-2">In this lesson</p>
+              <ul className="space-y-1 md:space-y-1.5">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-1.5 text-left">
+                    <span className="w-4 h-4 rounded flex items-center justify-center text-[8px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[10px] md:text-xs leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Button - SMALLER */}
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-5 md:px-6 py-2 md:py-2.5 rounded-lg text-white font-semibold text-xs md:text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 3px 15px rgba(var(--accent-rgb), 0.3)` }}>
+              Let's Go
+            </motion.button>
+          </div>
         </div>
       );
     };
