@@ -47,7 +47,7 @@ export default function LessonModal({
       {/* Backdrop - covers EVERYTHING including sidebar */}
       <div
         className="absolute inset-0 bg-black/70"
-        style={{ backdropFilter: 'blur(16px)' }}
+        style={{ backdropFilter: 'blur(8px)' }}
         onClick={onClose}
       />
 

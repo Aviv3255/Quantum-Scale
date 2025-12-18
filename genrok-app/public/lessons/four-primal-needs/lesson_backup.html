@@ -3,20 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Do You Actually Know Everything About Your Customers? | Quantum Scale</title>
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <title>The Science of Selling | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #0ea5e9; --accent-dark: #0284c7; --accent-light: #38bdf8; --accent-rgb: 14, 165, 233; }
+    :root { --accent: #6366f1; --accent-dark: #4f46e5; --accent-light: #818cf8; --accent-rgb: 99, 102, 241; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -36,12 +33,12 @@
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'post-purchase-surveys',
-      title: 'Do You Actually Know Everything About Your Customers?',
-      description: 'Why 90% of store owners are wrong about what makes customers buy - and how to fix it.',
-      accentColor: '#0ea5e9',
-      duration: '8 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more data-driven strategies.' }
+      id: 'science-of-selling',
+      title: 'The Science of Selling',
+      description: 'Why clarity beats creativity - and the psychology behind copy that converts.',
+      accentColor: '#6366f1',
+      duration: '7 min',
+      nextLesson: { id: 'ocpb-formula', title: 'The OCPB Formula', teaser: 'The 4-part framework for crafting irresistible offers that convert.' }
     };
 
     const welcomeAnimations = {
@@ -100,45 +97,40 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why 90-95% of store owners are completely wrong about their customers', 'How to discover what REALLY makes people buy (not what you think)', 'The exact questions to ask that reveal customer psychology'] },
-      { type: 'hook', headline: '90-95% of store owners are completely wrong about what makes customers buy.', subtext: 'They guess based on feelings. They assume based on opinions. They spend thousands on ads targeting the wrong people, saying the wrong things, at the wrong time. Meanwhile, the winning 5% know exactly who buys, why they buy, and how to get more of them. The difference? Data. Not guesses. Not gut feelings. Cold, hard customer data.' },
-      { type: 'content', title: 'The Expensive Guessing Game', body: 'Here\'s the brutal truth: Most marketing decisions are based on what the store owner THINKS will work. "I think customers care about fast shipping." "I think they want more product photos." "I think they found us on Instagram." But thinking isn\'t knowing. And when you guess wrong, you waste money, time, and opportunities. Every. Single. Day.' },
-      { type: 'visual', title: 'The Reality Check', visualType: 'stats', data: [
-        { value: '90-95%', label: 'are guessing', subtext: 'Store owners wrong about customers' },
-        { value: '60-70%', label: 'will tell you', subtext: 'Response rate on post-purchase surveys' },
-        { value: '20-30', label: 'responses', subtext: 'Before clear patterns emerge' }
-      ]},
-      { type: 'content', title: 'What If You Could Just... Ask?', body: 'Imagine knowing exactly what triggered every purchase. What made them hesitate. What finally convinced them. Where they first saw you. How many times they needed to see your brand before buying. Their age. Their style preference. Their buying frequency. Not guessing. Knowing. That\'s the power of Post-Purchase Surveys.' },
-      { type: 'content', title: 'The Survey That Prints Money', body: 'Post-purchase surveys appear right after checkout - when customers are most willing to share. You ask 3-4 short questions. They answer in 30 seconds. And you get a goldmine of data that transforms your entire marketing strategy. The best part? 60-70% of customers actually complete these surveys. That\'s real data from real buyers.' },
-      { type: 'cards', title: 'What Post-Purchase Surveys Reveal', items: [
-        { title: 'Purchase Trigger', description: 'What specifically made them decide to buy RIGHT NOW instead of later or never.' },
-        { title: 'Hesitations', description: 'What almost stopped them from purchasing - your hidden conversion killers.' },
-        { title: 'Discovery Source', description: 'Where they actually found you (not where you think they found you).' },
-        { title: 'Impression Count', description: 'How many times they saw your brand before they trusted you enough to buy.' },
-        { title: 'Demographics', description: 'Real age ranges, locations, and preferences of your ACTUAL paying customers.' },
-        { title: 'Return Intent', description: 'Whether they plan to buy again and what would make them come back sooner.' }
-      ]},
-      { type: 'example', scenario: 'Men\'s Fashion Store - Survey Questions', before: { label: 'Guessing (Wrong)', text: 'Store owner assumes: "Our customers are 25-34, found us on Instagram, and bought because of our sale." Reality: Completely different audience buying for completely different reasons.' }, after: { label: 'Asking (Right)', text: 'Survey reveals: 75% are 35-44, found you on Google, and bought because your style communicates "wealth" not "style." They needed 10+ brand impressions before purchasing.' }, insight: 'After 20-30 responses, patterns are crystal clear - often the exact opposite of what you assumed.' },
-      { type: 'cards', title: 'Example Survey Questions (Men\'s Fashion)', items: [
-        { title: 'Age Range', description: '18-24 / 25-34 / 35-44 / 45+' },
-        { title: 'Style Preference', description: 'Old Money / Rugged Masculine / Classic / Streetwear' },
-        { title: 'Impressions Before Purchase', description: '1 time / 2-5 times / 5-10 times / 10+ times' },
-        { title: 'Purchase Frequency', description: 'Monthly / Quarterly / Rarely / First time' },
-        { title: 'Relationship Status', description: 'Single / Married / In a relationship' },
-        { title: 'Clothing Should Communicate', description: 'Wealth / Masculinity / Classic Style / Trendy' }
-      ]},
-      { type: 'content', title: 'The Pattern Recognition Game', body: 'Here\'s where it gets powerful. After 20-30 survey responses, you start seeing patterns. Clear, undeniable patterns. 75% of your buyers are in the same age range. 80% discovered you the same way. 65% care about the same specific thing. These patterns reveal your TRUE customer - not who you think they are, but who they actually are.' },
-      { type: 'content', title: 'The Advanced Move: Analyze Your Whales', body: 'Want to go next level? Don\'t just analyze all customers. Analyze your TOP customers. The ones generating 95% of your profit. Example: Pull the 200 customers who spent $2,000+ in the last 6 months. Now look at THEIR survey answers. Find the commonalities: same age range, same style preference, same concerns, same discovery path. Now you know exactly who to target.' },
-      { type: 'example', scenario: 'Real Example: Fashion Store Data', before: { label: 'Before Analysis', text: 'Running generic ads to "men aged 18-50 interested in fashion." Targeting everyone. Converting no one. Burning money daily.' }, after: { label: 'After Analysis', text: 'Survey data reveals: Top 5% are 35-44, prefer Old Money aesthetic, want to communicate wealth, needed 10+ impressions. New strategy: Target ONLY this profile with aggressive remarketing.' }, insight: 'Specificity eliminates waste. When you know WHO buys and WHY, you stop guessing and start winning.' },
-      { type: 'visual', title: 'The Data Transformation', visualType: 'comparison', data: {
-        left: { label: 'Guessing', value: '5%', result: 'Conversion rate when targeting everyone', color: '#ef4444' },
-        right: { label: 'Knowing', value: '23%', result: 'Conversion rate targeting proven buyers', color: '#22c55e' },
-        center: { label: 'Data', value: '4.6x', result: 'Better results with survey insights', color: '#0ea5e9' }
+      { type: 'welcome', learningGoals: ['Why "creative" marketing often fails while "boring" wins', 'The 5 Awareness Stages - where your customer really is', 'The Rule of One - the secret to copy that converts'] },
+      { type: 'hook', headline: 'In 1996, Nissan won every advertising award. Their sales dropped 37%.', subtext: 'Meanwhile, Toyota ran a "boring" commercial. No fancy transitions. No clever metaphors. Just a clear message about what the car does. Result? 350,000 additional units sold. This is the $100 million lesson: Clarity beats creativity. Every. Single. Time.' },
+      { type: 'visual', title: 'The $100 Million Lesson', visualType: 'comparison', data: {
+        left: { label: 'Award Winner', value: '-37%', result: 'Nissan\'s "creative" campaign', color: '#ef4444' },
+        right: { label: 'Clear & Simple', value: '+350K', result: 'Toyota\'s "boring" ad', color: '#22c55e' },
+        center: { label: 'Lesson', value: 'Clarity', result: 'Always beats creativity', color: '#6366f1' }
       }},
-      { type: 'content', title: 'Stop Guessing. Start Knowing.', body: 'Analytics show you WHAT happened. "200 people visited. 10 bought." Cool. But WHY did those 10 buy while 190 didn\'t? What convinced them? What almost stopped them? Where did they come from? How many times did they see you first? Analytics can\'t tell you. Only surveys can. And once you know the answers, your entire marketing strategy transforms overnight.' },
-      { type: 'content', title: 'The Snowball Effect', body: 'Here\'s what happens when you implement post-purchase surveys: Month 1 - You collect data. Month 2 - Patterns emerge. Month 3 - You adjust targeting to match your ACTUAL best customers. Month 4 - Conversion rates climb. Month 5 - You double down on what works. Month 6 - Your competitors wonder how you\'re crushing it. The difference? You stopped guessing. They\'re still shooting in the dark.' },
-      { type: 'tool', title: 'The #1 Post-Purchase Survey Tool', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Displays simple surveys right after checkout when customers are most willing to share. Easy setup, high response rates, actionable insights.', questions: ['How did you first hear about us?', 'What made you decide to buy today?', 'Was there anything that almost stopped you?', 'How many times did you see our brand before ordering?'], insight: 'Out of 100 responses, 95 might give the same answer - and it will probably be the opposite of what you assumed.' },
-      { type: 'quiz', question: 'What percentage of customers typically complete post-purchase surveys?', options: ['20-30%', '40-50%', '60-70%', '80-90%'], correctIndex: 2, feedback: { correct: 'Exactly right! 60-70% of customers complete post-purchase surveys when they\'re displayed right after checkout. That\'s incredibly high compared to other survey methods. Why? Because they just bought, they\'re engaged, and they\'re willing to share. This response rate gives you real, actionable data from your actual buyers.', incorrect: 'Not quite. The answer is 60-70% - which is remarkably high! Post-purchase surveys get exceptional response rates because they appear right after checkout when customers are most engaged and willing to share. This high response rate means you get real data from real buyers, not just guesses.' }},
+      { type: 'content', title: 'Your Ad Has One Job: Sell', body: 'Entertainment is a bonus. Memorability without conversion is just an expensive brand exercise. The most beautiful, award-winning ad in the world is worthless if nobody buys. Before you write a single word, ask yourself: "Will this make my customer click, call, or buy?" If the answer is "no" or "maybe," kill it.' },
+      { type: 'content', title: 'The 5 Stages of Awareness', body: 'Eugene Schwartz revolutionized copywriting with a simple insight: your prospect exists somewhere on a spectrum of awareness. The fatal mistake most marketers make is assuming everyone is ready to buy. They jump to features and pricing when the audience hasn\'t even acknowledged the problem.' },
+      { type: 'cards', title: 'Where Is Your Customer?', items: [
+        { title: '1. Unaware', description: 'They don\'t know they have a problem. Your job: Pattern-interrupt. Show them a symptom they recognize but never named.' },
+        { title: '2. Problem Aware', description: 'They feel the pain but don\'t know solutions exist. Your job: Articulate their pain better than they can.' },
+        { title: '3. Solution Aware', description: 'They\'re comparing options. Your job: Explain WHY your solution works when others fail.' },
+        { title: '4. Product Aware', description: 'They know you exist. Something stopped them. Your job: Handle objections. Stack proof.' },
+        { title: '5. Most Aware', description: 'They\'re ready to buy. Your job: Make it easy. Clear CTA, strong guarantee, remove friction.' }
+      ]},
+      { type: 'example', scenario: 'Skincare Store - Awareness Mismatch', before: { label: 'Wrong Stage (Product Aware)', text: '"Our Advanced Retinol Serum uses 0.5% encapsulated retinol with hyaluronic acid. Save 20% today!"' }, after: { label: 'Right Stage (Problem Aware)', text: '"Waking up to new wrinkles? You\'re not aging faster than your friends. You\'re just missing ONE ingredient that 94% of dermatologists recommend."' }, insight: 'Match your message to their awareness. Most visitors are at Stage 2-3, not 4-5.' },
+      { type: 'content', title: 'The Rule of One', body: 'The most powerful principle in direct response copywriting is counterintuitive: less is exponentially more. Every additional idea, offer, or call-to-action dilutes your message. When you try to say everything, you say nothing. When you offer everything, they choose nothing.' },
+      { type: 'cards', title: 'The Three Sacred Rules', items: [
+        { title: 'One Reader', description: 'Write to a single specific person. Not a demographic. One human with a name and a problem that keeps them awake at 3 AM.' },
+        { title: 'One Big Idea', description: 'Your copy needs one dominant thought. Not three good ideas. One concept so compelling it demands attention and can\'t be ignored.' },
+        { title: 'One Clear Offer', description: 'Give them one path forward. Multiple CTAs create confusion and kill conversions. One action, one button, one decision.' }
+      ]},
+      { type: 'example', scenario: 'Fitness Equipment Store', before: { label: 'Multiple Offers (Confusion)', text: '"Shop our collection: Dumbbells, Resistance Bands, Yoga Mats, Kettlebells. Buy 2 get 1 free OR subscribe for 15% off OR bundle and save!"' }, after: { label: 'One Clear Offer', text: '"Build Your Dream Home Gym in One Click. This 5-piece starter kit has everything you need for full-body workouts. One price. Free shipping. 30-day money-back guarantee."' }, insight: 'One offer = clarity. Multiple offers = paralysis. Make the decision easy.' },
+      { type: 'visual', title: 'Focus Drives Conversions', visualType: 'stats', data: [
+        { value: '3x', label: 'more conversions', subtext: 'Single CTA vs. multiple CTAs' },
+        { value: '47%', label: 'bounce reduction', subtext: 'When message matches awareness' },
+        { value: '1', label: 'is the magic number', subtext: 'Reader, Idea, Offer' }
+      ]},
+      { type: 'content', title: 'The Million-Dollar Question', body: '"What does my customer lie awake at 3 AM thinking about?" This single question is worth more than any marketing course. Your customer doesn\'t care about your features or awards. They care about their problem and whether you can solve it. Your answer to this question becomes every headline, every hook, and every CTA.' },
+      { type: 'example', scenario: 'Pet Products Store', before: { label: '3 AM Answer: "Is my dog sick?"', text: '"Premium dog food with balanced nutrition and quality ingredients."' }, after: { label: '3 AM Answer Applied', text: '"Is your dog scratching until they bleed? It\'s probably not allergies. The real culprit is hiding in the ingredient list of your current food. (And yes, even the \'premium\' brands are guilty.)"' }, insight: 'When you articulate their 3 AM worry, they think: "This person GETS me."' },
+      { type: 'content', title: 'Stop Guessing. Start Knowing.', body: 'Here\'s the brutal truth: 94% of marketing decisions are based on guesses. Store owners change colors, buttons, headlines - based purely on what they THINK will work. But what if you could know EXACTLY what triggered every purchase? What almost stopped them? What made them finally click "Buy"? The answer isn\'t in your analytics. Analytics show what happened. You need to know WHY.' },
+      { type: 'tool', title: 'The #1 Tool for Finding Your 3 AM Answer', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Post-purchase surveys displayed right after checkout reveal WHY customers buy - not just what they did. Ask 3-4 short questions and get a goldmine of data.', questions: ['How did you first hear about us?', 'How many times did you see our brand before ordering?', 'What made you decide to buy right now?', 'Was there anything that made you hesitate?'], insight: 'Out of 100 responses, 95 might give the same answer - often the opposite of what you assumed.' },
+      { type: 'quiz', question: 'According to the Science of Selling, what\'s the #1 reason "creative" ads often fail?', options: ['They\'re too expensive to produce', 'They focus on entertainment over clarity', 'They use the wrong colors and fonts', 'They don\'t run long enough'], correctIndex: 1, feedback: { correct: 'Exactly! Creativity that doesn\'t convert is just an expensive brand exercise. The Nissan example proves it: they won every award but lost 37% of sales. Clarity always beats creativity.', incorrect: 'Not quite. The core lesson is that creative ads often prioritize entertainment over clarity. Remember Nissan\'s award-winning campaign that dropped sales 37%? They entertained but didn\'t sell. Clarity beats creativity every time.' }},
       { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
     ];
 
@@ -267,7 +259,7 @@
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
@@ -302,7 +294,7 @@
               </ul>
             </div>
             <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Add Post Purchase Surveys</span>
+              <span>Try {data.toolName}</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
@@ -360,7 +352,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why 90% of store owners are guessing - and how the winning 5% use post-purchase surveys to know exactly who buys, why they buy, and how to get more of them. Stop guessing. Start knowing.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know the science: Clarity beats creativity. Match their awareness stage. Follow the Rule of One. And always ask: "What keeps my customer awake at 3 AM?"</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -160,14 +160,28 @@ export default function LearnPage() {
   }, [user]);
 
   // Handle opening a lesson
-  const openLesson = (slug: string) => {
+  const openLesson = useCallback((slug: string) => {
     setSelectedLesson(slug);
-  };
+  }, []);
 
   // Handle closing a lesson
-  const closeLesson = () => {
+  const closeLesson = useCallback(() => {
     setSelectedLesson(null);
-  };
+  }, []);
+
+  // Get lesson info for modal
+  const selectedLessonInfo = selectedLesson ? lessonMeta[selectedLesson] : null;
+
+  const filteredArticles = useMemo(() => articles.filter((article) => {
+    const matchesCategory = activeCategory === 'all' || article.category === activeCategory;
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  }), [activeCategory, searchQuery]);
+
+  const featuredArticles = useMemo(() => filteredArticles.filter((a) => a.isFeatured), [filteredArticles]);
+  const regularArticles = useMemo(() => filteredArticles.filter((a) => !a.isFeatured), [filteredArticles]);
 
   if (isLoading || !user) {
     return (
@@ -176,20 +190,6 @@ export default function LearnPage() {
       </div>
     );
   }
-
-  // Get lesson info for modal
-  const selectedLessonInfo = selectedLesson ? lessonMeta[selectedLesson] : null;
-
-  const filteredArticles = articles.filter((article) => {
-    const matchesCategory = activeCategory === 'all' || article.category === activeCategory;
-    const matchesSearch =
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const featuredArticles = filteredArticles.filter((a) => a.isFeatured);
-  const regularArticles = filteredArticles.filter((a) => !a.isFeatured);
 
   return (
     <DashboardLayout>
@@ -353,7 +353,8 @@ function ArticleCard({ article, featured, onLessonClick }: ArticleCardProps) {
           src={article.thumbnail}
           alt={article.title}
           fill
-          unoptimized
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
