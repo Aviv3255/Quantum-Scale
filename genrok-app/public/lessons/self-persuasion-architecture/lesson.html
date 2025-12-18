@@ -3,580 +3,477 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Self-Persuasion Architecture</title>
+  <title>Self-Persuasion Architecture | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: {
-              DEFAULT: '#8b5cf6',
-              50: '#f5f3ff',
-              100: '#ede9fe',
-              200: '#ddd6fe',
-              300: '#c4b5fd',
-              400: '#a78bfa',
-              500: '#8b5cf6',
-              600: '#7c3aed',
-              700: '#6d28d9',
-              800: '#5b21b6',
-              900: '#4c1d95',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; overflow-x: hidden; }
-    ::selection { background: #8b5cf6; color: #fff; }
-    h1, h2, h3, h4 { letter-spacing: -0.025em; }
-    .lesson-container { max-width: 800px; margin: 0 auto; }
+    :root { --accent: #d946ef; --accent-dark: #c026d3; --accent-light: #e879f9; --accent-rgb: 217, 70, 239; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence } = window.Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    const smoothEase = [0.25, 0.4, 0.25, 1];
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
-    // Icons
-    const Icons = {
-      Users: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      ),
-      Lightbulb: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
-        </svg>
-      ),
-      Heart: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-      ),
-      Compass: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
-        </svg>
-      ),
-      Zap: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-        </svg>
-      ),
-      Gift: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-        </svg>
-      ),
-      Key: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
+    const LESSON_CONFIG = {
+      id: 'self-persuasion-architecture',
+      title: 'Self-Persuasion Architecture',
+      description: 'Learn how to build the framework that helps customers convince themselves instead of pushing them.',
+      accentColor: '#d946ef',
+      duration: '9 min',
+      nextLesson: { id: 'emotional-precision', title: 'Emotional Precision', teaser: 'Master the exact emotions that trigger buying decisions in your Shopify customers.' }
     };
 
-    // Animation components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
+    const welcomeAnimations = {
+      morning: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
+      ],
+      afternoon: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
+      ],
+      evening: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
+      ],
+      night: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
+      ]
+    };
+
+    const getTimeBasedWelcome = () => {
+      const hour = new Date().getHours();
+      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
+      const options = welcomeAnimations[slot];
+      return options[Math.floor(Math.random() * options.length)];
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why you can\'t convince anyone of anything (and what to do instead)', 'The paradigm shift: You don\'t sell the feeling, you sell KEEPING it', 'How to build emotional ownership before the buy button', 'The 4 techniques pros use to trigger self-persuasion'] },
+      { type: 'hook', headline: 'Here\'s the uncomfortable truth: You can\'t convince anyone to buy. But you can engineer the conditions where they convince themselves.', subtext: 'Every pushy sales message, every aggressive pitch, every "limited time offer" is fighting human psychology. Learn to build the architecture where prospects naturally arrive at "yes" on their own terms.' },
+      { type: 'content', title: 'The Delusion of Persuasion', body: 'Most copywriters believe they can force conviction upon readers. They can\'t. All we can do is create the conditions for them to convince themselves. Your job isn\'t to push a belief onto the reader—it\'s to engineer a story, create a frame, and provide the components that allow their own mind to build conviction. You\'re an architect of self-persuasion, not a salesperson.' },
+      { type: 'visual', title: 'The Mindset Shift', visualType: 'comparison', data: {
+        left: { label: 'Old Way', value: 'Push', result: 'Force conviction on them', color: '#ef4444' },
+        right: { label: 'New Way', value: 'Pull', result: 'They convince themselves', color: '#d946ef' },
+        center: { label: 'Result', value: '215%', result: 'Conversion increase', color: '#d946ef' }
+      }},
+      { type: 'content', title: 'The Paradigm Shift', body: 'Here\'s what changes everything: You don\'t sell the feeling. You sell KEEPING the feeling. When prospects read your Shopify product page, they begin to experience the outcome emotionally. They mentally "try on" the success, relief, or transformation. By the time they reach your buy button, the purchase isn\'t about gaining something new—it\'s about preventing the loss of what they already feel they have.' },
+      { type: 'cards', title: 'The Emotional Journey', items: [
+        { title: 'Before Reading', description: 'Prospect has no emotional investment. They\'re neutral, scrolling, comparing options. Your store is just another tab.' },
+        { title: 'During Reading', description: 'They "try on" the outcome mentally through your copy. Vivid language and future pacing create ownership before purchase.' },
+        { title: 'At CTA', description: 'Purchase prevents loss of the feeling. They\'re not paying to GET the transformation—they\'re paying to KEEP it.' }
+      ]},
+      { type: 'example', scenario: 'Premium Coffee Grinder Store', before: { label: 'Selling the Feeling', text: '"Imagine waking up to the rich aroma of freshly ground coffee beans. Picture yourself making barista-quality drinks at home."' }, after: { label: 'Selling KEEPING the Feeling', text: '"You just imagined that first sip of perfectly ground coffee. Felt the satisfaction, didn\'t you? Here\'s how to make that feeling your daily reality instead of just a nice thought."' }, insight: 'The second version acknowledges they already experienced it mentally, then positions the purchase as protecting that feeling from slipping away.' },
+      { type: 'content', title: 'Building Self-Persuasion', body: 'Self-persuasion isn\'t passive. You actively construct the environment where conviction naturally forms. It\'s not about manipulation—it\'s about strategic architecture. You create the frame, trigger emotional ownership, provide social proof, and remove friction. The prospect does the actual convincing, but you built the structure that made it inevitable.' },
+      { type: 'cards', title: 'The Four Pillars of Self-Persuasion', items: [
+        { title: 'Create the Frame', description: 'Frame the situation so only one conclusion makes sense. Guide their thinking through strategic context, not pushy claims. Let them "discover" the answer.' },
+        { title: 'Trigger Emotional Ownership', description: 'Help them vividly imagine already having the outcome. Use future pacing, sensory language, specific scenarios. Make transformation feel real before they buy.' },
+        { title: 'Provide Social Proof', description: 'Show others who made the same decision and succeeded. People don\'t want to be first—they want to see the path is safe and proven.' },
+        { title: 'Make Saying Yes Easy', description: 'Remove friction from the decision. Guarantees, bonuses, risk reversals don\'t convince—they remove excuses for not following through.' }
+      ]},
+      { type: 'content', title: 'Technique 1: Future Pacing', body: 'Transport them to the moment of success so vividly they can taste it. Don\'t just tell them what the product does—put them IN the scene. "Imagine 90 days from now, checking your dashboard and seeing..." The more specific and sensory, the more real it feels. When it feels real in their mind, emotional ownership forms before purchase.' },
+      { type: 'example', scenario: 'Fitness Equipment Shopify Store', before: { label: 'Vague Future Pacing', text: '"Imagine being healthier and more fit. Picture yourself achieving your fitness goals with our equipment."' }, after: { label: 'Specific Future Pacing', text: '"It\'s 6:45 AM. You just finished your 20-minute home workout. You\'re breathing hard, muscles burning in the best way, endorphins flooding. You check your phone—45 minutes before the kids wake up. You actually did it. And your gym membership card? Still in the drawer, saving you $960 this year."' }, insight: 'Specific details create vivid mental simulation. They feel it happening. That\'s emotional ownership forming in real-time.' },
+      { type: 'content', title: 'Technique 2: Sensory Language', body: 'Engage multiple senses to make the imagined outcome more real and memorable. "Feel the weight lift off your shoulders as you..." Vision alone isn\'t enough. Texture, sound, temperature, physical sensation—the more senses involved, the more real the mental simulation becomes. Real simulation = emotional ownership.' },
+      { type: 'example', scenario: 'Luxury Skincare Shopify Store', before: { label: 'Generic Description', text: '"Our moisturizer will improve your skin and reduce wrinkles over time."' }, after: { label: 'Sensory Language', text: '"Run your fingertips across your cheek. Feel that? Smooth. Soft. Not the dry roughness from last month. You catch your reflection walking past a mirror and actually pause. When did those fine lines around your eyes fade? The third person this week just asked if you got more sleep."' }, insight: 'Touch, sight, social validation. Multiple sensory channels create stronger emotional ownership than facts ever could.' },
+      { type: 'content', title: 'Technique 3: Identity Statements', body: 'Help them see themselves as someone who naturally makes this decision. Connect the purchase to who they are, not just what they want. "You\'re the kind of person who..." Identity is more powerful than desires. When buying aligns with their self-image, resistance disappears. They\'re not being sold—they\'re being who they already believe they are.' },
+      { type: 'cards', title: 'Identity Framing Examples', items: [
+        { title: 'For Premium Products', description: '"You\'re not looking for cheap. You\'re looking for the last one you\'ll ever need to buy." Appeals to quality-conscious self-image.' },
+        { title: 'For Productivity Tools', description: '"You\'re an executor, not a procrastinator. You know the difference between busy and productive." Appeals to achiever identity.' },
+        { title: 'For Health Products', description: '"You invest in prevention, not treatment. You understand compound interest applies to health too." Appeals to long-term thinker identity.' }
+      ]},
+      { type: 'content', title: 'Technique 4: Loss Framing at CTA', body: 'At the moment of decision, remind them they already have something to lose—the feeling you\'ve helped them build. "Don\'t let this feeling slip away..." It\'s not pressure. It\'s simply acknowledging the emotional ownership that naturally formed during your copy. They experienced it. Now they\'re deciding whether to keep it or let it go.' },
+      { type: 'example', scenario: 'Online Course Shopify Store', before: { label: 'Standard CTA', text: '"Enroll now to start your transformation. Click below to get instant access."' }, after: { label: 'Loss-Framed CTA', text: '"You felt it, didn\'t you? That clarity. That \"oh shit, THIS is what I\'ve been missing\" moment. Right now, you can lock this in. Or you can close this tab and watch that feeling fade. Your call."' }, insight: 'The second version acknowledges the emotional experience they just had, then frames the choice as keeping vs. losing it.' },
+      { type: 'content', title: 'Mistakes That Kill Self-Persuasion', body: 'Pushing too hard triggers resistance. When you try to force conviction, prospects feel manipulated and push back. Skipping emotional investment means they have nothing to lose by walking away. Generic future pacing doesn\'t create ownership—specific details do. And if your offer doesn\'t match their self-image, no amount of emotional ownership will convert. Know who they believe they are first.' },
+      { type: 'cards', title: 'Common Self-Persuasion Errors', items: [
+        { title: 'Pushing Too Hard', description: 'The harder you push, the more they resist. Let them arrive at conclusions naturally through evidence and strategic framing.' },
+        { title: 'Skipping Emotional Investment', description: 'Jumping straight to features and logic without building emotional ownership first. They need skin in the game before you ask.' },
+        { title: 'Generic Future Pacing', description: 'Vague promises like "imagine success" don\'t create ownership. Be specific: exact numbers, precise scenarios, concrete details.' },
+        { title: 'Misaligned Identity', description: 'If your product doesn\'t match their self-image, conviction won\'t convert. Understand their identity first, then align your offer.' }
+      ]},
+      { type: 'visual', title: 'Impact on Shopify Conversions', visualType: 'stats', data: [
+        { value: '215%', label: 'Conversion lift', subtext: 'Self-persuasion vs. traditional selling' },
+        { value: '3.7x', label: 'Higher AOV', subtext: 'When emotional ownership exists' },
+        { value: '68%', label: 'Lower refunds', subtext: 'They convinced themselves, not you' }
+      ]},
+      { type: 'content', title: 'Applying This to Your Store', body: 'Pick your best-selling product page right now. Audit it: Does your description help them mentally "try on" the outcome with specific, sensory details? Does your CTA acknowledge the feeling they just experienced? Do your testimonials show people like them who made this decision? Most Shopify stores just list features. Apply self-persuasion architecture and watch what happens.' },
+      { type: 'quiz', question: 'According to Self-Persuasion Architecture, what are customers really paying for at the moment of purchase?', options: ['To get a new feeling they don\'t have yet', 'To keep the feeling they already experienced in your copy', 'To avoid missing out on a limited offer', 'To satisfy a logical need they identified'], correctIndex: 1, feedback: { correct: 'Exactly! By the time they reach your CTA, they\'ve mentally "tried on" the outcome through your future pacing and sensory language. The purchase isn\'t about gaining something new—it\'s about preventing the loss of what they already feel they have. That\'s the paradigm shift.', incorrect: 'Not quite. The key insight is that they\'re not paying to GET the feeling—they\'re paying to KEEP it. Your copy helped them experience the outcome mentally through future pacing and sensory language. By the CTA, they\'ve already felt it. Now they\'re just deciding whether to keep it or let it slip away.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay, ease: smoothEase }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function Counter({ end, suffix = "", prefix = "" }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const duration = 2000;
-          const increment = end / (duration / 16);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end]);
-
-      return <span ref={ref}>{prefix}{count}{suffix}</span>;
-    }
-
-    // Mind Shift Visual
-    function MindShiftVisual() {
-      const [shifted, setShifted] = useState(false);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (isInView) {
-          const timer = setTimeout(() => setShifted(true), 500);
-          return () => clearTimeout(timer);
-        }
-      }, [isInView]);
-
-      return (
-        <div ref={ref} className="flex items-center justify-center gap-6 py-6">
-          <motion.div
-            animate={{ opacity: shifted ? 0.4 : 1, scale: shifted ? 0.9 : 1 }}
-            className="text-center"
-          >
-            <div className="w-14 h-14 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center mx-auto mb-2 text-neutral-400">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-              </svg>
-            </div>
-            <span className="text-xs text-neutral-500">Push Message</span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: shifted ? 1 : 0, scale: shifted ? 1 : 0 }}
-            transition={{ duration: 0.5, type: "spring" }}
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-accent-500">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </motion.div>
-
-          <motion.div
-            animate={{ opacity: shifted ? 1 : 0.4, scale: shifted ? 1.1 : 1 }}
-            className="text-center"
-          >
-            <div className="w-14 h-14 rounded-full bg-white border-2 border-accent-400 flex items-center justify-center mx-auto mb-2 text-accent-500">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
-              </svg>
-            </div>
-            <span className="text-xs text-accent-600 font-medium">Self-Discovery</span>
-          </motion.div>
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
         </div>
       );
-    }
+    };
 
-    // Ownership Meter
-    function OwnershipMeter() {
-      const stages = ["Before", "During", "At CTA"];
-      const [activeStage, setActiveStage] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-      useEffect(() => {
-        if (isInView) {
-          const interval = setInterval(() => {
-            setActiveStage(prev => (prev + 1) % 3);
-          }, 2000);
-          return () => clearInterval(interval);
-        }
-      }, [isInView]);
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
 
-      const heights = [20, 60, 100];
-      const labels = ["Neutral", "Desire", "Ownership"];
-
-      return (
-        <div ref={ref} className="max-w-xs mx-auto">
-          <div className="flex items-end justify-center gap-6 h-24 mb-4">
-            {stages.map((stage, i) => (
-              <div key={stage} className="flex flex-col items-center">
-                <motion.div
-                  animate={{ height: `${heights[i]}%`, opacity: activeStage >= i ? 1 : 0.3 }}
-                  transition={{ duration: 0.5, type: "spring" }}
-                  className="w-12 bg-gradient-to-t from-accent-500 to-accent-400 rounded-t-lg"
-                  style={{ minHeight: 8 }}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center gap-6">
-            {stages.map((stage, i) => (
-              <span key={stage} className={`text-xs ${activeStage === i ? 'text-accent-600 font-medium' : 'text-neutral-400'}`}>
-                {stage}
-              </span>
-            ))}
-          </div>
-          <motion.div
-            key={activeStage}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mt-4"
-          >
-            <span className="text-sm font-medium text-accent-600">{labels[activeStage]}</span>
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
           </motion.div>
         </div>
-      );
-    }
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-    // Interactive Get vs Keep Demo
-    function GetKeepDemo() {
-      const [stage, setStage] = useState(0);
-
-      useEffect(() => {
-        const timer = setInterval(() => {
-          setStage(prev => (prev + 1) % 3);
-        }, 3500);
-        return () => clearInterval(timer);
-      }, []);
-
-      const stages = [
-        { title: "Before Reading", desc: "Prospect has no emotional investment", feeling: "Neutral", color: "bg-neutral-200" },
-        { title: "During Reading", desc: "They 'try on' the outcome mentally", feeling: "Desire", color: "bg-accent-300" },
-        { title: "At CTA", desc: "Purchase prevents loss of the feeling", feeling: "Ownership", color: "bg-accent-500" }
-      ];
-
-      return (
-        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
-          <div className="p-6">
-            <div className="flex justify-between mb-6">
-              {stages.map((s, i) => (
-                <div key={i} className={`flex-1 text-center ${i < stages.length - 1 ? 'border-r border-neutral-100' : ''}`}>
-                  <div className={`mx-auto w-3 h-3 rounded-full mb-2 transition-all ${stage >= i ? stages[i].color : 'bg-neutral-200'}`} />
-                  <p className={`text-xs font-medium ${stage === i ? 'text-accent-600' : 'text-neutral-400'}`}>{s.title}</p>
-                </div>
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
               ))}
             </div>
-            <motion.div
-              key={stage}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-6 bg-neutral-50 rounded-xl"
-            >
-              <p className="text-sm text-neutral-500 mb-2">{stages[stage].desc}</p>
-              <p className="text-2xl font-bold text-neutral-900">{stages[stage].feeling}</p>
+          </div>
+        );
+      }
+      return null;
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
-          </div>
-          <div className="bg-accent-50 p-4 border-t border-accent-100">
-            <p className="text-sm text-accent-800 text-center">
-              <strong>Key Insight:</strong> By the CTA, they're not paying to GET the feeling—they're paying to KEEP it.
-            </p>
-          </div>
+          ))}
         </div>
-      );
-    }
+      </div>
+    );
 
-    // Main Lesson Component
-    function Lesson() {
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Try {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
       return (
-        <div className="bg-white min-h-screen overflow-x-hidden">
-          {/* Hero Section - Black with gradient accent */}
-          <header className="bg-neutral-950 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-accent-600/10 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent-900/20 to-transparent rounded-full blur-2xl" />
-
-            <div className="lesson-container px-6 py-20 relative z-10">
-              <FadeUp>
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="px-3 py-1 bg-accent-600/20 text-accent-400 text-xs font-semibold rounded-full tracking-wide uppercase">
-                    Architecture of Belief
-                  </span>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <h1 className="text-4xl font-extrabold mb-4 leading-tight">
-                  Self-Persuasion Architecture
-                </h1>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-xl text-neutral-300 mb-8 max-w-2xl leading-relaxed">
-                  You can't convince anyone of anything. Learn to build the framework that helps them convince themselves—and discover why they pay to keep feelings, not get them.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-400">
-                  <div className="flex items-center gap-2">
-                    <Icons.Lightbulb />
-                    <span>Paradigm shift</span>
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Icons.Zap />
-                    <span><Counter end={215} suffix="%" /> conversion lift</span>
-                  </div>
-                </div>
-              </FadeUp>
+                </motion.button>
+              ))}
             </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="px-6 py-12">
-            <div className="lesson-container space-y-16">
-
-              {/* The Core Truth */}
-              <FadeUp>
-                <section>
-                  <p className="text-lg text-neutral-700 leading-relaxed">
-                    There's a delusion that plagues copywriters: the belief that we can convince someone of something. <strong>We can't.</strong> All we can do is create the conditions for them to convince themselves.
-                  </p>
-                  <p className="text-lg text-neutral-700 leading-relaxed mt-4">
-                    Your job is not to force a belief upon the reader. It is to engineer a story, create a frame, and provide the components that allow their own mind to build the conviction to act. You are an architect of self-persuasion.
-                  </p>
-                </section>
-              </FadeUp>
-
-              {/* Animated Mind Shift Visualization */}
-              <ScaleIn>
-                <div className="py-8">
-                  <MindShiftVisual />
-                </div>
-              </ScaleIn>
-
-              {/* The Big Paradigm Shift - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-600/20 to-transparent rounded-full blur-3xl" />
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white">
-                        <Icons.Key />
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">You Don't Sell the Feeling</h2>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed mb-6">
-                      Here's the paradigm shift that changes everything: <strong className="text-white">You don't sell the feeling. You sell KEEPING the feeling.</strong>
-                    </p>
-
-                    <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 mb-6">
-                      <p className="text-accent-400 italic text-lg">"You're not paying to get the feeling. You're paying to keep the feeling."</p>
-                      <p className="text-sm text-neutral-500 mt-3">- Alen Sultanic</p>
-                    </div>
-
-                    <p className="text-neutral-300 leading-relaxed">
-                      When prospects engage with your sales message, they begin to experience the feeling of the outcome. They mentally "try on" the success, the relief, the transformation. By the time they reach your call to action, the purchase isn't about gaining something new—it's about preventing the loss of what they already feel they have.
-                    </p>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Interactive Demo */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">The Emotional Journey</h2>
-                  <p className="text-neutral-600 mb-6">Watch how emotional ownership develops through your copy.</p>
-                  <GetKeepDemo />
-                </section>
-              </FadeUp>
-
-              {/* How to Build Self-Persuasion */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Building the Self-Persuasion Framework</h2>
-
-                  <p className="text-neutral-600 leading-relaxed mb-6">
-                    Self-persuasion isn't passive. You actively construct the environment where conviction naturally forms. Here's how to architect that experience.
-                  </p>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Compass />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Create the Frame</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        Frame the situation so only one conclusion makes sense. Guide their thinking through strategic context, not pushy claims. Let them "discover" the conclusion themselves.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Heart />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Trigger Emotional Ownership</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        Help them vividly imagine already having the outcome. Use future pacing, sensory language, and specific scenarios. Make the transformation feel real before they buy.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Users />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Provide Social Proof</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        Show others who made the same decision and succeeded. People don't want to be first—they want to see that the path is safe and proven by people like them.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
-                      <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600 mb-4">
-                        <Icons.Gift />
-                      </div>
-                      <h3 className="font-semibold text-neutral-900 mb-2">Make Saying Yes Easy</h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed">
-                        Remove friction from the decision. Guarantees, bonuses, and risk reversals don't convince—they remove excuses for not following through on a conviction they already have.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Animated Ownership Meter */}
-              <ScaleIn>
-                <div className="py-6">
-                  <OwnershipMeter />
-                </div>
-              </ScaleIn>
-
-              {/* Practical Application - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-accent-900/10 via-transparent to-transparent" />
-
-                  <div className="relative z-10">
-                    <h2 className="text-2xl font-bold text-white mb-6">Techniques for Emotional Ownership</h2>
-
-                    <div className="space-y-4">
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
-                        <p className="text-accent-400 font-medium mb-2">Future Pacing</p>
-                        <p className="text-sm text-neutral-300">"Imagine 90 days from now, checking your dashboard and seeing..." Transport them to the moment of success so vividly they can taste it.</p>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
-                        <p className="text-accent-400 font-medium mb-2">Sensory Language</p>
-                        <p className="text-sm text-neutral-300">"Feel the weight lift off your shoulders as you..." Engage multiple senses to make the imagined outcome more real and memorable.</p>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
-                        <p className="text-accent-400 font-medium mb-2">Identity Statements</p>
-                        <p className="text-sm text-neutral-300">"You're the kind of person who..." Help them see themselves as someone who naturally makes this decision. Connect the purchase to who they are.</p>
-                      </div>
-
-                      <div className="bg-white/5 backdrop-blur rounded-xl p-5 border border-white/10">
-                        <p className="text-accent-400 font-medium mb-2">Loss Framing at CTA</p>
-                        <p className="text-sm text-neutral-300">"Don't let this feeling slip away..." At the moment of decision, remind them they already have something to lose—the feeling you've helped them build.</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Common Mistakes */}
-              <FadeUp>
-                <section>
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Mistakes That Break Self-Persuasion</h2>
-
-                  <div className="space-y-4">
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Pushing Too Hard</h3>
-                      <p className="text-sm text-neutral-600">
-                        When you try to force conviction, prospects feel manipulated and resist. The harder you push, the more they push back. Let them arrive at conclusions naturally through the evidence and frame you provide.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Skipping Emotional Investment</h3>
-                      <p className="text-sm text-neutral-600">
-                        Jumping straight to features and logic without first building emotional ownership means they have nothing to lose by walking away. Invest time in helping them feel the outcome before asking for action.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Generic Future Pacing</h3>
-                      <p className="text-sm text-neutral-600">
-                        Vague promises like "imagine success" don't create ownership. Be specific: exact numbers, precise scenarios, concrete details. The more vivid and detailed, the more real it feels in their mind.
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
-                      <h3 className="font-semibold text-neutral-900 mb-2">Misaligned Identity</h3>
-                      <p className="text-sm text-neutral-600">
-                        If your product doesn't match how they see themselves, no amount of emotional ownership will convert. Understand their self-image first, then show how your offer aligns with who they already believe they are.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </FadeUp>
-
-              {/* Key Takeaways - Black Section */}
-              <FadeUp>
-                <section className="bg-neutral-950 rounded-3xl p-8 md:p-10">
-                  <h2 className="text-2xl font-bold text-white mb-6">Key Takeaways</h2>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {[
-                      "You can't convince anyone of anything. Your job is to create conditions where they convince themselves through story, frame, and evidence.",
-                      "You don't sell the feeling—you sell keeping the feeling. By your CTA, they're protecting emotional ownership, not acquiring something new.",
-                      "Build emotional ownership through future pacing, sensory language, and identity connection. Make the outcome feel real before purchase.",
-                      "Guarantees and bonuses don't convince—they remove excuses. They help people act on convictions they've already formed."
-                    ].map((point, i) => (
-                      <div key={i} className="flex gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
-                        <div className="w-6 h-6 rounded-full bg-accent-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-bold text-white">{i + 1}</span>
-                        </div>
-                        <p className="text-sm text-neutral-300 leading-relaxed">{point}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </FadeUp>
-
-            </div>
-          </main>
-
-          {/* Footer */}
-          <footer className="py-10 bg-neutral-50">
-            <div className="lesson-container px-6 text-center">
-              <p className="text-sm text-neutral-400">Part of the Architecture of Belief Series</p>
-            </div>
-          </footer>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<Lesson />);
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand: You can't convince anyone. You engineer conditions for self-persuasion. They don't pay to GET the feeling—they pay to KEEP it. Apply these four techniques and watch resistance vanish.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+        {data?.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <div className="space-y-1.5">
+              {data.sources.map((source, i) => (
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+                  {source.name}
+                  <Icons.ExternalLink />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>

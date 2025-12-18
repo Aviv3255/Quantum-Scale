@@ -11,668 +11,467 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#14b8a6',
-            accentDark: '#0d9488',
-            dark: '#0f0f0f',
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
-    html { scroll-behavior: smooth; }
-    .gradient-text {
-      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-white text-dark overflow-x-hidden">
+<body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, AnimatePresence, useInView } = Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // SVG Icon Components
-    const Icon = ({ name, size = 20, className = "" }) => {
-      const icons = {
-        hook: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />,
-        document: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />,
-        flag: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />,
-        eye: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></>,
-        heart: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />,
-        shield: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
-        gift: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />,
-        arrow: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />,
-        check: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />,
-        x: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />,
-        layers: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />,
-        target: <><circle cx="12" cy="12" r="10" strokeWidth={2} /><circle cx="12" cy="12" r="6" strokeWidth={2} /><circle cx="12" cy="12" r="2" strokeWidth={2} /></>,
-        clock: <><circle cx="12" cy="12" r="10" strokeWidth={2} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" /></>,
-      };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'sales-message-anatomy',
+      title: 'Sales Message Anatomy',
+      description: 'Master the three-part structure that turns readers into buyers - Lead, Body, and Close.',
+      accentColor: '#10b981',
+      duration: '8 min',
+      nextLesson: { id: 'self-persuasion-architecture', title: 'Self-Persuasion Architecture', teaser: 'Learn how to make customers convince themselves instead of pushing them.' }
+    };
+
+    const welcomeAnimations = {
+      morning: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
+      ],
+      afternoon: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
+      ],
+      evening: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
+      ],
+      night: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
+      ]
+    };
+
+    const getTimeBasedWelcome = () => {
+      const hour = new Date().getHours();
+      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
+      const options = welcomeAnimations[slot];
+      return options[Math.floor(Math.random() * options.length)];
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['The 40-40-20 structure that pros use for every sales message', 'How to choose the right Lead type for your Shopify store', 'The Body elements that build belief and crush objections', 'Closing techniques that turn browsers into buyers'] },
+      { type: 'hook', headline: 'Every sales message follows the same blueprint. Learn it once, use it forever.', subtext: 'Whether you\'re writing a product description, email sequence, or landing page for your Shopify store—the anatomy stays the same. Master this three-part structure and you\'ll never stare at a blank page again.' },
+      { type: 'content', title: 'The 40-40-20 Rule', body: 'Every effective sales message has three parts. The Lead captures attention and makes them want to keep reading—invest 40% of your effort here. The Body builds belief through proof, benefits, and objection handling—another 40% goes here. The Close creates urgency and drives action—the final 20%. This isn\'t arbitrary. It mirrors how humans process buying decisions.' },
+      { type: 'visual', title: 'Message Structure Breakdown', visualType: 'stats', data: [
+        { value: '40%', label: 'The Lead', subtext: 'Hook attention, create desire' },
+        { value: '40%', label: 'The Body', subtext: 'Build belief, handle objections' },
+        { value: '20%', label: 'The Close', subtext: 'Create urgency, drive action' }
+      ]},
+      { type: 'content', title: 'Part 1: The Lead', body: 'Your Lead is the most critical part. If you lose them in the first few lines, nothing else matters. The Lead\'s job is to hook attention and create the desire to continue reading. You have about 3 seconds before they bounce. Use a pattern interrupt, identify their problem, or spark curiosity. The Lead determines if anyone reads your carefully crafted body copy.' },
+      { type: 'cards', title: 'Four Lead Types That Convert', items: [
+        { title: 'Problem Lead', description: 'Opens by identifying a painful problem. Best for Shopify stores solving obvious pain points. Example: "Tired of customers abandoning at checkout?"' },
+        { title: 'Story Lead', description: 'Begins with a narrative that draws readers in emotionally. Best for personal brands and transformation offers. Example: "Three years ago, my store made $200/month..."' },
+        { title: 'Secret Lead', description: 'Promises insider information most don\'t know. Best for information products and courses. Example: "The hidden factor behind every 7-figure Shopify store..."' },
+        { title: 'Direct Lead', description: 'Gets straight to the point with a clear offer. Best for established stores with warm audiences. Example: "50% off our best-seller. Today only."' }
+      ]},
+      { type: 'example', scenario: 'Fitness Equipment Shopify Store', before: { label: 'Weak Lead', text: '"Welcome to our store! We sell premium fitness equipment for home gyms. Check out our collection of dumbbells, resistance bands, and yoga mats."' }, after: { label: 'Strong Problem Lead', text: '"Your gym membership costs $80/month. You go twice. That\'s $40 per workout. Here\'s a better idea: Build a home gym that pays for itself in 3 months."' }, insight: 'The strong lead identifies a problem (wasted gym fees) and hints at the solution. The weak lead is just an introduction nobody asked for.' },
+      { type: 'content', title: 'Part 2: The Body', body: 'Once you\'ve hooked them with your Lead, the Body does the heavy lifting. This is where you build belief, demonstrate value, stack proof, handle objections, and future-pace the outcome. Most amateur copywriters rush through the body to get to the offer. Big mistake. The body is where you earn the right to ask for the sale.' },
+      { type: 'cards', title: 'Essential Body Elements', items: [
+        { title: 'Proof Stack', description: 'Testimonials, case studies, data, credentials. Stack multiple proof types. Specific numbers beat vague claims every time.' },
+        { title: 'Benefits Over Features', description: 'Features tell what it does. Benefits explain why it matters. Always translate features into emotional benefits that resonate.' },
+        { title: 'Objection Handling', description: '"You might be thinking..." Address concerns before they voice them. Shows you understand their perspective and builds trust.' },
+        { title: 'Future Pacing', description: 'Help them visualize life after using your product. Paint vivid pictures of the transformation. Make the outcome feel real and achievable.' }
+      ]},
+      { type: 'example', scenario: 'Skincare Shopify Store', before: { label: 'Features Only', text: '"Our serum contains 10% Vitamin C, hyaluronic acid, and is paraben-free. Made in the USA. 30ml bottle."' }, after: { label: 'Benefits + Future Pacing', text: '"Imagine checking the mirror in 30 days and seeing noticeably brighter skin. Our 10% Vitamin C serum targets dark spots while hyaluronic acid keeps skin hydrated all day. No parabens means gentle enough for sensitive skin. You\'ll look forward to your morning routine."' }, insight: 'Same product. But the second version helps them visualize the outcome and translates features into benefits they actually care about.' },
+      { type: 'content', title: 'Part 3: The Close', body: 'You\'ve hooked them with the Lead. You\'ve built belief in the Body. Now it\'s time to close. The Close creates urgency, removes risk, and makes taking action easy. This isn\'t about manipulation—it\'s about helping people who are already convinced take the final step. A weak close kills conversions even when everything else is perfect.' },
+      { type: 'cards', title: 'Closing Elements That Convert', items: [
+        { title: 'Offer Stack', description: 'Bundle your core offer with bonuses that increase perceived value. List each component with individual values, then reveal total savings.' },
+        { title: 'Risk Reversal', description: 'Guarantees, free trials, easy refunds. Remove the fear of making a wrong decision. Shift risk from buyer to seller.' },
+        { title: 'Urgency & Scarcity', description: 'Give them a reason to act now. Limited time, limited quantity, or bonuses that expire. But only use real deadlines—fake scarcity destroys trust.' },
+        { title: 'Clear CTA', description: 'Tell them exactly what to do next. Make it specific, prominent, and repeated. Explain what clicking the button will do for them.' }
+      ]},
+      { type: 'example', scenario: 'Coffee Subscription Shopify Store', before: { label: 'Weak Close', text: '"Click here to order. We have different subscription options available. Free shipping on orders over $50."' }, after: { label: 'Strong Close', text: '"Lock in your first bag at 40% off—this rate never expires as long as you stay subscribed. Plus, get a free burr grinder (worth $89) when you order in the next 48 hours. If you don\'t love it, we\'ll refund you AND let you keep the grinder. No risk. Pure upside."' }, insight: 'The strong close stacks value, creates urgency, reverses risk, and makes the decision feel like a no-brainer.' },
+      { type: 'visual', title: 'Structure Impact on Conversions', visualType: 'comparison', data: {
+        left: { label: 'No Structure', value: '1.2%', result: 'Random copy with no flow', color: '#ef4444' },
+        right: { label: '40-40-20 Structure', value: '3.8%', result: 'Proven anatomy applied', color: '#10b981' },
+        center: { label: 'Improvement', value: '+217%', result: 'By following the blueprint', color: '#10b981' }
+      }},
+      { type: 'content', title: 'Common Structural Mistakes', body: 'Most Shopify stores fail because they violate the anatomy. Starting with company history instead of a hook loses readers instantly. Listing features without benefits leaves them cold. Skipping objection handling means unspoken doubts kill conversions. Rushing to the CTA before building belief results in rejection. And unclear CTAs lead to analysis paralysis. Master the structure, avoid these mistakes.' },
+      { type: 'cards', title: 'Mistakes That Kill Conversions', items: [
+        { title: 'Weak or Missing Lead', description: 'Starting with background info or company history. Your first few lines determine if anyone reads the rest. Lead with impact, not introduction.' },
+        { title: 'Features Without Benefits', description: 'Listing specs without explaining why they matter. Every feature needs "so you can..." or "which means..." that connects to what they want.' },
+        { title: 'Premature Close', description: 'Asking for the sale before building sufficient desire. Make sure you\'ve earned the right to ask by providing enough value and proof first.' },
+        { title: 'Unclear CTA', description: 'If they don\'t know exactly what to do next, they\'ll do nothing. Be specific, prominent, and repeat your call to action.' }
+      ]},
+      { type: 'content', title: 'How to Apply This to Your Store', body: 'Pick one product page on your Shopify store right now. Audit it against the 40-40-20 structure. Does your product title and first line hook attention? Does your description build belief through benefits and social proof? Does your buy button area include urgency and risk reversal? Most stores have random copy that violates every rule. Apply the anatomy and watch what happens.' },
+      { type: 'quiz', question: 'According to the Sales Message Anatomy, how much of your effort should go into crafting The Lead?', options: ['20% - just hook attention quickly', '40% - it determines if anyone reads the rest', '60% - it\'s the most important part', '33% - equal effort across all three parts'], correctIndex: 1, feedback: { correct: 'Exactly! The Lead gets 40% of your effort because if you lose them in the first few lines, your carefully crafted body and close mean nothing. Hook them first, then deliver value.', incorrect: 'Not quite. The Lead should get 40% of your effort—the same as the Body. Why? Because if you lose them in the first few lines, nothing else matters. The 40-40-20 rule mirrors how humans make buying decisions.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-          {icons[name]}
-        </svg>
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
       );
     };
 
-    // FadeUp Animation Component
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-
-      return (
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={className}
-        >
-          {children}
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
-      );
-    }
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-    // Animated Counter
-    function AnimatedCounter({ end, duration = 2, suffix = "" }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
 
-      useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const increment = end / (duration * 60);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 1000 / 60);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end, duration]);
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-      return <span ref={ref}>{count}{suffix}</span>;
-    }
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
 
-    // Interactive Anatomy Builder
-    function AnatomyBuilder() {
-      const [activeSection, setActiveSection] = useState('lead');
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
 
-      const sections = {
-        lead: {
-          title: "The Lead",
-          percentage: "40%",
-          color: "bg-teal-500",
-          desc: "Captures attention and creates desire to continue reading",
-          elements: ["Big Promise", "Problem Agitation", "Story Hook", "Curiosity Gap"]
-        },
-        body: {
-          title: "The Body",
-          percentage: "40%",
-          color: "bg-teal-400",
-          desc: "Builds belief and overcomes objections",
-          elements: ["Proof Elements", "Features & Benefits", "Social Proof", "Objection Handling"]
-        },
-        close: {
-          title: "The Close",
-          percentage: "20%",
-          color: "bg-teal-300",
-          desc: "Creates urgency and drives action",
-          elements: ["Offer Stack", "Risk Reversal", "Urgency/Scarcity", "Clear CTA"]
-        }
-      };
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Try {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
-        <div className="bg-teal-50 rounded-2xl p-6 md:p-8 border border-teal-100">
-          <h4 className="text-lg font-semibold text-dark mb-6">Message Structure</h4>
-
-          <div className="flex gap-2 mb-6">
-            {Object.entries(sections).map(([key, section]) => (
-              <button
-                key={key}
-                onClick={() => setActiveSection(key)}
-                className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all
-                           ${activeSection === key
-                             ? 'bg-accent text-white shadow-lg'
-                             : 'bg-white text-neutral-600 hover:bg-neutral-50'}`}
-              >
-                {section.title}
-              </button>
-            ))}
-          </div>
-
-          <motion.div
-            key={activeSection}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl p-6"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h5 className="font-semibold text-dark">{sections[activeSection].title}</h5>
-              <span className="text-2xl font-bold text-accent">{sections[activeSection].percentage}</span>
-            </div>
-            <p className="text-sm text-neutral-600 mb-4">{sections[activeSection].desc}</p>
-            <div className="space-y-2">
-              {sections[activeSection].elements.map((element, i) => (
-                <div key={element} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-accent/10 rounded-full flex items-center justify-center">
-                    <Icon name="check" size={14} className="text-accent" />
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
                   </div>
-                  <span className="text-sm text-neutral-700">{element}</span>
-                </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know the blueprint: 40% Lead to hook attention, 40% Body to build belief, 20% Close to drive action. Apply the 40-40-20 structure to any sales message and watch conversions climb.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+        {data?.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <div className="space-y-1.5">
+              {data.sources.map((source, i) => (
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+                  {source.name}
+                  <Icons.ExternalLink />
+                </a>
               ))}
             </div>
           </motion.div>
-        </div>
-      );
-    }
+        )}
+      </div>
+    );
 
-    // Visual Flow Diagram
-    function FlowDiagram() {
-      const [activeStep, setActiveStep] = useState(0);
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-      const steps = [
-        { label: "Attention", desc: "Hook them in 3 seconds" },
-        { label: "Interest", desc: "Make them want more" },
-        { label: "Desire", desc: "Build emotional connection" },
-        { label: "Action", desc: "Make it easy to buy" }
-      ];
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
 
       useEffect(() => {
-        const interval = setInterval(() => {
-          setActiveStep(prev => (prev + 1) % steps.length);
-        }, 2500);
-        return () => clearInterval(interval);
-      }, []);
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-      return (
-        <div className="bg-white rounded-2xl p-6 md:p-8 border border-neutral-100 shadow-sm">
-          <h4 className="text-lg font-semibold text-dark mb-6">The AIDA Flow</h4>
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
 
-          <div className="space-y-4">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.label}
-                className={`flex items-center gap-4 p-4 rounded-xl transition-all
-                           ${activeStep === index ? 'bg-teal-50 border border-teal-200' : 'bg-neutral-50'}`}
-                animate={{
-                  scale: activeStep === index ? 1.02 : 1,
-                  x: activeStep === index ? 8 : 0
-                }}
-              >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
-                               ${activeStep >= index ? 'bg-accent text-white' : 'bg-neutral-200 text-neutral-500'}`}>
-                  {index + 1}
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-dark">{step.label}</p>
-                  <p className="text-xs text-neutral-500">{step.desc}</p>
-                </div>
-                {activeStep === index && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-3 h-3 bg-accent rounded-full"
-                  />
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Main App
-    function App() {
-      const leadTypes = [
-        {
-          name: "The Problem Lead",
-          desc: "Opens by identifying a painful problem the reader faces",
-          example: "Are you tired of waking up exhausted despite sleeping 8 hours?",
-          best: "Products solving obvious pain points"
-        },
-        {
-          name: "The Story Lead",
-          desc: "Begins with a narrative that draws readers in emotionally",
-          example: "Three years ago, I was $50,000 in debt and sleeping in my car...",
-          best: "Personal brands and transformation offers"
-        },
-        {
-          name: "The Secret Lead",
-          desc: "Promises insider information most people don't know",
-          example: "The hidden factor behind every 7-figure business...",
-          best: "Information products and courses"
-        },
-        {
-          name: "The Direct Lead",
-          desc: "Gets straight to the point with a clear offer",
-          example: "Get 50% off our best-selling course today only.",
-          best: "Established brands with warm audiences"
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
         }
-      ];
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="min-h-screen bg-white overflow-x-hidden">
-          {/* Hero Section */}
-          <header className="relative overflow-hidden bg-gradient-to-b from-teal-50/50 to-white">
-            <div className="max-w-6xl mx-auto px-6 py-20">
-              <FadeUp>
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                  <span className="text-sm font-medium text-teal-700">Persuasion Mastery</span>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <h1 className="text-5xl md:text-6xl font-bold text-dark leading-tight mb-6">
-                  Sales Message <span className="gradient-text">Anatomy</span>
-                </h1>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-xl text-neutral-600 max-w-2xl leading-relaxed mb-8">
-                  Master the three-part structure that turns readers into buyers. Learn how
-                  the Lead, Body, and Close work together to create irresistible offers.
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
-                      <Icon name="layers" size={24} className="text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-dark">3</p>
-                      <p className="text-sm text-neutral-500">Core Sections</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
-                      <Icon name="target" size={24} className="text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-dark"><AnimatedCounter end={127} suffix="%" /></p>
-                      <p className="text-sm text-neutral-500">Higher Conversion</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeUp>
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
-          </header>
-
-          <main className="max-w-6xl mx-auto px-6 py-16">
-            {/* Overview Section */}
-            <section className="mb-20">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-6">The Three-Part Structure</h2>
-              </FadeUp>
-
-              {/* Hero Image */}
-              <ScaleIn>
-                <div className="bg-neutral-950 -mx-6 md:-mx-0 md:rounded-2xl overflow-hidden">
-                  <img
-                    src="images/hero-image.jpg"
-                    alt="Lesson illustration"
-                    className="w-full h-auto"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
-                </div>
-              </ScaleIn>
-
-
-
-              <div className="grid md:grid-cols-2 gap-8">
-                <FadeUp delay={0.1}>
-                  <div className="prose prose-lg">
-                    <p className="text-neutral-600 leading-relaxed">
-                      Every effective sales message follows a predictable structure. Whether it's an email,
-                      landing page, video script, or ad—the anatomy remains the same. Understanding this
-                      structure is like having a blueprint for persuasion.
-                    </p>
-                    <p className="text-neutral-600 leading-relaxed">
-                      The Lead captures attention and creates the desire to keep reading. It's arguably
-                      the most important part because if you lose them here, nothing else matters.
-                      Roughly 40% of your effort should go into crafting a compelling lead.
-                    </p>
-                    <p className="text-neutral-600 leading-relaxed">
-                      The Body builds belief through proof, benefits, and objection handling. This is where
-                      you convince readers that your solution is the right choice. Another 40% of your
-                      message lives here, systematically building the case for action.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.2}>
-                  <div className="relative">
-                    <img
-                      src="images/anatomy-overview.png"
-                      alt="Sales Message Anatomy"
-                      className="rounded-2xl shadow-lg w-full"
-                    />
-                  </div>
-                </FadeUp>
-              </div>
-            </section>
-
-            {/* Interactive Demo */}
-            <section className="mb-20">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-3">Explore the Structure</h2>
-                <p className="text-neutral-500 mb-8">Click each section to see what belongs inside</p>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                <FadeUp delay={0.1}>
-                  <AnatomyBuilder />
-                </FadeUp>
-                <FadeUp delay={0.2}>
-                  <FlowDiagram />
-                </FadeUp>
-              </div>
-            </section>
-
-            {/* Lead Types */}
-            <section className="mb-20">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-3">Lead Types That Convert</h2>
-                <p className="text-neutral-500 mb-8">Choose the right opening for your audience</p>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {leadTypes.map((lead, index) => (
-                  <FadeUp key={lead.name} delay={index * 0.1}>
-                    <motion.div
-                      className="bg-white rounded-2xl p-6 border border-neutral-100 h-full"
-                      whileHover={{ scale: 1.02, boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.1)' }}
-                    >
-                      <h3 className="text-lg font-semibold text-dark mb-2">{lead.name}</h3>
-                      <p className="text-neutral-600 text-sm mb-4">{lead.desc}</p>
-
-                      <div className="bg-teal-50 rounded-lg p-4 mb-4">
-                        <p className="text-sm text-teal-800 italic">"{lead.example}"</p>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <Icon name="check" size={16} className="text-accent" />
-                        <span className="text-xs text-neutral-500">Best for: {lead.best}</span>
-                      </div>
-                    </motion.div>
-                  </FadeUp>
-                ))}
-              </div>
-            </section>
-
-            {/* The Body Deep Dive */}
-            <section className="mb-20 bg-neutral-50 rounded-3xl p-8 md:p-10">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-6">Building the Body</h2>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <div className="relative mb-8">
-                  <img
-                    src="images/body-structure.png"
-                    alt="Body Structure Framework"
-                    className="rounded-2xl shadow-lg w-full"
-                  />
-                </div>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                <FadeUp delay={0.2}>
-                  <div className="space-y-6">
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-                        <Icon name="eye" size={20} className="text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-dark mb-1">Proof Elements</h3>
-                        <p className="text-neutral-600 text-sm leading-relaxed">
-                          Testimonials, case studies, data, and credentials build trust. Stack multiple
-                          proof types for maximum impact. The more specific your proof, the more
-                          believable it becomes to skeptical readers.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-                        <Icon name="gift" size={20} className="text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-dark mb-1">Benefits Over Features</h3>
-                        <p className="text-neutral-600 text-sm leading-relaxed">
-                          Features tell what your product does. Benefits explain why it matters to
-                          the reader. Always translate features into emotional benefits that resonate
-                          with your audience's deepest desires.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.3}>
-                  <div className="space-y-6">
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-                        <Icon name="shield" size={20} className="text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-dark mb-1">Objection Handling</h3>
-                        <p className="text-neutral-600 text-sm leading-relaxed">
-                          Address common concerns before readers voice them. "You might be thinking..."
-                          acknowledges skepticism and positions you as understanding their perspective.
-                          This builds trust and removes barriers.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-                        <Icon name="heart" size={20} className="text-accent" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-dark mb-1">Future Pacing</h3>
-                        <p className="text-neutral-600 text-sm leading-relaxed">
-                          Help readers visualize their life after using your solution. Paint vivid
-                          pictures of the transformation they'll experience. Make the desired outcome
-                          feel real and achievable in their minds.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-              </div>
-            </section>
-
-            {/* The Close */}
-            <section className="mb-20">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-3">Closing That Converts</h2>
-                <p className="text-neutral-500 mb-8">Turn interest into action with these elements</p>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                <FadeUp delay={0.1}>
-                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-                      <Icon name="layers" size={24} className="text-accent" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-dark mb-3">The Offer Stack</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Bundle your core offer with bonuses that increase perceived value. List each
-                      component with its individual value, then reveal the total savings. Make the
-                      deal feel too good to pass up.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.2}>
-                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-                      <Icon name="shield" size={24} className="text-accent" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-dark mb-3">Risk Reversal</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Remove the fear of making a wrong decision. Guarantees, free trials, and
-                      easy refunds shift risk from buyer to seller. The stronger your guarantee,
-                      the more confident buyers become.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.3}>
-                  <div className="bg-white rounded-2xl p-6 border border-neutral-100">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-                      <Icon name="clock" size={24} className="text-accent" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-dark mb-3">Urgency & Scarcity</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Give readers a reason to act now, not later. Limited time offers, limited
-                      quantities, or bonuses that expire create genuine urgency. But only use real
-                      deadlines—fake scarcity destroys trust.
-                    </p>
-                  </div>
-                </FadeUp>
-              </div>
-            </section>
-
-            {/* Common Mistakes */}
-            <section className="mb-20">
-              <FadeUp>
-                <h2 className="text-3xl font-bold text-dark mb-3">Anatomy Mistakes to Avoid</h2>
-                <p className="text-neutral-500 mb-8">These structural errors kill conversions</p>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <FadeUp delay={0.1}>
-                  <div className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
-                    <h3 className="text-lg font-semibold text-dark mb-3">Weak or Missing Lead</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Starting with background information or company history loses readers instantly.
-                      Your first few lines determine whether anyone reads the rest. Lead with impact,
-                      not with introduction.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.2}>
-                  <div className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
-                    <h3 className="text-lg font-semibold text-dark mb-3">Features Without Benefits</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Listing specifications without explaining why they matter leaves readers cold.
-                      Every feature needs a "so you can..." or "which means..." that connects to
-                      what the reader actually wants.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.3}>
-                  <div className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
-                    <h3 className="text-lg font-semibold text-dark mb-3">Premature Close</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Asking for the sale before building sufficient desire and belief results in
-                      rejection. Make sure you've earned the right to ask by providing enough value
-                      and proof in the body first.
-                    </p>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.4}>
-                  <div className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
-                    <h3 className="text-lg font-semibold text-dark mb-3">Unclear Call to Action</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      If readers don't know exactly what to do next, they'll do nothing. Your CTA
-                      should be specific, prominent, and repeated. Tell them exactly what clicking
-                      the button will do for them.
-                    </p>
-                  </div>
-                </FadeUp>
-              </div>
-            </section>
-
-            {/* Key Takeaways */}
-            <section className="mb-16">
-              <FadeUp>
-                <div className="bg-dark rounded-3xl p-8 md:p-10 text-white">
-                  <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="flex gap-4">
-                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-sm">1</span>
-                      </div>
-                      <p className="text-neutral-300 text-sm leading-relaxed">
-                        Every sales message has three parts: Lead (40%), Body (40%), and Close (20%).
-                        Master this structure and you can write persuasive copy for any medium.
-                      </p>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-sm">2</span>
-                      </div>
-                      <p className="text-neutral-300 text-sm leading-relaxed">
-                        The Lead captures attention through problem, story, secret, or direct approaches.
-                        Choose based on your audience's awareness level and relationship with you.
-                      </p>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-sm">3</span>
-                      </div>
-                      <p className="text-neutral-300 text-sm leading-relaxed">
-                        The Body builds belief through proof, benefits, objection handling, and future
-                        pacing. Stack these elements to create an irresistible case for action.
-                      </p>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-sm">4</span>
-                      </div>
-                      <p className="text-neutral-300 text-sm leading-relaxed">
-                        The Close converts through offer stacking, risk reversal, urgency, and clear
-                        CTAs. Make it easy and safe for readers to take action now.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </FadeUp>
-            </section>
-          </main>
-
-          {/* Footer */}
-          <footer className="bg-neutral-50 py-10">
-            <div className="max-w-6xl mx-auto px-6 text-center">
-              <p className="text-neutral-400 text-sm">
-                Part of the Persuasion Mastery Series
-              </p>
-            </div>
-          </footer>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>

@@ -15,7 +15,7 @@ const lessons = [
   {
     name: 'FRED Method',
     path: 'genrok-app/public/lessons/fred-method/lesson.html',
-    totalSlides: 14
+    totalSlides: 16
   },
   {
     name: 'Gatekeeper Method',
@@ -25,12 +25,12 @@ const lessons = [
   {
     name: 'Three Second Rule',
     path: 'genrok-app/public/lessons/three-second-rule/lesson.html',
-    totalSlides: 15
+    totalSlides: 17
   },
   {
     name: 'Science of Selling',
     path: 'genrok-app/public/lessons/science-of-selling/lesson.html',
-    totalSlides: 15
+    totalSlides: 17
   },
   {
     name: 'Three Levels of Change',
@@ -60,6 +60,87 @@ const lessons = [
   {
     name: 'Emotional Precision',
     path: 'genrok-app/public/lessons/emotional-precision/lesson.html',
+    totalSlides: 15
+  },
+  // New converted lessons
+  {
+    name: 'Architecture of Belief',
+    path: 'genrok-app/public/lessons/architecture-of-belief/lesson.html',
+    totalSlides: 18
+  },
+  {
+    name: 'Blind Spot Effect',
+    path: 'genrok-app/public/lessons/blind-spot-effect/lesson.html',
+    totalSlides: 18
+  },
+  {
+    name: 'Copywriters Codex',
+    path: 'genrok-app/public/lessons/copywriters-codex/lesson.html',
+    totalSlides: 20
+  },
+  {
+    name: 'Customer Voice Mining',
+    path: 'genrok-app/public/lessons/customer-voice-mining/lesson.html',
+    totalSlides: 20
+  },
+  {
+    name: 'Double Bind of Fear',
+    path: 'genrok-app/public/lessons/double-bind-of-fear/lesson.html',
+    totalSlides: 20
+  },
+  {
+    name: 'Emotion Spectrum',
+    path: 'genrok-app/public/lessons/emotion-spectrum/lesson.html',
+    totalSlides: 20
+  },
+  {
+    name: 'Forty-Forty-Twenty Rule',
+    path: 'genrok-app/public/lessons/forty-forty-twenty-rule/lesson.html',
+    totalSlides: 17
+  },
+  {
+    name: 'Four Primal Needs',
+    path: 'genrok-app/public/lessons/four-primal-needs/lesson.html',
+    totalSlides: 20
+  },
+  {
+    name: 'Master Key Framework',
+    path: 'genrok-app/public/lessons/master-key-framework/lesson.html',
+    totalSlides: 18
+  },
+  {
+    name: 'Rule of One',
+    path: 'genrok-app/public/lessons/rule-of-one/lesson.html',
+    totalSlides: 21
+  },
+  {
+    name: 'Sales Message Anatomy',
+    path: 'genrok-app/public/lessons/sales-message-anatomy/lesson.html',
+    totalSlides: 19
+  },
+  {
+    name: 'Self Persuasion Architecture',
+    path: 'genrok-app/public/lessons/self-persuasion-architecture/lesson.html',
+    totalSlides: 23
+  },
+  {
+    name: 'Structural Tension',
+    path: 'genrok-app/public/lessons/structural-tension/lesson.html',
+    totalSlides: 14
+  },
+  {
+    name: 'Three Growth Levers',
+    path: 'genrok-app/public/lessons/three-growth-levers/lesson.html',
+    totalSlides: 17
+  },
+  {
+    name: 'Trust Architecture',
+    path: 'genrok-app/public/lessons/trust-architecture/lesson.html',
+    totalSlides: 16
+  },
+  {
+    name: 'Unique Mechanism',
+    path: 'genrok-app/public/lessons/unique-mechanism/lesson.html',
     totalSlides: 15
   }
 ];

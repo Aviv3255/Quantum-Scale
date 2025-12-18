@@ -3,674 +3,443 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Rule of One</title>
+  <title>The Rule of One | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.umd.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #000; }
-    .accent { color: #06b6d4; }
-    .accent-bg { background: #06b6d4; }
-    .glow { box-shadow: 0 0 60px rgba(6, 182, 212, 0.3); }
-    .glow-text { text-shadow: 0 0 40px rgba(6, 182, 212, 0.5); }
+    :root { --accent: #06b6d4; --accent-dark: #0891b2; --accent-light: #22d3ee; --accent-rgb: 6, 182, 212; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-    const { motion, useInView, AnimatePresence } = Motion;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Reusable Animation Components
-    function FadeUp({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'rule-of-one',
+      title: 'The Rule of One',
+      description: 'One reader. One big idea. One offer. One action. The foundation of all persuasive copy.',
+      accentColor: '#06b6d4',
+      duration: '7 min',
+      nextLesson: { id: 'persuasion-palette', title: 'The Persuasion Palette', teaser: 'Master the 6 emotional triggers that unlock action in any buyer.' }
+    };
+
+    const welcomeAnimations = {
+      morning: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
+      ],
+      afternoon: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
+      ],
+      evening: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
+      ],
+      night: [
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
+      ]
+    };
+
+    const getTimeBasedWelcome = () => {
+      const hour = new Date().getHours();
+      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
+      const options = welcomeAnimations[slot];
+      return options[Math.floor(Math.random() * options.length)];
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why scattered messaging kills conversions', 'The 4 components of the Rule of One framework', 'How to focus your copy for maximum persuasion'] },
+      { type: 'hook', headline: 'When you try to speak to everyone, you speak to no one.', subtext: 'Most Shopify store owners make the same fatal mistake: they pile on multiple benefits, throw in various offers, and scatter calls-to-action everywhere. The result? A confused prospect who does nothing. Because a confused mind always says no. The Rule of One is your cure for conversion-killing confusion.' },
+      { type: 'content', title: 'The Core Problem', body: 'Your visitor lands on your product page. Within 3 seconds, they see: "Perfect for athletes, busy moms, and fitness beginners!" Three different readers. "Burns fat, builds muscle, boosts energy!" Three different ideas. "Buy now OR subscribe OR download the free guide!" Three different actions. Their brain shuts down. Decision paralysis sets in. They click away. You just lost a sale to confusion.' },
+      { type: 'visual', title: 'The Confusion Equation', visualType: 'comparison', data: {
+        left: { label: 'Scattered', value: 'MANY', result: 'Multiple messages', color: '#ef4444' },
+        right: { label: 'Focused', value: 'ONE', result: 'Single clear path', color: '#22c55e' },
+        center: { label: 'Result', value: '10x', result: 'More conversions', color: '#06b6d4' }
+      }},
+      { type: 'content', title: 'Foundation #1: ONE Reader', body: 'Stop writing to "business owners" or "women 25-45." Write to Sarah, 32, who runs a side business while working full-time and has exactly 90 minutes per day to build her dream. The more specific your reader, the more people like them will feel understood. This is the paradox of persuasion: narrow your focus to expand your impact.' },
+      { type: 'example', scenario: 'Yoga Mat Store - ONE Reader', before: { label: 'Generic (Everyone)', text: '"Perfect yoga mat for beginners, experts, and everyone in between! Great for yoga, pilates, stretching, and more."' }, after: { label: 'Specific (ONE Reader)', text: '"For the 30-something woman who\'s tired of cheap mats that slip during downward dog and leave knee imprints that last for hours. You deserve better."' }, insight: 'The second version speaks to ONE person. But everyone with that pain feels seen.' },
+      { type: 'cards', title: 'How to Find Your ONE Reader', items: [
+        { title: 'Mine Reviews', description: 'Read 50+ Amazon reviews in your niche. Look for recurring frustrations, desires, and specific language they use.' },
+        { title: 'Analyze Support Tickets', description: 'What questions do customers ask before buying? What almost stopped them? This is gold.' },
+        { title: 'Reddit Deep Dive', description: 'Find subreddits where your customer hangs out. Read their posts. Copy their exact words and pain points.' },
+        { title: 'Create Your Avatar', description: 'Give them a name, age, job, daily frustration. Write TO this person. Not AT a demographic.' }
+      ]},
+      { type: 'content', title: 'Foundation #2: ONE Big Idea', body: 'Your product page should communicate one dominant concept. Not three good ideas. ONE concept so compelling it demands attention and can\'t be ignored. A big idea is instantly clear, different from competitors, and memorable enough to repeat to a friend. If your visitor can\'t explain your offer in one sentence, you failed the test.' },
+      { type: 'example', scenario: 'Protein Powder Store - ONE Big Idea', before: { label: 'Multiple Ideas (Weak)', text: '"Our protein helps you build muscle, lose fat, recover faster, improve gut health, and boost your immune system. Plus it tastes amazing!"' }, after: { label: 'ONE Big Idea (Strong)', text: '"The 20-Second Breakfast That Builds Muscle While You Work. No blender. No cleanup. No excuses."' }, insight: 'One clear concept. Everything else supports this single promise.' },
+      { type: 'visual', title: 'The Big Idea Test', visualType: 'stats', data: [
+        { value: '5 SEC', label: 'clarity check', subtext: 'Can they understand it instantly?' },
+        { value: 'DIFF', label: 'differentiation', subtext: 'Is it what everyone else says?' },
+        { value: 'MEMO', label: 'memorability', subtext: 'Can they repeat it tomorrow?' }
+      ]},
+      { type: 'content', title: 'Foundation #3: ONE Offer', body: 'Options kill conversions. When you give three pricing tiers, you create doubt. When you say "Buy OR subscribe OR download," you create paralysis. Present ONE clear solution that solves their ONE problem. Remove alternatives. Make the decision binary: yes or no. Never maybe.' },
+      { type: 'cards', title: 'The Offer Clarity Formula', items: [
+        { title: 'One Price', description: 'Not "Basic $29, Pro $49, Premium $99." Just: "Get Complete Access for $47."' },
+        { title: 'One Solution', description: 'Not "Choose from 20 products." One recommended solution for their specific problem.' },
+        { title: 'One Path', description: 'Every element on the page points to ONE action. No distractions. No alternatives.' }
+      ]},
+      { type: 'example', scenario: 'Skincare Store - ONE Offer', before: { label: 'Choice Paralysis', text: '"Shop our collection: Anti-Aging Serum ($39), Vitamin C Serum ($35), Retinol Serum ($42), or get our Best-Seller Bundle ($89) OR subscribe for 15% off!"' }, after: { label: 'Clear Path', text: '"The 3-Step Age-Reversing System. Everything you need. One price. $67. Free shipping. 60-day guarantee. Start today."' }, insight: 'One offer. One decision. Maximum clarity drives maximum conversions.' },
+      { type: 'content', title: 'Foundation #4: ONE Action', body: 'Every piece of copy should drive toward a single, clear next step. Not "Buy now or subscribe or download or contact us." Just ONE action. Your CTA should be the inevitable conclusion of everything above it. When they reach your button, there should be no question what to do next.' },
+      { type: 'visual', title: 'The CTA Hierarchy', visualType: 'stats', data: [
+        { value: '1st', label: 'primary CTA', subtext: 'One dominant action' },
+        { value: '0', label: 'alternatives', subtext: 'No competing options' },
+        { value: '100%', label: 'clarity', subtext: 'Zero confusion allowed' }
+      ]},
+      { type: 'example', scenario: 'Coffee Store - ONE Action', before: { label: 'Scattered Actions', text: '"Buy Now" + "Subscribe & Save" + "Read Reviews" + "Compare Products" + "Contact Us" + "Download Our App"' }, after: { label: 'Single Focus', text: 'Every section leads to ONE button: "Get Your First Bag for $1" (Trial offer). No alternatives. No distractions.' }, insight: 'One path to conversion. Every word points to this single action.' },
+      { type: 'content', title: 'The Holy Shift Moment', body: 'Here\'s the breakthrough insight: The Rule of One doesn\'t limit you - it liberates you. When you stop trying to say everything, you finally say something that matters. When you stop trying to be everything to everyone, you become irresistible to the right someone. Focus is your superpower. Clarity is your competitive advantage.' },
+      { type: 'cards', title: 'Apply It Now: The 4-Step Audit', items: [
+        { title: '1. ONE Reader Audit', description: 'Read your product page. Who exactly are you talking to? If you can\'t name them, rewrite it.' },
+        { title: '2. ONE Idea Audit', description: 'What\'s your dominant concept? Can a 12-year-old explain it in one sentence? If not, simplify.' },
+        { title: '3. ONE Offer Audit', description: 'Count your options. More than one? Cut everything except the best solution.' },
+        { title: '4. ONE Action Audit', description: 'Count your CTAs. More than one? Remove all but the most important action.' }
+      ]},
+      { type: 'visual', title: 'The Power of ONE', visualType: 'stats', data: [
+        { value: '3-5x', label: 'higher conversions', subtext: 'Single CTA vs multiple' },
+        { value: '67%', label: 'less bounce', subtext: 'When message is focused' },
+        { value: '1+1+1+1', label: 'equals conversion', subtext: 'The multiplication effect' }
+      ]},
+      { type: 'quiz', question: 'According to the Rule of One, what happens when you write to ONE specific person?', options: ['You limit your market and lose potential customers', 'Everyone like that person feels understood and connects with your message', 'You need to create separate pages for every customer type', 'Your message becomes too narrow to be effective'], correctIndex: 1, feedback: { correct: 'Exactly! This is the paradox of persuasion: when you narrow your focus to ONE specific person, everyone like them feels seen and understood. Specificity creates connection, not limitation. This is why the most successful copy speaks to an individual, not a crowd.', incorrect: 'Not quite. The magic of the Rule of One is this: when you write to ONE specific person, everyone LIKE that person feels understood. You\'re not limiting your market - you\'re creating deeper connection. Specificity doesn\'t narrow your reach; it amplifies your impact.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
       return (
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function ScaleIn({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      return (
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    function Counter({ end, suffix = "", duration = 2 }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      useEffect(() => {
-        if (!isInView) return;
-        let start = 0;
-        const increment = end / (duration * 60);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= end) {
-            setCount(end);
-            clearInterval(timer);
-          } else {
-            setCount(Math.floor(start));
-          }
-        }, 1000 / 60);
-        return () => clearInterval(timer);
-      }, [isInView, end, duration]);
-
-      return <span ref={ref}>{count}{suffix}</span>;
-    }
-
-    // Interactive Focus Demo - Shows scattered vs focused messaging
-    function FocusDemo() {
-      const [mode, setMode] = useState('scattered');
-
-      const scattered = {
-        readers: ['Business Owners', 'Marketers', 'Entrepreneurs', 'Students', 'Everyone'],
-        ideas: ['Save Time', 'Make Money', 'Be Happy', 'Get Healthy', 'Learn Fast'],
-        offers: ['Course', 'Ebook', 'Coaching', 'Software', 'Community'],
-        actions: ['Buy Now', 'Subscribe', 'Download', 'Join', 'Contact']
-      };
-
-      const focused = {
-        readers: ['Burned-out solopreneur working 60+ hours'],
-        ideas: ['Automate your business to work 20 hours/week'],
-        offers: ['The Automation Blueprint Course'],
-        actions: ['Start Your 7-Day Free Trial']
-      };
-
-      const data = mode === 'scattered' ? scattered : focused;
-
-      return (
-        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
-          <div className="flex gap-4 mb-8 justify-center">
-            <button
-              onClick={() => setMode('scattered')}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                mode === 'scattered'
-                  ? 'bg-neutral-500 text-white'
-                  : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-              }`}
-            >
-              Scattered (Fails)
-            </button>
-            <button
-              onClick={() => setMode('focused')}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                mode === 'focused'
-                  ? 'bg-neutral-900 text-white'
-                  : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-              }`}
-            >
-              Focused (Converts)
-            </button>
-          </div>
-
-          <div className="grid grid-cols-4 gap-4">
-            {['Reader', 'Idea', 'Offer', 'Action'].map((label, i) => {
-              const key = label.toLowerCase() + 's';
-              const items = data[key] || [];
-              return (
-                <div key={label} className="text-center">
-                  <div className="text-xs uppercase tracking-wider text-zinc-500 mb-3">One {label}</div>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={mode + label}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className={`p-4 rounded-xl min-h-[160px] flex flex-col justify-center gap-2 ${
-                        mode === 'scattered' ? 'bg-neutral-600/10 border border-neutral-500/30' : 'bg-neutral-900/30 border border-neutral-700/50'
-                      }`}
-                    >
-                      {items.map((item, idx) => (
-                        <motion.div
-                          key={item}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.1 }}
-                          className={`text-sm ${mode === 'scattered' ? 'text-neutral-400' : 'text-white font-semibold text-base'}`}
-                        >
-                          {item}
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-8 text-center">
-            <motion.div
-              key={mode}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={`inline-flex items-center gap-3 px-6 py-3 rounded-full ${
-                mode === 'scattered' ? 'bg-neutral-500/20 text-neutral-400' : 'bg-neutral-900/30 text-white'
-              }`}
-            >
-              {mode === 'scattered' ? (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Confused reader = No action
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Clear path = High conversion
-                </>
-              )}
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
             </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
-    }
+    };
 
-    // One Reader Persona Builder
-    function PersonaDemo() {
-      const [step, setStep] = useState(0);
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-      const layers = [
-        { label: 'Demographics', value: 'Female, 35-45, $80K income', color: 'bg-zinc-700' },
-        { label: 'Situation', value: 'Running a side business while employed', color: 'bg-zinc-600' },
-        { label: 'Frustration', value: 'No time to scale, working nights and weekends', color: 'bg-orange-600' },
-        { label: 'Desire', value: 'Quit job and run business full-time', color: 'bg-cyan-600' },
-        { label: 'Fear', value: 'What if it fails and I lose everything?', color: 'bg-cyan-500' }
-      ];
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
 
-      return (
-        <div className="bg-white rounded-2xl p-8">
-          <h4 className="text-xl font-bold text-zinc-900 mb-6 text-center">Build Your ONE Reader</h4>
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-          <div className="flex justify-center mb-8">
-            <div className="relative w-64 h-64">
-              {layers.slice(0, step + 1).map((layer, idx) => (
-                <motion.div
-                  key={layer.label}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className={`absolute inset-0 rounded-full ${layer.color} flex items-center justify-center`}
-                  style={{
-                    transform: `scale(${1 - idx * 0.15})`,
-                    zIndex: layers.length - idx
-                  }}
-                >
-                  {idx === step && (
-                    <div className="text-center px-4">
-                      <div className="text-xs uppercase tracking-wider text-white/60 mb-1">{layer.label}</div>
-                      <div className="text-sm font-medium text-white">{layer.value}</div>
-                    </div>
-                  )}
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
                 </motion.div>
               ))}
             </div>
           </div>
+        );
+      }
+      return null;
+    };
 
-          <div className="flex justify-center gap-2">
-            {layers.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setStep(idx)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  idx <= step ? 'bg-cyan-500' : 'bg-zinc-300'
-                }`}
-              />
-            ))}
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-
-          <p className="text-center text-zinc-600 mt-6 text-sm">
-            Click dots to reveal each layer. The deeper you go, the more powerful your copy.
-          </p>
         </div>
       );
-    }
+    };
 
-    // Power of One Calculator
-    function PowerCalculator() {
-      const [scores, setScores] = useState({ reader: 1, idea: 1, offer: 1, action: 1 });
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the foundation of persuasive copy: ONE reader, ONE idea, ONE offer, ONE action. This isn't a limitation - it's liberation. Clarity is your competitive advantage.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+        {data?.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <div className="space-y-1.5">
+              {data.sources.map((source, i) => (
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+                  {source.name}
+                  <Icons.ExternalLink />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
 
-      const power = scores.reader * scores.idea * scores.offer * scores.action;
-      const maxPower = 625; // 5^4
-      const percentage = Math.round((power / maxPower) * 100);
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-      const labels = {
-        reader: 'ONE Reader',
-        idea: 'ONE Big Idea',
-        offer: 'ONE Offer',
-        action: 'ONE Action'
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
       };
 
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
       return (
-        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
-          <h4 className="text-xl font-bold text-white mb-6 text-center">Your Persuasion Power Score</h4>
-
-          <div className="grid grid-cols-2 gap-6 mb-8">
-            {Object.entries(scores).map(([key, value]) => (
-              <div key={key} className="text-center">
-                <div className="text-sm text-zinc-400 mb-2">{labels[key]}</div>
-                <input
-                  type="range"
-                  min="1"
-                  max="5"
-                  value={value}
-                  onChange={(e) => setScores({...scores, [key]: parseInt(e.target.value)})}
-                  className="w-full accent-cyan-500"
-                />
-                <div className="flex justify-between text-xs text-zinc-500 mt-1">
-                  <span>Scattered</span>
-                  <span className="text-cyan-400 font-bold">{value}/5</span>
-                  <span>Focused</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <div className="text-6xl font-bold text-cyan-400 mb-2">{power}</div>
-            <div className="text-zinc-400">Persuasion Power ({percentage}% of max)</div>
-
-            <div className="mt-4 h-3 bg-zinc-800 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-cyan-600 to-cyan-400"
-                initial={{ width: 0 }}
-                animate={{ width: `${percentage}%` }}
-                transition={{ duration: 0.5 }}
-              />
-            </div>
-
-            <p className="text-sm text-zinc-500 mt-4">
-              {percentage < 30 && "Your message is too scattered. Focus each element."}
-              {percentage >= 30 && percentage < 60 && "Getting better! Keep narrowing your focus."}
-              {percentage >= 60 && percentage < 90 && "Strong focus! Your message has real power."}
-              {percentage >= 90 && "Maximum persuasion! Your message is laser-focused."}
-            </p>
-          </div>
-        </div>
-      );
-    }
-
-    function App() {
-      return (
-        <div className="min-h-screen">
-          {/* Hero Section - Dark */}
-          <section className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/20 via-transparent to-transparent" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-              <FadeUp>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                  <span className="text-cyan-400 text-sm font-medium">Copywriting Fundamentals</span>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                  The <span className="accent glow-text">Rule of One</span>
-                </h1>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <p className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-                  One reader. One big idea. One offer. One action.
-                  <span className="text-white font-medium"> The foundation of all persuasive copy.</span>
-                </p>
-              </FadeUp>
-
-              <FadeUp delay={0.3}>
-                <div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto">
-                  {[
-                    { icon: '1', label: 'Reader', desc: 'Speak to ONE person' },
-                    { icon: '1', label: 'Idea', desc: 'ONE compelling concept' },
-                    { icon: '1', label: 'Offer', desc: 'ONE clear solution' },
-                    { icon: '1', label: 'Action', desc: 'ONE next step' }
-                  ].map((item, i) => (
-                    <ScaleIn key={item.label} delay={0.4 + i * 0.1}>
-                      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl p-6 glow">
-                        <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
-                          <span className="text-2xl font-bold text-white">{item.icon}</span>
-                        </div>
-                        <div className="text-white font-semibold">{item.label}</div>
-                        <div className="text-zinc-500 text-sm mt-1">{item.desc}</div>
-                      </div>
-                    </ScaleIn>
-                  ))}
-                </div>
-              </FadeUp>
-            </div>
-
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-zinc-600"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
               </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
-          </section>
-
-          {/* The Problem Section - White */}
-          <section className="py-24 bg-white">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-cyan-600 text-sm font-semibold uppercase tracking-wider">The Core Problem</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Why Most Copy Fails</h2>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <div className="bg-zinc-50 rounded-2xl p-8 mb-12">
-                  <p className="text-lg text-zinc-700 leading-relaxed mb-6">
-                    Most marketers make the same fatal mistake: <span className="font-semibold text-zinc-900">they try to speak to everyone.</span> They pile on multiple benefits, throw in various offers, and scatter calls-to-action everywhere.
-                  </p>
-                  <p className="text-lg text-zinc-700 leading-relaxed">
-                    The result? A confused prospect who does nothing. Because <span className="font-semibold text-cyan-600">a confused mind always says no.</span>
-                  </p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <FocusDemo />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* One Reader Section - Dark */}
-          <section className="py-24 bg-zinc-950">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Foundation #1</span>
-                  <h2 className="text-4xl font-bold text-white mt-4">ONE Reader</h2>
-                  <p className="text-zinc-400 mt-4 text-lg">Write to a single person, not an audience</p>
-                </div>
-              </FadeUp>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                <FadeUp delay={0.1}>
-                  <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800 h-full">
-                    <h3 className="text-xl font-bold text-white mb-4">The Power of Specificity</h3>
-                    <p className="text-zinc-400 leading-relaxed mb-6">
-                      When you write to "everyone," you connect with no one. But when you write to ONE specific person, everyone like that person feels understood.
-                    </p>
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-red-400 text-sm">X</span>
-                        </div>
-                        <p className="text-zinc-500">"Are you a business owner looking to grow?"</p>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-cyan-400 text-sm">O</span>
-                        </div>
-                        <p className="text-cyan-300">"Working 60-hour weeks but your business still depends entirely on you?"</p>
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.2}>
-                  <PersonaDemo />
-                </FadeUp>
-              </div>
-            </div>
-          </section>
-
-          {/* One Big Idea Section - White */}
-          <section className="py-24 bg-white">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-cyan-600 text-sm font-semibold uppercase tracking-wider">Foundation #2</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">ONE Big Idea</h2>
-                  <p className="text-zinc-600 mt-4 text-lg">A single, dominant concept that carries your message</p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <div className="bg-gradient-to-br from-cyan-50 to-white rounded-2xl p-8 border border-cyan-100 mb-12">
-                  <h3 className="text-2xl font-bold text-zinc-900 mb-6 text-center">The Big Idea Test</h3>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {[
-                      { q: 'Is it instantly clear?', desc: 'Reader gets it in 5 seconds or less' },
-                      { q: 'Is it different?', desc: 'Not what everyone else is saying' },
-                      { q: 'Is it memorable?', desc: 'They can repeat it to others' }
-                    ].map((item, i) => (
-                      <div key={i} className="text-center p-6 bg-white rounded-xl shadow-sm">
-                        <div className="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <span className="text-cyan-600 font-bold">{i + 1}</span>
-                        </div>
-                        <h4 className="font-semibold text-zinc-900 mb-2">{item.q}</h4>
-                        <p className="text-sm text-zinc-600">{item.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.2}>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-neutral-100 rounded-xl p-6 border border-neutral-200">
-                    <div className="text-neutral-600 font-semibold mb-3">Weak (Multiple Ideas)</div>
-                    <p className="text-zinc-700 text-sm leading-relaxed">
-                      "Our course teaches you marketing, sales, copywriting, email automation, social media, and personal branding to grow your business."
-                    </p>
-                  </div>
-                  <div className="bg-neutral-950 rounded-xl p-6">
-                    <div className="text-white font-semibold mb-3">Strong (ONE Big Idea)</div>
-                    <p className="text-neutral-300 text-sm leading-relaxed">
-                      "The 4-Hour Workday: Build a business that runs itself while you focus on what matters."
-                    </p>
-                  </div>
-                </div>
-              </FadeUp>
-
-              {/* Lesson Illustration */}
-              <FadeUp>
-                <div className="my-8">
-                  <img
-                    src="images/hero-image.jpg"
-                    alt="Lesson illustration"
-                    className="w-full h-auto rounded-xl"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover' }}
-                  />
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* One Offer & One Action - Dark */}
-          <section className="py-24 bg-zinc-950">
-            <div className="max-w-4xl mx-auto px-6">
-              <div className="grid md:grid-cols-2 gap-12">
-                <FadeUp>
-                  <div>
-                    <span className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Foundation #3</span>
-                    <h2 className="text-3xl font-bold text-white mt-4 mb-6">ONE Offer</h2>
-                    <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-                      <p className="text-zinc-400 leading-relaxed mb-6">
-                        Don't give options. Options create doubt. Present ONE clear solution that solves their ONE problem.
-                      </p>
-                      <div className="space-y-4">
-                        <div className="p-4 bg-neutral-800 rounded-xl border border-neutral-700">
-                          <div className="text-neutral-400 text-sm font-medium mb-2">Choice Paralysis</div>
-                          <p className="text-zinc-500 text-sm">"Choose from our Basic, Pro, or Enterprise plan..."</p>
-                        </div>
-                        <div className="p-4 bg-white rounded-xl border border-neutral-200">
-                          <div className="text-neutral-900 text-sm font-medium mb-2">Clear Path</div>
-                          <p className="text-neutral-700 text-sm">"Get the Complete System for $497"</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-
-                <FadeUp delay={0.1}>
-                  <div>
-                    <span className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Foundation #4</span>
-                    <h2 className="text-3xl font-bold text-white mt-4 mb-6">ONE Action</h2>
-                    <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-                      <p className="text-zinc-400 leading-relaxed mb-6">
-                        Every piece of copy should drive toward a single, clear next step. No alternatives. No distractions.
-                      </p>
-                      <div className="space-y-4">
-                        <div className="p-4 bg-neutral-800 rounded-xl border border-neutral-700">
-                          <div className="text-neutral-400 text-sm font-medium mb-2">Scattered CTAs</div>
-                          <p className="text-zinc-500 text-sm">"Buy now, or subscribe, or download the free guide, or book a call..."</p>
-                        </div>
-                        <div className="p-4 bg-white rounded-xl border border-neutral-200">
-                          <div className="text-neutral-900 text-sm font-medium mb-2">Single Focus</div>
-                          <p className="text-neutral-700 text-sm">"Start Your Free Trial Now"</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-              </div>
-            </div>
-          </section>
-
-          {/* Holy Shit Moment - White */}
-          <section className="py-24 bg-gradient-to-b from-white to-cyan-50">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-12">
-                  <span className="text-cyan-600 text-sm font-semibold uppercase tracking-wider">The Insight</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Holy Shift Moment</h2>
-                </div>
-              </FadeUp>
-
-              <ScaleIn delay={0.2}>
-                <div className="bg-white rounded-3xl p-10  border border-zinc-200 text-center">
-                  <div className="w-20 h-20 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
-                    <svg className="w-10 h-10 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <blockquote className="text-2xl md:text-3xl font-bold text-zinc-900 leading-relaxed mb-6">
-                    "When you try to speak to everyone,
-                    <span className="text-cyan-600"> you speak to no one.</span>
-                    <br />When you speak to ONE person,
-                    <span className="text-cyan-600"> everyone like them listens."</span>
-                  </blockquote>
-                  <p className="text-zinc-600 text-lg">
-                    The paradox of persuasion: <span className="font-semibold">narrow your focus to expand your impact.</span>
-                  </p>
-                </div>
-              </ScaleIn>
-            </div>
-          </section>
-
-          {/* Calculator Section - Dark */}
-          <section className="py-24 bg-black">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Interactive Tool</span>
-                  <h2 className="text-4xl font-bold text-white mt-4">Score Your Copy</h2>
-                  <p className="text-zinc-400 mt-4">How focused is your current message?</p>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <PowerCalculator />
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Application Section - White */}
-          <section className="py-24 bg-white">
-            <div className="max-w-4xl mx-auto px-6">
-              <FadeUp>
-                <div className="text-center mb-16">
-                  <span className="text-cyan-600 text-sm font-semibold uppercase tracking-wider">Take Action</span>
-                  <h2 className="text-4xl font-bold text-zinc-900 mt-4">Apply It Now</h2>
-                </div>
-              </FadeUp>
-
-              <FadeUp delay={0.1}>
-                <div className="bg-zinc-50 rounded-2xl p-8">
-                  <div className="space-y-6">
-                    {[
-                      { num: '1', title: 'Define Your ONE Reader', desc: 'Write a detailed description of the single person you are writing to. Give them a name. Know their fears, desires, and daily frustrations.' },
-                      { num: '2', title: 'Crystallize Your ONE Idea', desc: 'What is the single most powerful concept you want them to remember? Can you say it in one sentence?' },
-                      { num: '3', title: 'Present ONE Offer', desc: 'Remove all alternatives. What is the single best solution for their problem? Make it obvious.' },
-                      { num: '4', title: 'Drive ONE Action', desc: 'What is the ONE thing you want them to do after reading? Every word should point to this.' }
-                    ].map((step, i) => (
-                      <ScaleIn key={i} delay={0.2 + i * 0.1}>
-                        <div className="flex gap-6 p-6 bg-white rounded-xl shadow-sm">
-                          <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <span className="text-xl font-bold text-white">{step.num}</span>
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-zinc-900 mb-2">{step.title}</h4>
-                            <p className="text-zinc-600">{step.desc}</p>
-                          </div>
-                        </div>
-                      </ScaleIn>
-                    ))}
-                  </div>
-                </div>
-              </FadeUp>
-            </div>
-          </section>
-
-          {/* Final CTA - Dark */}
-          <section className="py-24 bg-black">
-            <div className="max-w-3xl mx-auto px-6 text-center">
-              <FadeUp>
-                <h2 className="text-4xl font-bold text-white mb-6">Remember</h2>
-                <p className="text-xl text-zinc-400 mb-12 leading-relaxed">
-                  The Rule of One is not a limitation. It is <span className="text-cyan-400 font-semibold">liberation</span>.
-                  <br />Freedom from confusion. Freedom from mediocrity. Freedom to truly connect.
-                </p>
-              </FadeUp>
-
-              <ScaleIn delay={0.2}>
-                <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-500 rounded-2xl">
-                  <span className="text-white font-bold text-lg">ONE + ONE + ONE + ONE = CONVERSION</span>
-                </div>
-              </ScaleIn>
-            </div>
-          </section>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>
