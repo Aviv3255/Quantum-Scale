@@ -19,7 +19,46 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import LessonModal from '@/components/LessonModal';
 import { processedArticles as articles, Article } from '@/data/articles';
+import { getUserProfile } from '@/lib/supabase';
+
+// Lesson metadata for modal
+const lessonMeta: Record<string, { title: string; description: string }> = {
+  'familiar-surprise-secret': { title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle' },
+  'red-button-effect': { title: 'The Red Button Effect', description: 'Understanding psychological reactance' },
+  'fred-method': { title: 'The F.R.E.D. Method', description: 'A framework for audience psychology' },
+  'emotion-decides': { title: 'Emotion Decides, Logic Justifies', description: 'How emotions drive purchases' },
+  'gatekeeper-method': { title: 'The Gatekeeper Method', description: 'Bypass the brain\'s attention filter' },
+  'three-second-rule': { title: 'The 3-Second Rule', description: 'The critical window to capture attention' },
+  'science-of-selling': { title: 'The Science of Selling', description: 'Systematic approach to conversion' },
+  'persuasion-blueprint': { title: 'The Persuasion Blueprint', description: 'Master plan for influential copy' },
+  'persuasion-stack': { title: 'The Persuasion Stack', description: 'Layered persuasion techniques' },
+  'architecture-of-influence': { title: 'Architecture of Influence', description: 'Framework of persuasive communication' },
+  'wiifm-principle': { title: 'The WIIFM Principle', description: 'What\'s In It For Me' },
+  'three-canons-of-craft': { title: 'The Three Canons of Craft', description: 'Three tests every sentence must pass' },
+  'cpppb-proof-loop': { title: 'The CPPPB Proof Loop', description: 'Five-element framework for persuasion' },
+  'damaging-admission': { title: 'The Damaging Admission', description: 'Why revealing weakness builds trust' },
+  'emotional-precision': { title: 'Emotional Precision', description: 'Target precise emotions that drive action' },
+  'blind-spot-effect': { title: 'The Blind Spot Effect', description: 'What prospects can\'t see about themselves' },
+  'customer-voice-mining': { title: 'Voice of Customer Mining', description: 'Extract the exact words customers use' },
+  'double-bind-of-fear': { title: 'The Double Bind of Fear', description: 'Leverage action and inaction fears' },
+  'emotion-spectrum': { title: 'The Emotion Spectrum', description: 'Map the full range of persuasive emotions' },
+  'forty-forty-twenty-rule': { title: 'The 40/40/20 Rule', description: 'The marketing success formula' },
+  'four-primal-needs': { title: 'The Four Primal Needs', description: 'Deep drivers behind every purchase' },
+  'ocpb-formula': { title: 'The OCPB Formula', description: 'Offer, Copy, Proof, Bonus stack' },
+  'sales-message-anatomy': { title: 'Sales Message Anatomy', description: 'Dissect what makes copy convert' },
+  'self-persuasion-architecture': { title: 'Self-Persuasion Architecture', description: 'Let prospects convince themselves' },
+  'structural-tension': { title: 'Structural Tension', description: 'Create irresistible forward momentum' },
+  'three-growth-levers': { title: 'The Three Growth Levers', description: 'Customers, frequency, transaction size' },
+  'three-levels-of-change': { title: 'The Three Levels of Change', description: 'Transform behavior, beliefs, identity' },
+  'trust-architecture': { title: 'The Trust Architecture', description: 'Build unshakeable credibility' },
+  'unique-mechanism': { title: 'The Unique Mechanism', description: 'Proprietary reason your solution works' },
+  'master-key-framework': { title: 'The Master Key Framework', description: 'First-principles guide to copy' },
+  'rule-of-one': { title: 'The Rule of One', description: 'One reader, one idea, one offer, one action' },
+  'architecture-of-belief': { title: 'The Architecture of Belief', description: 'Three levels of mastery' },
+  'copywriters-codex': { title: 'The Copywriter\'s Codex', description: 'A synthesized playbook from the masters' },
+};
 
 // Categories for filtering
 const categories = [
@@ -49,12 +88,46 @@ export default function LearnPage() {
   const { user, isLoading } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string>('Builder');
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Fetch user's name for lesson personalization
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (!user) return;
+
+      // First try user_metadata
+      const metaName = user.user_metadata?.full_name;
+      if (metaName) {
+        setUserName(metaName.split(' ')[0]);
+        return;
+      }
+
+      // Fallback to profile
+      const { data: profile } = await getUserProfile(user.id);
+      if (profile?.full_name) {
+        setUserName(profile.full_name.split(' ')[0]);
+      }
+    };
+
+    fetchUserName();
+  }, [user]);
+
+  // Handle opening a lesson
+  const openLesson = (slug: string) => {
+    setSelectedLesson(slug);
+  };
+
+  // Handle closing a lesson
+  const closeLesson = () => {
+    setSelectedLesson(null);
+  };
 
   if (isLoading || !user) {
     return (
@@ -63,6 +136,9 @@ export default function LearnPage() {
       </div>
     );
   }
+
+  // Get lesson info for modal
+  const selectedLessonInfo = selectedLesson ? lessonMeta[selectedLesson] : null;
 
   const filteredArticles = articles.filter((article) => {
     const matchesCategory = activeCategory === 'all' || article.category === activeCategory;
@@ -100,6 +176,17 @@ export default function LearnPage() {
             </div>
           </div>
         </header>
+
+        {/* Lesson Modal - opens ON TOP of everything */}
+        {selectedLesson && selectedLessonInfo && (
+          <LessonModal
+            slug={selectedLesson}
+            title={selectedLessonInfo.title}
+            description={selectedLessonInfo.description}
+            userName={userName}
+            onClose={closeLesson}
+          />
+        )}
 
         {/* Categories Filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide">
@@ -139,7 +226,7 @@ export default function LearnPage() {
             >
               {featuredArticles.map((article) => (
                 <motion.div key={article.id} variants={itemVariants}>
-                  <ArticleCard article={article} featured />
+                  <ArticleCard article={article} featured onLessonClick={openLesson} />
                 </motion.div>
               ))}
             </motion.div>
@@ -167,7 +254,7 @@ export default function LearnPage() {
               >
                 {regularArticles.map((article) => (
                   <motion.div key={article.id} variants={itemVariants}>
-                    <ArticleCard article={article} />
+                    <ArticleCard article={article} onLessonClick={openLesson} />
                   </motion.div>
                 ))}
               </motion.div>
@@ -195,19 +282,31 @@ export default function LearnPage() {
 interface ArticleCardProps {
   article: Article;
   featured?: boolean;
+  onLessonClick: (slug: string) => void;
 }
 
-function ArticleCard({ article, featured }: ArticleCardProps) {
-  // Use directUrl for lessons, otherwise use article page
-  const linkHref = article.directUrl || `/learn/${article.slug}`;
-  const isLesson = !!article.directUrl;
+function ArticleCard({ article, featured, onLessonClick }: ArticleCardProps) {
+  // Check if this is a lesson (has directUrl like /learn/lessons/xxx)
+  const isLesson = !!article.directUrl && article.directUrl.includes('/lessons/');
 
-  return (
-    <Link
-      href={linkHref}
-      className={`card card-hover group block overflow-hidden ${featured ? 'border-[var(--border-strong)]' : ''}`}
-      style={{ padding: 0 }}
-    >
+  // Extract slug from directUrl for lessons
+  const lessonSlug = isLesson
+    ? article.directUrl?.split('/lessons/')[1] || ''
+    : '';
+
+  // For lessons: open modal. For articles: navigate to page
+  const handleClick = (e: React.MouseEvent) => {
+    if (isLesson && lessonSlug) {
+      e.preventDefault();
+      onLessonClick(lessonSlug);
+    }
+  };
+
+  // Link href - lessons will be intercepted by onClick, articles navigate normally
+  const linkHref = isLesson ? '#' : `/learn/${article.slug}`;
+
+  const CardContent = () => (
+    <>
       {/* Thumbnail */}
       <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-secondary)]">
         <Image
@@ -270,6 +369,29 @@ function ArticleCard({ article, featured }: ArticleCardProps) {
           <ChevronRight size={16} strokeWidth={1.5} />
         </div>
       </div>
+    </>
+  );
+
+  // For lessons, use a button/div with onClick. For articles, use Link
+  if (isLesson) {
+    return (
+      <button
+        onClick={handleClick}
+        className={`card card-hover group block overflow-hidden text-left w-full ${featured ? 'border-[var(--border-strong)]' : ''}`}
+        style={{ padding: 0 }}
+      >
+        <CardContent />
+      </button>
+    );
+  }
+
+  return (
+    <Link
+      href={linkHref}
+      className={`card card-hover group block overflow-hidden ${featured ? 'border-[var(--border-strong)]' : ''}`}
+      style={{ padding: 0 }}
+    >
+      <CardContent />
     </Link>
   );
 }

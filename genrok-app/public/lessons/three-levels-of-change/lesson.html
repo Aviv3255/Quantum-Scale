@@ -920,14 +920,30 @@
       const [direction, setDirection] = useState(0);
       const userName = useMemo(() => getUserName(), []);
 
-      const goToSlide = useCallback((newSlide) => {
-        if (newSlide < 0 || newSlide >= slides.length) return;
-        setDirection(newSlide > currentSlide ? 1 : -1);
-        setCurrentSlide(newSlide);
+      // Use ref to avoid stale closures in navigation
+      const currentSlideRef = React.useRef(0);
+
+      // Keep ref in sync with state
+      React.useEffect(() => {
+        currentSlideRef.current = currentSlide;
       }, [currentSlide]);
 
-      const nextSlide = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
-      const prevSlide = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
+      const goToSlide = useCallback((newSlide) => {
+        if (newSlide < 0 || newSlide >= slides.length) return;
+        const dir = newSlide > currentSlideRef.current ? 1 : -1;
+        setDirection(dir);
+        setCurrentSlide(newSlide);
+      }, []);
+
+      const nextSlide = useCallback(() => {
+        const next = currentSlideRef.current + 1;
+        if (next < slides.length) goToSlide(next);
+      }, [goToSlide]);
+
+      const prevSlide = useCallback(() => {
+        const prev = currentSlideRef.current - 1;
+        if (prev >= 0) goToSlide(prev);
+      }, [goToSlide]);
 
       // Keyboard navigation - ALWAYS works
       useEffect(() => {
@@ -971,41 +987,9 @@
       const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="fixed inset-0 z-[9999]">
-          {/* Full screen overlay - covers EVERYTHING including sidebar */}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(16px)' }}
-          />
-
-          {/* Floating Lesson Container - 85% of TOTAL screen */}
-          <div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl overflow-hidden flex flex-col"
-            style={{
-              width: '85vw',
-              height: '85vh',
-              maxWidth: '1400px',
-              maxHeight: '900px',
-              boxShadow: '0 25px 100px rgba(0, 0, 0, 0.5)'
-            }}
-          >
-            {/* Header - Back + Title */}
-            <div className="flex items-center justify-between px-5 md:px-6 py-3.5 border-b border-neutral-100 flex-shrink-0">
-              <a
-                href="/learn"
-                className="flex items-center gap-1.5 text-neutral-400 hover:text-neutral-600 transition-colors text-xs"
-              >
-                <Icons.Back />
-                <span>Back to Learning Center</span>
-              </a>
-              <div className="text-right">
-                <p className="text-neutral-900 font-semibold text-sm">{LESSON_CONFIG.title}</p>
-                <p className="text-neutral-400 text-[10px]">{LESSON_CONFIG.description}</p>
-              </div>
-            </div>
-
-            {/* Slide Content Area */}
-            <div className="flex-1 relative overflow-hidden">
+        <div className="w-full h-screen bg-white flex flex-col">
+          {/* Slide Content Area - fills the iframe */}
+          <div className="flex-1 relative overflow-hidden">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentSlide}
@@ -1056,7 +1040,6 @@
                 ))}
               </div>
             </div>
-          </div>
         </div>
       );
     };
