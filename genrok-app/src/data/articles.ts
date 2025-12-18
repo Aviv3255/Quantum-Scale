@@ -1082,7 +1082,8 @@ A Brand Search campaign is mandatory for every store:
 • It is extremely cheap to maintain
 
 This is one of the few campaigns that consistently delivers guaranteed results in every store.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/brand-search-campaign'
     },
     {
       id: 16,
@@ -1127,7 +1128,8 @@ They reduce effort, improve the buying experience, and increase conversions in a
 Any store with variants should be using them.`,
       buttons: [
         { text: 'Add Swatches to your store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/swatch-variants'
     },
     {
       id: 17,
@@ -1194,7 +1196,8 @@ This structure produces more money, more items per order, and more purchases.`,
       buttons: [
         { text: 'Add Wishlist', url: 'https://vitals.app/shopify/12548540' },
         { text: 'Add cart upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }
-      ]
+      ],
+      directUrl: '/learn/lessons/buy-now-button'
     },
     {
       id: 18,
@@ -1256,7 +1259,8 @@ A rounded Add to Cart button converts slightly better than a square one.
 It will not transform the entire business, but it improves the buying experience and adds incremental conversion gains.
 
 In ecommerce, every percent matters, and this is an easy win.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/rounded-button'
     },
     {
       id: 19,
@@ -1290,7 +1294,8 @@ to find which theme creates a smoother buying experience and increases conversio
 Impulse is still an excellent theme, but in a direct comparison Shrine simply outperformed it across the board.`,
       buttons: [
         { text: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }
-      ]
+      ],
+      directUrl: '/learn/lessons/best-shopify-theme'
     },
     {
       id: 20,
@@ -1334,7 +1339,8 @@ It automatically prevents Honey and other extensions from revealing your coupons
 This is the first mandatory step we implement for every brand we build.`,
       buttons: [
         { text: 'Install coupon blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }
-      ]
+      ],
+      directUrl: '/learn/lessons/coupon-leaking'
     },
     {
       id: 21,
@@ -1433,7 +1439,8 @@ Andromeda has changed the rules.
 Those who continue splitting audiences and trying to outsmart the algorithm will lose.
 
 Those who understand that the system is now an AI-driven matching engine, and focus on creative and offer, will generate stronger results on the same budget.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/meta-andromeda'
     },
     {
       id: 22,
@@ -1503,7 +1510,8 @@ It won because it sold a **cheap entry into a long-term profit engine**.
 The same principle can turn any ecommerce store into an LTV machine.
 
 If you want, I can show you exactly how to apply the Gillette model to your brand step by step.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/gillette-model'
     },
     {
       id: 23,
@@ -1618,7 +1626,8 @@ A journey where they:
 ✔ and build around your brand
 
 The longer the journey, the higher the LTV, the more resistant your CAC becomes, and the easier it is to reach millions without relying on luck or hacks.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/best-niches-2026'
     },
     {
       id: 24,
@@ -1694,7 +1703,8 @@ Winning products on Meta always combine two elements:
 If you want, I can prepare a list of product examples with strong USP in every niche.`,
       buttons: [
         { text: 'Product Mapping Manipulation course', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/two-meta-rules'
     },
     {
       id: 25,
@@ -1739,7 +1749,8 @@ Yes. If used consistently with no improvement, there is a full product guarantee
 • It consistently lowers CAC by filtering hesitation at the subconscious level
 
 If you want, I can now prepare versions for skincare, clothing, home decor, jewelry, fitness, or any other niche.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/pinned-comment-cac'
     },
     {
       id: 26,
@@ -1790,7 +1801,8 @@ A simple logo triggers this perception and reduces resistance.
 Adding a small MasterCard (or similar payment) logo on your product page or checkout page can **increase conversion rates**, because it reduces perceived financial friction and increases willingness to purchase.
 
 Across many stores we see a consistent lift in the "willingness to pay" metric when the icon is present.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/mastercard-psychology'
     },
     {
       id: 27,
@@ -1867,7 +1879,8 @@ This is how you sell anything to anyone at scale.`,
       buttons: [
         { text: 'The Social Proof', url: 'https://quantum-scale.co/pages/the-social-proof' },
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' }
-      ]
+      ],
+      directUrl: '/learn/lessons/formula-to-sell'
     },
     {
       id: 28,
@@ -1951,7 +1964,8 @@ These two resources will take you to the next stage:`,
       buttons: [
         { text: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
         { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/choose-products'
     },
     {
       id: 29,
@@ -2053,7 +2067,8 @@ It is immune to algorithms, platform changes, and ad costs because it is built o
 **Customers buy the future version of themselves, not the product that gets them there.**
 
 Halbert built his entire empire on this truth.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/gary-halbert-secret'
     },
     {
       id: 30,
@@ -2148,7 +2163,8 @@ At Quantum Scale we teach exactly this, how to take a product that seems ordinar
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
         { text: 'Offer Workshop', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
         { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/pet-rock-story'
     },
     {
       id: 31,
@@ -2309,7 +2325,8 @@ And yes, the products on this site cost $30–$55.
       buttons: [
         { text: 'Connect the app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
         { text: 'Full LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
+      ],
+      directUrl: '/learn/lessons/starbucks-ltv'
     },
     {
       id: 32,
@@ -2379,7 +2396,8 @@ Each headline is engineered to stop the scroll, open a curiosity loop, and activ
 If you're ready to stop guessing and start using formulas that are scientifically and psychologically proven, this is for you.`,
       buttons: [
         { text: '85 Meta Ad Headlines & Hooks Templates', url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks' }
-      ]
+      ],
+      directUrl: '/learn/lessons/killer-headlines'
     },
     {
       id: 33,
@@ -2472,7 +2490,8 @@ Combine both, and you can sell almost anything to almost anyone at almost any re
 This is the psychology used by the best marketers in the world.`,
       buttons: [
         { text: 'Apply Social Proof Protocol to your strategy', url: 'https://quantum-scale.co/pages/the-social-proof' }
-      ]
+      ],
+      directUrl: '/learn/lessons/two-dirty-tricks'
     },
     {
       id: 34,
@@ -2557,7 +2576,8 @@ It becomes a business with a power coefficient ten times higher than any competi
 And this, dear entrepreneurs, is the golden nugget of the marketing world.`,
       buttons: [
         { text: 'Connect the free data app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/golden-lookalike'
     },
     {
       id: 35,
@@ -2643,7 +2663,8 @@ Below, we will provide access to a free external pixel that delivers exact attri
 Only then can ABO testing and CBO scaling operate at full power.`,
       buttons: [
         { text: 'Connect Accurate Pixel', url: 'https://www.triplewhale.com/pixel' }
-      ]
+      ],
+      directUrl: '/learn/lessons/cbo-vs-abo'
     },
     {
       id: 36,
@@ -2750,7 +2771,8 @@ Not marketing tactics.
 Human understanding.`,
       buttons: [
         { text: 'Add this Announcement bar to your store', url: 'https://parityrocket.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/geo-personalization'
     },
     {
       id: 37,
@@ -2799,7 +2821,8 @@ Every line of copy must answer one question, clearly and instantly:
 If it does not, remove it.
 
 Because the fastest way to make someone fall in love with your brand is to make them fall in love with the version of themselves they become with your product.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/no-one-cares'
     },
     {
       id: 38,
@@ -2931,7 +2954,8 @@ Brands that don't will continue fighting over prices and searching for "magic ta
       buttons: [
         { text: '500 Ad Templates in Canva', url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates' },
         { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
-      ]
+      ],
+      directUrl: '/learn/lessons/creative-volume-2026'
     },
     // ==========================================
     // COPYWRITING MASTERCLASS LESSONS
