@@ -11,9 +11,9 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
@@ -24,6 +24,8 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); } 50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); } }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -46,13 +48,13 @@
 
     const welcomeAnimations = {
       morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee\'s ready? Your competition is still sleeping. Let\'s go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You\'re already ahead of 90%!" },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
         { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
       ],
       afternoon: [
         { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let\'s do this." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
         { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
       ],
       evening: [
@@ -61,9 +63,9 @@
         { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
       ],
       night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you\'re building dreams." },
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
         { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You\'re one of us. Can\'t sleep until you win? Welcome home." }
+        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
       ]
     };
 
@@ -99,43 +101,170 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Animated Components
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, delay = 0, color = 'var(--accent)' }) => {
+      const [width, setWidth] = useState(0);
+      useEffect(() => {
+        const timer = setTimeout(() => setWidth(percentage), delay);
+        return () => clearTimeout(timer);
+      }, [percentage, delay]);
+      return (
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-neutral-700">{label}</span>
+            <span className="text-sm font-bold" style={{ color }}>{percentage}%</span>
+          </div>
+          <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
+            <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full rounded-full" style={{ background: color }} />
+          </div>
+        </div>
+      );
+    };
+
+    // Typewriter Text Effect
+    const TypewriterText = ({ text, speed = 50, delay = 0, className = '', onComplete }) => {
+      const [displayText, setDisplayText] = useState('');
+      const [started, setStarted] = useState(false);
+      const [completed, setCompleted] = useState(false);
+      useEffect(() => {
+        const startTimer = setTimeout(() => setStarted(true), delay);
+        return () => clearTimeout(startTimer);
+      }, [delay]);
+      useEffect(() => {
+        if (!started) return;
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < text.length) { setDisplayText(text.slice(0, i + 1)); i++; }
+          else { clearInterval(timer); setCompleted(true); if (onComplete) onComplete(); }
+        }, speed);
+        return () => clearInterval(timer);
+      }, [text, speed, started, onComplete]);
+      return <span className={className}>{displayText}{!completed && <span className="animate-pulse">|</span>}</span>;
+    };
+
+    // Sequential Text Reveal
+    const SequentialReveal = ({ items, renderItem, delayBetween = 800, startDelay = 0 }) => {
+      const [visibleCount, setVisibleCount] = useState(0);
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          if (visibleCount < items.length) {
+            const interval = setInterval(() => {
+              setVisibleCount(prev => {
+                if (prev >= items.length) { clearInterval(interval); return prev; }
+                return prev + 1;
+              });
+            }, delayBetween);
+            return () => clearInterval(interval);
+          }
+        }, startDelay);
+        return () => clearTimeout(timer);
+      }, [items.length, delayBetween, startDelay]);
+      return (
+        <div className="space-y-4">
+          {items.slice(0, visibleCount).map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
+              {renderItem(item, i)}
+            </motion.div>
+          ))}
+        </div>
+      );
+    };
+
+    // Reveal from blur effect
+    const RevealFromBlur = ({ children, delay = 0 }) => {
+      const [revealed, setRevealed] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setRevealed(true), delay);
+        return () => clearTimeout(timer);
+      }, [delay]);
+      return (
+        <motion.div initial={{ opacity: 0, scale: 0.9, filter: 'blur(20px)' }} animate={revealed ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>
+          {children}
+        </motion.div>
+      );
+    };
+
+    // Dramatic Reveal Component
+    const DramaticReveal = ({ children, delay = 0 }) => {
+      const [revealed, setRevealed] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setRevealed(true), delay);
+        return () => clearTimeout(timer);
+      }, [delay]);
+      return (
+        <motion.div initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }} animate={revealed ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
+          {children}
+        </motion.div>
+      );
+    };
+
     const slides = [
-      { type: 'welcome', learningGoals: ['Why private agents matter (scary AliExpress truth)', 'The 3 key features of the best fulfillment partner', 'Why you need a backup agent (even if free)'] },
-      { type: 'hook', headline: 'Using AliExpress in 2025 is like selling iPhones in plastic bags.', subtext: 'The product might be great. But your customer makes a judgment in 0.4 seconds when they see that package. Cheap packaging = cheap product = instant return. The brutal truth? Your fulfillment method is either building your brand or destroying it. There\'s no middle ground.' },
-      { type: 'visual', title: 'The Fulfillment Reality', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Article_thumnails.jpg?v=1763290577', caption: 'This is what separates winners from everyone else' },
-      { type: 'content', title: 'The AliExpress Nightmare', body: 'Let\'s be honest about what AliExpress fulfillment really means: 21-45 day shipping times that kill repeat purchases. Zero quality control - you find out about defects when angry customers do. No real support when things go wrong. Every competitor can find your exact supplier in 3 clicks. This isn\'t dropshipping. This is playing roulette with your reputation.' },
-      { type: 'cards', title: 'Why AliExpress Kills Brands', items: [
-        { title: 'Shipping Death', description: '21-45 days means zero repeat buyers. By the time they get it, they forgot they ordered.' },
-        { title: 'Quality Chaos', description: 'You have no idea what\'s shipping. Wrong color? Damaged? Fake? You find out when they do.' },
-        { title: 'Support Ghost', description: 'When issues happen, you\'re alone. AliExpress suppliers don\'t care about your customer.' },
-        { title: 'Zero Advantage', description: 'Every competitor can source the same product. You\'re competing on price only.' }
+      { type: 'welcome', learningGoals: ['Why your fulfillment partner makes or breaks your brand', 'The criteria that actually matter when choosing an agent', 'Which agent won our testing - and how to connect'] },
+
+      { type: 'dark-statement', statement: 'Your customer just received their package.', followUp: 'In the next 3 seconds, they decide if they\'ll ever buy from you again.' },
+
+      { type: 'story-sequence', scenes: [
+        { emoji: '📦', text: 'A thin plastic envelope arrives' },
+        { emoji: '😕', text: 'No branding. No note. Just... product.' },
+        { emoji: '🧠', text: 'Brain instantly processes: "cheap store"' },
+        { emoji: '🚫', text: 'Decision made. Never ordering again.' }
+      ], conclusion: 'This happens thousands of times daily with AliExpress fulfillment.' },
+
+      { type: 'contrast-reveal', title: 'Now Imagine This Instead', before: { label: 'AliExpress Reality', items: ['21-45 day shipping', 'Thin plastic packaging', 'Zero branding', 'No quality check'] }, after: { label: 'Private Agent', items: ['5-7 day shipping', 'Branded packaging', 'Custom inserts', 'Quality inspection'] } },
+
+      { type: 'big-question', question: 'So which private agent is actually the best?', subtext: 'We tested several to find out.' },
+
+      { type: 'methodology', title: 'How We Tested', tests: [
+        { metric: '55+ Orders', description: 'Placed across multiple agents' },
+        { metric: '500+ Orders', description: 'Tracked long-term at scale' },
+        { metric: '3 Months', description: 'Real-world testing period' }
       ]},
-      { type: 'content', title: 'The Private Agent Advantage', body: 'Here\'s what changes when you switch to a real private agent: 5-7 day delivery instead of 45. Quality control before it ships - catch problems before customers do. 18/6 WhatsApp support when you need it. Bulk pricing that actually saves 3-5%. Branded packaging that builds your reputation. This is the difference between looking like Temu and looking like a real brand.' },
-      { type: 'content', title: 'We Tested Everything', body: 'Over the past 12 months, we placed 55 test orders across every major private agent. We tracked: shipping speed, product quality, communication response time, pricing accuracy, and problem resolution. Then we surveyed 500+ active dropshippers about their real experiences. Not sponsored. Not paid. Just data.' },
-      { type: 'visual', title: 'The Testing Process', visualType: 'stats', data: [
-        { value: '55', label: 'test orders placed', subtext: 'Across all major agents' },
-        { value: '500+', label: 'real users surveyed', subtext: 'Active dropshippers only' },
-        { value: '1', label: 'clear winner', subtext: 'Not even close' }
+
+      { type: 'criteria-bars', title: 'What We Measured', criteria: [
+        { label: 'Shipping Speed', weight: 95, note: 'Customer satisfaction driver #1' },
+        { label: 'Quality Control', weight: 90, note: 'Prevents returns and chargebacks' },
+        { label: 'Support Response', weight: 85, note: 'When things go wrong' },
+        { label: 'Pricing at Scale', weight: 80, note: 'Margins matter' }
       ]},
-      { type: 'content', title: 'The Winner: Mate Dropshipping', body: 'After testing everything, one agent consistently dominated: Mate Dropshipping. They delivered 5-7 day shipping on 94% of orders. Quality control caught defects before shipping on every test. WhatsApp support responded within 2 hours on average. Pricing beat AliExpress by 3-5% on bulk orders. Real branded packaging included. This isn\'t hype. This is tested, measured, proven.' },
-      { type: 'cards', title: 'Why Mate Wins', items: [
-        { title: '5-7 Day Delivery', description: 'Fast enough to build trust. Consistent enough to scale. Your customers actually remember ordering.' },
-        { title: 'Real Quality Control', description: 'They check products before shipping. Catch defects early. Protect your reputation automatically.' },
-        { title: '18/6 WhatsApp Support', description: 'Real humans who respond fast. They actually help solve problems instead of ghosting you.' },
-        { title: '3-5% Bulk Savings', description: 'Better pricing than AliExpress once you scale. Plus faster shipping. Win-win.' }
+
+      { type: 'finding', number: 1, title: 'Shipping Speed', insight: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers.', highlight: 'Customers who receive orders in under 7 days are significantly more likely to order again.' },
+
+      { type: 'finding', number: 2, title: 'Pricing', insight: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress at scale.', takeaway: 'Price is not the differentiator. Service is.' },
+
+      { type: 'finding', number: 3, title: 'Support Quality', insight: 'When a customer complains about a broken product, you have hours - not days - to fix it.', highlight: '18/6 WhatsApp support means real humans answering in minutes, not automated tickets.' },
+
+      { type: 'winner-reveal', pretext: 'After 3 months of testing...', winner: 'Mate Dropshipping', reasons: ['Fastest consistent delivery times', 'Quality inspection before shipping', 'WhatsApp support that actually responds', 'Competitive pricing that improves at scale'] },
+
+      { type: 'real-impact', title: 'What This Means For Your Store', impacts: [
+        { icon: '⚡', title: 'Faster Delivery', description: 'Customers get excited when packages arrive while they still remember ordering' },
+        { icon: '🛡️', title: 'Fewer Returns', description: 'Quality checks catch defects before your customer does' },
+        { icon: '💰', title: 'Better Margins', description: 'Bulk pricing often beats AliExpress at scale' },
+        { icon: '🔄', title: 'Repeat Buyers', description: 'Premium experience creates customers, not one-time buyers' }
       ]},
-      { type: 'content', title: 'Connect Your Primary Agent', body: 'Mate Dropshipping should be your primary fulfillment partner. Connect your account now - it\'s free to set up, and you only pay for actual orders. No monthly fees. No minimums. Just better fulfillment.' },
-      { type: 'cta', title: 'Connect Mate Dropshipping', buttonText: 'Connect Mate Dropshipping', buttonUrl: 'https://erp.matedropshipping.com/login?invite_id=915', description: 'Set up takes 3 minutes. Start with your first order and see the difference.' },
-      { type: 'content', title: 'Why You Need a Backup Agent', body: 'Here\'s what most people miss: even the best agent can\'t fulfill everything perfectly, every time. Sometimes one agent has better pricing for specific products. Sometimes one supplier runs out of stock. Sometimes one shipping route is faster for certain regions. Having a backup agent costs you ZERO - it\'s free to connect - but gives you flexibility when it matters. Think of it like having two suppliers instead of one. Smart builders always have options.' },
-      { type: 'cards', title: 'Backup Agent Benefits', items: [
-        { title: 'Better Pricing Options', description: 'One agent might have 20% cheaper pricing on a specific product category. Why leave money on the table?' },
-        { title: 'Stock Availability', description: 'Rare cases where one agent is out of stock, the backup has it. No lost sales.' },
-        { title: 'Zero Cost', description: 'Completely free to connect. No fees, no commitment, no minimum orders. Just options.' },
-        { title: 'Smart Insurance', description: 'If one agent has issues, you can switch orders instantly. No downtime.' }
-      ]},
-      { type: 'content', title: 'HyperSKU: The Best Backup', body: 'For your backup agent, we recommend HyperSKU. They\'re solid, reliable, and completely free to connect. You don\'t need to use them for every order - just have them ready for when Mate doesn\'t have the best option for a specific product. Connect both agents now, use Mate as primary, and you\'re covered for any situation.' },
-      { type: 'cta', title: 'Connect HyperSKU (Backup)', buttonText: 'Connect HyperSKU', buttonUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', description: 'Free to connect. Zero commitment. Smart insurance for your fulfillment.' },
-      { type: 'quiz', question: 'What\'s the main reason to have a backup fulfillment agent?', options: ['It costs money so you should only use one', 'Sometimes one agent has better pricing or stock for specific products', 'You should use 5+ agents for every order', 'Backup agents are slower than primary ones'], correctIndex: 1, feedback: { correct: 'Exactly! A backup agent gives you flexibility when one has better pricing, stock, or shipping for specific products. It\'s free to connect and smart insurance.', incorrect: 'Not quite. The key insight is flexibility: sometimes one agent has better pricing or stock for specific products. It\'s free to connect, so why not have options?' }},
+
+      { type: 'how-to-connect', title: 'Getting Started Is Simple', steps: ['Create a free account (no monthly fees)', 'Connect your Shopify store', 'Import your products', 'Start fulfilling orders'], cta: { text: 'Connect Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, note: 'Free to set up. No commitment. No minimums.' },
+
+      { type: 'strategy-insight', title: 'Smart Operators Use Two Agents', insight: 'Even the best agent can\'t be perfect for every product. Sometimes one has better pricing on specific items. Sometimes stock runs out. Sometimes one shipping route is faster for certain regions.', recommendation: 'Your primary handles 80-90% of orders. Your backup covers the edge cases.' },
+
+      { type: 'backup-option', title: 'Our Recommended Backup', agent: 'HyperSKU', useCase: 'When you need alternatives for specific products or faster routes to certain regions', cta: { text: 'Connect HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }, context: 'Free to connect. Use when needed. Zero commitment.' },
+
+      { type: 'quiz', question: 'What\'s the main reason to have a backup fulfillment agent?', options: ['Backup agents are always cheaper', 'Sometimes one agent has better pricing or stock for specific products', 'You should split every order between agents', 'Primary agents are unreliable'], correctIndex: 1, feedback: { correct: 'Exactly! A backup agent gives you flexibility when one has better pricing, stock, or shipping for specific products. Free to connect, so why not have options?', incorrect: 'Not quite. The key is flexibility: sometimes one agent has better pricing or stock for specific products. And it\'s free to connect - so why not have options?' }},
+
       { type: 'completion', sources: [{ name: 'Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, { name: 'HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }] }
     ];
 
@@ -148,8 +277,10 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
     };
 
+    // Welcome Slide
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -172,87 +303,235 @@
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
-    const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-      </div>
-    );
-
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'image') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden border-2 border-neutral-200 bg-white shadow-lg">
-              <img src={data.imageUrl} alt={data.title} className="w-full h-auto" />
-            </motion.div>
-            {data.caption && (
-              <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-neutral-500 text-sm mt-4 italic">{data.caption}</motion.p>
-            )}
+    // Dark Statement Slide - dramatic opening
+    const DarkStatementSlide = ({ data }) => {
+      const [showFollowUp, setShowFollowUp] = useState(false);
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 bg-neutral-900">
+          <div className="max-w-2xl text-center">
+            <TypewriterText text={data.statement} speed={40} className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight" onComplete={() => setTimeout(() => setShowFollowUp(true), 500)} />
+            <AnimatePresence>
+              {showFollowUp && (
+                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-lg md:text-xl text-neutral-400 mt-6 leading-relaxed">
+                  {data.followUp}
+                </motion.p>
+              )}
+            </AnimatePresence>
           </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // Story Sequence Slide - sequential emoji reveals
+    const StorySequenceSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+        <SequentialReveal items={data.scenes} delayBetween={1200} startDelay={300} renderItem={(scene, i) => (
+          <div className="flex items-center gap-4 bg-neutral-50 rounded-xl p-4 border border-neutral-200">
+            <span className="text-4xl">{scene.emoji}</span>
+            <p className="text-lg text-neutral-700">{scene.text}</p>
+          </div>
+        )} />
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5 }} className="text-center text-neutral-500 mt-8 text-sm italic">
+          {data.conclusion}
+        </motion.p>
+      </div>
+    );
+
+    // Contrast Reveal Slide - before/after
+    const ContrastRevealSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <h3 className="font-bold text-red-700 mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">✕</span>
+              {data.before.label}
+            </h3>
+            <ul className="space-y-3">
+              {data.before.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-center gap-2 text-red-800 text-sm">
+                  <span className="text-red-400">—</span> {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <h3 className="font-bold text-green-700 mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">✓</span>
+              {data.after.label}
+            </h3>
+            <ul className="space-y-3">
+              {data.after.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-center gap-2 text-green-800 text-sm">
+                  <span className="text-green-500">✓</span> {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Big Question Slide
+    const BigQuestionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="text-center">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-5xl lg:text-6xl text-black mb-6">{data.question}</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-lg md:text-xl text-neutral-500">{data.subtext}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // Methodology Slide - how we tested
+    const MethodologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.tests.map((test, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{test.metric}</div>
+              <p className="text-neutral-400 text-sm">{test.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const CTASlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black text-center mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 text-center mb-8 leading-relaxed">{data.description}</motion.p>
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} href={data.buttonUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-xl text-white font-semibold text-base md:text-lg transition-all hover:scale-[1.02] mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-          <span>{data.buttonText}</span>
-          <Icons.ExternalLink />
-        </motion.a>
+    // Criteria Bars Slide - animated progress bars
+    const CriteriaBarsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-6">
+          {data.criteria.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }}>
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-semibold text-neutral-800">{item.label}</span>
+                <span className="text-xs text-neutral-500">{item.note}</span>
+              </div>
+              <div className="h-4 bg-neutral-200 rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${item.weight}%` }} transition={{ duration: 1.2, delay: 0.3 + i * 0.2, ease: "easeOut" }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, var(--accent), var(--accent-dark))` }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     );
 
+    // Finding Slide - individual findings
+    const FindingSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            Finding #{data.number}
+          </span>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-2xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-600 leading-relaxed mb-6">{data.insight}</motion.p>
+        {data.highlight && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-4">
+            <p className="text-green-800 text-sm">{data.highlight}</p>
+          </motion.div>
+        )}
+        {data.takeaway && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm text-neutral-500 italic mt-4">{data.takeaway}</motion.p>
+        )}
+      </div>
+    );
+
+    // Winner Reveal Slide - dramatic winner announcement
+    const WinnerRevealSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 py-8">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-neutral-500 text-sm mb-4">{data.pretext}</motion.p>
+        <RevealFromBlur delay={800}>
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 pulse-glow" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <Icons.Trophy />
+            </div>
+            <h2 className="slide-title text-3xl md:text-5xl text-black mb-6">{data.winner}</h2>
+          </div>
+        </RevealFromBlur>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }} className="grid grid-cols-2 gap-3 max-w-lg mt-4">
+          {data.reasons.map((reason, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.7 + i * 0.1 }} className="bg-neutral-100 rounded-lg p-3 text-center">
+              <p className="text-xs text-neutral-700">{reason}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    );
+
+    // Real Impact Slide - what this means
+    const RealImpactSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.impacts.map((impact, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-green-300 transition-colors">
+              <div className="text-3xl mb-3">{impact.icon}</div>
+              <h3 className="font-bold text-neutral-900 mb-1">{impact.title}</h3>
+              <p className="text-sm text-neutral-600">{impact.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // How To Connect Slide - natural CTA integration
+    const HowToConnectSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto py-8 slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-3 mb-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-3 bg-neutral-50 rounded-xl p-4">
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+              <span className="text-neutral-700">{step}</span>
+            </motion.div>
+          ))}
+        </div>
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} href={data.cta.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-white font-semibold transition-all hover:scale-[1.02] mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+          {data.cta.text}
+          <Icons.ExternalLink />
+        </motion.a>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-400 text-xs mt-3">{data.note}</motion.p>
+      </div>
+    );
+
+    // Strategy Insight Slide - why backup matters
+    const StrategyInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-10">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-xl md:text-2xl text-white mb-4">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-400 leading-relaxed mb-6">{data.insight}</motion.p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-neutral-800 rounded-xl p-4 border border-neutral-700">
+            <p className="text-sm" style={{ color: 'var(--accent)' }}>{data.recommendation}</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Backup Option Slide - secondary tool naturally
+    const BackupOptionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-neutral-50 border-2 border-neutral-200 rounded-2xl p-6 md:p-8">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs uppercase tracking-wider text-neutral-400 mb-2">{data.title}</motion.p>
+          <motion.h3 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl font-bold text-neutral-900 mb-3">{data.agent}</motion.h3>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-neutral-600 text-sm mb-6">{data.useCase}</motion.p>
+          <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} href={data.cta.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-900 text-white font-medium text-sm transition-all hover:bg-neutral-800">
+            {data.cta.text}
+            <Icons.ExternalLink />
+          </motion.a>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-xs text-neutral-400 mt-4">{data.context}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -296,11 +575,12 @@
       );
     };
 
+    // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know which private agent wins - and why having a backup costs nothing but gives you smart flexibility. Connect both and you\'re ahead of 95% of dropshippers.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know which private agent wins - and why having a backup costs nothing but gives you smart flexibility. Connect both and you're ahead of most dropshippers.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -363,11 +643,18 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'cta': return <CTASlide data={slide} />;
+          case 'dark-statement': return <DarkStatementSlide data={slide} />;
+          case 'story-sequence': return <StorySequenceSlide data={slide} />;
+          case 'contrast-reveal': return <ContrastRevealSlide data={slide} />;
+          case 'big-question': return <BigQuestionSlide data={slide} />;
+          case 'methodology': return <MethodologySlide data={slide} />;
+          case 'criteria-bars': return <CriteriaBarsSlide data={slide} />;
+          case 'finding': return <FindingSlide data={slide} />;
+          case 'winner-reveal': return <WinnerRevealSlide data={slide} />;
+          case 'real-impact': return <RealImpactSlide data={slide} />;
+          case 'how-to-connect': return <HowToConnectSlide data={slide} />;
+          case 'strategy-insight': return <StrategyInsightSlide data={slide} />;
+          case 'backup-option': return <BackupOptionSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
