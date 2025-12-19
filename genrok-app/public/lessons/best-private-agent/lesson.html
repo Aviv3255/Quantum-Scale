@@ -24,8 +24,6 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); } 50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); } }
-    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -101,170 +99,40 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    // Animated Components
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration, decimals]);
-      return <span>{prefix}{count}{suffix}</span>;
-    };
-
-    const ProgressBar = ({ percentage, label, delay = 0, color = 'var(--accent)' }) => {
-      const [width, setWidth] = useState(0);
-      useEffect(() => {
-        const timer = setTimeout(() => setWidth(percentage), delay);
-        return () => clearTimeout(timer);
-      }, [percentage, delay]);
-      return (
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-neutral-700">{label}</span>
-            <span className="text-sm font-bold" style={{ color }}>{percentage}%</span>
-          </div>
-          <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
-            <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.5, ease: "easeOut" }} className="h-full rounded-full" style={{ background: color }} />
-          </div>
-        </div>
-      );
-    };
-
-    // Typewriter Text Effect
-    const TypewriterText = ({ text, speed = 50, delay = 0, className = '', onComplete }) => {
-      const [displayText, setDisplayText] = useState('');
-      const [started, setStarted] = useState(false);
-      const [completed, setCompleted] = useState(false);
-      useEffect(() => {
-        const startTimer = setTimeout(() => setStarted(true), delay);
-        return () => clearTimeout(startTimer);
-      }, [delay]);
-      useEffect(() => {
-        if (!started) return;
-        let i = 0;
-        const timer = setInterval(() => {
-          if (i < text.length) { setDisplayText(text.slice(0, i + 1)); i++; }
-          else { clearInterval(timer); setCompleted(true); if (onComplete) onComplete(); }
-        }, speed);
-        return () => clearInterval(timer);
-      }, [text, speed, started, onComplete]);
-      return <span className={className}>{displayText}{!completed && <span className="animate-pulse">|</span>}</span>;
-    };
-
-    // Sequential Text Reveal
-    const SequentialReveal = ({ items, renderItem, delayBetween = 800, startDelay = 0 }) => {
-      const [visibleCount, setVisibleCount] = useState(0);
-      useEffect(() => {
-        const timer = setTimeout(() => {
-          if (visibleCount < items.length) {
-            const interval = setInterval(() => {
-              setVisibleCount(prev => {
-                if (prev >= items.length) { clearInterval(interval); return prev; }
-                return prev + 1;
-              });
-            }, delayBetween);
-            return () => clearInterval(interval);
-          }
-        }, startDelay);
-        return () => clearTimeout(timer);
-      }, [items.length, delayBetween, startDelay]);
-      return (
-        <div className="space-y-4">
-          {items.slice(0, visibleCount).map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
-              {renderItem(item, i)}
-            </motion.div>
-          ))}
-        </div>
-      );
-    };
-
-    // Reveal from blur effect
-    const RevealFromBlur = ({ children, delay = 0 }) => {
-      const [revealed, setRevealed] = useState(false);
-      useEffect(() => {
-        const timer = setTimeout(() => setRevealed(true), delay);
-        return () => clearTimeout(timer);
-      }, [delay]);
-      return (
-        <motion.div initial={{ opacity: 0, scale: 0.9, filter: 'blur(20px)' }} animate={revealed ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>
-          {children}
-        </motion.div>
-      );
-    };
-
-    // Dramatic Reveal Component
-    const DramaticReveal = ({ children, delay = 0 }) => {
-      const [revealed, setRevealed] = useState(false);
-      useEffect(() => {
-        const timer = setTimeout(() => setRevealed(true), delay);
-        return () => clearTimeout(timer);
-      }, [delay]);
-      return (
-        <motion.div initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }} animate={revealed ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-          {children}
-        </motion.div>
-      );
-    };
-
     const slides = [
       { type: 'welcome', learningGoals: ['Why your fulfillment partner makes or breaks your brand', 'The criteria that actually matter when choosing an agent', 'Which agent won our testing - and how to connect'] },
-
-      { type: 'dark-statement', statement: 'Your customer just received their package.', followUp: 'In the next 3 seconds, they decide if they\'ll ever buy from you again.' },
-
-      { type: 'story-sequence', scenes: [
-        { emoji: '📦', text: 'A thin plastic envelope arrives' },
-        { emoji: '😕', text: 'No branding. No note. Just... product.' },
-        { emoji: '🧠', text: 'Brain instantly processes: "cheap store"' },
-        { emoji: '🚫', text: 'Decision made. Never ordering again.' }
-      ], conclusion: 'This happens thousands of times daily with AliExpress fulfillment.' },
-
-      { type: 'contrast-reveal', title: 'Now Imagine This Instead', before: { label: 'AliExpress Reality', items: ['21-45 day shipping', 'Thin plastic packaging', 'Zero branding', 'No quality check'] }, after: { label: 'Private Agent', items: ['5-7 day shipping', 'Branded packaging', 'Custom inserts', 'Quality inspection'] } },
-
-      { type: 'big-question', question: 'So which private agent is actually the best?', subtext: 'We tested several to find out.' },
-
-      { type: 'methodology', title: 'How We Tested', tests: [
-        { metric: '55+ Orders', description: 'Placed across multiple agents' },
-        { metric: '500+ Orders', description: 'Tracked long-term at scale' },
-        { metric: '3 Months', description: 'Real-world testing period' }
+      { type: 'hook', headline: 'Your customer just received their package. In the next 3 seconds, they decide if they\'ll ever buy from you again.', subtext: 'A thin plastic envelope. No branding. No note. Just... product. Their brain instantly processes: "cheap store." Decision made. Never ordering again. This happens thousands of times daily with AliExpress fulfillment.' },
+      { type: 'example', scenario: 'The Fulfillment Experience Gap', before: { label: 'AliExpress Reality', text: '21-45 day shipping. Thin plastic packaging. Zero branding. No quality check. Customer thinks: "I could have gotten this cheaper on Wish."' }, after: { label: 'Private Agent', text: '5-7 day shipping. Branded packaging. Custom inserts. Quality inspection. Customer thinks: "This feels premium. I\'ll order again."' }, insight: 'Same product. Different experience. One creates customers, the other creates one-time buyers.' },
+      { type: 'content', title: 'So Which Private Agent Is Actually the Best?', body: 'We didn\'t just read reviews. We placed over 55 orders across multiple agents. We tracked over 500 orders at scale. We tested for 3 months in real-world conditions. Here\'s what we found - and why it matters for your business.' },
+      { type: 'cards', title: 'What We Measured', items: [
+        { title: 'Shipping Speed', description: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers. This was our primary metric.' },
+        { title: 'Quality Control', description: 'When defective products reach customers, you lose money on returns AND lose the customer forever. Proper inspection prevents both.' },
+        { title: 'Support Response', description: 'When something goes wrong (and it will), you need answers in minutes, not days. Real humans on WhatsApp, not automated tickets.' },
+        { title: 'Pricing at Scale', description: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress when you scale. Price is not the differentiator.' }
       ]},
-
-      { type: 'criteria-bars', title: 'What We Measured', criteria: [
-        { label: 'Shipping Speed', weight: 95, note: 'Customer satisfaction driver #1' },
-        { label: 'Quality Control', weight: 90, note: 'Prevents returns and chargebacks' },
-        { label: 'Support Response', weight: 85, note: 'When things go wrong' },
-        { label: 'Pricing at Scale', weight: 80, note: 'Margins matter' }
+      { type: 'visual', title: 'Our Testing Results', visualType: 'stats', data: [
+        { value: '55+', label: 'Orders Placed', subtext: 'Across multiple agents' },
+        { value: '500+', label: 'Orders Tracked', subtext: 'Long-term at scale' },
+        { value: '3 Mo', label: 'Testing Period', subtext: 'Real-world conditions' }
       ]},
-
-      { type: 'finding', number: 1, title: 'Shipping Speed', insight: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers.', highlight: 'Customers who receive orders in under 7 days are significantly more likely to order again.' },
-
-      { type: 'finding', number: 2, title: 'Pricing', insight: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress at scale.', takeaway: 'Price is not the differentiator. Service is.' },
-
-      { type: 'finding', number: 3, title: 'Support Quality', insight: 'When a customer complains about a broken product, you have hours - not days - to fix it.', highlight: '18/6 WhatsApp support means real humans answering in minutes, not automated tickets.' },
-
-      { type: 'winner-reveal', pretext: 'After 3 months of testing...', winner: 'Mate Dropshipping', reasons: ['Fastest consistent delivery times', 'Quality inspection before shipping', 'WhatsApp support that actually responds', 'Competitive pricing that improves at scale'] },
-
-      { type: 'real-impact', title: 'What This Means For Your Store', impacts: [
-        { icon: '⚡', title: 'Faster Delivery', description: 'Customers get excited when packages arrive while they still remember ordering' },
-        { icon: '🛡️', title: 'Fewer Returns', description: 'Quality checks catch defects before your customer does' },
-        { icon: '💰', title: 'Better Margins', description: 'Bulk pricing often beats AliExpress at scale' },
-        { icon: '🔄', title: 'Repeat Buyers', description: 'Premium experience creates customers, not one-time buyers' }
+      { type: 'content', title: 'Finding #1: Shipping Speed', body: 'Customers who receive orders in under 7 days are significantly more likely to order again. The psychology is simple: fast delivery while the excitement is still fresh creates positive associations. Slow delivery lets doubt and regret creep in.' },
+      { type: 'content', title: 'Finding #2: Pricing', body: 'Here\'s what surprised us: the best agents often cost the SAME or LESS than AliExpress at scale. The "AliExpress is cheaper" myth only holds for single orders. At volume, private agents match or beat AliExpress pricing - with better service included.' },
+      { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. 18/6 WhatsApp support means real humans answering in minutes, not automated tickets that take 48 hours. This is where most agents fail - and where the best ones shine.' },
+      { type: 'visual', title: 'After 3 Months of Testing...', visualType: 'comparison', data: {
+        left: { label: 'Others', value: '14-21', result: 'Days average delivery', color: '#94a3b8' },
+        right: { label: 'Winner', value: '5-7', result: 'Days average delivery', color: '#10b981' },
+        center: { label: 'The Winner', value: 'Mate', result: 'Dropshipping', color: '#10b981' }
+      }},
+      { type: 'cards', title: 'Why Mate Dropshipping Won', items: [
+        { title: 'Fastest Consistent Delivery', description: '5-7 day shipping to most destinations. Not "up to 7 days" - actually 5-7 days consistently.' },
+        { title: 'Quality Inspection', description: 'They check products before shipping. Catches defects before your customer does. Fewer returns, fewer chargebacks.' },
+        { title: 'WhatsApp Support', description: 'Real humans answering in minutes. 18/6 availability. When things go wrong, you get help immediately.' },
+        { title: 'Competitive Pricing', description: 'Pricing that improves as you scale. At volume, often matches or beats AliExpress pricing.' }
       ]},
-
-      { type: 'how-to-connect', title: 'Getting Started Is Simple', steps: ['Create a free account (no monthly fees)', 'Connect your Shopify store', 'Import your products', 'Start fulfilling orders'], cta: { text: 'Connect Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, note: 'Free to set up. No commitment. No minimums.' },
-
-      { type: 'strategy-insight', title: 'Smart Operators Use Two Agents', insight: 'Even the best agent can\'t be perfect for every product. Sometimes one has better pricing on specific items. Sometimes stock runs out. Sometimes one shipping route is faster for certain regions.', recommendation: 'Your primary handles 80-90% of orders. Your backup covers the edge cases.' },
-
-      { type: 'backup-option', title: 'Our Recommended Backup', agent: 'HyperSKU', useCase: 'When you need alternatives for specific products or faster routes to certain regions', cta: { text: 'Connect HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }, context: 'Free to connect. Use when needed. Zero commitment.' },
-
+      { type: 'tool', title: 'Connect With Mate Dropshipping', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/mate-dropshipping.jpg', body: 'Our testing winner. Fastest delivery, quality inspection, and support that actually responds. Free to set up with no monthly fees or minimums.', questions: ['Create a free account (no monthly fees)', 'Connect your Shopify store', 'Import your products', 'Start fulfilling orders'], insight: 'Free to set up. No commitment. No minimums. Connect and see the difference yourself.' },
+      { type: 'content', title: 'Smart Operators Use Two Agents', body: 'Even the best agent can\'t be perfect for every product. Sometimes one has better pricing on specific items. Sometimes stock runs out. Sometimes one shipping route is faster for certain regions. Your primary handles 80-90% of orders. Your backup covers the edge cases.' },
+      { type: 'tool', title: 'Our Recommended Backup: HyperSKU', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hypersku.jpg', body: 'When you need alternatives for specific products or faster routes to certain regions. Free to connect - use when needed.', questions: ['Different product sourcing options', 'Alternative shipping routes', 'Backup when primary is out of stock', 'Price comparison for specific items'], insight: 'Free to connect. Use when needed. Zero commitment. Having options costs nothing.' },
       { type: 'quiz', question: 'What\'s the main reason to have a backup fulfillment agent?', options: ['Backup agents are always cheaper', 'Sometimes one agent has better pricing or stock for specific products', 'You should split every order between agents', 'Primary agents are unreliable'], correctIndex: 1, feedback: { correct: 'Exactly! A backup agent gives you flexibility when one has better pricing, stock, or shipping for specific products. Free to connect, so why not have options?', incorrect: 'Not quite. The key is flexibility: sometimes one agent has better pricing or stock for specific products. And it\'s free to connect - so why not have options?' }},
-
       { type: 'completion', sources: [{ name: 'Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, { name: 'HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }] }
     ];
 
@@ -277,10 +145,8 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
     };
 
-    // Welcome Slide
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -309,229 +175,138 @@
       );
     };
 
-    // Dark Statement Slide - dramatic opening
-    const DarkStatementSlide = ({ data }) => {
-      const [showFollowUp, setShowFollowUp] = useState(false);
-      return (
-        <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 bg-neutral-900">
-          <div className="max-w-2xl text-center">
-            <TypewriterText text={data.statement} speed={40} className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight" onComplete={() => setTimeout(() => setShowFollowUp(true), 500)} />
-            <AnimatePresence>
-              {showFollowUp && (
-                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-lg md:text-xl text-neutral-400 mt-6 leading-relaxed">
-                  {data.followUp}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+          </motion.div>
         </div>
-      );
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
     };
 
-    // Story Sequence Slide - sequential emoji reveals
-    const StorySequenceSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
-        <SequentialReveal items={data.scenes} delayBetween={1200} startDelay={300} renderItem={(scene, i) => (
-          <div className="flex items-center gap-4 bg-neutral-50 rounded-xl p-4 border border-neutral-200">
-            <span className="text-4xl">{scene.emoji}</span>
-            <p className="text-lg text-neutral-700">{scene.text}</p>
-          </div>
-        )} />
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5 }} className="text-center text-neutral-500 mt-8 text-sm italic">
-          {data.conclusion}
-        </motion.p>
-      </div>
-    );
-
-    // Contrast Reveal Slide - before/after
-    const ContrastRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-700 mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">✕</span>
-              {data.before.label}
-            </h3>
-            <ul className="space-y-3">
-              {data.before.items.map((item, i) => (
-                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-center gap-2 text-red-800 text-sm">
-                  <span className="text-red-400">—</span> {item}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-            <h3 className="font-bold text-green-700 mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">✓</span>
-              {data.after.label}
-            </h3>
-            <ul className="space-y-3">
-              {data.after.items.map((item, i) => (
-                <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-center gap-2 text-green-800 text-sm">
-                  <span className="text-green-500">✓</span> {item}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    // Big Question Slide
-    const BigQuestionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="text-center">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-5xl lg:text-6xl text-black mb-6">{data.question}</motion.h2>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-lg md:text-xl text-neutral-500">{data.subtext}</motion.p>
-        </motion.div>
-      </div>
-    );
-
-    // Methodology Slide - how we tested
-    const MethodologySlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.tests.map((test, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{test.metric}</div>
-              <p className="text-neutral-400 text-sm">{test.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    // Criteria Bars Slide - animated progress bars
-    const CriteriaBarsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-6">
-          {data.criteria.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }}>
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-semibold text-neutral-800">{item.label}</span>
-                <span className="text-xs text-neutral-500">{item.note}</span>
-              </div>
-              <div className="h-4 bg-neutral-200 rounded-full overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${item.weight}%` }} transition={{ duration: 1.2, delay: 0.3 + i * 0.2, ease: "easeOut" }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, var(--accent), var(--accent-dark))` }} />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    // Finding Slide - individual findings
-    const FindingSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            Finding #{data.number}
-          </span>
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-2xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-600 leading-relaxed mb-6">{data.insight}</motion.p>
-        {data.highlight && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-4">
-            <p className="text-green-800 text-sm">{data.highlight}</p>
-          </motion.div>
-        )}
-        {data.takeaway && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm text-neutral-500 italic mt-4">{data.takeaway}</motion.p>
-        )}
-      </div>
-    );
-
-    // Winner Reveal Slide - dramatic winner announcement
-    const WinnerRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 py-8">
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-neutral-500 text-sm mb-4">{data.pretext}</motion.p>
-        <RevealFromBlur delay={800}>
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 pulse-glow" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <Icons.Trophy />
-            </div>
-            <h2 className="slide-title text-3xl md:text-5xl text-black mb-6">{data.winner}</h2>
-          </div>
-        </RevealFromBlur>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }} className="grid grid-cols-2 gap-3 max-w-lg mt-4">
-          {data.reasons.map((reason, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.7 + i * 0.1 }} className="bg-neutral-100 rounded-lg p-3 text-center">
-              <p className="text-xs text-neutral-700">{reason}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    );
-
-    // Real Impact Slide - what this means
-    const RealImpactSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {data.impacts.map((impact, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-green-300 transition-colors">
-              <div className="text-3xl mb-3">{impact.icon}</div>
-              <h3 className="font-bold text-neutral-900 mb-1">{impact.title}</h3>
-              <p className="text-sm text-neutral-600">{impact.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    // How To Connect Slide - natural CTA integration
-    const HowToConnectSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto py-8 slide-scroll overflow-y-auto">
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-3 bg-neutral-50 rounded-xl p-4">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-              <span className="text-neutral-700">{step}</span>
+        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} href={data.cta.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-white font-semibold transition-all hover:scale-[1.02] mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-          {data.cta.text}
-          <Icons.ExternalLink />
-        </motion.a>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-400 text-xs mt-3">{data.note}</motion.p>
       </div>
     );
 
-    // Strategy Insight Slide - why backup matters
-    const StrategyInsightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-10">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-xl md:text-2xl text-white mb-4">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-400 leading-relaxed mb-6">{data.insight}</motion.p>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-neutral-800 rounded-xl p-4 border border-neutral-700">
-            <p className="text-sm" style={{ color: 'var(--accent)' }}>{data.recommendation}</p>
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
           </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">How It Works</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Try {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
 
-    // Backup Option Slide - secondary tool naturally
-    const BackupOptionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-neutral-50 border-2 border-neutral-200 rounded-2xl p-6 md:p-8">
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs uppercase tracking-wider text-neutral-400 mb-2">{data.title}</motion.p>
-          <motion.h3 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl font-bold text-neutral-900 mb-3">{data.agent}</motion.h3>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-neutral-600 text-sm mb-6">{data.useCase}</motion.p>
-          <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} href={data.cta.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-900 text-white font-medium text-sm transition-all hover:bg-neutral-800">
-            {data.cta.text}
-            <Icons.ExternalLink />
-          </motion.a>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-xs text-neutral-400 mt-4">{data.context}</motion.p>
-        </motion.div>
-      </div>
-    );
-
-    // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -575,7 +350,6 @@
       );
     };
 
-    // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -643,18 +417,12 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'dark-statement': return <DarkStatementSlide data={slide} />;
-          case 'story-sequence': return <StorySequenceSlide data={slide} />;
-          case 'contrast-reveal': return <ContrastRevealSlide data={slide} />;
-          case 'big-question': return <BigQuestionSlide data={slide} />;
-          case 'methodology': return <MethodologySlide data={slide} />;
-          case 'criteria-bars': return <CriteriaBarsSlide data={slide} />;
-          case 'finding': return <FindingSlide data={slide} />;
-          case 'winner-reveal': return <WinnerRevealSlide data={slide} />;
-          case 'real-impact': return <RealImpactSlide data={slide} />;
-          case 'how-to-connect': return <HowToConnectSlide data={slide} />;
-          case 'strategy-insight': return <StrategyInsightSlide data={slide} />;
-          case 'backup-option': return <BackupOptionSlide data={slide} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
