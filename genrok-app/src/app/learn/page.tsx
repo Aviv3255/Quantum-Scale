@@ -61,7 +61,6 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   // Article-based lessons
   'best-private-agent': { title: 'Who Is the Best Private Agent', description: '5-7 day shipping, 18/6 WhatsApp support' },
   'stop-aliexpress': { title: 'Stop Using AliExpress Now', description: 'Why AliExpress destroys your brand' },
-  'product-reviews-test': { title: 'Do Product Reviews Increase Conversion?', description: 'A/B test results: 12.7% impact' },
   'ltv-cheat-code': { title: 'The LTV Cheat Code', description: 'How 5% of customers generate 95% of revenue' },
   'million-dollar-roadmap': { title: 'The Roadmap to $1M/Month', description: '33 customers per day formula' },
   'geo-announcement-bar': { title: 'GEO-Location Announcement Bar', description: '67% conversion rate increase' },
