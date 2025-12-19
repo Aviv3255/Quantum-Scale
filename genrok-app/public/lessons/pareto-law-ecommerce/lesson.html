@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -44,35 +45,7 @@
       nextLesson: { id: 'next-lesson', title: 'Coming Soon', teaser: 'More insights to transform your eCommerce business.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -100,40 +73,150 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why the traditional 80/20 rule is dead in eCommerce', 'The shocking 5%/95% reality - and what it means for your business', 'How to identify and replicate your most valuable customers'] },
-      { type: 'hook', headline: 'You think you know the Pareto Principle. You\'re wrong.', subtext: 'Everyone in business knows "80% of results come from 20% of effort." That was true in 1906 when Vilfredo Pareto discovered it. But in modern eCommerce? The numbers are far more extreme. Try 95% of your lifetime profit comes from just 5% of your customers. Most store owners are blind to this. They treat all customers equally and wonder why profit margins erode. The data doesn\'t lie.' },
-      { type: 'content', title: 'The Traditional Pareto Law', body: 'In 1906, Italian economist Vilfredo Pareto observed that 80% of Italy\'s land was owned by 20% of the population. This pattern - now called the Pareto Principle or 80/20 rule - appears everywhere in business. 80% of sales from 20% of products. 80% of complaints from 20% of customers. 80% of revenue from 20% of clients. For decades, this rule guided business strategy. Optimize for the vital 20%, ignore the trivial 80%.' },
-      { type: 'visual', title: 'Traditional Pareto vs eCommerce Reality', visualType: 'comparison', data: {
-        left: { label: 'Traditional', value: '80/20', result: 'The old rule of thumb', color: '#6b7280' },
-        right: { label: 'eCommerce', value: '95/5', result: 'The brutal new reality', color: '#84cc16' },
-        center: { label: 'Extreme', value: 'Shift', result: 'Why the old rules don\'t apply', color: '#ef4444' }
-      }},
-      { type: 'content', title: 'Why eCommerce Is Different', body: 'In eCommerce, the Pareto distribution is far more extreme. Most customers buy once and never return. They came for a deal, a trending product, or an impulse buy. They have zero loyalty. They don\'t know your brand. They wouldn\'t recognize your logo in a lineup. But a tiny fraction - around 5% - buy 2, 3, 5, even 10+ times over 2 years. These customers are worth $2,000+ in lifetime value. The one-time buyers? $85 on average. You\'re not running one business. You\'re running two completely different businesses under the same roof.' },
+      { type: 'welcome', learningGoals: ['Why the traditional 80/20 rule doesn\'t apply to eCommerce', 'The extreme 5%/95% customer value distribution', 'How to identify and replicate your most valuable customers'] },
+      { type: 'hook', headline: 'You think you know the Pareto Principle. Think again.', subtext: 'Everyone in business knows "80% of results come from 20% of effort." That was true in 1906 when Vilfredo Pareto discovered it. But in modern eCommerce? The distribution can be far more extreme. Industry data suggests up to 95% of lifetime profit can come from just 5% of customers. Most store owners are blind to this pattern. They treat all customers equally and wonder why margins stay thin.' },
+      { type: 'content', title: 'The Traditional Pareto Law', body: 'In 1906, Italian economist Vilfredo Pareto observed that 80% of Italy\'s land was owned by 20% of the population. This pattern - now called the Pareto Principle or 80/20 rule - appears everywhere in business. 80% of sales from 20% of products. 80% of complaints from 20% of customers. For decades, this rule guided business strategy: Optimize for the vital 20%, manage the 80%.' },
+      { type: 'stat-countdown', title: 'eCommerce Reality', stats: [
+        { value: 95, suffix: '%', label: 'One-time buyers', subtext: 'Average $85 lifetime value' },
+        { value: 5, suffix: '%', label: 'Repeat customers', subtext: 'Can reach $2,000+ LTV' },
+        { value: 19, suffix: 'x', label: 'Value difference', subtext: 'Top 5% vs bottom 95%' }
+      ]},
+      { type: 'highlight-box', title: 'Why eCommerce Is Different', body: 'In eCommerce, customer value distribution can be far more extreme than traditional retail. Most customers buy once and never return - drawn by a deal, trending product, or impulse buy. Low loyalty. But a small fraction - often around 5% - buy multiple times over months or years.', highlight: 'You\'re not running one business. You\'re running two completely different businesses under the same roof.' },
       { type: 'cards', title: 'The Two Businesses You\'re Actually Running', items: [
-        { title: 'Business #1: The Masses', description: '95% of customers. Buy once. Average order $85. Zero loyalty. Chasing deals. High acquisition cost, low return. This is where most stores focus all their energy.' },
-        { title: 'Business #2: The Gold Mine', description: '5% of customers. Buy 2-10+ times. Lifetime value $2,000+. Brand loyal. Higher AOV. Lower churn. This is where all your profit actually lives.' }
+        { title: 'Business #1: The Masses', description: 'Typically 95% of customers. Buy once. Average $85 lifetime value. Low loyalty. Deal-seeking. High acquisition cost, minimal return. Where most stores focus energy.' },
+        { title: 'Business #2: The Gold Mine', description: 'Often 5% of customers. Buy 2-10+ times. Potential $2,000+ LTV. Higher brand loyalty. Better AOV. Lower churn rate. Where profit actually lives.' }
       ]},
-      { type: 'content', title: 'Real Data: August 2025', body: 'Let\'s look at actual numbers from a real store. August 2025: 8,000 new customers acquired. Most store owners would celebrate. "8,000 customers! We\'re crushing it!" But when you segment by lifetime value, the picture changes completely. The top 25% of those customers - just 2,000 people - generated $1.6 million in revenue. Average customer value: $796. The bottom 75% - 6,000 people - generated $700K. Average: $89-123 per person. Do the math. Half your customers are worth 10x more than the other half. And you\'re treating them all the same.' },
-      { type: 'visual', title: 'The LTV Breakdown', visualType: 'stats', data: [
-        { value: '$796', label: 'Top 25% avg value', subtext: '$1.6M total revenue' },
-        { value: '$1,253', label: 'Top 10% avg value', subtext: 'In just 2-3 months' },
-        { value: '$89', label: 'Bottom 75% avg', subtext: 'Only $700K total' }
+      { type: 'before-after', title: 'LTV Distribution Example (Real Store Data)', before: [
+        'Bottom 75%: 6,000 customers',
+        '$700K total revenue',
+        '$89-123 avg per customer',
+        'Mostly one-time buyers',
+        'High churn, low loyalty'
+      ], after: [
+        'Top 25%: 2,000 customers',
+        '$1.6M total revenue',
+        '$796 avg per customer',
+        'Multiple purchases',
+        'Higher retention rates'
       ]},
-      { type: 'image', title: 'Customer Lifetime Value Distribution', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', caption: 'Real store data: The top 5% generate more revenue than the bottom 95% combined.' },
-      { type: 'content', title: 'What Happens When You Don\'t Know This', body: 'If you don\'t know which 5% are worth $2,000+, you make catastrophic decisions. You run broad ads targeting "everyone." You discount to acquire customers who will never return. You spend $50 to acquire a customer worth $85. Your profit margins erode. You work harder and make less. You optimize for volume instead of value. You build a business on quicksand. Meanwhile, your best customers - the ones who would happily buy again - get ignored. No VIP experience. No retention strategy. No personalized communication. They eventually churn, and you replace them with more one-time buyers. This is the death spiral 98% of stores are in.' },
-      { type: 'example', scenario: 'Store Without LTV Knowledge vs LTV-Driven Store', before: { label: 'Blind Acquisition', text: 'Spend $40,000/month on Facebook ads. Target "everyone 18-65 interested in fitness." Acquire 800 customers. 95% buy once. AOV: $90. LTV: $95. Lose money on every customer. Blame "iOS 14" or "rising ad costs."' }, after: { label: 'LTV-Optimized Strategy', text: 'Export top 5% customer list to Meta. Create Lookalike Audience. Target people similar to $2,000 LTV customers. Same ad spend. Acquire 400 customers. 15% buy 3+ times. AOV: $140. LTV: $420. Profitable from day one.' }, insight: 'Both spent $40K. One lost money. One built a real business. The only difference? Knowing which customers matter.' },
-      { type: 'content', title: 'The Meta Secret Weapon', body: 'Here\'s what most store owners don\'t realize: Meta (Facebook/Instagram) has 52,000 data points on every user. Interests, behaviors, demographics, purchase history, browsing patterns, even offline activity. When you upload your top 5% customer list and create a Lookalike Audience, Meta\'s algorithm finds people who match those 52,000 data points. You\'re not guessing anymore. You\'re not targeting "women 25-45 interested in fashion." You\'re targeting people statistically identical to your best customers. Same income level. Same shopping behavior. Same lifetime value potential. This is the difference between gambling and precision targeting.' },
-      { type: 'cards', title: 'How to Find Your 5%', items: [
-        { title: 'Export Your Data', description: 'Pull all customer purchase data from your store. Include: email, total orders, total revenue, first purchase date. Sort by total revenue descending.' },
-        { title: 'Identify Top 5-10%', description: 'Look for the customers who\'ve spent $500+ (or 3+ orders). These are your high-LTV customers. This is your gold mine list.' },
-        { title: 'Create Lookalike Audience', description: 'Upload this list to Meta Ads Manager. Create a 1% Lookalike Audience. Meta finds people identical to your best customers.' },
-        { title: 'Run Acquisition Ads', description: 'Target ONLY the Lookalike Audience. Watch your LTV skyrocket while everyone else fights over one-time buyers.' }
+      { type: 'image', title: 'Customer Lifetime Value Distribution', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', caption: 'Real store data showing how the top customer segments generate disproportionate revenue.' },
+      { type: 'highlight-box', title: 'The Cost of Not Knowing', body: 'If you don\'t know which customers have high lifetime value potential, you make suboptimal decisions. Broad ad targeting acquires many one-time buyers. Heavy discounting attracts deal-seekers who won\'t return. You might spend $50 to acquire someone worth $85.', highlight: 'Meanwhile, high-value customers get the same treatment as everyone else. No VIP experience. No retention focus. Eventually they churn.' },
+      { type: 'example', scenario: 'Broad Targeting vs LTV-Optimized Acquisition', before: { label: 'Broad Acquisition', text: 'Spend $40K/month on Meta ads. Target "everyone 18-65 interested in fitness." Acquire 800 customers. Most buy once. AOV: $90. LTV: $95. Margins stay thin.' }, after: { label: 'LTV-Optimized', text: 'Export top 5% customer list. Create Lookalike Audience in Meta. Target people similar to high-LTV customers. Same spend. Acquire 400 customers with higher repeat rate. AOV: $140. LTV potential: $420+.' }, insight: 'Same budget. Different targeting. Dramatically different unit economics. The key? Knowing which customers actually matter.' },
+      { type: 'process-flow', title: 'The Meta Lookalike Advantage', steps: [
+        { icon: '📊', label: 'Export LTV Data', detail: 'Top 5-10%' },
+        { icon: '⬆️', label: 'Upload to Meta', detail: 'Custom Audience' },
+        { icon: '🎯', label: 'Create Lookalike', detail: '1% match' },
+        { icon: '📈', label: 'Run Ads', detail: 'Better targeting' },
+        { icon: '💰', label: 'Higher LTV', detail: 'Better ROI' }
       ]},
-      { type: 'content', title: 'Stop Guessing. Start Tracking.', body: 'You can\'t optimize what you don\'t measure. Most stores have no idea which customers are worth $2,000 and which are worth $85. They\'re flying blind. Shopify analytics show total revenue, but they don\'t show customer-level LTV in a way that\'s actionable. You need to see it visually. You need to export it. You need to act on it. The stores winning right now aren\'t smarter. They just have better data.' },
-      { type: 'tool', title: 'Track Customer LTV Automatically', toolName: 'Customer LTV App', toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', body: 'Install this Shopify app to automatically track customer lifetime value, segment your top spenders, and export lists for Meta Lookalike Audiences.', questions: ['Which customers have spent $500+ lifetime?', 'What percentage of customers are repeat buyers?', 'Which cohorts have the highest LTV?', 'Who should I target for VIP campaigns?'], insight: 'Once you see your LTV distribution, you can\'t unsee it. Your entire acquisition strategy will change overnight.' },
-      { type: 'quiz', question: 'In modern eCommerce, what percentage of customers typically generate 95% of lifetime profit?', options: ['20% (Traditional Pareto)', '10% (Moderate concentration)', '5% (Extreme concentration)', '1% (Ultra-rare whales)'], correctIndex: 2, feedback: { correct: 'Exactly! In eCommerce, the top 5% of customers can generate up to 95% of lifetime profit. This is far more extreme than the traditional 80/20 rule. Most customers buy once ($85 avg), but the top 5% are worth $2,000+ over 2 years. This is why treating all customers equally kills your margins.', incorrect: 'Not quite. The correct answer is 5%. In eCommerce, the concentration is far more extreme than traditional business. The top 5% of customers generate up to 95% of lifetime profit - they\'re worth $2,000+ while one-time buyers average $85. The old 80/20 rule doesn\'t apply here.' }},
+      { type: 'cards', title: 'How to Find Your Top 5%', items: [
+        { title: 'Export Purchase Data', description: 'Pull customer data from your store. Include email, total orders, total revenue, first purchase date. Sort by revenue descending.' },
+        { title: 'Identify High-LTV Segment', description: 'Find customers who\'ve spent $500+ or made 3+ orders. This is typically your top 5-10%. Your high-value segment.' },
+        { title: 'Create Lookalike Audience', description: 'Upload this list to Meta Ads Manager. Create a 1% Lookalike. Meta finds statistically similar people.' },
+        { title: 'Target Strategically', description: 'Run acquisition ads to the Lookalike. Test performance vs broad targeting. Measure LTV difference over time.' }
+      ]},
+      { type: 'highlight-box', title: 'Data-Driven Decision Making', body: 'You can\'t optimize what you don\'t measure. Many stores don\'t know which customers are worth $2,000 vs $85. Standard analytics show total revenue but not actionable customer-level LTV segmentation.', highlight: 'Successful stores track LTV, segment customers, and make targeting decisions based on data - not guesses.' },
+      { type: 'tool', title: 'Automatic LTV Tracking Tool', toolName: 'Customer LTV App', toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', body: 'This Shopify app automatically tracks customer lifetime value, segments top spenders, and helps you export lists for Meta Lookalike Audiences.', questions: ['Which customers have spent $500+ lifetime?', 'What percentage are repeat buyers?', 'Which cohorts have highest LTV?', 'Who to target for VIP campaigns?'], insight: 'Seeing your LTV distribution clearly can transform your entire acquisition and retention strategy.' },
+      { type: 'quiz', question: 'In eCommerce, what percentage of customers can generate up to 95% of lifetime profit?', options: ['20% (Traditional Pareto)', '10% (Moderate concentration)', '5% (Extreme concentration)', '1% (Ultra-rare whales)'], correctIndex: 2, feedback: { correct: 'Exactly! Industry data shows the top 5% of eCommerce customers can generate up to 95% of lifetime profit - far more extreme than the traditional 80/20 rule. While most customers might buy once (avg $85), the top 5% can reach $2,000+ LTV over time. This is why treating all customers identically limits margins.', incorrect: 'Not quite. The answer is 5%. In eCommerce, value concentration can be far more extreme than traditional business. Industry patterns show the top 5% generating up to 95% of lifetime profit - worth $2,000+ while one-time buyers average $85. The traditional 80/20 rule often doesn\'t apply here.' }},
       { type: 'completion', sources: [{ name: 'Customer LTV Tracker App', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }] }
     ];
+
+    // Animated Components
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
+            <div className="absolute -top-3 left-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">BEFORE</div>
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 pt-8">
+              <ul className="space-y-3">
+                {data.before.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-red-700">
+                    <span className="text-red-500 text-lg">✗</span>
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
+            <div className="absolute -top-3 left-4 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">AFTER</div>
+            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 pt-8">
+              <ul className="space-y-3">
+                {data.after.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-green-700">
+                    <span className="text-green-500 text-lg">✓</span>
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const ProcessFlowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {data.steps.map((step, i) => (
+            <React.Fragment key={i}>
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-4 text-center min-w-[100px]">
+                <div className="text-2xl mb-1">{step.icon}</div>
+                <div className="text-white text-sm font-medium">{step.label}</div>
+                {step.detail && <div className="text-neutral-400 text-xs mt-1">{step.detail}</div>}
+              </motion.div>
+              {i < data.steps.length - 1 && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="text-2xl" style={{ color: 'var(--accent)' }}>→</motion.div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    );
+
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+              <div className="text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
+              </div>
+              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+              <div className="text-xs text-neutral-400">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const HighlightBoxSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+          <p className="text-white text-lg font-bold">{data.highlight}</p>
+        </motion.div>
+      </div>
+    );
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -155,7 +238,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -365,7 +448,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why eCommerce breaks the traditional Pareto rule. The top 5% of your customers are worth 19x more than the bottom 95%. Stop treating all customers equally. Identify your gold mine, replicate them with Meta Lookalikes, and watch your LTV skyrocket.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why eCommerce customer value distribution can be far more extreme than traditional retail. Industry data shows the top 5% of customers can be worth up to 19x more than the bottom 95%. Start tracking LTV, identify your high-value segments, and use that data to optimize acquisition targeting.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -435,6 +518,10 @@
           case 'image': return <ImageSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'process-flow': return <ProcessFlowSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

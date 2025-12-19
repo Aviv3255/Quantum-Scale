@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -44,35 +45,7 @@
       nextLesson: { id: 'pet-rock-story', title: 'How to Sell Rocks for 30M', teaser: 'The 1975 Pet Rock phenomenon - proof that story creates value, not product.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -103,20 +76,21 @@
       { type: 'welcome', learningGoals: ['Why Gary Halbert outsold every marketer alive', 'The hungry crowd principle that changes everything', 'How to sell transformation instead of features'] },
       { type: 'hook', headline: 'Imagine a burger competition. You can pick ONE advantage. What would it be?', subtext: 'Better ingredients? Secret sauce? Premium buns? Perfect grill marks? Gary Halbert chose none of these. He chose the one thing that makes everything else irrelevant: a starving crowd of hungry people. That single insight made him the most dangerous salesman alive.' },
       { type: 'visual', title: 'Who Was Gary Halbert?', visualType: 'image', imageUrl: 'https://carminemastropierro.com/wp-content/uploads/2020/09/Gary-Halbert.jpg', caption: 'The legendary copywriter who could sell anything to anyone' },
+      { type: 'quote-spotlight', quote: 'I only want one advantage: a starving crowd.', author: 'Gary Halbert', context: 'When asked what single advantage he would choose to win a burger selling competition, while others debated ingredients and location.' },
       { type: 'content', title: 'The Burger Competition Question', body: 'Gary asked his seminar students: "If we were in a burger selling competition and you could have ANY advantage you wanted, what would you choose?" Students shouted: Better meat! Secret recipes! Prime location! Celebrity chef! Lower prices! Gary smiled. "I only want one advantage," he said. "A starving crowd."' },
       { type: 'content', title: 'Why the Crowd Beats Everything', body: 'You can have the best product in the world. Premium ingredients. Perfect pricing. Stunning design. None of it matters if you show it to people who don\'t want it. But show a basic solution to people desperately looking for it? They throw money at you. The hunger in your market is worth more than perfection in your product.' },
-      { type: 'visual', title: '90% of Failures Come From This', visualType: 'stats', data: [
-        { value: '90%', label: 'fail from complication', subtext: 'Overengineering kills sales' },
+      { type: 'visual', title: 'The Reality of Most Failures', visualType: 'stats', data: [
+        { value: '90%', label: 'fail from wrong audience', subtext: 'Great product, wrong people' },
         { value: '1', label: 'thing customers want', subtext: 'The end result' },
         { value: '0', label: 'care about HOW it works', subtext: 'Just make the pain stop' }
       ]},
       { type: 'content', title: 'Customers Want the Dream Outcome', body: 'They don\'t care about your technology. Your process. Your ingredients. Your story. They care about ONE thing: What will my life look like after I buy this? Will I be thinner? Richer? More attractive? Less stressed? More respected? Sell them THAT future. Not the tool. Not the method. The outcome.' },
       { type: 'example', scenario: 'Fitness Product', before: { label: 'Selling Features', text: '"Our resistance bands use premium latex with 5 tension levels, scientifically designed grip handles, and a 60-page workout guide created by certified trainers."' }, after: { label: 'Selling Dream Outcome', text: '"Get the body you want in 20 minutes a day - no gym, no excuses. Join 12,847 people who already transformed."' }, insight: 'They don\'t buy bands. They buy the body they see in the mirror 90 days from now.' },
-      { type: 'cards', title: 'The 4 Halbert Rules', items: [
-        { title: '1. Sell What They Already Want', description: 'Find the existing desire. Don\'t create demand - tap into what they\'re already desperately searching for.' },
-        { title: '2. Sell Transformation, Not Items', description: 'They don\'t want a course. They want to be a millionaire. Sell the identity shift, not the information.' },
-        { title: '3. Remove All Complexity', description: 'Every detail you add is another reason not to buy. Simplify to the dream outcome only.' },
-        { title: '4. Speak Their Language', description: 'Use the exact words they use to describe their problem. Mirror their desperation back to them.' }
+      { type: 'timeline', title: 'The Halbert Method', events: [
+        { title: 'Find the existing desire', description: 'Don\'t create demand - tap into what they\'re already desperately searching for. Look for burning pain points.' },
+        { title: 'Sell transformation, not items', description: 'They don\'t want a course. They want to be a millionaire. Sell the identity shift, not the information.' },
+        { title: 'Remove all complexity', description: 'Every detail you add is another reason not to buy. Simplify to the dream outcome only.' },
+        { title: 'Speak their language', description: 'Use the exact words they use to describe their problem. Mirror their desperation back to them.' }
       ]},
       { type: 'content', title: 'Find Your Hungry Crowd', body: 'Stop trying to convince people they need what you sell. Instead, find people who are already looking for it. Dehydrated people buy water. Tired people buy energy. Broke people buy wealth. Lonely people buy connection. Find the hunger. Feed it. That\'s the entire game.' },
       { type: 'visual', title: 'The Psychology Behind It', visualType: 'image', imageUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*NZxA6EqiVBslZ5Evbg8gFA.jpeg', caption: 'Halbert understood human nature better than anyone' },
@@ -125,6 +99,38 @@
       { type: 'quiz', question: 'You\'re selling a productivity app. Which headline follows Halbert\'s method?', options: ['"Advanced task management with AI-powered scheduling and calendar integration"', '"The app used by 50,000+ professionals to organize their day"', '"Finally finish your to-do list and leave work at 5pm - guilt-free"', '"Boost your productivity with our award-winning software"'], correctIndex: 2, feedback: { correct: 'Exactly! It sells the dream outcome: leaving work at 5pm without guilt. That\'s what they REALLY want. Not features. Not social proof. The transformation. The life they fantasize about.', incorrect: 'Not quite. Halbert would sell the dream outcome: "Finally finish your to-do list and leave work at 5pm - guilt-free." That\'s the hungry crowd - people desperate to stop working late. Sell them the future they crave, not the tool.' }},
       { type: 'completion', sources: [] }
     ];
+
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
+          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
+        </div>
+        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
+          />
+        </div>
+      </div>
+    );
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -146,7 +152,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -245,6 +251,41 @@
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
               <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSpotlightSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8 md:px-16 max-w-4xl mx-auto" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)' }}>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-6xl md:text-8xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="slide-title text-2xl md:text-4xl lg:text-5xl text-white mb-6 leading-tight italic">{data.quote}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-400 text-sm md:text-base">— {data.author}</motion.p>
+          {data.context && (
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-neutral-500 text-xs md:text-sm mt-8 max-w-2xl mx-auto italic">{data.context}</motion.p>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    const TimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.events.map((event, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 + i * 0.15, type: 'spring' }} className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                  {i + 1}
+                </motion.div>
+                {i < data.events.length - 1 && <div className="w-0.5 flex-1 bg-neutral-200 mt-2" />}
+              </div>
+              <div className="flex-1 pb-8">
+                <h3 className="font-bold text-neutral-900 mb-1 text-sm md:text-base">{event.title}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{event.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -366,6 +407,8 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
+          case 'timeline': return <TimelineSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

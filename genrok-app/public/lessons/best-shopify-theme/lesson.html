@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -35,6 +36,38 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
+          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
+        </div>
+        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
+          />
+        </div>
+      </div>
+    );
+
     const LESSON_CONFIG = {
       id: 'best-shopify-theme',
       title: 'Shrine vs Impulse: The 34.9% CVR Battle',
@@ -44,35 +77,7 @@
       nextLesson: { id: 'coupon-leaking', title: 'Your Store Is Leaking Coupons', teaser: 'Browser extensions are showing your 20% discount codes to full-price buyers. Here\'s how to stop it.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -103,12 +108,12 @@
       { type: 'welcome', learningGoals: ['Why Shrine beat Impulse by 34.9% CVR in a real head-to-head test', 'The 4 conversion killers hiding in most Shopify themes', 'How mobile loading speed is the silent profit leak'] },
       { type: 'hook', headline: 'Two themes. Same products. Same traffic. One destroyed the other by 34.9% CVR.', subtext: 'Shrine vs Impulse. Both premium Shopify themes. Both trusted by thousands of stores. But when tested side-by-side on identical traffic, Shrine obliterated Impulse. Why? Speed. Simplicity. Strategic information architecture. While Impulse showed off features, Shrine got people buying.' },
       { type: 'visual', title: 'The Head-to-Head Results', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/61.jpg?v=1763114928', caption: 'Same store, same products, same traffic. Shrine won by 34.9%. The difference? What happens in the first 3 seconds.' },
-      { type: 'visual', title: 'The CVR Difference', visualType: 'stats', data: [
-        { value: '34.9%', label: 'higher CVR with Shrine', subtext: 'Same store, same traffic' },
-        { value: '2.1s', label: 'faster mobile load', subtext: 'Shrine vs Impulse average' },
-        { value: '47%', label: 'fewer distractions', subtext: 'Cleaner product pages' }
+      { type: 'visual', title: 'The Performance Difference', visualType: 'stats', data: [
+        { value: '34.9%', label: 'CVR improvement observed', subtext: 'In documented case study' },
+        { value: '2.1s', label: 'faster typical load time', subtext: 'Lean vs feature-heavy themes' },
+        { value: '47%', label: 'fewer page elements', subtext: 'Cleaner, focused layouts' }
       ]},
-      { type: 'content', title: 'Why Shrine Won: Mobile Speed', body: 'Shrine loads faster on mobile. Way faster. Mobile is 70-80% of eCommerce traffic. Every extra second of load time kills 7-10% of potential conversions. Impulse is bloated with features most stores never use. Shrine is lean, fast, and built for mobile-first buying behavior.' },
+      { type: 'spotlight-card', title: 'The Speed Equation', mainStat: '70-80%', statLabel: 'of traffic is mobile', insight: 'Every extra second of mobile load time destroys 7-10% of conversions. Shrine loads in under 2 seconds. Impulse takes 4-6 seconds. The math is brutal.' },
       { type: 'cards', title: 'The 4 Conversion Killers in Most Themes', items: [
         { title: '1. Slow Mobile Load Times', description: 'Every second of delay = 7% CVR drop. Most themes load in 4-6 seconds on mobile. Shrine loads in under 2 seconds. Speed is profit.' },
         { title: '2. Cluttered Product Pages', description: 'Too many tabs, too many sections, too much scrolling. Shrine puts critical info above the fold. Clean. Fast. Conversion-focused.' },
@@ -116,7 +121,14 @@
         { title: '4. Poor Above-Fold Info', description: 'Visitors shouldn\'t scroll to see price, reviews, or shipping info. Shrine front-loads value. Everything critical is visible immediately.' }
       ]},
       { type: 'example', scenario: 'Product Page Comparison', before: { label: 'Impulse (Bloated)', text: 'Hero image, then scroll for price. Scroll more for reviews. Mega menu at top. Sidebar widgets. Pop-ups. 5.3s mobile load.' }, after: { label: 'Shrine (Lean)', text: 'Hero + price + reviews + ATC button all above fold. Minimal nav. No distractions. 1.8s mobile load. Clean path to purchase.' }, insight: 'Same product. One layout murders conversion. The other optimizes for it.' },
-      { type: 'content', title: 'Why Clean Beats Feature-Rich', body: 'More features don\'t mean more conversions. They mean more decisions, more cognitive load, more friction. Shrine strips away everything that doesn\'t directly support the buying decision. Impulse shows off. Shrine sells. That\'s the difference.' },
+      { type: 'icon-grid', title: 'Clean vs Cluttered', items: [
+        { icon: 'zap', label: 'Fast Load', value: 'Shrine', color: '#22c55e' },
+        { icon: 'target', label: 'Focused Layout', value: 'Shrine', color: '#22c55e' },
+        { icon: 'smartphone', label: 'Mobile-First', value: 'Shrine', color: '#22c55e' },
+        { icon: 'bloat', label: 'Feature Overload', value: 'Impulse', color: '#ef4444' },
+        { icon: 'slow', label: 'Heavy JS', value: 'Impulse', color: '#ef4444' },
+        { icon: 'distract', label: 'Too Many Options', value: 'Impulse', color: '#ef4444' }
+      ], insight: 'Shrine eliminates what doesn\'t convert. Impulse shows off features. One sells, one stalls.' },
       { type: 'content', title: 'The Mobile-First Reality', body: '70-80% of your traffic is on mobile. Most themes are designed desktop-first, then squeezed into mobile. Shrine is mobile-first from the ground up. Faster load. Better UX. Clearer hierarchy. Mobile users don\'t browse - they buy or bounce. Shrine is built for that behavior.' },
       { type: 'quiz', question: 'What was the PRIMARY reason Shrine beat Impulse by 34.9% CVR?', options: ['Better color scheme and design aesthetics', 'More features and customization options', 'Faster mobile loading and cleaner product pages', 'Lower price point for the theme'], correctIndex: 2, feedback: { correct: 'Exactly. Speed and simplicity win. Shrine loaded 2.1 seconds faster on mobile, had 47% fewer distractions, and placed critical info (price, reviews, ATC) above the fold. Clean beats cluttered. Always.', incorrect: 'Not quite. The winning factor was speed + simplicity. Shrine loaded 2.1 seconds faster on mobile, reduced distractions by 47%, and placed all critical info (price, reviews, ATC button) above the fold. Features don\'t convert - frictionless experiences do.' }},
       { type: 'completion', sources: [{ name: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }] }
@@ -144,7 +156,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -290,6 +302,42 @@
       );
     };
 
+    const SpotlightCardSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-12 text-center shadow-2xl max-w-lg w-full relative overflow-hidden">
+          <div className="absolute inset-0 bg-white opacity-5"></div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="relative z-10">
+            <div className="text-7xl md:text-8xl font-black text-white mb-4">{data.mainStat}</div>
+            <div className="text-xl font-semibold text-green-100 mb-8">{data.statLabel}</div>
+            <div className="border-t-2 border-green-400 pt-6">
+              <p className="text-green-50 text-base leading-relaxed">{data.insight}</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    const IconGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.08, type: 'spring' }} className="bg-white rounded-xl p-6 text-center border-2 hover:scale-105 transition-transform" style={{ borderColor: item.color }}>
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ backgroundColor: item.color + '20' }}>
+                <Icons.Zap style={{ color: item.color }} />
+              </div>
+              <div className="font-bold text-neutral-900 mb-1 text-sm">{item.label}</div>
+              <div className="text-xs font-semibold" style={{ color: item.color }}>{item.value}</div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -359,6 +407,8 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'spotlight-card': return <SpotlightCardSlide data={slide} />;
+          case 'icon-grid': return <IconGridSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;

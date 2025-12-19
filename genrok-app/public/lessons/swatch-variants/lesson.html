@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -33,6 +34,104 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // Product Preview Component
+    const ProductPreviewSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="bg-neutral-100 rounded-xl aspect-square flex items-center justify-center">
+            <span className="text-6xl">{data.productEmoji || '👕'}</span>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+            <h3 className="font-bold text-xl mb-4">{data.productName}</h3>
+            <p className="text-neutral-600 mb-4">{data.description}</p>
+            <div className="mb-4">
+              <p className="text-sm font-medium text-neutral-500 mb-2">Color</p>
+              <div className="flex gap-2">
+                {data.colors.map((color, i) => (
+                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.1 }} className="w-8 h-8 rounded-full border-2 border-neutral-300 cursor-pointer hover:scale-110 transition-transform" style={{ background: color }} />
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-neutral-500 italic">{data.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Comparison Grid Component
+    const ComparisonGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
+              <h3 className="font-bold text-red-700">{data.old.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-red-100">
+              <p className="text-xs text-neutral-500 mb-2">Available in:</p>
+              <div className="space-y-1">
+                {data.old.items.map((item, i) => (
+                  <div key={i} className="text-sm text-neutral-700 bg-neutral-50 px-2 py-1 rounded">{item}</div>
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-red-700 italic">{data.old.insight}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
+              <h3 className="font-bold text-green-700">{data.new.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-green-100">
+              <p className="text-xs text-neutral-500 mb-2">Select color:</p>
+              <div className="flex gap-2">
+                {data.new.swatches.map((swatch, i) => (
+                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.1 }} className="w-10 h-10 rounded-lg border-2 border-neutral-300 cursor-pointer hover:scale-110 transition-transform" style={{ background: swatch }} />
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-green-700 italic">{data.new.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Pro Tip Component
+    const ProTipSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
+          <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-2xl p-8 relative">
+            <div className="absolute -top-4 left-6 px-4 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">💡 PRO TIP</div>
+            <h2 className="slide-title text-2xl md:text-3xl text-purple-900 mb-4 pt-2">{data.title}</h2>
+            <p className="text-purple-800 leading-relaxed">{data.body}</p>
+            {data.action && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
+                <p className="text-sm font-medium text-purple-700">➜ {data.action}</p>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
@@ -44,35 +143,7 @@
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more conversion optimization tactics.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee\'s ready? Your competition is still sleeping. Let\'s go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You\'re already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let\'s do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you\'re building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You\'re one of us. Can\'t sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -100,26 +171,22 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why image swatches convert 3.4% better than text labels for variants', 'The psychology of cognitive load and instant visual understanding', 'How to implement visual swatches without slowing down your store'] },
-      { type: 'hook', headline: 'A single visual change increased conversions by 3.4%.', subtext: 'Not a redesign. Not a new funnel. Just switching from text labels to image swatches for product variants. Sounds too simple to matter, right? Wrong. When customers can SEE the color instantly instead of reading "Forest Green" and imagining it, their brains process the choice faster. Less cognitive load. Less hesitation. More purchases. The A/B test proved it: Image swatches beat text labels by 3.4%. And the fix takes 10 minutes.' },
-      { type: 'content', title: 'The Hidden Friction in Text Labels', body: 'Picture this: A customer lands on your product page. They see "Available in: Navy Blue, Forest Green, Charcoal Gray, Burgundy." Now what? Their brain has to process each word. Translate the color name into a mental image. Compare the imagined colors. Make a decision. That\'s cognitive load. Every micro-decision adds friction. And friction kills conversions.' },
-      { type: 'visual', title: 'The A/B Test Results', visualType: 'stats', data: [
-        { value: '+3.4%', label: 'CVR Increase', subtext: 'Image swatches vs text labels' },
-        { value: '0.3s', label: 'Faster Decision', subtext: 'Visual recognition vs reading text' },
-        { value: '47%', label: 'Lower Bounce', subtext: 'On variant selection step' }
-      ]},
-      { type: 'content', title: 'What Are Image Swatches?', body: 'Image swatches are small visual thumbnails showing each variant option. Instead of reading "Ocean Blue," customers see a tiny image of the actual blue color. Instead of imagining "Marble Pattern," they see the pattern. Click. Done. The brain processes images 60,000x faster than text. You\'re not just showing options. You\'re removing the mental translation step entirely.' },
+      { type: 'welcome', learningGoals: ['Why image swatches convert better than text labels for variants', 'The psychology of cognitive load and instant visual understanding', 'How to implement visual swatches without slowing down your store'] },
+      { type: 'hook', headline: 'A single visual change can significantly boost conversions.', subtext: 'Not a redesign. Not a new funnel. Just switching from text labels to image swatches for product variants. Sounds too simple to matter, right? When customers can SEE the color instantly instead of reading "Forest Green" and imagining it, their brains process the choice faster. Less cognitive load. Less hesitation. More purchases. Image swatches consistently beat text labels in testing. And the fix takes 10 minutes.' },
+      { type: 'content', title: 'The Hidden Friction in Text Labels', body: 'Picture this: A customer lands on your product page. They see "Available in: Navy Blue, Forest Green, Charcoal Gray, Burgundy." Now what? Their brain has to process each word. Translate the color name into a mental image. Compare the imagined colors. Make a decision. That is cognitive load. Every micro-decision adds friction. And friction kills conversions.' },
+      { type: 'comparison-grid', title: 'Text vs Visual Swatches', old: { title: 'Text Labels', items: ['Navy Blue', 'Forest Green', 'Charcoal Gray', 'Burgundy'], insight: 'Customer must read and imagine each color' }, new: { title: 'Image Swatches', swatches: ['#001f3f', '#228b22', '#36454f', '#800020'], insight: 'Customer sees and selects instantly' }},
+      { type: 'content', title: 'What Are Image Swatches?', body: 'Image swatches are small visual thumbnails showing each variant option. Instead of reading "Ocean Blue," customers see a tiny image of the actual blue color. Instead of imagining "Marble Pattern," they see the pattern. Click. Done. The brain processes images much faster than text. You are not just showing options. You are removing the mental translation step entirely.' },
+      { type: 'product-preview', title: 'How Swatches Work', productEmoji: '👕', productName: 'Premium Cotton T-Shirt', description: 'Soft, breathable, perfect fit. Available in multiple colors.', colors: ['#000000', '#ffffff', '#001f3f', '#228b22', '#800020'], insight: 'Instant visual selection reduces hesitation and speeds up purchase decisions.' },
       { type: 'content', title: 'Why This Works: Cognitive Load Theory', body: 'Your customer\'s brain has limited processing capacity. Every tiny decision drains that capacity. "What does Forest Green look like?" "Is Navy Blue dark or light?" "Does Charcoal Gray match my style?" These micro-questions create hesitation. Hesitation creates doubt. Doubt kills sales. Image swatches eliminate the questions. They SEE it. They KNOW it. They BUY it.' },
       { type: 'visual', title: 'The Visual Comparison', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', caption: 'Left: Text labels force imagination. Right: Image swatches show instant reality.' },
       { type: 'cards', title: 'Why Image Swatches Win', items: [
-        { title: 'Instant Recognition', description: 'Brain processes images 60,000x faster than text. See it. Click it. Done.' },
+        { title: 'Instant Recognition', description: 'Brain processes images much faster than text. See it. Click it. Done.' },
         { title: 'Zero Imagination Required', description: 'No mental translation. No "what does that look like?" confusion.' },
         { title: 'Reduces Choice Paralysis', description: 'Visual comparison is faster than reading and comparing text descriptions.' },
         { title: 'Mobile-Friendly', description: 'Tap on image is easier than reading tiny text labels on mobile.' },
         { title: 'Premium Perception', description: 'Looks more professional and polished than plain text dropdowns.' }
       ]},
-      { type: 'example', scenario: 'Fashion Store Implementing Swatches', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
-      { type: 'content', title: 'The Mobile Advantage', body: 'On mobile, the difference is even bigger. Text labels are small. Customers squint. They tap the wrong option. They get frustrated. They leave. Image swatches? Big enough to see clearly. Easy to tap accurately. Instant visual feedback when the main image changes. Mobile users convert 4.1% better with swatches because the experience is effortless.' },
+      { type: 'pro-tip', title: 'Mobile Makes the Difference Bigger', body: 'On mobile, the advantage is even clearer. Text labels are small. Customers squint. They tap the wrong option. They get frustrated. Image swatches? Big enough to see clearly. Easy to tap accurately. Instant visual feedback when the main image changes.', action: 'Test this on mobile first - that is where you will see the biggest impact.' },
       { type: 'content', title: 'It\'s Not Just Colors', body: 'Image swatches work for ANY visual variant. Colors? Obviously. Patterns? Absolutely. Materials? Yes. Styles? Definitely. Even sizes can benefit if you show fit differences visually. Anything the customer needs to SEE to decide should be shown as an image swatch, not a text label.' },
       { type: 'cards', title: 'What to Use Swatches For', items: [
         { title: 'Colors', description: 'Show the actual shade, not the name. "Midnight Blue" means nothing until you see it.' },
@@ -127,12 +194,11 @@
         { title: 'Materials', description: 'Leather, suede, canvas - texture matters and images communicate it.' },
         { title: 'Styles', description: 'Different cuts, collars, or designs shown as mini previews.' }
       ]},
-      { type: 'example', scenario: 'Real Implementation Results', before: { label: 'Week 1-2 (Text)', text: '1,000 visitors. 2.8% conversion rate. 28 sales. Variant selection: 62% complete. 38% abandon at this step.' }, after: { label: 'Week 3-4 (Swatches)', text: '1,000 visitors. 3.2% conversion rate. 32 sales. Variant selection: 89% complete. 11% abandon at this step.' }, insight: '4 extra sales per 1,000 visitors. Over a month with 10,000 visitors, that\'s 40 additional sales. Compounding forever.' },
-      { type: 'content', title: 'The Implementation Reality Check', body: 'Here\'s the good news: Most Shopify themes already support image swatches natively. You don\'t need custom code. You don\'t need a developer. You just need product images for each variant. Upload them. Enable swatches in theme settings. Done. 10 minutes of work for a 3.4% conversion boost that compounds forever.' },
-      { type: 'content', title: 'The Premium Perception Bonus', body: 'Beyond conversion rates, image swatches make your store look more professional. Compare Amazon (text dropdowns) to luxury brands (visual swatches). Which feels premium? Which builds trust? Visual swatches signal quality and attention to detail. Customers subconsciously associate this polish with product quality. It\'s not just about UX. It\'s about brand perception.' },
-      { type: 'tool', title: 'Easiest Way to Add Swatches', toolName: 'Section Factory', toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', body: 'Drag-and-drop visual variant swatches for any product. No coding required. Works with your existing theme. Mobile-optimized. Lightning fast.', questions: ['Do your products have color or pattern variants?', 'Are customers hesitating at the variant selection step?', 'Do you want to look more premium and convert better?'], insight: 'One-time setup. Permanent conversion boost. The swatches work 24/7 removing friction you didn\'t know existed.' },
-      { type: 'content', title: 'The Compound Effect Over Time', body: 'A 3.4% conversion increase sounds small. But it compounds. If you get 10,000 monthly visitors at a 2% CVR, that\'s 200 sales. Boost to 3.4% CVR with swatches? Now it\'s 340 sales. That\'s 140 extra sales per month. At $50 average order, that\'s $7,000 in additional revenue. From changing how variants display. The ROI is infinite because the implementation is basically free.' },
-      { type: 'quiz', question: 'Why do image swatches convert better than text labels?', options: ['They look prettier', 'They reduce cognitive load and enable instant visual understanding', 'They take up more space on the page', 'Customers prefer clicking images over text'], correctIndex: 1, feedback: { correct: 'Exactly right! Image swatches convert better because they reduce cognitive load. When customers SEE the color or pattern instead of reading the name and imagining it, their brains process the choice 60,000x faster. This eliminates hesitation, speeds up decisions, and removes the mental friction that causes cart abandonment. It\'s pure psychology applied to UX design.', incorrect: 'Not quite. The answer is reducing cognitive load and enabling instant visual understanding. When customers have to read "Forest Green" and imagine what it looks like, that\'s mental work. Mental work creates friction. Friction kills conversions. Image swatches remove that work entirely - they SEE it, they KNOW it, they BUY it. The brain processes images 60,000x faster than text.' }},
+      { type: 'example', scenario: 'Fashion Store Implementing Swatches', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
+      { type: 'content', title: 'The Implementation Reality Check', body: 'Here is the good news: Most Shopify themes already support image swatches natively. You do not need custom code. You do not need a developer. You just need product images for each variant. Upload them. Enable swatches in theme settings. Done. 10 minutes of work for a conversion boost that compounds forever.' },
+      { type: 'content', title: 'The Premium Perception Bonus', body: 'Beyond conversion rates, image swatches make your store look more professional. Compare Amazon (text dropdowns) to luxury brands (visual swatches). Which feels premium? Which builds trust? Visual swatches signal quality and attention to detail. Customers subconsciously associate this polish with product quality. It is not just about UX. It is about brand perception.' },
+      { type: 'tool', title: 'Easiest Way to Add Swatches', toolName: 'Section Factory', toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', body: 'Drag-and-drop visual variant swatches for any product. No coding required. Works with your existing theme. Mobile-optimized. Lightning fast.', questions: ['Do your products have color or pattern variants?', 'Are customers hesitating at the variant selection step?', 'Do you want to look more premium and convert better?'], insight: 'One-time setup. Permanent conversion boost. The swatches work 24/7 removing friction you did not know existed.' },
+      { type: 'quiz', question: 'Why do image swatches convert better than text labels?', options: ['They look prettier', 'They reduce cognitive load and enable instant visual understanding', 'They take up more space on the page', 'Customers prefer clicking images over text'], correctIndex: 1, feedback: { correct: 'Exactly right! Image swatches convert better because they reduce cognitive load. When customers SEE the color or pattern instead of reading the name and imagining it, their brains process the choice much faster. This eliminates hesitation, speeds up decisions, and removes the mental friction that causes cart abandonment. It is pure psychology applied to UX design.', incorrect: 'Not quite. The answer is reducing cognitive load and enabling instant visual understanding. When customers have to read "Forest Green" and imagine what it looks like, that is mental work. Mental work creates friction. Friction kills conversions. Image swatches remove that work entirely - they SEE it, they KNOW it, they BUY it. The brain processes images much faster than text.' }},
       { type: 'completion', sources: [{ name: 'Add Swatches to Your Store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }] }
     ];
 
@@ -156,7 +222,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -341,7 +407,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why image swatches convert 3.4% better than text labels. By reducing cognitive load and enabling instant visual understanding, you remove friction that kills conversions. Implement swatches today and watch your conversion rate climb permanently.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why image swatches convert better than text labels. By reducing cognitive load and enabling instant visual understanding, you remove friction that kills conversions. Implement swatches today and watch your conversion rate improve.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -409,6 +475,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'product-preview': return <ProductPreviewSlide data={slide} />;
+          case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
+          case 'pro-tip': return <ProTipSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

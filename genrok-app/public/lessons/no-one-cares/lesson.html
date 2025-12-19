@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -44,35 +45,7 @@
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more copywriting psychology.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -102,7 +75,9 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why customers only care about one thing: themselves', 'How to pass the Self-Interest Filter every time', 'The Authority Transfer that makes customers the hero'] },
       { type: 'hook', headline: 'Hard truth: No one cares about your brand story, your mission, or your values.', subtext: 'Customers have one filter for every word on your site: "How does this improve MY life?" If your copy talks about YOU, they disconnect. If your copy talks about THEM and their world, they lean in. The Self-Interest Bias is the most powerful psychological force in copywriting. Ignore it and you\'re invisible. Use it and you win.' },
+      { type: 'quote-spotlight', quote: 'No one cares about your product', attribution: 'Copywriting Psychology' },
       { type: 'content', title: 'The Self-Interest Filter', body: 'Every human walks around with an invisible filter. Everything they see, hear, or read passes through this filter: "How does this affect ME? How does this improve MY life? What\'s in it for ME?" If the answer isn\'t obvious, they tune out. Instantly. Your brand story? Filtered out. Your 20 years of experience? Filtered out. Your values and mission? Filtered out. Unless you connect them to their world, their problems, their desires - they don\'t exist.' },
+      { type: 'mindset-shift', title: 'The Copywriting Mindset Shift', before: ['Talk about your brand story', 'Highlight your experience', 'Show off your features', 'Prove how innovative you are'], after: ['Show how their life improves', 'Connect experience to their outcomes', 'Paint the picture of benefits', 'Demonstrate clear value for them'] },
       { type: 'example', scenario: 'Brand-Focused vs Customer-Focused Copy', before: { label: 'Brand-Focused (Ignored)', text: '"We have 20 years of experience crafting premium footwear. Our team is passionate about quality." - Customer thinks: "Cool story. How does this help ME?"' }, after: { label: 'Customer-Focused (Powerful)', text: '"For 20 years we refined one purpose: giving YOU shoes that feel weightless. Your feet don\'t hurt. Your day doesn\'t slow down." - Customer thinks: "Wait, shoes that don\'t hurt? Tell me more."' }, insight: 'Same 20 years. Different focus. One talks about the brand. One talks about the customer. Guess which one converts?' },
       { type: 'content', title: 'Authority Transfer: The Secret', body: 'Here\'s the copywriting secret most brands miss: Don\'t make YOUR brand the authority. Make the CUSTOMER the hero. Transfer authority to them. Instead of "We\'re experts in X" say "You deserve X." Instead of "Our mission is Y" say "Your life becomes Y." The moment you position them as the main character of the story, they care. Because now it\'s about THEM, not you.' },
       { type: 'cards', title: 'Passing the Self-Interest Filter', items: [
@@ -118,13 +93,51 @@
       { type: 'visual', title: 'The Self-Interest Test', visualType: 'stats', data: [
         { value: '100%', label: 'of customers', subtext: 'Only care about themselves (not you)' },
         { value: '3 sec', label: 'to answer', subtext: '"What\'s in it for me?" or they leave' },
-        { value: '2x', label: 'conversion', subtext: 'When copy focuses on customer outcomes' }
+        { value: '2x', label: 'potential lift', subtext: 'When copy focuses on customer outcomes' }
       ]},
-      { type: 'content', title: 'The Brutal Copy Audit', body: 'Here\'s how to fix your copy right now: Read every sentence on your homepage. Ask yourself: "Is this about us or them?" If it\'s about you - your story, your values, your achievements - delete it or reframe it. Make it about THEM. Their problems. Their desires. Their transformation. Do this ruthlessly. Every line that survives must answer: "How does this make the customer\'s life better?" That\'s the standard. Meet it or delete it.' },
+      { type: 'checklist-interactive', title: 'The Brutal Copy Audit', subtitle: 'Click each item as you audit your copy', items: [
+        { title: 'Read every sentence', description: 'Go through your homepage or landing page line by line.' },
+        { title: 'Ask: "Us or them?"', description: 'Is this line about your brand or about customer benefit?' },
+        { title: 'Delete ego copy', description: 'Remove lines that brag without connecting to their outcome.' },
+        { title: 'Reframe to customer', description: 'Transform remaining lines to focus on their transformation.' },
+        { title: 'Test the filter', description: 'Does it answer: "How does this improve MY life?"' }
+      ]},
       { type: 'content', title: 'Why This Works So Powerfully', body: 'Self-Interest Bias isn\'t manipulation. It\'s human nature. We\'re wired to prioritize ourselves. When your copy reflects their world, speaks their language, and focuses on their outcomes - you\'re not being selfish. You\'re being relevant. Relevance builds attention. Attention builds trust. Trust converts. The brands that win? They make customers feel seen, understood, and prioritized. Not because they\'re generous. Because they understand psychology.' },
       { type: 'quiz', question: 'What should every line of copy answer to pass the Self-Interest Filter?', options: ['"How great is this brand?"', '"How does this improve MY life?"', '"How innovative is this product?"', '"How many people use this?"'], correctIndex: 1, feedback: { correct: 'Exactly right! Every line must answer: "How does this improve MY life?" Customers filter everything through self-interest. If your copy talks about your brand, they tune out. If it talks about their life improved, they lean in. That\'s the difference between ignored and converting.', incorrect: 'Not quite. The answer is: "How does this improve MY life?" Self-Interest Bias means customers only care about themselves. Your brand story? Your innovation? Your user count? None of it matters unless it connects to their world, their problems, their outcomes. Make them the hero. Then they care.' }},
       { type: 'completion', sources: [] }
     ];
+
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
+          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
+        </div>
+        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
+          />
+        </div>
+      </div>
+    );
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -146,7 +159,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -237,6 +250,76 @@
         </div>
       </div>
     );
+
+    const QuoteSpotlightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="relative">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute -top-8 -left-4 text-9xl font-bold opacity-10" style={{ color: 'var(--accent)' }}>"</motion.div>
+          <h2 className="slide-title text-4xl md:text-5xl lg:text-6xl text-black text-center mb-6 relative z-10">{data.quote}</h2>
+          {data.attribution && <p className="text-center text-neutral-500 text-sm md:text-base italic">— {data.attribution}</p>}
+        </motion.div>
+      </div>
+    );
+
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
+            <div className="absolute -top-3 -left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">OLD THINKING</div>
+            <div className="bg-neutral-100 border-2 border-neutral-300 rounded-xl p-6 pt-8">
+              <ul className="space-y-3">
+                {data.before.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2 text-neutral-600">
+                    <Icons.X className="flex-shrink-0 mt-1 text-red-500" />
+                    <span className="text-sm leading-relaxed">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="relative">
+            <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW THINKING</div>
+            <div className="border-2 rounded-xl p-6 pt-8" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.05), rgba(var(--accent-rgb), 0.1))`, borderColor: 'var(--accent)' }}>
+              <ul className="space-y-3">
+                {data.after.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-2 text-neutral-800">
+                    <Icons.Check className="flex-shrink-0 mt-1 text-green-500" />
+                    <span className="text-sm leading-relaxed font-medium">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const ChecklistInteractiveSlide = ({ data }) => {
+      const [checked, setChecked] = useState([]);
+      const toggleCheck = (index) => {
+        setChecked(prev => prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]);
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
+          {data.subtitle && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-6 text-sm">{data.subtitle}</motion.p>}
+          <div className="space-y-3">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} onClick={() => toggleCheck(i)} className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${checked.includes(i) ? 'bg-green-50 border-green-300' : 'bg-white border-neutral-200 hover:border-neutral-300'}`}>
+                <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${checked.includes(i) ? 'bg-green-500 border-green-500' : 'border-neutral-300'}`}>
+                  {checked.includes(i) && <Icons.Check className="text-white" style={{ width: 16, height: 16 }} />}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-neutral-900 mb-1 text-sm">{item.title}</h3>
+                  <p className="text-neutral-600 text-xs leading-relaxed">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -353,6 +436,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
+          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
+          case 'checklist-interactive': return <ChecklistInteractiveSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

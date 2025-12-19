@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -44,35 +45,7 @@
       nextLesson: { id: 'geo-personalization', title: 'The Power of Personalization', teaser: 'How a simple GEO announcement bar doubles CVR by matching economic reality.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -99,27 +72,60 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
+          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
+        </div>
+        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
+          />
+        </div>
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why CBO and ABO are not alternatives - they solve different problems', 'The fatal flaw killing your testing decisions (20-30% misattribution)', 'The exact 4-step method that works under Andromeda'] },
       { type: 'hook', headline: 'Most store owners treat CBO and ABO like choosing between coffee or tea.', subtext: 'That\'s like asking: "Should I use a hammer or a screwdriver?" Wrong question. They\'re different tools for different jobs. Trying to scale with ABO is like hammering with a screwdriver. And testing with CBO? That\'s screwing with a hammer. Both work terribly. Here\'s what actually works.' },
       { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.' },
-      { type: 'cards', title: 'Different Jobs, Different Strengths', items: [
-        { title: 'ABO - The Testing Lab', description: 'Controlled experiments. Isolate variables. Test one concept at a time. Learn what angle works. Discover winning hooks. Small budgets, high volume.' },
-        { title: 'CBO - The Scaling Engine', description: 'Dynamic optimization. High budgets. Multiple winning creatives. Andromeda distributes spend based on predicted performance. You don\'t choose - it does.' }
-      ]},
-      { type: 'content', title: 'The Silent Killer: Data Misattribution', body: 'Here\'s the part nobody talks about. Without accurate pixel data, ABO testing is MEANINGLESS. When 20-30% of conversions are misattributed, you\'re making decisions on false signals. You kill winners. You scale losers. You burn budgets on guesses, not data.' },
-      { type: 'visual', title: 'The Accuracy Problem', visualType: 'stats', data: [
-        { value: '20-30%', label: 'conversion misattribution', subtext: 'Standard pixel accuracy loss' },
-        { value: '0', label: 'reliable decisions', subtext: 'When data is broken' },
-        { value: '100%', label: 'accuracy needed', subtext: 'Before testing means anything' }
+      { type: 'comparison-battle', title: 'ABO vs CBO: Different Jobs', left: { label: 'ABO', subtitle: 'Testing Lab', color: '#EF4444', features: ['Small budgets ($20-50/day)', 'Test one concept at a time', 'Controlled experiments', 'Learn what resonates', '40-50 creatives weekly'] }, right: { label: 'CBO', subtitle: 'Scaling Engine', color: '#10B981', features: ['High budgets ($500+/day)', 'Feed 12-30 winners', 'Dynamic optimization', 'Andromeda distributes spend', 'Let AI find buyers'] } },
+      { type: 'content', title: 'The Silent Killer: Data Misattribution', body: 'Here\'s the part nobody talks about. Without accurate pixel data, ABO testing is MEANINGLESS. When iOS privacy changes impact tracking, you\'re making decisions on incomplete signals. You might kill winners. You might scale losers. Accurate data is the foundation.' },
+      { type: 'stat-countdown', title: 'The Accuracy Problem', stats: [
+        { value: 30, suffix: '%', label: 'Typical tracking loss', subtext: 'iOS privacy changes impact', color: '#EF4444' },
+        { value: 100, suffix: '%', label: 'Accuracy needed', subtext: 'For confident decisions', color: '#10B981' }
       ]},
       { type: 'example', scenario: 'ABO Testing Without Accurate Data', before: { label: 'Bad Data = Bad Decisions', text: 'Ad A: 15 conversions reported, Ad B: 8 conversions. You kill Ad B and scale Ad A. But 30% was misattributed - Ad B actually drove 12 conversions, Ad A drove 10. You just killed your winner.' }, after: { label: 'Accurate Data = Clear Signals', text: 'With 100% attribution accuracy, you see reality: Ad B outperforms. You scale the actual winner. No guessing. No bleeding budgets on false positives.' }, insight: 'Accuracy isn\'t optional. It\'s the foundation. Without it, testing is gambling.' },
       { type: 'tool', title: 'Fix Your Attribution Before Testing Anything', toolName: 'Triple Whale Pixel', toolUrl: 'https://www.triplewhale.com/pixel', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Server-side tracking that restores attribution accuracy to near 100%. See which ads actually drive sales. Make testing decisions on reality, not broken data.', questions: ['Which ad angle drove the most profit?', 'What creative format converts highest?', 'Which audience segment has best LTV?', 'Where is my budget actually going?'], insight: 'When data is accurate, winning becomes systematic - not lucky.' },
-      { type: 'cards', title: 'The Winning Method (4 Steps)', items: [
-        { title: '1. ABO Continuous Testing', description: '40-50 creatives weekly. Test concepts, hooks, angles, formats. Small budgets. High volume. Learn what resonates with real people.' },
-        { title: '2. CBO Scaling Engine', description: 'Feed CBO 12-30 winning diverse creatives. High budget. Let Andromeda\'s AI distribute spend dynamically. No manual meddling.' },
-        { title: '3. Never Shut Off Winners', description: 'If it\'s making money, don\'t touch it. Even if CPM rises. Even if ROAS dips slightly. Killing profitable campaigns is self-sabotage.' },
-        { title: '4. Accuracy Is Non-Negotiable', description: 'Without 100% attribution accuracy, everything else is noise. Fix your pixel first. Test second. Scale third.' }
+      { type: 'decision-tree', title: 'When to Use Which?', question: 'What stage are you at?', paths: [
+        { condition: 'Testing new concepts', recommendation: 'Use ABO', explanation: 'Small budgets, controlled tests, learn what resonates', color: '#EF4444' },
+        { condition: 'Have 5+ winning creatives', recommendation: 'Switch to CBO', explanation: 'Feed all winners into one campaign, let Andromeda optimize', color: '#10B981' },
+        { condition: 'Campaign is profitable', recommendation: 'Never shut it off', explanation: 'Even if ROAS dips slightly, profit is profit', color: '#3B82F6' }
+      ]},
+      { type: 'timeline', title: 'The 4-Step Scaling System', steps: [
+        { number: 1, title: 'ABO Continuous Testing', description: '40-50 creatives weekly. Small budgets. High volume testing. Find winners.' },
+        { number: 2, title: 'CBO Scaling Engine', description: 'Feed 12-30 diverse winners. High budget. Let Andromeda distribute spend.' },
+        { number: 3, title: 'Never Shut Off Winners', description: 'If it makes money, keep it running. Profit beats perfect ROAS.' },
+        { number: 4, title: 'Fix Pixel Accuracy', description: 'Server-side tracking ensures decisions are based on reality, not broken data.' }
       ]},
       { type: 'content', title: 'Why This Works Under Andromeda', body: 'Andromeda is a prediction engine. It doesn\'t need you to tell it which audience to target. It needs creative diversity and accurate conversion data. When you feed CBO 12-30 diverse winning creatives and accurate signals, Andromeda finds the buyers. That\'s the entire system.' },
       { type: 'quiz', question: 'You have 5 winning ad creatives from ABO testing. What should you do next?', options: ['Keep running them in separate ABO campaigns to maintain control', 'Feed all 5 into one CBO campaign and let Andromeda optimize distribution', 'Pick the best one and scale it alone in a new CBO', 'Turn them all off and test 5 new creatives'], correctIndex: 1, feedback: { correct: 'Exactly! Feed all diverse winners into CBO. Andromeda needs volume + diversity to predict who will buy. One creative = limited signal. Multiple winners = powerful scaling engine.', incorrect: 'Not quite. The winning move: Feed all 5 winners into one CBO campaign. Andromeda thrives on creative diversity. Give it multiple proven winners and let the prediction AI distribute spend to find buyers. That\'s how you scale profitably under Andromeda.' }},
@@ -146,7 +152,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -350,6 +356,106 @@
       );
     };
 
+    const ComparisonBattleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="relative">
+            <div className="absolute -top-2 -left-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.left.color }}></div>
+            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.left.color }}>
+              <div className="text-center mb-4">
+                <h3 className="text-3xl font-bold mb-1" style={{ color: data.left.color }}>{data.left.label}</h3>
+                <p className="text-sm text-neutral-600">{data.left.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.left.features.map((feature, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="flex items-start gap-2">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.left.color }}>✓</span>
+                    <span className="text-neutral-700 text-sm">{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="relative">
+            <div className="absolute -top-2 -right-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.right.color }}></div>
+            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.right.color }}>
+              <div className="text-center mb-4">
+                <h3 className="text-3xl font-bold mb-1" style={{ color: data.right.color }}>{data.right.label}</h3>
+                <p className="text-sm text-neutral-600">{data.right.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.right.features.map((feature, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.right.color }}>✓</span>
+                    <span className="text-neutral-700 text-sm">{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
+              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000} />
+              </div>
+              <div className="text-lg font-semibold text-white mb-2">{stat.label}</div>
+              <div className="text-sm text-neutral-400">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const DecisionTreeSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-8 text-lg">{data.question}</motion.p>
+        <div className="space-y-4">
+          {data.paths.map((path, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="bg-white border-2 rounded-xl p-5 hover:shadow-lg transition-shadow" style={{ borderColor: path.color }}>
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style={{ background: path.color }}>{i + 1}</div>
+                <div className="flex-1">
+                  <div className="text-sm text-neutral-500 mb-1">If: {path.condition}</div>
+                  <div className="text-lg font-bold mb-2" style={{ color: path.color }}>{path.recommendation}</div>
+                  <div className="text-sm text-neutral-600">{path.explanation}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const TimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="relative">
+          <div className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500 rounded-full"></div>
+          <div className="space-y-6">
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative pl-16">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15 + i * 0.1, type: 'spring' }} className="absolute left-0 w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.number}</motion.div>
+                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
+                  <h3 className="font-bold text-neutral-900 mb-2 text-base">{step.title}</h3>
+                  <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -419,6 +525,10 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'decision-tree': return <DecisionTreeSlide data={slide} />;
+          case 'timeline': return <TimelineSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;

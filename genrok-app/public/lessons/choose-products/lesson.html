@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -44,35 +45,7 @@
       nextLesson: { id: 'formula-to-sell', title: 'The Formula to Sell Anything', teaser: 'The 4 psychological variables that make buying feel inevitable, not optional.' }
     };
 
-    const welcomeAnimations = {
-      morning: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', greeting: "Coffee's ready? Your competition is still sleeping. Let's go." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', greeting: "Early bird gets the million. You're already ahead of 90%!" },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', greeting: "Morning champion! This is how winners start their day." }
-      ],
-      afternoon: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', greeting: "Afternoon warrior! While they crash, you climb." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', greeting: "Post-lunch learner. Most quit now. You? Let's do this." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', greeting: "We have work to do. Winners separate from watchers." }
-      ],
-      evening: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', greeting: "Evening mastermind! Relaxed but ready. This is YOUR time." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', greeting: "Prime time learner. While they binge Netflix, you build." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', greeting: "Respect for being here. Evening architect mode activated." }
-      ],
-      night: [
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', greeting: "Night owl energy! While they sleep, you're building dreams." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', greeting: "Midnight grind mode. The quiet hours are profitable." },
-        { gif: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', greeting: "You're one of us. Can't sleep until you win? Welcome home." }
-      ]
-    };
-
-    const getTimeBasedWelcome = () => {
-      const hour = new Date().getHours();
-      let slot = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 17 ? 'afternoon' : hour >= 17 && hour < 21 ? 'evening' : 'night';
-      const options = welcomeAnimations[slot];
-      return options[Math.floor(Math.random() * options.length)];
-    };
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -99,13 +72,45 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
+          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
+        </div>
+        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
+          />
+        </div>
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: ['The 2 rules that separate winning products from dead inventory', 'Why "special enough" matters more than perfect margins', 'How Fashion and Home Decor create repeat buyers (not one-timers)'] },
       { type: 'hook', headline: 'Your customer is on the couch. Tired. Wallet in the other room. They don\'t know you.', subtext: 'This is the reality of eCommerce product selection. They have zero reason to get up, walk to their bag, pull out their credit card, and give you money. Unless your product passes two tests. Fail either one, and they scroll past. Pass both, and they\'re pulling out that card.' },
       { type: 'content', title: 'The Product Selection Paradox', body: 'Most store owners choose products backwards. They find cheap suppliers, decent margins, trending items - and wonder why nobody buys. The issue isn\'t your price or your ads. It\'s that your product doesn\'t pass the Couch Test: Is this special enough to justify the effort of ordering from a stranger online?' },
-      { type: 'cards', title: 'Rule #1: Special Enough to Order Online', items: [
-        { title: 'The Couch Scenario', description: 'Your customer is tired, comfortable, lazy. Their wallet is in the kitchen. They don\'t know your brand. Why would they move?' },
-        { title: 'Strong USP Required', description: 'You need a reason they CAN\'T ignore. Something they can\'t get locally. A unique design, custom feature, or clear upgrade over boring alternatives.' }
+      { type: 'product-criteria', title: 'The 2 Rules for Winning Products', rules: [
+        { number: 1, title: 'Special Enough', description: 'Must justify ordering from a stranger online', checkpoints: ['Can\'t get it locally', 'Unique design or customization', 'Clear upgrade over generic versions'], color: '#8b5cf6' },
+        { number: 2, title: 'Broad Appeal', description: 'Appeals to 60-80% of your audience', checkpoints: ['No complex sizing', 'Not ultra-niche aesthetics', 'Works for most people'], color: '#10b981' }
       ]},
       { type: 'example', scenario: 'Wall Clock Product', before: { label: 'Fails Couch Test', text: '"Plain white minimalist wall clock. $29.99. Ships in 5-7 days."' }, after: { label: 'Passes Couch Test', text: '"Personalized wooden clock with your family photos embedded. Custom engraving. Only available online. $59.99."' }, insight: 'Same category. One is generic (I can get that anywhere). One is special (I NEED this specific version).' },
       { type: 'content', title: 'Why Generic Products Die Online', body: 'If I can buy it at Target or Amazon in 2 clicks with Prime shipping, why would I trust YOUR unknown store? You\'re competing with convenience, trust, and speed. Your only weapon is UNIQUE. Special designs. Exclusive features. Customization. Bundles they can\'t get elsewhere. Make it special or die trying.' },
@@ -126,11 +131,7 @@
         { title: 'Why These Work', description: 'Repeat buyers = higher LTV. You\'re not chasing new customers every sale - you\'re building a base of collectors who trust your curation.' }
       ]},
       { type: 'content', title: 'The Fatal Mistake: Commodity Products', body: 'Phone cases everyone sells. Generic kitchen gadgets. Bland workout gear. These require constant new customer acquisition because nobody comes back. No brand loyalty. No journey. Just price wars and ad spend bleed. If your product doesn\'t create a "I wonder what else they have" moment - you\'re in trouble.' },
-      { type: 'visual', title: 'One-Time vs. Journey Products', visualType: 'comparison', data: {
-        left: { label: 'One Purchase', value: '1X', result: 'Gadgets, tools, solutions (churn forever)', color: '#94a3b8' },
-        right: { label: 'Repeat Buyers', value: '8X', result: 'Fashion, decor, curated collections (journey)', color: '#10b981' },
-        center: { label: 'LTV Difference', value: '+700%', result: 'Same customer, different category', color: '#8b5cf6' }
-      }},
+      { type: 'comparison-battle', title: 'One-Time vs. Journey Products', leftSide: { label: 'One Purchase Products', items: ['Buy once, done forever', 'Constant new customer acquisition', 'No brand loyalty built', 'Price war competition'], emoji: '⚠️', color: '#94a3b8' }, rightSide: { label: 'Journey Products', items: ['Customers return monthly', 'Build loyal collector base', 'Higher lifetime value', 'Curation creates moat'], emoji: '✨', color: '#10b981' }, winner: 'Fashion & Home Decor typically see 3-5x higher customer LTV' },
       { type: 'quiz', question: 'Which product BEST fits both Rule #1 (Special Enough) and Rule #2 (Broad Appeal)?', options: ['"Custom birthstone necklace with name engraving - fits all styles"', '"Generic stainless steel water bottle - $12.99"', '"Hyper-limited edition sneakers for hardcore sneakerheads only"', '"Standard black hoodie - available everywhere"'], correctIndex: 0, feedback: { correct: 'Exactly! It\'s special enough (custom, personalized, can\'t get at Target) AND broad enough (fits all styles, appeals to wide audience). That\'s the sweet spot where eCommerce wins happen.', incorrect: 'Not quite. The winning product is custom + personalized (Rule #1: Special Enough) but also works for everyone (Rule #2: Broad Appeal). Generic items fail Rule #1. Hyper-niche items fail Rule #2. You need both.' }},
       { type: 'completion', sources: [{ name: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' }, { name: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }] }
     ];
@@ -155,7 +156,7 @@
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed">Hey <span className="font-bold text-neutral-900">{userName}</span>! {welcomeData.greeting}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
@@ -209,6 +210,74 @@
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
           <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ProductCriteriaSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.rules.map((rule, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 + i * 0.2, type: 'spring' }} className="bg-white border-2 rounded-2xl p-6" style={{ borderColor: rule.color }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-2xl font-bold" style={{ background: rule.color }}>
+                  {rule.number}
+                </div>
+                <div>
+                  <h3 className="font-bold text-neutral-900 text-lg">{rule.title}</h3>
+                  <p className="text-neutral-500 text-sm">{rule.description}</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {rule.checkpoints.map((checkpoint, j) => (
+                  <motion.div key={j} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.2 + j * 0.1 }} className="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={rule.color} strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span className="text-neutral-700 text-sm">{checkpoint}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ComparisonBattleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-2">{data.leftSide.emoji}</div>
+              <h3 className="font-bold text-neutral-900 text-lg mb-1">{data.leftSide.label}</h3>
+            </div>
+            <ul className="space-y-2">
+              {data.leftSide.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2 text-neutral-600 text-sm">
+                  <span className="text-neutral-400 mt-0.5">•</span>
+                  <span>{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 text-white" style={{ background: `linear-gradient(135deg, ${data.rightSide.color}, ${data.rightSide.color}dd)` }}>
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-2">{data.rightSide.emoji}</div>
+              <h3 className="font-bold text-lg mb-1">{data.rightSide.label}</h3>
+            </div>
+            <ul className="space-y-2">
+              {data.rightSide.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-2 text-white/90 text-sm">
+                  <span className="text-white/60 mt-0.5">✓</span>
+                  <span>{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm font-medium">{data.winner}</p>
         </motion.div>
       </div>
     );
@@ -358,6 +427,8 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
+          case 'product-criteria': return <ProductCriteriaSlide data={slide} />;
+          case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
