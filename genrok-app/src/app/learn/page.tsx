@@ -116,6 +116,11 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'telescope-flip': { title: 'The Telescope Flip', description: '97% of marketers hold it backwards' },
   'trust-blueprint': { title: 'The Trust Blueprint', description: 'Build instant credibility that converts' },
   'value-perception-lever': { title: 'The Value Perception Lever', description: 'Make price irrelevant' },
+  'three-brains-wallet': { title: 'The 3 Brains Controlling Your Customer\'s Wallet', description: 'Which brain controls the wallet' },
+  'pre-suasion-hack': { title: 'The Pre-Suasion Hack', description: 'Win before the pitch' },
+  'pattern-interrupts': { title: 'Pattern Interrupts', description: 'Hijack their attention' },
+  'dopamine-blueprint': { title: 'The Dopamine Blueprint', description: 'Create addictive loops' },
+  'anti-sell-mastery': { title: 'The Anti-Sell', description: 'Pull, don\'t push' },
 };
 
 // Categories for filtering

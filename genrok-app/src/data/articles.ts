@@ -4215,6 +4215,101 @@ Engineer perceived worth that makes price irrelevant. How to increase value perc
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/value-perception-lever/lesson.html' }
       ]
+    },
+    {
+      id: 151,
+      thumbnail: '/images/lessons/three-brains-wallet.png',
+      title: 'The 3 Brains Controlling Your Customer\'s Wallet',
+      intro: 'Your customer has THREE brains making buying decisions. Learn which one actually controls the wallet.',
+      directUrl: '/learn/lessons/three-brains-wallet',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The 3 Brains Controlling Your Customer's Wallet
+
+95% of purchasing decisions are made subconsciously. The Neocortex (Thinker), Limbic System (Feeler), and Reptilian Brain (Decider) all compete for control. Learn the 6 Primal Levers that bypass logic and trigger instant action.
+
+**Open the interactive lesson to master neuro-marketing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-brains-wallet/lesson.html' }
+      ]
+    },
+    {
+      id: 152,
+      thumbnail: '/images/lessons/pre-suasion-hack.png',
+      title: 'The Pre-Suasion Hack',
+      intro: 'How to prime your customer\'s mind BEFORE they even see your offer.',
+      directUrl: '/learn/lessons/pre-suasion-hack',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Pre-Suasion Hack
+
+A wine store played French music. French wine sales jumped 5x. That's Pre-Suasion: winning the sale before the pitch even starts. Learn how to frame your customer's mindset BEFORE they encounter your offer.
+
+**Open the interactive lesson to master pre-suasion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pre-suasion-hack/lesson.html' }
+      ]
+    },
+    {
+      id: 153,
+      thumbnail: '/images/lessons/pattern-interrupts.png',
+      title: 'Pattern Interrupts',
+      intro: 'Why your customer\'s brain ignores 90% of what you show them - and how to hijack their attention.',
+      directUrl: '/learn/lessons/pattern-interrupts',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Attention', label: 'Focus' }
+      ],
+      content: `## Pattern Interrupts
+
+Your customer scrolled past 347 ads today. They didn't see a single one. The brain is designed to ignore predictable patterns. Learn the Pattern Interrupt technique that forces conscious attention.
+
+**Open the interactive lesson to master attention hijacking.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pattern-interrupts/lesson.html' }
+      ]
+    },
+    {
+      id: 154,
+      thumbnail: '/images/lessons/dopamine-blueprint.png',
+      title: 'The Dopamine Blueprint',
+      intro: 'Why anticipation is more addictive than the reward itself.',
+      directUrl: '/learn/lessons/dopamine-blueprint',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Dopamine', label: 'Focus' }
+      ],
+      content: `## The Dopamine Blueprint
+
+Scientists gave monkeys juice when a light turned on. After the pattern was learned, dopamine stopped spiking at the juice - it spiked at the LIGHT. Learn the Habit Loop (Trigger → Routine → Reward) and how Variable Rewards create addiction.
+
+**Open the interactive lesson to master dopamine loops.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/dopamine-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 155,
+      thumbnail: '/images/lessons/anti-sell-mastery.png',
+      title: 'The Anti-Sell',
+      intro: 'Why pushing harder kills sales - and how pulling back makes customers chase YOU.',
+      directUrl: '/learn/lessons/anti-sell-mastery',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Reactance', label: 'Focus' }
+      ],
+      content: `## The Anti-Sell
+
+"This product probably isn't for you." That one sentence increased conversions by 31%. Learn Psychological Reactance and why the less you chase, the more they come to you.
+
+**Open the interactive lesson to master the anti-sell.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/anti-sell-mastery/lesson.html' }
+      ]
     }
   ];
 
@@ -4240,7 +4335,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception') || title.includes('brains') || title.includes('pre-suasion') || title.includes('pattern interrupt') || title.includes('dopamine') || title.includes('anti-sell')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {
