@@ -3852,6 +3852,141 @@ Distilling the core frameworks and psychological secrets of the world's most eff
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/copywriters-codex/lesson.html' }
       ]
+    },
+    {
+      id: 134,
+      thumbnail: '/images/lessons/autopilot-sale.png',
+      title: 'The Autopilot Sale',
+      intro: 'How mental shortcuts make customers buy without thinking. The psychology behind instant decisions.',
+      directUrl: '/learn/lessons/autopilot-sale',
+      specialFeatures: [
+        { value: '95%', label: 'Autopilot decisions' },
+        { value: '5x', label: 'Price perception' }
+      ],
+      content: `## The Autopilot Sale
+
+Your customer's brain makes 95% of decisions on autopilot. Mental shortcuts - expensive equals good, "because" triggers compliance, turquoise jewelry doubled in price and sold out.
+
+### Key Concepts:
+1. **The Expensive = Good Shortcut**: Higher price signals higher quality automatically
+2. **The "Because" Trigger**: Ellen Langer's Xerox study - giving ANY reason increases compliance by 93%
+3. **Click-Whirr Responses**: The brain's automatic programs that bypass conscious thought
+
+### The Science:
+Robert Cialdini spent decades studying these shortcuts. They're not bugs - they're features. Your ancestors needed fast decisions to survive. Your customers still use the same mental wiring.
+
+**Open the interactive lesson to master autopilot selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/autopilot-sale/lesson.html' }
+      ]
+    },
+    {
+      id: 135,
+      thumbnail: '/images/lessons/borrowed-trust.png',
+      title: 'Borrowed Trust',
+      intro: 'Why we trust experts and like people similar to us. The Authority and Liking principles.',
+      directUrl: '/learn/lessons/borrowed-trust',
+      specialFeatures: [
+        { value: '400%', label: 'Authority boost' },
+        { value: '77%', label: 'Similarity effect' }
+      ],
+      content: `## Borrowed Trust
+
+People trust authorities automatically and buy from people they like. A lab coat increases compliance by 400%. Similarity creates instant connection.
+
+### Key Concepts:
+1. **Authority Principle**: Titles, credentials, uniforms, expert endorsements bypass skepticism
+2. **Liking Principle**: Physical attractiveness, similarity, compliments, contact, cooperation
+3. **The Joe Girard Effect**: World's greatest salesman sent 13,000 cards saying "I like you"
+
+### The Science:
+Stanley Milgram's obedience studies proved we defer to authority even against our better judgment. Use this responsibly - borrow trust from legitimate experts.
+
+**Open the interactive lesson to master borrowed trust.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/borrowed-trust/lesson.html' }
+      ]
+    },
+    {
+      id: 136,
+      thumbnail: '/images/lessons/herd-instinct.png',
+      title: 'The Herd Instinct',
+      intro: 'How social proof and similar others create irresistible buying pressure.',
+      directUrl: '/learn/lessons/herd-instinct',
+      specialFeatures: [
+        { value: '70%', label: 'Check reviews' },
+        { value: '4x', label: 'Similar buyer effect' }
+      ],
+      content: `## The Herd Instinct
+
+We look to others to determine correct behavior. When uncertain, we follow the crowd - especially crowds that look like us.
+
+### Key Concepts:
+1. **Social Proof**: "10,000 customers can't be wrong" - uncertainty + similarity = maximum influence
+2. **Similar Others Effect**: A review from someone like me is 4x more persuasive than a celebrity
+3. **The Bartender's Tip Jar**: Pre-seeding creates social proof that triggers more action
+
+### The Science:
+Solomon Asch's conformity studies proved we'll deny our own eyes to match group consensus. Your customers are wired to follow the herd.
+
+**Open the interactive lesson to master the herd instinct.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/herd-instinct/lesson.html' }
+      ]
+    },
+    {
+      id: 137,
+      thumbnail: '/images/lessons/gift-that-sells.png',
+      title: 'The Gift That Sells',
+      intro: 'How unexpected value creates powerful reciprocity loops that drive sales.',
+      directUrl: '/learn/lessons/gift-that-sells',
+      specialFeatures: [
+        { value: '500%', label: 'Donation increase' },
+        { value: '40%', label: 'LTV boost' }
+      ],
+      content: `## The Gift That Sells
+
+When someone gives us something, we feel an overpowering obligation to reciprocate. The Hare Krishna flower. The Amway BUG. The WWI bread that saved a life.
+
+### Key Concepts:
+1. **Reciprocation Rule**: Give first, give unexpectedly, give disproportionately
+2. **Three Gift Types**: Information gifts, tool gifts, experience gifts
+3. **Surprise & Delight**: Post-purchase unexpected value creates evangelists
+
+### The Science:
+Societies that didn't reciprocate died out. We are the descendants of reciprocators. This instinct runs deeper than conscious thought.
+
+**Open the interactive lesson to master the gift that sells.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gift-that-sells/lesson.html' }
+      ]
+    },
+    {
+      id: 138,
+      thumbnail: '/images/lessons/micro-yes-mastery.png',
+      title: 'Micro-Yes Mastery',
+      intro: 'How tiny commitments and strategic scarcity create inevitable conversions.',
+      directUrl: '/learn/lessons/micro-yes-mastery',
+      specialFeatures: [
+        { value: '4x', label: 'Conversion lift' },
+        { value: '340%', label: 'Retention boost' }
+      ],
+      content: `## Micro-Yes Mastery
+
+Chinese interrogators discovered you can change someone's entire belief system with a single small yes. The POW camps proved it. Your checkout page can use it ethically.
+
+### Key Concepts:
+1. **Commitment Principle**: Once someone takes a stand, they behave consistently with it
+2. **Foot-in-Door Technique**: Small commitments lead to large purchases (4x conversion)
+3. **Ethical Scarcity**: Real stock counts, limited editions, genuine deadlines
+
+### The Science:
+Written commitments are stronger than verbal. Public stronger than private. Effortful stronger than easy. Stack commitment with genuine scarcity for maximum power.
+
+**Open the interactive lesson to master micro-yes selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/micro-yes-mastery/lesson.html' }
+      ]
     }
   ];
 
@@ -3877,7 +4012,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {

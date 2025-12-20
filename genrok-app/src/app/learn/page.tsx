@@ -97,6 +97,12 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'geo-personalization': { title: 'GEO Personalization Power', description: 'Location-based offers increase CVR' },
   'no-one-cares': { title: 'No One Cares About You', description: 'Self-interest drives all purchases' },
   'creative-volume-2026': { title: 'Creative Volume in 2026', description: '40-70 creatives weekly for Andromeda' },
+  // Psychology of Sales lessons
+  'autopilot-sale': { title: 'The Autopilot Sale', description: 'How mental shortcuts make customers buy without thinking' },
+  'borrowed-trust': { title: 'Borrowed Trust', description: 'Authority and Liking principles that bypass skepticism' },
+  'herd-instinct': { title: 'The Herd Instinct', description: 'Social proof and similar others create buying pressure' },
+  'gift-that-sells': { title: 'The Gift That Sells', description: 'Reciprocity loops that drive sales' },
+  'micro-yes-mastery': { title: 'Micro-Yes Mastery', description: 'Tiny commitments create inevitable conversions' },
 };
 
 // Categories for filtering
