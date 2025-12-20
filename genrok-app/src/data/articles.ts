@@ -3987,6 +3987,234 @@ Written commitments are stronger than verbal. Public stronger than private. Effo
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/micro-yes-mastery/lesson.html' }
       ]
+    },
+    {
+      id: 139,
+      thumbnail: '/images/lessons/authority-over-hope.png',
+      title: 'Authority Over Hope',
+      intro: 'Stop hoping they buy. Guide them with certainty.',
+      directUrl: '/learn/lessons/authority-over-hope',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## Authority Over Hope
+
+Stop hoping customers will buy. Lead them with unshakeable conviction. The difference between amateur sellers and masters is the transfer of certainty.
+
+**Open the interactive lesson to master authority selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/authority-over-hope/lesson.html' }
+      ]
+    },
+    {
+      id: 140,
+      thumbnail: '/images/lessons/certainty-transfer.png',
+      title: 'Certainty Transfer',
+      intro: 'Why customers don\'t need more information—they need to borrow your conviction.',
+      directUrl: '/learn/lessons/certainty-transfer',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## Certainty Transfer
+
+Customers don't need more information. They need to borrow your conviction. Master the art of transferring certainty from your mind to theirs.
+
+**Open the interactive lesson to master certainty transfer.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/certainty-transfer/lesson.html' }
+      ]
+    },
+    {
+      id: 141,
+      thumbnail: '/images/lessons/conviction-architecture.png',
+      title: 'Conviction Architecture',
+      intro: 'The 3-layer pyramid that separates amateur marketers from masters of influence.',
+      directUrl: '/learn/lessons/conviction-architecture',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: '3 Layers', label: 'Framework' }
+      ],
+      content: `## Conviction Architecture
+
+The 3-layer pyramid that separates amateur marketers from masters of influence. Build messaging that converts consistently.
+
+**Open the interactive lesson to master conviction architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/conviction-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 142,
+      thumbnail: '/images/lessons/digital-pause-power.png',
+      title: 'The Digital Pause',
+      intro: 'Why confident silence at checkout converts better than desperate discounts.',
+      directUrl: '/learn/lessons/digital-pause-power',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Conversion', label: 'Category' }
+      ],
+      content: `## The Digital Pause
+
+Why confident silence at checkout converts better than desperate discounts. Master closing with conviction instead of desperation.
+
+**Open the interactive lesson to master the digital pause.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/digital-pause-power/lesson.html' }
+      ]
+    },
+    {
+      id: 143,
+      thumbnail: '/images/lessons/fomo-engineering.png',
+      title: 'FOMO Engineering',
+      intro: 'Turn passive interest into urgent action with ethical urgency tactics.',
+      directUrl: '/learn/lessons/fomo-engineering',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Urgency', label: 'Focus' }
+      ],
+      content: `## FOMO Engineering
+
+Turn passive interest into urgent action. Learn the psychology of urgency and how to ethically engineer fear of missing out.
+
+**Open the interactive lesson to master FOMO engineering.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fomo-engineering/lesson.html' }
+      ]
+    },
+    {
+      id: 144,
+      thumbnail: '/images/lessons/framing-effect-mastery.png',
+      title: 'The Framing Effect',
+      intro: 'Same facts. Wildly different decisions. Master the art of framing.',
+      directUrl: '/learn/lessons/framing-effect-mastery',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## The Framing Effect
+
+Same facts. Wildly different decisions. How you frame information determines how customers respond to it.
+
+**Open the interactive lesson to master the framing effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/framing-effect-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 145,
+      thumbnail: '/images/lessons/identity-marketing.png',
+      title: 'Identity Marketing',
+      intro: 'Sell to who they WANT to be, not who they are.',
+      directUrl: '/learn/lessons/identity-marketing',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: 'Identity', label: 'Focus' }
+      ],
+      content: `## Identity Marketing
+
+Sell to who they WANT to be, not who they are. People buy products that reinforce their desired identity.
+
+**Open the interactive lesson to master identity marketing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/identity-marketing/lesson.html' }
+      ]
+    },
+    {
+      id: 146,
+      thumbnail: '/images/lessons/marketers-delusion.png',
+      title: 'The Marketer\'s Delusion',
+      intro: 'The fatal error killing your conversions. Why obsessing over your product blinds you.',
+      directUrl: '/learn/lessons/marketers-delusion',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Mindset', label: 'Focus' }
+      ],
+      content: `## The Marketer's Delusion
+
+The fatal error killing your conversions. Why obsessing over your product blinds you to what actually sells.
+
+**Open the interactive lesson to escape the marketer's delusion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/marketers-delusion/lesson.html' }
+      ]
+    },
+    {
+      id: 147,
+      thumbnail: '/images/lessons/pain-escalation-ladder.png',
+      title: 'The Pain Escalation Ladder',
+      intro: 'How to ethically escalate customer pain from "meh" to "I NEED this NOW".',
+      directUrl: '/learn/lessons/pain-escalation-ladder',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: '3 Stages', label: 'Framework' }
+      ],
+      content: `## The Pain Escalation Ladder
+
+How to ethically escalate customer pain from "meh" to "I NEED this NOW" in three psychological stages.
+
+**Open the interactive lesson to master pain escalation.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pain-escalation-ladder/lesson.html' }
+      ]
+    },
+    {
+      id: 148,
+      thumbnail: '/images/lessons/telescope-flip.png',
+      title: 'The Telescope Flip',
+      intro: 'Why 97% of marketers are holding the telescope backwards.',
+      directUrl: '/learn/lessons/telescope-flip',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Perspective', label: 'Focus' }
+      ],
+      content: `## The Telescope Flip
+
+Why 97% of marketers are holding the telescope backwards. Flip your perspective and see what customers actually see.
+
+**Open the interactive lesson to master the telescope flip.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/telescope-flip/lesson.html' }
+      ]
+    },
+    {
+      id: 149,
+      thumbnail: '/images/lessons/trust-blueprint.png',
+      title: 'The Trust Blueprint',
+      intro: 'Build instant credibility that converts strangers into buyers.',
+      directUrl: '/learn/lessons/trust-blueprint',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Trust', label: 'Focus' }
+      ],
+      content: `## The Trust Blueprint
+
+Build instant credibility that converts strangers into buyers. The systematic approach to establishing trust.
+
+**Open the interactive lesson to master the trust blueprint.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/trust-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 150,
+      thumbnail: '/images/lessons/value-perception-lever.png',
+      title: 'The Value Perception Lever',
+      intro: 'Engineer perceived worth that makes price irrelevant.',
+      directUrl: '/learn/lessons/value-perception-lever',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Value', label: 'Focus' }
+      ],
+      content: `## The Value Perception Lever
+
+Engineer perceived worth that makes price irrelevant. How to increase value perception without changing the product.
+
+**Open the interactive lesson to master value perception.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/value-perception-lever/lesson.html' }
+      ]
     }
   ];
 
@@ -4012,7 +4240,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {

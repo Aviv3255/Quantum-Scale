@@ -103,6 +103,19 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'herd-instinct': { title: 'The Herd Instinct', description: 'Social proof and similar others create buying pressure' },
   'gift-that-sells': { title: 'The Gift That Sells', description: 'Reciprocity loops that drive sales' },
   'micro-yes-mastery': { title: 'Micro-Yes Mastery', description: 'Tiny commitments create inevitable conversions' },
+  // Additional Psychology lessons
+  'authority-over-hope': { title: 'Authority Over Hope', description: 'Stop hoping they buy. Guide them with certainty.' },
+  'certainty-transfer': { title: 'Certainty Transfer', description: 'Master the art of transferring conviction' },
+  'conviction-architecture': { title: 'Conviction Architecture', description: 'The 3-layer pyramid of influence' },
+  'digital-pause-power': { title: 'The Digital Pause', description: 'Confident silence converts better than discounts' },
+  'fomo-engineering': { title: 'FOMO Engineering', description: 'Turn passive interest into urgent action' },
+  'framing-effect-mastery': { title: 'The Framing Effect', description: 'Same facts. Wildly different decisions.' },
+  'identity-marketing': { title: 'Identity Marketing', description: 'Sell to who they WANT to be' },
+  'marketers-delusion': { title: "The Marketer's Delusion", description: 'The fatal error killing conversions' },
+  'pain-escalation-ladder': { title: 'The Pain Escalation Ladder', description: 'Ethically escalate pain to action' },
+  'telescope-flip': { title: 'The Telescope Flip', description: '97% of marketers hold it backwards' },
+  'trust-blueprint': { title: 'The Trust Blueprint', description: 'Build instant credibility that converts' },
+  'value-perception-lever': { title: 'The Value Perception Lever', description: 'Make price irrelevant' },
 };
 
 // Categories for filtering
