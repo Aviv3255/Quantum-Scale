@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $57 Bag That Sells for $3,500</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #111827;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #F3F4F6;
+            color: #6B7280;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #111827;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #6B7280;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin: 60px 0 24px 0;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin: 40px 0 16px 0;
+        }
+
+        p {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .hook {
+            background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+            color: white;
+            padding: 48px;
+            border-radius: 24px;
+            margin: 40px 0;
+        }
+
+        .hook h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .hook p {
+            color: #D1D5DB;
+            font-size: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: #3B82F6;
+        }
+
+        .stat-value {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .comparison-card {
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid;
+        }
+
+        .comparison-card.old {
+            background: #FEF2F2;
+            border-color: #FEE2E2;
+        }
+
+        .comparison-card.new {
+            background: #EFF6FF;
+            border-color: #DBEAFE;
+        }
+
+        .comparison-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .comparison-card.old .comparison-title {
+            color: #DC2626;
+        }
+
+        .comparison-card.new .comparison-title {
+            color: #2563EB;
+        }
+
+        .comparison-content {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .comparison-card.old .comparison-content {
+            color: #991B1B;
+        }
+
+        .comparison-card.new .comparison-content {
+            color: #1E40AF;
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border: 2px solid #FBBF24;
+            border-radius: 20px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+
+        .insight-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .insight-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #78350F;
+            line-height: 1.6;
+        }
+
+        .quote-box {
+            border-left: 4px solid #3B82F6;
+            padding-left: 32px;
+            margin: 40px 0;
+            font-style: italic;
+        }
+
+        .quote-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1F2937;
+            line-height: 1.5;
+        }
+
+        .takeaway-grid {
+            display: grid;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .takeaway-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 24px;
+            background: #F9FAFB;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .takeaway-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: #3B82F6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .takeaway-text {
+            font-size: 17px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: linear-gradient(180deg, transparent 60%, #FEF3C7 60%);
+            font-weight: 600;
+        }
+
+        .big-number {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 42px;
+            }
+
+            .hook {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { motion, useInView } = window.Motion;
+        const { useRef, useEffect, useState } = React;
+
+        const FadeUp = ({ children, delay = 0 }) => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <motion.div
+                    ref={ref}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                    transition={{
+                        duration: 0.7,
+                        delay,
+                        ease: [0.25, 0.4, 0.25, 1]
+                    }}
+                >
+                    {children}
+                </motion.div>
+            );
+        };
+
+        const AnimatedNumber = ({ value, prefix = "", suffix = "" }) => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true });
+            const [displayValue, setDisplayValue] = useState(0);
+
+            useEffect(() => {
+                if (isInView) {
+                    let start = 0;
+                    const end = value;
+                    const duration = 2000;
+                    const increment = end / (duration / 16);
+
+                    const timer = setInterval(() => {
+                        start += increment;
+                        if (start >= end) {
+                            setDisplayValue(end);
+                            clearInterval(timer);
+                        } else {
+                            setDisplayValue(Math.floor(start));
+                        }
+                    }, 16);
+
+                    return () => clearInterval(timer);
+                }
+            }, [isInView, value]);
+
+            return (
+                <span ref={ref}>
+                    {prefix}{displayValue.toLocaleString()}{suffix}
+                </span>
+            );
+        };
+
+        const Lesson = () => {
+            return (
+                <div className="container">
+                    <FadeUp>
+                        <div className="badge">Psychology of Sales</div>
+                        <h1>The $57 Bag That Sells for $3,500</h1>
+                        <p className="subtitle">
+                            What Dior and Rolex know about pricing that you don't.
+                            Spoiler: They're not selling products—they're selling something far more valuable.
+                        </p>
+                    </FadeUp>
+
+                    <FadeUp delay={0.1}>
+                        <div className="hook">
+                            <h2>The Cotton That Costs More Than Gold</h2>
+                            <p>
+                                Walk into any Dior boutique. You'll find a tote bag.
+                                Canvas. Simple stitching. A logo.
+                            </p>
+                            <p>
+                                Cost to make? $57.
+                            </p>
+                            <p>
+                                Price tag? $3,500.
+                            </p>
+                            <p style={{ marginBottom: 0, fontSize: '22px', fontWeight: '700', color: '#FDE68A' }}>
+                                That's not a markup. That's a masterclass.
+                            </p>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp delay={0.2}>
+                        <div className="comparison-grid">
+                            <div className="stat-card">
+                                <div className="stat-value" style={{ color: '#DC2626' }}>
+                                    $<AnimatedNumber value={57} />
+                                </div>
+                                <div className="stat-label">Cost to Make</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-value" style={{ color: '#10B981' }}>
+                                    $<AnimatedNumber value={3500} />
+                                </div>
+                                <div className="stat-label">Retail Price</div>
+                            </div>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp>
+                        <h2>They're Not Selling Cotton. They're Selling Status.</h2>
+                        <p>
+                            Here's what most sellers miss:
+                        </p>
+                        <p>
+                            Dior isn't competing with other bags.
+                            They're competing with Chanel. Hermès. Louis Vuitton.
+                        </p>
+                        <p>
+                            The customer isn't buying a bag to carry stuff.
+                            They're buying <span className="highlight">a signal to the world</span> that says: "I can afford this."
+                        </p>
+                        <p>
+                            The price itself becomes the product.
+                        </p>
+                    </FadeUp>
+
+                    <FadeUp delay={0.1}>
+                        <div className="insight-box">
+                            <div className="insight-icon">💎</div>
+                            <div className="insight-text">
+                                When you price at $3,500, you're not just setting a number.
+                                You're creating a "price prime"—anchoring value at an elite level that filters OUT everyone except your most qualified buyers.
+                            </div>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp>
+                        <h2>The Rolex Waitlist: Selling What You DON'T Have</h2>
+                        <p>
+                            Now let's talk watches.
+                        </p>
+                        <p>
+                            You walk into a Rolex authorized dealer.
+                            You want a Daytona. A Submariner. Anything desirable.
+                        </p>
+                        <p>
+                            The answer? "We don't have it. But we can put you on the list."
+                        </p>
+                        <p>
+                            The wait? 2-5 years. Sometimes never.
+                        </p>
+                    </FadeUp>
+
+                    <FadeUp delay={0.1}>
+                        <div className="comparison-grid">
+                            <div className="comparison-card old">
+                                <div className="comparison-title">Regular Brand</div>
+                                <div className="comparison-content">
+                                    "We have 100 in stock! Buy now!"
+                                </div>
+                            </div>
+                            <div className="comparison-card new">
+                                <div className="comparison-title">Rolex Strategy</div>
+                                <div className="comparison-content">
+                                    "You can't have it. Join the waitlist."
+                                </div>
+                            </div>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp>
+                        <p>
+                            Here's the genius:
+                        </p>
+                        <p>
+                            Rolex makes more money selling the <span className="highlight">waitlist</span> than selling the actual watches.
+                        </p>
+                        <p>
+                            The offer isn't the timepiece.
+                            The offer is the <span className="highlight">promise of future access</span>.
+                            The ultimate exclusivity signal.
+                        </p>
+                    </FadeUp>
+
+                    <FadeUp delay={0.1}>
+                        <div className="quote-box">
+                            <div className="quote-text">
+                                "Scarcity IS the product. The watch is just a bonus."
+                            </div>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp>
+                        <h2>What This Means for YOUR Store</h2>
+                        <p>
+                            You're not Dior. You're not Rolex.
+                        </p>
+                        <p>
+                            But the psychology? It's universal.
+                        </p>
+                        <p>
+                            Stop asking: "How can I compete on price?"
+                        </p>
+                        <p>
+                            Start asking: "What am I REALLY selling?"
+                        </p>
+                    </FadeUp>
+
+                    <FadeUp delay={0.1}>
+                        <div className="takeaway-grid">
+                            <div className="takeaway-item">
+                                <div className="takeaway-number">1</div>
+                                <div className="takeaway-text">
+                                    <strong>Price = Signal.</strong> Your price tells customers who the product is for. Low price = mass market. High price = exclusivity. Choose your signal.
+                                </div>
+                            </div>
+                            <div className="takeaway-item">
+                                <div className="takeaway-number">2</div>
+                                <div className="takeaway-text">
+                                    <strong>Scarcity = Desire.</strong> When everyone can have it, nobody wants it. Limited access creates hunger. Use it strategically.
+                                </div>
+                            </div>
+                            <div className="takeaway-item">
+                                <div className="takeaway-number">3</div>
+                                <div className="takeaway-text">
+                                    <strong>Status > Function.</strong> Dior's bag doesn't carry stuff better than a $20 bag. But it carries status. What status does YOUR product carry?
+                                </div>
+                            </div>
+                            <div className="takeaway-item">
+                                <div className="takeaway-number">4</div>
+                                <div className="takeaway-text">
+                                    <strong>The waitlist wins.</strong> You don't need inventory to create value. You need demand. Build the desire first. Fulfill it second.
+                                </div>
+                            </div>
+                        </div>
+                    </FadeUp>
+
+                    <FadeUp>
+                        <div className="insight-box" style={{ background: 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%)', borderColor: '#3B82F6' }}>
+                            <div className="insight-icon">⚡</div>
+                            <div className="insight-text" style={{ color: '#1E3A8A' }}>
+                                <strong>Action Step:</strong> Look at your best-selling product.
+                                Ask yourself: "What status am I selling alongside this product?"
+                                If the answer is "none," you're leaving money on the table.
+                                Find the status. Sell THAT.
+                            </div>
+                        </div>
+                    </FadeUp>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<Lesson />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Gucci Is Dying (And What It Teaches You)</title>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF;
+            color: #111827;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6B7280;
+            margin-bottom: 48px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 80px 0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+
+        p {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #FEF3C7 0%, #FDE68A 100%);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .brand-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 60px 0;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            border: 3px solid #E5E7EB;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+        }
+
+        .brand-card.failing::before {
+            background: linear-gradient(90deg, #EF4444 0%, #DC2626 100%);
+        }
+
+        .brand-card.winning::before {
+            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+        }
+
+        .brand-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .brand-status {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .brand-card.failing .brand-status {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .brand-card.winning .brand-status {
+            background: #D1FAE5;
+            color: #059669;
+        }
+
+        .brand-metric {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .brand-metric:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+            margin: 60px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #3B82F6 0%, #EF4444 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 100px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 28px;
+            top: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px #3B82F6;
+        }
+
+        .timeline-item.bad .timeline-dot {
+            box-shadow: 0 0 0 2px #EF4444;
+            background: #EF4444;
+        }
+
+        .timeline-item.good .timeline-dot {
+            box-shadow: 0 0 0 2px #10B981;
+            background: #10B981;
+        }
+
+        .timeline-year {
+            font-size: 14px;
+            font-weight: 700;
+            color: #3B82F6;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+
+        .timeline-content p {
+            font-size: 16px;
+            color: #6B7280;
+            margin-bottom: 0;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+            border-left: 4px solid #EF4444;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+
+        .callout-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #991B1B;
+            margin-bottom: 12px;
+        }
+
+        .callout-text {
+            font-size: 17px;
+            color: #7F1D1D;
+            line-height: 1.7;
+        }
+
+        .lesson-box {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: 24px;
+            padding: 48px;
+            margin: 60px 0;
+            color: white;
+        }
+
+        .lesson-box h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lesson-icon {
+            font-size: 32px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .lesson-text {
+            font-size: 16px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .holy-shit {
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .holy-shit::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .holy-shit-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .holy-shit h2 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 24px;
+        }
+
+        .holy-shit p {
+            color: rgba(255,255,255,0.9);
+            font-size: 20px;
+            line-height: 1.8;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .action-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            border-color: #8B5CF6;
+        }
+
+        .action-emoji {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .action-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #000000;
+        }
+
+        .action-desc {
+            font-size: 15px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            .brand-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding-left: 60px;
+            }
+
+            .timeline-dot {
+                left: 8px;
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.25, 0.4, 0.25, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="fade-up">
+            <span class="badge">Brand Strategy</span>
+            <h1>Why Gucci Is Dying (And What It Teaches You)</h1>
+            <p class="subtitle">The billion-dollar mistake that's destroying one of the world's most iconic luxury brands—and how to avoid making it in your store.</p>
+        </div>
+
+        <div class="section fade-up">
+            <h2>Gucci was unstoppable.</h2>
+            <p>Under creative director Alessandro Michele, sales <span class="highlight">tripled</span>.</p>
+            <p>Young people went crazy for it. The Princetown slippers became a status symbol. The Marmont bag was everywhere.</p>
+            <p>Gucci resonated with a new generation. Cool, fashionable, must-have.</p>
+            <p>Then everything collapsed.</p>
+            <p>Stock tumbled. Profits cratered. Parent company Kering now makes far less than rival LVMH.</p>
+            <p><strong>What happened?</strong></p>
+        </div>
+
+        <div class="callout fade-up">
+            <div class="callout-title">⚠️ The Fatal Mistake</div>
+            <div class="callout-text">Gucci confused "fashion" with "luxury"—and paid a billion-dollar price for it.</div>
+        </div>
+
+        <div class="section fade-up">
+            <h2>Fashion vs Luxury: The Critical Difference</h2>
+            <p><strong>Fashion</strong> relies on trends. What's hot right now. This season's must-have. Fast-moving, constantly changing.</p>
+            <p><strong>Luxury</strong> relies on timelessness. Heritage. Scarcity. Permanence. Doesn't chase trends—it transcends them.</p>
+            <p>Gucci's hit products were fashion, not luxury.</p>
+            <p>And here's the trap:</p>
+        </div>
+
+        <div class="timeline fade-up">
+            <div class="timeline-item good">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Phase 1: The Rise</div>
+                    <h3>Create a hit product</h3>
+                    <p>Princetown slippers become THE status symbol. Sales explode. Everyone wants them.</p>
+                </div>
+            </div>
+            <div class="timeline-item good">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Phase 2: The Temptation</div>
+                    <h3>Milk the hit for all it's worth</h3>
+                    <p>Create variations. More colors. Different materials. Flood the market. Maximize revenue NOW.</p>
+                </div>
+            </div>
+            <div class="timeline-item bad">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Phase 3: The Collapse</div>
+                    <h3>Destroy long-term value</h3>
+                    <p>Product goes from exclusive to ubiquitous. No longer special. No longer desirable. Sales collapse.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section fade-up">
+            <p>That's exactly what Gucci did.</p>
+            <p>They overexposed their hits. Endless variations. Available everywhere.</p>
+            <p>Products went from <span class="highlight">exclusive to ubiquitous</span>.</p>
+            <p>And when luxury becomes common, it's no longer luxury.</p>
+        </div>
+
+        <div class="holy-shit fade-up">
+            <div class="holy-shit-content">
+                <h2>The Hermès Difference</h2>
+                <p>Meanwhile, Hermès does the opposite.</p>
+                <p>Birkin bags have 3-5 YEAR waitlists. They could flood the market tomorrow and make billions.</p>
+                <p>But they don't. They protect scarcity ruthlessly. Every bag remains special.</p>
+                <p>Result? Hermès keeps growing while Gucci collapses.</p>
+            </div>
+        </div>
+
+        <div class="brand-comparison fade-up">
+            <div class="brand-card failing">
+                <div class="brand-icon">👜</div>
+                <div class="brand-name">Gucci</div>
+                <div class="brand-status">Short-Term Thinking</div>
+                <div class="brand-metric">
+                    <div class="metric-label">Strategy</div>
+                    <div class="metric-value">Flood market with hits</div>
+                </div>
+                <div class="brand-metric">
+                    <div class="metric-label">Focus</div>
+                    <div class="metric-value">This quarter's revenue</div>
+                </div>
+                <div class="brand-metric">
+                    <div class="metric-label">Result</div>
+                    <div class="metric-value">Stock collapsed</div>
+                </div>
+            </div>
+
+            <div class="brand-card winning">
+                <div class="brand-icon">💎</div>
+                <div class="brand-name">Hermès</div>
+                <div class="brand-status">Long-Term Mastery</div>
+                <div class="brand-metric">
+                    <div class="metric-label">Strategy</div>
+                    <div class="metric-value">Ruthless scarcity control</div>
+                </div>
+                <div class="brand-metric">
+                    <div class="metric-label">Focus</div>
+                    <div class="metric-value">Brand value forever</div>
+                </div>
+                <div class="brand-metric">
+                    <div class="metric-label">Result</div>
+                    <div class="metric-value">Continuous growth</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section fade-up">
+            <h2>What This Means for Your Store</h2>
+            <p>You might not be selling $5,000 bags.</p>
+            <p>But the principle is identical:</p>
+            <p><strong>Short-term revenue maximization destroys long-term brand value.</strong></p>
+            <p>Every DTC brand faces this choice:</p>
+        </div>
+
+        <div class="lesson-box fade-up">
+            <h3>The Gucci Trap in Your Business</h3>
+            <div class="lesson-item">
+                <div class="lesson-icon">🎯</div>
+                <div class="lesson-text"><strong>You launch a product that goes viral.</strong> Sales explode. Everyone wants it. You could 10x inventory and make a fortune this month.</div>
+            </div>
+            <div class="lesson-item">
+                <div class="lesson-icon">⚠️</div>
+                <div class="lesson-text"><strong>The temptation:</strong> Flood the market. Maximize revenue NOW. Create variations. Sell, sell, sell.</div>
+            </div>
+            <div class="lesson-item">
+                <div class="lesson-icon">💀</div>
+                <div class="lesson-text"><strong>The consequence:</strong> Product becomes common. Loses specialness. Customers move on. You're left with nothing.</div>
+            </div>
+            <div class="lesson-item">
+                <div class="lesson-icon">✨</div>
+                <div class="lesson-text"><strong>The alternative:</strong> Protect scarcity. Keep it special. Build long-term brand equity. Stay valuable forever.</div>
+            </div>
+        </div>
+
+        <div class="section fade-up">
+            <h2>How to Avoid the Gucci Mistake</h2>
+        </div>
+
+        <div class="action-grid fade-up">
+            <div class="action-card">
+                <div class="action-emoji">🔒</div>
+                <div class="action-title">Limited Releases</div>
+                <div class="action-desc">Don't keep hot products in stock forever. Drop them in limited batches. Create natural scarcity.</div>
+            </div>
+            <div class="action-card">
+                <div class="action-emoji">🚫</div>
+                <div class="action-title">Resist Variations</div>
+                <div class="action-desc">Don't create 47 versions of your hit. Keep it pure. Too many variations = diluted value.</div>
+            </div>
+            <div class="action-card">
+                <div class="action-emoji">⏰</div>
+                <div class="action-title">Seasonal Rotation</div>
+                <div class="action-desc">Retire products before they become stale. Bring them back later. Absence creates desire.</div>
+            </div>
+            <div class="action-card">
+                <div class="action-emoji">💎</div>
+                <div class="action-title">Quality Over Volume</div>
+                <div class="action-desc">Sell fewer units at higher perceived value. Better than flooding market and destroying brand.</div>
+            </div>
+        </div>
+
+        <div class="callout fade-up" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border-left-color: #10B981;">
+            <div class="callout-title" style="color: #065F46;">💡 The Lesson</div>
+            <div class="callout-text" style="color: #064E3B;">Fashion chases trends and dies with them. Luxury creates timelessness and lives forever. Choose which game you're playing—then play it ruthlessly.</div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
