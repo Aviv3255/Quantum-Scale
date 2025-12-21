@@ -4558,6 +4558,388 @@ Your customer has two brains: the logical one that "decides" and the primal one 
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/primal-stimuli/lesson.html' }
       ]
+    },
+    // CRO Flywheel + Direct Response Brand lessons
+    {
+      id: 115,
+      thumbnail: '/images/lessons/leaky-bucket-audit.png',
+      title: 'The $50,000 Hole in Your Funnel',
+      intro: 'The PPV metric reveals exactly where you\'re bleeding money.',
+      directUrl: '/learn/lessons/leaky-bucket-audit',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The Leaky Bucket Audit
+
+Most stores obsess over traffic. Smart stores obsess over leaks. The Profit Per Visitor (PPV) metric reveals exactly where money disappears in your funnel - and which fixes deliver the highest ROI.
+
+**Open the interactive lesson to find your $50K leak.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/leaky-bucket-audit/lesson.html' }
+      ]
+    },
+    {
+      id: 116,
+      thumbnail: '/images/lessons/price-chunking-yesloop.png',
+      title: 'The Yes-Loop: How to 3X Your AOV',
+      intro: 'Break big prices into irresistible small yeses.',
+      directUrl: '/learn/lessons/price-chunking-yesloop',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Price Chunking Yes-Loop
+
+Big numbers scare brains. Small numbers feel easy. Price chunking turns "$1,200/year" into "$3.28/day" - and suddenly it's cheaper than coffee. Stack these micro-yeses and watch AOV explode.
+
+**Open the interactive lesson to master price psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/price-chunking-yesloop/lesson.html' }
+      ]
+    },
+    {
+      id: 117,
+      thumbnail: '/images/lessons/objection-destroyer.png',
+      title: 'The "At First I Thought" Framework',
+      intro: 'Turn objections into conversions with one sentence pattern.',
+      directUrl: '/learn/lessons/objection-destroyer',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Copy', label: 'Focus' }
+      ],
+      content: `## The Objection Destroyer Framework
+
+Every prospect has objections. Most marketers ignore them. Masters address them BEFORE they're spoken. "At first I thought X... but then I discovered Y" neutralizes resistance instantly.
+
+**Open the interactive lesson to destroy objections.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/objection-destroyer/lesson.html' }
+      ]
+    },
+    {
+      id: 118,
+      thumbnail: '/images/lessons/product-page-anatomy.png',
+      title: 'The 5-Element Product Page',
+      intro: 'The exact anatomy of pages that convert at 8%+.',
+      directUrl: '/learn/lessons/product-page-anatomy',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The 5-Element Product Page Anatomy
+
+8%+ conversion pages aren't accidents. They follow a precise 5-element formula: Hero Image, Benefit Stack, Social Proof, Urgency, and Risk Reversal. Miss one element = money left on table.
+
+**Open the interactive lesson to build perfect product pages.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/product-page-anatomy/lesson.html' }
+      ]
+    },
+    {
+      id: 119,
+      thumbnail: '/images/lessons/post-purchase-goldmine.png',
+      title: 'The Hidden Revenue You\'re Ignoring',
+      intro: 'Turn $40 customers into $120 customers instantly.',
+      directUrl: '/learn/lessons/post-purchase-goldmine',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'LTV', label: 'Focus' }
+      ],
+      content: `## The Post-Purchase Goldmine
+
+The sale isn't the end - it's the beginning. Post-purchase upsells convert at 10-15% because trust is highest right after buying. Most stores leave this goldmine completely untouched.
+
+**Open the interactive lesson to unlock hidden revenue.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/post-purchase-goldmine/lesson.html' }
+      ]
+    },
+    {
+      id: 120,
+      thumbnail: '/images/lessons/bottom-up-brand.png',
+      title: 'Why Movements Beat Marketing',
+      intro: 'Build a brand like a movement, not a corporation.',
+      directUrl: '/learn/lessons/bottom-up-brand',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand', label: 'Focus' }
+      ],
+      content: `## Bottom-Up Brand Building
+
+Top-down brands spend millions on awareness. Bottom-up brands build movements. Harley didn't create bikers - bikers created Harley. Find your tribe, serve them obsessively, and let THEM build your brand.
+
+**Open the interactive lesson to build a movement.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/bottom-up-brand/lesson.html' }
+      ]
+    },
+    {
+      id: 121,
+      thumbnail: '/images/lessons/halo-serial-position.png',
+      title: 'The First & Last Impression Hack',
+      intro: '0.05 seconds decides if they trust you.',
+      directUrl: '/learn/lessons/halo-serial-position',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Halo Effect + Serial Position
+
+First impressions create halos - good or bad. The Halo Effect means one positive trait colors everything. Serial Position means firsts and lasts are remembered. Nail your opening and closing.
+
+**Open the interactive lesson to master first impressions.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/halo-serial-position/lesson.html' }
+      ]
+    },
+    {
+      id: 122,
+      thumbnail: '/images/lessons/ikea-effect.png',
+      title: 'The IKEA Effect',
+      intro: 'Why DIY = 63% higher perceived value.',
+      directUrl: '/learn/lessons/ikea-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The IKEA Effect
+
+People value what they help create. IKEA furniture feels more valuable because YOU built it. Add customization, configuration, or co-creation and watch perceived value (and willingness to pay) soar.
+
+**Open the interactive lesson to leverage the IKEA Effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/ikea-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 123,
+      thumbnail: '/images/lessons/von-restorff-effect.png',
+      title: 'The Von Restorff Effect',
+      intro: 'Make your CTA impossible to miss.',
+      directUrl: '/learn/lessons/von-restorff-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Von Restorff Effect
+
+In a sea of sameness, different wins. The Von Restorff Effect proves that items that stand out are remembered. Your CTA should be the only thing that POPS on the page.
+
+**Open the interactive lesson to make CTAs unmissable.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/von-restorff-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 124,
+      thumbnail: '/images/lessons/jakobs-law.png',
+      title: 'Jakob\'s Law',
+      intro: 'Why "unique" checkout flows kill conversions.',
+      directUrl: '/learn/lessons/jakobs-law',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'UX', label: 'Focus' }
+      ],
+      content: `## Jakob's Law
+
+Users spend most of their time on OTHER sites. They expect your site to work like the sites they already know. Creative checkout = confused customers = abandoned carts. Familiar patterns convert.
+
+**Open the interactive lesson to master familiar UX.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/jakobs-law/lesson.html' }
+      ]
+    },
+    // Unseen Seller + Psychological Commerce lessons
+    {
+      id: 125,
+      thumbnail: '/images/lessons/gaze-direction.png',
+      title: 'The Gaze Hack',
+      intro: 'Where they look is where they click.',
+      directUrl: '/learn/lessons/gaze-direction',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Neuromarketing', label: 'Focus' }
+      ],
+      content: `## The Gaze Hack
+
+Humans instinctively follow gaze direction. The famous baby ad study proved it: when the baby looks at the headline, so do viewers. Use faces and eyes to direct attention exactly where you want it.
+
+**Open the interactive lesson to master gaze direction.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gaze-direction/lesson.html' }
+      ]
+    },
+    {
+      id: 126,
+      thumbnail: '/images/lessons/five-second-test.png',
+      title: 'The 5-Second Test',
+      intro: 'Why clarity crushes cleverness every time.',
+      directUrl: '/learn/lessons/five-second-test',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'UX', label: 'Focus' }
+      ],
+      content: `## The 5-Second Test
+
+If visitors can't understand your value prop in 5 seconds, they leave. Processing fluency research proves: easy-to-read = trustworthy. Clever headlines that confuse lose to simple headlines that convert.
+
+**Open the interactive lesson to master clarity.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/five-second-test/lesson.html' }
+      ]
+    },
+    {
+      id: 127,
+      thumbnail: '/images/lessons/speed-equals-trust.png',
+      title: 'The $1.7 Billion Speed Bump',
+      intro: '0.1 second delay = 1% revenue loss.',
+      directUrl: '/learn/lessons/speed-equals-trust',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Performance', label: 'Focus' }
+      ],
+      content: `## Speed Equals Trust
+
+Amazon discovered that every 100ms of latency costs 1% in sales. That's $1.7 billion annually. Speed isn't a technical metric - it's a trust signal. Slow = sketchy. Fast = professional.
+
+**Open the interactive lesson to understand speed psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/speed-equals-trust/lesson.html' }
+      ]
+    },
+    {
+      id: 128,
+      thumbnail: '/images/lessons/imperceptible-nudge.png',
+      title: 'The $200 Million Color',
+      intro: 'Invisible nudges that drive millions in revenue.',
+      directUrl: '/learn/lessons/imperceptible-nudge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Neuromarketing', label: 'Focus' }
+      ],
+      content: `## The Imperceptible Nudge
+
+Google tested 41 shades of blue for their links - and found the winner generated $200M more annually. The wine store music study proved: French music = French wine sales surge. Nudges work because they're invisible.
+
+**Open the interactive lesson to master invisible influence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/imperceptible-nudge/lesson.html' }
+      ]
+    },
+    {
+      id: 129,
+      thumbnail: '/images/lessons/cognitive-load-trap.png',
+      title: 'The Easy Brain Wins',
+      intro: 'Reduce friction, increase trust automatically.',
+      directUrl: '/learn/lessons/cognitive-load-trap',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Cognitive Load Trap
+
+Every decision drains mental energy. Overwhelmed brains choose the easiest option: leaving. Reduce cognitive load ruthlessly. Fewer choices. Clearer copy. Simpler paths. Easy = trusted = purchased.
+
+**Open the interactive lesson to reduce cognitive load.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cognitive-load-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 130,
+      thumbnail: '/images/lessons/placebo-product.png',
+      title: 'Your Product Is a Placebo',
+      intro: 'Perception literally alters physical reality.',
+      directUrl: '/learn/lessons/placebo-product',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Placebo Product
+
+Wine tastes better when you're told it costs more. Energy drinks work better with premium branding. The placebo effect isn't just medical - it's commercial. How you frame the product literally changes the experience.
+
+**Open the interactive lesson to harness the placebo effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/placebo-product/lesson.html' }
+      ]
+    },
+    {
+      id: 131,
+      thumbnail: '/images/lessons/information-asymmetry.png',
+      title: 'The Prada Mystery Play',
+      intro: 'Hide information to elevate perceived status.',
+      directUrl: '/learn/lessons/information-asymmetry',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Luxury', label: 'Focus' }
+      ],
+      content: `## Information Asymmetry
+
+Prada doesn't explain itself. Luxury brands create mystery through selective silence. What you DON'T say creates exclusivity. Information asymmetry signals: "If you need to ask, you're not the target."
+
+**Open the interactive lesson to master strategic mystery.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/information-asymmetry/lesson.html' }
+      ]
+    },
+    {
+      id: 132,
+      thumbnail: '/images/lessons/visual-shorthand.png',
+      title: 'Toothpaste Stripes Psychology',
+      intro: 'Visual cues shortcut directly to quality perception.',
+      directUrl: '/learn/lessons/visual-shorthand',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Design', label: 'Focus' }
+      ],
+      content: `## Visual Shorthand
+
+Why do premium toothpastes have colored stripes? Because stripes signal "multiple active ingredients" without reading anything. Visual shorthand bypasses logic and goes straight to perception. What does YOUR product visually communicate?
+
+**Open the interactive lesson to master visual signals.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/visual-shorthand/lesson.html' }
+      ]
+    },
+    {
+      id: 133,
+      thumbnail: '/images/lessons/radical-honesty-play.png',
+      title: 'The Inside Joke Effect',
+      intro: 'Admit you\'re marketing and watch trust skyrocket.',
+      directUrl: '/learn/lessons/radical-honesty-play',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand', label: 'Focus' }
+      ],
+      content: `## The Radical Honesty Play
+
+Liquid Death calls itself "murder your thirst." dbrand openly admits they're manipulating you. This radical honesty creates an inside joke with customers. You're both in on it - and that builds insane loyalty.
+
+**Open the interactive lesson to master radical honesty.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/radical-honesty-play/lesson.html' }
+      ]
+    },
+    {
+      id: 134,
+      thumbnail: '/images/lessons/hermes-doctrine.png',
+      title: 'The Hermès Infinite Game',
+      intro: 'Protect the Birkin, play forever.',
+      directUrl: '/learn/lessons/hermes-doctrine',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Strategy', label: 'Focus' }
+      ],
+      content: `## The Hermès Doctrine
+
+Gucci over-expanded and collapsed. Hermès protects the Birkin like a sacred object. The difference? Finite vs Infinite game thinking. Short-term revenue grabs destroy long-term brand equity. Hermès plays the infinite game.
+
+**Open the interactive lesson to think in infinite games.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/hermes-doctrine/lesson.html' }
+      ]
     }
   ];
 
