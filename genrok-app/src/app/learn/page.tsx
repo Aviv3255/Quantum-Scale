@@ -133,6 +133,9 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'price-format-code': { title: 'The Price Format Code', description: 'How formatting changes price perception' },
   'cost-of-standing-still': { title: 'The Cost of Standing Still', description: 'Sell the cost of NOT buying' },
   'unity-principle': { title: 'The Unity Principle', description: 'One word turns customers into partners' },
+  'visual-priming': { title: 'The Invisible Influencer', description: 'How background images decide what customers buy' },
+  'objection-inversion': { title: 'The Objection Judo Trick', description: 'Turn objections into reasons to buy' },
+  'primal-stimuli': { title: 'The 6 Primal Buy Buttons', description: 'The only 6 triggers that get the reptile brain to say YES' },
 };
 
 // Categories for filtering
