@@ -123,27 +123,29 @@
       return <span ref={ref}>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
     };
 
-    const BarChart = ({ data, accentColor }) => {
+    const BarChart = ({ data, accentColor, darkMode = false }) => {
       const ref = useRef(null);
       const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const textColor = darkMode ? '#ffffff' : '#171717';
+      const bgColor = darkMode ? 'rgba(255,255,255,0.1)' : '#e5e5e5';
 
       return (
-        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {data.map((item, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, x: -20 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ delay: i * 0.15, duration: 0.5 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px', color: textColor }}>
                 <span>{item.label}</span>
-                <span style={{ fontWeight: 'bold' }}>{item.value}</span>
+                <span style={{ fontWeight: 'bold', color: accentColor }}>{item.value}</span>
               </div>
-              <div style={{ height: '12px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
+              <div style={{ height: '14px', background: bgColor, borderRadius: '999px', overflow: 'hidden' }}>
                 <motion.div
-                  style={{ height: '100%', borderRadius: '999px', background: accentColor }}
+                  style={{ height: '100%', borderRadius: '999px', background: `linear-gradient(90deg, ${accentColor}, ${accentColor}dd)` }}
                   initial={{ width: 0 }}
                   animate={isInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                  transition={{ delay: i * 0.15 + 0.2, duration: 0.8 }}
+                  transition={{ delay: i * 0.15 + 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
                 />
               </div>
             </motion.div>
@@ -156,10 +158,10 @@
       { type: 'welcome', learningGoals: [
         'Why context determines perceived value (not quality)',
         'The $32 violinist experiment and what it reveals',
-        'How to choose premium ad placements for your Shopify store'
+        'How to choose premium ad placements for your online store'
       ]},
-      { type: 'hook', headline: 'A $3.5 million violin. A world-renowned musician. And $32.', subtext: 'Joshua Bell, one of the world\'s greatest violinists, played his $3.5M Stradivarius in a metro station during rush hour. 1,097 people walked past. Only 7 stopped. He made just $32. Two days earlier, he sold out a Boston concert at $100/ticket average. What changed? The context.' },
-      { type: 'visualContrast', image: 'images/context-contrast.png', caption: 'Concert Hall vs. Metro Station — Same Music, Different Context' },
+      { type: 'hook', headline: 'A $3.5 million violin. A world-renowned musician. And $32.', subtext: 'Joshua Bell, one of the world\'s greatest violinists, played his $3.5M Stradivarius in a metro station during rush hour. 1,097 people walked past. Only 7 stopped. He made just $32. Two days earlier, he sold out a Boston concert at $100/ticket average. What changed? The context.', image: 'images/violinist-concert.png' },
+      { type: 'visualContrast', title: 'Same Music. Different Context.', leftImage: 'images/violinist-concert.png', rightImage: 'images/subway-station.png', leftLabel: 'Concert Hall — $100/ticket', rightLabel: 'Metro Station — $32 total' },
       { type: 'typingReveal', text: 'Same product. Different value.' },
       { type: 'stats', title: 'The Attention Gap', data: [
         { value: 1097, label: 'People Passed', subtext: 'In metro station during rush hour' },
@@ -179,12 +181,11 @@
         { title: 'Expert Reviews = Credible', description: 'Industry experts signal quality. Their context transfers authority to your brand. Choose wisely.' }
       ]},
       { type: 'example', scenario: 'Fitness Apparel Store', before: { label: 'Volume Strategy', text: 'Run ads on 10 general fitness pages with 500K+ followers each' }, after: { label: 'Context Strategy', text: 'Partner with 3 specialized trainers (50K followers) known for quality recommendations' }, insight: 'Same budget, 6x higher conversion rate, 2.3x higher average order value' },
-      { type: 'actionable', title: 'Your Shopify Action Plan', points: [
-        'Audit every influencer placement',
-        'Ask: Does this context make my product look premium or cheap?',
-        'Does this creator\'s audience align with my ideal customer?',
-        'Would I personally discover quality products here?',
-        'If any answer is no, kill the placement'
+      { type: 'visualTakeaways', title: 'Key Takeaways', image: 'images/context-premium.png', items: [
+        { icon: '🎯', title: 'Audit Placements', description: 'Review every influencer and ad placement for context quality' },
+        { icon: '💎', title: 'Premium Context', description: 'Does this make your product look premium or cheap?' },
+        { icon: '👥', title: 'Audience Fit', description: 'Does the creator\'s audience match your ideal customer?' },
+        { icon: '🚫', title: 'Kill Bad Fits', description: 'If any answer is no, cut the placement immediately' }
       ]},
       { type: 'quiz', question: 'Why did Joshua Bell make only $32 in the metro station while selling out concert halls?', options: ['People were rushing and didn\'t have time to stop', 'The acoustics in metro stations are terrible', 'Context determines perceived value - subway signals "ignore" while concert hall signals "valuable"', 'He wasn\'t playing his best pieces in the metro'], correctIndex: 2, feedback: { correct: 'Exactly! The brain uses context as a shortcut to determine value. Same music, same musician - different environment, different perceived worth. Apply this to your ad placements.', incorrect: 'Not quite. While people were busy, the real insight is deeper: context determines value. The brain categorized "subway performance" as ignorable and "concert hall" as premium - even with identical quality.' }},
       { type: 'completion' }
@@ -232,12 +233,26 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full flex flex-col md:flex-row items-center justify-center gap-8 px-6 md:px-12 max-w-6xl mx-auto slide-scroll overflow-y-auto py-8">
+        <div className="flex-1 max-w-xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.image && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
+            className="flex-shrink-0 w-full md:w-2/5"
+          >
+            <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}>
+              <img src={data.image} alt="Hook visual" className="w-full h-auto" style={{ maxHeight: '45vh', objectFit: 'cover' }} />
+            </div>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -250,43 +265,68 @@
     );
 
     const VisualContrastSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="relative w-full rounded-2xl overflow-hidden"
-          style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
-        >
-          <img
-            src={data.image}
-            alt={data.caption}
-            className="w-full h-auto"
-            style={{ maxHeight: '60vh', objectFit: 'cover' }}
-          />
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-6 text-center text-lg md:text-xl text-neutral-600 font-medium"
-        >
-          {data.caption}
-        </motion.p>
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
+        {data.title && (
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        )}
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 w-full">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1, type: 'spring', stiffness: 100 }}
+            className="relative rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
+          >
+            <img src={data.leftImage} alt={data.leftLabel} className="w-full h-48 md:h-56 object-cover" />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                {data.leftLabel}
+              </span>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
+            className="relative rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
+          >
+            <img src={data.rightImage} alt={data.rightLabel} className="w-full h-48 md:h-56 object-cover" />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-400"></span>
+                {data.rightLabel}
+              </span>
+            </div>
+          </motion.div>
+        </div>
+        {data.caption && (
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-5 text-center text-base md:text-lg text-neutral-500 font-medium">{data.caption}</motion.p>
+        )}
       </div>
     );
 
     const StatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid md:grid-cols-3 gap-4">
           {data.data.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: i * 0.15, type: 'spring' }} className="bg-white rounded-2xl p-6 text-center" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.12, type: 'spring', stiffness: 100 }}
+              whileHover={{ scale: 1.02, y: -4 }}
+              className="bg-neutral-900 rounded-2xl p-6 text-center relative overflow-hidden"
+              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: `linear-gradient(90deg, var(--accent), var(--accent-dark))` }}></div>
+              <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
                 <AnimatedNumber value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix || ''} />
               </div>
-              <div className="text-sm font-semibold text-neutral-900 mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-500">{stat.subtext}</div>
+              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+              <div className="text-xs text-neutral-400">{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
@@ -294,10 +334,19 @@
     );
 
     const BarChartSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-          <BarChart data={data.data} accentColor="var(--accent)" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
+          className="bg-neutral-900 rounded-2xl p-8 relative overflow-hidden"
+          style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.15)' }}
+        >
+          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
+          <div className="relative z-10">
+            <BarChart data={data.data} accentColor="var(--accent)" darkMode={true} />
+          </div>
         </motion.div>
       </div>
     );
@@ -333,19 +382,42 @@
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white rounded-2xl p-4 hover:shadow-lg transition-shadow" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    const CardsSlide = ({ data }) => {
+      const getCardStyle = (i) => {
+        const styles = [
+          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true },
+          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
+          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
+          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true }
+        ];
+        return styles[i % 4];
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.items.map((item, i) => {
+              const style = getCardStyle(i);
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
+                  whileHover={{ scale: 1.02, y: -3 }}
+                  className={`${style.bg} rounded-2xl p-5 relative overflow-hidden`}
+                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
+                >
+                  {style.accent && <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-20" style={{ background: 'var(--accent)', filter: 'blur(25px)', transform: 'translate(30%, -30%)' }}></div>}
+                  <h3 className={`font-bold mb-2 text-base ${style.text}`}>{item.title}</h3>
+                  <p className={`text-sm leading-relaxed ${style.desc}`}>{item.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -380,6 +452,43 @@
             </motion.div>
           ))}
         </div>
+      </div>
+    );
+
+    const VisualTakeawaysSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.1, type: 'spring', stiffness: 100 }}
+              className="bg-neutral-900 rounded-2xl p-5 flex items-start gap-4"
+              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+            >
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl" style={{ background: 'rgba(var(--accent-rgb), 0.15)' }}>
+                {item.icon}
+              </div>
+              <div>
+                <h4 className="text-white font-semibold text-base mb-1">{item.title}</h4>
+                <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {data.image && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-6 rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}
+          >
+            <img src={data.image} alt="Takeaway visualization" className="w-full h-auto max-h-48 object-cover" />
+          </motion.div>
+        )}
       </div>
     );
 
@@ -495,6 +604,7 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'actionable': return <ActionableSlide data={slide} />;
+          case 'visualTakeaways': return <VisualTakeawaysSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
