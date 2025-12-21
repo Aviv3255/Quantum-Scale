@@ -142,6 +142,26 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
     title: 'The Copywriter\'s Codex',
     description: 'A synthesized playbook from the masters',
   },
+  'cost-of-standing-still': {
+    title: 'The Cost of Standing Still',
+    description: 'Stop selling your price. Start selling what customers LOSE without you.',
+  },
+  'unity-principle': {
+    title: 'The Unity Principle',
+    description: 'One word change turns customers into partners.',
+  },
+  'visual-priming': {
+    title: 'The Invisible Influencer',
+    description: 'How background images decide what customers buy - without them knowing.',
+  },
+  'objection-inversion': {
+    title: 'The Objection Judo Trick',
+    description: 'Turn objections into the exact reasons to buy.',
+  },
+  'primal-stimuli': {
+    title: 'The 6 Primal Buy Buttons',
+    description: 'The only 6 triggers that get the reptile brain to say YES.',
+  },
 };
 
 export default function LessonPage() {
