@@ -4501,6 +4501,63 @@ A Cornell study found "12" outsells "$12.00". MIT found "$39" outsells "$34". Fo
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/unity-principle/lesson.html' }
       ]
+    },
+    {
+      id: 112,
+      thumbnail: '/images/lessons/visual-priming.png',
+      title: 'The Invisible Influencer',
+      intro: 'How a simple background image decides what customers buy - without them knowing.',
+      directUrl: '/learn/lessons/visual-priming',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Invisible Influencer
+
+A furniture store showed clouds to one group, coins to another. The clouds group bought comfort. The coins group bought value. Both groups denied being influenced. That's the power of visual priming - the images behind your product shape what customers care about before they even see the price.
+
+**Open the interactive lesson to master visual priming.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/visual-priming/lesson.html' }
+      ]
+    },
+    {
+      id: 113,
+      thumbnail: '/images/lessons/objection-inversion.png',
+      title: 'The Objection Judo Trick',
+      intro: 'Turn the #1 reason they WON\'T buy into the #1 reason they SHOULD.',
+      directUrl: '/learn/lessons/objection-inversion',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Reframing', label: 'Focus' }
+      ],
+      content: `## The Objection Judo Trick
+
+"I can't afford it" → "Isn't that exactly why you need this?" Don't fight objections. Use their force against them. Like judo, redirect the energy. The objection killing your sales is actually your best selling point - if you know how to flip it.
+
+**Open the interactive lesson to master objection inversion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/objection-inversion/lesson.html' }
+      ]
+    },
+    {
+      id: 114,
+      thumbnail: '/images/lessons/primal-stimuli.png',
+      title: 'The 6 Primal Buy Buttons',
+      intro: 'The only 6 triggers that reliably get the reptile brain to say YES.',
+      directUrl: '/learn/lessons/primal-stimuli',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Neuroscience', label: 'Focus' }
+      ],
+      content: `## The 6 Primal Buy Buttons
+
+Your customer has two brains: the logical one that "decides" and the primal one that actually decides. The primal brain only responds to 6 stimuli: Self-Centered, Contrast, Tangible, Beginning & End, Visual, and Emotional. Press these buttons = sale. Ignore them = logic wins (and logic doesn't buy).
+
+**Open the interactive lesson to master primal selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/primal-stimuli/lesson.html' }
+      ]
     }
   ];
 
