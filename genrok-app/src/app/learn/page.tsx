@@ -158,6 +158,20 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'visual-shorthand': { title: 'Toothpaste Stripes Psychology', description: 'Visual cues shortcut to quality' },
   'radical-honesty-play': { title: 'The Inside Joke Effect', description: 'Admit you\'re marketing to win' },
   'hermes-doctrine': { title: 'The Hermès Infinite Game', description: 'Protect the Birkin, play forever' },
+  // DTC Growth + Luxury Status + Psychology Growth lessons
+  'hero-mechanism': { title: 'The $4,225 Question', description: 'Why Oura Ring costs $399 vs $12 knockoff' },
+  'scammer-playbook-good': { title: "The Scammer's Playbook (Used for Good)", description: '7 ethical persuasion levers' },
+  'us-vs-them': { title: 'The David vs Goliath Play', description: 'Create tribal identity through enemies' },
+  'brand-universe': { title: 'Build a World, Not Just a Store', description: 'Create universes, not products' },
+  'product-to-identity': { title: 'From Product to Identity Purchase', description: 'Transform commodities to identity' },
+  'commodity-escape': { title: 'The Commodity Trap', description: 'How Starbucks charges $6 for $0.50 coffee' },
+  'myth-and-urgency': { title: 'Weaving Myth & Manufacturing Urgency', description: 'Create irresistible desire through scarcity + story' },
+  'value-ladder': { title: 'The Value Ladder & Hidden Menu', description: 'Secret tiers that create aspiration' },
+  'box-worth-300': { title: 'The $300 Empty Box', description: "Tiffany's packaging IS the product" },
+  'story-taste-experiment': { title: 'Your Story Changes How Products TASTE', description: 'Story literally alters perception' },
+  'scarcity-calendar': { title: "Le Creuset's Scarcity Engine", description: 'One color per year creates collectors' },
+  'anchor-moments': { title: "Ralph Lauren's Anchor Moments", description: '$20K bag makes $200 polo feel cheap' },
+  'irrational-loyalty': { title: 'The Pizza Test & Sock Test', description: 'Once identity forms, logic dies' },
 };
 
 // Categories for filtering
