@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 6 Primal Buy Buttons | Quantum Scale</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #FAFAFA;
+      --bg-secondary: #F5F5F7;
+      --bg-card: #FFFFFF;
+      --text-primary: #000000;
+      --text-secondary: #1D1D1F;
+      --text-muted: #86868B;
+      --accent: #dc2626;
+      --accent-rgb: 220, 38, 38;
+      --success: #34C759;
+      --error: #FF3B30;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    #root {
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .lesson-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    /* Typography */
+    .slide-title {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .slide-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .slide-description {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    /* Welcome Slide */
+    .welcome-goals {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .welcome-goal {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .goal-icon {
+      width: 24px;
+      height: 24px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .goal-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Hook Slide */
+    .hook-content {
+      text-align: center;
+      padding: 64px 32px;
+      background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.05) 0%, transparent 100%);
+      border-radius: 20px;
+      border: 2px solid rgba(var(--accent-rgb), 0.1);
+    }
+
+    .hook-text {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hook-highlight {
+      color: var(--accent);
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Content Slide */
+    .content-block {
+      padding: 40px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .content-heading {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .content-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Visual Slides */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      padding: 32px 24px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      border-color: rgba(var(--accent-rgb), 0.2);
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* Comparison */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .comparison-card {
+      padding: 32px 24px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .comparison-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .comparison-formula {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background: rgba(var(--accent-rgb), 0.08);
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Monaco', monospace;
+    }
+
+    .comparison-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Cards Slide */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .stimulus-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .stimulus-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      border-color: rgba(var(--accent-rgb), 0.2);
+    }
+
+    .stimulus-number {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: rgba(var(--accent-rgb), 0.1);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .stimulus-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .stimulus-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .stimulus-example {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+
+    /* Split Slide */
+    .split-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .split-section {
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .split-heading {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .checklist-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Example Slide */
+    .example-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .example-item {
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .example-label {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(var(--accent-rgb), 0.1);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .example-label.after {
+      background: rgba(52, 199, 89, 0.1);
+      color: var(--success);
+    }
+
+    .example-content {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .example-highlight {
+      display: inline-block;
+      padding: 2px 6px;
+      background: rgba(var(--accent-rgb), 0.1);
+      color: var(--accent);
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Quiz Slide */
+    .quiz-container {
+      max-width: 600px;
+      margin: 32px auto 0;
+    }
+
+    .quiz-question {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.4;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-option {
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 16px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-option:hover {
+      border-color: rgba(var(--accent-rgb), 0.3);
+      background: rgba(var(--accent-rgb), 0.02);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--accent);
+      background: rgba(var(--accent-rgb), 0.05);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--success);
+      background: rgba(52, 199, 89, 0.05);
+    }
+
+    .quiz-option.incorrect {
+      border-color: var(--error);
+      background: rgba(255, 59, 48, 0.05);
+    }
+
+    .option-letter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--bg-secondary);
+      border-radius: 50%;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .quiz-feedback {
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: rgba(var(--accent-rgb), 0.05);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .feedback-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .feedback-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Completion Slide */
+    .completion-content {
+      text-align: center;
+      padding: 48px 32px;
+    }
+
+    .completion-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(var(--accent-rgb), 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .completion-icon svg {
+      width: 40px;
+      height: 40px;
+      color: var(--accent);
+    }
+
+    .completion-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .completion-message {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .action-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      margin-top: 32px;
+      text-align: left;
+    }
+
+    .action-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .action-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    .lesson-navigation {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 20px 24px;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-button {
+      padding: 12px 24px;
+      background: var(--text-primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-button:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .nav-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .nav-button.secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .nav-button.secondary:hover {
+      background: var(--bg-card);
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--bg-secondary);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Close Button */
+    .close-button {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 101;
+    }
+
+    .close-button:hover {
+      background: var(--bg-secondary);
+      transform: rotate(90deg);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .lesson-container {
+        padding: 60px 20px 100px;
+      }
+
+      .slide-title {
+        font-size: 36px;
+      }
+
+      .hook-text {
+        font-size: 22px;
+      }
+
+      .split-container {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const LESSON_CONFIG = {
+      slug: 'primal-stimuli',
+      title: 'The 6 Primal Buy Buttons',
+      description: "Your customer's brain has 6 buttons. Press the right ones = sale.",
+      accentColor: '#dc2626',
+      totalSlides: 12,
+      nextLesson: {
+        slug: 'visual-priming',
+        title: 'The Invisible Influencer'
+      }
+    };
+
+    const slides = [
+      {
+        id: 1,
+        type: 'welcome',
+        title: 'The 6 Primal Buy Buttons',
+        subtitle: "Your customer's brain has 6 buttons. Press the right ones = sale.",
+        goals: [
+          'The 6 stimuli that trigger purchases',
+          'Why logic and data fail to persuade',
+          'Mapping tactics to primal triggers'
+        ]
+      },
+      {
+        id: 2,
+        type: 'hook',
+        content: "You've been marketing to the wrong brain. The decision-maker doesn't speak English. It speaks 6 primal triggers."
+      },
+      {
+        id: 3,
+        type: 'content',
+        title: 'Why Logic Fails',
+        heading: 'The Analyst Isn\'t In Charge',
+        content: "You've been trying to convince a logical 'Analyst' who isn't actually in charge. The Primal Brain makes the decision, then the Analyst rationalizes it. Logic, data, and complex words are foreign languages to the Primal Brain. It only understands 6 specific stimuli."
+      },
+      {
+        id: 4,
+        type: 'visual',
+        subtype: 'stats',
+        title: 'The Numbers That Matter',
+        subtitle: 'Understanding the Primal Brain',
+        stats: [
+          {
+            number: '500M',
+            label: 'Years Old',
+            description: 'The age of the Primal Brain - ancient survival mechanism'
+          },
+          {
+            number: '6',
+            label: 'Triggers',
+            description: 'The only stimuli it understands and responds to'
+          },
+          {
+            number: '50x',
+            label: 'Faster',
+            description: 'Visual processing speed vs auditory in the brain'
+          }
+        ]
+      },
+      {
+        id: 5,
+        type: 'cards',
+        title: 'Stimuli 1 & 2',
+        subtitle: 'The Foundation: Self & Contrast',
+        cards: [
+          {
+            number: 1,
+            name: 'Self-Centered',
+            description: 'The Primal Brain is purely narcissistic. Everything must be framed in terms of "me" and "my survival."',
+            example: 'Use "You" relentlessly. Frame all benefits from the user\'s point of view.'
+          },
+          {
+            number: 2,
+            name: 'Contrast',
+            description: 'Clear, sharp contrast creates easy decision-making and generates urgency.',
+            example: 'Price markdowns create visual contrast. Countdown timers contrast "now" (opportunity) with "later" (loss).'
+          }
+        ]
+      },
+      {
+        id: 6,
+        type: 'cards',
+        title: 'Stimuli 3 & 4',
+        subtitle: 'Making It Real & Memorable',
+        cards: [
+          {
+            number: 3,
+            name: 'Tangible',
+            description: 'The Primal Brain struggles with abstract concepts. It needs simple, concrete, graspable ideas.',
+            example: 'Avoid jargon. Use analogies. Make your value proposition physically real.'
+          },
+          {
+            number: 4,
+            name: 'Beginning & End',
+            description: 'The Primal Brain pays most attention at start and finish, largely forgetting the middle.',
+            example: '"Your headline + CTA are 90% of the battle." - George Lucas on good movies applies here too.'
+          }
+        ]
+      },
+      {
+        id: 7,
+        type: 'cards',
+        title: 'Stimuli 5 & 6',
+        subtitle: 'Show & Feel',
+        cards: [
+          {
+            number: 5,
+            name: 'Visual',
+            description: 'The optic nerve is a superhighway to the Primal Brain. Vision is the dominant sense - 50x faster than auditory.',
+            example: 'Use powerful images. Show product in use. Use visual cues to guide attention.'
+          },
+          {
+            number: 6,
+            name: 'Emotional',
+            description: 'Emotion creates memories and drives action. The Primal Brain responds to raw, universal emotions: fear, desire, belonging.',
+            example: 'Show faces - frustrated customer mirrors pain, smiling customer demonstrates gain.'
+          }
+        ]
+      },
+      {
+        id: 8,
+        type: 'visual',
+        subtype: 'comparison',
+        title: 'The Unified Theory',
+        subtitle: 'How common tactics map to primal stimuli',
+        comparisons: [
+          {
+            title: 'FOMO/Urgency',
+            formula: 'Contrast + Emotional',
+            description: 'Countdown timers create contrast between now and later, triggering fear of loss.'
+          },
+          {
+            title: 'Zero-Risk Guarantees',
+            formula: 'Tangible + Emotional',
+            description: 'Make fear elimination concrete and emotionally reassuring.'
+          },
+          {
+            title: 'Anchoring/Pricing Tiers',
+            formula: 'Contrast + Tangible',
+            description: 'Visual price differences make value concrete and decision easy.'
+          },
+          {
+            title: 'Social Proof',
+            formula: 'Emotional + Visual',
+            description: 'Faces and testimonials trigger belonging through visual emotion.'
+          }
+        ]
+      },
+      {
+        id: 9,
+        type: 'example',
+        title: 'Before & After',
+        subtitle: 'The same product page, optimized',
+        examples: [
+          {
+            label: 'Before',
+            type: 'before',
+            content: '"Our enterprise-grade solution leverages cutting-edge algorithms to optimize your workflow efficiency. Feature-rich dashboard with comprehensive analytics and seamless integrations."'
+          },
+          {
+            label: 'After',
+            type: 'after',
+            content: '"You\'re wasting 4 hours daily on manual tasks. See your exact time savings in 60 seconds. [Visual demo] Save 20 hours/week or pay nothing. [Frustrated face → Relieved face] Start your free trial."',
+            highlights: ['Self-Centered (You)', 'Contrast (4hrs vs 60sec)', 'Tangible (20 hours/week)', 'Beginning & End (strong open/close)', 'Visual (demo + faces)', 'Emotional (frustration → relief)']
+          }
+        ]
+      },
+      {
+        id: 10,
+        type: 'split',
+        title: 'Landing Page Audit',
+        subtitle: 'Which stimuli are you missing?',
+        sections: [
+          {
+            heading: 'Score Each Stimulus (1-10)',
+            items: [
+              'Self-Centered: Is everything framed as "You"?',
+              'Contrast: Clear before/after or now/later?',
+              'Tangible: Concrete numbers and outcomes?',
+              'Beginning & End: Strong headline + CTA?',
+              'Visual: Powerful images showing product in use?',
+              'Emotional: Faces showing pain → gain?'
+            ]
+          },
+          {
+            heading: 'Red Flags',
+            items: [
+              'Using "we" more than "you"',
+              'Only one pricing option',
+              'Abstract benefits without numbers',
+              'Weak or generic headline',
+              'Stock photos instead of real product',
+              'No human faces or emotion'
+            ]
+          }
+        ]
+      },
+      {
+        id: 11,
+        type: 'quiz',
+        question: 'Which stimulus does a countdown timer primarily activate?',
+        options: [
+          { letter: 'A', text: 'Self-Centered', correct: false },
+          { letter: 'B', text: 'Contrast', correct: true },
+          { letter: 'C', text: 'Tangible', correct: false },
+          { letter: 'D', text: 'Visual', correct: false }
+        ],
+        feedback: {
+          correct: 'Exactly! A countdown timer creates sharp contrast between "now" (opportunity) and "later" (loss). This contrast makes decision-making urgent and clear for the Primal Brain.',
+          incorrect: 'Not quite. While timers can be visual, they primarily activate Contrast - creating a sharp distinction between "now" (opportunity) and "later" (loss). This contrast is what drives urgency.'
+        }
+      },
+      {
+        id: 12,
+        type: 'completion',
+        title: 'Primal Triggers Unlocked',
+        message: "You now know the 6 buttons that drive every purchase decision. Time to audit your pages.",
+        action: {
+          title: 'Your Next Step',
+          description: 'Score your current landing page against all 6 stimuli (1-10 each). Focus on improving your lowest-scoring trigger first - that\'s your biggest conversion leak.'
+        }
+      }
+    ];
+
+    function WelcomeSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div>
+            <motion.h1
+              className="slide-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.title}
+            </motion.h1>
+            <motion.p
+              className="slide-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          <div className="welcome-goals">
+            {data.goals.map((goal, index) => (
+              <motion.div
+                key={index}
+                className="welcome-goal"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + (index * 0.1) }}
+              >
+                <svg className="goal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="goal-text">{goal}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      );
+    }
+
+    function HookSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="hook-content"
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <p className="hook-text">
+              {data.content}
+            </p>
+          </motion.div>
+        </motion.div>
+      );
+    }
+
+    function ContentSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div>
+            <motion.h2
+              className="slide-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.title}
+            </motion.h2>
+          </div>
+
+          <motion.div
+            className="content-block"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h3 className="content-heading">{data.heading}</h3>
+            <p className="content-text">{data.content}</p>
+          </motion.div>
+        </motion.div>
+      );
+    }
+
+    function VisualSlide({ data }) {
+      if (data.subtype === 'stats') {
+        return (
+          <motion.div
+            className="slide-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <motion.h2
+                className="slide-title"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {data.title}
+              </motion.h2>
+              <motion.p
+                className="slide-subtitle"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                {data.subtitle}
+              </motion.p>
+            </div>
+
+            <div className="stats-grid">
+              {data.stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="stat-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + (index * 0.1) }}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="stat-number">{stat.number}</div>
+                  <div className="stat-label">{stat.label}</div>
+                  <div className="stat-description">{stat.description}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      }
+
+      if (data.subtype === 'comparison') {
+        return (
+          <motion.div
+            className="slide-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <motion.h2
+                className="slide-title"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {data.title}
+              </motion.h2>
+              <motion.p
+                className="slide-subtitle"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                {data.subtitle}
+              </motion.p>
+            </div>
+
+            <div className="comparison-grid">
+              {data.comparisons.map((comparison, index) => (
+                <motion.div
+                  key={index}
+                  className="comparison-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + (index * 0.1) }}
+                >
+                  <div className="comparison-title">{comparison.title}</div>
+                  <div className="comparison-formula">{comparison.formula}</div>
+                  <div className="comparison-description">{comparison.description}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      }
+    }
+
+    function CardsSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div>
+            <motion.h2
+              className="slide-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.title}
+            </motion.h2>
+            <motion.p
+              className="slide-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          <div className="cards-grid">
+            {data.cards.map((card, index) => (
+              <motion.div
+                key={index}
+                className="stimulus-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + (index * 0.1) }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="stimulus-number">{card.number}</div>
+                <div className="stimulus-name">{card.name}</div>
+                <div className="stimulus-description">{card.description}</div>
+                <div className="stimulus-example">{card.example}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      );
+    }
+
+    function SplitSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div>
+            <motion.h2
+              className="slide-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.title}
+            </motion.h2>
+            <motion.p
+              className="slide-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          <div className="split-container">
+            {data.sections.map((section, index) => (
+              <motion.div
+                key={index}
+                className="split-section"
+                initial={{ opacity: 0, x: index === 0 ? -20 : 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + (index * 0.1) }}
+              >
+                <h3 className="split-heading">{section.heading}</h3>
+                <div className="checklist">
+                  {section.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="checklist-item">
+                      <svg className="checklist-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      );
+    }
+
+    function ExampleSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div>
+            <motion.h2
+              className="slide-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.title}
+            </motion.h2>
+            <motion.p
+              className="slide-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          <div className="example-container">
+            {data.examples.map((example, index) => (
+              <motion.div
+                key={index}
+                className="example-item"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + (index * 0.2) }}
+              >
+                <span className={`example-label ${example.type}`}>{example.label}</span>
+                <div className="example-content">{example.content}</div>
+                {example.highlights && (
+                  <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {example.highlights.map((highlight, hIndex) => (
+                      <span key={hIndex} className="example-highlight">{highlight}</span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      );
+    }
+
+    function QuizSlide({ data }) {
+      const [selectedOption, setSelectedOption] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+
+      const handleOptionClick = (option) => {
+        if (!showFeedback) {
+          setSelectedOption(option);
+          setShowFeedback(true);
+        }
+      };
+
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="quiz-container">
+            <motion.h2
+              className="quiz-question"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {data.question}
+            </motion.h2>
+
+            <div className="quiz-options">
+              {data.options.map((option, index) => (
+                <motion.div
+                  key={index}
+                  className={`quiz-option ${
+                    selectedOption === option ?
+                      (option.correct ? 'correct' : 'incorrect') :
+                      ''
+                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + (index * 0.1) }}
+                  onClick={() => handleOptionClick(option)}
+                  whileHover={{ scale: showFeedback ? 1 : 1.02 }}
+                  whileTap={{ scale: showFeedback ? 1 : 0.98 }}
+                >
+                  <div className="option-letter">{option.letter}</div>
+                  <span>{option.text}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div
+                  className="quiz-feedback"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <div className="feedback-title">
+                    {selectedOption.correct ? 'Correct!' : 'Not quite...'}
+                  </div>
+                  <div className="feedback-text">
+                    {selectedOption.correct ? data.feedback.correct : data.feedback.incorrect}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      );
+    }
+
+    function CompletionSlide({ data }) {
+      return (
+        <motion.div
+          className="slide-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="completion-content">
+            <motion.div
+              className="completion-icon"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </motion.div>
+
+            <motion.h2
+              className="completion-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {data.title}
+            </motion.h2>
+
+            <motion.p
+              className="completion-message"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              {data.message}
+            </motion.p>
+
+            <motion.div
+              className="action-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <h3 className="action-title">{data.action.title}</h3>
+              <p className="action-description">{data.action.description}</p>
+            </motion.div>
+          </div>
+        </motion.div>
+      );
+    }
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+
+      const handleNext = () => {
+        if (currentSlide < slides.length - 1) {
+          setCurrentSlide(currentSlide + 1);
+        } else {
+          // Navigate to next lesson or learning center
+          if (LESSON_CONFIG.nextLesson) {
+            window.location.href = `/lessons/${LESSON_CONFIG.nextLesson.slug}/lesson.html`;
+          } else {
+            window.location.href = '/learning-center';
+          }
+        }
+      };
+
+      const handlePrevious = () => {
+        if (currentSlide > 0) {
+          setCurrentSlide(currentSlide - 1);
+        }
+      };
+
+      const handleClose = () => {
+        window.location.href = '/learning-center';
+      };
+
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+      const currentSlideData = slides[currentSlide];
+
+      const renderSlide = () => {
+        switch (currentSlideData.type) {
+          case 'welcome':
+            return <WelcomeSlide data={currentSlideData} />;
+          case 'hook':
+            return <HookSlide data={currentSlideData} />;
+          case 'content':
+            return <ContentSlide data={currentSlideData} />;
+          case 'visual':
+            return <VisualSlide data={currentSlideData} />;
+          case 'cards':
+            return <CardsSlide data={currentSlideData} />;
+          case 'split':
+            return <SplitSlide data={currentSlideData} />;
+          case 'example':
+            return <ExampleSlide data={currentSlideData} />;
+          case 'quiz':
+            return <QuizSlide data={currentSlideData} />;
+          case 'completion':
+            return <CompletionSlide data={currentSlideData} />;
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <>
+          <button className="close-button" onClick={handleClose}>
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div className="lesson-container">
+            <AnimatePresence mode="wait">
+              {renderSlide()}
+            </AnimatePresence>
+          </div>
+
+          <div className="lesson-navigation">
+            <div className="nav-content">
+              <button
+                className="nav-button secondary"
+                onClick={handlePrevious}
+                disabled={currentSlide === 0}
+              >
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous
+              </button>
+
+              <div className="progress-bar">
+                <motion.div
+                  className="progress-fill"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+
+              <span className="progress-text">
+                {currentSlide + 1} / {slides.length}
+              </span>
+
+              <button
+                className="nav-button"
+                onClick={handleNext}
+              >
+                {currentSlide === slides.length - 1 ? (
+                  LESSON_CONFIG.nextLesson ? (
+                    <>
+                      Next Lesson
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </>
+                  ) : (
+                    'Complete'
+                  )
+                ) : (
+                  <>
+                    Next
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

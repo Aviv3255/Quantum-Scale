@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Invisible Influencer - Visual Priming</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@11.11.11/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #0ea5e9;
+            --accent-rgb: 14, 165, 233;
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #F5F5F7;
+            --bg-card: #FFFFFF;
+            --text-primary: #000000;
+            --text-secondary: #1D1D1F;
+            --text-muted: #86868B;
+            --success: #34C759;
+            --error: #FF3B30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #root {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lesson-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .slide {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 80px 0;
+        }
+
+        .slide-content {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .slide-content.wide {
+            max-width: 1000px;
+        }
+
+        /* Welcome Slide */
+        .welcome-slide {
+            text-align: center;
+        }
+
+        .lesson-badge {
+            display: inline-block;
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .lesson-title {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .lesson-description {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            line-height: 1.6;
+        }
+
+        .learning-goals {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .learning-goals h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .goals-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .goals-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+        }
+
+        .goal-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        /* Hook Slide */
+        .hook-slide {
+            text-align: center;
+        }
+
+        .hook-text {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.4;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hook-highlight {
+            color: var(--accent);
+            position: relative;
+        }
+
+        /* Content Slide */
+        .content-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .content-slide p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .content-slide strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .insight-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .insight-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .insight-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        /* Visual Stats Slide */
+        .visual-slide {
+            text-align: center;
+        }
+
+        .visual-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            letter-spacing: -0.01em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Split Slide */
+        .split-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .split-panel {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+        }
+
+        .split-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            background: rgba(var(--accent-rgb), 0.1);
+            border-radius: 50%;
+        }
+
+        .split-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .split-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .split-arrow {
+            text-align: center;
+            font-size: 24px;
+            margin: 16px 0;
+        }
+
+        .split-result {
+            background: rgba(var(--accent-rgb), 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .split-result-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Cards Slide */
+        .cards-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .strategy-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--accent);
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .strategy-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .strategy-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .strategy-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Example Slide */
+        .example-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .example-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .example-panel {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .example-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .example-label.before {
+            background: rgba(255, 59, 48, 0.1);
+            color: var(--error);
+        }
+
+        .example-label.after {
+            background: rgba(52, 199, 89, 0.1);
+            color: var(--success);
+        }
+
+        .example-content {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .example-hero {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .example-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        .example-visual {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .example-visual.product {
+            background: #e5e5e5;
+            color: #999;
+        }
+
+        .example-visual.lifestyle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%23667eea" width="400" height="300"/><circle cx="100" cy="80" r="40" fill="white" opacity="0.3"/><circle cx="250" cy="150" r="60" fill="white" opacity="0.2"/><circle cx="320" cy="100" r="30" fill="white" opacity="0.25"/></svg>');
+            background-size: cover;
+        }
+
+        /* Quiz Slide */
+        .quiz-slide {
+            text-align: center;
+        }
+
+        .quiz-slide h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            letter-spacing: -0.01em;
+        }
+
+        .quiz-question {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .quiz-option {
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(52, 199, 89, 0.05);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--error);
+            background: rgba(255, 59, 48, 0.05);
+            opacity: 0.5;
+        }
+
+        .quiz-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 600;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .quiz-option.correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .quiz-option.incorrect .option-letter {
+            background: var(--error);
+            color: white;
+        }
+
+        .quiz-feedback {
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border-left: 4px solid var(--success);
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--success);
+            font-size: 16px;
+        }
+
+        .feedback-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Completion Slide */
+        .completion-slide {
+            text-align: center;
+        }
+
+        .completion-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 40px;
+        }
+
+        .completion-slide h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .completion-message {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+        }
+
+        .action-box {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .action-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .next-lesson {
+            background: var(--accent);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+        }
+
+        .next-lesson:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+        }
+
+        /* Navigation */
+        .lesson-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-button {
+            background: var(--bg-card);
+            border: 2px solid var(--bg-secondary);
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-button.primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .nav-button.primary:hover:not(:disabled) {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lesson-title {
+                font-size: 32px;
+            }
+
+            .hook-text {
+                font-size: 24px;
+            }
+
+            .content-slide h2,
+            .visual-slide h2,
+            .split-slide h2,
+            .cards-slide h2,
+            .example-slide h2,
+            .quiz-slide h2 {
+                font-size: 24px;
+            }
+
+            .split-container,
+            .example-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slide {
+                padding: 40px 0;
+                min-height: 70vh;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+            }
+
+            .progress-bar {
+                order: -1;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = Motion;
+
+        const LESSON_CONFIG = {
+            slug: 'visual-priming',
+            title: 'The Invisible Influencer',
+            description: 'The background image on your landing page is secretly controlling what people buy.',
+            accentColor: '#0ea5e9',
+            nextLesson: {
+                slug: 'objection-inversion',
+                title: 'The Objection Judo Trick'
+            }
+        };
+
+        const SLIDES = [
+            {
+                id: 1,
+                type: 'welcome',
+                badge: 'Visual Psychology',
+                title: LESSON_CONFIG.title,
+                description: LESSON_CONFIG.description,
+                goals: [
+                    'The science of visual priming and unconscious influence',
+                    'The Clouds vs Coins experiment results',
+                    '3 priming strategies to match your positioning'
+                ]
+            },
+            {
+                id: 2,
+                type: 'hook',
+                content: 'The image behind your headline is making decisions for your customers. They just don\'t know it.'
+            },
+            {
+                id: 3,
+                type: 'content',
+                title: 'The Science of Visual Priming',
+                content: [
+                    'Your brain processes visuals **60,000 times faster** than text.',
+                    'The first image a visitor sees doesn\'t just grab attention—it sets the **evaluation frame** for everything that follows.',
+                    'This is visual priming: unconscious cues that influence how people perceive value, quality, and price.'
+                ],
+                insight: 'The initial visual cue shapes the entire shopping experience before a single word is read.'
+            },
+            {
+                id: 4,
+                type: 'visual',
+                title: 'The Numbers Behind Visual Influence',
+                stats: [
+                    { number: '60,000x', label: 'Faster visual processing than text' },
+                    { number: '100%', label: 'Of participants denied being influenced' },
+                    { number: '40%+', label: 'Behavior change from background alone' }
+                ]
+            },
+            {
+                id: 5,
+                type: 'split',
+                title: 'The Clouds vs Coins Experiment',
+                panels: [
+                    {
+                        icon: '☁️',
+                        title: 'Clouds Background',
+                        description: 'Soft, fluffy clouds in the background',
+                        result: 'Visitors prioritized "comfortable" and "soft" furniture'
+                    },
+                    {
+                        icon: '💰',
+                        title: 'Coins Background',
+                        description: 'Stacked coins and currency imagery',
+                        result: 'Visitors focused on price, seeking budget options'
+                    }
+                ],
+                note: 'Same products. Same prices. Only the background changed.'
+            },
+            {
+                id: 6,
+                type: 'content',
+                title: 'Why We Deny Being Influenced',
+                content: [
+                    'When researchers asked participants if the background influenced their choices, **100% said no**.',
+                    'Yet the data showed a clear pattern: clouds primed comfort-seeking behavior, while coins primed price-consciousness.',
+                    'This is the power of unconscious priming—it works **beneath conscious awareness**.'
+                ],
+                insight: 'The initial visual cue framed their entire shopping experience, and they had no idea it was happening.'
+            },
+            {
+                id: 7,
+                type: 'cards',
+                title: '3 Priming Strategies',
+                cards: [
+                    {
+                        title: 'Prime for Quality & Comfort',
+                        description: 'Soft textures, natural landscapes, aspirational lifestyle imagery. Use when selling premium products where comfort and quality matter more than price.'
+                    },
+                    {
+                        title: 'Prime for Price & Value',
+                        description: 'Sharp lines, high-contrast colors, price-focused graphics (dollar signs, "best value" badges). Use when competing on price or targeting budget-conscious buyers.'
+                    },
+                    {
+                        title: 'Prime for Identity',
+                        description: 'Ask a question before your offer that aligns with your product\'s identity. Example: "Do you consider yourself adventurous?" increased energy drink trials by 40%.'
+                    }
+                ]
+            },
+            {
+                id: 8,
+                type: 'example',
+                title: 'Priming in Action',
+                before: {
+                    label: 'Generic Product Focus',
+                    visual: 'product',
+                    visualText: 'Product on white background',
+                    hero: 'Premium Coffee Maker',
+                    note: 'Clean but no priming. Brain has no evaluation frame.'
+                },
+                after: {
+                    label: 'Lifestyle Aspiration',
+                    visual: 'lifestyle',
+                    visualText: 'Morning sunlight, cozy kitchen scene',
+                    hero: 'Premium Coffee Maker',
+                    note: 'Primes for quality, comfort, morning ritual. Sets premium perception.'
+                }
+            },
+            {
+                id: 9,
+                type: 'quiz',
+                question: 'Why did visitors on the "clouds" page spend more on comfort features?',
+                options: [
+                    { id: 'a', text: 'Clouds are naturally calming', correct: false },
+                    { id: 'b', text: 'The visual primed them to prioritize comfort unconsciously', correct: true },
+                    { id: 'c', text: 'They saw more comfortable products', correct: false },
+                    { id: 'd', text: 'The prices were different', correct: false }
+                ],
+                feedback: {
+                    title: 'Exactly right!',
+                    text: 'The clouds background unconsciously primed visitors to evaluate furniture through a "comfort and softness" lens. They didn\'t consciously think "clouds = comfort," but their brains were already primed to value those attributes before seeing any products.'
+                }
+            },
+            {
+                id: 10,
+                type: 'completion',
+                title: 'Lesson Complete!',
+                message: 'You now understand how visual priming controls purchasing decisions.',
+                action: {
+                    title: 'Your Action Step',
+                    description: 'Audit your hero images—are they priming for your positioning? Premium brand should use comfort/quality imagery. Budget brand should use value/price cues. Match your visual prime to your promise.'
+                }
+            }
+        ];
+
+        function WelcomeSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide welcome-slide"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content">
+                        <motion.div
+                            className="lesson-badge"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.badge}
+                        </motion.div>
+                        <motion.h1
+                            className="lesson-title"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            {slide.title}
+                        </motion.h1>
+                        <motion.p
+                            className="lesson-description"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.4 }}
+                        >
+                            {slide.description}
+                        </motion.p>
+                        <motion.div
+                            className="learning-goals"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            <h3>What You'll Learn</h3>
+                            <ul className="goals-list">
+                                {slide.goals.map((goal, index) => (
+                                    <motion.li
+                                        key={index}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.6 + index * 0.1 }}
+                                    >
+                                        <span className="goal-icon">✓</span>
+                                        <span>{goal}</span>
+                                    </motion.li>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function HookSlide({ slide }) {
+            const words = slide.content.split(' ');
+
+            return (
+                <motion.div
+                    className="slide hook-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content">
+                        <h2 className="hook-text">
+                            {words.map((word, index) => (
+                                <motion.span
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                    style={{ display: 'inline-block', marginRight: '0.3em' }}
+                                >
+                                    {word}
+                                </motion.span>
+                            ))}
+                        </h2>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function ContentSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide content-slide"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        {slide.content.map((paragraph, index) => (
+                            <motion.p
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 + index * 0.1 }}
+                                dangerouslySetInnerHTML={{
+                                    __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                }}
+                            />
+                        ))}
+                        {slide.insight && (
+                            <motion.div
+                                className="insight-box"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 }}
+                            >
+                                <div className="insight-label">Key Insight</div>
+                                <div className="insight-text">{slide.insight}</div>
+                            </motion.div>
+                        )}
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function VisualSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide visual-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content wide">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <div className="stats-grid">
+                            {slide.stats.map((stat, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="stat-card"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 + index * 0.15 }}
+                                >
+                                    <div className="stat-number">{stat.number}</div>
+                                    <div className="stat-label">{stat.label}</div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function SplitSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide split-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content wide">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <div className="split-container">
+                            {slide.panels.map((panel, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="split-panel"
+                                    initial={{ opacity: 0, x: index === 0 ? -30 : 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.3 + index * 0.2 }}
+                                >
+                                    <div className="split-icon">{panel.icon}</div>
+                                    <div className="split-title">{panel.title}</div>
+                                    <div className="split-description">{panel.description}</div>
+                                    <div className="split-arrow">↓</div>
+                                    <div className="split-result">
+                                        <div className="split-result-text">{panel.result}</div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                        {slide.note && (
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.8 }}
+                                style={{ textAlign: 'center', marginTop: '32px', color: 'var(--text-muted)', fontStyle: 'italic' }}
+                            >
+                                {slide.note}
+                            </motion.p>
+                        )}
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function CardsSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide cards-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content wide">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <div className="cards-grid">
+                            {slide.cards.map((card, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="strategy-card"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 + index * 0.15 }}
+                                >
+                                    <div className="strategy-number">{index + 1}</div>
+                                    <div className="strategy-title">{card.title}</div>
+                                    <div className="strategy-description">{card.description}</div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function ExampleSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide example-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content wide">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <div className="example-container">
+                            <motion.div
+                                className="example-panel"
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <span className="example-label before">{slide.before.label}</span>
+                                <div className="example-content">
+                                    <div className={`example-visual ${slide.before.visual}`}>
+                                        {slide.before.visualText}
+                                    </div>
+                                    <div className="example-hero">{slide.before.hero}</div>
+                                </div>
+                                <p className="example-note">{slide.before.note}</p>
+                            </motion.div>
+                            <motion.div
+                                className="example-panel"
+                                initial={{ opacity: 0, x: 30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                <span className="example-label after">{slide.after.label}</span>
+                                <div className="example-content">
+                                    <div className={`example-visual ${slide.after.visual}`}>
+                                        {slide.after.visualText}
+                                    </div>
+                                    <div className="example-hero">{slide.after.hero}</div>
+                                </div>
+                                <p className="example-note">{slide.after.note}</p>
+                            </motion.div>
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function QuizSlide({ slide, onCorrectAnswer }) {
+            const [selectedOption, setSelectedOption] = useState(null);
+            const [showFeedback, setShowFeedback] = useState(false);
+
+            const handleOptionClick = (option) => {
+                if (selectedOption) return;
+
+                setSelectedOption(option.id);
+                setShowFeedback(true);
+
+                if (option.correct) {
+                    setTimeout(() => {
+                        onCorrectAnswer();
+                    }, 3000);
+                }
+            };
+
+            return (
+                <motion.div
+                    className="slide quiz-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            Knowledge Check
+                        </motion.h2>
+                        <motion.div
+                            className="quiz-question"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            {slide.question}
+                        </motion.div>
+                        <div className="quiz-options">
+                            {slide.options.map((option, index) => (
+                                <motion.div
+                                    key={option.id}
+                                    className={`quiz-option ${
+                                        selectedOption === option.id
+                                            ? option.correct
+                                                ? 'correct'
+                                                : 'incorrect'
+                                            : selectedOption
+                                                ? 'disabled'
+                                                : ''
+                                    }`}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + index * 0.1 }}
+                                    onClick={() => handleOptionClick(option)}
+                                >
+                                    <span className="option-letter">{option.id.toUpperCase()}</span>
+                                    <span>{option.text}</span>
+                                </motion.div>
+                            ))}
+                        </div>
+                        <AnimatePresence>
+                            {showFeedback && (
+                                <motion.div
+                                    className="quiz-feedback"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                >
+                                    <div className="feedback-title">{slide.feedback.title}</div>
+                                    <div className="feedback-text">{slide.feedback.text}</div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function CompletionSlide({ slide }) {
+            return (
+                <motion.div
+                    className="slide completion-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="slide-content">
+                        <motion.div
+                            className="completion-icon"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                        >
+                            ✓
+                        </motion.div>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                        >
+                            {slide.title}
+                        </motion.h2>
+                        <motion.p
+                            className="completion-message"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            {slide.message}
+                        </motion.p>
+                        <motion.div
+                            className="action-box"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <div className="action-title">{slide.action.title}</div>
+                            <div className="action-description">{slide.action.description}</div>
+                        </motion.div>
+                        <motion.a
+                            href={`/learn/lessons/${LESSON_CONFIG.nextLesson.slug}`}
+                            className="next-lesson"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7 }}
+                        >
+                            <span>Next Lesson: {LESSON_CONFIG.nextLesson.title}</span>
+                            <span>→</span>
+                        </motion.a>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [quizAnswered, setQuizAnswered] = useState(false);
+
+            const slide = SLIDES[currentSlide];
+            const progress = ((currentSlide + 1) / SLIDES.length) * 100;
+
+            const handleNext = () => {
+                if (currentSlide < SLIDES.length - 1) {
+                    setCurrentSlide(currentSlide + 1);
+                    setQuizAnswered(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            const handlePrevious = () => {
+                if (currentSlide > 0) {
+                    setCurrentSlide(currentSlide - 1);
+                    setQuizAnswered(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            const canGoNext = () => {
+                if (slide.type === 'quiz') {
+                    return quizAnswered;
+                }
+                return true;
+            };
+
+            return (
+                <div className="lesson-container">
+                    <AnimatePresence mode="wait">
+                        {slide.type === 'welcome' && <WelcomeSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'hook' && <HookSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'content' && <ContentSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'visual' && <VisualSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'split' && <SplitSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'cards' && <CardsSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'example' && <ExampleSlide key={slide.id} slide={slide} />}
+                        {slide.type === 'quiz' && <QuizSlide key={slide.id} slide={slide} onCorrectAnswer={() => setQuizAnswered(true)} />}
+                        {slide.type === 'completion' && <CompletionSlide key={slide.id} slide={slide} />}
+                    </AnimatePresence>
+
+                    <div className="lesson-nav">
+                        <div className="nav-content">
+                            <button
+                                className="nav-button"
+                                onClick={handlePrevious}
+                                disabled={currentSlide === 0}
+                            >
+                                ← Previous
+                            </button>
+                            <div className="progress-bar">
+                                <motion.div
+                                    className="progress-fill"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${progress}%` }}
+                                    transition={{ duration: 0.5 }}
+                                />
+                            </div>
+                            <div className="slide-counter">
+                                {currentSlide + 1} / {SLIDES.length}
+                            </div>
+                            <button
+                                className="nav-button primary"
+                                onClick={handleNext}
+                                disabled={currentSlide === SLIDES.length - 1 || !canGoNext()}
+                            >
+                                Next →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>
