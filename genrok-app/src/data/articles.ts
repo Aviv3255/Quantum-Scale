@@ -4310,6 +4310,101 @@ Scientists gave monkeys juice when a light turned on. After the pattern was lear
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/anti-sell-mastery/lesson.html' }
       ]
+    },
+    {
+      id: 156,
+      thumbnail: '/images/lessons/decoy-effect.png',
+      title: 'The Decoy Effect',
+      intro: 'Why movie theaters price popcorn the way they do - and how a "useless" option boosts premium sales by 43%.',
+      directUrl: '/learn/lessons/decoy-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Decoy Effect
+
+Small popcorn: $3. Large: $7. Nobody buys large. Add a Medium at $6.50 and suddenly large sales jump 43%. The "useless" middle option isn't useless - it's a psychological weapon that makes expensive feel like a bargain.
+
+**Open the interactive lesson to master decoy pricing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/decoy-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 157,
+      thumbnail: '/images/lessons/precise-price-trick.png',
+      title: 'The Precise Price Trick',
+      intro: 'Why $4,988 feels fairer than $5,000 - and how precise numbers signal calculation, not greed.',
+      directUrl: '/learn/lessons/precise-price-trick',
+      specialFeatures: [
+        { value: '4 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Precise Price Trick
+
+Round numbers feel arbitrary. Precise numbers feel calculated. A study found that homes priced at $494,500 sold closer to asking price than those at $500,000. The brain assumes precision means research.
+
+**Open the interactive lesson to master precise pricing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/precise-price-trick/lesson.html' }
+      ]
+    },
+    {
+      id: 158,
+      thumbnail: '/images/lessons/paradox-of-choice.png',
+      title: 'The Paradox of Choice',
+      intro: 'Why Chipotle crushes Cheesecake Factory - and how 24 jam flavors killed sales by 90%.',
+      directUrl: '/learn/lessons/paradox-of-choice',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Choice', label: 'Focus' }
+      ],
+      content: `## The Paradox of Choice
+
+A grocery store tested 24 jam flavors vs 6. The big display got more attention, but 90% fewer sales. Too many options create decision paralysis. Chipotle's simple menu beats Cheesecake Factory's 250+ items.
+
+**Open the interactive lesson to master choice architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/paradox-of-choice/lesson.html' }
+      ]
+    },
+    {
+      id: 159,
+      thumbnail: '/images/lessons/forty-million-mistake.png',
+      title: 'The $40 Million Mistake',
+      intro: 'How Coca-Cola won 200,000 taste tests... and lost everything. Data without emotion = disaster.',
+      directUrl: '/learn/lessons/forty-million-mistake',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Emotion', label: 'Focus' }
+      ],
+      content: `## The $40 Million Mistake
+
+In 1985, Coca-Cola spent $40 million on research. New Coke won every taste test. 79 days later, they brought back the original after 8,000 angry calls per day. They measured taste but forgot identity.
+
+**Open the interactive lesson to learn from Coke's disaster.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forty-million-mistake/lesson.html' }
+      ]
+    },
+    {
+      id: 160,
+      thumbnail: '/images/lessons/fly-in-the-urinal.png',
+      title: 'The Fly in the Urinal',
+      intro: 'How a tiny etched fly reduced bathroom spillage by 80% - and what it teaches about nudging behavior.',
+      directUrl: '/learn/lessons/fly-in-the-urinal',
+      specialFeatures: [
+        { value: '4 min', label: 'Duration' },
+        { value: 'Nudge', label: 'Focus' }
+      ],
+      content: `## The Fly in the Urinal
+
+Amsterdam Airport had a cleaning problem. Signs didn't work. So they etched a small fly into each urinal. Spillage dropped 80%. The brain responds to targets, not instructions. Nudge > Push.
+
+**Open the interactive lesson to master nudge psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fly-in-the-urinal/lesson.html' }
+      ]
     }
   ];
 
@@ -4335,7 +4430,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception') || title.includes('brains') || title.includes('pre-suasion') || title.includes('pattern interrupt') || title.includes('dopamine') || title.includes('anti-sell')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception') || title.includes('brains') || title.includes('pre-suasion') || title.includes('pattern interrupt') || title.includes('dopamine') || title.includes('anti-sell') || title.includes('decoy') || title.includes('paradox') || title.includes('choice') || title.includes('mistake') || title.includes('nudge') || title.includes('urinal') || title.includes('fly in')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {

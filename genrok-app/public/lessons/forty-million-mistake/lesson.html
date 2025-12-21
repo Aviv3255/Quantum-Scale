@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $40 Million Mistake | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #dc2626;
+            --accent-light: #fef2f2;
+            --accent-dark: #991b1b;
+        }
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #ffffff; margin: 0; padding: 0; }
+        .slide-enter { opacity: 0; transform: translateY(30px); }
+        .slide-enter-active { opacity: 1; transform: translateY(0); transition: all 0.5s ease-out; }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .progress-bar { transition: width 0.5s ease-out; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.5); }
+        }
+        .pulse-glow { animation: pulse-glow 2s infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake { animation: shake 0.5s ease-in-out; }
+        @keyframes count-up {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .count-up { animation: count-up 0.3s ease-out forwards; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
+
+        // Lesson Configuration
+        const LESSON_CONFIG = {
+            id: 'forty-million-mistake',
+            title: 'The $40 Million Mistake',
+            subtitle: 'How Coca-Cola Won Every Test... And Lost Everything',
+            category: 'Neuromarketing',
+            duration: '5 min',
+            accentColor: '#dc2626',
+            nextLesson: {
+                id: 'fly-in-the-urinal',
+                title: 'The Fly in the Urinal'
+            }
+        };
+
+        // Celebration GIFs for correct answers
+        const celebrationGifs = [
+            "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif",
+            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
+            "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"
+        ];
+
+        // Empathy GIFs for wrong answers
+        const empathyGifs = [
+            "https://media.giphy.com/media/3oEjHGr1Fhz0kyv8Ig/giphy.gif",
+            "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
+            "https://media.giphy.com/media/xT0GqtcVR0jOXzmmPK/giphy.gif"
+        ];
+
+        // Slide Data
+        const slides = [
+            {
+                type: 'welcome',
+                category: LESSON_CONFIG.category,
+                title: LESSON_CONFIG.title,
+                subtitle: LESSON_CONFIG.subtitle,
+                duration: LESSON_CONFIG.duration
+            },
+            {
+                type: 'hook',
+                title: 'The Perfect Crime Scene',
+                content: "Imagine spending **$40 million on research**. Running **200,000 taste tests**. Having scientists, marketers, and data analysts all agree: \"This is better.\"\n\nAnd then watching it all **burn to the ground** in 79 days.\n\nThis actually happened. To the biggest brand on Earth."
+            },
+            {
+                type: 'content',
+                title: 'The Setup: 1985',
+                content: "Coca-Cola was losing ground to Pepsi. The \"Pepsi Challenge\" was killing them.\n\n**So they did something bold:**\n\nThey created a new formula. Sweeter. Smoother. Objectively \"better tasting.\"\n\nThey tested it **200,000 times**.\n\n**New Coke won. Every. Single. Time.**\n\nThe data was clear. The science was solid. Victory was certain."
+            },
+            {
+                type: 'visual',
+                title: 'The Data Looked Perfect',
+                visualType: 'data-vs-reality'
+            },
+            {
+                type: 'content',
+                title: 'Then Reality Hit',
+                content: "April 23, 1985. New Coke launches.\n\n**Within hours:**\n- 8,000 angry phone calls per day\n- Protest groups formed\n- People hoarding \"old\" Coke\n- Death threats to executives\n\nOne man drove across state lines just to buy the last cases of original Coke.\n\n**The data said \"better.\" The people said \"how dare you.\""
+            },
+            {
+                type: 'example',
+                title: 'The Quote That Says Everything',
+                example: {
+                    quote: "We did not understand the deep emotions of so many of our customers for Coca-Cola.",
+                    author: "Roberto Goizueta, Coca-Cola CEO",
+                    context: "After pulling New Coke from shelves"
+                }
+            },
+            {
+                type: 'content',
+                title: 'The Reptilian Brain Strikes',
+                content: "**Here's what Coca-Cola missed:**\n\nPeople don't drink Coke for the taste. They drink it for the **memory**. The **identity**. The **emotion**.\n\nThat first sip at a baseball game with Dad. That summer afternoon with friends. That feeling of \"this is MY drink.\"\n\n**You can't measure that in a taste test.**\n\nThe reptilian brain said: \"This is mine. Don't touch it.\""
+            },
+            {
+                type: 'visual',
+                title: 'Logic vs. Emotion',
+                visualType: 'brain-battle'
+            },
+            {
+                type: 'content',
+                title: 'The $40 Million Lesson',
+                content: "**79 days later**, Coca-Cola brought back the original formula as \"Coca-Cola Classic.\"\n\nThe announcement made national news. People literally **cried with joy**.\n\n**What did they learn?**\n\nData tells you WHAT people do.\nEmotion tells you WHO they are.\n\n**And identity always wins.**"
+            },
+            {
+                type: 'cards',
+                title: 'The Marketing Truth',
+                cards: [
+                    {
+                        icon: '📊',
+                        title: 'Data Says',
+                        description: '"This tastes better"'
+                    },
+                    {
+                        icon: '🧠',
+                        title: 'Brain Hears',
+                        description: '"They\'re changing who I am"'
+                    },
+                    {
+                        icon: '❤️',
+                        title: 'Heart Decides',
+                        description: '"I\'ll fight to keep my identity"'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'For YOUR Marketing',
+                content: "**Every product has two values:**\n\n**1. Functional Value** - What it does\n**2. Emotional Value** - How it makes them feel\n\nCoca-Cola tested functional. They forgot emotional.\n\n**Your landing page, your ads, your emails** - are they speaking to logic... or identity?\n\nBecause when logic and emotion fight, **emotion wins. Every time.**"
+            },
+            {
+                type: 'quiz',
+                question: 'Why did New Coke fail despite winning 200,000 taste tests?',
+                options: [
+                    'The taste tests were conducted wrong',
+                    'People\'s emotional connection to the brand was ignored',
+                    'The new formula was actually worse',
+                    'Pepsi sabotaged the launch'
+                ],
+                correctIndex: 1,
+                explanation: "Coca-Cola measured taste but forgot that people buy with emotion first. The drink was part of their IDENTITY - and you can't change someone's identity with a better recipe."
+            },
+            {
+                type: 'completion',
+                title: 'Key Takeaway',
+                summary: 'Data measures behavior. Emotion measures identity. When you sell, you\'re not changing what they drink - you\'re asking to be part of who they are.',
+                nextLesson: LESSON_CONFIG.nextLesson
+            }
+        ];
+
+        // Data vs Reality Visual Component
+        const DataVsRealityVisual = () => {
+            const [stage, setStage] = useState(0);
+
+            useEffect(() => {
+                const timers = [
+                    setTimeout(() => setStage(1), 500),
+                    setTimeout(() => setStage(2), 1200),
+                    setTimeout(() => setStage(3), 1900)
+                ];
+                return () => timers.forEach(clearTimeout);
+            }, []);
+
+            return (
+                <div className="flex flex-col items-center gap-8 py-8">
+                    <div className="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-4xl">
+                        {/* Data Side */}
+                        <div className={`flex-1 transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
+                                <div className="text-5xl mb-4">📊</div>
+                                <div className="text-xl font-bold text-green-800 mb-2">The Data</div>
+                                <div className="space-y-2 text-left">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-green-600">✓</span>
+                                        <span className="text-gray-700">200,000 taste tests</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-green-600">✓</span>
+                                        <span className="text-gray-700">New Coke wins every time</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-green-600">✓</span>
+                                        <span className="text-gray-700">Objectively "better"</span>
+                                    </div>
+                                </div>
+                                <div className="mt-4 text-2xl font-bold text-green-600">LAUNCH IT! ✓</div>
+                            </div>
+                        </div>
+
+                        {/* Arrow */}
+                        <div className={`text-4xl transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                            →
+                        </div>
+
+                        {/* Reality Side */}
+                        <div className={`flex-1 transition-all duration-500 ${stage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center">
+                                <div className="text-5xl mb-4">💥</div>
+                                <div className="text-xl font-bold text-red-800 mb-2">The Reality</div>
+                                <div className="space-y-2 text-left">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-red-600">✗</span>
+                                        <span className="text-gray-700">8,000 angry calls/day</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-red-600">✗</span>
+                                        <span className="text-gray-700">Protest groups formed</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-red-600">✗</span>
+                                        <span className="text-gray-700">Death threats to execs</span>
+                                    </div>
+                                </div>
+                                <div className="mt-4 text-2xl font-bold text-red-600">DISASTER! ✗</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Bottom Message */}
+                    <div className={`text-center transition-all duration-500 ${stage >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                        <div className="bg-gray-900 text-white px-8 py-4 rounded-xl inline-block">
+                            <div className="text-lg font-bold">What the data couldn't measure:</div>
+                            <div className="text-2xl font-bold text-red-400 mt-1">IDENTITY</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Brain Battle Visual Component
+        const BrainBattleVisual = () => {
+            const [stage, setStage] = useState(0);
+
+            useEffect(() => {
+                const timers = [
+                    setTimeout(() => setStage(1), 400),
+                    setTimeout(() => setStage(2), 900),
+                    setTimeout(() => setStage(3), 1400),
+                    setTimeout(() => setStage(4), 2100)
+                ];
+                return () => timers.forEach(clearTimeout);
+            }, []);
+
+            return (
+                <div className="flex flex-col items-center gap-6 py-8">
+                    {/* VS Battle */}
+                    <div className="flex items-center gap-6 md:gap-12">
+                        {/* Logic Brain */}
+                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+                            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 text-center w-40 md:w-52">
+                                <div className="text-5xl mb-2">🧮</div>
+                                <div className="font-bold text-blue-800">LOGIC</div>
+                                <div className="text-sm text-gray-600 mt-2">"New Coke is better"</div>
+                                <div className={`mt-4 text-3xl font-bold text-blue-600 transition-all duration-300 ${stage >= 3 ? 'line-through opacity-50' : ''}`}>
+                                    55%
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* VS */}
+                        <div className={`transition-all duration-500 ${stage >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+                            <div className="bg-gray-900 text-white font-bold px-4 py-2 rounded-full text-xl">VS</div>
+                        </div>
+
+                        {/* Emotion Brain */}
+                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center w-40 md:w-52">
+                                <div className="text-5xl mb-2">❤️</div>
+                                <div className="font-bold text-red-800">EMOTION</div>
+                                <div className="text-sm text-gray-600 mt-2">"This is MY Coke"</div>
+                                <div className={`mt-4 text-3xl font-bold text-red-600 transition-all duration-500 ${stage >= 3 ? 'scale-125 count-up' : ''}`}>
+                                    {stage >= 3 ? '100%' : '45%'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Winner Banner */}
+                    <div className={`transition-all duration-700 ${stage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                        <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-2xl text-center pulse-glow">
+                            <div className="text-sm font-medium opacity-90">WINNER:</div>
+                            <div className="text-2xl font-bold">EMOTION WINS. ALWAYS.</div>
+                        </div>
+                    </div>
+
+                    {/* Key Insight */}
+                    <div className={`transition-all duration-500 ${stage >= 4 ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="text-center text-gray-600 max-w-md">
+                            <p>When logic and emotion conflict, the reptilian brain (emotion) makes the final call.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Progress Bar Component
+        const ProgressBar = ({ current, total }) => {
+            const progress = ((current + 1) / total) * 100;
+            return (
+                <div className="fixed top-0 left-0 right-0 h-1 bg-gray-100 z-50">
+                    <div
+                        className="h-full progress-bar"
+                        style={{
+                            width: `${progress}%`,
+                            backgroundColor: LESSON_CONFIG.accentColor
+                        }}
+                    />
+                </div>
+            );
+        };
+
+        // Navigation Component
+        const Navigation = ({ current, total, onPrev, onNext, canGoNext }) => (
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-40">
+                <div className="max-w-2xl mx-auto flex items-center justify-between">
+                    <button
+                        onClick={onPrev}
+                        disabled={current === 0}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    >
+                        <span>←</span>
+                        <span className="hidden sm:inline">Back</span>
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                        {Array.from({ length: total }, (_, i) => (
+                            <div
+                                key={i}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                    i === current
+                                        ? 'w-6'
+                                        : i < current
+                                            ? 'bg-gray-300'
+                                            : 'bg-gray-200'
+                                }`}
+                                style={{
+                                    backgroundColor: i <= current ? LESSON_CONFIG.accentColor : undefined
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={onNext}
+                        disabled={!canGoNext}
+                        className="flex items-center gap-2 px-6 py-2 rounded-lg text-white font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                    >
+                        <span className="hidden sm:inline">{current === total - 1 ? 'Finish' : 'Continue'}</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        );
+
+        // Slide Components
+        const WelcomeSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+                <div
+                    className="text-sm font-semibold tracking-wide uppercase mb-4 px-4 py-1 rounded-full"
+                    style={{
+                        color: LESSON_CONFIG.accentColor,
+                        backgroundColor: `${LESSON_CONFIG.accentColor}15`
+                    }}
+                >
+                    {data.category}
+                </div>
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+                    {data.title}
+                </h1>
+                <p className="text-xl text-gray-600 max-w-lg mb-8">
+                    {data.subtitle}
+                </p>
+                <div className="flex items-center gap-2 text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{data.duration} read</span>
+                </div>
+            </div>
+        );
+
+        const HookSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+                        {data.title}
+                    </h2>
+                    <div className="text-lg md:text-xl text-gray-700 leading-relaxed space-y-4">
+                        {data.content.split('\n\n').map((paragraph, i) => (
+                            <p key={i} dangerouslySetInnerHTML={{
+                                __html: paragraph
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
+                            }} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ContentSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+                        {data.title}
+                    </h2>
+                    <div className="text-lg text-gray-700 leading-relaxed space-y-4">
+                        {data.content.split('\n\n').map((paragraph, i) => (
+                            <p key={i} dangerouslySetInnerHTML={{
+                                __html: paragraph
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
+                            }} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const VisualSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-4xl w-full">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+                        {data.title}
+                    </h2>
+                    {data.visualType === 'data-vs-reality' && <DataVsRealityVisual />}
+                    {data.visualType === 'brain-battle' && <BrainBattleVisual />}
+                </div>
+            </div>
+        );
+
+        const ExampleSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+                        {data.title}
+                    </h2>
+                    <div className="bg-gray-50 border-l-4 rounded-r-2xl p-8" style={{ borderColor: LESSON_CONFIG.accentColor }}>
+                        <div className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
+                            "{data.example.quote}"
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-xl">
+                                👔
+                            </div>
+                            <div>
+                                <div className="font-bold text-gray-900">{data.example.author}</div>
+                                <div className="text-gray-500 text-sm">{data.example.context}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const CardsSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-4xl w-full">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+                        {data.title}
+                    </h2>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {data.cards.map((card, i) => (
+                            <div
+                                key={i}
+                                className="bg-white rounded-2xl p-6 card-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+                            >
+                                <div className="text-5xl mb-4">{card.icon}</div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                                    {card.title}
+                                </h3>
+                                <p className="text-gray-600">
+                                    {card.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const QuizSlide = ({ data, onAnswer, answered, selectedIndex }) => {
+            const isCorrect = selectedIndex === data.correctIndex;
+            const [gifUrl, setGifUrl] = useState('');
+
+            useEffect(() => {
+                if (answered) {
+                    const gifs = isCorrect ? celebrationGifs : empathyGifs;
+                    setGifUrl(gifs[Math.floor(Math.random() * gifs.length)]);
+                }
+            }, [answered, isCorrect]);
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                    <div className="max-w-2xl w-full">
+                        <div
+                            className="text-sm font-semibold tracking-wide uppercase mb-4 text-center"
+                            style={{ color: LESSON_CONFIG.accentColor }}
+                        >
+                            Quick Check
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+                            {data.question}
+                        </h2>
+
+                        <div className="space-y-3 mb-8">
+                            {data.options.map((option, i) => {
+                                let buttonStyle = "bg-white border-2 border-gray-200 hover:border-gray-300";
+
+                                if (answered) {
+                                    if (i === data.correctIndex) {
+                                        buttonStyle = "bg-green-50 border-2 border-green-500 text-green-800";
+                                    } else if (i === selectedIndex && !isCorrect) {
+                                        buttonStyle = "bg-red-50 border-2 border-red-300 text-red-800";
+                                    } else {
+                                        buttonStyle = "bg-gray-50 border-2 border-gray-200 opacity-50";
+                                    }
+                                }
+
+                                return (
+                                    <button
+                                        key={i}
+                                        onClick={() => !answered && onAnswer(i)}
+                                        disabled={answered}
+                                        className={`w-full p-4 rounded-xl text-left transition-all ${buttonStyle} ${!answered && 'cursor-pointer'}`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-medium text-sm">
+                                                {String.fromCharCode(65 + i)}
+                                            </span>
+                                            <span className="font-medium">{option}</span>
+                                            {answered && i === data.correctIndex && (
+                                                <span className="ml-auto text-green-600">✓</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {answered && (
+                            <div className="text-center">
+                                <div className="mb-4 rounded-xl overflow-hidden inline-block">
+                                    <img
+                                        src={gifUrl}
+                                        alt={isCorrect ? "Celebration" : "Keep trying"}
+                                        className="w-48 h-36 object-cover"
+                                    />
+                                </div>
+                                <div className={`p-4 rounded-xl ${isCorrect ? 'bg-green-50' : 'bg-amber-50'}`}>
+                                    <div className={`font-bold mb-2 ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
+                                        {isCorrect ? '🎉 Exactly right!' : '💡 Not quite!'}
+                                    </div>
+                                    <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-amber-700'}`}>
+                                        {data.explanation}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const CompletionSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+                <div className="max-w-xl">
+                    <div className="text-6xl mb-6">🎯</div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        {data.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                        {data.summary}
+                    </p>
+                    <div className="bg-gray-50 rounded-2xl p-6 mb-8">
+                        <div className="text-sm text-gray-500 mb-2">Remember</div>
+                        <div className="text-lg font-bold text-gray-900">
+                            Data without emotion = the $40 million mistake
+                        </div>
+                    </div>
+                    {data.nextLesson && (
+                        <a
+                            href={`/lessons/${data.nextLesson.id}/lesson.html`}
+                            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-medium transition-all hover:opacity-90"
+                            style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                        >
+                            <span>Next: {data.nextLesson.title}</span>
+                            <span>→</span>
+                        </a>
+                    )}
+                </div>
+            </div>
+        );
+
+        // Main App Component
+        const App = () => {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [quizAnswered, setQuizAnswered] = useState(false);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [slideKey, setSlideKey] = useState(0);
+
+            const currentSlideData = slides[currentSlide];
+
+            const canGoNext = () => {
+                if (currentSlideData.type === 'quiz') {
+                    return quizAnswered;
+                }
+                return true;
+            };
+
+            const handleNext = useCallback(() => {
+                if (currentSlide < slides.length - 1 && canGoNext()) {
+                    setCurrentSlide(prev => prev + 1);
+                    setSlideKey(prev => prev + 1);
+                }
+            }, [currentSlide, quizAnswered]);
+
+            const handlePrev = useCallback(() => {
+                if (currentSlide > 0) {
+                    setCurrentSlide(prev => prev - 1);
+                    setSlideKey(prev => prev + 1);
+                }
+            }, [currentSlide]);
+
+            const handleQuizAnswer = (index) => {
+                setSelectedAnswer(index);
+                setQuizAnswered(true);
+            };
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        handleNext();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        handlePrev();
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [handleNext, handlePrev]);
+
+            // Reset quiz state when leaving quiz slide
+            useEffect(() => {
+                if (currentSlideData.type !== 'quiz') {
+                    setQuizAnswered(false);
+                    setSelectedAnswer(null);
+                }
+            }, [currentSlide]);
+
+            const renderSlide = () => {
+                const props = { data: currentSlideData, key: slideKey };
+
+                switch (currentSlideData.type) {
+                    case 'welcome':
+                        return <WelcomeSlide {...props} />;
+                    case 'hook':
+                        return <HookSlide {...props} />;
+                    case 'content':
+                        return <ContentSlide {...props} />;
+                    case 'visual':
+                        return <VisualSlide {...props} />;
+                    case 'example':
+                        return <ExampleSlide {...props} />;
+                    case 'cards':
+                        return <CardsSlide {...props} />;
+                    case 'quiz':
+                        return <QuizSlide
+                            {...props}
+                            onAnswer={handleQuizAnswer}
+                            answered={quizAnswered}
+                            selectedIndex={selectedAnswer}
+                        />;
+                    case 'completion':
+                        return <CompletionSlide {...props} />;
+                    default:
+                        return <div>Unknown slide type</div>;
+                }
+            };
+
+            return (
+                <div className="bg-white min-h-screen pb-20">
+                    <ProgressBar current={currentSlide} total={slides.length} />
+
+                    <div className="slide-enter-active">
+                        {renderSlide()}
+                    </div>
+
+                    <Navigation
+                        current={currentSlide}
+                        total={slides.length}
+                        onPrev={handlePrev}
+                        onNext={handleNext}
+                        canGoNext={canGoNext()}
+                    />
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>

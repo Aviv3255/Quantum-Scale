@@ -121,6 +121,12 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'pattern-interrupts': { title: 'Pattern Interrupts', description: 'Hijack their attention' },
   'dopamine-blueprint': { title: 'The Dopamine Blueprint', description: 'Create addictive loops' },
   'anti-sell-mastery': { title: 'The Anti-Sell', description: 'Pull, don\'t push' },
+  // Primal Playbook lessons
+  'decoy-effect': { title: 'The Decoy Effect', description: 'Why a "useless" option boosts sales by 43%' },
+  'precise-price-trick': { title: 'The Precise Price Trick', description: 'Why $4,988 beats $5,000' },
+  'paradox-of-choice': { title: 'The Paradox of Choice', description: 'Why fewer options = more sales' },
+  'forty-million-mistake': { title: 'The $40 Million Mistake', description: 'Data without emotion = disaster' },
+  'fly-in-the-urinal': { title: 'The Fly in the Urinal', description: 'Nudge psychology in action' },
 };
 
 // Categories for filtering

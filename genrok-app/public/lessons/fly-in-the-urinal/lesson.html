@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fly in the Urinal | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #0891b2;
+            --accent-light: #ecfeff;
+            --accent-dark: #0e7490;
+        }
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #ffffff; margin: 0; padding: 0; }
+        .slide-enter { opacity: 0; transform: translateY(30px); }
+        .slide-enter-active { opacity: 1; transform: translateY(0); transition: all 0.5s ease-out; }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .progress-bar { transition: width 0.5s ease-out; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(8, 145, 178, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(8, 145, 178, 0.5); }
+        }
+        .pulse-glow { animation: pulse-glow 2s infinite; }
+        @keyframes buzz {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 1px) rotate(-1deg); }
+            75% { transform: translate(1px, 1px) rotate(1deg); }
+        }
+        .buzz { animation: buzz 0.3s ease-in-out infinite; }
+        @keyframes draw-arrow {
+            from { stroke-dashoffset: 100; }
+            to { stroke-dashoffset: 0; }
+        }
+        .draw-arrow {
+            stroke-dasharray: 100;
+            animation: draw-arrow 1s ease-out forwards;
+        }
+        @keyframes fill-bar {
+            from { width: 0; }
+        }
+        .fill-bar { animation: fill-bar 1s ease-out forwards; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
+
+        // Lesson Configuration
+        const LESSON_CONFIG = {
+            id: 'fly-in-the-urinal',
+            title: 'The Fly in the Urinal',
+            subtitle: 'How a Tiny Image Saved Millions',
+            category: 'Neuromarketing',
+            duration: '4 min',
+            accentColor: '#0891b2',
+            nextLesson: null // Last lesson in this series
+        };
+
+        // Celebration GIFs for correct answers
+        const celebrationGifs = [
+            "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif",
+            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
+            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
+            "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"
+        ];
+
+        // Empathy GIFs for wrong answers
+        const empathyGifs = [
+            "https://media.giphy.com/media/3oEjHGr1Fhz0kyv8Ig/giphy.gif",
+            "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
+            "https://media.giphy.com/media/xT0GqtcVR0jOXzmmPK/giphy.gif"
+        ];
+
+        // Slide Data
+        const slides = [
+            {
+                type: 'welcome',
+                category: LESSON_CONFIG.category,
+                title: LESSON_CONFIG.title,
+                subtitle: LESSON_CONFIG.subtitle,
+                duration: LESSON_CONFIG.duration
+            },
+            {
+                type: 'hook',
+                title: 'The World\'s Smartest Bathroom',
+                content: "Amsterdam Schiphol Airport had a problem.\n\n**Men were... missing.**\n\nThe janitorial costs were insane. They tried signs. \"Please aim carefully.\" Nothing worked.\n\nThen someone had a **ridiculous idea**.\n\nAn idea that would revolutionize behavioral economics. And cost almost nothing."
+            },
+            {
+                type: 'content',
+                title: 'The Simple Solution',
+                content: "They etched a small **housefly** into each urinal.\n\nThat's it. Just a tiny fake fly.\n\nNo signs. No instructions. No \"please\" anything.\n\n**The result?**\n\nSpillage reduced by **80%**.\n\nMen instinctively aimed at the fly. They couldn't help it.\n\nThe brain saw a target. The brain wanted to hit it. No thinking required."
+            },
+            {
+                type: 'visual',
+                title: 'The Power of the Nudge',
+                visualType: 'fly-comparison'
+            },
+            {
+                type: 'content',
+                title: 'Push vs. Nudge',
+                content: "There are two ways to change behavior:\n\n**PUSH:** Tell people what to do\n\"Please aim carefully\" → They ignore you\n\n**NUDGE:** Design the environment so the right choice is natural\nPut a fly → They aim without thinking\n\n**The reptilian brain doesn't read signs.**\nIt responds to targets, triggers, and cues.\n\nNudges speak its language."
+            },
+            {
+                type: 'visual',
+                title: 'The Nudge Framework',
+                visualType: 'push-vs-nudge'
+            },
+            {
+                type: 'example',
+                title: 'Nudges Are Everywhere',
+                examples: [
+                    { icon: '🛒', title: 'Grocery Store', push: 'Sign: "Buy healthy food"', nudge: 'Put fruits at eye level, candy down low' },
+                    { icon: '💳', title: 'Checkout Page', push: 'Text: "Add warranty"', nudge: 'Pre-check the warranty box' },
+                    { icon: '📧', title: 'Email Signup', push: 'Popup: "Subscribe now!"', nudge: 'Content gate: "Enter email to continue reading"' }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'For YOUR Marketing',
+                content: "**Stop pushing. Start nudging.**\n\nDon't say \"Buy Now!\" → Make buying the easiest option\n\nDon't say \"Trust us!\" → Show social proof automatically\n\nDon't say \"Upgrade!\" → Pre-select the upgrade option\n\n**Every friction point is a chance to nudge.**\n\nEvery button placement. Every default setting. Every visual cue.\n\nThe best marketers don't convince. They **design inevitability**."
+            },
+            {
+                type: 'cards',
+                title: 'Nudge Checklist',
+                cards: [
+                    {
+                        icon: '⚙️',
+                        title: 'Defaults',
+                        description: 'Pre-select the option you want chosen'
+                    },
+                    {
+                        icon: '👁️',
+                        title: 'Visibility',
+                        description: 'Make the right choice the most visible'
+                    },
+                    {
+                        icon: '🎯',
+                        title: 'Targets',
+                        description: 'Give them something to "aim at"'
+                    },
+                    {
+                        icon: '🚧',
+                        title: 'Friction',
+                        description: 'Add friction to choices you don\'t want'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Billion-Dollar Insight',
+                content: "**Choice architecture** is worth billions.\n\nGoogle pays Apple $15B/year to be the default search engine.\n\nWhy? Because defaults WIN. 90%+ of people never change them.\n\n**The fly didn't convince men to aim better.**\nIt just made aiming irresistible.\n\n**Your job isn't to convince.**\nIt's to make the right choice feel natural."
+            },
+            {
+                type: 'quiz',
+                question: 'Why did the fly in the urinal work so well?',
+                options: [
+                    'It told men to aim better with a clear message',
+                    'It triggered an automatic targeting instinct in the brain',
+                    'Men read about the experiment and wanted to help',
+                    'The fly scared men into being more careful'
+                ],
+                correctIndex: 1,
+                explanation: "The fly worked because it triggered an automatic, unconscious response - the instinct to aim at a target. No reading, no thinking, no decision-making. Pure reptilian brain activation."
+            },
+            {
+                type: 'completion',
+                title: 'Key Takeaway',
+                summary: 'Don\'t push behavior with instructions. NUDGE it with design. Make the desired action feel natural, automatic, and inevitable.',
+                nextLesson: LESSON_CONFIG.nextLesson
+            }
+        ];
+
+        // Fly Comparison Visual Component
+        const FlyComparisonVisual = () => {
+            const [stage, setStage] = useState(0);
+
+            useEffect(() => {
+                const timers = [
+                    setTimeout(() => setStage(1), 500),
+                    setTimeout(() => setStage(2), 1200),
+                    setTimeout(() => setStage(3), 1900),
+                    setTimeout(() => setStage(4), 2600)
+                ];
+                return () => timers.forEach(clearTimeout);
+            }, []);
+
+            return (
+                <div className="flex flex-col items-center gap-8 py-8">
+                    <div className="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-4xl">
+                        {/* Before */}
+                        <div className={`flex-1 transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="bg-gray-100 rounded-2xl p-6 text-center">
+                                <div className="text-lg font-bold text-gray-500 mb-4">BEFORE: The Sign</div>
+                                <div className="bg-white rounded-xl p-8 border-2 border-gray-200 relative">
+                                    <div className="w-24 h-32 mx-auto bg-gray-200 rounded-b-full mb-4"></div>
+                                    <div className="absolute top-2 right-2 bg-yellow-100 border border-yellow-300 px-2 py-1 rounded text-xs">
+                                        "Please aim carefully"
+                                    </div>
+                                </div>
+                                <div className={`mt-4 transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                                    <div className="text-3xl font-bold text-red-500">0%</div>
+                                    <div className="text-gray-500 text-sm">improvement</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Arrow */}
+                        <div className={`text-4xl transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                            →
+                        </div>
+
+                        {/* After */}
+                        <div className={`flex-1 transition-all duration-500 ${stage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="bg-cyan-50 rounded-2xl p-6 text-center border-2 border-cyan-200">
+                                <div className="text-lg font-bold text-cyan-700 mb-4">AFTER: The Fly</div>
+                                <div className="bg-white rounded-xl p-8 border-2 border-cyan-200 relative">
+                                    <div className="w-24 h-32 mx-auto bg-gray-200 rounded-b-full mb-4 relative">
+                                        {/* The Fly */}
+                                        <div className={`absolute top-8 left-1/2 -translate-x-1/2 text-2xl ${stage >= 3 ? 'buzz' : ''}`}>
+                                            🪰
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={`mt-4 transition-all duration-500 ${stage >= 3 ? 'opacity-100' : 'opacity-0'}`}>
+                                    <div className="text-3xl font-bold text-green-500">80%</div>
+                                    <div className="text-gray-500 text-sm">less spillage</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Bottom Message */}
+                    <div className={`text-center transition-all duration-500 ${stage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                        <div className="bg-gray-900 text-white px-8 py-4 rounded-xl inline-block">
+                            <div className="text-sm opacity-70">Cost of the fly:</div>
+                            <div className="text-2xl font-bold text-cyan-400">Almost $0</div>
+                            <div className="text-sm opacity-70 mt-1">Savings: Millions</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Push vs Nudge Visual Component
+        const PushVsNudgeVisual = () => {
+            const [stage, setStage] = useState(0);
+
+            useEffect(() => {
+                const timers = [
+                    setTimeout(() => setStage(1), 400),
+                    setTimeout(() => setStage(2), 1000),
+                    setTimeout(() => setStage(3), 1600),
+                    setTimeout(() => setStage(4), 2200)
+                ];
+                return () => timers.forEach(clearTimeout);
+            }, []);
+
+            return (
+                <div className="flex flex-col items-center gap-8 py-8">
+                    <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                        {/* Push */}
+                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+                                <div className="text-center mb-4">
+                                    <div className="text-4xl mb-2">📢</div>
+                                    <div className="text-xl font-bold text-red-700">PUSH</div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-red-500">✗</span>
+                                        <span>Tells people what to do</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-red-500">✗</span>
+                                        <span>Requires conscious effort</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-red-500">✗</span>
+                                        <span>Easy to ignore</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-red-500">✗</span>
+                                        <span>Creates resistance</span>
+                                    </div>
+                                </div>
+                                <div className={`mt-4 text-center transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                                    <div className="bg-red-100 rounded-lg px-4 py-2 inline-block">
+                                        <span className="font-bold text-red-700">Result: 20% compliance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Nudge */}
+                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+                            <div className="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-6">
+                                <div className="text-center mb-4">
+                                    <div className="text-4xl mb-2">🪶</div>
+                                    <div className="text-xl font-bold text-cyan-700">NUDGE</div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-green-500">✓</span>
+                                        <span>Guides behavior naturally</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-green-500">✓</span>
+                                        <span>Works automatically</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-green-500">✓</span>
+                                        <span>Hard to resist</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-green-500">✓</span>
+                                        <span>Feels like free will</span>
+                                    </div>
+                                </div>
+                                <div className={`mt-4 text-center transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                                    <div className="bg-cyan-100 rounded-lg px-4 py-2 inline-block">
+                                        <span className="font-bold text-cyan-700">Result: 80% compliance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Bottom Insight */}
+                    <div className={`transition-all duration-500 ${stage >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                        <div className="bg-gray-900 text-white px-8 py-6 rounded-2xl text-center max-w-xl">
+                            <div className="text-lg mb-2">The Insight:</div>
+                            <div className="text-xl font-bold">
+                                The reptilian brain <span className="text-red-400">ignores instructions</span>
+                                <br />
+                                but <span className="text-cyan-400">follows design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Examples Slide Component
+        const ExamplesSlide = ({ data }) => {
+            const [visibleIndex, setVisibleIndex] = useState(-1);
+
+            useEffect(() => {
+                data.examples.forEach((_, i) => {
+                    setTimeout(() => setVisibleIndex(i), 500 + i * 400);
+                });
+            }, []);
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                    <div className="max-w-4xl w-full">
+                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+                            {data.title}
+                        </h2>
+                        <div className="space-y-4">
+                            {data.examples.map((ex, i) => (
+                                <div
+                                    key={i}
+                                    className={`transition-all duration-500 ${i <= visibleIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                                >
+                                    <div className="bg-white rounded-2xl p-6 card-shadow">
+                                        <div className="flex items-start gap-4">
+                                            <div className="text-4xl">{ex.icon}</div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-gray-900 mb-3">{ex.title}</div>
+                                                <div className="grid md:grid-cols-2 gap-4">
+                                                    <div className="bg-red-50 rounded-lg p-3">
+                                                        <div className="text-xs font-bold text-red-600 mb-1">PUSH ❌</div>
+                                                        <div className="text-gray-700 text-sm">{ex.push}</div>
+                                                    </div>
+                                                    <div className="bg-green-50 rounded-lg p-3">
+                                                        <div className="text-xs font-bold text-green-600 mb-1">NUDGE ✓</div>
+                                                        <div className="text-gray-700 text-sm">{ex.nudge}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Progress Bar Component
+        const ProgressBar = ({ current, total }) => {
+            const progress = ((current + 1) / total) * 100;
+            return (
+                <div className="fixed top-0 left-0 right-0 h-1 bg-gray-100 z-50">
+                    <div
+                        className="h-full progress-bar"
+                        style={{
+                            width: `${progress}%`,
+                            backgroundColor: LESSON_CONFIG.accentColor
+                        }}
+                    />
+                </div>
+            );
+        };
+
+        // Navigation Component
+        const Navigation = ({ current, total, onPrev, onNext, canGoNext }) => (
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-40">
+                <div className="max-w-2xl mx-auto flex items-center justify-between">
+                    <button
+                        onClick={onPrev}
+                        disabled={current === 0}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    >
+                        <span>←</span>
+                        <span className="hidden sm:inline">Back</span>
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                        {Array.from({ length: total }, (_, i) => (
+                            <div
+                                key={i}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                    i === current
+                                        ? 'w-6'
+                                        : i < current
+                                            ? 'bg-gray-300'
+                                            : 'bg-gray-200'
+                                }`}
+                                style={{
+                                    backgroundColor: i <= current ? LESSON_CONFIG.accentColor : undefined
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={onNext}
+                        disabled={!canGoNext}
+                        className="flex items-center gap-2 px-6 py-2 rounded-lg text-white font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:opacity-90"
+                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                    >
+                        <span className="hidden sm:inline">{current === total - 1 ? 'Finish' : 'Continue'}</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        );
+
+        // Slide Components
+        const WelcomeSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+                <div
+                    className="text-sm font-semibold tracking-wide uppercase mb-4 px-4 py-1 rounded-full"
+                    style={{
+                        color: LESSON_CONFIG.accentColor,
+                        backgroundColor: `${LESSON_CONFIG.accentColor}15`
+                    }}
+                >
+                    {data.category}
+                </div>
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+                    {data.title}
+                </h1>
+                <p className="text-xl text-gray-600 max-w-lg mb-8">
+                    {data.subtitle}
+                </p>
+                <div className="flex items-center gap-2 text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{data.duration} read</span>
+                </div>
+            </div>
+        );
+
+        const HookSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+                        {data.title}
+                    </h2>
+                    <div className="text-lg md:text-xl text-gray-700 leading-relaxed space-y-4">
+                        {data.content.split('\n\n').map((paragraph, i) => (
+                            <p key={i} dangerouslySetInnerHTML={{
+                                __html: paragraph
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
+                            }} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ContentSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+                        {data.title}
+                    </h2>
+                    <div className="text-lg text-gray-700 leading-relaxed space-y-4">
+                        {data.content.split('\n\n').map((paragraph, i) => (
+                            <p key={i} dangerouslySetInnerHTML={{
+                                __html: paragraph
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
+                            }} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const VisualSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-4xl w-full">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+                        {data.title}
+                    </h2>
+                    {data.visualType === 'fly-comparison' && <FlyComparisonVisual />}
+                    {data.visualType === 'push-vs-nudge' && <PushVsNudgeVisual />}
+                </div>
+            </div>
+        );
+
+        const CardsSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                <div className="max-w-4xl w-full">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+                        {data.title}
+                    </h2>
+                    <div className="grid md:grid-cols-4 gap-4">
+                        {data.cards.map((card, i) => (
+                            <div
+                                key={i}
+                                className="bg-white rounded-2xl p-5 card-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+                            >
+                                <div className="text-4xl mb-3">{card.icon}</div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                                    {card.title}
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    {card.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const QuizSlide = ({ data, onAnswer, answered, selectedIndex }) => {
+            const isCorrect = selectedIndex === data.correctIndex;
+            const [gifUrl, setGifUrl] = useState('');
+
+            useEffect(() => {
+                if (answered) {
+                    const gifs = isCorrect ? celebrationGifs : empathyGifs;
+                    setGifUrl(gifs[Math.floor(Math.random() * gifs.length)]);
+                }
+            }, [answered, isCorrect]);
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                    <div className="max-w-2xl w-full">
+                        <div
+                            className="text-sm font-semibold tracking-wide uppercase mb-4 text-center"
+                            style={{ color: LESSON_CONFIG.accentColor }}
+                        >
+                            Quick Check
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+                            {data.question}
+                        </h2>
+
+                        <div className="space-y-3 mb-8">
+                            {data.options.map((option, i) => {
+                                let buttonStyle = "bg-white border-2 border-gray-200 hover:border-gray-300";
+
+                                if (answered) {
+                                    if (i === data.correctIndex) {
+                                        buttonStyle = "bg-green-50 border-2 border-green-500 text-green-800";
+                                    } else if (i === selectedIndex && !isCorrect) {
+                                        buttonStyle = "bg-red-50 border-2 border-red-300 text-red-800";
+                                    } else {
+                                        buttonStyle = "bg-gray-50 border-2 border-gray-200 opacity-50";
+                                    }
+                                }
+
+                                return (
+                                    <button
+                                        key={i}
+                                        onClick={() => !answered && onAnswer(i)}
+                                        disabled={answered}
+                                        className={`w-full p-4 rounded-xl text-left transition-all ${buttonStyle} ${!answered && 'cursor-pointer'}`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-medium text-sm">
+                                                {String.fromCharCode(65 + i)}
+                                            </span>
+                                            <span className="font-medium">{option}</span>
+                                            {answered && i === data.correctIndex && (
+                                                <span className="ml-auto text-green-600">✓</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {answered && (
+                            <div className="text-center">
+                                <div className="mb-4 rounded-xl overflow-hidden inline-block">
+                                    <img
+                                        src={gifUrl}
+                                        alt={isCorrect ? "Celebration" : "Keep trying"}
+                                        className="w-48 h-36 object-cover"
+                                    />
+                                </div>
+                                <div className={`p-4 rounded-xl ${isCorrect ? 'bg-green-50' : 'bg-amber-50'}`}>
+                                    <div className={`font-bold mb-2 ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
+                                        {isCorrect ? '🎉 Exactly right!' : '💡 Not quite!'}
+                                    </div>
+                                    <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-amber-700'}`}>
+                                        {data.explanation}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const CompletionSlide = ({ data }) => (
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+                <div className="max-w-xl">
+                    <div className="text-6xl mb-6">🪰</div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        {data.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                        {data.summary}
+                    </p>
+                    <div className="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-6 mb-8">
+                        <div className="text-sm text-cyan-600 mb-2">The Nudge Mantra</div>
+                        <div className="text-lg font-bold text-gray-900">
+                            Design the choice. Don't demand it.
+                        </div>
+                    </div>
+                    <a
+                        href="/learn"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-medium transition-all hover:opacity-90"
+                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                    >
+                        <span>Explore More Lessons</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+        );
+
+        // Main App Component
+        const App = () => {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [quizAnswered, setQuizAnswered] = useState(false);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [slideKey, setSlideKey] = useState(0);
+
+            const currentSlideData = slides[currentSlide];
+
+            const canGoNext = () => {
+                if (currentSlideData.type === 'quiz') {
+                    return quizAnswered;
+                }
+                return true;
+            };
+
+            const handleNext = useCallback(() => {
+                if (currentSlide < slides.length - 1 && canGoNext()) {
+                    setCurrentSlide(prev => prev + 1);
+                    setSlideKey(prev => prev + 1);
+                }
+            }, [currentSlide, quizAnswered]);
+
+            const handlePrev = useCallback(() => {
+                if (currentSlide > 0) {
+                    setCurrentSlide(prev => prev - 1);
+                    setSlideKey(prev => prev + 1);
+                }
+            }, [currentSlide]);
+
+            const handleQuizAnswer = (index) => {
+                setSelectedAnswer(index);
+                setQuizAnswered(true);
+            };
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        handleNext();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        handlePrev();
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [handleNext, handlePrev]);
+
+            // Reset quiz state when leaving quiz slide
+            useEffect(() => {
+                if (currentSlideData.type !== 'quiz') {
+                    setQuizAnswered(false);
+                    setSelectedAnswer(null);
+                }
+            }, [currentSlide]);
+
+            const renderSlide = () => {
+                const props = { data: currentSlideData, key: slideKey };
+
+                switch (currentSlideData.type) {
+                    case 'welcome':
+                        return <WelcomeSlide {...props} />;
+                    case 'hook':
+                        return <HookSlide {...props} />;
+                    case 'content':
+                        return <ContentSlide {...props} />;
+                    case 'visual':
+                        return <VisualSlide {...props} />;
+                    case 'example':
+                        return <ExamplesSlide {...props} />;
+                    case 'cards':
+                        return <CardsSlide {...props} />;
+                    case 'quiz':
+                        return <QuizSlide
+                            {...props}
+                            onAnswer={handleQuizAnswer}
+                            answered={quizAnswered}
+                            selectedIndex={selectedAnswer}
+                        />;
+                    case 'completion':
+                        return <CompletionSlide {...props} />;
+                    default:
+                        return <div>Unknown slide type</div>;
+                }
+            };
+
+            return (
+                <div className="bg-white min-h-screen pb-20">
+                    <ProgressBar current={currentSlide} total={slides.length} />
+
+                    <div className="slide-enter-active">
+                        {renderSlide()}
+                    </div>
+
+                    <Navigation
+                        current={currentSlide}
+                        total={slides.length}
+                        onPrev={handlePrev}
+                        onNext={handleNext}
+                        canGoNext={canGoNext()}
+                    />
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
