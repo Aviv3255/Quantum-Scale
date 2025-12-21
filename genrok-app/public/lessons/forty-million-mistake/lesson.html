@@ -1,736 +1,458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The $40 Million Mistake | Quantum Scale</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #dc2626;
-            --accent-light: #fef2f2;
-            --accent-dark: #991b1b;
-        }
-        * { font-family: 'Inter', sans-serif; }
-        body { background: #ffffff; margin: 0; padding: 0; }
-        .slide-enter { opacity: 0; transform: translateY(30px); }
-        .slide-enter-active { opacity: 1; transform: translateY(0); transition: all 0.5s ease-out; }
-        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .progress-bar { transition: width 0.5s ease-out; }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.5); }
-        }
-        .pulse-glow { animation: pulse-glow 2s infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .float { animation: float 3s ease-in-out infinite; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake { animation: shake 0.5s ease-in-out; }
-        @keyframes count-up {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .count-up { animation: count-up 0.3s ease-out forwards; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The $40 Million Mistake | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #dc2626;
+      --accent-dark: #991b1b;
+      --accent-light: #fca5a5;
+      --accent-rgb: 220, 38, 38;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useCallback } = React;
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-        // Lesson Configuration
-        const LESSON_CONFIG = {
-            id: 'forty-million-mistake',
-            title: 'The $40 Million Mistake',
-            subtitle: 'How Coca-Cola Won Every Test... And Lost Everything',
-            category: 'Neuromarketing',
-            duration: '5 min',
-            accentColor: '#dc2626',
-            nextLesson: {
-                id: 'fly-in-the-urinal',
-                title: 'The Fly in the Urinal'
-            }
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
+
+    const LESSON_CONFIG = {
+      id: 'forty-million-mistake',
+      title: 'The $40 Million Mistake',
+      description: 'How Coca-Cola won every test and lost everything - the day data met emotion and lost.',
+      accentColor: '#dc2626',
+      duration: '5 min',
+      nextLesson: {
+        id: 'fly-in-the-urinal',
+        title: 'The Fly in the Urinal',
+        teaser: 'How a tiny sticker reduced bathroom cleaning costs by 80% - behavioral design at its finest.'
+      }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why 200,000 taste tests led to the biggest marketing disaster in history',
+        'The psychology gap between "better" and "beloved"',
+        'How to avoid selling logic when customers buy emotion'
+      ]},
+      { type: 'hook', headline: '$40 million research. 200,000 taste tests. Complete disaster.', subtext: 'Imagine having data that says "this is better" from 200,000 people. Scientists agree. Marketing teams agree. The board approves. You launch. And within 79 days, people are literally crying, protesting, and threatening your executives. Welcome to New Coke - the day the world\'s biggest brand learned that emotion beats data. Every. Single. Time.' },
+      { type: 'content', title: 'The Setup: 1985', body: 'Coca-Cola had a problem. The Pepsi Challenge was killing them in blind taste tests. People preferred Pepsi\'s sweeter taste. So Coke did what any rational company would do: they created a better-tasting formula. They tested it 200,000 times. New Coke won. Every. Single. Time. The data was crystal clear. The science was solid. Victory was inevitable.' },
+      { type: 'visual', title: 'The Data Looked Perfect', visualType: 'comparison', data: {
+        left: { emoji: '📊', label: 'The Research', stat: '200,000', subtext: 'taste tests conducted' },
+        center: { emoji: '✓', label: 'The Results', stat: '55%', subtext: 'preferred New Coke' },
+        right: { emoji: '🚀', label: 'The Decision', stat: '100%', subtext: 'confidence to launch' }
+      }},
+      { type: 'content', title: 'Then Reality Hit', body: 'April 23, 1985. New Coke launches. Within hours: 8,000 angry phone calls per day. Protest groups forming. People hoarding old Coke like it\'s the apocalypse. Death threats to executives. One man drove across state lines just to buy the last cases of original Coke. The data said "better." The people said "how dare you touch our Coke."' },
+      { type: 'example', scenario: 'The Quote That Says Everything', before: { label: 'What Data Measured', text: 'Taste preference\nFlavor profile\nSweetness level\nSmooth finish\n\nResult: New Coke wins 55-45' }, after: { label: 'What Data Missed', text: 'Childhood memories\nEmotional connection\nPersonal identity\nCultural nostalgia\n\nResult: Complete rejection' }, insight: '"We did not understand the deep emotions of so many of our customers for Coca-Cola." - Roberto Goizueta, CEO' },
+      { type: 'content', title: 'The Reptilian Brain Strikes', body: 'Here\'s what Coca-Cola missed: People don\'t drink Coke for the taste. They drink it for the memory. The identity. The emotion. That first sip at a baseball game with Dad. That summer afternoon with friends. That feeling of "this is MY drink." You can\'t measure that in a taste test. The reptilian brain said: "This is mine. Don\'t touch it."' },
+      { type: 'visual', title: 'Logic vs. Emotion', visualType: 'battle', data: {
+        logic: { title: 'Logical Brain', stat: '55%', claims: ['Better taste', 'Sweeter formula', '200,000 tests prove it'] },
+        emotion: { title: 'Emotional Brain', stat: '100%', claims: ['My childhood', 'My identity', 'Don\'t change ME'] }
+      }},
+      { type: 'content', title: 'The $40 Million Lesson', body: '79 days later, Coca-Cola brought back the original formula as "Coca-Cola Classic." The announcement made national news. People literally cried with joy. What did they learn? Data tells you WHAT people do. Emotion tells you WHO they are. And identity always wins.' },
+      { type: 'cards', title: 'The Marketing Truth', items: [
+        { emoji: '📊', title: 'Data Says', description: '"This tastes better than the original"', color: 'blue' },
+        { emoji: '🧠', title: 'Brain Hears', description: '"They\'re changing who I am"', color: 'purple' },
+        { emoji: '❤️', title: 'Heart Decides', description: '"I\'ll fight to keep my identity"', color: 'red' },
+        { emoji: '💰', title: 'Revenue Follows', description: 'Emotion, not logic. Always.', color: 'green' }
+      ]},
+      { type: 'content', title: 'For YOUR Marketing', body: 'Every product has two values: Functional Value (what it does) and Emotional Value (how it makes them feel). Coca-Cola tested functional. They forgot emotional. Your landing page, your ads, your emails - are they speaking to logic or identity? Because when logic and emotion fight, emotion wins. Every time.' },
+      { type: 'visual', title: 'The Numbers Tell The Story', visualType: 'stats', data: [
+        { value: '79', label: 'days to admit defeat', subtext: 'From launch to Classic' },
+        { value: '$40M', label: 'wasted on research', subtext: 'That missed the point' },
+        { value: '8,000', label: 'angry calls per day', subtext: 'Emotion in action' }
+      ]},
+      { type: 'example', scenario: 'How This Applies To You', before: { label: 'Feature-Based Copy', text: '"Our skincare has 2x more hyaluronic acid"\n"Clinically proven results in 14 days"\n"Dermatologist-tested formula"\n\nConversion: Meh.' }, after: { label: 'Identity-Based Copy', text: '"The confidence to go makeup-free"\n"Look in the mirror and feel like YOU again"\n"Your skin, but 10 years younger"\n\nConversion: Shut up and take my money.' }, insight: 'Same product. Different emotional connection. One sells the thing. One sells the transformation.' },
+      { type: 'cards', title: 'Audit Your Marketing', items: [
+        { emoji: '🔍', title: 'Step 1: List Your Features', description: 'Write down what your product DOES. The specs. The data. The logic.', color: 'neutral' },
+        { emoji: '❤️', title: 'Step 2: Find The Feeling', description: 'For each feature, ask: "How does this make them FEEL?" That\'s your real selling point.', color: 'red' },
+        { emoji: '🎯', title: 'Step 3: Rewrite Everything', description: 'Lead with emotion. Support with logic. Not the other way around.', color: 'amber' },
+        { emoji: '🧪', title: 'Step 4: Test Both', description: 'Run A/B tests: feature-first vs. emotion-first. Watch emotion win.', color: 'green' }
+      ]},
+      { type: 'quiz', question: 'Why did New Coke fail despite winning 200,000 taste tests?', options: ['The taste tests were conducted incorrectly', 'People\'s emotional connection to the brand was ignored', 'The new formula was actually worse', 'Pepsi sabotaged the launch'], correctIndex: 1, feedback: { correct: 'Exactly right! Coca-Cola measured taste but forgot that people buy with emotion first. The drink was part of their IDENTITY - and you can\'t change someone\'s identity with a better recipe. Data without emotion = disaster.', incorrect: 'Not quite. The taste tests were valid - New Coke really did taste "better" to most people. But Coca-Cola missed the emotional truth: the original Coke was part of people\'s identity. You can\'t logic someone out of their identity.' }},
+      { type: 'completion' }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonVisual = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid grid-cols-3 gap-3 md:gap-6 w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center">
+            <div className="text-4xl mb-3">{data.data.left.emoji}</div>
+            <div className="text-xs font-semibold text-neutral-400 mb-2">{data.data.left.label}</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-1">{data.data.left.stat}</div>
+            <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.subtext}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <div className="text-4xl mb-3">{data.data.center.emoji}</div>
+            <div className="text-xs font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-1">{data.data.center.stat}</div>
+            <div className="text-[10px] md:text-xs text-white/70">{data.data.center.subtext}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center">
+            <div className="text-4xl mb-3">{data.data.right.emoji}</div>
+            <div className="text-xs font-semibold text-neutral-400 mb-2">{data.data.right.label}</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-1">{data.data.right.stat}</div>
+            <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.subtext}</div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const BattleVisual = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6 w-full mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 text-center">
+            <div className="text-5xl mb-3">🧮</div>
+            <h3 className="font-bold text-blue-900 text-xl mb-2">{data.data.logic.title}</h3>
+            <div className="text-4xl font-bold text-blue-600 mb-4">{data.data.logic.stat}</div>
+            <ul className="space-y-2 text-left">
+              {data.data.logic.claims.map((claim, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
+                  <span className="text-blue-500">✓</span>
+                  <span>{claim}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center relative overflow-hidden" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded-full">WINNER</div>
+            <div className="text-5xl mb-3">❤️</div>
+            <h3 className="font-bold text-white text-xl mb-2">{data.data.emotion.title}</h3>
+            <div className="text-4xl font-bold text-white mb-4">{data.data.emotion.stat}</div>
+            <ul className="space-y-2 text-left">
+              {data.data.emotion.claims.map((claim, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-white">
+                  <span className="text-white">❤️</span>
+                  <span>{claim}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center text-neutral-500 text-sm max-w-md">When logic and emotion conflict, the reptilian brain (emotion) makes the final call.</motion.p>
+      </div>
+    );
+
+    const StatsVisual = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.data.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+              <div className="text-xs text-neutral-400">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') return <ComparisonVisual data={data} />;
+      if (data.visualType === 'battle') return <BattleVisual data={data} />;
+      if (data.visualType === 'stats') return <StatsVisual data={data} />;
+      return null;
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              {item.emoji && <div className="text-3xl mb-2">{item.emoji}</div>}
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand why emotion beats data every time. Stop selling features. Start selling transformation. Your copy will never be the same.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-        // Celebration GIFs for correct answers
-        const celebrationGifs = [
-            "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif",
-            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
-            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
-            "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"
-        ];
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
 
-        // Empathy GIFs for wrong answers
-        const empathyGifs = [
-            "https://media.giphy.com/media/3oEjHGr1Fhz0kyv8Ig/giphy.gif",
-            "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
-            "https://media.giphy.com/media/xT0GqtcVR0jOXzmmPK/giphy.gif"
-        ];
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
 
-        // Slide Data
-        const slides = [
-            {
-                type: 'welcome',
-                category: LESSON_CONFIG.category,
-                title: LESSON_CONFIG.title,
-                subtitle: LESSON_CONFIG.subtitle,
-                duration: LESSON_CONFIG.duration
-            },
-            {
-                type: 'hook',
-                title: 'The Perfect Crime Scene',
-                content: "Imagine spending **$40 million on research**. Running **200,000 taste tests**. Having scientists, marketers, and data analysts all agree: \"This is better.\"\n\nAnd then watching it all **burn to the ground** in 79 days.\n\nThis actually happened. To the biggest brand on Earth."
-            },
-            {
-                type: 'content',
-                title: 'The Setup: 1985',
-                content: "Coca-Cola was losing ground to Pepsi. The \"Pepsi Challenge\" was killing them.\n\n**So they did something bold:**\n\nThey created a new formula. Sweeter. Smoother. Objectively \"better tasting.\"\n\nThey tested it **200,000 times**.\n\n**New Coke won. Every. Single. Time.**\n\nThe data was clear. The science was solid. Victory was certain."
-            },
-            {
-                type: 'visual',
-                title: 'The Data Looked Perfect',
-                visualType: 'data-vs-reality'
-            },
-            {
-                type: 'content',
-                title: 'Then Reality Hit',
-                content: "April 23, 1985. New Coke launches.\n\n**Within hours:**\n- 8,000 angry phone calls per day\n- Protest groups formed\n- People hoarding \"old\" Coke\n- Death threats to executives\n\nOne man drove across state lines just to buy the last cases of original Coke.\n\n**The data said \"better.\" The people said \"how dare you.\""
-            },
-            {
-                type: 'example',
-                title: 'The Quote That Says Everything',
-                example: {
-                    quote: "We did not understand the deep emotions of so many of our customers for Coca-Cola.",
-                    author: "Roberto Goizueta, Coca-Cola CEO",
-                    context: "After pulling New Coke from shelves"
-                }
-            },
-            {
-                type: 'content',
-                title: 'The Reptilian Brain Strikes',
-                content: "**Here's what Coca-Cola missed:**\n\nPeople don't drink Coke for the taste. They drink it for the **memory**. The **identity**. The **emotion**.\n\nThat first sip at a baseball game with Dad. That summer afternoon with friends. That feeling of \"this is MY drink.\"\n\n**You can't measure that in a taste test.**\n\nThe reptilian brain said: \"This is mine. Don't touch it.\""
-            },
-            {
-                type: 'visual',
-                title: 'Logic vs. Emotion',
-                visualType: 'brain-battle'
-            },
-            {
-                type: 'content',
-                title: 'The $40 Million Lesson',
-                content: "**79 days later**, Coca-Cola brought back the original formula as \"Coca-Cola Classic.\"\n\nThe announcement made national news. People literally **cried with joy**.\n\n**What did they learn?**\n\nData tells you WHAT people do.\nEmotion tells you WHO they are.\n\n**And identity always wins.**"
-            },
-            {
-                type: 'cards',
-                title: 'The Marketing Truth',
-                cards: [
-                    {
-                        icon: '📊',
-                        title: 'Data Says',
-                        description: '"This tastes better"'
-                    },
-                    {
-                        icon: '🧠',
-                        title: 'Brain Hears',
-                        description: '"They\'re changing who I am"'
-                    },
-                    {
-                        icon: '❤️',
-                        title: 'Heart Decides',
-                        description: '"I\'ll fight to keep my identity"'
-                    }
-                ]
-            },
-            {
-                type: 'content',
-                title: 'For YOUR Marketing',
-                content: "**Every product has two values:**\n\n**1. Functional Value** - What it does\n**2. Emotional Value** - How it makes them feel\n\nCoca-Cola tested functional. They forgot emotional.\n\n**Your landing page, your ads, your emails** - are they speaking to logic... or identity?\n\nBecause when logic and emotion fight, **emotion wins. Every time.**"
-            },
-            {
-                type: 'quiz',
-                question: 'Why did New Coke fail despite winning 200,000 taste tests?',
-                options: [
-                    'The taste tests were conducted wrong',
-                    'People\'s emotional connection to the brand was ignored',
-                    'The new formula was actually worse',
-                    'Pepsi sabotaged the launch'
-                ],
-                correctIndex: 1,
-                explanation: "Coca-Cola measured taste but forgot that people buy with emotion first. The drink was part of their IDENTITY - and you can't change someone's identity with a better recipe."
-            },
-            {
-                type: 'completion',
-                title: 'Key Takeaway',
-                summary: 'Data measures behavior. Emotion measures identity. When you sell, you\'re not changing what they drink - you\'re asking to be part of who they are.',
-                nextLesson: LESSON_CONFIG.nextLesson
-            }
-        ];
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
-        // Data vs Reality Visual Component
-        const DataVsRealityVisual = () => {
-            const [stage, setStage] = useState(0);
-
-            useEffect(() => {
-                const timers = [
-                    setTimeout(() => setStage(1), 500),
-                    setTimeout(() => setStage(2), 1200),
-                    setTimeout(() => setStage(3), 1900)
-                ];
-                return () => timers.forEach(clearTimeout);
-            }, []);
-
-            return (
-                <div className="flex flex-col items-center gap-8 py-8">
-                    <div className="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-4xl">
-                        {/* Data Side */}
-                        <div className={`flex-1 transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
-                                <div className="text-5xl mb-4">📊</div>
-                                <div className="text-xl font-bold text-green-800 mb-2">The Data</div>
-                                <div className="space-y-2 text-left">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-green-600">✓</span>
-                                        <span className="text-gray-700">200,000 taste tests</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-green-600">✓</span>
-                                        <span className="text-gray-700">New Coke wins every time</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-green-600">✓</span>
-                                        <span className="text-gray-700">Objectively "better"</span>
-                                    </div>
-                                </div>
-                                <div className="mt-4 text-2xl font-bold text-green-600">LAUNCH IT! ✓</div>
-                            </div>
-                        </div>
-
-                        {/* Arrow */}
-                        <div className={`text-4xl transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
-                            →
-                        </div>
-
-                        {/* Reality Side */}
-                        <div className={`flex-1 transition-all duration-500 ${stage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center">
-                                <div className="text-5xl mb-4">💥</div>
-                                <div className="text-xl font-bold text-red-800 mb-2">The Reality</div>
-                                <div className="space-y-2 text-left">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-red-600">✗</span>
-                                        <span className="text-gray-700">8,000 angry calls/day</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-red-600">✗</span>
-                                        <span className="text-gray-700">Protest groups formed</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-red-600">✗</span>
-                                        <span className="text-gray-700">Death threats to execs</span>
-                                    </div>
-                                </div>
-                                <div className="mt-4 text-2xl font-bold text-red-600">DISASTER! ✗</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Message */}
-                    <div className={`text-center transition-all duration-500 ${stage >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        <div className="bg-gray-900 text-white px-8 py-4 rounded-xl inline-block">
-                            <div className="text-lg font-bold">What the data couldn't measure:</div>
-                            <div className="text-2xl font-bold text-red-400 mt-1">IDENTITY</div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Brain Battle Visual Component
-        const BrainBattleVisual = () => {
-            const [stage, setStage] = useState(0);
-
-            useEffect(() => {
-                const timers = [
-                    setTimeout(() => setStage(1), 400),
-                    setTimeout(() => setStage(2), 900),
-                    setTimeout(() => setStage(3), 1400),
-                    setTimeout(() => setStage(4), 2100)
-                ];
-                return () => timers.forEach(clearTimeout);
-            }, []);
-
-            return (
-                <div className="flex flex-col items-center gap-6 py-8">
-                    {/* VS Battle */}
-                    <div className="flex items-center gap-6 md:gap-12">
-                        {/* Logic Brain */}
-                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-                            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 text-center w-40 md:w-52">
-                                <div className="text-5xl mb-2">🧮</div>
-                                <div className="font-bold text-blue-800">LOGIC</div>
-                                <div className="text-sm text-gray-600 mt-2">"New Coke is better"</div>
-                                <div className={`mt-4 text-3xl font-bold text-blue-600 transition-all duration-300 ${stage >= 3 ? 'line-through opacity-50' : ''}`}>
-                                    55%
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* VS */}
-                        <div className={`transition-all duration-500 ${stage >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
-                            <div className="bg-gray-900 text-white font-bold px-4 py-2 rounded-full text-xl">VS</div>
-                        </div>
-
-                        {/* Emotion Brain */}
-                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center w-40 md:w-52">
-                                <div className="text-5xl mb-2">❤️</div>
-                                <div className="font-bold text-red-800">EMOTION</div>
-                                <div className="text-sm text-gray-600 mt-2">"This is MY Coke"</div>
-                                <div className={`mt-4 text-3xl font-bold text-red-600 transition-all duration-500 ${stage >= 3 ? 'scale-125 count-up' : ''}`}>
-                                    {stage >= 3 ? '100%' : '45%'}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Winner Banner */}
-                    <div className={`transition-all duration-700 ${stage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-2xl text-center pulse-glow">
-                            <div className="text-sm font-medium opacity-90">WINNER:</div>
-                            <div className="text-2xl font-bold">EMOTION WINS. ALWAYS.</div>
-                        </div>
-                    </div>
-
-                    {/* Key Insight */}
-                    <div className={`transition-all duration-500 ${stage >= 4 ? 'opacity-100' : 'opacity-0'}`}>
-                        <div className="text-center text-gray-600 max-w-md">
-                            <p>When logic and emotion conflict, the reptilian brain (emotion) makes the final call.</p>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Progress Bar Component
-        const ProgressBar = ({ current, total }) => {
-            const progress = ((current + 1) / total) * 100;
-            return (
-                <div className="fixed top-0 left-0 right-0 h-1 bg-gray-100 z-50">
-                    <div
-                        className="h-full progress-bar"
-                        style={{
-                            width: `${progress}%`,
-                            backgroundColor: LESSON_CONFIG.accentColor
-                        }}
-                    />
-                </div>
-            );
-        };
-
-        // Navigation Component
-        const Navigation = ({ current, total, onPrev, onNext, canGoNext }) => (
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-40">
-                <div className="max-w-2xl mx-auto flex items-center justify-between">
-                    <button
-                        onClick={onPrev}
-                        disabled={current === 0}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                    >
-                        <span>←</span>
-                        <span className="hidden sm:inline">Back</span>
-                    </button>
-
-                    <div className="flex items-center gap-2">
-                        {Array.from({ length: total }, (_, i) => (
-                            <div
-                                key={i}
-                                className={`w-2 h-2 rounded-full transition-all ${
-                                    i === current
-                                        ? 'w-6'
-                                        : i < current
-                                            ? 'bg-gray-300'
-                                            : 'bg-gray-200'
-                                }`}
-                                style={{
-                                    backgroundColor: i <= current ? LESSON_CONFIG.accentColor : undefined
-                                }}
-                            />
-                        ))}
-                    </div>
-
-                    <button
-                        onClick={onNext}
-                        disabled={!canGoNext}
-                        className="flex items-center gap-2 px-6 py-2 rounded-lg text-white font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
-                    >
-                        <span className="hidden sm:inline">{current === total - 1 ? 'Finish' : 'Continue'}</span>
-                        <span>→</span>
-                    </button>
-                </div>
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
-        );
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
 
-        // Slide Components
-        const WelcomeSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                <div
-                    className="text-sm font-semibold tracking-wide uppercase mb-4 px-4 py-1 rounded-full"
-                    style={{
-                        color: LESSON_CONFIG.accentColor,
-                        backgroundColor: `${LESSON_CONFIG.accentColor}15`
-                    }}
-                >
-                    {data.category}
-                </div>
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-                    {data.title}
-                </h1>
-                <p className="text-xl text-gray-600 max-w-lg mb-8">
-                    {data.subtitle}
-                </p>
-                <div className="flex items-center gap-2 text-gray-400">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{data.duration} read</span>
-                </div>
-            </div>
-        );
-
-        const HookSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-                        {data.title}
-                    </h2>
-                    <div className="text-lg md:text-xl text-gray-700 leading-relaxed space-y-4">
-                        {data.content.split('\n\n').map((paragraph, i) => (
-                            <p key={i} dangerouslySetInnerHTML={{
-                                __html: paragraph
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
-                            }} />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-
-        const ContentSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-                        {data.title}
-                    </h2>
-                    <div className="text-lg text-gray-700 leading-relaxed space-y-4">
-                        {data.content.split('\n\n').map((paragraph, i) => (
-                            <p key={i} dangerouslySetInnerHTML={{
-                                __html: paragraph
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
-                            }} />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-
-        const VisualSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-4xl w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-                        {data.title}
-                    </h2>
-                    {data.visualType === 'data-vs-reality' && <DataVsRealityVisual />}
-                    {data.visualType === 'brain-battle' && <BrainBattleVisual />}
-                </div>
-            </div>
-        );
-
-        const ExampleSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-                        {data.title}
-                    </h2>
-                    <div className="bg-gray-50 border-l-4 rounded-r-2xl p-8" style={{ borderColor: LESSON_CONFIG.accentColor }}>
-                        <div className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
-                            "{data.example.quote}"
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-xl">
-                                👔
-                            </div>
-                            <div>
-                                <div className="font-bold text-gray-900">{data.example.author}</div>
-                                <div className="text-gray-500 text-sm">{data.example.context}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const CardsSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-4xl w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
-                        {data.title}
-                    </h2>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {data.cards.map((card, i) => (
-                            <div
-                                key={i}
-                                className="bg-white rounded-2xl p-6 card-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-                            >
-                                <div className="text-5xl mb-4">{card.icon}</div>
-                                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                                    {card.title}
-                                </h3>
-                                <p className="text-gray-600">
-                                    {card.description}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-
-        const QuizSlide = ({ data, onAnswer, answered, selectedIndex }) => {
-            const isCorrect = selectedIndex === data.correctIndex;
-            const [gifUrl, setGifUrl] = useState('');
-
-            useEffect(() => {
-                if (answered) {
-                    const gifs = isCorrect ? celebrationGifs : empathyGifs;
-                    setGifUrl(gifs[Math.floor(Math.random() * gifs.length)]);
-                }
-            }, [answered, isCorrect]);
-
-            return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                    <div className="max-w-2xl w-full">
-                        <div
-                            className="text-sm font-semibold tracking-wide uppercase mb-4 text-center"
-                            style={{ color: LESSON_CONFIG.accentColor }}
-                        >
-                            Quick Check
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
-                            {data.question}
-                        </h2>
-
-                        <div className="space-y-3 mb-8">
-                            {data.options.map((option, i) => {
-                                let buttonStyle = "bg-white border-2 border-gray-200 hover:border-gray-300";
-
-                                if (answered) {
-                                    if (i === data.correctIndex) {
-                                        buttonStyle = "bg-green-50 border-2 border-green-500 text-green-800";
-                                    } else if (i === selectedIndex && !isCorrect) {
-                                        buttonStyle = "bg-red-50 border-2 border-red-300 text-red-800";
-                                    } else {
-                                        buttonStyle = "bg-gray-50 border-2 border-gray-200 opacity-50";
-                                    }
-                                }
-
-                                return (
-                                    <button
-                                        key={i}
-                                        onClick={() => !answered && onAnswer(i)}
-                                        disabled={answered}
-                                        className={`w-full p-4 rounded-xl text-left transition-all ${buttonStyle} ${!answered && 'cursor-pointer'}`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-medium text-sm">
-                                                {String.fromCharCode(65 + i)}
-                                            </span>
-                                            <span className="font-medium">{option}</span>
-                                            {answered && i === data.correctIndex && (
-                                                <span className="ml-auto text-green-600">✓</span>
-                                            )}
-                                        </div>
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-                        {answered && (
-                            <div className="text-center">
-                                <div className="mb-4 rounded-xl overflow-hidden inline-block">
-                                    <img
-                                        src={gifUrl}
-                                        alt={isCorrect ? "Celebration" : "Keep trying"}
-                                        className="w-48 h-36 object-cover"
-                                    />
-                                </div>
-                                <div className={`p-4 rounded-xl ${isCorrect ? 'bg-green-50' : 'bg-amber-50'}`}>
-                                    <div className={`font-bold mb-2 ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
-                                        {isCorrect ? '🎉 Exactly right!' : '💡 Not quite!'}
-                                    </div>
-                                    <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-amber-700'}`}>
-                                        {data.explanation}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        };
-
-        const CompletionSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                <div className="max-w-xl">
-                    <div className="text-6xl mb-6">🎯</div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                        {data.title}
-                    </h2>
-                    <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                        {data.summary}
-                    </p>
-                    <div className="bg-gray-50 rounded-2xl p-6 mb-8">
-                        <div className="text-sm text-gray-500 mb-2">Remember</div>
-                        <div className="text-lg font-bold text-gray-900">
-                            Data without emotion = the $40 million mistake
-                        </div>
-                    </div>
-                    {data.nextLesson && (
-                        <a
-                            href={`/lessons/${data.nextLesson.id}/lesson.html`}
-                            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-medium transition-all hover:opacity-90"
-                            style={{ backgroundColor: LESSON_CONFIG.accentColor }}
-                        >
-                            <span>Next: {data.nextLesson.title}</span>
-                            <span>→</span>
-                        </a>
-                    )}
-                </div>
-            </div>
-        );
-
-        // Main App Component
-        const App = () => {
-            const [currentSlide, setCurrentSlide] = useState(0);
-            const [quizAnswered, setQuizAnswered] = useState(false);
-            const [selectedAnswer, setSelectedAnswer] = useState(null);
-            const [slideKey, setSlideKey] = useState(0);
-
-            const currentSlideData = slides[currentSlide];
-
-            const canGoNext = () => {
-                if (currentSlideData.type === 'quiz') {
-                    return quizAnswered;
-                }
-                return true;
-            };
-
-            const handleNext = useCallback(() => {
-                if (currentSlide < slides.length - 1 && canGoNext()) {
-                    setCurrentSlide(prev => prev + 1);
-                    setSlideKey(prev => prev + 1);
-                }
-            }, [currentSlide, quizAnswered]);
-
-            const handlePrev = useCallback(() => {
-                if (currentSlide > 0) {
-                    setCurrentSlide(prev => prev - 1);
-                    setSlideKey(prev => prev + 1);
-                }
-            }, [currentSlide]);
-
-            const handleQuizAnswer = (index) => {
-                setSelectedAnswer(index);
-                setQuizAnswered(true);
-            };
-
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if (e.key === 'ArrowRight' || e.key === ' ') {
-                        e.preventDefault();
-                        handleNext();
-                    } else if (e.key === 'ArrowLeft') {
-                        e.preventDefault();
-                        handlePrev();
-                    }
-                };
-
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [handleNext, handlePrev]);
-
-            // Reset quiz state when leaving quiz slide
-            useEffect(() => {
-                if (currentSlideData.type !== 'quiz') {
-                    setQuizAnswered(false);
-                    setSelectedAnswer(null);
-                }
-            }, [currentSlide]);
-
-            const renderSlide = () => {
-                const props = { data: currentSlideData, key: slideKey };
-
-                switch (currentSlideData.type) {
-                    case 'welcome':
-                        return <WelcomeSlide {...props} />;
-                    case 'hook':
-                        return <HookSlide {...props} />;
-                    case 'content':
-                        return <ContentSlide {...props} />;
-                    case 'visual':
-                        return <VisualSlide {...props} />;
-                    case 'example':
-                        return <ExampleSlide {...props} />;
-                    case 'cards':
-                        return <CardsSlide {...props} />;
-                    case 'quiz':
-                        return <QuizSlide
-                            {...props}
-                            onAnswer={handleQuizAnswer}
-                            answered={quizAnswered}
-                            selectedIndex={selectedAnswer}
-                        />;
-                    case 'completion':
-                        return <CompletionSlide {...props} />;
-                    default:
-                        return <div>Unknown slide type</div>;
-                }
-            };
-
-            return (
-                <div className="bg-white min-h-screen pb-20">
-                    <ProgressBar current={currentSlide} total={slides.length} />
-
-                    <div className="slide-enter-active">
-                        {renderSlide()}
-                    </div>
-
-                    <Navigation
-                        current={currentSlide}
-                        total={slides.length}
-                        onPrev={handlePrev}
-                        onNext={handleNext}
-                        canGoNext={canGoNext()}
-                    />
-                </div>
-            );
-        };
-
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
 </body>
 </html>

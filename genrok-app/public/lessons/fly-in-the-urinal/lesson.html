@@ -1,783 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Fly in the Urinal | Quantum Scale</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #0891b2;
-            --accent-light: #ecfeff;
-            --accent-dark: #0e7490;
-        }
-        * { font-family: 'Inter', sans-serif; }
-        body { background: #ffffff; margin: 0; padding: 0; }
-        .slide-enter { opacity: 0; transform: translateY(30px); }
-        .slide-enter-active { opacity: 1; transform: translateY(0); transition: all 0.5s ease-out; }
-        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .progress-bar { transition: width 0.5s ease-out; }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(8, 145, 178, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(8, 145, 178, 0.5); }
-        }
-        .pulse-glow { animation: pulse-glow 2s infinite; }
-        @keyframes buzz {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 1px) rotate(-1deg); }
-            75% { transform: translate(1px, 1px) rotate(1deg); }
-        }
-        .buzz { animation: buzz 0.3s ease-in-out infinite; }
-        @keyframes draw-arrow {
-            from { stroke-dashoffset: 100; }
-            to { stroke-dashoffset: 0; }
-        }
-        .draw-arrow {
-            stroke-dasharray: 100;
-            animation: draw-arrow 1s ease-out forwards;
-        }
-        @keyframes fill-bar {
-            from { width: 0; }
-        }
-        .fill-bar { animation: fill-bar 1s ease-out forwards; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Fly in the Urinal | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0891b2;
+      --accent-dark: #0e7490;
+      --accent-light: #22d3ee;
+      --accent-rgb: 8, 145, 178;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes buzz {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 1px) rotate(-1deg); }
+      75% { transform: translate(1px, 1px) rotate(1deg); }
+    }
+    .buzz { animation: buzz 0.3s ease-in-out infinite; }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useCallback } = React;
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-        // Lesson Configuration
-        const LESSON_CONFIG = {
-            id: 'fly-in-the-urinal',
-            title: 'The Fly in the Urinal',
-            subtitle: 'How a Tiny Image Saved Millions',
-            category: 'Neuromarketing',
-            duration: '4 min',
-            accentColor: '#0891b2',
-            nextLesson: null // Last lesson in this series
-        };
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
 
-        // Celebration GIFs for correct answers
-        const celebrationGifs = [
-            "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif",
-            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
-            "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
-            "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"
-        ];
+    const LESSON_CONFIG = {
+      id: 'fly-in-the-urinal',
+      title: 'The Fly in the Urinal',
+      description: 'How a tiny image saved Amsterdam Airport millions - the psychology of visual nudges.',
+      accentColor: '#0891b2',
+      duration: '4 min',
+      nextLesson: {
+        id: 'decoy-effect',
+        title: 'The Decoy Effect',
+        teaser: 'How movie theaters trick your brain into buying the large popcorn with a "useless" middle option.'
+      }
+    };
 
-        // Empathy GIFs for wrong answers
-        const empathyGifs = [
-            "https://media.giphy.com/media/3oEjHGr1Fhz0kyv8Ig/giphy.gif",
-            "https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif",
-            "https://media.giphy.com/media/xT0GqtcVR0jOXzmmPK/giphy.gif"
-        ];
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
 
-        // Slide Data
-        const slides = [
-            {
-                type: 'welcome',
-                category: LESSON_CONFIG.category,
-                title: LESSON_CONFIG.title,
-                subtitle: LESSON_CONFIG.subtitle,
-                duration: LESSON_CONFIG.duration
-            },
-            {
-                type: 'hook',
-                title: 'The World\'s Smartest Bathroom',
-                content: "Amsterdam Schiphol Airport had a problem.\n\n**Men were... missing.**\n\nThe janitorial costs were insane. They tried signs. \"Please aim carefully.\" Nothing worked.\n\nThen someone had a **ridiculous idea**.\n\nAn idea that would revolutionize behavioral economics. And cost almost nothing."
-            },
-            {
-                type: 'content',
-                title: 'The Simple Solution',
-                content: "They etched a small **housefly** into each urinal.\n\nThat's it. Just a tiny fake fly.\n\nNo signs. No instructions. No \"please\" anything.\n\n**The result?**\n\nSpillage reduced by **80%**.\n\nMen instinctively aimed at the fly. They couldn't help it.\n\nThe brain saw a target. The brain wanted to hit it. No thinking required."
-            },
-            {
-                type: 'visual',
-                title: 'The Power of the Nudge',
-                visualType: 'fly-comparison'
-            },
-            {
-                type: 'content',
-                title: 'Push vs. Nudge',
-                content: "There are two ways to change behavior:\n\n**PUSH:** Tell people what to do\n\"Please aim carefully\" → They ignore you\n\n**NUDGE:** Design the environment so the right choice is natural\nPut a fly → They aim without thinking\n\n**The reptilian brain doesn't read signs.**\nIt responds to targets, triggers, and cues.\n\nNudges speak its language."
-            },
-            {
-                type: 'visual',
-                title: 'The Nudge Framework',
-                visualType: 'push-vs-nudge'
-            },
-            {
-                type: 'example',
-                title: 'Nudges Are Everywhere',
-                examples: [
-                    { icon: '🛒', title: 'Grocery Store', push: 'Sign: "Buy healthy food"', nudge: 'Put fruits at eye level, candy down low' },
-                    { icon: '💳', title: 'Checkout Page', push: 'Text: "Add warranty"', nudge: 'Pre-check the warranty box' },
-                    { icon: '📧', title: 'Email Signup', push: 'Popup: "Subscribe now!"', nudge: 'Content gate: "Enter email to continue reading"' }
-                ]
-            },
-            {
-                type: 'content',
-                title: 'For YOUR Marketing',
-                content: "**Stop pushing. Start nudging.**\n\nDon't say \"Buy Now!\" → Make buying the easiest option\n\nDon't say \"Trust us!\" → Show social proof automatically\n\nDon't say \"Upgrade!\" → Pre-select the upgrade option\n\n**Every friction point is a chance to nudge.**\n\nEvery button placement. Every default setting. Every visual cue.\n\nThe best marketers don't convince. They **design inevitability**."
-            },
-            {
-                type: 'cards',
-                title: 'Nudge Checklist',
-                cards: [
-                    {
-                        icon: '⚙️',
-                        title: 'Defaults',
-                        description: 'Pre-select the option you want chosen'
-                    },
-                    {
-                        icon: '👁️',
-                        title: 'Visibility',
-                        description: 'Make the right choice the most visible'
-                    },
-                    {
-                        icon: '🎯',
-                        title: 'Targets',
-                        description: 'Give them something to "aim at"'
-                    },
-                    {
-                        icon: '🚧',
-                        title: 'Friction',
-                        description: 'Add friction to choices you don\'t want'
-                    }
-                ]
-            },
-            {
-                type: 'content',
-                title: 'The Billion-Dollar Insight',
-                content: "**Choice architecture** is worth billions.\n\nGoogle pays Apple $15B/year to be the default search engine.\n\nWhy? Because defaults WIN. 90%+ of people never change them.\n\n**The fly didn't convince men to aim better.**\nIt just made aiming irresistible.\n\n**Your job isn't to convince.**\nIt's to make the right choice feel natural."
-            },
-            {
-                type: 'quiz',
-                question: 'Why did the fly in the urinal work so well?',
-                options: [
-                    'It told men to aim better with a clear message',
-                    'It triggered an automatic targeting instinct in the brain',
-                    'Men read about the experiment and wanted to help',
-                    'The fly scared men into being more careful'
-                ],
-                correctIndex: 1,
-                explanation: "The fly worked because it triggered an automatic, unconscious response - the instinct to aim at a target. No reading, no thinking, no decision-making. Pure reptilian brain activation."
-            },
-            {
-                type: 'completion',
-                title: 'Key Takeaway',
-                summary: 'Don\'t push behavior with instructions. NUDGE it with design. Make the desired action feel natural, automatic, and inevitable.',
-                nextLesson: LESSON_CONFIG.nextLesson
-            }
-        ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
-        // Fly Comparison Visual Component
-        const FlyComparisonVisual = () => {
-            const [stage, setStage] = useState(0);
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
 
-            useEffect(() => {
-                const timers = [
-                    setTimeout(() => setStage(1), 500),
-                    setTimeout(() => setStage(2), 1200),
-                    setTimeout(() => setStage(3), 1900),
-                    setTimeout(() => setStage(4), 2600)
-                ];
-                return () => timers.forEach(clearTimeout);
-            }, []);
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-            return (
-                <div className="flex flex-col items-center gap-8 py-8">
-                    <div className="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-4xl">
-                        {/* Before */}
-                        <div className={`flex-1 transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="bg-gray-100 rounded-2xl p-6 text-center">
-                                <div className="text-lg font-bold text-gray-500 mb-4">BEFORE: The Sign</div>
-                                <div className="bg-white rounded-xl p-8 border-2 border-gray-200 relative">
-                                    <div className="w-24 h-32 mx-auto bg-gray-200 rounded-b-full mb-4"></div>
-                                    <div className="absolute top-2 right-2 bg-yellow-100 border border-yellow-300 px-2 py-1 rounded text-xs">
-                                        "Please aim carefully"
-                                    </div>
-                                </div>
-                                <div className={`mt-4 transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
-                                    <div className="text-3xl font-bold text-red-500">0%</div>
-                                    <div className="text-gray-500 text-sm">improvement</div>
-                                </div>
-                            </div>
-                        </div>
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why a tiny fly image reduced spillage by 80%',
+        'The difference between pushing and nudging behavior',
+        'How to use visual targets in your checkout and product pages'
+      ]},
+      { type: 'hook', headline: 'Amsterdam Airport had a $1M+ cleaning problem. Men were missing the urinals.', subtext: 'They tried signs: "Please aim carefully." Nothing worked. Then someone etched a tiny fly image into each urinal. Spillage dropped 80%. No instructions. No asking. Just a visual target. That\'s the power of a nudge.' },
+      { type: 'content', title: 'The Simple Solution', body: 'They etched a small housefly into each urinal. That\'s it. Just a tiny fake fly. No signs. No instructions. No "please" anything. The result? Spillage reduced by 80%. Men instinctively aimed at the fly. They couldn\'t help it. The brain saw a target. The brain wanted to hit it. No thinking required.' },
+      { type: 'visual', title: 'The Power of the Nudge', visualType: 'fly-comparison' },
+      { type: 'content', title: 'Push vs. Nudge', body: 'There are two ways to change behavior:\n\nPUSH: Tell people what to do. "Please aim carefully" → They ignore you.\n\nNUDGE: Design the environment so the right choice is natural. Put a fly → They aim without thinking.\n\nThe reptilian brain doesn\'t read signs. It responds to targets, triggers, and cues. Nudges speak its language.' },
+      { type: 'visual', title: 'The Nudge Framework', visualType: 'push-vs-nudge' },
+      { type: 'example', scenario: 'Nudges Are Everywhere', before: { label: 'Grocery Store', text: 'PUSH: Sign saying "Buy healthy food"\n\nNUDGE: Put fruits at eye level, candy down low' }, after: { label: 'Checkout Page', text: 'PUSH: Text saying "Add warranty"\n\nNUDGE: Pre-check the warranty box' }, insight: 'Design the choice. Don\'t demand it.' },
+      { type: 'content', title: 'For Your Marketing', body: 'Stop pushing. Start nudging. Don\'t say "Buy Now!" → Make buying the easiest option. Don\'t say "Trust us!" → Show social proof automatically. Don\'t say "Upgrade!" → Pre-select the upgrade option. Every friction point is a chance to nudge. Every button placement. Every default setting. Every visual cue. The best marketers don\'t convince. They design inevitability.' },
+      { type: 'cards', title: 'Nudge Checklist', items: [
+        { title: 'Defaults', description: 'Pre-select the option you want chosen. Most people never change defaults.' },
+        { title: 'Visibility', description: 'Make the right choice the most visible. Eye level sells.' },
+        { title: 'Targets', description: 'Give them something to "aim at" - visual cues, highlighted options.' },
+        { title: 'Friction', description: 'Add friction to choices you don\'t want. Make them harder to access.' }
+      ]},
+      { type: 'content', title: 'The Billion-Dollar Insight', body: 'Choice architecture is worth billions. Google pays Apple $15B/year to be the default search engine. Why? Because defaults WIN. 90%+ of people never change them. The fly didn\'t convince men to aim better. It just made aiming irresistible. Your job isn\'t to convince. It\'s to make the right choice feel natural.' },
+      { type: 'quiz', question: 'Why did the fly in the urinal work so well?', options: ['It told men to aim better with a clear message', 'It triggered an automatic targeting instinct in the brain', 'Men read about the experiment and wanted to help', 'The fly scared men into being more careful'], correctIndex: 1, feedback: { correct: 'Exactly! The fly worked because it triggered an automatic, unconscious response - the instinct to aim at a target. No reading, no thinking, no decision-making. Pure reptilian brain activation.', incorrect: 'Not quite. The fly didn\'t work through conscious thought or messages - it triggered an automatic, unconscious targeting instinct. The brain sees a target and wants to hit it, no thinking required.' }},
+      { type: 'completion' }
+    ];
 
-                        {/* Arrow */}
-                        <div className={`text-4xl transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
-                            →
-                        </div>
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    };
 
-                        {/* After */}
-                        <div className={`flex-1 transition-all duration-500 ${stage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="bg-cyan-50 rounded-2xl p-6 text-center border-2 border-cyan-200">
-                                <div className="text-lg font-bold text-cyan-700 mb-4">AFTER: The Fly</div>
-                                <div className="bg-white rounded-xl p-8 border-2 border-cyan-200 relative">
-                                    <div className="w-24 h-32 mx-auto bg-gray-200 rounded-b-full mb-4 relative">
-                                        {/* The Fly */}
-                                        <div className={`absolute top-8 left-1/2 -translate-x-1/2 text-2xl ${stage >= 3 ? 'buzz' : ''}`}>
-                                            🪰
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={`mt-4 transition-all duration-500 ${stage >= 3 ? 'opacity-100' : 'opacity-0'}`}>
-                                    <div className="text-3xl font-bold text-green-500">80%</div>
-                                    <div className="text-gray-500 text-sm">less spillage</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Message */}
-                    <div className={`text-center transition-all duration-500 ${stage >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        <div className="bg-gray-900 text-white px-8 py-4 rounded-xl inline-block">
-                            <div className="text-sm opacity-70">Cost of the fly:</div>
-                            <div className="text-2xl font-bold text-cyan-400">Almost $0</div>
-                            <div className="text-sm opacity-70 mt-1">Savings: Millions</div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Push vs Nudge Visual Component
-        const PushVsNudgeVisual = () => {
-            const [stage, setStage] = useState(0);
-
-            useEffect(() => {
-                const timers = [
-                    setTimeout(() => setStage(1), 400),
-                    setTimeout(() => setStage(2), 1000),
-                    setTimeout(() => setStage(3), 1600),
-                    setTimeout(() => setStage(4), 2200)
-                ];
-                return () => timers.forEach(clearTimeout);
-            }, []);
-
-            return (
-                <div className="flex flex-col items-center gap-8 py-8">
-                    <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
-                        {/* Push */}
-                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-                            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
-                                <div className="text-center mb-4">
-                                    <div className="text-4xl mb-2">📢</div>
-                                    <div className="text-xl font-bold text-red-700">PUSH</div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-red-500">✗</span>
-                                        <span>Tells people what to do</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-red-500">✗</span>
-                                        <span>Requires conscious effort</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-red-500">✗</span>
-                                        <span>Easy to ignore</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-red-500">✗</span>
-                                        <span>Creates resistance</span>
-                                    </div>
-                                </div>
-                                <div className={`mt-4 text-center transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
-                                    <div className="bg-red-100 rounded-lg px-4 py-2 inline-block">
-                                        <span className="font-bold text-red-700">Result: 20% compliance</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Nudge */}
-                        <div className={`transition-all duration-500 ${stage >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-                            <div className="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-6">
-                                <div className="text-center mb-4">
-                                    <div className="text-4xl mb-2">🪶</div>
-                                    <div className="text-xl font-bold text-cyan-700">NUDGE</div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-green-500">✓</span>
-                                        <span>Guides behavior naturally</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-green-500">✓</span>
-                                        <span>Works automatically</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-green-500">✓</span>
-                                        <span>Hard to resist</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-gray-700">
-                                        <span className="text-green-500">✓</span>
-                                        <span>Feels like free will</span>
-                                    </div>
-                                </div>
-                                <div className={`mt-4 text-center transition-all duration-500 ${stage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
-                                    <div className="bg-cyan-100 rounded-lg px-4 py-2 inline-block">
-                                        <span className="font-bold text-cyan-700">Result: 80% compliance</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Insight */}
-                    <div className={`transition-all duration-500 ${stage >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div className="bg-gray-900 text-white px-8 py-6 rounded-2xl text-center max-w-xl">
-                            <div className="text-lg mb-2">The Insight:</div>
-                            <div className="text-xl font-bold">
-                                The reptilian brain <span className="text-red-400">ignores instructions</span>
-                                <br />
-                                but <span className="text-cyan-400">follows design</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Examples Slide Component
-        const ExamplesSlide = ({ data }) => {
-            const [visibleIndex, setVisibleIndex] = useState(-1);
-
-            useEffect(() => {
-                data.examples.forEach((_, i) => {
-                    setTimeout(() => setVisibleIndex(i), 500 + i * 400);
-                });
-            }, []);
-
-            return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                    <div className="max-w-4xl w-full">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-                            {data.title}
-                        </h2>
-                        <div className="space-y-4">
-                            {data.examples.map((ex, i) => (
-                                <div
-                                    key={i}
-                                    className={`transition-all duration-500 ${i <= visibleIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                                >
-                                    <div className="bg-white rounded-2xl p-6 card-shadow">
-                                        <div className="flex items-start gap-4">
-                                            <div className="text-4xl">{ex.icon}</div>
-                                            <div className="flex-1">
-                                                <div className="font-bold text-gray-900 mb-3">{ex.title}</div>
-                                                <div className="grid md:grid-cols-2 gap-4">
-                                                    <div className="bg-red-50 rounded-lg p-3">
-                                                        <div className="text-xs font-bold text-red-600 mb-1">PUSH ❌</div>
-                                                        <div className="text-gray-700 text-sm">{ex.push}</div>
-                                                    </div>
-                                                    <div className="bg-green-50 rounded-lg p-3">
-                                                        <div className="text-xs font-bold text-green-600 mb-1">NUDGE ✓</div>
-                                                        <div className="text-gray-700 text-sm">{ex.nudge}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Progress Bar Component
-        const ProgressBar = ({ current, total }) => {
-            const progress = ((current + 1) / total) * 100;
-            return (
-                <div className="fixed top-0 left-0 right-0 h-1 bg-gray-100 z-50">
-                    <div
-                        className="h-full progress-bar"
-                        style={{
-                            width: `${progress}%`,
-                            backgroundColor: LESSON_CONFIG.accentColor
-                        }}
-                    />
-                </div>
-            );
-        };
-
-        // Navigation Component
-        const Navigation = ({ current, total, onPrev, onNext, canGoNext }) => (
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-40">
-                <div className="max-w-2xl mx-auto flex items-center justify-between">
-                    <button
-                        onClick={onPrev}
-                        disabled={current === 0}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                    >
-                        <span>←</span>
-                        <span className="hidden sm:inline">Back</span>
-                    </button>
-
-                    <div className="flex items-center gap-2">
-                        {Array.from({ length: total }, (_, i) => (
-                            <div
-                                key={i}
-                                className={`w-2 h-2 rounded-full transition-all ${
-                                    i === current
-                                        ? 'w-6'
-                                        : i < current
-                                            ? 'bg-gray-300'
-                                            : 'bg-gray-200'
-                                }`}
-                                style={{
-                                    backgroundColor: i <= current ? LESSON_CONFIG.accentColor : undefined
-                                }}
-                            />
-                        ))}
-                    </div>
-
-                    <button
-                        onClick={onNext}
-                        disabled={!canGoNext}
-                        className="flex items-center gap-2 px-6 py-2 rounded-lg text-white font-medium disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:opacity-90"
-                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
-                    >
-                        <span className="hidden sm:inline">{current === total - 1 ? 'Finish' : 'Continue'}</span>
-                        <span>→</span>
-                    </button>
-                </div>
+    const FlyComparisonVisual = () => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <div className="grid md:grid-cols-2 gap-8 w-full">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
+            <div className="text-lg font-bold text-red-700 mb-4">BEFORE: The Sign</div>
+            <div className="bg-white rounded-xl p-8 border-2 border-red-200 relative mb-4">
+              <div className="w-20 h-28 mx-auto bg-gray-200 rounded-b-full"></div>
+              <div className="absolute top-2 right-2 bg-yellow-100 border border-yellow-300 px-2 py-1 rounded text-xs">"Please aim carefully"</div>
             </div>
-        );
+            <div className="text-3xl font-bold text-red-500">0%</div>
+            <div className="text-gray-500 text-sm">improvement</div>
+          </motion.div>
 
-        // Slide Components
-        const WelcomeSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                <div
-                    className="text-sm font-semibold tracking-wide uppercase mb-4 px-4 py-1 rounded-full"
-                    style={{
-                        color: LESSON_CONFIG.accentColor,
-                        backgroundColor: `${LESSON_CONFIG.accentColor}15`
-                    }}
-                >
-                    {data.category}
-                </div>
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-                    {data.title}
-                </h1>
-                <p className="text-xl text-gray-600 max-w-lg mb-8">
-                    {data.subtitle}
-                </p>
-                <div className="flex items-center gap-2 text-gray-400">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{data.duration} read</span>
-                </div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-cyan-50 border-2 border-cyan-200 rounded-xl p-6 text-center">
+            <div className="text-lg font-bold text-cyan-700 mb-4">AFTER: The Fly</div>
+            <div className="bg-white rounded-xl p-8 border-2 border-cyan-200 relative mb-4">
+              <div className="w-20 h-28 mx-auto bg-gray-200 rounded-b-full relative">
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 text-2xl buzz">🪰</div>
+              </div>
             </div>
-        );
+            <div className="text-3xl font-bold text-green-500">80%</div>
+            <div className="text-gray-500 text-sm">less spillage</div>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 bg-neutral-900 text-white px-6 py-4 rounded-xl inline-block">
+          <div className="text-xs opacity-70">Cost of the fly:</div>
+          <div className="text-2xl font-bold text-cyan-400">Almost $0</div>
+          <div className="text-xs opacity-70 mt-1">Savings: Millions</div>
+        </motion.div>
+      </div>
+    );
 
-        const HookSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-                        {data.title}
-                    </h2>
-                    <div className="text-lg md:text-xl text-gray-700 leading-relaxed space-y-4">
-                        {data.content.split('\n\n').map((paragraph, i) => (
-                            <p key={i} dangerouslySetInnerHTML={{
-                                __html: paragraph
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
-                            }} />
-                        ))}
-                    </div>
-                </div>
+    const PushVsNudgeVisual = () => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <div className="grid md:grid-cols-2 gap-6 w-full mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-2">📢</div>
+              <div className="text-xl font-bold text-red-700">PUSH</div>
             </div>
-        );
-
-        const ContentSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-                        {data.title}
-                    </h2>
-                    <div className="text-lg text-gray-700 leading-relaxed space-y-4">
-                        {data.content.split('\n\n').map((paragraph, i) => (
-                            <p key={i} dangerouslySetInnerHTML={{
-                                __html: paragraph
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>')
-                            }} />
-                        ))}
-                    </div>
-                </div>
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-red-500">✗</span>
+                <span>Tells people what to do</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-red-500">✗</span>
+                <span>Requires conscious effort</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-red-500">✗</span>
+                <span>Easy to ignore</span>
+              </div>
             </div>
-        );
-
-        const VisualSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-4xl w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-                        {data.title}
-                    </h2>
-                    {data.visualType === 'fly-comparison' && <FlyComparisonVisual />}
-                    {data.visualType === 'push-vs-nudge' && <PushVsNudgeVisual />}
-                </div>
+            <div className="bg-red-100 rounded-lg px-3 py-2 text-center">
+              <span className="font-bold text-red-700 text-sm">Result: 20% compliance</span>
             </div>
-        );
+          </motion.div>
 
-        const CardsSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <div className="max-w-4xl w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
-                        {data.title}
-                    </h2>
-                    <div className="grid md:grid-cols-4 gap-4">
-                        {data.cards.map((card, i) => (
-                            <div
-                                key={i}
-                                className="bg-white rounded-2xl p-5 card-shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-                            >
-                                <div className="text-4xl mb-3">{card.icon}</div>
-                                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                                    {card.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm">
-                                    {card.description}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-cyan-50 border-2 border-cyan-200 rounded-xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-2">🪶</div>
+              <div className="text-xl font-bold text-cyan-700">NUDGE</div>
             </div>
-        );
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-green-500">✓</span>
+                <span>Guides behavior naturally</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-green-500">✓</span>
+                <span>Works automatically</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-700 text-sm">
+                <span className="text-green-500">✓</span>
+                <span>Hard to resist</span>
+              </div>
+            </div>
+            <div className="bg-cyan-100 rounded-lg px-3 py-2 text-center">
+              <span className="font-bold text-cyan-700 text-sm">Result: 80% compliance</span>
+            </div>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 text-white px-6 py-4 rounded-xl text-center max-w-xl">
+          <div className="text-sm mb-2">The Insight:</div>
+          <div className="text-lg font-bold">
+            The reptilian brain <span className="text-red-400">ignores instructions</span> but <span className="text-cyan-400">follows design</span>
+          </div>
+        </motion.div>
+      </div>
+    );
 
-        const QuizSlide = ({ data, onAnswer, answered, selectedIndex }) => {
-            const isCorrect = selectedIndex === data.correctIndex;
-            const [gifUrl, setGifUrl] = useState('');
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
-            useEffect(() => {
-                if (answered) {
-                    const gifs = isCorrect ? celebrationGifs : empathyGifs;
-                    setGifUrl(gifs[Math.floor(Math.random() * gifs.length)]);
-                }
-            }, [answered, isCorrect]);
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
-            return (
-                <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                    <div className="max-w-2xl w-full">
-                        <div
-                            className="text-sm font-semibold tracking-wide uppercase mb-4 text-center"
-                            style={{ color: LESSON_CONFIG.accentColor }}
-                        >
-                            Quick Check
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
-                            {data.question}
-                        </h2>
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
 
-                        <div className="space-y-3 mb-8">
-                            {data.options.map((option, i) => {
-                                let buttonStyle = "bg-white border-2 border-gray-200 hover:border-gray-300";
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-                                if (answered) {
-                                    if (i === data.correctIndex) {
-                                        buttonStyle = "bg-green-50 border-2 border-green-500 text-green-800";
-                                    } else if (i === selectedIndex && !isCorrect) {
-                                        buttonStyle = "bg-red-50 border-2 border-red-300 text-red-800";
-                                    } else {
-                                        buttonStyle = "bg-gray-50 border-2 border-gray-200 opacity-50";
-                                    }
-                                }
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
 
-                                return (
-                                    <button
-                                        key={i}
-                                        onClick={() => !answered && onAnswer(i)}
-                                        disabled={answered}
-                                        className={`w-full p-4 rounded-xl text-left transition-all ${buttonStyle} ${!answered && 'cursor-pointer'}`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-medium text-sm">
-                                                {String.fromCharCode(65 + i)}
-                                            </span>
-                                            <span className="font-medium">{option}</span>
-                                            {answered && i === data.correctIndex && (
-                                                <span className="ml-auto text-green-600">✓</span>
-                                            )}
-                                        </div>
-                                    </button>
-                                );
-                            })}
-                        </div>
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-                        {answered && (
-                            <div className="text-center">
-                                <div className="mb-4 rounded-xl overflow-hidden inline-block">
-                                    <img
-                                        src={gifUrl}
-                                        alt={isCorrect ? "Celebration" : "Keep trying"}
-                                        className="w-48 h-36 object-cover"
-                                    />
-                                </div>
-                                <div className={`p-4 rounded-xl ${isCorrect ? 'bg-green-50' : 'bg-amber-50'}`}>
-                                    <div className={`font-bold mb-2 ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
-                                        {isCorrect ? '🎉 Exactly right!' : '💡 Not quite!'}
-                                    </div>
-                                    <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-amber-700'}`}>
-                                        {data.explanation}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'fly-comparison') {
+        return <FlyComparisonVisual />;
+      }
+      if (data.visualType === 'push-vs-nudge') {
+        return <PushVsNudgeVisual />;
+      }
+      return null;
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand the power of nudges. Don't push behavior with instructions. Design the environment so the right choice feels natural, automatic, and inevitable.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-        const CompletionSlide = ({ data }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-                <div className="max-w-xl">
-                    <div className="text-6xl mb-6">🪰</div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                        {data.title}
-                    </h2>
-                    <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                        {data.summary}
-                    </p>
-                    <div className="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-6 mb-8">
-                        <div className="text-sm text-cyan-600 mb-2">The Nudge Mantra</div>
-                        <div className="text-lg font-bold text-gray-900">
-                            Design the choice. Don't demand it.
-                        </div>
-                    </div>
-                    <a
-                        href="/learn"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-medium transition-all hover:opacity-90"
-                        style={{ backgroundColor: LESSON_CONFIG.accentColor }}
-                    >
-                        <span>Explore More Lessons</span>
-                        <span>→</span>
-                    </a>
-                </div>
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
-        );
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
 
-        // Main App Component
-        const App = () => {
-            const [currentSlide, setCurrentSlide] = useState(0);
-            const [quizAnswered, setQuizAnswered] = useState(false);
-            const [selectedAnswer, setSelectedAnswer] = useState(null);
-            const [slideKey, setSlideKey] = useState(0);
-
-            const currentSlideData = slides[currentSlide];
-
-            const canGoNext = () => {
-                if (currentSlideData.type === 'quiz') {
-                    return quizAnswered;
-                }
-                return true;
-            };
-
-            const handleNext = useCallback(() => {
-                if (currentSlide < slides.length - 1 && canGoNext()) {
-                    setCurrentSlide(prev => prev + 1);
-                    setSlideKey(prev => prev + 1);
-                }
-            }, [currentSlide, quizAnswered]);
-
-            const handlePrev = useCallback(() => {
-                if (currentSlide > 0) {
-                    setCurrentSlide(prev => prev - 1);
-                    setSlideKey(prev => prev + 1);
-                }
-            }, [currentSlide]);
-
-            const handleQuizAnswer = (index) => {
-                setSelectedAnswer(index);
-                setQuizAnswered(true);
-            };
-
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if (e.key === 'ArrowRight' || e.key === ' ') {
-                        e.preventDefault();
-                        handleNext();
-                    } else if (e.key === 'ArrowLeft') {
-                        e.preventDefault();
-                        handlePrev();
-                    }
-                };
-
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [handleNext, handlePrev]);
-
-            // Reset quiz state when leaving quiz slide
-            useEffect(() => {
-                if (currentSlideData.type !== 'quiz') {
-                    setQuizAnswered(false);
-                    setSelectedAnswer(null);
-                }
-            }, [currentSlide]);
-
-            const renderSlide = () => {
-                const props = { data: currentSlideData, key: slideKey };
-
-                switch (currentSlideData.type) {
-                    case 'welcome':
-                        return <WelcomeSlide {...props} />;
-                    case 'hook':
-                        return <HookSlide {...props} />;
-                    case 'content':
-                        return <ContentSlide {...props} />;
-                    case 'visual':
-                        return <VisualSlide {...props} />;
-                    case 'example':
-                        return <ExamplesSlide {...props} />;
-                    case 'cards':
-                        return <CardsSlide {...props} />;
-                    case 'quiz':
-                        return <QuizSlide
-                            {...props}
-                            onAnswer={handleQuizAnswer}
-                            answered={quizAnswered}
-                            selectedIndex={selectedAnswer}
-                        />;
-                    case 'completion':
-                        return <CompletionSlide {...props} />;
-                    default:
-                        return <div>Unknown slide type</div>;
-                }
-            };
-
-            return (
-                <div className="bg-white min-h-screen pb-20">
-                    <ProgressBar current={currentSlide} total={slides.length} />
-
-                    <div className="slide-enter-active">
-                        {renderSlide()}
-                    </div>
-
-                    <Navigation
-                        current={currentSlide}
-                        total={slides.length}
-                        onPrev={handlePrev}
-                        onNext={handleNext}
-                        canGoNext={canGoNext()}
-                    />
-                </div>
-            );
-        };
-
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
 </body>
 </html>
