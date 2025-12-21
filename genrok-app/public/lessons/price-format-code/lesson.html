@@ -70,8 +70,8 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, AnimatePresence } = window.Motion;
-    const { useState, useEffect, useCallback, useMemo } = React;
+    const { motion, AnimatePresence, useInView } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
@@ -121,12 +121,12 @@
     // PREMIUM ANIMATION COMPONENTS
 
     const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
-      const [current, setCurrent] = React.useState(0);
-      const [hasAnimated, setHasAnimated] = React.useState(false);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const [current, setCurrent] = useState(0);
 
-      React.useEffect(() => {
-        if (hasAnimated) return;
-        setHasAnimated(true);
+      useEffect(() => {
+        if (!isInView) return;
 
         const duration = 1500;
         const steps = 60;
@@ -140,20 +140,21 @@
         }, duration / steps);
 
         return () => clearInterval(timer);
-      }, [value, hasAnimated]);
+      }, [value, isInView]);
 
-      return <span>{prefix}{current.toLocaleString()}{suffix}</span>;
+      return <span ref={ref}>{prefix}{current.toLocaleString()}{suffix}</span>;
     };
 
     const TypingText = ({ text, speed = 40 }) => {
-      const [displayed, setDisplayed] = React.useState('');
-      const [hasTyped, setHasTyped] = React.useState(false);
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const [displayed, setDisplayed] = useState('');
 
-      React.useEffect(() => {
-        if (hasTyped) return;
-        setHasTyped(true);
+      useEffect(() => {
+        if (!isInView) return;
 
         let i = 0;
+        setDisplayed('');
         const timer = setInterval(() => {
           if (i < text.length) {
             setDisplayed(text.substring(0, i + 1));
@@ -163,34 +164,39 @@
           }
         }, speed);
         return () => clearInterval(timer);
-      }, [text, hasTyped]);
+      }, [text, isInView, speed]);
 
-      return <span>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
+      return <span ref={ref}>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
     };
 
-    const BarChart = ({ data, accentColor }) => (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {data.map((item, i) => (
-          <motion.div key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.15 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '4px' }}>
-              <span>{item.label}</span>
-              <span style={{ fontWeight: 'bold' }}>{item.value}</span>
-            </div>
-            <div style={{ height: '12px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
-              <motion.div
-                style={{ height: '100%', borderRadius: '999px', background: accentColor }}
-                initial={{ width: 0 }}
-                animate={{ width: `${item.percentage}%` }}
-                transition={{ delay: i * 0.15 + 0.2, duration: 0.8 }}
-              />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    );
+    const BarChart = ({ data, accentColor }) => {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+      return (
+        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {data.map((item, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ delay: i * 0.15, duration: 0.5 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '4px' }}>
+                <span>{item.label}</span>
+                <span style={{ fontWeight: 'bold' }}>{item.value}</span>
+              </div>
+              <div style={{ height: '12px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
+                <motion.div
+                  style={{ height: '100%', borderRadius: '999px', background: accentColor }}
+                  initial={{ width: 0 }}
+                  animate={isInView ? { width: `${item.percentage}%` } : { width: 0 }}
+                  transition={{ delay: i * 0.15 + 0.2, duration: 0.8 }}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      );
+    };
 
     const IconGrid = ({ items }) => (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
@@ -208,6 +214,33 @@
       </div>
     );
 
+    const VisualContrastSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative w-full rounded-2xl overflow-hidden"
+          style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
+        >
+          <img
+            src={data.image}
+            alt={data.caption}
+            className="w-full h-auto"
+            style={{ maxHeight: '60vh', objectFit: 'cover' }}
+          />
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-6 text-center text-lg md:text-xl text-neutral-600 font-medium"
+        >
+          {data.caption}
+        </motion.p>
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: [
         'The 3 price formats and when to use each one',
@@ -215,6 +248,7 @@
         'MIT research on charm pricing and the psychology of $39 vs $34'
       ]},
       { type: 'hook', headline: '$12.00 vs 12 vs $12. Same price. Wildly different results.', subtext: 'A Cornell study tested the exact same menu items at three different price formats. "$12.00" performed the worst. "Twelve dollars" came in second. But "12" - just the numeral, no dollar sign, no decimals - outsold both significantly. The price didn\'t change. The FORMAT did. And format changes perception.' },
+      { type: 'visualContrast', image: 'images/price-formats.png', caption: 'The Same Price, Three Different Perceptions' },
       { type: 'priceComparison', formats: [
         { format: '12', label: 'Everyday Items', description: 'No symbol, minimal friction', delay: 0.1 },
         { format: '$39', label: 'Deals & Bargains', description: 'Charm pricing signals value', delay: 0.3 },
@@ -588,6 +622,7 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
+          case 'visualContrast': return <VisualContrastSlide data={slide} />;
           case 'priceComparison': return <PriceComparisonSlide data={slide} />;
           case 'typingReveal': return <TypingRevealSlide data={slide} />;
           case 'barChart': return <BarChartSlide data={slide} />;
