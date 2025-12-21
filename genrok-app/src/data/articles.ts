@@ -4405,6 +4405,102 @@ Amsterdam Airport had a cleaning problem. Signs didn't work. So they etched a sm
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/fly-in-the-urinal/lesson.html' }
       ]
+    },
+    // Conversion Blueprint lessons
+    {
+      id: 107,
+      thumbnail: '/images/lessons/thirty-two-violinist.png',
+      title: 'The $32 Violinist',
+      intro: 'Why the world\'s greatest violinist made just $32 playing in a subway - and what it means for your ads.',
+      directUrl: '/learn/lessons/thirty-two-violinist',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Context', label: 'Focus' }
+      ],
+      content: `## The $32 Violinist
+
+Joshua Bell, one of the world's greatest violinists, played a $3.5M Stradivarius in a Washington D.C. metro station. 1,097 people walked by. Only 7 stopped. He made just $32. Two days prior, he sold out a Boston concert at $100/ticket. Same music. Same skill. Different context. Your product on a meme page = perceived as cheap. Same product on a premium influencer = perceived as valuable. Context IS the product.
+
+**Open the interactive lesson to master context psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/thirty-two-violinist/lesson.html' }
+      ]
+    },
+    {
+      id: 108,
+      thumbnail: '/images/lessons/invisible-influence.png',
+      title: 'The Invisible Influence',
+      intro: 'How a simple background image changes what products your customers buy - without them knowing.',
+      directUrl: '/learn/lessons/invisible-influence',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Invisible Influence
+
+Researchers showed two groups the same furniture. Only difference: the background image. Clouds = customers bought comfort. Coins = customers bought cheap. When asked, both groups denied the background influenced them. But it did. Your hero image is silently deciding what products customers click. Test it.
+
+**Open the interactive lesson to master visual priming.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/invisible-influence/lesson.html' }
+      ]
+    },
+    {
+      id: 109,
+      thumbnail: '/images/lessons/price-format-code.png',
+      title: 'The Price Format Code',
+      intro: 'Why "$39" outsells "$34" - and when to use each price format in your store.',
+      directUrl: '/learn/lessons/price-format-code',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Price Format Code
+
+A Cornell study found "12" outsells "$12.00". MIT found "$39" outsells "$34". For premium goods, "$250" beats "$249.99". The format is the signal. Wrong format = wrong positioning = dead conversions. Supplements: no dollar sign. Fashion: charm pricing. Luxury: rounded numbers.
+
+**Open the interactive lesson to master price psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/price-format-code/lesson.html' }
+      ]
+    },
+    {
+      id: 110,
+      thumbnail: '/images/lessons/cost-of-standing-still.png',
+      title: 'The Cost of Standing Still',
+      intro: 'Stop selling your price. Start selling what customers LOSE without you.',
+      directUrl: '/learn/lessons/cost-of-standing-still',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Framing', label: 'Focus' }
+      ],
+      content: `## The Cost of Standing Still
+
+"Our service is $10,000" feels expensive. "Staying where you are costs you $100,000/month in lost revenue" makes $10,000 feel like a bargain. Stop selling features. Sell the cost of inaction. Your $99 tool isn't the expense - their $3,000/month in abandoned carts is.
+
+**Open the interactive lesson to master cost reframing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cost-of-standing-still/lesson.html' }
+      ]
+    },
+    {
+      id: 111,
+      thumbnail: '/images/lessons/unity-principle.png',
+      title: 'The Unity Principle',
+      intro: 'One word change in your review request email = 3x more reviews.',
+      directUrl: '/learn/lessons/unity-principle',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Language', label: 'Focus' }
+      ],
+      content: `## The Unity Principle
+
+"Please leave a review" makes them a critic. "Could we ask for your advice?" makes them a partner. The word "advice" triggers tribal belonging. Warren Buffett uses this. Small brands should too. Update your Klaviyo flow. Replace "feedback" with "advice." Watch review rates triple.
+
+**Open the interactive lesson to master unity language.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/unity-principle/lesson.html' }
+      ]
     }
   ];
 

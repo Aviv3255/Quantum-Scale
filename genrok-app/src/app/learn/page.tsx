@@ -127,6 +127,12 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'paradox-of-choice': { title: 'The Paradox of Choice', description: 'Why fewer options = more sales' },
   'forty-million-mistake': { title: 'The $40 Million Mistake', description: 'Data without emotion = disaster' },
   'fly-in-the-urinal': { title: 'The Fly in the Urinal', description: 'Nudge psychology in action' },
+  // Conversion Blueprint lessons
+  'thirty-two-violinist': { title: 'The $32 Violinist', description: 'Context dictates perceived value' },
+  'invisible-influence': { title: 'The Invisible Influence', description: 'How backgrounds prime buying decisions' },
+  'price-format-code': { title: 'The Price Format Code', description: 'How formatting changes price perception' },
+  'cost-of-standing-still': { title: 'The Cost of Standing Still', description: 'Sell the cost of NOT buying' },
+  'unity-principle': { title: 'The Unity Principle', description: 'One word turns customers into partners' },
 };
 
 // Categories for filtering
