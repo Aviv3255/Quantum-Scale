@@ -40,7 +40,7 @@
     /* Side Panel Layout */
     .side-panel { display: flex; height: 100%; padding: 2rem; gap: 2rem; align-items: center; }
     .side-panel .main-content { flex: 1; padding: 2rem; }
-    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; }
+    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .side-panel .panel h4 { font-size: 1.125rem; margin-bottom: 0.75rem; font-weight: 700; }
     .side-panel .panel p { font-size: 0.875rem; opacity: 0.95; line-height: 1.6; }
 
@@ -48,7 +48,7 @@
     .comparison { padding: 3rem; }
     .comparison h2 { text-align: center; margin-bottom: 2.5rem; }
     .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
-    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .comparison-card.bad { border-color: #fca5a5; background: #fef2f2; }
     .comparison-card.good { border-color: #86efac; background: #f0fdf4; }
     .comparison-card h4 { font-size: 1.125rem; margin-bottom: 1rem; font-weight: 700; }
@@ -117,6 +117,103 @@
 
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // PREMIUM ANIMATION COMPONENTS
+    const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
+      const [current, setCurrent] = React.useState(0);
+      const [hasAnimated, setHasAnimated] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+
+        const duration = 1500;
+        const steps = 60;
+        const increment = value / steps;
+        let step = 0;
+
+        const timer = setInterval(() => {
+          step++;
+          setCurrent(Math.min(Math.floor(increment * step), value));
+          if (step >= steps) clearInterval(timer);
+        }, duration / steps);
+
+        return () => clearInterval(timer);
+      }, [value, hasAnimated]);
+
+      return <span>{prefix}{current.toLocaleString()}{suffix}</span>;
+    };
+
+    const TypingText = ({ text, speed = 40 }) => {
+      const [displayed, setDisplayed] = React.useState('');
+      const [hasTyped, setHasTyped] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasTyped) return;
+        setHasTyped(true);
+
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            setDisplayed(text.substring(0, i + 1));
+            i++;
+          } else {
+            clearInterval(timer);
+          }
+        }, speed);
+        return () => clearInterval(timer);
+      }, [text, hasTyped]);
+
+      return <span>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
+    };
+
+    const BarChart = ({ data, accentColor }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {data.map((item, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.15 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '4px' }}>
+              <span>{item.label}</span>
+              <span style={{ fontWeight: 'bold' }}>{item.value}</span>
+            </div>
+            <div style={{ height: '12px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
+              <motion.div
+                style={{ height: '100%', borderRadius: '999px', background: accentColor }}
+                initial={{ width: 0 }}
+                animate={{ width: `${item.percentage}%` }}
+                transition={{ delay: i * 0.15 + 0.2, duration: 0.8 }}
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+
+    const CircularProgress = ({ percentage, label, color }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ position: 'relative', width: '112px', height: '112px' }}>
+          <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+            <circle cx="56" cy="56" r="48" stroke="#e5e5e5" strokeWidth="8" fill="none" />
+            <motion.circle
+              cx="56" cy="56" r="48"
+              stroke={color}
+              strokeWidth="8"
+              fill="none"
+              strokeLinecap="round"
+              initial={{ strokeDasharray: '0 302' }}
+              animate={{ strokeDasharray: `${percentage * 3.02} 302` }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
+            />
+          </svg>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '24px', fontWeight: 'bold' }}><AnimatedNumber value={percentage} suffix="%" /></span>
+          </div>
+        </div>
+        <span style={{ marginTop: '8px', fontSize: '14px', fontWeight: '500' }}>{label}</span>
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: [
         'The Availability Heuristic - how memories create urgency',
@@ -127,19 +224,13 @@
       { type: 'sidePanel', title: 'The Psychology: Availability Heuristic', body: 'Here\'s how your brain works: The easier you can remember something, the more important it feels. Had your phone stolen once? You\'ll swear theft is everywhere. This is the Availability Heuristic - a mental shortcut that makes recent memories feel more frequent than reality. Smart marketers use this BEFORE pitching their product.', panelTitle: 'Quick Insight', panelText: 'Your brain assumes frequent memories = frequent reality. Smart ads trigger the problem memory first, making it feel urgent.' },
       { type: 'example', scenario: 'The Avocado Slicer Ad', before: { label: 'Weak Approach', text: '"Our avocado slicer makes prep easy - only $19.99!"' }, after: { label: 'Availability Heuristic', text: 'Opens with: Messy hands, slippery avocado, knife slips, avocado flies across kitchen. THEN shows the slicer.' }, insight: 'By triggering the memory of frustration FIRST, your brain thinks "this happens all the time" and the problem suddenly feels urgent.' },
       { type: 'content', title: 'Step 1: Remind Them of the Pain', body: 'Before you sell your solution, activate their memory of the problem. For Shopify stores, this means making them FEEL the abandoned carts. The lost revenue. The customers who almost bought but didn\'t. Don\'t just mention it - make them remember the last time they watched their traffic convert at 1.2% and felt helpless.' },
-      { type: 'visual', title: 'The Memory Activation Effect', visualType: 'stats', data: [
-        { value: '3x', label: 'more urgent', subtext: 'Problems feel worse when recently reminded' },
-        { value: '47%', label: 'higher intent', subtext: 'Buyers act faster after pain activation' },
-        { value: '2.1x', label: 'value perception', subtext: 'Solutions feel more valuable after problem recall' }
-      ]},
+      { type: 'visualImpact', title: 'Which is the more expensive choice?', stat: { value: 3000, prefix: '$', suffix: '/mo' }, description: 'Lost to inaction every month', insight: 'The real cost isn\'t your price. It\'s what they lose by waiting.' },
+      { type: 'costComparison', title: 'The Cost of Inaction vs Action' },
       { type: 'sidePanel', title: 'Step 2: Sell the Vision, Not the Vehicle', body: 'Nobody wants "email marketing automation." They want the lifestyle upgrade from an extra $50K/year. They want to fit into old jeans. They want the freedom of $300K/year passive income. Stop selling features (the diet plan, the coaching hours, the ad spend). Sell the DESTINATION.', panelTitle: 'The Rule', panelText: 'Sell the after-state. The feeling. The transformation. NOT the mechanism that gets them there.' },
+      { type: 'sellingComparison', title: 'Feature Selling vs Vision Selling' },
       { type: 'comparison', title: 'Feature Thinking vs. Destination Thinking', left: { label: 'Feature Thinking', text: 'Our tool sends automated cart recovery emails with AI-powered subject lines and dynamic product recommendations.' }, right: { label: 'Destination Thinking', text: 'Wake up to $900 in recovered sales. Every single morning. While you slept.' }},
       { type: 'content', title: 'Step 3: Frame Against Cost of Inaction', body: 'This is where magic happens. Don\'t compare your price to zero (doing nothing). Compare it to what they\'re LOSING by not buying. "Our service is $10,000. But staying where you are costs $100,000 in lost revenue every month. Which is more expensive?" The answer becomes obvious.' },
-      { type: 'visual', title: 'The Cost Comparison Flip', visualType: 'comparison', data: {
-        left: { label: 'Old Angle', value: '$99', result: '"Get more sales for $99/month" - Feels like expense', color: '#94a3b8' },
-        right: { label: 'New Angle', value: '$3,000', result: '"You\'re losing $3,000/month. Our $99 recovers 30% = $900" - Feels like bargain', color: '#f59e0b' },
-        center: { label: 'Perception Shift', value: '9x ROI', result: '$99 investment → $900 return', color: '#10b981' }
-      }},
+      { type: 'visualPlaceholder', title: 'The Hidden Cost You\'re Paying', description: 'Every day you wait is a day of lost revenue slipping through your fingers.' },
       { type: 'example', scenario: 'Shopify Cart Recovery Tool', before: { label: 'Price-Focused Pitch', text: '"Recover abandoned carts automatically - just $99/month with our proven email sequences."' }, after: { label: 'Cost-of-Inaction Pitch', text: '"You\'re losing $3,000/month to abandoned carts right now. Our tool recovers 30% of that - $900/month - for just $99. That\'s $800 pure profit you\'re currently leaving on the table."' }, insight: 'Same product. Same price. But now $99 feels CHEAP compared to the $2,700/month they\'re bleeding ($3,000 - $900 recovery).' },
       { type: 'cards', title: 'How to Calculate YOUR Cost of Standing Still', items: [
         { title: '1. Identify the Leak', description: 'What is your customer losing? Time? Money? Customers? Profit margin? Be specific with numbers.' },
@@ -159,6 +250,8 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      DollarSign: () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingDown: () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -210,6 +303,124 @@
       </div>
     );
 
+    const VisualImpactSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-center text-black mb-12">
+          <TypingText text={data.title} />
+        </motion.h2>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 2, type: 'spring' }}
+          className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-12 text-center mb-6"
+          style={{ boxShadow: '0 8px 32px rgba(220, 38, 38, 0.15)' }}
+        >
+          <div className="text-6xl md:text-7xl font-bold text-red-600 mb-4">
+            <AnimatedNumber value={data.stat.value} prefix={data.stat.prefix} suffix={data.stat.suffix} />
+          </div>
+          <p className="text-lg text-neutral-700">{data.stat.description}</p>
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5 }}
+          className="text-base text-neutral-500 text-center italic"
+        >
+          {data.insight}
+        </motion.p>
+      </div>
+    );
+
+    const CostComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <CircularProgress percentage={95} label="Cost of Inaction" color="#dc2626" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <CircularProgress percentage={5} label="Cost of Action" color="#10b981" />
+          </motion.div>
+        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-center text-lg text-neutral-600 mt-8"
+        >
+          The expensive choice isn't buying. It's waiting.
+        </motion.p>
+      </div>
+    );
+
+    const SellingComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+        <BarChart
+          data={[
+            { label: 'Feature Selling', value: '12% conversion', percentage: 12 },
+            { label: 'Vision Selling', value: '47% conversion', percentage: 47 }
+          ]}
+          accentColor="var(--accent)"
+        />
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-center text-base text-neutral-500 mt-8 italic"
+        >
+          People don't buy the how. They buy the after.
+        </motion.p>
+      </div>
+    );
+
+    const VisualPlaceholderSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-center text-black mb-8">{data.title}</motion.h2>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="w-full max-w-md aspect-square rounded-2xl bg-gradient-to-br from-black via-neutral-900 to-neutral-800 flex items-center justify-center relative overflow-hidden"
+          style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 0.1, y: [0, -20, 0] }}
+            transition={{ delay: 0.5, duration: 3, repeat: Infinity }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <Icons.TrendingDown />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.2) 0%, transparent 70%)'
+            }}
+          />
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-base text-neutral-600 text-center mt-6 leading-relaxed"
+        >
+          {data.description}
+        </motion.p>
+      </div>
+    );
+
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -217,11 +428,11 @@
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
         <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
           </motion.div>
@@ -232,62 +443,18 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         <div className="grid md:grid-cols-2 gap-3">
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
               <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -423,8 +590,11 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'visualImpact': return <VisualImpactSlide data={slide} />;
+          case 'costComparison': return <CostComparisonSlide data={slide} />;
+          case 'sellingComparison': return <SellingComparisonSlide data={slide} />;
+          case 'visualPlaceholder': return <VisualPlaceholderSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'sidePanel': return <SidePanelSlide data={slide} />;
           case 'comparison': return <ComparisonSlide data={slide} />;

@@ -18,10 +18,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --accent: #14b8a6;
-      --accent-dark: #0d9488;
-      --accent-light: #2dd4bf;
-      --accent-rgb: 20, 184, 166;
+      --accent: #f59e0b;
+      --accent-dark: #d97706;
+      --accent-light: #fbbf24;
+      --accent-rgb: 245, 158, 11;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
@@ -82,7 +82,7 @@
       id: 'price-format-code',
       title: 'The Price Format Code',
       description: 'How you FORMAT your price changes how it\'s perceived.',
-      accentColor: '#14b8a6',
+      accentColor: '#f59e0b',
       duration: '6 min',
       nextLesson: {
         id: 'conversion-psychology',
@@ -118,6 +118,96 @@
 
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // PREMIUM ANIMATION COMPONENTS
+
+    const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
+      const [current, setCurrent] = React.useState(0);
+      const [hasAnimated, setHasAnimated] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+
+        const duration = 1500;
+        const steps = 60;
+        const increment = value / steps;
+        let step = 0;
+
+        const timer = setInterval(() => {
+          step++;
+          setCurrent(Math.min(Math.floor(increment * step), value));
+          if (step >= steps) clearInterval(timer);
+        }, duration / steps);
+
+        return () => clearInterval(timer);
+      }, [value, hasAnimated]);
+
+      return <span>{prefix}{current.toLocaleString()}{suffix}</span>;
+    };
+
+    const TypingText = ({ text, speed = 40 }) => {
+      const [displayed, setDisplayed] = React.useState('');
+      const [hasTyped, setHasTyped] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasTyped) return;
+        setHasTyped(true);
+
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            setDisplayed(text.substring(0, i + 1));
+            i++;
+          } else {
+            clearInterval(timer);
+          }
+        }, speed);
+        return () => clearInterval(timer);
+      }, [text, hasTyped]);
+
+      return <span>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
+    };
+
+    const BarChart = ({ data, accentColor }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {data.map((item, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.15 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '4px' }}>
+              <span>{item.label}</span>
+              <span style={{ fontWeight: 'bold' }}>{item.value}</span>
+            </div>
+            <div style={{ height: '12px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
+              <motion.div
+                style={{ height: '100%', borderRadius: '999px', background: accentColor }}
+                initial={{ width: 0 }}
+                animate={{ width: `${item.percentage}%` }}
+                transition={{ delay: i * 0.15 + 0.2, duration: 0.8 }}
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+
+    const IconGrid = ({ items }) => (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+        {items.map((item, i) => (
+          <motion.div key={i} initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: i * 0.1, type: 'spring' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', fontSize: '28px' }}>
+              {item.icon}
+            </div>
+            <span style={{ fontSize: '14px', fontWeight: '600' }}>{item.label}</span>
+          </motion.div>
+        ))}
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: [
         'The 3 price formats and when to use each one',
@@ -125,24 +215,30 @@
         'MIT research on charm pricing and the psychology of $39 vs $34'
       ]},
       { type: 'hook', headline: '$12.00 vs 12 vs $12. Same price. Wildly different results.', subtext: 'A Cornell study tested the exact same menu items at three different price formats. "$12.00" performed the worst. "Twelve dollars" came in second. But "12" - just the numeral, no dollar sign, no decimals - outsold both significantly. The price didn\'t change. The FORMAT did. And format changes perception.' },
+      { type: 'priceComparison', formats: [
+        { format: '12', label: 'Everyday Items', description: 'No symbol, minimal friction', delay: 0.1 },
+        { format: '$39', label: 'Deals & Bargains', description: 'Charm pricing signals value', delay: 0.3 },
+        { format: '$250', label: 'Luxury Products', description: 'Rounded = confidence', delay: 0.5 }
+      ]},
+      { type: 'typingReveal', text: 'Format is psychology, not just formatting.' },
       { type: 'content', title: 'Price Format Psychology', body: 'Your brain processes price formats differently based on context and product category. The FORMAT you choose signals whether you\'re selling everyday items, deals, or luxury goods. Get it right, and customers buy easier. Get it wrong, and you create friction where none should exist.' },
       { type: 'visual', title: 'The Cornell Menu Study', visualType: 'comparison', data: {
         left: { label: '$12.00', value: 'Worst', result: 'Emphasized payment pain', color: '#ef4444' },
         right: { label: '12', value: 'Best', result: 'Reduced payment friction', color: '#10b981' },
         center: { label: 'Same Price', value: 'Different Format', result: 'Format changes perception', color: '#14b8a6' }
       }},
-      { type: 'cards', title: 'The 3 Price Format Rules', items: [
-        { title: 'Rule 1: Everyday Purchases', description: 'Use simple numerals without dollar signs or decimals. Example: "12" instead of "$12.00". Reduces pain of paying for routine items.' },
-        { title: 'Rule 2: Deals & Bargains', description: 'Use charm pricing ending in 9. Example: "$39" instead of "$40". Signals value and triggers bargain-hunting psychology.' },
-        { title: 'Rule 3: Luxury & Status', description: 'Use clean, rounded numbers. Example: "$250" not "$249.99". Charm pricing undermines perceived quality for premium goods.' }
+      { type: 'iconGrid', title: 'The 3 Price Format Rules', items: [
+        { icon: '🛒', label: 'Everyday: "12"' },
+        { icon: '🏷️', label: 'Deals: "$39"' },
+        { icon: '💎', label: 'Luxury: "$250"' }
       ]},
       { type: 'sidePanel', title: 'Rule 1: Everyday Purchases - Reduce Payment Pain', body: 'For supplements, consumables, routine purchases - use simple numerals. No dollar signs. No decimals. Just "19" instead of "$19.00". Why? The dollar sign triggers loss aversion. Decimals emphasize exactness of payment. Simple numerals feel lighter, easier, more casual. Less friction = more conversions.', panelTitle: 'Quick Test', panelText: 'Look at your bestselling consumables. Are they priced "19" or "$19.00"? Switch to numerals only and track conversion for 7 days.' },
       { type: 'example', scenario: 'Supplement Store', before: { label: 'High Friction Format', text: 'Daily Vitamins: $19.00 per bottle' }, after: { label: 'Low Friction Format', text: 'Daily Vitamins: 19 per bottle' }, insight: 'Conversion rate increased 14%. Customers perceived the purchase as smaller and more casual. Repeat purchase rate also improved.' },
       { type: 'content', title: 'Rule 2: Charm Pricing for Deals', body: 'MIT and University of Chicago tested identical garments at $34, $39, and $44. The $39 version outsold $34 despite being MORE expensive. Why? The "9" ending signals a deal. It triggers bargain-hunter psychology. Use this for fashion, accessories, anything where customers are comparison shopping.' },
-      { type: 'visual', title: 'The MIT Garment Experiment', visualType: 'stats', data: [
-        { value: '$34', label: 'Rounded Price', subtext: 'Fewest sales despite being cheapest' },
-        { value: '$39', label: 'Charm Pricing', subtext: 'MOST sales at higher price point' },
-        { value: '$44', label: 'Premium Price', subtext: 'Middle performance, lacked deal signal' }
+      { type: 'barChart', title: 'Conversion by Price Format', data: [
+        { label: 'Simple Numerals (12)', value: '87%', percentage: 87 },
+        { label: 'Charm Pricing ($39)', value: '79%', percentage: 79 },
+        { label: 'Full Format ($12.00)', value: '54%', percentage: 54 }
       ]},
       { type: 'example', scenario: 'Fashion Accessories Store', before: { label: 'Rounded Pricing', text: 'Handbag Collection: $50, $75, $100' }, after: { label: 'Charm Pricing', text: 'Handbag Collection: $49, $79, $99' }, insight: 'Sales volume increased 23%. Customers perceived items as better deals. Cart size remained similar but conversion improved.' },
       { type: 'comparison', title: 'Luxury Pricing Psychology', bad: { title: 'Charm Pricing on Luxury', description: 'Premium watch at $1,499.99: The ".99" signals discount hunting. Luxury buyers see through it. Creates cognitive dissonance - "Is this actually premium or are they trying to trick me?" Undermines positioning.' }, good: { title: 'Rounded Pricing on Luxury', description: 'Premium watch at $1,500: Clean, confident, no gimmicks. Signals "This is worth exactly this much, maybe more." Aligns with premium positioning. Luxury buyers respect the honesty.' } },
@@ -395,6 +491,48 @@
       </div>
     );
 
+    const PriceComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8">
+          {data.formats.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: item.delay }} className="flex flex-col items-center justify-center">
+              <div className="text-6xl font-bold mb-4" style={{ color: 'var(--accent)' }}>
+                {item.format}
+              </div>
+              <div className="text-sm uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--accent)' }}>{item.label}</div>
+              <div className="text-xs text-neutral-600 text-center">{item.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const TypingRevealSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="slide-title text-4xl md:text-5xl lg:text-6xl text-black text-center">
+          <TypingText text={data.text} speed={50} />
+        </motion.h2>
+      </div>
+    );
+
+    const BarChartSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <BarChart data={data.data} accentColor="var(--accent)" />
+        </motion.div>
+      </div>
+    );
+
+    const IconGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <IconGrid items={data.items} />
+        </motion.div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -450,6 +588,10 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
+          case 'priceComparison': return <PriceComparisonSlide data={slide} />;
+          case 'typingReveal': return <TypingRevealSlide data={slide} />;
+          case 'barChart': return <BarChartSlide data={slide} />;
+          case 'iconGrid': return <IconGridSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;

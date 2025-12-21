@@ -40,7 +40,7 @@
     /* Side Panel Layout */
     .side-panel { display: flex; height: 100%; padding: 2rem; gap: 2rem; align-items: center; }
     .side-panel .main-content { flex: 1; padding: 2rem; }
-    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; }
+    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .side-panel .panel h4 { font-size: 1.125rem; margin-bottom: 0.75rem; font-weight: 700; }
     .side-panel .panel p { font-size: 0.875rem; opacity: 0.95; line-height: 1.6; }
 
@@ -48,7 +48,7 @@
     .comparison { padding: 3rem; }
     .comparison h2 { text-align: center; margin-bottom: 2.5rem; }
     .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
-    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .comparison-card.bad { border-color: #fca5a5; background: #fef2f2; }
     .comparison-card.good { border-color: #86efac; background: #f0fdf4; }
     .comparison-card h4 { font-size: 1.125rem; margin-bottom: 1rem; font-weight: 700; }
@@ -117,6 +117,121 @@
 
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // PREMIUM ANIMATION COMPONENTS
+    const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
+      const [current, setCurrent] = React.useState(0);
+      const [hasAnimated, setHasAnimated] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+
+        const duration = 1500;
+        const steps = 60;
+        const targetVal = typeof value === 'string' ? parseFloat(value) : value;
+        const increment = targetVal / steps;
+        let step = 0;
+
+        const timer = setInterval(() => {
+          step++;
+          const newVal = Math.min(increment * step, targetVal);
+          setCurrent(value.toString().includes('.') ? parseFloat(newVal.toFixed(1)) : Math.floor(newVal));
+          if (step >= steps) clearInterval(timer);
+        }, duration / steps);
+
+        return () => clearInterval(timer);
+      }, [value, hasAnimated]);
+
+      const displayValue = typeof value === 'string' && value.includes('.') ? current.toFixed(1) : current.toLocaleString();
+      return <span>{prefix}{displayValue}{suffix}</span>;
+    };
+
+    const TypingText = ({ text, speed = 40 }) => {
+      const [displayed, setDisplayed] = React.useState('');
+      const [hasTyped, setHasTyped] = React.useState(false);
+
+      React.useEffect(() => {
+        if (hasTyped) return;
+        setHasTyped(true);
+
+        let i = 0;
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            setDisplayed(text.substring(0, i + 1));
+            i++;
+          } else {
+            clearInterval(timer);
+          }
+        }, speed);
+        return () => clearInterval(timer);
+      }, [text, hasTyped]);
+
+      return <span>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
+    };
+
+    const BarChart = ({ data, accentColor }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '500px', margin: '0 auto' }}>
+        {data.map((item, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.15 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', marginBottom: '8px', fontWeight: '600' }}>
+              <span>{item.label}</span>
+              <span style={{ color: accentColor }}>{item.value}</span>
+            </div>
+            <div style={{ height: '16px', background: '#e5e5e5', borderRadius: '999px', overflow: 'hidden' }}>
+              <motion.div
+                style={{ height: '100%', borderRadius: '999px', background: accentColor }}
+                initial={{ width: 0 }}
+                animate={{ width: `${item.percentage}%` }}
+                transition={{ delay: i * 0.15 + 0.2, duration: 0.8, ease: 'easeOut' }}
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+
+    const IconGrid = ({ items }) => (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', maxWidth: '600px', margin: '0 auto' }}>
+        {items.map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: i * 0.1, type: 'spring', stiffness: 150 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '20px',
+              background: 'white',
+              borderRadius: '16px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+            }}
+          >
+            <div style={{
+              width: '72px',
+              height: '72px',
+              borderRadius: '16px',
+              background: `rgba(var(--accent-rgb), 0.1)`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '12px',
+              fontSize: '32px'
+            }}>
+              {item.icon}
+            </div>
+            <span style={{ fontSize: '15px', fontWeight: '700', color: '#1a1a1a', marginBottom: '6px' }}>{item.label}</span>
+            <span style={{ fontSize: '13px', color: '#737373', lineHeight: '1.5' }}>{item.description}</span>
+          </motion.div>
+        ))}
+      </div>
+    );
+
     const slides = [
       { type: 'welcome', learningGoals: [
         'Why "we" triggers tribal belonging instantly',
@@ -125,20 +240,19 @@
       ]},
       { type: 'hook', headline: 'Change one word. Get 10x more reviews.', subtext: '"Please leave us a review." Nobody cares. "Could we ask for your advice?" Suddenly they WANT to help. Same request. Different word. The difference? Tribal psychology. When you ask for "advice" instead of "feedback," you activate the Unity Principle - and people stop being customers and start being partners.' },
       { type: 'sidePanel', title: 'The Science: Unity Principle', body: 'We are wired to say "yes" to people we perceive as part of our tribe. Family. Team. Community. When someone feels like "one of us," persuasion becomes automatic. Robert Cialdini calls this the Unity Principle - the most powerful influence trigger discovered in the last 20 years. It\'s not about similarity. It\'s about SHARED IDENTITY.', panelTitle: 'Key Insight', panelText: 'Unity beats all other persuasion triggers. When they feel like tribe, resistance disappears.' },
-      { type: 'visual', title: 'The Tribal Response', visualType: 'stats', data: [
-        { value: '3.2x', label: 'compliance rate', subtext: 'People help "tribe members" 3x more' },
-        { value: '10x', label: 'review boost', subtext: 'Asking for "advice" vs "feedback"' },
-        { value: '89%', label: 'trust increase', subtext: 'Using "we" language vs "you" language' }
+      { type: 'statsDisplay', title: 'The Tribal Response', stats: [
+        { value: 3.2, suffix: 'x', label: 'compliance rate', subtext: 'People help "tribe members" 3x more' },
+        { value: 10, suffix: 'x', label: 'review boost', subtext: 'Asking for "advice" vs "feedback"' },
+        { value: 89, suffix: '%', label: 'trust increase', subtext: 'Using "we" language vs "you" language' }
       ]},
+      { type: 'typingMoment', text: 'One word changes everything.' },
       { type: 'sidePanel', title: 'The Magic Word: "Advice"', body: 'When you ask for an "opinion" or "feedback," you make someone a critic - standing outside, judging your work. But when you ask for "advice," you make them a partner - sitting next to you, helping build. That one word creates a "togetherness" effect. It brings them to YOUR side of the table. And people on your side don\'t criticize. They collaborate.', panelTitle: 'The Shift', panelText: 'Feedback = external judge. Advice = internal partner. One word changes the entire relationship.' },
       { type: 'example', scenario: 'Post-Purchase Email', before: { label: 'Transactional Request', text: '"Please leave us a review. We\'d love to hear your feedback!"' }, after: { label: 'Unity Principle Applied', text: '"As a small business, could we ask for your advice? We\'re trying to build the best product possible, and your insight as a valued customer would be a huge help."' }, insight: 'Same ask. But "advice" + "valued customer" + "we\'re trying" creates partnership. They stop being a customer. They become part of your mission.' },
-      { type: 'comparison', title: 'Why "Advice" Destroys "Feedback"', left: { label: 'Feedback = Critic', text: 'Puts them OUTSIDE looking in. "Tell me what you think." They\'re judging you. Distance. Transaction. Result: Low response rates.' }, right: { label: 'Advice = Partner', text: 'Brings them INSIDE with you. "Help me build this." They\'re collaborating. Closeness. Tribe. Result: 10x more responses.' }},
+      { type: 'responseComparison', title: 'Why "Advice" Destroys "Feedback"' },
+      { type: 'comparison', title: 'Feedback vs Advice', left: { label: 'Feedback = Critic', text: 'Puts them OUTSIDE looking in. "Tell me what you think." They\'re judging you. Distance. Transaction. Result: Low response rates.' }, right: { label: 'Advice = Partner', text: 'Brings them INSIDE with you. "Help me build this." They\'re collaborating. Closeness. Tribe. Result: 10x more responses.' }},
       { type: 'content', title: 'The "We" Language Framework', body: 'Unity isn\'t just one word. It\'s an entire language system. "Let\'s build this together." "Welcome to the family." "You\'re one of us now." Every phrase signals: You belong here. This isn\'t a transaction - it\'s membership. And once someone feels like a member, everything changes. They defend your brand. They leave reviews unprompted. They buy again and again.' },
-      { type: 'visual', title: 'Language Comparison', visualType: 'comparison', data: {
-        left: { label: 'Transactional', value: 'YOU', result: '"You should try this" - Distance, seller-buyer', color: '#94a3b8' },
-        right: { label: 'Tribal', value: 'WE', result: '"Let\'s try this together" - Unity, partnership', color: '#8b5cf6' },
-        center: { label: 'Trust Gap', value: '89%', result: 'Trust increase with "we" language', color: '#10b981' }
-      }},
+      { type: 'unityTriggers', title: '4 Unity Triggers You Can Use Today' },
+      { type: 'visualPlaceholder', title: 'Building Genuine Partnership', description: 'The Unity Principle works because it transforms transactions into relationships.' },
       { type: 'example', scenario: 'Warren Buffett\'s Strategy', before: { label: 'Standard Corporate', text: '"We will continue to execute our strategy and deliver shareholder value."' }, after: { label: 'Unity Principle', text: 'Buffett writes he\'s advising shareholders "in the same way I would advise a family member." Family. Not investors.' }, insight: 'Buffett doesn\'t have shareholders. He has FAMILY. That language is why Berkshire holders never sell - they\'re not in an investment, they\'re in a TRIBE.' },
       { type: 'cards', title: 'Where to Use Unity Language', items: [
         { title: 'Review Requests', description: '"Could we ask for your advice?" instead of "Please leave a review." Makes them a collaborator, not a task-doer.' },
@@ -158,6 +272,7 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -209,6 +324,115 @@
       </div>
     );
 
+    const StatsDisplaySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              className="bg-neutral-900 rounded-2xl p-8 text-center"
+              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+            >
+              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: 'var(--accent)' }}>
+                <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="text-sm font-semibold text-white mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-400 leading-relaxed">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const TypingMomentSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center px-8">
+        <motion.h2
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="slide-title text-4xl md:text-5xl lg:text-6xl text-center text-black leading-tight max-w-4xl"
+        >
+          <TypingText text={data.text} speed={50} />
+        </motion.h2>
+      </div>
+    );
+
+    const ResponseComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
+        <BarChart
+          data={[
+            { label: '"Can I get feedback?"', value: '12% response rate', percentage: 12 },
+            { label: '"Can I get your advice?"', value: '34% response rate', percentage: 34 }
+          ]}
+          accentColor="var(--accent)"
+        />
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-center text-base text-neutral-500 mt-10 italic"
+        >
+          Same request. Different word. 3x the responses.
+        </motion.p>
+      </div>
+    );
+
+    const UnityTriggersSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-5xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+        <IconGrid items={[
+          { icon: '👨‍👩‍👧', label: 'Family Language', description: '"Welcome to the family" creates instant belonging' },
+          { icon: '🤝', label: 'Team Language', description: '"Let\'s do this together" builds partnership' },
+          { icon: '🔑', label: 'Insider Language', description: '"You\'re one of us now" triggers exclusivity' },
+          { icon: '💼', label: 'Partner Language', description: '"Your advice matters" elevates their role' }
+        ]} />
+      </div>
+    );
+
+    const VisualPlaceholderSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-center text-black mb-8">{data.title}</motion.h2>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="w-full max-w-md aspect-square rounded-2xl bg-gradient-to-br from-purple-50 via-white to-purple-50 flex items-center justify-center relative overflow-hidden border-2 border-purple-100"
+          style={{ boxShadow: '0 20px 60px rgba(139, 92, 246, 0.15)' }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 0.15, scale: [1, 1.1, 1] }}
+            transition={{ delay: 0.5, duration: 3, repeat: Infinity }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <Icons.Users />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 70%)'
+            }}
+          />
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-base text-neutral-600 text-center mt-6 leading-relaxed"
+        >
+          {data.description}
+        </motion.p>
+      </div>
+    );
+
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -216,11 +440,11 @@
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
         <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
           </motion.div>
@@ -231,62 +455,18 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         <div className="grid md:grid-cols-2 gap-3">
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
               <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -422,8 +602,12 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'statsDisplay': return <StatsDisplaySlide data={slide} />;
+          case 'typingMoment': return <TypingMomentSlide data={slide} />;
+          case 'responseComparison': return <ResponseComparisonSlide data={slide} />;
+          case 'unityTriggers': return <UnityTriggersSlide data={slide} />;
+          case 'visualPlaceholder': return <VisualPlaceholderSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'sidePanel': return <SidePanelSlide data={slide} />;
           case 'comparison': return <ComparisonSlide data={slide} />;
