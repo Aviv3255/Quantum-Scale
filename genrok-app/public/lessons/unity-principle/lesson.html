@@ -30,6 +30,39 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Split Screen Layout */
+    .split-screen { display: flex; height: 100%; align-items: center; }
+    .split-left { width: 40%; display: flex; align-items: center; justify-content: center; padding: 2rem; background: #f5f5f7; }
+    .split-left img { width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
+    .split-right { width: 60%; padding: 3rem 4rem; }
+
+    /* Side Panel Layout */
+    .side-panel { display: flex; height: 100%; padding: 2rem; gap: 2rem; align-items: center; }
+    .side-panel .main-content { flex: 1; padding: 2rem; }
+    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; }
+    .side-panel .panel h4 { font-size: 1.125rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .side-panel .panel p { font-size: 0.875rem; opacity: 0.95; line-height: 1.6; }
+
+    /* Comparison Slide */
+    .comparison { padding: 3rem; }
+    .comparison h2 { text-align: center; margin-bottom: 2.5rem; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card.bad { border-color: #fca5a5; background: #fef2f2; }
+    .comparison-card.good { border-color: #86efac; background: #f0fdf4; }
+    .comparison-card h4 { font-size: 1.125rem; margin-bottom: 1rem; font-weight: 700; }
+    .comparison-card.bad h4 { color: #dc2626; }
+    .comparison-card.good h4 { color: #16a34a; }
+    .comparison-card p { color: #404040; line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .split-screen { flex-direction: column; }
+      .split-left, .split-right { width: 100%; }
+      .side-panel { flex-direction: column; }
+      .side-panel .panel { width: 100%; }
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -91,20 +124,15 @@
         'How Warren Buffett uses Unity to build trust'
       ]},
       { type: 'hook', headline: 'Change one word. Get 10x more reviews.', subtext: '"Please leave us a review." Nobody cares. "Could we ask for your advice?" Suddenly they WANT to help. Same request. Different word. The difference? Tribal psychology. When you ask for "advice" instead of "feedback," you activate the Unity Principle - and people stop being customers and start being partners.' },
-      { type: 'content', title: 'The Science: Unity Principle', body: 'We are wired to say "yes" to people we perceive as part of our tribe. Family. Team. Community. When someone feels like "one of us," persuasion becomes automatic. Robert Cialdini calls this the Unity Principle - the most powerful influence trigger discovered in the last 20 years. It\'s not about similarity. It\'s about SHARED IDENTITY.' },
+      { type: 'sidePanel', title: 'The Science: Unity Principle', body: 'We are wired to say "yes" to people we perceive as part of our tribe. Family. Team. Community. When someone feels like "one of us," persuasion becomes automatic. Robert Cialdini calls this the Unity Principle - the most powerful influence trigger discovered in the last 20 years. It\'s not about similarity. It\'s about SHARED IDENTITY.', panelTitle: 'Key Insight', panelText: 'Unity beats all other persuasion triggers. When they feel like tribe, resistance disappears.' },
       { type: 'visual', title: 'The Tribal Response', visualType: 'stats', data: [
         { value: '3.2x', label: 'compliance rate', subtext: 'People help "tribe members" 3x more' },
         { value: '10x', label: 'review boost', subtext: 'Asking for "advice" vs "feedback"' },
         { value: '89%', label: 'trust increase', subtext: 'Using "we" language vs "you" language' }
       ]},
-      { type: 'content', title: 'The Magic Word: "Advice"', body: 'When you ask for an "opinion" or "feedback," you make someone a critic - standing outside, judging your work. But when you ask for "advice," you make them a partner - sitting next to you, helping build. That one word creates a "togetherness" effect. It brings them to YOUR side of the table. And people on your side don\'t criticize. They collaborate.' },
+      { type: 'sidePanel', title: 'The Magic Word: "Advice"', body: 'When you ask for an "opinion" or "feedback," you make someone a critic - standing outside, judging your work. But when you ask for "advice," you make them a partner - sitting next to you, helping build. That one word creates a "togetherness" effect. It brings them to YOUR side of the table. And people on your side don\'t criticize. They collaborate.', panelTitle: 'The Shift', panelText: 'Feedback = external judge. Advice = internal partner. One word changes the entire relationship.' },
       { type: 'example', scenario: 'Post-Purchase Email', before: { label: 'Transactional Request', text: '"Please leave us a review. We\'d love to hear your feedback!"' }, after: { label: 'Unity Principle Applied', text: '"As a small business, could we ask for your advice? We\'re trying to build the best product possible, and your insight as a valued customer would be a huge help."' }, insight: 'Same ask. But "advice" + "valued customer" + "we\'re trying" creates partnership. They stop being a customer. They become part of your mission.' },
-      { type: 'cards', title: 'Why "Advice" Destroys "Feedback"', items: [
-        { title: '"Feedback" = Critic', description: 'Puts them OUTSIDE looking in. "Tell me what you think." They\'re judging you. Distance. Transaction.' },
-        { title: '"Advice" = Partner', description: 'Brings them INSIDE with you. "Help me build this." They\'re collaborating. Closeness. Tribe.' },
-        { title: 'The Subtext Matters', description: 'Feedback says: "You\'re the customer, I\'m the seller." Advice says: "We\'re in this together."' },
-        { title: 'Results Speak', description: 'Shopify stores using "advice" language see 10x more review responses than "feedback" emails.' }
-      ]},
+      { type: 'comparison', title: 'Why "Advice" Destroys "Feedback"', left: { label: 'Feedback = Critic', text: 'Puts them OUTSIDE looking in. "Tell me what you think." They\'re judging you. Distance. Transaction. Result: Low response rates.' }, right: { label: 'Advice = Partner', text: 'Brings them INSIDE with you. "Help me build this." They\'re collaborating. Closeness. Tribe. Result: 10x more responses.' }},
       { type: 'content', title: 'The "We" Language Framework', body: 'Unity isn\'t just one word. It\'s an entire language system. "Let\'s build this together." "Welcome to the family." "You\'re one of us now." Every phrase signals: You belong here. This isn\'t a transaction - it\'s membership. And once someone feels like a member, everything changes. They defend your brand. They leave reviews unprompted. They buy again and again.' },
       { type: 'visual', title: 'Language Comparison', visualType: 'comparison', data: {
         left: { label: 'Transactional', value: 'YOU', result: '"You should try this" - Distance, seller-buyer', color: '#94a3b8' },
@@ -118,7 +146,7 @@
         { title: 'Product Pages', description: '"Join 10,000 builders" instead of "10,000 customers bought this." Identity, not social proof.' },
         { title: 'Support Messages', description: '"Let\'s figure this out together" instead of "We\'ll look into it." Partnership, not service desk.' }
       ]},
-      { type: 'content', title: 'The Shopify Action Plan', body: 'Step 1: Update your Klaviyo review request flow. Replace "feedback" with "advice." Replace "please review" with "could we ask." Step 2: Add "family" language to welcome emails. "You\'re officially part of our community" beats "Thank you for your order." Step 3: Use "we" in product descriptions. "Let\'s solve this problem together" beats "This product solves your problem." Watch your review rate 10x in 30 days.' },
+      { type: 'comparison', title: 'Review Request Transformation', left: { label: 'Transactional Language', text: 'Please leave us a review. We\'d love to hear your feedback on the product. Thank you for your purchase!' }, right: { label: 'Unity Language', text: 'As a small business, could we ask for your advice? We\'re building the best product possible, and your insight as a valued member of our community would help us immensely.' }},
       { type: 'quiz', question: 'Why does asking for "advice" get 10x more responses than "feedback"?', options: ['"Advice" sounds more professional', '"Advice" makes them a partner in your mission, while "feedback" makes them an outside critic', 'People prefer giving advice because it\'s easier', 'It\'s just a coincidence'], correctIndex: 1, feedback: { correct: 'Exactly! "Advice" triggers the Unity Principle - it brings them to YOUR side of the table. They stop being a customer judging your work and become a collaborator helping you build. That shift in identity changes everything.', incorrect: 'Not quite. The power is in identity shift. "Feedback" keeps them at arm\'s length as a critic. "Advice" pulls them in as a partner. When they feel like part of your tribe, helping you becomes instinctive.' }},
       { type: 'completion' }
     ];
@@ -309,6 +337,35 @@
       );
     };
 
+    const SidePanelSlide = ({ data }) => (
+      <div className="side-panel">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="main-content">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="panel">
+          <h4>{data.panelTitle}</h4>
+          <p>{data.panelText}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="comparison slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+        <div className="comparison-grid">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
+            <h4>{data.left.label}</h4>
+            <p>{data.left.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
+            <h4>{data.right.label}</h4>
+            <p>{data.right.text}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -368,6 +425,8 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'sidePanel': return <SidePanelSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

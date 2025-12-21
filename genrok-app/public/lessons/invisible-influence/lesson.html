@@ -30,6 +30,40 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Split Screen Layout */
+    .split-screen-container { display: grid; grid-template-columns: 40% 60%; height: 100%; gap: 0; }
+    .split-left { background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+    .split-left img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+    .split-right { display: flex; flex-direction: column; justify-content: center; padding: 3rem 4rem; }
+    @media (max-width: 768px) {
+      .split-screen-container { grid-template-columns: 1fr; grid-template-rows: 40% 60%; }
+      .split-right { padding: 2rem; }
+    }
+
+    /* Side Panel Layout */
+    .side-panel-container { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; height: 100%; padding: 3rem 4rem; align-items: center; }
+    .panel { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; padding: 2rem; border-radius: 16px; }
+    .panel h4 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .panel p { font-size: 0.875rem; line-height: 1.6; opacity: 0.95; }
+    @media (max-width: 768px) {
+      .side-panel-container { grid-template-columns: 1fr; padding: 2rem; }
+      .panel { margin-top: 1.5rem; }
+    }
+
+    /* Comparison Layout */
+    .comparison-container { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 2rem 3rem; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card.bad { background: #fef2f2; border-color: #fca5a5; }
+    .comparison-card.good { background: #f0fdf4; border-color: #86efac; }
+    .comparison-card h4 { font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
+    .comparison-card.bad h4 { color: #dc2626; }
+    .comparison-card.good h4 { color: #16a34a; }
+    .comparison-card p { font-size: 0.9375rem; line-height: 1.6; color: #404040; }
+    @media (max-width: 768px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -97,7 +131,7 @@
         right: { label: 'Coins Background', value: 'Price', result: 'Clicked cheapest items first', color: '#ec4899' },
         center: { label: 'Same Products', value: 'Different Behavior', result: 'Background primed their priorities', color: '#10b981' }
       }},
-      { type: 'content', title: 'What Actually Happened', body: 'Cloud-background visitors spent significantly more time browsing "comfortable" and "soft" furniture. They prioritized comfort features in product descriptions. Coin-background visitors immediately filtered by price. They focused on discounts and value. When asked afterwards, both groups denied the background influenced them. But it absolutely did.' },
+      { type: 'sidePanel', title: 'What Actually Happened', body: 'Cloud-background visitors spent significantly more time browsing "comfortable" and "soft" furniture. They prioritized comfort features in product descriptions. Coin-background visitors immediately filtered by price. They focused on discounts and value. When asked afterwards, both groups denied the background influenced them. But it absolutely did.', panelTitle: 'The Disconnect', panelText: 'People consciously deny being influenced while their behavior proves they were. Visual priming bypasses awareness.' },
       { type: 'cards', title: 'The Psychology Behind Priming', items: [
         { title: 'Visual Priming is Unconscious', description: 'The initial image your brain sees creates a framework for everything that follows. You don\'t choose this. It happens automatically.' },
         { title: 'First Impression Frames the Journey', description: 'That background image sets the mental filter for the entire shopping experience. Comfort primed? Look for comfort. Price primed? Look for deals.' },
@@ -116,7 +150,7 @@
         { title: 'For Luxury/Status Products', description: 'Use minimalist backgrounds, elegant environments, subtle sophistication. Prime customers to think about prestige and exclusivity.' },
         { title: 'For Practical/Functional Items', description: 'Use clean workspaces, organized systems, efficiency signals. Prime customers to think about utility and results.' }
       ]},
-      { type: 'content', title: 'Your Hero Section Test', body: 'Right now, your hero section is priming every visitor who lands on your store. Look at it. What does the background communicate? If you sell premium products but show discount-style graphics, you\'re priming customers to hunt for the cheapest item. If you sell budget-friendly items but show luxury imagery, you\'re creating confusion.' },
+      { type: 'comparison', title: 'Hero Background Alignment', bad: { title: 'Misaligned Priming', description: 'Premium product with price tags and "SALE" graphics in the hero: Customers primed to hunt for discounts. They skip your high-margin items and filter by lowest price. AOV drops.' }, good: { title: 'Aligned Priming', description: 'Premium product with lifestyle imagery and aspirational settings: Customers primed to think about quality and transformation. They explore benefits, not just price. AOV increases.' } },
       { type: 'example', scenario: 'Activewear Brand', before: { label: 'Misaligned Priming', text: 'Background: Gym equipment pricing charts, discount percentages, "SALE" graphics' }, after: { label: 'Aligned Priming', text: 'Background: Athlete in motion, natural outdoor setting, focus on performance and energy' }, insight: 'Conversion rate increased 47%. Customers bought complete outfits instead of single items. AOV jumped from $42 to $89.' },
       { type: 'cards', title: 'A/B Test Your Background', items: [
         { title: 'Create Two Hero Versions', description: 'Version A: Prime for quality (lifestyle, aspirational imagery). Version B: Prime for value (price-focused, deal-oriented visuals).' },
@@ -314,6 +348,47 @@
       );
     };
 
+    const SplitScreenSlide = ({ data }) => (
+      <div className="split-screen-container">
+        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="split-left">
+          <img src={data.image} alt={data.imageAlt} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="split-right">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const SidePanelSlide = ({ data }) => (
+      <div className="side-panel-container">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="panel">
+          <h4>{data.panelTitle}</h4>
+          <p>{data.panelText}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="comparison-container">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <div className="comparison-grid">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
+            <h4>{data.bad.title}</h4>
+            <p>{data.bad.description}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
+            <h4>{data.good.title}</h4>
+            <p>{data.good.description}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -373,6 +448,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'splitScreen': return <SplitScreenSlide data={slide} />;
+          case 'sidePanel': return <SidePanelSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

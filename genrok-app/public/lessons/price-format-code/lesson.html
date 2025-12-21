@@ -30,6 +30,40 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Split Screen Layout */
+    .split-screen-container { display: grid; grid-template-columns: 40% 60%; height: 100%; gap: 0; }
+    .split-left { background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+    .split-left img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+    .split-right { display: flex; flex-direction: column; justify-content: center; padding: 3rem 4rem; }
+    @media (max-width: 768px) {
+      .split-screen-container { grid-template-columns: 1fr; grid-template-rows: 40% 60%; }
+      .split-right { padding: 2rem; }
+    }
+
+    /* Side Panel Layout */
+    .side-panel-container { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; height: 100%; padding: 3rem 4rem; align-items: center; }
+    .panel { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; padding: 2rem; border-radius: 16px; }
+    .panel h4 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .panel p { font-size: 0.875rem; line-height: 1.6; opacity: 0.95; }
+    @media (max-width: 768px) {
+      .side-panel-container { grid-template-columns: 1fr; padding: 2rem; }
+      .panel { margin-top: 1.5rem; }
+    }
+
+    /* Comparison Layout */
+    .comparison-container { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 2rem 3rem; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card.bad { background: #fef2f2; border-color: #fca5a5; }
+    .comparison-card.good { background: #f0fdf4; border-color: #86efac; }
+    .comparison-card h4 { font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
+    .comparison-card.bad h4 { color: #dc2626; }
+    .comparison-card.good h4 { color: #16a34a; }
+    .comparison-card p { font-size: 0.9375rem; line-height: 1.6; color: #404040; }
+    @media (max-width: 768px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -102,7 +136,7 @@
         { title: 'Rule 2: Deals & Bargains', description: 'Use charm pricing ending in 9. Example: "$39" instead of "$40". Signals value and triggers bargain-hunting psychology.' },
         { title: 'Rule 3: Luxury & Status', description: 'Use clean, rounded numbers. Example: "$250" not "$249.99". Charm pricing undermines perceived quality for premium goods.' }
       ]},
-      { type: 'content', title: 'Rule 1: Everyday Purchases - Reduce Payment Pain', body: 'For supplements, consumables, routine purchases - use simple numerals. No dollar signs. No decimals. Just "19" instead of "$19.00". Why? The dollar sign triggers loss aversion. Decimals emphasize exactness of payment. Simple numerals feel lighter, easier, more casual. Less friction = more conversions.' },
+      { type: 'sidePanel', title: 'Rule 1: Everyday Purchases - Reduce Payment Pain', body: 'For supplements, consumables, routine purchases - use simple numerals. No dollar signs. No decimals. Just "19" instead of "$19.00". Why? The dollar sign triggers loss aversion. Decimals emphasize exactness of payment. Simple numerals feel lighter, easier, more casual. Less friction = more conversions.', panelTitle: 'Quick Test', panelText: 'Look at your bestselling consumables. Are they priced "19" or "$19.00"? Switch to numerals only and track conversion for 7 days.' },
       { type: 'example', scenario: 'Supplement Store', before: { label: 'High Friction Format', text: 'Daily Vitamins: $19.00 per bottle' }, after: { label: 'Low Friction Format', text: 'Daily Vitamins: 19 per bottle' }, insight: 'Conversion rate increased 14%. Customers perceived the purchase as smaller and more casual. Repeat purchase rate also improved.' },
       { type: 'content', title: 'Rule 2: Charm Pricing for Deals', body: 'MIT and University of Chicago tested identical garments at $34, $39, and $44. The $39 version outsold $34 despite being MORE expensive. Why? The "9" ending signals a deal. It triggers bargain-hunter psychology. Use this for fashion, accessories, anything where customers are comparison shopping.' },
       { type: 'visual', title: 'The MIT Garment Experiment', visualType: 'stats', data: [
@@ -111,7 +145,7 @@
         { value: '$44', label: 'Premium Price', subtext: 'Middle performance, lacked deal signal' }
       ]},
       { type: 'example', scenario: 'Fashion Accessories Store', before: { label: 'Rounded Pricing', text: 'Handbag Collection: $50, $75, $100' }, after: { label: 'Charm Pricing', text: 'Handbag Collection: $49, $79, $99' }, insight: 'Sales volume increased 23%. Customers perceived items as better deals. Cart size remained similar but conversion improved.' },
-      { type: 'content', title: 'Rule 3: Luxury Pricing - Signal Confidence', body: 'For premium products, aspirational goods, status items - AVOID charm pricing. Use clean, rounded numbers. "$250" not "$249.99". Why? Luxury buyers don\'t want to feel like they\'re hunting for deals. The ".99" ending signals discounting, which undermines perceived quality and status.' },
+      { type: 'comparison', title: 'Luxury Pricing Psychology', bad: { title: 'Charm Pricing on Luxury', description: 'Premium watch at $1,499.99: The ".99" signals discount hunting. Luxury buyers see through it. Creates cognitive dissonance - "Is this actually premium or are they trying to trick me?" Undermines positioning.' }, good: { title: 'Rounded Pricing on Luxury', description: 'Premium watch at $1,500: Clean, confident, no gimmicks. Signals "This is worth exactly this much, maybe more." Aligns with premium positioning. Luxury buyers respect the honesty.' } },
       { type: 'cards', title: 'Luxury Pricing Signals', items: [
         { title: 'Rounded = Confidence', description: '$500 says "We don\'t need gimmicks." It signals the product is worth exactly this much, maybe more.' },
         { title: 'Charm = Discount', description: '$499.99 says "We\'re trying to make this look cheaper." It signals you\'re competing on price, not quality.' },
@@ -320,6 +354,47 @@
       );
     };
 
+    const SplitScreenSlide = ({ data }) => (
+      <div className="split-screen-container">
+        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="split-left">
+          <img src={data.image} alt={data.imageAlt} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="split-right">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const SidePanelSlide = ({ data }) => (
+      <div className="side-panel-container">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="panel">
+          <h4>{data.panelTitle}</h4>
+          <p>{data.panelText}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="comparison-container">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <div className="comparison-grid">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
+            <h4>{data.bad.title}</h4>
+            <p>{data.bad.description}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
+            <h4>{data.good.title}</h4>
+            <p>{data.good.description}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -379,6 +454,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'splitScreen': return <SplitScreenSlide data={slide} />;
+          case 'sidePanel': return <SidePanelSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

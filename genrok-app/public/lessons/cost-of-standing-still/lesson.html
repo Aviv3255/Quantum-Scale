@@ -30,6 +30,39 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Split Screen Layout */
+    .split-screen { display: flex; height: 100%; align-items: center; }
+    .split-left { width: 40%; display: flex; align-items: center; justify-content: center; padding: 2rem; background: #f5f5f7; }
+    .split-left img { width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
+    .split-right { width: 60%; padding: 3rem 4rem; }
+
+    /* Side Panel Layout */
+    .side-panel { display: flex; height: 100%; padding: 2rem; gap: 2rem; align-items: center; }
+    .side-panel .main-content { flex: 1; padding: 2rem; }
+    .side-panel .panel { width: 280px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); padding: 2rem; border-radius: 16px; color: white; }
+    .side-panel .panel h4 { font-size: 1.125rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .side-panel .panel p { font-size: 0.875rem; opacity: 0.95; line-height: 1.6; }
+
+    /* Comparison Slide */
+    .comparison { padding: 3rem; }
+    .comparison h2 { text-align: center; margin-bottom: 2.5rem; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card.bad { border-color: #fca5a5; background: #fef2f2; }
+    .comparison-card.good { border-color: #86efac; background: #f0fdf4; }
+    .comparison-card h4 { font-size: 1.125rem; margin-bottom: 1rem; font-weight: 700; }
+    .comparison-card.bad h4 { color: #dc2626; }
+    .comparison-card.good h4 { color: #16a34a; }
+    .comparison-card p { color: #404040; line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .split-screen { flex-direction: column; }
+      .split-left, .split-right { width: 100%; }
+      .side-panel { flex-direction: column; }
+      .side-panel .panel { width: 100%; }
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -91,7 +124,7 @@
         'The formula that makes $99 feel like a bargain'
       ]},
       { type: 'hook', headline: 'Your customers aren\'t cheap. They just don\'t see the cost.', subtext: 'You say "$99/month." They hear "expensive." But what if you flipped it? What if you showed them the $3,000 they\'re LOSING every month by doing nothing? Suddenly $99 feels like stealing. This is the Cost of Standing Still.' },
-      { type: 'content', title: 'The Psychology: Availability Heuristic', body: 'Here\'s how your brain works: The easier you can remember something, the more important it feels. Had your phone stolen once? You\'ll swear theft is everywhere. This is the Availability Heuristic - a mental shortcut that makes recent memories feel more frequent than reality. Smart marketers use this BEFORE pitching their product.' },
+      { type: 'sidePanel', title: 'The Psychology: Availability Heuristic', body: 'Here\'s how your brain works: The easier you can remember something, the more important it feels. Had your phone stolen once? You\'ll swear theft is everywhere. This is the Availability Heuristic - a mental shortcut that makes recent memories feel more frequent than reality. Smart marketers use this BEFORE pitching their product.', panelTitle: 'Quick Insight', panelText: 'Your brain assumes frequent memories = frequent reality. Smart ads trigger the problem memory first, making it feel urgent.' },
       { type: 'example', scenario: 'The Avocado Slicer Ad', before: { label: 'Weak Approach', text: '"Our avocado slicer makes prep easy - only $19.99!"' }, after: { label: 'Availability Heuristic', text: 'Opens with: Messy hands, slippery avocado, knife slips, avocado flies across kitchen. THEN shows the slicer.' }, insight: 'By triggering the memory of frustration FIRST, your brain thinks "this happens all the time" and the problem suddenly feels urgent.' },
       { type: 'content', title: 'Step 1: Remind Them of the Pain', body: 'Before you sell your solution, activate their memory of the problem. For Shopify stores, this means making them FEEL the abandoned carts. The lost revenue. The customers who almost bought but didn\'t. Don\'t just mention it - make them remember the last time they watched their traffic convert at 1.2% and felt helpless.' },
       { type: 'visual', title: 'The Memory Activation Effect', visualType: 'stats', data: [
@@ -99,11 +132,8 @@
         { value: '47%', label: 'higher intent', subtext: 'Buyers act faster after pain activation' },
         { value: '2.1x', label: 'value perception', subtext: 'Solutions feel more valuable after problem recall' }
       ]},
-      { type: 'content', title: 'Step 2: Sell the Vision, Not the Vehicle', body: 'Nobody wants "email marketing automation." They want the lifestyle upgrade from an extra $50K/year. They want to fit into old jeans. They want the freedom of $300K/year passive income. Stop selling features (the diet plan, the coaching hours, the ad spend). Sell the DESTINATION.' },
-      { type: 'cards', title: 'Feature vs. Destination', items: [
-        { title: 'Feature Thinking', description: '"Our tool sends automated cart recovery emails with AI-powered subject lines and dynamic product recommendations."' },
-        { title: 'Destination Thinking', description: '"Wake up to $900 in recovered sales. Every single morning. While you slept."' }
-      ]},
+      { type: 'sidePanel', title: 'Step 2: Sell the Vision, Not the Vehicle', body: 'Nobody wants "email marketing automation." They want the lifestyle upgrade from an extra $50K/year. They want to fit into old jeans. They want the freedom of $300K/year passive income. Stop selling features (the diet plan, the coaching hours, the ad spend). Sell the DESTINATION.', panelTitle: 'The Rule', panelText: 'Sell the after-state. The feeling. The transformation. NOT the mechanism that gets them there.' },
+      { type: 'comparison', title: 'Feature Thinking vs. Destination Thinking', left: { label: 'Feature Thinking', text: 'Our tool sends automated cart recovery emails with AI-powered subject lines and dynamic product recommendations.' }, right: { label: 'Destination Thinking', text: 'Wake up to $900 in recovered sales. Every single morning. While you slept.' }},
       { type: 'content', title: 'Step 3: Frame Against Cost of Inaction', body: 'This is where magic happens. Don\'t compare your price to zero (doing nothing). Compare it to what they\'re LOSING by not buying. "Our service is $10,000. But staying where you are costs $100,000 in lost revenue every month. Which is more expensive?" The answer becomes obvious.' },
       { type: 'visual', title: 'The Cost Comparison Flip', visualType: 'comparison', data: {
         left: { label: 'Old Angle', value: '$99', result: '"Get more sales for $99/month" - Feels like expense', color: '#94a3b8' },
@@ -117,7 +147,7 @@
         { title: '3. Your Solution\'s Recovery', description: 'Show realistic recovery. "We recover 30% = $3,900/month back in your pocket."' },
         { title: '4. Frame Your Price', description: '"For $99/month, you get $3,900 back. You\'re not spending $99. You\'re losing $3,801 by NOT buying."' }
       ]},
-      { type: 'content', title: 'The Complete Framework in Action', body: 'Step 1: Activate the memory - "Remember the last time you watched 50 people add to cart... and only 3 bought?" Step 2: Sell the vision - "Imagine waking up to $900 in recovered sales every morning." Step 3: Frame the cost - "Our tool is $99. But you\'re losing $3,000/month right now. Which costs more?" This isn\'t manipulation. It\'s clarity.' },
+      { type: 'comparison', title: 'The Complete Cost Framework', left: { label: 'Old Way: Price-Focused', text: 'Our cart recovery tool is just $99/month. Sign up today and start recovering abandoned carts with our proven system.' }, right: { label: 'New Way: Cost-Focused', text: 'You\'re losing $3,000/month in abandoned carts. Our $99 tool recovers $900 of that. You\'re not spending $99 - you\'re losing $2,901 by waiting.' }},
       { type: 'quiz', question: 'Why does showing the "cost of standing still" make your price feel like a bargain?', options: ['It uses scarcity to create urgency', 'It compares your price to the LOSS they\'re experiencing, making it feel like a profitable investment instead of an expense', 'It tricks them into thinking your product is cheaper', 'Lower prices always convert better'], correctIndex: 1, feedback: { correct: 'Exactly! When you compare $99 to the $3,000/month they\'re currently losing, your price becomes the PROFITABLE choice. It\'s not an expense - it\'s stopping a leak.', incorrect: 'Not quite. The power is in reframing: you\'re not comparing your price to $0 (doing nothing). You\'re comparing it to what they\'re LOSING right now. That makes your price feel like the cheaper option.' }},
       { type: 'completion' }
     ];
@@ -308,6 +338,35 @@
       );
     };
 
+    const SidePanelSlide = ({ data }) => (
+      <div className="side-panel">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="main-content">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="panel">
+          <h4>{data.panelTitle}</h4>
+          <p>{data.panelText}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="comparison slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+        <div className="comparison-grid">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
+            <h4>{data.left.label}</h4>
+            <p>{data.left.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
+            <h4>{data.right.label}</h4>
+            <p>{data.right.text}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -367,6 +426,8 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'sidePanel': return <SidePanelSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

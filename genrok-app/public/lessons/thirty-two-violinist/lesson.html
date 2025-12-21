@@ -30,6 +30,40 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Split Screen Layout */
+    .split-screen-container { display: grid; grid-template-columns: 40% 60%; height: 100%; gap: 0; }
+    .split-left { background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+    .split-left img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+    .split-right { display: flex; flex-direction: column; justify-content: center; padding: 3rem 4rem; }
+    @media (max-width: 768px) {
+      .split-screen-container { grid-template-columns: 1fr; grid-template-rows: 40% 60%; }
+      .split-right { padding: 2rem; }
+    }
+
+    /* Side Panel Layout */
+    .side-panel-container { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; height: 100%; padding: 3rem 4rem; align-items: center; }
+    .panel { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; padding: 2rem; border-radius: 16px; }
+    .panel h4 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .panel p { font-size: 0.875rem; line-height: 1.6; opacity: 0.95; }
+    @media (max-width: 768px) {
+      .side-panel-container { grid-template-columns: 1fr; padding: 2rem; }
+      .panel { margin-top: 1.5rem; }
+    }
+
+    /* Comparison Layout */
+    .comparison-container { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 2rem 3rem; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
+    .comparison-card.bad { background: #fef2f2; border-color: #fca5a5; }
+    .comparison-card.good { background: #f0fdf4; border-color: #86efac; }
+    .comparison-card h4 { font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
+    .comparison-card.bad h4 { color: #dc2626; }
+    .comparison-card.good h4 { color: #16a34a; }
+    .comparison-card p { font-size: 0.9375rem; line-height: 1.6; color: #404040; }
+    @media (max-width: 768px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -96,13 +130,13 @@
         right: { label: 'Concert Hall', value: '$100/ticket', result: 'Sold out audience / standing ovation', color: '#6366f1' },
         center: { label: 'Same Violinist', value: 'Same Music', result: 'Different context = different value', color: '#10b981' }
       }},
-      { type: 'content', title: 'The Brain Doesn\'t Evaluate in a Vacuum', body: 'Here\'s the uncomfortable truth: Your brain doesn\'t assess quality objectively. It uses context as a shortcut. Concert hall = valuable. Subway = ignore. The music was identical. The musician was identical. But the environment completely rewired how people perceived the value. This isn\'t about music. It\'s about YOUR products.' },
+      { type: 'sidePanel', title: 'The Brain Doesn\'t Evaluate in a Vacuum', body: 'Here\'s the uncomfortable truth: Your brain doesn\'t assess quality objectively. It uses context as a shortcut. Concert hall = valuable. Subway = ignore. The music was identical. The musician was identical. But the environment completely rewired how people perceived the value. This isn\'t about music. It\'s about YOUR products.', panelTitle: 'Key Insight', panelText: 'Your product\'s perceived value changes based purely on WHERE it\'s advertised, not WHAT it is.' },
       { type: 'visual', title: 'Attention Comparison', visualType: 'stats', data: [
         { value: '1,097', label: 'People Passed', subtext: 'In metro station during rush hour' },
         { value: '7', label: 'People Stopped', subtext: 'Less than 1% noticed the performance' },
         { value: '$32', label: 'Total Earned', subtext: 'From one of the world\'s best violinists' }
       ]},
-      { type: 'content', title: 'Low Context Kills Perceived Value', body: 'Your $50 product advertised on a meme page with millions of followers? The brain categorizes it as cheap entertainment. Same product on a premium lifestyle micro-influencer? Now it\'s aspirational. Now it\'s worth buying. The product didn\'t change. The CONTEXT did. And context is everything.' },
+      { type: 'comparison', title: 'Context Changes Everything', bad: { title: 'Low-Context Placement', description: 'Meme page with 2M followers: Your product shown alongside jokes and viral trends. Brain categorizes it as cheap entertainment. Impulse buys only. Low AOV. High refund rate.' }, good: { title: 'High-Context Placement', description: 'Premium micro-influencer with 50K followers: Your product shown in aspirational lifestyle content. Brain categorizes it as valuable investment. Higher intent. Better customers.' } },
       { type: 'example', scenario: 'Premium Skincare Brand', before: { label: 'Low Context Placement', text: 'Ad on viral comedy page (2M followers): "Amazing serum! Buy now!"' }, after: { label: 'High Context Placement', text: 'Ad on beauty expert with 50K followers: "The serum I use every morning"' }, insight: 'Smaller audience + premium context = higher perceived value + better customers' },
       { type: 'cards', title: 'Context Signals for eCommerce', items: [
         { title: 'Meme Pages = Cheap', description: 'High reach, low value perception. Your product becomes a gag gift. Avoid unless you\'re selling novelty items.' },
@@ -115,7 +149,7 @@
         right: { label: 'Niche Expert', value: '4.2%', result: '200K impressions / high intent', color: '#10b981' },
         center: { label: 'Conversion Rate', value: '5.25x', result: 'Context beats reach every time', color: '#6366f1' }
       }},
-      { type: 'content', title: 'Your Shopify Action Plan', body: 'Audit every influencer placement. Ask: Does this context make my product look premium or cheap? Does this creator\'s audience align with my ideal customer? Would I personally discover quality products here? If any answer is no, kill the placement. Premium context = premium customers = premium prices.' },
+      { type: 'sidePanel', title: 'Your Shopify Action Plan', body: 'Audit every influencer placement. Ask: Does this context make my product look premium or cheap? Does this creator\'s audience align with my ideal customer? Would I personally discover quality products here? If any answer is no, kill the placement. Premium context = premium customers = premium prices.', panelTitle: 'Action Item', panelText: 'Right now: Screenshot your current ad placements. Rate each 1-10 for context quality. Cut anything below 7.' },
       { type: 'example', scenario: 'Fitness Apparel Store', before: { label: 'Volume Strategy', text: 'Run ads on 10 general fitness pages with 500K+ followers each' }, after: { label: 'Context Strategy', text: 'Partner with 3 specialized trainers (50K followers) known for quality recommendations' }, insight: 'Same budget, 6x higher conversion rate, 2.3x higher average order value' },
       { type: 'cards', title: 'How to Find Premium Context', items: [
         { title: 'Look for Curation', description: 'Does this influencer carefully select what they promote? Or do they shill everything? Selectivity signals value.' },
@@ -313,6 +347,47 @@
       );
     };
 
+    const SplitScreenSlide = ({ data }) => (
+      <div className="split-screen-container">
+        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="split-left">
+          <img src={data.image} alt={data.imageAlt} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="split-right">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const SidePanelSlide = ({ data }) => (
+      <div className="side-panel-container">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="panel">
+          <h4>{data.panelTitle}</h4>
+          <p>{data.panelText}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="comparison-container">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <div className="comparison-grid">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
+            <h4>{data.bad.title}</h4>
+            <p>{data.bad.description}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
+            <h4>{data.good.title}</h4>
+            <p>{data.good.description}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -372,6 +447,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'splitScreen': return <SplitScreenSlide data={slide} />;
+          case 'sidePanel': return <SidePanelSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
