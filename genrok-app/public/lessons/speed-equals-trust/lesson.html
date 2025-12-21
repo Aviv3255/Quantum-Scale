@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $1.7 Billion Speed Bump</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="../shared/greetings.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        const celebrationGifs = [
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration1.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration2.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration3.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration5.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration6.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration7.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration8.mp4'
+        ];
+
+        const empathyGifs = [
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy1.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy2.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy3.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy5.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy6.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy7.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy8.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy9.mp4'
+        ];
+
+        const accentColor = '#34C759'; // Green for speed/efficiency
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [quizSubmitted, setQuizSubmitted] = useState(false);
+
+            const slides = [
+                {
+                    type: 'welcome',
+                    title: 'The $1.7B Speed Bump',
+                    subtitle: 'Why 100 Milliseconds Costs You Money',
+                    accentText: 'Your subconscious is judging site speed'
+                },
+                {
+                    type: 'hook',
+                    title: '0.1 seconds.',
+                    subtitle: 'You can\'t even notice it.',
+                    content: 'One-tenth of a second.\n\nA blink takes 300-400 milliseconds.\n\nYou can\'t consciously perceive a 100ms delay.\n\nBut your SUBCONSCIOUS can.\n\nAnd it\'s making judgments about your trustworthiness.\n\nAmazon proved this.\n\nThe cost? $1.7 billion per year if they get it wrong.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Amazon Study',
+                    content: 'Amazon tested site speed obsessively.\n\nTheir finding:\n\nEvery 100ms of speed improvement = +1% in sales.\n\nThat\'s it.\n\nNot 1 second. Not even half a second.\n\nOne-tenth of a second.\n\nFor Amazon, that\'s $1.7 BILLION per year in revenue.\n\nFor your store? It could be the difference between 2% and 4% conversion rates.\n\nDouble your revenue. Same traffic. Faster loading.'
+                },
+                {
+                    type: 'visual',
+                    title: 'Why You Can\'t Notice It',
+                    content: 'Your conscious brain processes at ~40 bits per second.\n\nYour subconscious? 11 MILLION bits per second.\n\nThe subconscious detects delays you can\'t consciously feel.\n\n100ms feels like "nothing" to you.\n\nBut your ancient brain is screaming:\n\n"This is slow. Something is wrong. Not trustworthy. Leave."\n\nYou don\'t think this. You just feel... off.\n\nAnd you bounce.'
+                },
+                {
+                    type: 'content',
+                    title: 'Speed = Efficiency = Trust',
+                    content: 'Your brain uses speed as a proxy for competence.\n\nFast website = efficient business\nSlow website = disorganized, unprofessional\n\nThis happens at the subconscious level.\n\nA visitor doesn\'t think:\n"Hmm, this site is slow, therefore the company is incompetent."\n\nThey just feel uneasy.\n\nThey don\'t trust you.\n\nThey leave.\n\nAll from a delay they couldn\'t consciously detect.'
+                },
+                {
+                    type: 'cards',
+                    title: 'The Speed Killers',
+                    cards: [
+                        {
+                            title: 'Uncompressed Images',
+                            description: 'The #1 culprit. That 5MB hero image? Compress to 200KB. Nobody notices quality difference.'
+                        },
+                        {
+                            title: 'Too Many Scripts',
+                            description: '15 tracking pixels, 8 marketing tools, 3 chat widgets. Each adds 100-500ms.'
+                        },
+                        {
+                            title: 'Render-Blocking Resources',
+                            description: 'CSS and JS that prevents the page from showing until fully loaded'
+                        },
+                        {
+                            title: 'Slow Server Response',
+                            description: 'Cheap hosting = slow servers. You save $10/month, lose $1000/month in conversions.'
+                        }
+                    ]
+                },
+                {
+                    type: 'example',
+                    title: 'The Slow Store',
+                    negative: true,
+                    content: '10 high-res product images (3MB each)\n5 video backgrounds\n12 tracking scripts\n\nTotal load time: 4.2 seconds\n\nBounce rate: 68%\nConversion rate: 1.8%\n\nYou think: "My site looks amazing!"\n\nVisitors think: (nothing - they already left)\n\nThe images look gorgeous.\n\nBut nobody stayed long enough to see them.'
+                },
+                {
+                    type: 'example',
+                    title: 'The Fast Store',
+                    content: 'Same 10 images, compressed to 150KB each\nVideos lazy-loaded\nScripts deferred\n\nTotal load time: 1.1 seconds\n\nBounce rate: 42%\nConversion rate: 3.4%\n\nSame products. Same design.\n\n3 seconds faster.\n\nNearly DOUBLE the conversion rate.\n\nSpeed IS conversion optimization.'
+                },
+                {
+                    type: 'quiz',
+                    question: 'Your Shopify store loads in 3.5 seconds. Industry average is 3 seconds. Do you need to optimize speed?',
+                    options: [
+                        'No - I\'m only 0.5 seconds slower than average',
+                        'No - visitors can\'t notice a half-second difference',
+                        'Yes - every 100ms matters for subconscious trust',
+                        'Yes - but only if my conversion rate is already low'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'YES - every 100ms matters! That 0.5 second difference is FIVE opportunities to increase conversions by 1% each. You\'re potentially leaving 5% of revenue on the table. The subconscious detects these micro-delays even when you can\'t. Speed optimization is always worth it.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Image Compression Test',
+                    content: 'Right now, open your homepage.\n\nRight-click any product image → "Save image as"\n\nCheck the file size.\n\nIs it over 300KB?\n\n→ Compress it to 100-200KB\n\nRun this test on every image.\n\nThis one action can cut 2-3 seconds off your load time.\n\n2-3 seconds = 20-30% conversion improvement.\n\nThis is a 30-minute task that could double your revenue.'
+                },
+                {
+                    type: 'content',
+                    title: 'Mobile Is 10x Worse',
+                    content: 'Desktop on WiFi: Fast\n\nMobile on 4G in a coffee shop: Brutal\n\nThat 3-second desktop load?\n\nBecomes 8-12 seconds on mobile.\n\n53% of mobile users abandon after 3 seconds.\n\nYou\'re losing HALF your mobile traffic to speed.\n\nAnd mobile is 70%+ of eCommerce traffic now.\n\nSpeed isn\'t a nice-to-have.\n\nIt\'s the difference between a business and a hobby.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Speed Audit',
+                    content: 'Go to PageSpeed Insights (Google it)\n\nEnter your URL\n\nLook at the mobile score\n\nUnder 50? You\'re hemorrhaging money.\n50-70? You\'re leaving 10-20% on the table.\n70-90? Good, but there\'s still room.\n90+? You get it.\n\nThe report tells you EXACTLY what to fix.\n\nImages, scripts, server response.\n\nDon\'t guess. Measure. Fix. Profit.'
+                },
+                {
+                    type: 'completion',
+                    title: 'You Now Know',
+                    lessons: [
+                        'Why 100ms delays cost Amazon $1.7B/year',
+                        'How the subconscious detects speed you can\'t consciously feel',
+                        'The 4 biggest speed killers (images, scripts, blocking, servers)',
+                        'Why mobile speed is 10x more critical than desktop',
+                        'The exact audit tool to identify your speed issues (PageSpeed Insights)'
+                    ],
+                    nextLesson: 'Next: The $200M Shade of Blue - Imperceptible nudges that print money'
+                }
+            ];
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setDirection(1);
+                    setCurrentSlide(currentSlide + 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setDirection(-1);
+                    setCurrentSlide(currentSlide - 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const renderSlide = () => {
+                const slide = slides[currentSlide];
+
+                switch(slide.type) {
+                    case 'welcome':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <div className="text-gray-400 text-sm uppercase tracking-wider mb-6">
+                                            {typeof getTimeBasedWelcome !== 'undefined' ? getTimeBasedWelcome() : 'Welcome'}
+                                        </div>
+                                        <h1 className="fraunces text-6xl md:text-8xl text-white mb-6 leading-none">
+                                            {slide.title}
+                                        </h1>
+                                        <p className="text-3xl md:text-4xl mb-8" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                                            {slide.accentText}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'hook':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8 leading-tight">
+                                            {slide.title}
+                                        </h2>
+                                        <p className="text-2xl mb-6" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'content':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'visual':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12 text-center"
+                                        style={{background: 'linear-gradient(135deg, rgba(52,199,89,0.1) 0%, rgba(52,199,89,0.05) 100%)'}}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'cards':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-5xl w-full">
+                                    <h2 className="fraunces text-4xl md:text-6xl text-white mb-12 text-center">
+                                        {slide.title}
+                                    </h2>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {slide.cards.map((card, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+                                            >
+                                                <h3 className="text-2xl font-bold mb-4" style={{color: accentColor}}>
+                                                    {card.title}
+                                                </h3>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {card.description}
+                                                </p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'example':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12"
+                                        style={{
+                                            background: slide.negative
+                                                ? 'linear-gradient(135deg, rgba(255,59,48,0.1) 0%, rgba(255,59,48,0.05) 100%)'
+                                                : 'linear-gradient(135deg, rgba(52,199,89,0.1) 0%, rgba(52,199,89,0.05) 100%)',
+                                            border: slide.negative ? '2px solid rgba(255,59,48,0.2)' : '2px solid rgba(52,199,89,0.2)'
+                                        }}
+                                    >
+                                        <div className="text-sm uppercase tracking-wider mb-4"
+                                             style={{color: slide.negative ? '#FF3B30' : '#34C759'}}>
+                                            {slide.negative ? '❌ SLOW & EXPENSIVE' : '✓ FAST & PROFITABLE'}
+                                        </div>
+                                        <h2 className="fraunces text-4xl md:text-5xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'quiz':
+                        const isCorrect = selectedAnswer === slide.correctAnswer;
+                        const showFeedback = quizSubmitted;
+
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                    >
+                                        <div className="text-center mb-12">
+                                            <div className="text-sm uppercase tracking-wider mb-4" style={{color: accentColor}}>
+                                                Knowledge Check
+                                            </div>
+                                            <h2 className="fraunces text-3xl md:text-4xl text-white mb-8 leading-tight">
+                                                {slide.question}
+                                            </h2>
+                                        </div>
+
+                                        <div className="space-y-4 mb-8">
+                                            {slide.options.map((option, index) => (
+                                                <motion.button
+                                                    key={index}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    onClick={() => !quizSubmitted && setSelectedAnswer(index)}
+                                                    className="w-full p-6 rounded-xl text-left text-lg transition-all"
+                                                    style={{
+                                                        background: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? 'rgba(52,199,89,0.2)' : 'rgba(255,59,48,0.2)')
+                                                                : 'rgba(52,199,89,0.2)')
+                                                            : 'rgba(255,255,255,0.05)',
+                                                        border: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? '2px solid #34C759' : '2px solid #FF3B30')
+                                                                : `2px solid ${accentColor}`)
+                                                            : '2px solid rgba(255,255,255,0.1)',
+                                                        color: 'white'
+                                                    }}
+                                                >
+                                                    <span className="font-semibold mr-3" style={{color: accentColor}}>
+                                                        {String.fromCharCode(65 + index)}.
+                                                    </span>
+                                                    {option}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+
+                                        {!quizSubmitted && selectedAnswer !== null && (
+                                            <motion.button
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setQuizSubmitted(true)}
+                                                className="w-full py-4 rounded-xl text-white font-semibold text-lg"
+                                                style={{background: accentColor}}
+                                            >
+                                                Submit Answer
+                                            </motion.button>
+                                        )}
+
+                                        {showFeedback && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="mt-8 p-8 rounded-2xl"
+                                                style={{
+                                                    background: isCorrect
+                                                        ? 'rgba(52,199,89,0.1)'
+                                                        : 'rgba(52,199,89,0.1)',
+                                                    border: isCorrect
+                                                        ? '2px solid rgba(52,199,89,0.3)'
+                                                        : '2px solid rgba(52,199,89,0.3)'
+                                                }}
+                                            >
+                                                <div className="text-center mb-6">
+                                                    {isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                                        />
+                                                    )}
+                                                    {!isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
+                                                        />
+                                                    )}
+                                                    <div className="text-2xl font-bold mb-2"
+                                                         style={{color: isCorrect ? '#34C759' : accentColor}}>
+                                                        {isCorrect ? 'You get it!' : 'Think bigger!'}
+                                                    </div>
+                                                </div>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {slide.explanation}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'completion':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <video
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            loop
+                                            className="w-40 h-40 mx-auto mb-8"
+                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                        />
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-left max-w-2xl mx-auto mb-12">
+                                            {slide.lessons.map((lesson, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="flex items-start mb-4"
+                                                >
+                                                    <span className="mr-4 text-2xl" style={{color: accentColor}}>✓</span>
+                                                    <span className="text-gray-300 text-lg">{lesson}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                        <div className="text-xl mb-2" style={{color: accentColor}}>
+                                            {slide.nextLesson}
+                                        </div>
+                                        <p className="text-gray-400">
+                                            Speed is money.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="relative">
+                    <AnimatePresence initial={false} custom={direction} mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{
+                                x: { type: "spring", stiffness: 300, damping: 30 },
+                                opacity: { duration: 0.2 }
+                            }}
+                        >
+                            {renderSlide()}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-8 z-50">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/20 transition-all"
+                        >
+                            ← Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all"
+                                    style={{
+                                        background: index === currentSlide ? accentColor : 'rgba(255,255,255,0.3)',
+                                        width: index === currentSlide ? '24px' : '8px'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all"
+                            style={{background: currentSlide === slides.length - 1 ? 'rgba(255,255,255,0.1)' : accentColor}}
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>

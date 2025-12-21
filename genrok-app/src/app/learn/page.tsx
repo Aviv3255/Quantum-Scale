@@ -147,6 +147,17 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'ikea-effect': { title: 'The IKEA Effect', description: 'Why DIY = 63% higher perceived value' },
   'von-restorff-effect': { title: 'The Von Restorff Effect', description: 'Make your CTA impossible to miss' },
   'jakobs-law': { title: 'Jakob\'s Law', description: 'Why "unique" checkout flows kill conversions' },
+  // Unseen Seller + Psychological Commerce lessons
+  'gaze-direction': { title: 'The Gaze Hack', description: 'Where they look is where they click' },
+  'five-second-test': { title: 'The 5-Second Test', description: 'Why clarity crushes cleverness' },
+  'speed-equals-trust': { title: 'The $1.7 Billion Speed Bump', description: '0.1 second = 1% more sales' },
+  'imperceptible-nudge': { title: 'The $200 Million Color', description: 'Invisible nudges that drive millions' },
+  'cognitive-load-trap': { title: 'The Easy Brain Wins', description: 'Reduce friction, increase trust' },
+  'placebo-product': { title: 'Your Product Is a Placebo', description: 'Perception literally alters reality' },
+  'information-asymmetry': { title: 'The Prada Mystery Play', description: 'Hide information to elevate status' },
+  'visual-shorthand': { title: 'Toothpaste Stripes Psychology', description: 'Visual cues shortcut to quality' },
+  'radical-honesty-play': { title: 'The Inside Joke Effect', description: 'Admit you\'re marketing to win' },
+  'hermes-doctrine': { title: 'The Hermès Infinite Game', description: 'Protect the Birkin, play forever' },
 };
 
 // Categories for filtering

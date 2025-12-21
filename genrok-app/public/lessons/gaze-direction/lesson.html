@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gaze Hack: Where They Look Is Where They Click</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="../shared/greetings.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        const celebrationGifs = [
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration1.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration2.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration3.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration5.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration6.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration7.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration8.mp4'
+        ];
+
+        const empathyGifs = [
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy1.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy2.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy3.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy4.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy5.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy6.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy7.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy8.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy9.mp4'
+        ];
+
+        const accentColor = '#FF6B6B'; // Red for attention/gaze
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [quizSubmitted, setQuizSubmitted] = useState(false);
+
+            const slides = [
+                {
+                    type: 'welcome',
+                    title: 'The Gaze Hack',
+                    subtitle: 'Where They Look Is Where They Click',
+                    accentText: 'Control attention with invisible cues'
+                },
+                {
+                    type: 'hook',
+                    title: 'A baby is staring at you.',
+                    subtitle: 'Do you look back?',
+                    content: 'Of course you do. You can\'t help it.\n\nThis isn\'t conscious. It\'s hardwired.\n\nYour brain is programmed to follow the gaze of others.\n\nAnd the best marketers weaponize this.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Baby Ad Study',
+                    content: 'Researchers tested two identical baby food ads.\n\nOnly ONE thing changed:\n\nVersion A: Baby looking at the viewer\nVersion B: Baby looking at the product copy\n\nResult?\n\nVersion B got 300% more attention on the copy.\n\nSame ad. Same baby. Different gaze direction.\n\nMassive difference in where people looked.'
+                },
+                {
+                    type: 'visual',
+                    title: 'Heatmap Proof',
+                    content: 'Eye-tracking heatmaps showed RED HOTSPOTS exactly where the baby was looking.\n\nWhen the baby looked at the viewer:\n→ Viewers looked at the baby\n→ Copy was ignored\n\nWhen the baby looked at the copy:\n→ Viewers followed the gaze\n→ Copy got read\n\nYou literally control their eyes.'
+                },
+                {
+                    type: 'content',
+                    title: 'Why This Works',
+                    content: 'Humans are social primates.\n\nFor 300,000 years, following the gaze of others meant:\n\n→ Spotting predators\n→ Finding food\n→ Detecting threats\n→ Understanding social cues\n\nYour brain treats gaze direction as CRITICAL INFORMATION.\n\nIt processes it faster than conscious thought.\n\nYou follow gaze before you know you\'re doing it.'
+                },
+                {
+                    type: 'cards',
+                    title: 'Visual Directing Tools',
+                    cards: [
+                        {
+                            title: 'Human Gaze',
+                            description: 'People/faces looking at your CTA, product, or headline'
+                        },
+                        {
+                            title: 'Arrows & Pointers',
+                            description: 'Literal direction - finger pointing, arrow graphics'
+                        },
+                        {
+                            title: 'Leading Lines',
+                            description: 'Visual paths that guide the eye - roads, rails, diagonal composition'
+                        },
+                        {
+                            title: 'Motion Direction',
+                            description: 'In video ads - which way is the person/object moving?'
+                        }
+                    ]
+                },
+                {
+                    type: 'example',
+                    title: 'The Wrong Way',
+                    negative: true,
+                    content: 'Your ad shows a model staring directly at the camera.\n\nConfident. Beautiful. Strong eye contact.\n\nThe viewer looks at the model.\n\nThe CTA button? Ignored.\n\nThe product benefit? Skipped.\n\nThe headline? Never read.\n\nYou paid for their attention - then wasted it on the model\'s face.'
+                },
+                {
+                    type: 'example',
+                    title: 'The Right Way',
+                    content: 'Same model. Same ad.\n\nBut now the model is looking at your headline.\n\nTheir gaze creates an invisible arrow.\n\nViewers follow it automatically.\n\nThey read your headline.\n\nThey see your CTA.\n\nYou didn\'t change the copy. You changed where they looked.\n\nConversions jump 40%.'
+                },
+                {
+                    type: 'quiz',
+                    question: 'You\'re running a Facebook ad for a skincare product. The image shows a woman with glowing skin. Where should she be looking for maximum conversions?',
+                    options: [
+                        'Directly at the viewer (eye contact)',
+                        'At the product bottle in her hand',
+                        'Off to the side (candid/natural)',
+                        'Down at the ground (pensive)'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'At the product bottle! Her gaze directs the viewer\'s attention to the product itself. Eye contact wastes the gaze cue. Looking away loses control of their attention. The product is what you\'re selling - make her look at it.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Audit Question',
+                    content: 'Pull up your top 5 ads right now.\n\nAsk:\n\n"Where are the people/characters looking?"\n\nIf they\'re looking at the viewer:\n→ You\'re wasting gaze power\n\nIf they\'re looking at nothing:\n→ You\'re losing control\n\nIf they\'re looking at your CTA/product/headline:\n→ You\'re weaponizing 300,000 years of evolution\n\nThis is a 15-minute audit that can 2x your CTR.'
+                },
+                {
+                    type: 'content',
+                    title: 'Advanced Application',
+                    content: 'Gaze direction works on:\n\n→ Landing pages (hero images)\n→ Email headers\n→ TikTok videos (which way are you looking?)\n→ Product photos\n→ Testimonial images\n→ Instagram carousel ads\n\nEverywhere there\'s a face, there\'s a gaze.\n\nAnd every gaze is either helping you or hurting you.\n\nThere\'s no neutral.'
+                },
+                {
+                    type: 'completion',
+                    title: 'You Now Know',
+                    lessons: [
+                        'Why humans instinctively follow gaze direction',
+                        'The baby ad study that proved gaze control',
+                        'How to use faces/arrows/leading lines strategically',
+                        'The 15-minute audit that can 2x your CTR',
+                        'Where gaze should point (product/CTA/headline)'
+                    ],
+                    nextLesson: 'Next: The 5-Second Test - Why Clarity Crushes Cleverness'
+                }
+            ];
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setDirection(1);
+                    setCurrentSlide(currentSlide + 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setDirection(-1);
+                    setCurrentSlide(currentSlide - 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const renderSlide = () => {
+                const slide = slides[currentSlide];
+
+                switch(slide.type) {
+                    case 'welcome':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <div className="text-gray-400 text-sm uppercase tracking-wider mb-6">
+                                            {typeof getTimeBasedWelcome !== 'undefined' ? getTimeBasedWelcome() : 'Welcome'}
+                                        </div>
+                                        <h1 className="fraunces text-6xl md:text-8xl text-white mb-6 leading-none">
+                                            {slide.title}
+                                        </h1>
+                                        <p className="text-3xl md:text-4xl mb-8" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                                            {slide.accentText}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'hook':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8 leading-tight">
+                                            {slide.title}
+                                        </h2>
+                                        <p className="text-2xl mb-6" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'content':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'visual':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12 text-center"
+                                        style={{background: 'linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(255,107,107,0.05) 100%)'}}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'cards':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-5xl w-full">
+                                    <h2 className="fraunces text-4xl md:text-6xl text-white mb-12 text-center">
+                                        {slide.title}
+                                    </h2>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {slide.cards.map((card, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+                                            >
+                                                <h3 className="text-2xl font-bold mb-4" style={{color: accentColor}}>
+                                                    {card.title}
+                                                </h3>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {card.description}
+                                                </p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'example':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12"
+                                        style={{
+                                            background: slide.negative
+                                                ? 'linear-gradient(135deg, rgba(255,59,48,0.1) 0%, rgba(255,59,48,0.05) 100%)'
+                                                : 'linear-gradient(135deg, rgba(52,199,89,0.1) 0%, rgba(52,199,89,0.05) 100%)',
+                                            border: slide.negative ? '2px solid rgba(255,59,48,0.2)' : '2px solid rgba(52,199,89,0.2)'
+                                        }}
+                                    >
+                                        <div className="text-sm uppercase tracking-wider mb-4"
+                                             style={{color: slide.negative ? '#FF3B30' : '#34C759'}}>
+                                            {slide.negative ? '❌ WRONG APPROACH' : '✓ RIGHT APPROACH'}
+                                        </div>
+                                        <h2 className="fraunces text-4xl md:text-5xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'quiz':
+                        const isCorrect = selectedAnswer === slide.correctAnswer;
+                        const showFeedback = quizSubmitted;
+
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                    >
+                                        <div className="text-center mb-12">
+                                            <div className="text-sm uppercase tracking-wider mb-4" style={{color: accentColor}}>
+                                                Knowledge Check
+                                            </div>
+                                            <h2 className="fraunces text-3xl md:text-4xl text-white mb-8 leading-tight">
+                                                {slide.question}
+                                            </h2>
+                                        </div>
+
+                                        <div className="space-y-4 mb-8">
+                                            {slide.options.map((option, index) => (
+                                                <motion.button
+                                                    key={index}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    onClick={() => !quizSubmitted && setSelectedAnswer(index)}
+                                                    className="w-full p-6 rounded-xl text-left text-lg transition-all"
+                                                    style={{
+                                                        background: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? 'rgba(52,199,89,0.2)' : 'rgba(255,59,48,0.2)')
+                                                                : 'rgba(255,107,107,0.2)')
+                                                            : 'rgba(255,255,255,0.05)',
+                                                        border: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? '2px solid #34C759' : '2px solid #FF3B30')
+                                                                : `2px solid ${accentColor}`)
+                                                            : '2px solid rgba(255,255,255,0.1)',
+                                                        color: 'white'
+                                                    }}
+                                                >
+                                                    <span className="font-semibold mr-3" style={{color: accentColor}}>
+                                                        {String.fromCharCode(65 + index)}.
+                                                    </span>
+                                                    {option}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+
+                                        {!quizSubmitted && selectedAnswer !== null && (
+                                            <motion.button
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setQuizSubmitted(true)}
+                                                className="w-full py-4 rounded-xl text-white font-semibold text-lg"
+                                                style={{background: accentColor}}
+                                            >
+                                                Submit Answer
+                                            </motion.button>
+                                        )}
+
+                                        {showFeedback && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="mt-8 p-8 rounded-2xl"
+                                                style={{
+                                                    background: isCorrect
+                                                        ? 'rgba(52,199,89,0.1)'
+                                                        : 'rgba(255,107,107,0.1)',
+                                                    border: isCorrect
+                                                        ? '2px solid rgba(52,199,89,0.3)'
+                                                        : '2px solid rgba(255,107,107,0.3)'
+                                                }}
+                                            >
+                                                <div className="text-center mb-6">
+                                                    {isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                                        />
+                                                    )}
+                                                    {!isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
+                                                        />
+                                                    )}
+                                                    <div className="text-2xl font-bold mb-2"
+                                                         style={{color: isCorrect ? '#34C759' : accentColor}}>
+                                                        {isCorrect ? 'Exactly right!' : 'Not quite!'}
+                                                    </div>
+                                                </div>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {slide.explanation}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'completion':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <video
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            loop
+                                            className="w-40 h-40 mx-auto mb-8"
+                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                        />
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-left max-w-2xl mx-auto mb-12">
+                                            {slide.lessons.map((lesson, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="flex items-start mb-4"
+                                                >
+                                                    <span className="mr-4 text-2xl" style={{color: accentColor}}>✓</span>
+                                                    <span className="text-gray-300 text-lg">{lesson}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                        <div className="text-xl mb-2" style={{color: accentColor}}>
+                                            {slide.nextLesson}
+                                        </div>
+                                        <p className="text-gray-400">
+                                            You're becoming dangerous.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="relative">
+                    <AnimatePresence initial={false} custom={direction} mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{
+                                x: { type: "spring", stiffness: 300, damping: 30 },
+                                opacity: { duration: 0.2 }
+                            }}
+                        >
+                            {renderSlide()}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-8 z-50">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/20 transition-all"
+                        >
+                            ← Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all"
+                                    style={{
+                                        background: index === currentSlide ? accentColor : 'rgba(255,255,255,0.3)',
+                                        width: index === currentSlide ? '24px' : '8px'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all"
+                            style={{background: currentSlide === slides.length - 1 ? 'rgba(255,255,255,0.1)' : accentColor}}
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>

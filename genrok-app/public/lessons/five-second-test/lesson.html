@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 5-Second Test: Why Clarity Crushes Cleverness</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="../shared/greetings.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        const celebrationGifs = [
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration1.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration2.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration3.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration5.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration6.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration7.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration8.mp4'
+        ];
+
+        const empathyGifs = [
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy1.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy2.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy3.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy4.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy5.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy6.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy7.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy8.mp4',
+            'https://vhjguததpxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy9.mp4'
+        ];
+
+        const accentColor = '#007AFF'; // Blue for clarity
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [quizSubmitted, setQuizSubmitted] = useState(false);
+
+            const slides = [
+                {
+                    type: 'welcome',
+                    title: 'The 5-Second Test',
+                    subtitle: 'Why Clarity Crushes Cleverness',
+                    accentText: 'Your headline has 5 seconds to prove itself'
+                },
+                {
+                    type: 'hook',
+                    title: 'You have 5 seconds.',
+                    subtitle: 'That\'s it.',
+                    content: 'A visitor lands on your site.\n\nTheir brain asks ONE question:\n\n"Am I in the right place?"\n\nIf the answer isn\'t INSTANTLY clear:\n\nThey bounce.\n\nYou lost the sale in 5 seconds.\n\nNot because your product was bad.\n\nBecause your headline was clever instead of clear.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Brain Craves Fluency',
+                    content: 'Cognitive fluency = how EASY something is to process.\n\nYour brain uses fluency as a trust signal:\n\n→ Easy to understand = safe, trustworthy\n→ Hard to understand = risky, suspicious\n\nThis happens subconsciously.\n\nYou don\'t think "This is confusing, therefore untrustworthy."\n\nYou just feel uneasy and leave.\n\nClarity isn\'t just good copywriting.\n\nIt\'s a survival mechanism.'
+                },
+                {
+                    type: 'example',
+                    title: 'The Vague Headline',
+                    negative: true,
+                    content: '"Better Together"\n\nWhat does this company do?\n\nRelationship coaching?\nTeam building software?\nDating app?\nCouples therapy?\n\nYou have NO IDEA.\n\nYour brain feels the confusion.\n\nYou don\'t consciously think "I\'m confused."\n\nYou just hit the back button.\n\n5-second test: FAILED.'
+                },
+                {
+                    type: 'example',
+                    title: 'The Clear Headline',
+                    content: '"Leadership Coaching for Mid-Level Managers"\n\nWhat does this company do?\n\nLeadership coaching.\n\nWho is it for?\n\nMid-level managers.\n\nAm I in the right place?\n\nIf you\'re a mid-level manager who wants leadership coaching: YES.\n\nIf not: NO (and that\'s good - you saved both of you time).\n\n5-second test: PASSED.'
+                },
+                {
+                    type: 'content',
+                    title: 'Why Clever Fails',
+                    content: 'Marketers love clever headlines.\n\n"Where Vision Meets Execution"\n"Unleash Your Potential"\n"Innovation Starts Here"\n\nThese sound good in the boardroom.\n\nThey FEEL sophisticated.\n\nBut they communicate NOTHING.\n\nYour visitor\'s brain does extra work to decode them.\n\nExtra work = cognitive strain.\n\nCognitive strain = distrust.\n\nDistrust = bounce.\n\nClever lost you the sale.'
+                },
+                {
+                    type: 'visual',
+                    title: 'The 5-Second Test Protocol',
+                    content: 'Show your homepage to someone for 5 seconds.\n\nThen hide it.\n\nAsk: "What does this company do?"\n\nIf they can\'t answer clearly:\n→ Your headline has failed\n\nIf they hesitate:\n→ Your headline has failed\n\nIf they guess:\n→ Your headline has failed\n\nThe ONLY passing grade is instant, accurate clarity.\n\n"Oh, they do [exact thing you do] for [exact audience]."\n\nAnything less is costing you money.'
+                },
+                {
+                    type: 'cards',
+                    title: 'Clarity Formula',
+                    cards: [
+                        {
+                            title: 'What You Do',
+                            description: 'The actual service/product in plain language (not "solutions" or "platforms")'
+                        },
+                        {
+                            title: 'Who It\'s For',
+                            description: 'Specific audience, not "everyone" or "businesses"'
+                        },
+                        {
+                            title: 'The Core Benefit',
+                            description: 'One clear outcome they get (not a list of features)'
+                        },
+                        {
+                            title: 'No Jargon',
+                            description: 'If a 12-year-old can\'t understand it, rewrite it'
+                        }
+                    ]
+                },
+                {
+                    type: 'quiz',
+                    question: 'Which headline would pass the 5-second test for a meal prep delivery service?',
+                    options: [
+                        '"Fuel Your Journey to Greatness"',
+                        '"Where Nutrition Meets Convenience"',
+                        '"Healthy Meal Prep Delivered to Your Door"',
+                        '"Empowering Your Wellness Revolution"'
+                    ],
+                    correctAnswer: 2,
+                    explanation: 'Option C is the ONLY clear headline. It says exactly what they do (meal prep), the key benefit (healthy), and how it works (delivered). The others are vague corporate speak that communicate nothing specific. Clarity crushes cleverness.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Confusion Tax',
+                    content: 'Every second of confusion costs you conversions.\n\nIf 1,000 visitors land on your vague homepage:\n\n→ 700 bounce immediately (confused)\n→ 200 stay but don\'t convert (uncertain)\n→ 100 convert despite the confusion\n\n10% conversion rate.\n\nNow make it CLEAR:\n\n→ 200 bounce (not the right fit - good)\n→ 300 stay and browse (curious)\n→ 500 convert (they know they\'re in the right place)\n\n50% conversion rate.\n\nSame traffic. Same product.\n\n5X conversions from one headline change.'
+                },
+                {
+                    type: 'content',
+                    title: 'Clarity Checklist',
+                    content: 'Run your headline through this filter:\n\n1. Can a stranger understand it in 5 seconds?\n2. Does it use industry jargon?\n3. Would a 12-year-old get it?\n4. Does it say WHAT you do, not how you feel about it?\n5. Could it apply to 10 other companies?\n\nIf you failed any of these:\n\nYour headline is too clever.\n\nRewrite it to be brutally, obviously, almost-insultingly clear.\n\nThat\'s the one that converts.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Brutal Truth',
+                    content: 'You think clarity is boring.\n\nYou want to sound innovative, disruptive, visionary.\n\nYou want a headline that impresses your competitors.\n\nBut your customers don\'t care about impressive.\n\nThey care about KNOWING if this is for them.\n\nDescriptive beats clever.\nSpecific beats vague.\nClear beats creative.\n\nEvery. Single. Time.\n\nYour job isn\'t to impress.\n\nYour job is to convert.'
+                },
+                {
+                    type: 'completion',
+                    title: 'You Now Know',
+                    lessons: [
+                        'Why the brain uses fluency as a trust signal',
+                        'The 5-second test protocol to audit your headlines',
+                        'Why clever headlines destroy conversions',
+                        'The 4-part clarity formula (what, who, benefit, no jargon)',
+                        'How confusion is a conversion tax you can\'t afford'
+                    ],
+                    nextLesson: 'Next: The $1.7 Billion Speed Bump - Why milliseconds matter'
+                }
+            ];
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setDirection(1);
+                    setCurrentSlide(currentSlide + 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setDirection(-1);
+                    setCurrentSlide(currentSlide - 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const renderSlide = () => {
+                const slide = slides[currentSlide];
+
+                switch(slide.type) {
+                    case 'welcome':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <div className="text-gray-400 text-sm uppercase tracking-wider mb-6">
+                                            {typeof getTimeBasedWelcome !== 'undefined' ? getTimeBasedWelcome() : 'Welcome'}
+                                        </div>
+                                        <h1 className="fraunces text-6xl md:text-8xl text-white mb-6 leading-none">
+                                            {slide.title}
+                                        </h1>
+                                        <p className="text-3xl md:text-4xl mb-8" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                                            {slide.accentText}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'hook':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8 leading-tight">
+                                            {slide.title}
+                                        </h2>
+                                        <p className="text-2xl mb-6" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'content':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'visual':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12 text-center"
+                                        style={{background: 'linear-gradient(135deg, rgba(0,122,255,0.1) 0%, rgba(0,122,255,0.05) 100%)'}}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'cards':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-5xl w-full">
+                                    <h2 className="fraunces text-4xl md:text-6xl text-white mb-12 text-center">
+                                        {slide.title}
+                                    </h2>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {slide.cards.map((card, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+                                            >
+                                                <h3 className="text-2xl font-bold mb-4" style={{color: accentColor}}>
+                                                    {card.title}
+                                                </h3>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {card.description}
+                                                </p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'example':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12"
+                                        style={{
+                                            background: slide.negative
+                                                ? 'linear-gradient(135deg, rgba(255,59,48,0.1) 0%, rgba(255,59,48,0.05) 100%)'
+                                                : 'linear-gradient(135deg, rgba(52,199,89,0.1) 0%, rgba(52,199,89,0.05) 100%)',
+                                            border: slide.negative ? '2px solid rgba(255,59,48,0.2)' : '2px solid rgba(52,199,89,0.2)'
+                                        }}
+                                    >
+                                        <div className="text-sm uppercase tracking-wider mb-4"
+                                             style={{color: slide.negative ? '#FF3B30' : '#34C759'}}>
+                                            {slide.negative ? '❌ FAILS THE TEST' : '✓ PASSES THE TEST'}
+                                        </div>
+                                        <h2 className="fraunces text-4xl md:text-5xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'quiz':
+                        const isCorrect = selectedAnswer === slide.correctAnswer;
+                        const showFeedback = quizSubmitted;
+
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                    >
+                                        <div className="text-center mb-12">
+                                            <div className="text-sm uppercase tracking-wider mb-4" style={{color: accentColor}}>
+                                                Knowledge Check
+                                            </div>
+                                            <h2 className="fraunces text-3xl md:text-4xl text-white mb-8 leading-tight">
+                                                {slide.question}
+                                            </h2>
+                                        </div>
+
+                                        <div className="space-y-4 mb-8">
+                                            {slide.options.map((option, index) => (
+                                                <motion.button
+                                                    key={index}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    onClick={() => !quizSubmitted && setSelectedAnswer(index)}
+                                                    className="w-full p-6 rounded-xl text-left text-lg transition-all"
+                                                    style={{
+                                                        background: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? 'rgba(52,199,89,0.2)' : 'rgba(255,59,48,0.2)')
+                                                                : 'rgba(0,122,255,0.2)')
+                                                            : 'rgba(255,255,255,0.05)',
+                                                        border: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? '2px solid #34C759' : '2px solid #FF3B30')
+                                                                : `2px solid ${accentColor}`)
+                                                            : '2px solid rgba(255,255,255,0.1)',
+                                                        color: 'white'
+                                                    }}
+                                                >
+                                                    <span className="font-semibold mr-3" style={{color: accentColor}}>
+                                                        {String.fromCharCode(65 + index)}.
+                                                    </span>
+                                                    {option}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+
+                                        {!quizSubmitted && selectedAnswer !== null && (
+                                            <motion.button
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setQuizSubmitted(true)}
+                                                className="w-full py-4 rounded-xl text-white font-semibold text-lg"
+                                                style={{background: accentColor}}
+                                            >
+                                                Submit Answer
+                                            </motion.button>
+                                        )}
+
+                                        {showFeedback && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="mt-8 p-8 rounded-2xl"
+                                                style={{
+                                                    background: isCorrect
+                                                        ? 'rgba(52,199,89,0.1)'
+                                                        : 'rgba(0,122,255,0.1)',
+                                                    border: isCorrect
+                                                        ? '2px solid rgba(52,199,89,0.3)'
+                                                        : '2px solid rgba(0,122,255,0.3)'
+                                                }}
+                                            >
+                                                <div className="text-center mb-6">
+                                                    {isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                                        />
+                                                    )}
+                                                    {!isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
+                                                        />
+                                                    )}
+                                                    <div className="text-2xl font-bold mb-2"
+                                                         style={{color: isCorrect ? '#34C759' : accentColor}}>
+                                                        {isCorrect ? 'Perfect!' : 'Close!'}
+                                                    </div>
+                                                </div>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {slide.explanation}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'completion':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <video
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            loop
+                                            className="w-40 h-40 mx-auto mb-8"
+                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                        />
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-left max-w-2xl mx-auto mb-12">
+                                            {slide.lessons.map((lesson, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="flex items-start mb-4"
+                                                >
+                                                    <span className="mr-4 text-2xl" style={{color: accentColor}}>✓</span>
+                                                    <span className="text-gray-300 text-lg">{lesson}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                        <div className="text-xl mb-2" style={{color: accentColor}}>
+                                            {slide.nextLesson}
+                                        </div>
+                                        <p className="text-gray-400">
+                                            Clarity is your superpower.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="relative">
+                    <AnimatePresence initial={false} custom={direction} mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{
+                                x: { type: "spring", stiffness: 300, damping: 30 },
+                                opacity: { duration: 0.2 }
+                            }}
+                        >
+                            {renderSlide()}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-8 z-50">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/20 transition-all"
+                        >
+                            ← Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all"
+                                    style={{
+                                        background: index === currentSlide ? accentColor : 'rgba(255,255,255,0.3)',
+                                        width: index === currentSlide ? '24px' : '8px'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all"
+                            style={{background: currentSlide === slides.length - 1 ? 'rgba(255,255,255,0.1)' : accentColor}}
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>

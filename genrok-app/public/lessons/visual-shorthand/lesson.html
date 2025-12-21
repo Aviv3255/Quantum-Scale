@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toothpaste Stripes Psychology - Visual Shorthand</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <!-- Shared Greetings -->
+    <script src="../shared/greetings.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.motion || window['framer-motion'];
+
+        // Supabase celebration GIFs
+        const celebrationGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-8.gif'
+        ];
+
+        const empathyGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-8.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-9.gif'
+        ];
+
+        const ACCENT_COLOR = '#E67E22'; // Warm orange for visual psychology
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: 'Toothpaste Stripes Psychology',
+                subtitle: 'Why visuals persuade better than words ever could',
+                accentText: 'Visual Shorthand'
+            },
+            {
+                type: 'hook',
+                question: 'Why does toothpaste have stripes?',
+                options: [
+                    'Different ingredients for different benefits',
+                    'Visual signal of multiple benefits (even though it mixes)',
+                    'Manufacturing efficiency',
+                    'To look pretty'
+                ],
+                correctIndex: 1,
+                explanation: 'The stripes serve NO logical purpose once mixed in your mouth. But visually? They signal "cavity protection + fresh breath + whitening." Your brain uses visual shortcuts to judge quality faster than reading labels.',
+                insight: 'Humans don\'t process information logically. We use VISUAL CUES as shortcuts to judge quality, benefits, and value. This is perception hacking at its finest.'
+            },
+            {
+                type: 'content',
+                title: 'The Visual Shorthand Principle',
+                content: 'Your brain is lazy (in a smart way). Reading and processing words takes WORK. Visual cues? Instant judgment.',
+                points: [
+                    'Visual processing is 60,000x faster than text',
+                    'People judge quality in 0.05 seconds based on aesthetics',
+                    'Premium visuals = premium product (even if identical inside)',
+                    'Perception IS reality in purchasing decisions'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'The Toothpaste Stripe Breakdown',
+                examples: [
+                    {
+                        label: 'LOGICAL REALITY',
+                        description: 'All ingredients mix together instantly. Stripes are meaningless functionally.'
+                    },
+                    {
+                        label: 'VISUAL PERCEPTION',
+                        description: 'Stripes signal: "This has MULTIPLE benefits." Brain shortcuts: More stripes = More value.'
+                    },
+                    {
+                        label: 'PURCHASE DECISION',
+                        description: 'Buyer chooses striped toothpaste over plain white, paying more for identical formula.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'Case Study: Rolls-Royce',
+                content: 'Rolls-Royce uses BMW engines. The actual engineering? Same luxury tier as competitors.',
+                points: [
+                    'Engine: BMW (hidden, unknown to most buyers)',
+                    'Interior: Hand-stitched leather, lambswool carpets, chrome details',
+                    'Result: Perceived as "the ultimate luxury" despite shared parts',
+                    'Visual cues (plush interiors) communicate value more than specs'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'Sephora\'s $2 Bag Strategy',
+                examples: [
+                    {
+                        label: 'BASIC PLASTIC BAG',
+                        description: '$0.10 cost. Functional. Forgettable. No Instagram posts.'
+                    },
+                    {
+                        label: 'SEPHORA ROPE-HANDLE BAG',
+                        description: '$2+ cost. Premium feel. Instagram-worthy. Free advertising as customers carry it.'
+                    },
+                    {
+                        label: 'PERCEPTION SHIFT',
+                        description: 'Same makeup inside. But the BAG signals: "I shop at premium stores." Worth the expense.'
+                    }
+                ]
+            },
+            {
+                type: 'cards',
+                title: 'Visual Shorthand in Action',
+                cards: [
+                    {
+                        title: 'Apple Packaging',
+                        description: 'White, minimalist boxes cost 3x more to produce. But they signal: "Premium, thoughtful, valuable product inside."'
+                    },
+                    {
+                        title: 'Tiffany Blue Box',
+                        description: 'A robin\'s egg blue box adds ZERO functional value. But it\'s so iconic it increases perceived value 30%+.'
+                    },
+                    {
+                        title: 'Luxury Car Interiors',
+                        description: 'Wood trim, metal accents, ambient lighting. Engineers say it doesn\'t affect performance. Buyers disagree with their wallets.'
+                    },
+                    {
+                        title: 'Premium Water Bottles',
+                        description: 'Fiji, Voss, Evian. Same H2O. Different bottles. 10x price difference based purely on visual design.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'Why This Works: Brain Science',
+                content: 'Your brain evolved to make FAST decisions based on visual patterns. Reading labels = slow. Visual assessment = instant survival.',
+                points: [
+                    'Visual cortex processes images in 13 milliseconds',
+                    'Text comprehension requires conscious effort and time',
+                    'Aesthetic judgments trigger emotional, not logical, pathways',
+                    'First impressions (visual) are nearly impossible to override'
+                ]
+            },
+            {
+                type: 'content',
+                title: 'DTC Application: Your Product',
+                content: 'Packaging IS the product. Not an afterthought. Not "good enough." OBSESSIVE.',
+                points: [
+                    'Invest in packaging like it\'s your marketing budget (it is)',
+                    'Every visual detail signals quality or cheapness',
+                    'Unboxing experience = first physical brand interaction',
+                    'Instagram-worthy packaging = free advertising'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'DTC Application: Your Website',
+                examples: [
+                    {
+                        label: 'TYPOGRAPHY & SPACING',
+                        description: 'This is your "plush Rolls-Royce interior." Clean fonts, generous white space, perfect hierarchy = premium brand.'
+                    },
+                    {
+                        label: 'CUSTOM PHOTOGRAPHY',
+                        description: 'Stock photos scream "cheap startup." Custom product photography signals: "We invested, we care, we\'re real."'
+                    },
+                    {
+                        label: 'UI MICRO-DETAILS',
+                        description: 'Button shadows, hover states, loading animations. These "unnecessary" details separate premium from amateur.'
+                    }
+                ]
+            },
+            {
+                type: 'example',
+                title: 'Real-World Implementation',
+                scenario: 'You sell a $40 skincare serum. Same formula as competitors.',
+                approaches: [
+                    {
+                        label: 'AMATEUR APPROACH',
+                        description: 'Clear plastic bottle, printed label, bubble mailer shipping. Focuses budget on Facebook ads.',
+                        result: 'Looks like a $15 product. Price resistance. Low perceived value.'
+                    },
+                    {
+                        label: 'VISUAL SHORTHAND APPROACH',
+                        description: 'Frosted glass bottle, embossed logo, magnetic-closure box, tissue paper wrap, branded sticker seal.',
+                        result: 'Looks like a $60 product. Unboxing videos. Customers justify premium price to themselves.'
+                    }
+                ]
+            },
+            {
+                type: 'quiz',
+                question: 'Your competitor uses basic packaging and undercuts your price by $5. What\'s the VISUAL SHORTHAND move?',
+                options: [
+                    'Match their price and packaging to compete',
+                    'Invest MORE in packaging to justify premium positioning',
+                    'Focus on product quality only, ignore packaging',
+                    'Add flashy colors and graphics to stand out'
+                ],
+                correctIndex: 1,
+                celebration: 'EXACTLY. Premium packaging JUSTIFIES premium pricing. When visuals scream quality, customers don\'t question the price - they assume your product is worth more. Race to the top, not the bottom.',
+                empathy: 'It feels risky to spend on "just packaging." But here\'s the truth: customers can\'t taste your skincare formula through the screen. They CAN see your packaging. Visual cues are your ONLY quality signal until they buy. Invest there first.'
+            },
+            {
+                type: 'completion',
+                title: 'You\'re Now Dangerous',
+                summary: 'You understand that humans don\'t judge products logically - they use visual shortcuts. Toothpaste stripes, Rolls-Royce interiors, Sephora bags - all perception hacking.',
+                keyTakeaway: 'Your packaging, website design, and visual details aren\'t "nice to have." They\'re your primary quality signals. Invest obsessively in visual shorthand, and customers will justify your premium prices to themselves.',
+                nextSteps: [
+                    'Audit your packaging: Does it signal premium or amateur?',
+                    'Review your website typography and spacing: Plush or cramped?',
+                    'Replace ALL stock photos with custom product photography',
+                    'Add one "unnecessary" premium detail to your packaging'
+                ]
+            }
+        ];
+
+        function Lesson() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [userName, setUserName] = useState('');
+
+            useEffect(() => {
+                const name = window.getStoredUserName ? window.getStoredUserName() : '';
+                setUserName(name);
+            }, []);
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const nextSlide = () => {
+                setDirection(1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1));
+            };
+
+            const prevSlide = () => {
+                setDirection(-1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.max(prev - 1, 0));
+            };
+
+            const handleAnswerSelect = (index) => {
+                setSelectedAnswer(index);
+                setShowExplanation(true);
+            };
+
+            const slide = slides[currentSlide];
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+
+            return (
+                <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
+                    {/* Progress Bar */}
+                    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+                        <motion.div
+                            className="h-full"
+                            style={{ background: ACCENT_COLOR }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.3 }}
+                        />
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 flex items-center justify-center p-4 md:p-8 pt-12">
+                        <div className="w-full max-w-4xl">
+                            <AnimatePresence mode="wait" custom={direction}>
+                                <motion.div
+                                    key={currentSlide}
+                                    custom={direction}
+                                    variants={slideVariants}
+                                    initial="enter"
+                                    animate="center"
+                                    exit="exit"
+                                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                >
+                                    {slide.type === 'welcome' && (
+                                        <div className="text-center space-y-8 py-12">
+                                            <motion.div
+                                                initial={{ scale: 0.9, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ delay: 0.2 }}
+                                            >
+                                                <div className="inline-block px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-6"
+                                                     style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                    {slide.accentText}
+                                                </div>
+                                                <h1 className="fraunces text-5xl md:text-7xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h1>
+                                                <p className="text-xl md:text-2xl" style={{ color: '#86868B' }}>
+                                                    {slide.subtitle}
+                                                </p>
+                                            </motion.div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'hook' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                                {slide.explanation}
+                                                            </p>
+                                                            <div className="p-4 rounded-xl" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                                <p className="font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                                    {slide.insight}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'content' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.content}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                {slide.points.map((point, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="flex gap-4 p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            <span className="font-bold">{index + 1}</span>
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {point}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'visual' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.examples.map((example, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: index * 0.15 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {example.label}
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {example.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'cards' && (
+                                        <div className="max-w-4xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                {slide.cards.map((card, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, scale: 0.9 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                        whileHover={{ scale: 1.03 }}
+                                                    >
+                                                        <h3 className="font-bold text-xl mb-3" style={{ color: '#000' }}>
+                                                            {card.title}
+                                                        </h3>
+                                                        <p style={{ color: '#86868B' }}>
+                                                            {card.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'example' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.scenario}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.approaches.map((approach, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.2 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {approach.label}
+                                                        </div>
+                                                        <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                            {approach.description}
+                                                        </p>
+                                                        <div className="p-4 rounded-xl" style={{ background: '#F5F5F7' }}>
+                                                            <p className="font-semibold" style={{ color: '#86868B' }}>
+                                                                {approach.result}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'quiz' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg font-semibold" style={{ color: '#1D1D1F' }}>
+                                                                {selectedAnswer === slide.correctIndex ? slide.celebration : slide.empathy}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'completion' && (
+                                        <div className="text-center space-y-8 py-12 max-w-3xl mx-auto">
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ type: "spring", duration: 0.6 }}
+                                                className="w-24 h-24 mx-auto rounded-full flex items-center justify-center text-4xl mb-8"
+                                                style={{ background: `${ACCENT_COLOR}20` }}
+                                            >
+                                                🎯
+                                            </motion.div>
+
+                                            <h2 className="fraunces text-4xl md:text-6xl mb-6" style={{ color: '#000' }}>
+                                                {slide.title}
+                                            </h2>
+
+                                            <p className="text-xl mb-8" style={{ color: '#86868B' }}>
+                                                {slide.summary}
+                                            </p>
+
+                                            <div className="p-8 rounded-2xl mb-8" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                <p className="text-xl font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                    {slide.keyTakeaway}
+                                                </p>
+                                            </div>
+
+                                            <div className="text-left space-y-4 p-8 rounded-2xl" style={{ background: '#FFFFFF' }}>
+                                                <h3 className="font-bold text-xl mb-4" style={{ color: '#000' }}>
+                                                    Next Steps:
+                                                </h3>
+                                                {slide.nextSteps.map((step, index) => (
+                                                    <div key={index} className="flex gap-3 items-start">
+                                                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            {index + 1}
+                                                        </div>
+                                                        <p style={{ color: '#1D1D1F' }}>{step}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: '#FFFFFF',
+                                color: '#000',
+                                border: '2px solid #F5F5F7'
+                            }}
+                        >
+                            Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all duration-300"
+                                    style={{
+                                        background: index === currentSlide ? ACCENT_COLOR : '#E5E5E7'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: ACCENT_COLOR,
+                                color: '#FFFFFF'
+                            }}
+                        >
+                            {currentSlide === slides.length - 1 ? 'Complete' : 'Next'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Lesson />);
+    </script>
+</body>
+</html>

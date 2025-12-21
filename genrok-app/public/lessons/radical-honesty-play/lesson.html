@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Inside Joke Effect - Radical Honesty Play</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <!-- Shared Greetings -->
+    <script src="../shared/greetings.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.motion || window['framer-motion'];
+
+        // Supabase celebration GIFs
+        const celebrationGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-8.gif'
+        ];
+
+        const empathyGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-8.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-9.gif'
+        ];
+
+        const ACCENT_COLOR = '#9B59B6'; // Purple for radical honesty
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: 'The Inside Joke Effect',
+                subtitle: 'For cynical audiences: admitting you\'re marketing IS the marketing',
+                accentText: 'Radical Honesty Play'
+            },
+            {
+                type: 'hook',
+                question: 'What\'s the MOST effective tactic for marketing-savvy, skeptical audiences?',
+                options: [
+                    'More aggressive persuasion tactics',
+                    'Hide that you\'re selling anything',
+                    'Admit you\'re marketing and make it funny',
+                    'Use complex psychology they won\'t recognize'
+                ],
+                correctIndex: 2,
+                explanation: 'When your audience has seen EVERY marketing trick, the only move left is radical honesty. Liquid Death has a "VP of Cult Indoctrination." dbrand calls their manifesto "propaganda." They\'re SO transparent about marketing that it disarms skepticism.',
+                insight: 'The meta-game: When everyone knows the game, acknowledging the game becomes the winning move. You make them feel like they\'re in on the joke, not the target of it.'
+            },
+            {
+                type: 'content',
+                title: 'The Radical Honesty Principle',
+                content: 'Modern consumers are EXHAUSTED by marketing. They\'ve seen it all. The only surprise left? Total transparency.',
+                points: [
+                    'Skeptical audiences automatically resist persuasion attempts',
+                    'Traditional marketing triggers their "I\'m being sold to" alarm',
+                    'Admitting you\'re marketing creates cognitive dissonance (wait, are they selling or joking?)',
+                    'Result: They laugh, lower guard, and paradoxically become MORE persuadable'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'Case Study: Liquid Death',
+                examples: [
+                    {
+                        label: 'TRADITIONAL WATER BRAND',
+                        description: 'Job titles: VP of Marketing, Brand Manager, Sales Director. Serious. Corporate. Boring.'
+                    },
+                    {
+                        label: 'LIQUID DEATH\'S MOVE',
+                        description: 'Actual job title: "VP of Cult Indoctrination." So absurdly honest about creating brand loyalty it becomes hilarious.'
+                    },
+                    {
+                        label: 'CUSTOMER REACTION',
+                        description: '"LOL they literally have a VP of CULT INDOCTRINATION. This is amazing." *Buys overpriced water and posts about it on Instagram*'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'Case Study: dbrand',
+                content: 'dbrand sells phone skins. Commoditized product. Tough market. Their solution? Weaponized self-awareness.',
+                points: [
+                    'Company "Manifesto" literally titled: "This is propaganda"',
+                    '"Extortion Portal" - a page where you send them money for nothing',
+                    'Roast customers on Twitter who complain about delays',
+                    'No pretense of "customer service theater" - just brutal honesty'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'dbrand\'s Transparency Strategy',
+                examples: [
+                    {
+                        label: 'MANIFESTO EXCERPT',
+                        description: '"This is propaganda designed to make you buy our products. We\'re admitting it. You\'ll probably still buy it because we\'re honest about it being propaganda."'
+                    },
+                    {
+                        label: 'EXTORTION PORTAL',
+                        description: 'A literal page where you can send them money for absolutely nothing in return. People do it because it\'s funny and they appreciate the joke.'
+                    },
+                    {
+                        label: 'CUSTOMER SERVICE',
+                        description: 'Response to complaint: "Yeah, your order is late. We\'re shipping globally during a pandemic. Chill." Customers actually respect the honesty.'
+                    }
+                ]
+            },
+            {
+                type: 'cards',
+                title: 'Why This Works: The Psychology',
+                cards: [
+                    {
+                        title: 'Disarms Skepticism',
+                        description: 'Hard to be cynical about someone who\'s MORE cynical than you. "They get it. They\'re not trying to trick me."'
+                    },
+                    {
+                        title: 'Creates In-Group Feeling',
+                        description: 'You\'re not the target - you\'re part of the joke. "We\'re both laughing at how absurd marketing is."'
+                    },
+                    {
+                        title: 'Parasocial Authenticity',
+                        description: 'Feels like a real person, not a corporate robot. "These are MY people. They think like me."'
+                    },
+                    {
+                        title: 'Shareability Factor',
+                        description: 'You can\'t WAIT to show friends. "Look at this insane job title!" Free viral marketing from the honesty itself.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Inside Joke Mechanism',
+                content: 'Traditional marketing: Customer is the TARGET. Radical honesty: Customer is the CO-CONSPIRATOR.',
+                points: [
+                    'Normal brand: "Our product changes lives!" (eye roll)',
+                    'Radical honesty: "It\'s a phone case. But it\'s a COOL phone case." (nod of respect)',
+                    'You acknowledge the absurdity of consumerism WHILE participating in it',
+                    'Customer feels smart for "getting it" and rewards you with loyalty'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'Traditional vs Radical Honesty',
+                examples: [
+                    {
+                        label: 'TRADITIONAL SKINCARE BRAND',
+                        description: '"Our revolutionary serum harnesses the power of rare botanicals to transform your skin." (Generic marketing speak)'
+                    },
+                    {
+                        label: 'RADICAL HONESTY VERSION',
+                        description: '"Look, it\'s overpriced face goo. But it works, it smells good, and the bottle looks sick on your shelf. Your call."'
+                    },
+                    {
+                        label: 'RESULT',
+                        description: 'Second version gets shared, quoted, memed. First version gets ignored. Honesty wins attention in saturated markets.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'When Radical Honesty Works',
+                content: 'This isn\'t for everyone. Know your audience before deploying.',
+                points: [
+                    'Your audience is marketing-savvy (Gen Z, Millennials, tech workers)',
+                    'Your product category is saturated and commoditized',
+                    'Your brand voice can handle irreverence and humor',
+                    'You\'re willing to alienate some people to deeply connect with others'
+                ]
+            },
+            {
+                type: 'example',
+                title: 'DTC Application: Coffee Brand',
+                scenario: 'You sell premium coffee. Crowded market. Skeptical audience tired of "artisanal" BS.',
+                approaches: [
+                    {
+                        label: 'TRADITIONAL APPROACH',
+                        description: '"Our single-origin beans are ethically sourced from sustainable farms, hand-roasted in small batches using time-honored methods..."',
+                        result: 'Sounds exactly like 47 other coffee brands. No differentiation. Skeptical audience tunes out.'
+                    },
+                    {
+                        label: 'RADICAL HONESTY APPROACH',
+                        description: '"It\'s coffee. Expensive coffee, yeah. But it tastes way better than Folgers and you know it. We\'re not saving the world - we\'re caffeinating it."',
+                        result: 'Refreshingly honest. Shareable. Memorable. Creates "they get it" bond with cynical coffee snobs.'
+                    }
+                ]
+            },
+            {
+                type: 'quiz',
+                question: 'Your DTC brand gets a 1-star review: "This is overpriced and overhyped." What\'s the RADICAL HONESTY response?',
+                options: [
+                    'Delete it and pretend it doesn\'t exist',
+                    'Professional response: "We\'re sorry you feel that way..."',
+                    '"You\'re right, it IS overpriced. Premium materials cost money. Not for everyone."',
+                    'Attack the customer for not understanding quality'
+                ],
+                correctIndex: 2,
+                celebration: 'PERFECT. You acknowledged their point without getting defensive. This shows confidence, honesty, and actually INCREASES trust with other customers reading reviews. You\'re not for everyone - and that\'s the point. Radical honesty filters for your ideal customers.',
+                empathy: 'The instinct is to defend or apologize. But here\'s the move: AGREE with the criticism, own your positioning. "Yes, we\'re expensive. That\'s because X, Y, Z. If you want cheap, go elsewhere." This actually builds respect with customers who value those trade-offs.'
+            },
+            {
+                type: 'completion',
+                title: 'You\'re Now Dangerous',
+                summary: 'You understand that for skeptical, marketing-savvy audiences, traditional persuasion backfires. Liquid Death has a "VP of Cult Indoctrination." dbrand admits their manifesto is propaganda. Radical honesty disarms skepticism by making customers feel like co-conspirators, not targets.',
+                keyTakeaway: 'When everyone knows the marketing game, the winning move is to acknowledge the game. Make them laugh at the absurdity of consumerism WHILE participating in it. They\'ll reward your honesty with loyalty and free viral marketing.',
+                nextSteps: [
+                    'Audit your copy: Where are you using generic marketing speak?',
+                    'Rewrite ONE product description with radical honesty',
+                    'Test self-aware humor in social media posts (if it fits brand voice)',
+                    'Consider: What\'s your brand\'s version of "VP of Cult Indoctrination"?'
+                ]
+            }
+        ];
+
+        function Lesson() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [userName, setUserName] = useState('');
+
+            useEffect(() => {
+                const name = window.getStoredUserName ? window.getStoredUserName() : '';
+                setUserName(name);
+            }, []);
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const nextSlide = () => {
+                setDirection(1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1));
+            };
+
+            const prevSlide = () => {
+                setDirection(-1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.max(prev - 1, 0));
+            };
+
+            const handleAnswerSelect = (index) => {
+                setSelectedAnswer(index);
+                setShowExplanation(true);
+            };
+
+            const slide = slides[currentSlide];
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+
+            return (
+                <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
+                    {/* Progress Bar */}
+                    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+                        <motion.div
+                            className="h-full"
+                            style={{ background: ACCENT_COLOR }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.3 }}
+                        />
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 flex items-center justify-center p-4 md:p-8 pt-12">
+                        <div className="w-full max-w-4xl">
+                            <AnimatePresence mode="wait" custom={direction}>
+                                <motion.div
+                                    key={currentSlide}
+                                    custom={direction}
+                                    variants={slideVariants}
+                                    initial="enter"
+                                    animate="center"
+                                    exit="exit"
+                                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                >
+                                    {slide.type === 'welcome' && (
+                                        <div className="text-center space-y-8 py-12">
+                                            <motion.div
+                                                initial={{ scale: 0.9, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ delay: 0.2 }}
+                                            >
+                                                <div className="inline-block px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-6"
+                                                     style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                    {slide.accentText}
+                                                </div>
+                                                <h1 className="fraunces text-5xl md:text-7xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h1>
+                                                <p className="text-xl md:text-2xl" style={{ color: '#86868B' }}>
+                                                    {slide.subtitle}
+                                                </p>
+                                            </motion.div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'hook' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                                {slide.explanation}
+                                                            </p>
+                                                            <div className="p-4 rounded-xl" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                                <p className="font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                                    {slide.insight}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'content' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.content}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                {slide.points.map((point, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="flex gap-4 p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            <span className="font-bold">{index + 1}</span>
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {point}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'visual' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.examples.map((example, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: index * 0.15 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {example.label}
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {example.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'cards' && (
+                                        <div className="max-w-4xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                {slide.cards.map((card, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, scale: 0.9 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                        whileHover={{ scale: 1.03 }}
+                                                    >
+                                                        <h3 className="font-bold text-xl mb-3" style={{ color: '#000' }}>
+                                                            {card.title}
+                                                        </h3>
+                                                        <p style={{ color: '#86868B' }}>
+                                                            {card.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'example' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.scenario}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.approaches.map((approach, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.2 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {approach.label}
+                                                        </div>
+                                                        <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                            {approach.description}
+                                                        </p>
+                                                        <div className="p-4 rounded-xl" style={{ background: '#F5F5F7' }}>
+                                                            <p className="font-semibold" style={{ color: '#86868B' }}>
+                                                                {approach.result}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'quiz' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg font-semibold" style={{ color: '#1D1D1F' }}>
+                                                                {selectedAnswer === slide.correctIndex ? slide.celebration : slide.empathy}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'completion' && (
+                                        <div className="text-center space-y-8 py-12 max-w-3xl mx-auto">
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ type: "spring", duration: 0.6 }}
+                                                className="w-24 h-24 mx-auto rounded-full flex items-center justify-center text-4xl mb-8"
+                                                style={{ background: `${ACCENT_COLOR}20` }}
+                                            >
+                                                🎭
+                                            </motion.div>
+
+                                            <h2 className="fraunces text-4xl md:text-6xl mb-6" style={{ color: '#000' }}>
+                                                {slide.title}
+                                            </h2>
+
+                                            <p className="text-xl mb-8" style={{ color: '#86868B' }}>
+                                                {slide.summary}
+                                            </p>
+
+                                            <div className="p-8 rounded-2xl mb-8" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                <p className="text-xl font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                    {slide.keyTakeaway}
+                                                </p>
+                                            </div>
+
+                                            <div className="text-left space-y-4 p-8 rounded-2xl" style={{ background: '#FFFFFF' }}>
+                                                <h3 className="font-bold text-xl mb-4" style={{ color: '#000' }}>
+                                                    Next Steps:
+                                                </h3>
+                                                {slide.nextSteps.map((step, index) => (
+                                                    <div key={index} className="flex gap-3 items-start">
+                                                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            {index + 1}
+                                                        </div>
+                                                        <p style={{ color: '#1D1D1F' }}>{step}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: '#FFFFFF',
+                                color: '#000',
+                                border: '2px solid #F5F5F7'
+                            }}
+                        >
+                            Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all duration-300"
+                                    style={{
+                                        background: index === currentSlide ? ACCENT_COLOR : '#E5E5E7'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: ACCENT_COLOR,
+                                color: '#FFFFFF'
+                            }}
+                        >
+                            {currentSlide === slides.length - 1 ? 'Complete' : 'Next'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Lesson />);
+    </script>
+</body>
+</html>
