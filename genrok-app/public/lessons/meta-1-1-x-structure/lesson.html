@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-card: #ffffff; --meta-text: #1c1e21; --meta-muted: #65676b; --meta-border: #dddfe2; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -61,11 +61,37 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Clean SVG Icons - No emojis
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      Sparkles: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Folder: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>,
+      Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Image: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Play: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+      PauseCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>,
+      Settings: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      ChevronDown: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>,
+      ChevronRight: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>,
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why multiple ad sets hurt performance in the Andromeda era', 'The 1-1-X structure: 1 campaign, 1 ad set, X creatives', 'How simplification leads to +22% ROAS improvement'] },
       { type: 'hook', headline: 'Your 15 ad sets are fighting each other. And Meta\'s AI is confused.', subtext: 'In 2020, complex campaign structures made sense. You needed to manually segment audiences. In 2025? Andromeda is smarter than your segmentation. Every ad set you add creates internal competition, fragments data, and slows learning. The winners have simplified down to almost nothing.' },
       { type: 'content', title: 'What Is the 1-1-X Structure?', body: 'It\'s radical simplicity: 1 Campaign. 1 Ad Set (broad targeting). X Creatives (the more variety, the better). That\'s it. No interest stacking. No lookalike tiers. No age/gender splits. Just one broad ad set with maximum creative diversity. Let Andromeda figure out who should see what. It\'s better at targeting than you are.' },
-      { type: 'structure-visual', title: 'The New Structure Visualized', oldStructure: { label: 'Old (Complex)', items: ['Campaign 1', '├── Ad Set: Interest 1', '├── Ad Set: Interest 2', '├── Ad Set: LAL 1%', '├── Ad Set: LAL 2%', '├── Ad Set: Broad 25-34', '└── Ad Set: Broad 35-44'], problems: ['Audience overlap', 'Budget fragmentation', 'Slow learning', 'Internal competition'] }, newStructure: { label: 'New (1-1-X)', items: ['Campaign 1', '└── Ad Set: Broad', '    ├── Creative 1', '    ├── Creative 2', '    ├── Creative 3', '    └── ...Creative X'], benefits: ['Zero overlap', 'Consolidated budget', 'Fast learning', 'AI-optimized delivery'] }},
+      { type: 'ads-manager-mockup', title: 'The 1-1-X Structure in Ads Manager', description: 'This is exactly what your campaign structure should look like. No more complex hierarchies.' },
+      { type: 'structure-visual', title: 'Old vs New Structure', oldStructure: { label: 'Old (Complex)', items: ['Campaign 1', '  Ad Set: Interest 1', '  Ad Set: Interest 2', '  Ad Set: LAL 1%', '  Ad Set: LAL 2%', '  Ad Set: Broad 25-34', '  Ad Set: Broad 35-44'], problems: ['Audience overlap', 'Budget fragmentation', 'Slow learning', 'Internal competition'] }, newStructure: { label: 'New (1-1-X)', items: ['Campaign 1', '  Ad Set: Broad', '    Creative 1', '    Creative 2', '    Creative 3', '    ...Creative X'], benefits: ['Zero overlap', 'Consolidated budget', 'Fast learning', 'AI-optimized delivery'] }},
       { type: 'cards', title: 'Why Complexity Kills Performance', items: [
         { title: 'Audience Overlap', description: 'Your "Interest: Fitness" ad set shares 60% of users with your "Interest: Gym" ad set. You\'re bidding against yourself.' },
         { title: 'Budget Fragmentation', description: '$100 spread across 10 ad sets = $10 each. Not enough data for Andromeda to learn. One ad set with $100 = fast optimization.' },
@@ -74,10 +100,10 @@
       { type: 'example', scenario: 'Fashion Brand - $5K/day Spend', before: { label: 'Complex Structure (Broken)', text: '12 ad sets: LAL 1%, LAL 2%, LAL 3%, Interest stacks, Age splits, Retargeting segments. Result: 8 ad sets in learning phase. Avg frequency: 4.8. ROAS: 1.8x. Massive audience overlap.' }, after: { label: '1-1-X Structure (Winning)', text: '1 campaign. 1 broad ad set. 25 diverse creatives. Result: Exited learning in 3 days. Frequency: 1.9. ROAS: 2.2x (+22%). Zero overlap. Creative does the targeting.' }, insight: 'Same budget. Simpler structure. 22% better ROAS. The AI is better at finding buyers than your manual targeting.' },
       { type: 'content', title: 'Creative Becomes Your Targeting', body: 'In 1-1-X, you don\'t tell Meta WHO to target. Your creative tells Andromeda. A UGC video of a young woman using skincare? Andromeda shows it to young women interested in skincare. A luxury lifestyle shot? Andromeda finds high-income users. The visual content IS the targeting. More creative variety = more audience segments discovered automatically.' },
       { type: 'creative-targeting', title: 'How Creative Signals Audience', examples: [
-        { creative: 'Young woman unboxing product (UGC)', audience: '18-34 female, social shoppers', icon: '📦' },
-        { creative: 'Premium lifestyle flat-lay shot', audience: 'High-income, design-focused', icon: '✨' },
-        { creative: 'Comparison chart vs competitor', audience: 'Research-heavy, price-conscious', icon: '📊' },
-        { creative: 'Before/after transformation', audience: 'Problem-aware, solution-seeking', icon: '🔄' }
+        { creative: 'Young woman unboxing product (UGC)', audience: '18-34 female, social shoppers', icon: 'package' },
+        { creative: 'Premium lifestyle flat-lay shot', audience: 'High-income, design-focused', icon: 'sparkles' },
+        { creative: 'Comparison chart vs competitor', audience: 'Research-heavy, price-conscious', icon: 'chart' },
+        { creative: 'Before/after transformation', audience: 'Problem-aware, solution-seeking', icon: 'refresh' }
       ], insight: 'Each creative attracts a different buyer profile. Variety = reach expansion without manual targeting.' },
       { type: 'stats-visual', title: 'The Numbers Don\'t Lie', stats: [
         { value: '+22%', label: 'ROAS Increase', description: 'Average improvement from 1-1-X adoption' },
@@ -94,15 +120,6 @@
       ], bottomNote: 'The hardest part is trusting the AI. Your manual targeting instincts are outdated. Let go and watch results improve.' },
       { type: 'completion', sources: [] }
     ];
-
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -148,6 +165,179 @@
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
       </div>
     );
+
+    // Meta Ads Manager Mockup showing 1-1-X Structure
+    const AdsManagerMockupSlide = ({ data }) => {
+      const [expanded, setExpanded] = useState({ campaign: true, adset: true });
+      const creatives = [
+        { name: 'UGC Unboxing Video', status: 'Active', spend: '$342.50', cpa: '$12.40', impressions: '28.4K' },
+        { name: 'Lifestyle Flat Lay', status: 'Active', spend: '$287.20', cpa: '$14.20', impressions: '22.1K' },
+        { name: 'Before/After Split', status: 'Active', spend: '$198.90', cpa: '$11.80', impressions: '18.7K' },
+        { name: 'Product Demo 15s', status: 'Active', spend: '$156.40', cpa: '$15.60', impressions: '14.2K' },
+        { name: 'Customer Testimonial', status: 'Learning', spend: '$89.00', cpa: '$17.80', impressions: '8.9K' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-4 max-w-lg mx-auto">{data.description}</motion.p>
+
+          {/* Meta Ads Manager Mockup */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border border-neutral-200 shadow-lg overflow-hidden">
+            {/* Ads Manager Header */}
+            <div className="bg-[#1877f2] px-4 py-3 flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded bg-white flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </div>
+                <span className="text-white font-semibold text-sm">Ads Manager</span>
+              </div>
+              <div className="flex-1"></div>
+              <div className="text-white/80 text-xs">Your Ad Account</div>
+            </div>
+
+            {/* Toolbar */}
+            <div className="bg-[#f0f2f5] px-4 py-2 border-b border-neutral-200 flex items-center gap-3">
+              <button className="px-3 py-1.5 bg-[#1877f2] text-white rounded text-xs font-medium">+ Create</button>
+              <button className="px-3 py-1.5 bg-white border border-neutral-300 rounded text-xs text-neutral-600">Duplicate</button>
+              <button className="px-3 py-1.5 bg-white border border-neutral-300 rounded text-xs text-neutral-600">Edit</button>
+            </div>
+
+            {/* Campaign Structure */}
+            <div className="p-4">
+              {/* Campaign Row */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mb-2"
+              >
+                <div
+                  className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors"
+                  onClick={() => setExpanded(e => ({ ...e, campaign: !e.campaign }))}
+                >
+                  <span className={`text-[#1877f2] transition-transform ${expanded.campaign ? 'rotate-90' : ''}`}>
+                    <Icons.ChevronRight />
+                  </span>
+                  <div className="w-8 h-8 rounded bg-[#1877f2] flex items-center justify-center text-white">
+                    <Icons.Folder />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-[#1c1e21] text-sm">Summer Sale - Conversions</div>
+                    <div className="text-xs text-[#65676b]">Conversions - Purchase</div>
+                  </div>
+                  <div className="flex items-center gap-1 px-2 py-1 bg-green-100 rounded text-green-700 text-xs font-medium">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    Active
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold text-[#1c1e21]">$1,074.00</div>
+                    <div className="text-xs text-[#65676b]">Today's spend</div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Ad Set Row */}
+              <AnimatePresence>
+                {expanded.campaign && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="ml-8 mb-2"
+                  >
+                    <div
+                      className="flex items-center gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors"
+                      onClick={() => setExpanded(e => ({ ...e, adset: !e.adset }))}
+                    >
+                      <span className={`text-purple-600 transition-transform ${expanded.adset ? 'rotate-90' : ''}`}>
+                        <Icons.ChevronRight />
+                      </span>
+                      <div className="w-8 h-8 rounded bg-purple-500 flex items-center justify-center text-white">
+                        <Icons.Layers />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-[#1c1e21] text-sm">Broad - US 18+</div>
+                        <div className="text-xs text-[#65676b]">
+                          <span className="text-purple-600 font-medium">No detailed targeting</span> - Advantage+ Audience
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 px-2 py-1 bg-green-100 rounded text-green-700 text-xs font-medium">
+                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                        Active
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-semibold text-[#1c1e21]">$1,074.00</div>
+                        <div className="text-xs text-[#65676b]">Daily budget: $1,500</div>
+                      </div>
+                    </div>
+
+                    {/* Creatives */}
+                    <AnimatePresence>
+                      {expanded.adset && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="ml-8 mt-2 space-y-1"
+                        >
+                          {creatives.map((creative, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 * i }}
+                              className="flex items-center gap-3 p-2 bg-white border border-neutral-200 rounded-lg hover:border-neutral-300 transition-colors"
+                            >
+                              <div className="w-6 h-6 rounded bg-neutral-100 flex items-center justify-center text-neutral-500">
+                                <Icons.Image />
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-medium text-[#1c1e21] text-xs">{creative.name}</div>
+                              </div>
+                              <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${creative.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                                <div className={`w-1.5 h-1.5 rounded-full ${creative.status === 'Active' ? 'bg-green-500' : 'bg-amber-500'}`}></div>
+                                {creative.status}
+                              </div>
+                              <div className="text-right text-xs">
+                                <div className="text-[#1c1e21]">{creative.spend}</div>
+                              </div>
+                              <div className="text-right text-xs">
+                                <div className="text-[#1c1e21]">{creative.cpa}</div>
+                                <div className="text-[#65676b]">CPA</div>
+                              </div>
+                            </motion.div>
+                          ))}
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="text-center py-2"
+                          >
+                            <span className="text-xs text-[#1877f2] cursor-pointer hover:underline">+ Add more creatives</span>
+                          </motion.div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Insight */}
+            <div className="px-4 pb-4">
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-green-700">
+                  <Icons.Check />
+                  <span className="font-medium">1-1-X Structure Active</span>
+                </div>
+                <p className="text-xs text-green-600 mt-1">1 Campaign, 1 Ad Set, 5 Creatives. No audience overlap. Fast learning.</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
 
     const StructureVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -222,32 +412,54 @@
           </motion.div>
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap />{data.insight}</p>
         </motion.div>
       </div>
     );
 
-    const CreativeTargetingSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3 mb-6">
-          {data.examples.map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center gap-4">
-                <div className="text-3xl">{ex.icon}</div>
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-neutral-700 mb-1">{ex.creative}</div>
-                  <div className="text-xs text-neutral-500">→ Attracts: <span className="font-semibold" style={{ color: 'var(--accent)' }}>{ex.audience}</span></div>
+    // Enhanced Creative Targeting with SVG icons
+    const CreativeTargetingSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = {
+          package: <Icons.Package />,
+          sparkles: <Icons.Sparkles />,
+          chart: <Icons.BarChart />,
+          refresh: <Icons.RefreshCw />
+        };
+        return icons[iconName] || <Icons.Image />;
+      };
+
+      const iconColors = {
+        package: '#3b82f6',
+        sparkles: '#8b5cf6',
+        chart: '#10b981',
+        refresh: '#f59e0b'
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.examples.map((ex, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${iconColors[ex.icon]}15`, color: iconColors[ex.icon] }}>
+                    {getIcon(ex.icon)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-neutral-700 mb-1">{ex.creative}</div>
+                    <div className="text-xs text-neutral-500">Attracts: <span className="font-semibold" style={{ color: iconColors[ex.icon] }}>{ex.audience}</span></div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+            <p className="text-blue-800 text-sm">{data.insight}</p>
+          </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
-          <p className="text-blue-800 text-sm">{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
     const StatsVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -389,6 +601,7 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'ads-manager-mockup': return <AdsManagerMockupSlide data={slide} />;
           case 'structure-visual': return <StructureVisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;

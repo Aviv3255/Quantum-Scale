@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    :root {
+      --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246;
+      --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-text: #1c1e21; --meta-muted: #65676b;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -61,29 +61,52 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Clean SVG Icons
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      CheckCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Settings: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      ThumbsUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>,
+      ThumbsDown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>,
+      AlertCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+    };
+
     const slides = [
-      { type: 'welcome', learningGoals: ['The exact formula: Total Value = Bid × Estimated Action Rate × Ad Quality', 'Why a lower bid can win over a higher bid', 'How to optimize each variable in the equation'] },
+      { type: 'welcome', learningGoals: ['The exact formula: Total Value = Bid x Estimated Action Rate x Ad Quality', 'Why a lower bid can win over a higher bid', 'How to optimize each variable in the equation'] },
       { type: 'hook', headline: 'Your competitor bids $50. You bid $20. You win. How?', subtext: 'Meta\'s auction isn\'t about who pays more. It\'s about who provides more VALUE - to Meta, to users, to the platform. Understand the formula, and you can win auctions while paying less than clueless competitors who think it\'s all about budget.' },
       { type: 'formula-reveal', title: 'The Auction Formula Revealed', formula: { parts: [
         { name: 'Total Value', symbol: 'TV', color: '#8B5CF6' },
         { name: 'Advertiser Bid', symbol: 'Bid', color: '#3B82F6' },
         { name: 'Estimated Action Rate', symbol: 'EAR', color: '#10B981' },
         { name: 'Ad Quality Score', symbol: 'AQ', color: '#F59E0B' }
-      ], equation: 'TV = Bid × EAR × AQ' }, insight: 'The ad with highest Total Value wins - regardless of who bid the most money.' },
-      { type: 'content', title: 'Breaking Down Each Variable', body: 'Let\'s understand what each part means and how to optimize it:\n\n**Advertiser Bid** - What you\'re willing to pay for the action (purchase, lead, click). You control this directly.\n\n**Estimated Action Rate** - Meta\'s prediction of how likely THIS USER is to take the action. Based on user history + your ad\'s past performance.\n\n**Ad Quality Score** - How valuable/relevant your ad is. Measured by engagement, feedback, landing page quality, and ad relevance.' },
+      ], equation: 'TV = Bid x EAR x AQ' }, insight: 'The ad with highest Total Value wins - regardless of who bid the most money.' },
       { type: 'variable-breakdown', title: 'How Each Variable Works', variables: [
-        { name: 'Advertiser Bid', control: 'You control', range: '$1-$100+', optimization: 'Set based on your margins. Higher bids reach more people but cost more.', impact: 'Direct', icon: '💰' },
-        { name: 'Estimated Action Rate', control: 'Meta calculates', range: '0.1%-10%', optimization: 'Improve by targeting the right people with relevant creative. Better tracking helps.', impact: 'Multiplier', icon: '📊' },
-        { name: 'Ad Quality Score', control: 'You influence', range: '0.5-1.5', optimization: 'Engaging creative, positive feedback, fast landing page, relevance to audience.', impact: 'Multiplier', icon: '⭐' }
+        { name: 'Advertiser Bid', control: 'You control', range: '$1-$100+', optimization: 'Set based on your margins. Higher bids reach more people but cost more.', impact: 'Direct', iconType: 'dollar' },
+        { name: 'Estimated Action Rate', control: 'Meta calculates', range: '0.1%-10%', optimization: 'Improve by targeting the right people with relevant creative. Better tracking helps.', impact: 'Multiplier', iconType: 'chart' },
+        { name: 'Ad Quality Score', control: 'You influence', range: '0.5-1.5', optimization: 'Engaging creative, positive feedback, fast landing page, relevance to audience.', impact: 'Multiplier', iconType: 'star' }
       ]},
       { type: 'math-example', title: 'See The Formula In Action', scenarios: [
-        { label: 'Advertiser A (High Bid, Low Quality)', bid: 50, ear: 0.02, aq: 0.7, calculation: '50 × 0.02 × 0.7 = 0.70' },
-        { label: 'Advertiser B (Medium Bid, High Quality)', bid: 20, ear: 0.05, aq: 1.2, calculation: '20 × 0.05 × 1.2 = 1.20' }
+        { label: 'Advertiser A (High Bid, Low Quality)', bid: 50, ear: 0.02, aq: 0.7, calculation: '50 x 0.02 x 0.7 = 0.70' },
+        { label: 'Advertiser B (Medium Bid, High Quality)', bid: 20, ear: 0.05, aq: 1.2, calculation: '20 x 0.05 x 1.2 = 1.20' }
       ], winner: 'Advertiser B', insight: 'B wins with a $20 bid vs A\'s $50 bid. Quality and relevance beat raw budget.' },
+      { type: 'diagnostics-mockup', title: 'Find Your Quality Score in Ads Manager' },
       { type: 'cards', title: 'How To Boost Each Variable', items: [
-        { title: 'Optimize Bid Strategy', description: 'Use cost caps when scaling. Start with lowest cost to let Meta learn, then add caps once you have data. Don\'t overbid - it wastes money without improving quality.' },
-        { title: 'Improve Action Rate', description: 'Better tracking (CAPI + Pixel). More relevant creative. Right optimization event. The AI\'s prediction improves when it has accurate, complete data.' },
-        { title: 'Boost Ad Quality', description: 'Engaging hooks (watch time). Positive sentiment (hide rate low). Fast landing pages. Creative that matches audience expectations.' }
+        { title: 'Optimize Bid Strategy', description: 'Use cost caps when scaling. Start with lowest cost to let Meta learn, then add caps once you have data. Don\'t overbid - it wastes money without improving quality.', iconType: 'dollar' },
+        { title: 'Improve Action Rate', description: 'Better tracking (CAPI + Pixel). More relevant creative. Right optimization event. The AI\'s prediction improves when it has accurate, complete data.', iconType: 'trending' },
+        { title: 'Boost Ad Quality', description: 'Engaging hooks (watch time). Positive sentiment (hide rate low). Fast landing pages. Creative that matches audience expectations.', iconType: 'star' }
       ]},
       { type: 'quality-signals', title: 'What Affects Ad Quality Score', positive: [
         { signal: 'High engagement (likes, comments, shares)', impact: '+' },
@@ -92,14 +115,15 @@
         { signal: 'Fast, mobile-optimized landing page', impact: '+' },
         { signal: 'Relevance to target audience', impact: '+' }
       ], negative: [
-        { signal: 'Users hiding your ad', impact: '−' },
-        { signal: 'Low click-through rate', impact: '−' },
-        { signal: 'Slow landing page (>3s load)', impact: '−' },
-        { signal: 'Misleading claims', impact: '−' },
-        { signal: 'Negative comments accumulating', impact: '−' }
+        { signal: 'Users hiding your ad', impact: '-' },
+        { signal: 'Low click-through rate', impact: '-' },
+        { signal: 'Slow landing page (>3s load)', impact: '-' },
+        { signal: 'Misleading claims', impact: '-' },
+        { signal: 'Negative comments accumulating', impact: '-' }
       ]},
-      { type: 'content', title: 'The Quality Score Secret: 0.1 Matters', body: 'A 0.1 improvement in Ad Quality Score means 10-15% more Total Value. That\'s the difference between winning and losing auctions. If your Quality Score is 0.8 vs a competitor\'s 0.9, they win even with a lower bid. Small quality improvements compound: better creative → higher engagement → better score → win more auctions → more data → better predictions → even higher score. It\'s a flywheel.' },
-      { type: 'quiz', question: 'Advertiser A bids $30 with 3% estimated action rate and 1.0 quality. Advertiser B bids $40 with 2% action rate and 0.9 quality. Who wins?', options: ['Advertiser A (lower bid wins because of better quality)', 'Advertiser B (higher bid always wins)', 'They tie (equal total value)', 'Need more information'], correctIndex: 0, feedback: { correct: 'Correct! A: $30 × 0.03 × 1.0 = 0.90. B: $40 × 0.02 × 0.9 = 0.72. Advertiser A wins with a 25% LOWER bid because their action rate and quality score multiply to create more total value. This is why creative quality and proper tracking matter more than budget.', incorrect: 'Let\'s do the math. A: $30 × 0.03 × 1.0 = 0.90. B: $40 × 0.02 × 0.9 = 0.72. Advertiser A wins! Even though B bid 33% more, A\'s better action rate and quality score created more Total Value. Budget isn\'t everything - the formula rewards relevance and quality.' }},
+      { type: 'bid-strategy', title: 'Choosing Your Bid Strategy' },
+      { type: 'quality-flywheel', title: 'The Quality Score Secret' },
+      { type: 'quiz', question: 'Advertiser A bids $30 with 3% estimated action rate and 1.0 quality. Advertiser B bids $40 with 2% action rate and 0.9 quality. Who wins?', options: ['Advertiser A (lower bid wins because of better quality)', 'Advertiser B (higher bid always wins)', 'They tie (equal total value)', 'Need more information'], correctIndex: 0, feedback: { correct: 'Correct! A: $30 x 0.03 x 1.0 = 0.90. B: $40 x 0.02 x 0.9 = 0.72. Advertiser A wins with a 25% LOWER bid because their action rate and quality score multiply to create more total value. This is why creative quality and proper tracking matter more than budget.', incorrect: 'Let\'s do the math. A: $30 x 0.03 x 1.0 = 0.90. B: $40 x 0.02 x 0.9 = 0.72. Advertiser A wins! Even though B bid 33% more, A\'s better action rate and quality score created more Total Value. Budget isn\'t everything - the formula rewards relevance and quality.' }},
       { type: 'action-checklist', title: 'Optimize Your Auction Position', items: [
         { task: 'Check ad relevance diagnostics in Ads Manager for quality signals', done: false },
         { task: 'Ensure CAPI + Pixel dual tracking is active (improves EAR)', done: false },
@@ -109,15 +133,6 @@
       ], bottomNote: 'Focus on quality and relevance first. Budget increases only help after the fundamentals are solid.' },
       { type: 'completion', sources: [] }
     ];
-
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -157,13 +172,6 @@
       </div>
     );
 
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
-      </div>
-    );
-
     const FormulaRevealSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -186,28 +194,41 @@
       </div>
     );
 
-    const VariableBreakdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4">
-          {data.variables.map((v, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-start gap-4">
-                <div className="text-3xl">{v.icon}</div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-neutral-900">{v.name}</h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">{v.control}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600">{v.range}</span>
+    const VariableBreakdownSlide = ({ data }) => {
+      const getIcon = (type) => {
+        switch(type) {
+          case 'dollar': return <Icons.DollarSign />;
+          case 'chart': return <Icons.BarChart />;
+          case 'star': return <Icons.Star />;
+          default: return <Icons.Target />;
+        }
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.variables.map((v, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                    {getIcon(v.iconType)}
                   </div>
-                  <p className="text-sm text-neutral-600">{v.optimization}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-bold text-neutral-900">{v.name}</h3>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">{v.control}</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600">{v.range}</span>
+                    </div>
+                    <p className="text-sm text-neutral-600">{v.optimization}</p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const MathExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -228,33 +249,238 @@
           ))}
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-5 text-center">
-          <div className="text-green-400 font-bold text-lg mb-2">🏆 Winner: {data.winner}</div>
+          <div className="flex items-center justify-center gap-2 text-green-400 font-bold text-lg mb-2">
+            <Icons.Award />
+            <span>Winner: {data.winner}</span>
+          </div>
           <p className="text-neutral-400 text-sm">{data.insight}</p>
         </motion.div>
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
+    // Meta Ads Manager style Diagnostics Mockup
+    const DiagnosticsMockupSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
+
+        {/* Meta Ads Manager Mockup */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#f0f2f5] rounded-xl overflow-hidden border border-[#dddfe2] shadow-lg">
+          {/* Header */}
+          <div className="bg-white border-b border-[#dddfe2] px-4 py-3 flex items-center gap-3">
+            <div className="flex items-center gap-2 text-[#1877f2]">
+              <Icons.BarChart />
+              <span className="font-semibold text-sm text-[#1c1e21]">Ad Relevance Diagnostics</span>
+            </div>
+            <span className="text-xs text-[#65676b] bg-[#f0f2f5] px-2 py-0.5 rounded">Ads Manager &gt; Columns &gt; Customize</span>
+          </div>
+
+          {/* Content */}
+          <div className="p-4 bg-white m-3 rounded-lg">
+            {/* Quality Ranking */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                    <Icons.Star />
+                  </div>
+                  <span className="text-sm font-medium text-[#1c1e21]">Quality Ranking</span>
+                </div>
+                <span className="text-sm font-semibold text-green-600">Above Average</span>
+              </div>
+              <div className="h-2 bg-[#e4e6eb] rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: '75%' }} transition={{ delay: 0.4, duration: 0.8 }} className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full" />
+              </div>
+              <p className="text-xs text-[#65676b] mt-1">Perceived quality compared to ads competing for same audience</p>
+            </div>
+
+            {/* Engagement Ranking */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                    <Icons.ThumbsUp />
+                  </div>
+                  <span className="text-sm font-medium text-[#1c1e21]">Engagement Rate Ranking</span>
+                </div>
+                <span className="text-sm font-semibold text-amber-600">Average</span>
+              </div>
+              <div className="h-2 bg-[#e4e6eb] rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: '50%' }} transition={{ delay: 0.5, duration: 0.8 }} className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full" />
+              </div>
+              <p className="text-xs text-[#65676b] mt-1">Expected engagement rate compared to competing ads</p>
+            </div>
+
+            {/* Conversion Ranking */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                    <Icons.Target />
+                  </div>
+                  <span className="text-sm font-medium text-[#1c1e21]">Conversion Rate Ranking</span>
+                </div>
+                <span className="text-sm font-semibold text-green-600">Above Average</span>
+              </div>
+              <div className="h-2 bg-[#e4e6eb] rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: '80%' }} transition={{ delay: 0.6, duration: 0.8 }} className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full" />
+              </div>
+              <p className="text-xs text-[#65676b] mt-1">Expected conversion rate compared to competing ads</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>How to access:</strong> Ads Manager → Columns dropdown → Customize columns → Search "Quality ranking", "Engagement ranking", "Conversion ranking"
+          </p>
+        </motion.div>
       </div>
     );
+
+    // Bid Strategy Comparison Slide
+    const BidStrategySlide = ({ data }) => {
+      const strategies = [
+        { name: 'Lowest Cost', description: 'Meta optimizes for cheapest results. Best for learning phase.', pros: ['Simple setup', 'Good for testing', 'No bid cap needed'], cons: ['Less control', 'May overspend', 'Volatile CPAs'], best: 'Testing new creatives' },
+        { name: 'Cost Cap', description: 'Set maximum cost per result. Meta stays under your limit.', pros: ['Predictable costs', 'Scales better', 'Protects margins'], cons: ['May limit reach', 'Needs data first', 'Slower delivery'], best: 'Scaling proven winners' },
+        { name: 'Bid Cap', description: 'Maximum bid in each auction. Most control, least flexibility.', pros: ['Maximum control', 'No overspending', 'Precise margins'], cons: ['May miss auctions', 'Slower spend', 'Expert only'], best: 'High-volume, known LTV' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {strategies.map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-blue-300 transition-colors">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
+                    <Icons.DollarSign />
+                  </div>
+                  <h3 className="font-bold text-neutral-900">{s.name}</h3>
+                </div>
+
+                <p className="text-xs text-neutral-600 mb-3">{s.description}</p>
+
+                <div className="space-y-2 mb-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-green-600 font-semibold mb-1">Pros</p>
+                    <ul className="space-y-0.5">
+                      {s.pros.map((pro, j) => (
+                        <li key={j} className="flex items-center gap-1 text-xs text-neutral-600">
+                          <span className="text-green-500"><Icons.CheckCircle /></span>
+                          {pro}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-red-600 font-semibold mb-1">Cons</p>
+                    <ul className="space-y-0.5">
+                      {s.cons.map((con, j) => (
+                        <li key={j} className="flex items-center gap-1 text-xs text-neutral-600">
+                          <span className="text-red-500"><Icons.AlertCircle /></span>
+                          {con}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 rounded-lg p-2 text-center">
+                  <p className="text-[10px] uppercase tracking-wider text-blue-600 font-semibold mb-0.5">Best For</p>
+                  <p className="text-xs font-medium text-blue-800">{s.best}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Quality Flywheel Slide
+    const QualityFlywheelSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-6">A 0.1 improvement in Quality Score = 10-15% more Total Value</motion.p>
+
+        {/* Flywheel Visualization */}
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { step: '1', label: 'Better Creative', icon: <Icons.Zap /> },
+              { step: '2', label: 'Higher Engagement', icon: <Icons.ThumbsUp /> },
+              { step: '3', label: 'Better Score', icon: <Icons.Star /> },
+              { step: '4', label: 'Win More Auctions', icon: <Icons.Award /> }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="text-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white mx-auto mb-2">
+                  {item.icon}
+                </div>
+                <div className="text-[10px] text-neutral-500 uppercase tracking-wider mb-0.5">Step {item.step}</div>
+                <div className="text-sm text-white font-medium">{item.label}</div>
+                {i < 3 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 + i * 0.1 }} className="hidden md:block text-neutral-500 mt-2">
+                    <Icons.ArrowRight />
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-4 pt-4 border-t border-neutral-700">
+            <div className="flex items-center justify-center gap-2 text-blue-400">
+              <Icons.TrendingUp />
+              <span className="text-sm">More Data = Better Predictions = Even Higher Score</span>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+          <p className="text-sm text-amber-800">
+            <strong>The flywheel effect:</strong> Small quality improvements compound over time. If your score is 0.8 vs a competitor's 0.9, they win even with a lower bid.
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    const CardsSlide = ({ data }) => {
+      const getIcon = (type) => {
+        switch(type) {
+          case 'dollar': return <Icons.DollarSign />;
+          case 'trending': return <Icons.TrendingUp />;
+          case 'star': return <Icons.Star />;
+          default: return <Icons.Zap />;
+        }
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 mb-3">
+                  {getIcon(item.iconType)}
+                </div>
+                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     const QualitySignalsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         <div className="grid md:grid-cols-2 gap-6">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">Positive Signals</span>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
+                <Icons.ThumbsUp />
+              </div>
+              <span className="font-bold text-green-700">Positive Signals</span>
             </div>
             <div className="space-y-2">
               {data.positive.map((item, i) => (
@@ -266,8 +492,11 @@
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">Negative Signals</span>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
+                <Icons.ThumbsDown />
+              </div>
+              <span className="font-bold text-red-700">Negative Signals</span>
             </div>
             <div className="space-y-2">
               {data.negative.map((item, i) => (
@@ -355,7 +584,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the auction formula: Total Value = Bid × Estimated Action Rate × Ad Quality. Higher bids don't guarantee wins - quality and relevance multiply your value. Optimize all three variables to dominate auctions while spending less.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the auction formula: Total Value = Bid x Estimated Action Rate x Ad Quality. Higher bids don't guarantee wins - quality and relevance multiply your value. Optimize all three variables to dominate auctions while spending less.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -406,12 +635,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
           case 'formula-reveal': return <FormulaRevealSlide data={slide} />;
           case 'variable-breakdown': return <VariableBreakdownSlide data={slide} />;
           case 'math-example': return <MathExampleSlide data={slide} />;
+          case 'diagnostics-mockup': return <DiagnosticsMockupSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quality-signals': return <QualitySignalsSlide data={slide} />;
+          case 'bid-strategy': return <BidStrategySlide data={slide} />;
+          case 'quality-flywheel': return <QualityFlywheelSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

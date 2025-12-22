@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    :root {
+      --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246;
+      --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-text: #1c1e21; --meta-muted: #65676b;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -61,32 +61,43 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Clean SVG Icons
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Lock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Wind: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Globe: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      MapPin: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+      UserMinus: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>,
+      Image: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Settings: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      ToggleRight: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="5" width="22" height="14" rx="7" ry="7"/><circle cx="16" cy="12" r="3"/></svg>,
+      ToggleLeft: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="5" width="22" height="14" rx="7" ry="7"/><circle cx="8" cy="12" r="3"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['The difference between Controls (hard limits) and Suggestions (soft hints)', 'Why interest targeting is mostly ignored by Andromeda', 'Which targeting inputs actually matter in 2025'] },
       { type: 'hook', headline: 'You spent 3 hours building the perfect interest stack. Meta ignored all of it.', subtext: 'Here\'s the truth nobody tells you: Most "targeting" options in Meta Ads are suggestions, not rules. The AI listens to some inputs like law. Others? It treats them as gentle hints it can override whenever it wants. Knowing the difference changes everything.' },
-      { type: 'content', title: 'Controls vs Suggestions: The Core Difference', body: '**Controls** are HARD BOUNDARIES. Meta will NEVER show your ad outside these limits. No exceptions.\n\n**Suggestions** are SOFT SIGNALS. Meta uses them as starting points but will expand beyond them if it thinks it\'ll get better results.\n\nThis distinction isn\'t documented anywhere obvious. But once you understand it, you\'ll stop wasting time on targeting that doesn\'t matter.' },
-      { type: 'comparison-table', title: 'What Meta Actually Respects', controls: { label: 'CONTROLS (Hard Limits)', icon: '🔒', items: [
-        { name: 'Geographic Location', description: 'Country, state, city - never violated' },
-        { name: 'Minimum Age', description: 'Will never show to users below this' },
-        { name: 'Language Settings', description: 'Strictly respected' },
-        { name: 'Exclusions', description: 'Custom audiences you exclude are 100% blocked' },
-        { name: 'Placements (if manual)', description: 'Won\'t show on placements you remove' }
-      ]}, suggestions: { label: 'SUGGESTIONS (Soft Hints)', icon: '💨', items: [
-        { name: 'Interest Targeting', description: 'Treated as starting signal, easily overridden' },
-        { name: 'Lookalike Audiences', description: 'Used initially, then expanded' },
-        { name: 'Age Ranges (except min)', description: 'Will show to 55-year-olds if you said 25-45' },
-        { name: 'Gender', description: 'Frequently ignored if opposite gender converts' },
-        { name: 'Advantage+ Expansion', description: 'On by default, hard to truly disable' }
-      ]}},
-      { type: 'content', title: 'Why Interest Targeting Is (Mostly) Dead', body: 'In the Andromeda era, interest targeting has become a starting signal, not a boundary. You select "Interest: Fitness" and Meta starts by showing to fitness-interested users. But within hours, if it finds that non-fitness users convert better, it expands. Your careful interest stack? A suggestion the AI overrides constantly. This is why broad targeting often beats detailed targeting now - you\'re not fighting the algorithm.' },
+      { type: 'core-concept', title: 'Controls vs Suggestions: The Core Difference' },
+      { type: 'comparison-table', title: 'What Meta Actually Respects' },
+      { type: 'advantage-mockup', title: 'See Advantage+ Settings in Action' },
+      { type: 'interest-dead', title: 'Why Interest Targeting Is (Mostly) Dead' },
       { type: 'example', scenario: 'Fashion Brand - Interest Targeting Test', before: { label: 'Detailed Interests', text: 'Interest stack: Fashion, Shopping, Online Shopping, Women\'s Clothing, Zara, H&M. Age 25-45. Female only. Result: Meta expanded to 65% non-interest users within 48 hours. "Targeting" was meaningless.' }, after: { label: 'Broad + Creative Targeting', text: 'No interests. Just location + age 18+. Let creative do the targeting. Result: Same audience reached (65% overlap with interest version). But 23% lower CPM because no bid competition on interest categories.' }, insight: 'The interest targeting gave you nothing but higher CPMs. Broad reaches the same people cheaper.' },
       { type: 'cards', title: 'The Only Targeting That Matters', items: [
-        { title: 'Location (Control)', description: 'Your only true geographic boundary. Use it. If you only ship to US, only target US. This is respected 100%.' },
-        { title: 'Exclusions (Control)', description: 'Exclude past purchasers, existing customers, or competitors\' audiences. These exclusions are absolute.' },
-        { title: 'Creative (De Facto Targeting)', description: 'Your ad\'s content signals who should see it. UGC attracts different buyers than luxury aesthetics. This is real targeting.' }
+        { title: 'Location (Control)', description: 'Your only true geographic boundary. Use it. If you only ship to US, only target US. This is respected 100%.', iconType: 'map' },
+        { title: 'Exclusions (Control)', description: 'Exclude past purchasers, existing customers, or competitors\' audiences. These exclusions are absolute.', iconType: 'exclude' },
+        { title: 'Creative (De Facto Targeting)', description: 'Your ad\'s content signals who should see it. UGC attracts different buyers than luxury aesthetics. This is real targeting.', iconType: 'image' }
       ]},
       { type: 'practical-guide', title: 'The New Targeting Strategy', oldWay: { label: 'Old Way (Wasted Effort)', items: ['Research 50 interests', 'Build complex stacks', 'Create LAL 1%, 2%, 3%', 'Split by age/gender', 'Manage 15 ad sets'] }, newWay: { label: 'New Way (What Works)', items: ['Set location + min age', 'Exclude past buyers', 'Go broad', 'Let creative target', 'Run 1 ad set'] }, bottomLine: 'Spend your targeting time on creative strategy, not audience building. Creative IS your targeting now.' },
-      { type: 'content', title: 'When Suggestions Still Help', body: 'Suggestions aren\'t useless - they affect the STARTING point of delivery. If you have a very niche product, interest targeting can help Meta learn faster initially. But treat it as training wheels, not guardrails. Use suggestions to: 1) Speed up initial learning phase 2) Give directional hints to new campaigns 3) Test if certain signals improve early results. But never rely on them as boundaries.' },
+      { type: 'when-suggestions-help', title: 'When Suggestions Still Help' },
       { type: 'quiz', question: 'You\'re launching ads for a US-only business. Which targeting choice actually LIMITS who sees your ad?', options: ['Setting interests to "Fitness" and "Gym"', 'Setting location to "United States"', 'Setting age range to 25-45', 'Setting gender to "Female"'], correctIndex: 1, feedback: { correct: 'Correct! Location is a CONTROL - Meta will never show your ad outside the US if you set it. Interests, age ranges, and gender are SUGGESTIONS that Meta can and will override if it thinks it\'ll improve results. Only controls are true limits.', incorrect: 'Not quite. Location is the only CONTROL in these options - it\'s a hard limit Meta never violates. Interests, age, and gender are SUGGESTIONS that the algorithm frequently overrides. If you set 25-45 female fitness enthusiasts, Meta will still show to 55-year-old men if they convert well.' }},
       { type: 'action-checklist', title: 'Simplify Your Targeting Today', items: [
         { task: 'Remove complex interest stacks - they\'re not being respected anyway', done: false },
@@ -97,15 +108,6 @@
       ], bottomNote: 'Most advertisers are managing phantom targeting that Meta ignores. Simplify and redirect effort to creative.' },
       { type: 'completion', sources: [] }
     ];
-
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -145,46 +147,269 @@
       </div>
     );
 
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
-      </div>
-    );
+    // Core Concept Visual Slide
+    const CoreConceptSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
 
-    const ComparisonTableSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-300 rounded-xl p-4">
-            <div className="text-center mb-4">
-              <span className="text-2xl mb-2 block">{data.controls.icon}</span>
-              <span className="font-bold text-green-700 text-sm">{data.controls.label}</span>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Controls */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center text-white">
+                <Icons.Lock />
+              </div>
+              <div>
+                <h3 className="font-bold text-green-800 text-lg">Controls</h3>
+                <p className="text-green-600 text-sm">Hard Boundaries</p>
+              </div>
             </div>
-            <div className="space-y-3">
-              {data.controls.items.map((item, i) => (
-                <div key={i} className="bg-white rounded-lg p-3 border border-green-200">
-                  <div className="font-semibold text-neutral-800 text-sm">{item.name}</div>
-                  <div className="text-xs text-neutral-500">{item.description}</div>
-                </div>
-              ))}
+            <p className="text-green-700 text-sm leading-relaxed mb-4">
+              Meta will <strong>NEVER</strong> show your ad outside these limits. No exceptions. These are absolute rules the algorithm cannot override.
+            </p>
+            <div className="bg-white rounded-lg p-3 border border-green-200">
+              <div className="flex items-center gap-2 text-sm text-green-800">
+                <Icons.Shield />
+                <span className="font-medium">100% respected</span>
+              </div>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
-            <div className="text-center mb-4">
-              <span className="text-2xl mb-2 block">{data.suggestions.icon}</span>
-              <span className="font-bold text-amber-700 text-sm">{data.suggestions.label}</span>
+
+          {/* Suggestions */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-white">
+                <Icons.Wind />
+              </div>
+              <div>
+                <h3 className="font-bold text-amber-800 text-lg">Suggestions</h3>
+                <p className="text-amber-600 text-sm">Soft Signals</p>
+              </div>
             </div>
-            <div className="space-y-3">
-              {data.suggestions.items.map((item, i) => (
-                <div key={i} className="bg-white rounded-lg p-3 border border-amber-200">
-                  <div className="font-semibold text-neutral-800 text-sm">{item.name}</div>
-                  <div className="text-xs text-neutral-500">{item.description}</div>
-                </div>
-              ))}
+            <p className="text-amber-700 text-sm leading-relaxed mb-4">
+              Meta uses these as <strong>starting points</strong> but will expand beyond them if it thinks it'll get better results. Easily overridden.
+            </p>
+            <div className="bg-white rounded-lg p-3 border border-amber-200">
+              <div className="flex items-center gap-2 text-sm text-amber-800">
+                <Icons.Wind />
+                <span className="font-medium">Often ignored</span>
+              </div>
             </div>
           </motion.div>
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-white text-sm">This distinction isn't documented anywhere obvious. But once you understand it, you'll stop wasting time on targeting that doesn't matter.</p>
+        </motion.div>
+      </div>
+    );
+
+    const ComparisonTableSlide = ({ data }) => {
+      const controls = [
+        { name: 'Geographic Location', description: 'Country, state, city - never violated' },
+        { name: 'Minimum Age', description: 'Will never show to users below this' },
+        { name: 'Language Settings', description: 'Strictly respected' },
+        { name: 'Exclusions', description: 'Custom audiences you exclude are 100% blocked' },
+        { name: 'Placements (if manual)', description: 'Won\'t show on placements you remove' }
+      ];
+      const suggestions = [
+        { name: 'Interest Targeting', description: 'Treated as starting signal, easily overridden' },
+        { name: 'Lookalike Audiences', description: 'Used initially, then expanded' },
+        { name: 'Age Ranges (except min)', description: 'Will show to 55-year-olds if you said 25-45' },
+        { name: 'Gender', description: 'Frequently ignored if opposite gender converts' },
+        { name: 'Advantage+ Expansion', description: 'On by default, hard to truly disable' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-300 rounded-xl p-4">
+              <div className="flex items-center gap-2 justify-center mb-4">
+                <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white">
+                  <Icons.Lock />
+                </div>
+                <span className="font-bold text-green-700 text-sm">CONTROLS (Hard Limits)</span>
+              </div>
+              <div className="space-y-3">
+                {controls.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.05 }} className="bg-white rounded-lg p-3 border border-green-200">
+                    <div className="font-semibold text-neutral-800 text-sm">{item.name}</div>
+                    <div className="text-xs text-neutral-500">{item.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
+              <div className="flex items-center gap-2 justify-center mb-4">
+                <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-white">
+                  <Icons.Wind />
+                </div>
+                <span className="font-bold text-amber-700 text-sm">SUGGESTIONS (Soft Hints)</span>
+              </div>
+              <div className="space-y-3">
+                {suggestions.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 + i * 0.05 }} className="bg-white rounded-lg p-3 border border-amber-200">
+                    <div className="font-semibold text-neutral-800 text-sm">{item.name}</div>
+                    <div className="text-xs text-neutral-500">{item.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Advantage+ Settings Mockup
+    const AdvantageMockupSlide = ({ data }) => {
+      const [toggles, setToggles] = useState({ detailed: true, lookalike: true, custom: false });
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          {/* Meta Ads Manager Mockup */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#f0f2f5] rounded-xl overflow-hidden border border-[#dddfe2] shadow-lg">
+            {/* Header */}
+            <div className="bg-white border-b border-[#dddfe2] px-4 py-3 flex items-center gap-3">
+              <div className="flex items-center gap-2 text-[#1877f2]">
+                <Icons.Settings />
+                <span className="font-semibold text-sm text-[#1c1e21]">Advantage+ Audience</span>
+              </div>
+              <span className="text-xs text-[#65676b] bg-[#f0f2f5] px-2 py-0.5 rounded">Ad Set Level</span>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 bg-white m-3 rounded-lg">
+              <p className="text-xs text-[#65676b] mb-4">Meta will use your audience selections as suggestions. Your ads may reach people outside your selections if our system finds better results.</p>
+
+              {/* Toggle Settings */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-[#f0f2f5] rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Icons.Target />
+                    <div>
+                      <div className="text-sm font-medium text-[#1c1e21]">Advantage detailed targeting</div>
+                      <div className="text-xs text-[#65676b]">Reach people beyond your detailed targeting selections</div>
+                    </div>
+                  </div>
+                  <motion.button onClick={() => setToggles(t => ({...t, detailed: !t.detailed}))} className={`w-12 h-6 rounded-full p-1 transition-colors ${toggles.detailed ? 'bg-[#1877f2]' : 'bg-gray-300'}`}>
+                    <motion.div animate={{ x: toggles.detailed ? 24 : 0 }} className="w-4 h-4 bg-white rounded-full shadow" />
+                  </motion.button>
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-[#f0f2f5] rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Icons.Users />
+                    <div>
+                      <div className="text-sm font-medium text-[#1c1e21]">Advantage lookalike</div>
+                      <div className="text-xs text-[#65676b]">Allow our system to expand beyond your lookalike %</div>
+                    </div>
+                  </div>
+                  <motion.button onClick={() => setToggles(t => ({...t, lookalike: !t.lookalike}))} className={`w-12 h-6 rounded-full p-1 transition-colors ${toggles.lookalike ? 'bg-[#1877f2]' : 'bg-gray-300'}`}>
+                    <motion.div animate={{ x: toggles.lookalike ? 24 : 0 }} className="w-4 h-4 bg-white rounded-full shadow" />
+                  </motion.button>
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Icons.Lock />
+                    <div>
+                      <div className="text-sm font-medium text-green-800">Custom audience exclusions</div>
+                      <div className="text-xs text-green-600">These exclusions are ALWAYS respected (Control)</div>
+                    </div>
+                  </div>
+                  <div className="text-green-600">
+                    <Icons.Shield />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-4 grid grid-cols-2 gap-3">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+              <p className="text-xs text-amber-800"><strong>Suggestions:</strong> Even if you turn these OFF, Meta often ignores it</p>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+              <p className="text-xs text-green-800"><strong>Controls:</strong> Exclusions are the only thing 100% respected</p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Interest Dead Slide
+    const InterestDeadSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6 mb-6">
+          <div className="grid md:grid-cols-3 gap-4 text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <div className="text-4xl font-bold text-amber-400 mb-2">48h</div>
+              <div className="text-sm text-neutral-400">Time until Meta expands beyond interests</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+              <div className="text-4xl font-bold text-blue-400 mb-2">65%</div>
+              <div className="text-sm text-neutral-400">Typical expansion to non-interest users</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+              <div className="text-4xl font-bold text-green-400 mb-2">23%</div>
+              <div className="text-sm text-neutral-400">Lower CPM with broad targeting</div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-4">
+          <div className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+            <p className="text-neutral-700 leading-relaxed">
+              In the Andromeda era, interest targeting has become a <strong>starting signal</strong>, not a boundary. You select "Interest: Fitness" and Meta starts by showing to fitness-interested users. But within hours, if it finds that non-fitness users convert better, it expands.
+            </p>
+          </div>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <p className="text-amber-800 text-sm">
+              <strong>Your careful interest stack?</strong> A suggestion the AI overrides constantly. This is why broad targeting often beats detailed targeting now - you're not fighting the algorithm.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // When Suggestions Help Slide
+    const WhenSuggestionsHelpSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-6">Suggestions aren't useless - they affect the STARTING point of delivery</motion.p>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-6 mb-6">
+          <h3 className="font-bold text-neutral-900 mb-4 flex items-center gap-2">
+            <Icons.Zap />
+            Use suggestions to:
+          </h3>
+          <div className="space-y-3">
+            {[
+              { num: '1', text: 'Speed up initial learning phase', desc: 'Give Meta a starting point to find converters faster' },
+              { num: '2', text: 'Give directional hints to new campaigns', desc: 'Especially useful for niche products' },
+              { num: '3', text: 'Test if certain signals improve early results', desc: 'Compare with/without to measure impact' }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3 p-3 bg-neutral-50 rounded-lg">
+                <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center flex-shrink-0">{item.num}</span>
+                <div>
+                  <div className="font-medium text-neutral-800">{item.text}</div>
+                  <div className="text-xs text-neutral-500">{item.desc}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+          <p className="text-amber-800 text-sm">
+            <strong>But never rely on suggestions as boundaries.</strong> Treat them as training wheels, not guardrails. If you have a niche product, interest targeting can help Meta learn faster initially - just don't expect it to last.
+          </p>
+        </motion.div>
       </div>
     );
 
@@ -205,24 +430,41 @@
           </motion.div>
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+          <div className="flex items-center justify-center gap-2 text-neutral-300 text-sm">
+            <Icons.Zap />
+            <span>{data.insight}</span>
+          </div>
         </motion.div>
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    const CardsSlide = ({ data }) => {
+      const getIcon = (type) => {
+        switch(type) {
+          case 'map': return <Icons.MapPin />;
+          case 'exclude': return <Icons.UserMinus />;
+          case 'image': return <Icons.Image />;
+          default: return <Icons.Zap />;
+        }
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 mb-3">
+                  {getIcon(item.iconType)}
+                </div>
+                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const PracticalGuideSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -235,7 +477,7 @@
             <div className="space-y-2">
               {data.oldWay.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm text-neutral-600">
-                  <Icons.X />
+                  <span className="text-red-500"><Icons.X /></span>
                   <span>{item}</span>
                 </div>
               ))}
@@ -248,7 +490,7 @@
             <div className="space-y-2">
               {data.newWay.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm text-neutral-600">
-                  <Icons.Check />
+                  <span className="text-green-500"><Icons.Check /></span>
                   <span>{item}</span>
                 </div>
               ))}
@@ -385,11 +627,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
+          case 'core-concept': return <CoreConceptSlide data={slide} />;
           case 'comparison-table': return <ComparisonTableSlide data={slide} />;
+          case 'advantage-mockup': return <AdvantageMockupSlide data={slide} />;
+          case 'interest-dead': return <InterestDeadSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'practical-guide': return <PracticalGuideSlide data={slide} />;
+          case 'when-suggestions-help': return <WhenSuggestionsHelpSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
