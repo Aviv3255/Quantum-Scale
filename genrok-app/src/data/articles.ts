@@ -5473,6 +5473,158 @@ Your product isn't "Brazilian Blend Coffee"—it's "Forbidden coffee once reserv
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/forbidden-coffee-hook/lesson.html' }
       ]
+    },
+    {
+      id: 189,
+      thumbnail: '/images/lessons/meta-three-second-hook.png',
+      title: 'The 3-Second Rule: Why Meta Judges Your Ad in the Blink of an Eye',
+      intro: 'Meta\'s Andromeda AI decides if your creative is "new" or "same" based on the first 3 seconds alone.',
+      directUrl: '/learn/lessons/meta-three-second-hook',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 3-Second Rule
+
+Meta's Andromeda system analyzes your creative's first 3 seconds to determine similarity. Same hook = same ad in Meta's eyes. Learn how to create truly different creatives that escape the similarity trap.
+
+**Open the interactive lesson to master the 3-second hook strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-three-second-hook/lesson.html' }
+      ]
+    },
+    {
+      id: 190,
+      thumbnail: '/images/lessons/meta-70-20-10-rule.png',
+      title: 'The 70-20-10 Creative Rule: How Top Advertisers Allocate Their Ad Budget',
+      intro: '70% proven winners, 20% iterations, 10% wild experiments. The creative allocation framework that scales.',
+      directUrl: '/learn/lessons/meta-70-20-10-rule',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 70-20-10 Creative Rule
+
+Don't put all eggs in one basket. Allocate 70% to proven winners, 20% to iterations of winners, and 10% to completely wild experiments. This framework balances risk and breakthrough potential.
+
+**Open the interactive lesson to build your creative portfolio strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-70-20-10-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 191,
+      thumbnail: '/images/lessons/meta-ga4-integration.png',
+      title: 'GA4 + Meta: Feeding the Algorithm What It Actually Needs',
+      intro: 'Enhanced conversions through GA4 give Meta the high-quality signals it craves for better targeting.',
+      directUrl: '/learn/lessons/meta-ga4-integration',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## GA4 + Meta Integration
+
+The quality of your conversion data directly impacts Meta's optimization. GA4 enhanced conversions provide first-party data that survives iOS changes and gives Meta cleaner signals for better targeting.
+
+**Open the interactive lesson to set up your GA4-Meta data pipeline.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-ga4-integration/lesson.html' }
+      ]
+    },
+    {
+      id: 192,
+      thumbnail: '/images/lessons/meta-1-1-x-structure.png',
+      title: 'The 1-1-X Structure: The Simplest Meta Campaign Setup That Works',
+      intro: '1 Campaign, 1 Ad Set, X Creatives. Stop overcomplicating. Start scaling.',
+      directUrl: '/learn/lessons/meta-1-1-x-structure',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 1-1-X Structure
+
+Forget complex campaign structures. In 2026, the winning formula is simple: 1 campaign, 1 ad set, and as many creatives as you can feed it. Let Meta's AI do the heavy lifting.
+
+**Open the interactive lesson to restructure your campaigns for maximum performance.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-1-1-x-structure/lesson.html' }
+      ]
+    },
+    {
+      id: 193,
+      thumbnail: '/images/lessons/meta-auction-formula.png',
+      title: 'The Meta Auction Formula: Total Value = Bid × EAR × Quality',
+      intro: 'Understanding how Meta decides which ad wins every single auction. Spoiler: it\'s not just about budget.',
+      directUrl: '/learn/lessons/meta-auction-formula',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The Meta Auction Formula
+
+Every ad auction is won by the highest Total Value score: Bid × Estimated Action Rate × Ad Quality. Understanding this formula reveals why creative quality beats budget every time.
+
+**Open the interactive lesson to optimize your auction score.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-auction-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 194,
+      thumbnail: '/images/lessons/meta-controls-vs-suggestions.png',
+      title: 'Controls vs Suggestions: What Meta Actually Listens To',
+      intro: 'Hard boundaries vs soft signals. Know the difference or waste your budget on ignored settings.',
+      directUrl: '/learn/lessons/meta-controls-vs-suggestions',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## Controls vs Suggestions
+
+Meta has two types of settings: Controls (hard boundaries it must obey) and Suggestions (soft signals it can ignore). Most advertisers waste time on suggestions while neglecting controls.
+
+**Open the interactive lesson to set your campaigns up correctly.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-controls-vs-suggestions/lesson.html' }
+      ]
+    },
+    {
+      id: 195,
+      thumbnail: '/images/lessons/meta-creative-ecosystem.png',
+      title: 'The Creative Ecosystem: Building 20-50 Meaningfully Different Ads',
+      intro: 'Quantity matters, but only if each creative is truly different. Build a creative factory, not a creative graveyard.',
+      directUrl: '/learn/lessons/meta-creative-ecosystem',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The Creative Ecosystem
+
+Meta's algorithm needs creative diversity to find winners. Learn how to build an ecosystem of 20-50 meaningfully different ads across hooks, formats, and angles—without burning out your creative team.
+
+**Open the interactive lesson to build your creative factory.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-creative-ecosystem/lesson.html' }
+      ]
+    },
+    {
+      id: 196,
+      thumbnail: '/images/lessons/meta-capi-pixel-setup.png',
+      title: 'CAPI + Pixel: The Dual Tracking Setup That\'s Now Mandatory',
+      intro: 'Browser-side Pixel + Server-side CAPI. One without the other is leaving money on the table.',
+      directUrl: '/learn/lessons/meta-capi-pixel-setup',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## CAPI + Pixel Setup
+
+In 2026, running just the Pixel is like driving with one headlight. CAPI (Conversions API) sends server-side events that bypass browser limitations. Together, they create complete conversion visibility.
+
+**Open the interactive lesson to set up bulletproof tracking.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-capi-pixel-setup/lesson.html' }
+      ]
     }
   ];
 
