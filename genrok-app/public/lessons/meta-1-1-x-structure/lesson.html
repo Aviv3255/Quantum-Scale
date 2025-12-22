@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 1-1-X Campaign Structure | Quantum Scale</title>
+  <title>The Complete Meta Ads Campaign Structure | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-card: #ffffff; --meta-text: #1c1e21; --meta-muted: #65676b; --meta-border: #dddfe2; }
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -38,86 +35,99 @@
 
     const LESSON_CONFIG = {
       id: 'meta-1-1-x-structure',
-      title: 'The 1-1-X Structure',
-      description: 'Kill your complex ad sets. The simplified campaign structure that outperforms everything.',
+      title: 'The Complete Campaign Structure',
+      description: 'The 3-phase Meta Ads strategy: Testing, Scaling, and Remarketing.',
       accentColor: '#3b82f6',
-      duration: '7 min',
-      nextLesson: { id: 'meta-auction-formula', title: 'The Auction Formula', teaser: 'The exact equation Meta uses to decide who wins every ad auction - and how to game it.' }
+      duration: '9 min',
+      nextLesson: { id: 'meta-auction-formula', title: 'The Auction Formula', teaser: 'The exact equation Meta uses to decide who wins every ad auction.' }
     };
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    // Clean SVG Icons - No emojis
+    // Clean SVG Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowDown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
-      Sparkles: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
-      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
-      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Beaker: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
       Folder: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>,
       Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
       Image: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
-      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      Play: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
-      PauseCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>,
-      Settings: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
-      ChevronDown: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Sparkles: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
       ChevronRight: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>,
+      Repeat: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
     };
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why multiple ad sets hurt performance in the Andromeda era', 'The 1-1-X structure: 1 campaign, 1 ad set, X creatives', 'How simplification leads to +22% ROAS improvement'] },
-      { type: 'hook', headline: 'Your 15 ad sets are fighting each other. And Meta\'s AI is confused.', subtext: 'In 2020, complex campaign structures made sense. You needed to manually segment audiences. In 2025? Andromeda is smarter than your segmentation. Every ad set you add creates internal competition, fragments data, and slows learning. The winners have simplified down to almost nothing.' },
-      { type: 'content', title: 'What Is the 1-1-X Structure?', body: 'It\'s radical simplicity: 1 Campaign. 1 Ad Set (broad targeting). X Creatives (the more variety, the better). That\'s it. No interest stacking. No lookalike tiers. No age/gender splits. Just one broad ad set with maximum creative diversity. Let Andromeda figure out who should see what. It\'s better at targeting than you are.' },
-      { type: 'ads-manager-mockup', title: 'The 1-1-X Structure in Ads Manager', description: 'This is exactly what your campaign structure should look like. No more complex hierarchies.' },
-      { type: 'structure-visual', title: 'Old vs New Structure', oldStructure: { label: 'Old (Complex)', items: ['Campaign 1', '  Ad Set: Interest 1', '  Ad Set: Interest 2', '  Ad Set: LAL 1%', '  Ad Set: LAL 2%', '  Ad Set: Broad 25-34', '  Ad Set: Broad 35-44'], problems: ['Audience overlap', 'Budget fragmentation', 'Slow learning', 'Internal competition'] }, newStructure: { label: 'New (1-1-X)', items: ['Campaign 1', '  Ad Set: Broad', '    Creative 1', '    Creative 2', '    Creative 3', '    ...Creative X'], benefits: ['Zero overlap', 'Consolidated budget', 'Fast learning', 'AI-optimized delivery'] }},
-      { type: 'cards', title: 'Why Complexity Kills Performance', items: [
-        { title: 'Audience Overlap', description: 'Your "Interest: Fitness" ad set shares 60% of users with your "Interest: Gym" ad set. You\'re bidding against yourself.' },
-        { title: 'Budget Fragmentation', description: '$100 spread across 10 ad sets = $10 each. Not enough data for Andromeda to learn. One ad set with $100 = fast optimization.' },
-        { title: 'Slower Learning', description: 'Each ad set needs ~50 conversions/week to exit learning. With 10 ad sets, you need 500 conversions. With 1? Just 50.' }
+      { type: 'welcome', learningGoals: ['Phase 1: Creative Testing with ABO (find winners fast)', 'Phase 2: Scaling Campaign with CBO (7 strategic ad sets)', 'Phase 3: Remarketing structure for maximum recovery'] },
+      { type: 'hook', headline: 'One structure does NOT fit all.', subtext: 'The biggest mistake? Using the same campaign structure for testing AND scaling. Testing requires isolation. Scaling requires consolidation. Mix them up and you waste budget on both. Let me show you the exact 3-phase structure top media buyers use.' },
+      { type: 'overview', title: 'The 3-Phase Campaign Strategy', phases: [
+        { number: 1, name: 'Creative Testing', type: 'ABO', goal: 'Find winners fast', icon: 'Beaker', color: '#f59e0b' },
+        { number: 2, name: 'Scaling', type: 'CBO', goal: 'Maximize winners', icon: 'TrendingUp', color: '#10b981' },
+        { number: 3, name: 'Remarketing', type: 'Varies', goal: 'Recover & convert', icon: 'Repeat', color: '#8b5cf6' }
       ]},
-      { type: 'example', scenario: 'Fashion Brand - $5K/day Spend', before: { label: 'Complex Structure (Broken)', text: '12 ad sets: LAL 1%, LAL 2%, LAL 3%, Interest stacks, Age splits, Retargeting segments. Result: 8 ad sets in learning phase. Avg frequency: 4.8. ROAS: 1.8x. Massive audience overlap.' }, after: { label: '1-1-X Structure (Winning)', text: '1 campaign. 1 broad ad set. 25 diverse creatives. Result: Exited learning in 3 days. Frequency: 1.9. ROAS: 2.2x (+22%). Zero overlap. Creative does the targeting.' }, insight: 'Same budget. Simpler structure. 22% better ROAS. The AI is better at finding buyers than your manual targeting.' },
-      { type: 'content', title: 'Creative Becomes Your Targeting', body: 'In 1-1-X, you don\'t tell Meta WHO to target. Your creative tells Andromeda. A UGC video of a young woman using skincare? Andromeda shows it to young women interested in skincare. A luxury lifestyle shot? Andromeda finds high-income users. The visual content IS the targeting. More creative variety = more audience segments discovered automatically.' },
-      { type: 'creative-targeting', title: 'How Creative Signals Audience', examples: [
-        { creative: 'Young woman unboxing product (UGC)', audience: '18-34 female, social shoppers', icon: 'package' },
-        { creative: 'Premium lifestyle flat-lay shot', audience: 'High-income, design-focused', icon: 'sparkles' },
-        { creative: 'Comparison chart vs competitor', audience: 'Research-heavy, price-conscious', icon: 'chart' },
-        { creative: 'Before/after transformation', audience: 'Problem-aware, solution-seeking', icon: 'refresh' }
-      ], insight: 'Each creative attracts a different buyer profile. Variety = reach expansion without manual targeting.' },
-      { type: 'stats-visual', title: 'The Numbers Don\'t Lie', stats: [
-        { value: '+22%', label: 'ROAS Increase', description: 'Average improvement from 1-1-X adoption' },
-        { value: '3-5', label: 'Days to Exit Learning', description: 'vs 14+ days with fragmented structure' },
-        { value: '60%', label: 'Less Management', description: 'Time saved on campaign optimization' }
+      { type: 'phase-header', phase: 1, title: 'Creative Testing', subtitle: 'Find your winners before you scale', budgetType: 'ABO', color: '#f59e0b' },
+      { type: 'testing-structure', title: 'Phase 1: Creative Testing Structure', description: 'One creative per ad set. Identical targeting. Let the creative be the only variable.' },
+      { type: 'content', title: 'Why ABO for Testing?', body: 'Ad Set Budget Optimization (ABO) gives each creative equal opportunity. With CBO, Meta might dump all budget into one ad set before others get a fair chance. ABO forces equal distribution. Every creative gets tested. No premature winners or losers.' },
+      { type: 'testing-rules', title: 'Creative Testing Rules', rules: [
+        { rule: 'One creative per ad set', why: 'Isolate the variable. Know exactly what won.' },
+        { rule: 'Identical targeting across all ad sets', why: 'Broad interests, largest possible audience. Let creative do the targeting.' },
+        { rule: 'Equal budget per ad set', why: 'ABO ensures fair testing. No favoritism.' },
+        { rule: 'Test 4-10 creatives at once', why: 'More tests = faster learnings = faster scaling.' }
       ]},
-      { type: 'quiz', question: 'You\'re launching a new product. What structure gives Andromeda the best chance to find buyers?', options: ['5 campaigns with different objectives (awareness, traffic, conversions)', '1 campaign with 8 ad sets (LAL 1%, LAL 2%, interests, age splits, etc.)', '1 campaign, 1 broad ad set, 15-20 diverse creatives', '3 campaigns: prospecting, retargeting, and lookalike'], correctIndex: 2, feedback: { correct: 'Perfect! 1 campaign, 1 broad ad set, and 15-20 diverse creatives is the optimal structure. No audience overlap, consolidated learning, and creative variety lets Andromeda discover your best buyers automatically. The AI is better at segmentation than manual targeting ever was.', incorrect: 'Not quite. The 1-1-X structure (1 campaign, 1 broad ad set, many creatives) outperforms complex structures because: 1) No audience overlap fighting for the same users, 2) Consolidated budget means faster learning, 3) Creative variety naturally segments audiences without manual intervention. Let Andromeda do the targeting work.' }},
-      { type: 'action-checklist', title: 'Migrate to 1-1-X Today', items: [
-        { task: 'Export current campaigns - identify all active ad sets', done: false },
-        { task: 'Create 1 new campaign with 1 broad ad set (no interests)', done: false },
-        { task: 'Move all winning creatives into the single ad set', done: false },
-        { task: 'Pause old fragmented campaigns after 7 days of parallel testing', done: false },
-        { task: 'Add 5-10 new creative variations monthly to maintain diversity', done: false }
-      ], bottomNote: 'The hardest part is trusting the AI. Your manual targeting instincts are outdated. Let go and watch results improve.' },
+      { type: 'phase-header', phase: 2, title: 'Scaling Campaign', subtitle: 'Maximize your proven winners', budgetType: 'CBO', color: '#10b981' },
+      { type: 'scaling-structure', title: 'Phase 2: Scaling Structure (CBO)', description: 'One campaign. Seven strategic ad sets. All winning creatives in each.' },
+      { type: 'adset-breakdown', title: 'The 7 Scaling Ad Sets', adsets: [
+        { name: 'Top 10% Spenders', description: 'Your highest-value customers', icon: 'Crown', free: true },
+        { name: 'Top 25% Spenders', description: 'Strong repeat buyers', icon: 'Star', free: true },
+        { name: 'RFM Segments', description: 'Champion, Loyal, Promising customers', icon: 'Heart', free: true },
+        { name: '5% Purchase Lookalike', description: 'Clone your best buyers', icon: 'Users', free: false },
+        { name: '6-8 Winning Interests', description: 'Winners from testing phase', icon: 'Target', free: false },
+        { name: 'Open Targeting', description: 'No interests, no demographics', icon: 'Globe', free: false },
+        { name: 'Advantage+ Targeting', description: 'Let Meta find buyers', icon: 'Sparkles', free: false }
+      ]},
+      { type: 'content', title: 'Why CBO for Scaling?', body: 'Campaign Budget Optimization (CBO) lets Meta shift budget to whoever is performing best RIGHT NOW. Your Top 10% might crush it Monday, but Open Targeting wins Tuesday. CBO adapts in real-time. You set the budget once. Meta optimizes 24/7.' },
+      { type: 'scaling-visual', title: 'Scaling Campaign Visual', subtitle: 'All winning creatives live under EVERY ad set' },
+      { type: 'phase-header', phase: 3, title: 'Remarketing', subtitle: 'Recover abandoned intent', budgetType: 'Varies', color: '#8b5cf6' },
+      { type: 'remarketing-structure', title: 'Phase 3: Remarketing Structure', description: 'Target people who showed intent but did not convert.' },
+      { type: 'comparison', title: 'Testing vs Scaling: The Key Difference', items: [
+        { aspect: 'Budget Type', testing: 'ABO (equal distribution)', scaling: 'CBO (dynamic allocation)' },
+        { aspect: 'Ad Sets', testing: 'Multiple identical (1 creative each)', scaling: '7 strategic audiences' },
+        { aspect: 'Creatives', testing: '1 unique creative per ad set', scaling: 'ALL winners in EVERY ad set' },
+        { aspect: 'Goal', testing: 'Find what works', scaling: 'Maximize what works' },
+        { aspect: 'Targeting', testing: 'Broad, identical across all', scaling: 'Segmented by value/intent' }
+      ]},
+      { type: 'quiz', question: 'You have 5 new creatives to test. What structure should you use?', options: ['1 CBO campaign with 5 creatives in 1 ad set', '1 ABO campaign with 5 ad sets, each with 1 creative', '5 separate campaigns, one for each creative', '1 CBO campaign with 7 ad sets, 5 creatives in each'], correctIndex: 1, feedback: { correct: 'Exactly! For testing, use ABO with one creative per ad set. This ensures equal budget distribution and isolates each creative as the only variable. Once you find winners, THEN move them to your scaling CBO campaign.', incorrect: 'Not quite. For creative testing, you want ABO (Ad Set Budget Optimization) with one creative per ad set. This gives each creative equal budget and isolates it as the only variable. CBO is for scaling proven winners, not testing new ones.' }},
+      { type: 'action-checklist', title: 'Set Up Your 3-Phase Structure', items: [
+        { task: 'Create Testing Campaign (ABO) with 4-6 ad sets, 1 creative each', done: false },
+        { task: 'Set identical broad targeting for all testing ad sets', done: false },
+        { task: 'After 3-5 days, identify winning creatives (lowest CPA, highest ROAS)', done: false },
+        { task: 'Create Scaling Campaign (CBO) with 7 ad sets', done: false },
+        { task: 'Add ALL winning creatives to EVERY scaling ad set', done: false },
+        { task: 'Set up Remarketing campaign for abandoned carts/viewers', done: false }
+      ], bottomNote: 'Test in ABO. Scale in CBO. Never mix them up.' },
       { type: 'completion', sources: [] }
     ];
 
@@ -152,7 +162,6 @@
     const HookSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
           <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
@@ -166,313 +175,485 @@
       </div>
     );
 
-    // Meta Ads Manager Mockup showing 1-1-X Structure
-    const AdsManagerMockupSlide = ({ data }) => {
-      const [expanded, setExpanded] = useState({ campaign: true, adset: true });
-      const creatives = [
-        { name: 'UGC Unboxing Video', status: 'Active', spend: '$342.50', cpa: '$12.40', impressions: '28.4K' },
-        { name: 'Lifestyle Flat Lay', status: 'Active', spend: '$287.20', cpa: '$14.20', impressions: '22.1K' },
-        { name: 'Before/After Split', status: 'Active', spend: '$198.90', cpa: '$11.80', impressions: '18.7K' },
-        { name: 'Product Demo 15s', status: 'Active', spend: '$156.40', cpa: '$15.60', impressions: '14.2K' },
-        { name: 'Customer Testimonial', status: 'Learning', spend: '$89.00', cpa: '$17.80', impressions: '8.9K' },
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-4 max-w-lg mx-auto">{data.description}</motion.p>
-
-          {/* Meta Ads Manager Mockup */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border border-neutral-200 shadow-lg overflow-hidden">
-            {/* Ads Manager Header */}
-            <div className="bg-[#1877f2] px-4 py-3 flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded bg-white flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </div>
-                <span className="text-white font-semibold text-sm">Ads Manager</span>
-              </div>
-              <div className="flex-1"></div>
-              <div className="text-white/80 text-xs">Your Ad Account</div>
-            </div>
-
-            {/* Toolbar */}
-            <div className="bg-[#f0f2f5] px-4 py-2 border-b border-neutral-200 flex items-center gap-3">
-              <button className="px-3 py-1.5 bg-[#1877f2] text-white rounded text-xs font-medium">+ Create</button>
-              <button className="px-3 py-1.5 bg-white border border-neutral-300 rounded text-xs text-neutral-600">Duplicate</button>
-              <button className="px-3 py-1.5 bg-white border border-neutral-300 rounded text-xs text-neutral-600">Edit</button>
-            </div>
-
-            {/* Campaign Structure */}
-            <div className="p-4">
-              {/* Campaign Row */}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="mb-2"
-              >
-                <div
-                  className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors"
-                  onClick={() => setExpanded(e => ({ ...e, campaign: !e.campaign }))}
-                >
-                  <span className={`text-[#1877f2] transition-transform ${expanded.campaign ? 'rotate-90' : ''}`}>
-                    <Icons.ChevronRight />
-                  </span>
-                  <div className="w-8 h-8 rounded bg-[#1877f2] flex items-center justify-center text-white">
-                    <Icons.Folder />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-[#1c1e21] text-sm">Summer Sale - Conversions</div>
-                    <div className="text-xs text-[#65676b]">Conversions - Purchase</div>
-                  </div>
-                  <div className="flex items-center gap-1 px-2 py-1 bg-green-100 rounded text-green-700 text-xs font-medium">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    Active
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-semibold text-[#1c1e21]">$1,074.00</div>
-                    <div className="text-xs text-[#65676b]">Today's spend</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Ad Set Row */}
-              <AnimatePresence>
-                {expanded.campaign && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="ml-8 mb-2"
-                  >
-                    <div
-                      className="flex items-center gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors"
-                      onClick={() => setExpanded(e => ({ ...e, adset: !e.adset }))}
-                    >
-                      <span className={`text-purple-600 transition-transform ${expanded.adset ? 'rotate-90' : ''}`}>
-                        <Icons.ChevronRight />
-                      </span>
-                      <div className="w-8 h-8 rounded bg-purple-500 flex items-center justify-center text-white">
-                        <Icons.Layers />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-[#1c1e21] text-sm">Broad - US 18+</div>
-                        <div className="text-xs text-[#65676b]">
-                          <span className="text-purple-600 font-medium">No detailed targeting</span> - Advantage+ Audience
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 px-2 py-1 bg-green-100 rounded text-green-700 text-xs font-medium">
-                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                        Active
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-[#1c1e21]">$1,074.00</div>
-                        <div className="text-xs text-[#65676b]">Daily budget: $1,500</div>
-                      </div>
-                    </div>
-
-                    {/* Creatives */}
-                    <AnimatePresence>
-                      {expanded.adset && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="ml-8 mt-2 space-y-1"
-                        >
-                          {creatives.map((creative, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.1 * i }}
-                              className="flex items-center gap-3 p-2 bg-white border border-neutral-200 rounded-lg hover:border-neutral-300 transition-colors"
-                            >
-                              <div className="w-6 h-6 rounded bg-neutral-100 flex items-center justify-center text-neutral-500">
-                                <Icons.Image />
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-medium text-[#1c1e21] text-xs">{creative.name}</div>
-                              </div>
-                              <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${creative.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                                <div className={`w-1.5 h-1.5 rounded-full ${creative.status === 'Active' ? 'bg-green-500' : 'bg-amber-500'}`}></div>
-                                {creative.status}
-                              </div>
-                              <div className="text-right text-xs">
-                                <div className="text-[#1c1e21]">{creative.spend}</div>
-                              </div>
-                              <div className="text-right text-xs">
-                                <div className="text-[#1c1e21]">{creative.cpa}</div>
-                                <div className="text-[#65676b]">CPA</div>
-                              </div>
-                            </motion.div>
-                          ))}
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
-                            className="text-center py-2"
-                          >
-                            <span className="text-xs text-[#1877f2] cursor-pointer hover:underline">+ Add more creatives</span>
-                          </motion.div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Insight */}
-            <div className="px-4 pb-4">
-              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-green-700">
-                  <Icons.Check />
-                  <span className="font-medium">1-1-X Structure Active</span>
-                </div>
-                <p className="text-xs text-green-600 mt-1">1 Campaign, 1 Ad Set, 5 Creatives. No audience overlap. Fast learning.</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      );
-    };
-
-    const StructureVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">{data.oldStructure.label}</span>
-            </div>
-            <div className="bg-white rounded-lg p-4 mb-4 font-mono text-xs text-neutral-700">
-              {data.oldStructure.items.map((item, i) => (
-                <div key={i} className="py-0.5">{item}</div>
-              ))}
-            </div>
-            <div className="space-y-1">
-              {data.oldStructure.problems.map((problem, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-red-600">
-                  <Icons.X /><span>{problem}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">{data.newStructure.label}</span>
-            </div>
-            <div className="bg-white rounded-lg p-4 mb-4 font-mono text-xs text-neutral-700">
-              {data.newStructure.items.map((item, i) => (
-                <div key={i} className="py-0.5">{item}</div>
-              ))}
-            </div>
-            <div className="space-y-1">
-              {data.newStructure.benefits.map((benefit, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-green-600">
-                  <Icons.Check /><span>{benefit}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 border-2 border-red-500 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-400 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-300 text-sm leading-relaxed">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 border-2 rounded-xl p-5" style={{ borderColor: 'var(--accent)' }}>
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div><span className="font-semibold text-sm" style={{ color: 'var(--accent-light)' }}>{data.after.label}</span></div>
-            <p className="text-neutral-300 text-sm leading-relaxed">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    // Enhanced Creative Targeting with SVG icons
-    const CreativeTargetingSlide = ({ data }) => {
+    // 3-Phase Overview
+    const OverviewSlide = ({ data }) => {
       const getIcon = (iconName) => {
-        const icons = {
-          package: <Icons.Package />,
-          sparkles: <Icons.Sparkles />,
-          chart: <Icons.BarChart />,
-          refresh: <Icons.RefreshCw />
-        };
-        return icons[iconName] || <Icons.Image />;
-      };
-
-      const iconColors = {
-        package: '#3b82f6',
-        sparkles: '#8b5cf6',
-        chart: '#10b981',
-        refresh: '#f59e0b'
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
       };
 
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="space-y-3 mb-6">
-            {data.examples.map((ex, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${iconColors[ex.icon]}15`, color: iconColors[ex.icon] }}>
-                    {getIcon(ex.icon)}
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
+            {data.phases.map((phase, i) => (
+              <React.Fragment key={i}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.15 }}
+                  className="bg-white border-2 rounded-2xl p-6 text-center w-full md:w-56"
+                  style={{ borderColor: phase.color }}
+                >
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ backgroundColor: `${phase.color}20`, color: phase.color }}>
+                    {getIcon(phase.icon)}
                   </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-neutral-700 mb-1">{ex.creative}</div>
-                    <div className="text-xs text-neutral-500">Attracts: <span className="font-semibold" style={{ color: iconColors[ex.icon] }}>{ex.audience}</span></div>
+                  <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: phase.color }}>Phase {phase.number}</div>
+                  <h3 className="font-bold text-lg text-neutral-900 mb-1">{phase.name}</h3>
+                  <div className="text-sm text-neutral-500 mb-2">{phase.goal}</div>
+                  <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: `${phase.color}15`, color: phase.color }}>
+                    {phase.type}
                   </div>
+                </motion.div>
+                {i < data.phases.length - 1 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 + i * 0.15 }}
+                    className="text-neutral-300 hidden md:block"
+                  >
+                    <Icons.ArrowRight />
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Phase Header
+    const PhaseHeaderSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-4"
+        >
+          <span className="inline-block px-4 py-2 rounded-full text-sm font-bold text-white" style={{ backgroundColor: data.color }}>
+            Phase {data.phase} - {data.budgetType}
+          </span>
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="slide-title text-4xl md:text-5xl lg:text-6xl mb-4"
+          style={{ color: data.color }}
+        >
+          {data.title}
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg md:text-xl text-neutral-500"
+        >
+          {data.subtitle}
+        </motion.p>
+      </div>
+    );
+
+    // Testing Structure Visual - Clean minimalist blocks
+    const TestingStructureSlide = ({ data }) => {
+      const adSets = [
+        { name: 'Ad Set 1', creative: 'Creative 1' },
+        { name: 'Ad Set 2', creative: 'Creative 2' },
+        { name: 'Ad Set 3', creative: 'Creative 3' },
+        { name: 'Ad Set 4', creative: 'Creative 4' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-6">{data.description}</motion.p>
+
+          {/* Visual Structure */}
+          <div className="flex flex-col items-center">
+            {/* Campaign */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white border-2 border-amber-500 rounded-xl px-6 py-3 mb-4"
+            >
+              <div className="text-center">
+                <div className="text-xs text-amber-600 font-semibold uppercase tracking-wider">Campaign</div>
+                <div className="font-bold text-neutral-900">1 ABO Campaign</div>
+              </div>
+            </motion.div>
+
+            {/* Arrow */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-amber-400 mb-4">
+              <Icons.ArrowDown />
+            </motion.div>
+
+            {/* Ad Sets Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 w-full max-w-2xl">
+              {adSets.map((adSet, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 + i * 0.08 }}
+                  className="bg-white border border-neutral-900 rounded-lg p-3 text-center"
+                >
+                  <div className="text-[10px] text-neutral-500 uppercase tracking-wider">Ad Set</div>
+                  <div className="font-semibold text-neutral-900 text-sm">{adSet.name}</div>
+                  <div className="text-[10px] text-neutral-400 mt-1">Broad targeting</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Arrows */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 w-full max-w-2xl">
+              {adSets.map((_, i) => (
+                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.05 }} className="flex justify-center text-neutral-300">
+                  <Icons.ArrowDown />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Creatives Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl">
+              {adSets.map((adSet, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 + i * 0.08 }}
+                  className="bg-white border border-neutral-900 rounded-lg p-3 text-center"
+                >
+                  <div className="w-8 h-8 mx-auto mb-2 rounded bg-neutral-100 flex items-center justify-center text-neutral-400">
+                    <Icons.Image />
+                  </div>
+                  <div className="font-semibold text-neutral-900 text-sm">{adSet.creative}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Note */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="mt-6 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-center max-w-lg"
+            >
+              <p className="text-sm text-amber-800">
+                <strong>Goal:</strong> Test as many signals as possible. Each creative gets equal budget.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Testing Rules
+    const TestingRulesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.rules.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              className="bg-white border border-neutral-200 rounded-xl p-4"
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0">
+                  <Icons.Check />
+                </div>
+                <div>
+                  <h3 className="font-bold text-neutral-900 text-sm md:text-base">{item.rule}</h3>
+                  <p className="text-neutral-500 text-sm mt-1">{item.why}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Scaling Structure Visual
+    const ScalingStructureSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-6">{data.description}</motion.p>
+
+        <div className="flex flex-col items-center">
+          {/* Campaign */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white border-2 border-emerald-500 rounded-xl px-6 py-3 mb-4"
+          >
+            <div className="text-center">
+              <div className="text-xs text-emerald-600 font-semibold uppercase tracking-wider">Campaign</div>
+              <div className="font-bold text-neutral-900">1 CBO Campaign</div>
+            </div>
+          </motion.div>
+
+          {/* Arrow */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-emerald-400 mb-4">
+            <Icons.ArrowDown />
+          </motion.div>
+
+          {/* 7 Ad Sets */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-4 w-full">
+            {['Top 10%', 'Top 25%', 'RFM', 'LLA 5%', 'Interests', 'Open', 'Adv+'].map((name, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 + i * 0.05 }}
+                className="bg-white border border-neutral-900 rounded-lg p-2 text-center"
+              >
+                <div className="text-[9px] text-neutral-500 uppercase">Ad Set {i + 1}</div>
+                <div className="font-semibold text-neutral-900 text-[11px]">{name}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Arrows */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-neutral-300 mb-4">
+            <Icons.ArrowDown />
+          </motion.div>
+
+          {/* All Winning Creatives */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+            className="bg-white border-2 border-neutral-900 rounded-xl px-8 py-4 text-center"
+          >
+            <div className="text-[10px] text-neutral-500 uppercase tracking-wider mb-1">Under Every Ad Set</div>
+            <div className="font-bold text-neutral-900">All Winning Creatives</div>
+            <div className="flex justify-center gap-2 mt-2">
+              {[1,2,3,4,5].map((_, i) => (
+                <div key={i} className="w-6 h-6 rounded bg-neutral-100 flex items-center justify-center text-neutral-400 text-xs">
+                  <Icons.Image />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Note */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-6 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-center max-w-lg"
+          >
+            <p className="text-sm text-emerald-800">
+              <strong>CBO Magic:</strong> Meta shifts budget to the best-performing ad set in real-time.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Ad Set Breakdown
+    const AdSetBreakdownSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-3">
+            {data.adsets.map((adset, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.06 }}
+                className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center gap-4"
+              >
+                <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
+                  {getIcon(adset.icon)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-neutral-900 text-sm truncate">{adset.name}</h3>
+                    {adset.free && (
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded-full">FREE</span>
+                    )}
+                  </div>
+                  <p className="text-neutral-500 text-xs">{adset.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
-            <p className="text-blue-800 text-sm">{data.insight}</p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mt-4 text-center"
+          >
+            <span className="text-xs text-neutral-400">First 3 audiences can be created for free using your customer data</span>
           </motion.div>
         </div>
       );
     };
 
-    const StatsVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.description}</div>
+    // Scaling Visual
+    const ScalingVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto text-center">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 mb-8">{data.subtitle}</motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-neutral-900 rounded-2xl p-6 md:p-8"
+        >
+          <div className="grid grid-cols-3 md:grid-cols-7 gap-3 mb-6">
+            {['Top 10%', 'Top 25%', 'RFM', 'LLA', 'Interest', 'Open', 'Adv+'].map((name, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.05 }}
+                className="bg-neutral-800 border border-neutral-700 rounded-lg py-2 px-1"
+              >
+                <div className="text-[10px] text-neutral-400 truncate">{name}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center justify-center gap-2 text-neutral-400 mb-4"
+          >
+            <Icons.ArrowDown />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl py-4 px-6"
+          >
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              {[1,2,3,4,5,6,7,8].map((_, i) => (
+                <div key={i} className="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-white/60">
+                  <Icons.Image />
+                </div>
+              ))}
+            </div>
+            <div className="text-emerald-400 font-semibold mt-3 text-sm">All Winning Creatives</div>
+            <div className="text-emerald-300/60 text-xs">Same creatives in every ad set</div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Remarketing Structure
+    const RemarketingStructureSlide = ({ data }) => {
+      const segments = [
+        { name: 'Cart Abandoners', window: '1-7 days', priority: 'High' },
+        { name: 'Product Viewers', window: '1-14 days', priority: 'Medium' },
+        { name: 'Past Purchasers', window: '30-90 days', priority: 'Upsell' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-6">{data.description}</motion.p>
+
+          <div className="space-y-3">
+            {segments.map((seg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center gap-4"
+              >
+                <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 flex-shrink-0">
+                  <Icons.Users />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-neutral-900 text-sm">{seg.name}</h3>
+                  <p className="text-neutral-500 text-xs">Window: {seg.window}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  seg.priority === 'High' ? 'bg-red-100 text-red-700' :
+                  seg.priority === 'Medium' ? 'bg-amber-100 text-amber-700' :
+                  'bg-blue-100 text-blue-700'
+                }`}>
+                  {seg.priority}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-xl"
+          >
+            <p className="text-sm text-purple-800 text-center">
+              Remarketing can be separate or integrated with scaling. Key is to not compete with your prospecting campaigns.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Comparison Table
+    const ComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white border border-neutral-200 rounded-xl overflow-hidden"
+        >
+          {/* Header */}
+          <div className="grid grid-cols-3 bg-neutral-100">
+            <div className="p-3 text-xs font-bold text-neutral-500 uppercase tracking-wider">Aspect</div>
+            <div className="p-3 text-xs font-bold text-amber-600 uppercase tracking-wider text-center border-l border-neutral-200">Testing (ABO)</div>
+            <div className="p-3 text-xs font-bold text-emerald-600 uppercase tracking-wider text-center border-l border-neutral-200">Scaling (CBO)</div>
+          </div>
+
+          {/* Rows */}
+          {data.items.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 + i * 0.05 }}
+              className="grid grid-cols-3 border-t border-neutral-200"
+            >
+              <div className="p-3 text-sm font-medium text-neutral-700">{item.aspect}</div>
+              <div className="p-3 text-sm text-neutral-600 text-center border-l border-neutral-200 bg-amber-50/50">{item.testing}</div>
+              <div className="p-3 text-sm text-neutral-600 text-center border-l border-neutral-200 bg-emerald-50/50">{item.scaling}</div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-4 text-center"
+        >
+          <p className="text-sm text-neutral-500">
+            <strong>Key insight:</strong> Find winners in ABO, then scale them in CBO.
+          </p>
+        </motion.div>
       </div>
     );
 
@@ -495,8 +676,8 @@
               </motion.div>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+            <p className="text-blue-800 text-sm font-medium">{data.bottomNote}</p>
           </motion.div>
         </div>
       );
@@ -549,7 +730,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 1-1-X structure: 1 campaign, 1 broad ad set, maximum creative diversity. Simplification beats complexity. Let Andromeda do the targeting - it's better at it than manual segmentation ever was.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 3-phase campaign structure: Test with ABO (1 creative per ad set), scale with CBO (7 ad sets, all winners), and remarket to recover intent. Never mix testing and scaling structures.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -601,12 +782,15 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'ads-manager-mockup': return <AdsManagerMockupSlide data={slide} />;
-          case 'structure-visual': return <StructureVisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'creative-targeting': return <CreativeTargetingSlide data={slide} />;
-          case 'stats-visual': return <StatsVisualSlide data={slide} />;
+          case 'overview': return <OverviewSlide data={slide} />;
+          case 'phase-header': return <PhaseHeaderSlide data={slide} />;
+          case 'testing-structure': return <TestingStructureSlide data={slide} />;
+          case 'testing-rules': return <TestingRulesSlide data={slide} />;
+          case 'scaling-structure': return <ScalingStructureSlide data={slide} />;
+          case 'adset-breakdown': return <AdSetBreakdownSlide data={slide} />;
+          case 'scaling-visual': return <ScalingVisualSlide data={slide} />;
+          case 'remarketing-structure': return <RemarketingStructureSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
