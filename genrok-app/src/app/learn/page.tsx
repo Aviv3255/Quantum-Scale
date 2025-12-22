@@ -235,6 +235,12 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'story-changes-taste': { title: 'Story Changes Taste', description: 'Narrative literally alters perception' },
   'thirty-five-thousand-decisions': { title: '35,000 Decisions', description: 'Reduce decision fatigue to convert' },
   'whale-customer-paradox': { title: 'The Whale Customer Paradox', description: 'Your best customers behave differently' },
+  // Google Ads 2026 lessons
+  'google-highest-cpa-wins': { title: 'Why The Highest CPA Wins', description: 'The counterintuitive truth about Google Ads dominance' },
+  'google-product-feed-mastery': { title: 'Your Product Feed IS Your Ad', description: 'The hidden weapon for Shopping & PMax success' },
+  'google-pmax-blueprint': { title: 'The PMax Asset Group Blueprint', description: 'Stop forcing Google AI to guess' },
+  'google-data-quality-edge': { title: 'Better Data In, Better AI Out', description: 'The quality edge that wins in 2026' },
+  'google-competitor-conquest': { title: 'Competitor Conquest', description: 'Steal market share legally with Google Ads' },
 };
 
 // Categories for filtering

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Your Unfair Advantage | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
+    <script src="../shared/greetings.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { margin: 0; overflow: hidden; background: #000; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+const { motion, AnimatePresence } = Motion;
+
+const LESSON_CONFIG = {
+    id: 'google-brand-moat',
+    title: 'Building Your Unfair Advantage',
+    description: 'Brand as the ultimate moat',
+    accentColor: '#14b8a6',
+    duration: '7 min',
+    nextLesson: { id: 'google-highest-cpa-wins', title: 'The Counterintuitive Truth: Highest CPA Wins' }
+};
+
+const Icons = {
+    shield: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>),
+    crown: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>),
+    heart: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>),
+    trendingUp: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>),
+    dollarSign: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>),
+    check: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-full h-full"><polyline points="20 6 9 17 4 12"/></svg>),
+    x: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-full h-full"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>),
+    arrow: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>),
+    lightbulb: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>),
+    trophy: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>),
+    zap: () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>)
+};
+
+const celebrationGifs = ['https://media1.tenor.com/m/1VjHHcaOrrQAAAAC/great-job-yes.gif','https://media1.tenor.com/m/uK0tLjpHLDcAAAAC/girl-kid.gif','https://media1.tenor.com/m/aKS6MJHP60YAAAAC/nice-happy.gif','https://media1.tenor.com/m/FNhN8wBBh1sAAAAC/winners-toby.gif'];
+const empathyGifs = ['https://media1.tenor.com/m/XNH4l5P7RXgAAAAC/not-quite-almost.gif','https://media1.tenor.com/m/QVBVOOIyv2gAAAAC/a-for-effort.gif','https://media1.tenor.com/m/pM_5-PEg_agAAAAC/good-try-nice-try.gif'];
+
+const slides = [
+    { type: 'welcome', title: LESSON_CONFIG.title, subtitle: 'Brand as the Ultimate Moat', duration: LESSON_CONFIG.duration },
+    { type: 'hook', hookLine: 'Nike can sell a t-shirt for $50.', followUp: 'An unbranded t-shirt sells for $5.', reveal: 'Same fabric. Same quality. 10x price. Why? Brand.' },
+    { type: 'content', title: 'The Nike Effect', content: 'A strong brand lets you charge 5-10x more than competitors. Same product. Higher perceived value.', highlight: 'This is the ultimate moat. When you have brand power, Google Ads is on easy mode.', icon: 'crown' },
+    { type: 'castle-moat', title: 'The Castle & Moat', visual: {
+        castle: { label: 'Your Business', elements: ['Product', 'Customer base', 'Revenue'] },
+        moat: { label: 'Your Brand', protection: 'Competitors\' ads bounce off. Customers come directly to YOU.' },
+        attackers: { label: 'Competitors', attempts: ['Lower prices', 'Better ads', 'Aggressive bidding'], result: 'None of it matters if your brand is strong' }
+    }},
+    { type: 'content', title: 'Brand = Easy Mode Ads', content: 'When you have brand recognition, your Google Ads perform better automatically.', highlight: 'Higher CTR. Lower CPC. Better Quality Score. More conversions. All because people recognize and trust you.', icon: 'zap' },
+    { type: 'brand-advantages', title: 'Brand Advantages in Google Ads', advantages: [
+        { metric: 'Click-Through Rate', unbranded: '2%', branded: '8%', multiplier: '4x higher', icon: 'trendingUp' },
+        { metric: 'Cost Per Click', unbranded: '$3.00', branded: '$1.20', multiplier: '60% lower', icon: 'dollarSign' },
+        { metric: 'Conversion Rate', unbranded: '1.5%', branded: '4.5%', multiplier: '3x higher', icon: 'check' },
+        { metric: 'Customer LTV', unbranded: '$80', branded: '$240', multiplier: '3x higher', icon: 'heart' }
+    ]},
+    { type: 'content', title: 'How to Build a Brand', content: 'Brand isn\'t a logo. It\'s trust, recognition, and emotional connection.', highlight: 'You build it through consistency, storytelling, and genuine value delivery.', icon: 'heart' },
+    { type: 'brand-building', title: 'The 3-Pillar Brand Strategy', pillars: [
+        { number: '1', title: 'Master Economics', description: 'LTV > CAC. Profitability first. Can\'t build a brand if you\'re bleeding money.', icon: 'dollarSign' },
+        { number: '2', title: 'Superior Data Quality', description: 'Clean tracking, customer lists, value-based bidding. Feed AI better signals.', icon: 'trendingUp' },
+        { number: '3', title: 'Defensible Moat (Brand)', description: 'Unique story, consistent voice, customer trust. This is the final layer.', icon: 'shield' }
+    ]},
+    { type: 'content', title: 'Consistency Builds Recognition', content: 'Same colors, same tone, same message. Every touchpoint reinforces who you are.', highlight: 'People need 7-10 exposures to remember your brand. Consistency accelerates this.', icon: 'check' },
+    { type: 'brand-touchpoints', title: 'Brand Touchpoint Checklist', touchpoints: [
+        { name: 'Visual Identity', items: ['Logo', 'Color palette', 'Typography', 'Image style'], status: 'consistent' },
+        { name: 'Voice & Messaging', items: ['Tone of voice', 'Key phrases', 'Value proposition', 'Brand story'], status: 'consistent' },
+        { name: 'Customer Experience', items: ['Website UX', 'Checkout flow', 'Support quality', 'Post-purchase'], status: 'consistent' }
+    ]},
+    { type: 'content', title: 'The Winning Formula', content: 'You need all three layers to dominate in 2026.', highlight: '1) Master Economics + 2) Superior Data + 3) Defensible Moat = Market Domination', icon: 'trophy' },
+    { type: 'formula-visual', title: 'Market Domination Formula', layers: [
+        { layer: 'Layer 1', title: 'Master Economics', description: 'Increase LTV so you can afford highest CPA', color: '#f97316' },
+        { layer: 'Layer 2', title: 'Superior Data', description: 'Server-side tracking, customer lists, value-based bidding', color: '#8b5cf6' },
+        { layer: 'Layer 3', title: 'Defensible Moat', description: 'Build brand so strong competitors can\'t compete', color: '#14b8a6' }
+    ], result: 'You outbid everyone profitably AND have brand loyalty. Game over.'},
+    { type: 'quiz', question: 'Why is brand the ultimate moat in 2026?', options: ['It makes your logo look better', 'It lets you charge more and makes ads perform better', 'It reduces product quality concerns', 'It only helps with organic traffic'], correctIndex: 1, explanation: 'Correct! Brand lets you charge premium prices AND makes Google Ads perform better (higher CTR, lower CPC, better conversions). It\'s the ultimate competitive advantage.' },
+    { type: 'action-framework', title: 'Start Building Your Moat', steps: [
+        { number: '1', title: 'Audit Brand Consistency', action: 'Colors, voice, messaging—are they consistent everywhere?', icon: 'check' },
+        { number: '2', title: 'Define Your Story', action: 'Why do you exist? What makes you different? What do you stand for?', icon: 'heart' },
+        { number: '3', title: 'Deliver Exceptional Value', action: 'Brand is built through experience. Over-deliver on promises.', icon: 'trophy' }
+    ]},
+    { type: 'insight', title: 'The Long Game', insight: 'Most advertisers chase short-term tactics. Lower CPA. Better ROAS this month.', highlight: 'You? You build a brand. You create a moat. You play the long game and win everything.', icon: 'lightbulb' },
+    { type: 'completion', title: 'Lesson Complete!', summary: [
+        'Brand = 10x pricing power + better ad performance',
+        'Strong brand = castle with a moat (competitors can\'t touch you)',
+        'Winning formula: Economics + Data + Brand',
+        'Build brand through consistency, story, and exceptional value'
+    ], nextLessonId: LESSON_CONFIG.nextLesson.id, nextLessonTitle: LESSON_CONFIG.nextLesson.title }
+];
+
+// Slide components (minimal)
+const WelcomeSlide = ({ data }) => { const greeting = typeof getGreeting === 'function' ? getGreeting() : 'Welcome'; return (<div className="min-h-screen bg-black flex items-center justify-center p-8"><motion.div className="text-center max-w-3xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }} className="w-20 h-20 mx-auto mb-8 rounded-2xl flex items-center justify-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><div className="w-10 h-10" style={{ color: LESSON_CONFIG.accentColor }}><Icons.shield /></div></motion.div><motion.p className="text-gray-400 text-lg mb-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>{greeting}</motion.p><motion.h1 className="text-5xl md:text-6xl font-bold text-white mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>{data.title}</motion.h1><motion.p className="text-xl text-gray-400 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>{data.subtitle}</motion.p><motion.div className="flex items-center justify-center gap-2 text-gray-500" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>{data.duration}</span></motion.div></motion.div></div>); };
+const HookSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="text-center max-w-4xl"><motion.p className="text-3xl md:text-4xl text-gray-400 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.hookLine}</motion.p><motion.p className="text-2xl text-gray-500 mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>{data.followUp}</motion.p><motion.div className="text-4xl md:text-5xl font-bold" style={{ color: LESSON_CONFIG.accentColor }} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.5 }}>{data.reveal}</motion.div></div></div>);
+const ContentSlide = ({ data }) => { const IconComponent = Icons[data.icon]; return (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-4xl w-full"><motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{IconComponent && <div className="w-16 h-16 mx-auto mb-6 text-gray-600"><IconComponent /></div>}<h2 className="text-4xl font-bold text-white mb-6">{data.title}</h2></motion.div><motion.p className="text-2xl text-gray-400 text-center mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>{data.content}</motion.p><motion.div className="p-6 rounded-2xl text-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '15' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}><p className="text-xl font-medium" style={{ color: LESSON_CONFIG.accentColor }}>{data.highlight}</p></motion.div></div></div>); };
+const CastleMoatSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-5xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="grid md:grid-cols-3 gap-6"><motion.div className="bg-gray-900/50 rounded-2xl p-6 border-2" style={{ borderColor: LESSON_CONFIG.accentColor }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}><div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><div className="w-6 h-6" style={{ color: LESSON_CONFIG.accentColor }}><Icons.shield /></div></div><h3 className="text-xl font-bold text-white mb-4">{data.visual.castle.label}</h3><div className="space-y-2">{data.visual.castle.elements.map((el, i) => (<div key={i} className="flex items-center gap-2 text-gray-400 text-sm"><div className="w-1 h-1 rounded-full bg-gray-600"></div>{el}</div>))}</div></motion.div><motion.div className="bg-gray-900/50 rounded-2xl p-6 border-2 border-gray-700" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}><div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><div className="w-6 h-6" style={{ color: LESSON_CONFIG.accentColor }}><Icons.shield /></div></div><h3 className="text-xl font-bold mb-4" style={{ color: LESSON_CONFIG.accentColor }}>{data.visual.moat.label}</h3><p className="text-gray-300 text-sm">{data.visual.moat.protection}</p></motion.div><motion.div className="bg-gray-900/50 rounded-2xl p-6 border-2 border-red-500/30" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}><div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-red-500/20"><div className="w-6 h-6 text-red-500"><Icons.x /></div></div><h3 className="text-xl font-bold text-red-400 mb-4">{data.visual.attackers.label}</h3><div className="space-y-2 mb-4">{data.visual.attackers.attempts.map((att, i) => (<div key={i} className="flex items-center gap-2 text-gray-400 text-sm"><div className="w-4 h-4 text-red-500"><Icons.x /></div>{att}</div>))}</div><p className="text-red-400 text-xs font-medium">{data.visual.attackers.result}</p></motion.div></div></div></div>);
+const BrandAdvantagesSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-5xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="space-y-4">{data.advantages.map((adv, i) => (<motion.div key={i} className="bg-gray-900/50 rounded-xl p-6 border border-gray-800" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}><div className="grid md:grid-cols-4 gap-4 items-center"><div><h3 className="text-lg font-bold text-white">{adv.metric}</h3></div><div><span className="text-xs text-gray-500 uppercase block">Unbranded</span><p className="text-gray-400">{adv.unbranded}</p></div><div><span className="text-xs text-gray-500 uppercase block">Branded</span><p className="font-bold" style={{ color: LESSON_CONFIG.accentColor }}>{adv.branded}</p></div><div><span className="px-3 py-1 rounded-full text-sm font-bold" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20', color: LESSON_CONFIG.accentColor }}>{adv.multiplier}</span></div></div></motion.div>))}</div></div></div>);
+const BrandBuildingSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-4xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="space-y-6">{data.pillars.map((pillar, i) => { const IconComponent = Icons[pillar.icon]; return (<motion.div key={i} className="flex items-start gap-6 p-6 bg-gray-900/50 rounded-2xl border border-gray-800" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.2 }}><div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><span className="text-2xl font-bold" style={{ color: LESSON_CONFIG.accentColor }}>{pillar.number}</span></div><div className="flex-1"><h3 className="text-xl font-bold text-white mb-2">{pillar.title}</h3><p className="text-gray-400">{pillar.description}</p></div></motion.div>); })}</div></div></div>);
+const BrandTouchpointsSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-4xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="space-y-6">{data.touchpoints.map((tp, i) => (<motion.div key={i} className="bg-gray-900/50 rounded-xl p-6 border border-gray-800" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.15 }}><h3 className="text-lg font-bold text-white mb-4">{tp.name}</h3><div className="grid md:grid-cols-2 gap-2">{tp.items.map((item, j) => (<div key={j} className="flex items-center gap-2 text-gray-400 text-sm"><div className="w-4 h-4" style={{ color: LESSON_CONFIG.accentColor }}><Icons.check /></div>{item}</div>))}</div></motion.div>))}</div></div></div>);
+const FormulaVisualSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-4xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="space-y-4 mb-8">{data.layers.map((layer, i) => (<motion.div key={i} className="p-6 rounded-xl border-2" style={{ borderColor: layer.color, backgroundColor: layer.color + '15' }} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.2 }}><div className="flex items-center gap-3 mb-2"><span className="text-sm font-bold px-3 py-1 rounded-full" style={{ backgroundColor: layer.color + '30', color: layer.color }}>{layer.layer}</span><h3 className="text-xl font-bold text-white">{layer.title}</h3></div><p className="text-gray-300">{layer.description}</p></motion.div>))}</div><motion.div className="p-8 rounded-2xl text-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1 }}><p className="text-2xl font-bold" style={{ color: LESSON_CONFIG.accentColor }}>{data.result}</p></motion.div></div></div>);
+const QuizSlide = ({ data, onAnswer }) => { const [selected, setSelected] = useState(null); const [showResult, setShowResult] = useState(false); const [gifUrl, setGifUrl] = useState(''); const handleSelect = (index) => { if (showResult) return; setSelected(index); setShowResult(true); const isCorrect = index === data.correctIndex; setGifUrl((isCorrect ? celebrationGifs : empathyGifs)[Math.floor(Math.random() * (isCorrect ? celebrationGifs : empathyGifs).length)]); setTimeout(() => onAnswer?.(isCorrect), 2000); }; return (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-3xl w-full"><motion.div className="text-center mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><span className="inline-block px-4 py-1 rounded-full text-sm font-medium mb-6" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20', color: LESSON_CONFIG.accentColor }}>Quick Check</span><h2 className="text-3xl font-bold text-white">{data.question}</h2></motion.div><div className="space-y-4 mb-8">{data.options.map((option, index) => (<motion.button key={index} onClick={() => handleSelect(index)} className={`w-full p-5 rounded-xl text-left transition-all ${showResult ? index === data.correctIndex ? 'bg-green-500/20 border-2 border-green-500' : index === selected ? 'bg-red-500/20 border-2 border-red-500' : 'bg-gray-800/50 border-2 border-gray-700 opacity-50' : 'bg-gray-800/50 border-2 border-gray-700 hover:border-gray-500'}`} disabled={showResult} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + index * 0.1 }}><span className="text-white">{option}</span></motion.button>))}</div><AnimatePresence>{showResult && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center"><img src={gifUrl} alt="Result" className="w-48 h-48 object-cover rounded-2xl mx-auto mb-4"/><p className={`text-lg font-medium mb-2 ${selected === data.correctIndex ? 'text-green-400' : 'text-red-400'}`}>{selected === data.correctIndex ? 'Correct!' : 'Not quite!'}</p><p className="text-gray-400">{data.explanation}</p></motion.div>)}</AnimatePresence></div></div>); };
+const ActionFrameworkSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-4xl w-full"><motion.h2 className="text-4xl font-bold text-white text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>{data.title}</motion.h2><div className="space-y-6">{data.steps.map((step, i) => { const IconComponent = Icons[step.icon]; return (<motion.div key={i} className="flex items-start gap-6 p-6 bg-gray-900/50 rounded-2xl border border-gray-800" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.2 }}><div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><span className="text-2xl font-bold" style={{ color: LESSON_CONFIG.accentColor }}>{step.number}</span></div><div className="flex-1"><div className="flex items-center gap-2 mb-2">{IconComponent && <div className="w-5 h-5 text-gray-500"><IconComponent /></div>}<h3 className="text-xl font-bold text-white">{step.title}</h3></div><p className="text-gray-400">{step.action}</p></div></motion.div>); })}</div></div></div>);
+const InsightSlide = ({ data }) => { const IconComponent = Icons[data.icon]; return (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-3xl w-full text-center"><motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }} className="w-24 h-24 mx-auto mb-8 rounded-2xl flex items-center justify-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><div className="w-12 h-12" style={{ color: LESSON_CONFIG.accentColor }}>{IconComponent && <IconComponent />}</div></motion.div><motion.h2 className="text-3xl font-bold text-white mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>{data.title}</motion.h2><motion.p className="text-2xl text-gray-400 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>{data.insight}</motion.p><motion.div className="p-8 rounded-2xl" style={{ backgroundColor: LESSON_CONFIG.accentColor + '15' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}><p className="text-xl font-medium" style={{ color: LESSON_CONFIG.accentColor }}>{data.highlight}</p></motion.div></div></div>); };
+const CompletionSlide = ({ data }) => (<div className="min-h-screen bg-black flex items-center justify-center p-8"><div className="max-w-2xl w-full text-center"><motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }} className="w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center" style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}><div className="w-12 h-12" style={{ color: LESSON_CONFIG.accentColor }}><Icons.trophy /></div></motion.div><motion.h2 className="text-4xl font-bold text-white mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>{data.title}</motion.h2><motion.div className="bg-gray-900/50 rounded-2xl p-8 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}><h3 className="text-lg font-medium text-gray-400 mb-4">Key Takeaways</h3><div className="space-y-3">{data.summary.map((item, i) => (<div key={i} className="flex items-start gap-3 text-left"><div className="w-5 h-5 mt-0.5" style={{ color: LESSON_CONFIG.accentColor }}><Icons.check /></div><span className="text-gray-300">{item}</span></div>))}</div></motion.div><motion.a href={`../${data.nextLessonId}/lesson.html`} className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-medium text-white transition-transform hover:scale-105" style={{ backgroundColor: LESSON_CONFIG.accentColor }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>Next: {data.nextLessonTitle}<div className="w-5 h-5"><Icons.arrow /></div></motion.a></div></div>);
+
+const LessonApp = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [direction, setDirection] = useState(1);
+    const goToSlide = (index, dir = 1) => { if (index >= 0 && index < slides.length) { setDirection(dir); setCurrentSlide(index); } };
+    const nextSlide = () => goToSlide(currentSlide + 1, 1);
+    const prevSlide = () => goToSlide(currentSlide - 1, -1);
+    useEffect(() => {
+        const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); } };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [currentSlide]);
+    const renderSlide = (slide) => {
+        switch (slide.type) {
+            case 'welcome': return <WelcomeSlide data={slide} />;
+            case 'hook': return <HookSlide data={slide} />;
+            case 'content': return <ContentSlide data={slide} />;
+            case 'castle-moat': return <CastleMoatSlide data={slide} />;
+            case 'brand-advantages': return <BrandAdvantagesSlide data={slide} />;
+            case 'brand-building': return <BrandBuildingSlide data={slide} />;
+            case 'brand-touchpoints': return <BrandTouchpointsSlide data={slide} />;
+            case 'formula-visual': return <FormulaVisualSlide data={slide} />;
+            case 'quiz': return <QuizSlide data={slide} onAnswer={() => setTimeout(nextSlide, 1000)} />;
+            case 'action-framework': return <ActionFrameworkSlide data={slide} />;
+            case 'insight': return <InsightSlide data={slide} />;
+            case 'completion': return <CompletionSlide data={slide} />;
+            default: return <div className="text-white">Unknown slide type</div>;
+        }
+    };
+    return (
+        <div className="relative w-full h-screen overflow-hidden bg-black">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gray-800 z-50">
+                <motion.div className="h-full" style={{ backgroundColor: LESSON_CONFIG.accentColor }} initial={{ width: 0 }} animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }} transition={{ duration: 0.3 }}/>
+            </div>
+            <a href="/lessons" className="absolute top-6 left-6 z-50 flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                <span className="text-sm font-medium">Back</span>
+            </a>
+            <div className="absolute top-6 right-6 z-50 text-gray-500 text-sm font-medium">{currentSlide + 1} / {slides.length}</div>
+            <AnimatePresence mode="wait">
+                <motion.div key={currentSlide} initial={{ opacity: 0, x: direction * 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction * -100 }} transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }} className="w-full h-full">
+                    {renderSlide(slides[currentSlide])}
+                </motion.div>
+            </AnimatePresence>
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-4 z-50">
+                <button onClick={prevSlide} disabled={currentSlide === 0} className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-12 h-12 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-90 transition-opacity" style={{ backgroundColor: LESSON_CONFIG.accentColor }}>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+            <div className="absolute bottom-8 right-8 text-gray-600 text-xs hidden md:block">Use ← → keys to navigate</div>
+        </div>
+    );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<LessonApp />);
+</script>
+</body>
+</html>

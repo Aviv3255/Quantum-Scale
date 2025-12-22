@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why The Highest CPA Wins: The Counterintuitive Truth | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fdba74; --accent-rgb: 249, 115, 22; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'google-highest-cpa-wins',
+      title: 'Why The Highest CPA Wins: The Counterintuitive Truth',
+      description: 'The businesses that dominate Google Ads aren\'t the ones with the lowest CPA. They\'re the ones who can afford to pay the MOST and still be profitable.',
+      accentColor: '#f97316',
+      duration: '6 min',
+      nextLesson: { id: 'google-product-feed-mastery', title: 'Product Feed Mastery', teaser: 'Learn how your product feed is the raw material for every ad.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why most Google Ad campaigns fail and that\'s completely normal', 'How one massive winner pays for all experiments and creates immense profit', 'The counterintuitive truth: Your goal is the HIGHEST CPA, not the lowest', 'How to master unit economics: LTV > CAC = SCALE'] },
+      { type: 'hook', headline: 'Everyone obsesses over lowering their cost-per-acquisition. "Get your CPA down!" they say. But here\'s the truth that separates winners from losers: The businesses dominating Google Ads aren\'t the ones with the lowest CPA. They\'re the ones who can afford to pay the MOST.', subtext: 'When you can outbid everyone else and still be profitable, you don\'t just compete in the market. You control it. Budget becomes a weapon, not a limitation.' },
+      { type: 'content', title: 'The Reality: Most Campaigns Fail', body: 'Let\'s start with what nobody wants to admit: Most Google Ad campaigns fail. That\'s not a bug. That\'s the norm.\n\nYou\'re going to test campaigns that don\'t work. Audiences that don\'t convert. Creative that bombs. Keywords that burn money. This isn\'t failure - it\'s the scientific method applied to advertising.\n\nThe businesses that win understand this fundamental truth: You\'re not trying to make every campaign profitable. You\'re searching for the one massive winner that pays for everything else.\n\nExample: You test 20 campaigns. Each loses $1,000. You\'re down $20,000. Most advertisers panic and quit here. But campaign 21 hits. You scale it to $100,000 spend. It generates $400,000 in revenue. That single success created $300,000 in profit - more than covering all 20 failures.\n\nThis is how the game actually works.' },
+      { type: 'content', title: 'The Counterintuitive Goal', body: 'Here\'s the mindset shift that changes everything:\n\nYour goal ISN\'T the lowest cost-per-sale. It\'s the HIGHEST.\n\nRead that again. The HIGHEST CPA wins.\n\nWhy? Because the business that can afford to pay $200 to acquire a customer when everyone else maxes out at $80 doesn\'t just win more auctions. They eliminate the competition entirely.\n\nWhen your competitor\'s max profitable CPA is $80, and you can go to $200 and still make money, you control the entire market. They physically cannot compete with you. Their economics don\'t allow it.\n\nThe businesses that win with Google Ads aren\'t the ones with the cleverest ad copy or the best landing page design. They\'re the ones with the unit economics that allow them to outspend everyone else and still be profitable.\n\nWhen you can outbid everyone and still be profitable, budget becomes a weapon, not a limitation.' },
+      { type: 'mockup', title: 'The Scale Balance', description: 'Low CPA gets you small scale and fierce competition. High CPA gets you market dominance and unlimited growth potential. The business with better unit economics wins every time.', mockupType: 'scale-balance' },
+      { type: 'content', title: 'Master Unit Economics', body: 'The entire game comes down to one simple formula:\n\nLTV > CAC = SCALE\n\nLifetime Value must be greater than Customer Acquisition Cost. When it is, you can scale infinitely. When it\'s not, you\'re dead.\n\nCAC Limit = The absolute maximum you can afford to pay to acquire one customer while maintaining profitability.\n\nLTV = How much a customer pays over their entire relationship with your brand, not just the first purchase.\n\nMost advertisers only think about first-purchase profitability. "Did I make money on this sale?" That\'s amateur thinking.\n\nProfessionals think in LTV. They know a customer worth $500 over 12 months allows them to spend $200 acquiring them today. Their competitor thinking in first-purchase terms can only spend $80. Who wins the auction? Who scales? Who owns the market?\n\nThe answer is obvious.' },
+      { type: 'stats-grid', title: 'The Economics of Winning', items: [
+        { value: '20:1', label: 'Failure Ratio', description: '20 failed campaigns, 1 massive winner' },
+        { value: '$400K', label: 'Winner Revenue', description: 'From $100K ad spend on the winner' },
+        { value: '$200', label: 'High CAC Limit', description: 'vs $80 competitor maximum' },
+        { value: '2.5x', label: 'Bidding Power', description: 'Market dominance advantage' }
+      ]},
+      { type: 'quote', data: {
+        quote: 'When you can outbid everyone else and still be profitable, you don\'t compete in the market. You control it.',
+        context: 'The strategic advantage of superior unit economics'
+      }},
+      { type: 'content', title: 'How to Increase Your LTV', body: 'If LTV determines your competitive advantage, how do you increase it? Three proven strategies:\n\n1. Encourage Repeat Purchases\nPost-purchase email sequences, retargeting ads, loyalty rewards. Get customers to buy again. A customer who buys twice is worth 2x. A customer who buys monthly is worth 12x.\n\n2. Introduce a Subscription Model\nRecurring revenue is the ultimate LTV multiplier. Even a small percentage of customers on subscription dramatically increases your average LTV and your competitive bidding power.\n\n3. Create High-Value Upsells and Cross-Sells\nIncrease average order value through bundles, premium versions, complementary products. If you can add $50 to each order through strategic upsells, that\'s $50 more you can spend acquiring customers.\n\nEvery dollar you add to LTV is another dollar you can spend outbidding your competition. This is how market dominance is built.' },
+      { type: 'quiz', question: 'What\'s the PRIMARY goal for Google Ads dominance?', options: ['Getting the lowest possible CPA', 'Writing the cleverest ad copy', 'Being able to afford the HIGHEST CPA while staying profitable', 'Running the most campaigns'], correctIndex: 2, feedback: { correct: 'Exactly! The highest CPA wins. When you can afford to pay $200 to acquire a customer while your competitor maxes out at $80, you control the market. They can\'t compete with your economics. This is why mastering LTV is everything - it determines your maximum profitable CPA, which determines your market dominance. Budget becomes a weapon when your unit economics are superior.', incorrect: 'Not quite. The counterintuitive truth is that the HIGHEST CPA wins, not the lowest. When you can afford to pay $200 to acquire a customer while competitors max out at $80, you win every auction. You control the market. This comes from superior unit economics (LTV > CAC). The business that can outbid everyone else and still be profitable doesn\'t just compete - they dominate.' }},
+      { type: 'completion', sources: [{ name: 'Google Ads - Performance Max Strategy Guide', url: 'https://ads.google.com/' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'scale-balance') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full max-w-2xl mx-auto">
+              <svg viewBox="0 0 400 300" className="w-full">
+                <defs>
+                  <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#ea580c" stopOpacity="0.3" />
+                  </linearGradient>
+                </defs>
+
+                {/* Balance beam */}
+                <motion.line
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.2 }}
+                  x1="100" y1="150" x2="300" y2="150"
+                  stroke="#374151"
+                  strokeWidth="4"
+                  style={{ transformOrigin: 'center' }}
+                />
+
+                {/* Center fulcrum */}
+                <motion.polygon
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  points="200,150 180,180 220,180"
+                  fill="#374151"
+                />
+
+                {/* Left side - Low CPA (lighter, smaller) */}
+                <motion.g
+                  initial={{ y: -50, opacity: 0 }}
+                  animate={{ y: 30, opacity: 1 }}
+                  transition={{ delay: 0.4, type: 'spring' }}
+                >
+                  <rect x="80" y="100" width="40" height="40" fill="#fdba74" stroke="#f97316" strokeWidth="2" rx="4"/>
+                  <text x="100" y="95" fontSize="12" fontWeight="600" textAnchor="middle" fill="#374151">Low CPA</text>
+                  <text x="100" y="165" fontSize="10" textAnchor="middle" fill="#6b7280">Small Scale</text>
+                </motion.g>
+
+                {/* Right side - High CPA (heavier, larger) */}
+                <motion.g
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: -20, opacity: 1 }}
+                  transition={{ delay: 0.5, type: 'spring' }}
+                >
+                  <rect x="270" y="80" width="60" height="60" fill="url(#orangeGradient)" stroke="#ea580c" strokeWidth="3" rx="4"/>
+                  <text x="300" y="65" fontSize="12" fontWeight="600" textAnchor="middle" fill="#374151">High CPA</text>
+                  <text x="300" y="175" fontSize="10" fontWeight="700" textAnchor="middle" fill="#ea580c">Market Dominance</text>
+                </motion.g>
+
+                {/* Arrows showing direction */}
+                <motion.path
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                  d="M 100 200 L 100 210 M 95 205 L 100 210 L 105 205"
+                  stroke="#6b7280"
+                  strokeWidth="2"
+                  fill="none"
+                />
+                <motion.path
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                  d="M 300 200 L 300 190 M 295 195 L 300 190 L 305 195"
+                  stroke="#ea580c"
+                  strokeWidth="2"
+                  fill="none"
+                />
+              </svg>
+            </div>
+          </div>
+        );
+      }
+    };
+
+    const StatsGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-orange-300 hover:bg-orange-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-orange-50 border-2 border-orange-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand why the highest CPA wins - and how superior unit economics create market dominance on Google Ads.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'stats-grid': return <StatsGridSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          {gif.src && (
+            <motion.div animate={{ opacity: gif.opacity }} initial={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+              <video src={gif.src} autoPlay loop muted playsInline className="h-2/3 object-contain" style={{ [gif.side]: '10%' }} />
+            </motion.div>
+          )}
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center hover:border-orange-300 disabled:opacity-30 disabled:cursor-not-allowed transition-all"><Icons.ArrowLeft /></button>
+              <div className="flex gap-1">
+                {slides.map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d8' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

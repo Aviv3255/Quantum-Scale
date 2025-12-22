@@ -5625,6 +5625,120 @@ In 2026, running just the Pixel is like driving with one headlight. CAPI (Conver
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/meta-capi-pixel-setup/lesson.html' }
       ]
+    },
+    // Google Ads 2026 Interactive Lessons
+    {
+      id: 197,
+      thumbnail: '/images/lessons/google-highest-cpa-wins.png',
+      title: 'Why The Highest CPA Wins: The Counterintuitive Truth',
+      intro: 'The businesses that dominate Google Ads aren\'t the ones with the lowest CPA. They\'re the ones who can afford to pay the MOST.',
+      directUrl: '/learn/lessons/google-highest-cpa-wins',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Counterintuitive Truth
+
+Most Google Ad campaigns fail. That's not a bug—that's the norm. The secret is that one massive winner pays for all the experiments and losses, many times over.
+
+**Your goal isn't the lowest cost-per-sale. It's the HIGHEST.**
+
+When you can outbid everyone else and still be profitable, you control the market. Budget becomes a weapon, not a limitation.
+
+**Open the interactive lesson to master unit economics.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-highest-cpa-wins/lesson.html' }
+      ]
+    },
+    {
+      id: 198,
+      thumbnail: '/images/lessons/google-product-feed-mastery.png',
+      title: 'Your Product Feed IS Your Ad: The Hidden Weapon',
+      intro: 'Most advertisers set up their feed once and forget it. A continuously optimized feed is your first and easiest competitive advantage.',
+      directUrl: '/learn/lessons/google-product-feed-mastery',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Hidden Weapon
+
+With Shopping and Performance Max campaigns, Google's AI makes decisions based on the data you provide. Your product feed is the PRIMARY source of that data.
+
+It's not just an inventory list—it's the raw material for every ad served.
+
+**Learn the recipe: Title formula, benefit-driven descriptions, and custom labels that give you an unfair advantage.**
+
+**Open the interactive lesson to optimize your feed.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-product-feed-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 199,
+      thumbnail: '/images/lessons/google-pmax-blueprint.png',
+      title: 'The Performance Max Asset Group Blueprint',
+      intro: 'Running one generic PMax campaign with one asset group forces the AI to guess. Here\'s how to structure it properly.',
+      directUrl: '/learn/lessons/google-pmax-blueprint',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The PMax Blueprint
+
+**The Mistake:** Running a single PMax campaign with one asset group for all your products and audiences. This forces the AI to guess.
+
+**The Solution:** Create distinct Asset Groups based on your target market segments or product categories. This allows you to tailor creative and messaging.
+
+**Open the interactive lesson to build your perfect PMax structure.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-pmax-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 200,
+      thumbnail: '/images/lessons/google-data-quality-edge.png',
+      title: 'Better Data In, Better AI Out: The Quality Edge',
+      intro: 'Your competitive advantage in an AI-driven world is the QUALITY of the data you feed the machine.',
+      directUrl: '/learn/lessons/google-data-quality-edge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Quality Edge
+
+In 2026, data quality is your competitive moat. Three pillars:
+
+1. **Flawless Conversion Tracking:** Browser + server-side
+2. **Segmented Customer Lists:** High-Value, Repeat Buyers, VIPs
+3. **Value-Based Bidding:** Pass actual revenue, not just conversions
+
+**Budget reallocation alone took one account from 2.8x to 5.1x ROAS.**
+
+**Open the interactive lesson to build your data advantage.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-data-quality-edge/lesson.html' }
+      ]
+    },
+    {
+      id: 201,
+      thumbnail: '/images/lessons/google-competitor-conquest.png',
+      title: 'Competitor Conquest: Steal Market Share Legally',
+      intro: 'Use the Google Ads Transparency Center and competitor targeting to capture customers who are already in-market.',
+      directUrl: '/learn/lessons/google-competitor-conquest',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Steal Market Share Legally
+
+The **Google Ads Transparency Center** is a free tool that lets you see the ads any business is currently running on Google.
+
+**The Advanced Play:** Directly target your competitors' customers with Custom Segments. Place your superior offer in front of an audience that is already in-market.
+
+**Open the interactive lesson to set up competitor conquest campaigns.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-competitor-conquest/lesson.html' }
+      ]
     }
   ];
 
