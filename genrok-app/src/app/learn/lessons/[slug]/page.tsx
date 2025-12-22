@@ -162,6 +162,26 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
     title: 'The 6 Primal Buy Buttons',
     description: 'The only 6 triggers that get the reptile brain to say YES.',
   },
+  'three-cro-tests': {
+    title: 'The Three High-Impact CRO Tests',
+    description: 'The Oodie made $2.83M with these 3 simple changes.',
+  },
+  'digital-velvet-rope': {
+    title: 'The Digital Velvet Rope Effect',
+    description: 'Password-protected pages create explosive desire.',
+  },
+  'hidden-menu-psychology': {
+    title: 'The Hidden Menu Psychology',
+    description: 'Rolex has watches you can\'t see anywhere—for $1M+ spenders only.',
+  },
+  'celebrity-gifting-flywheel': {
+    title: 'The Celebrity Gifting Flywheel',
+    description: 'Drake has 140+ Rolexes. He didn\'t buy most of them.',
+  },
+  'forbidden-coffee-hook': {
+    title: 'The Forbidden Coffee Hook',
+    description: 'It\'s not "Brazilian Blend"—it\'s forbidden coffee for Amazonian warriors.',
+  },
 };
 
 export default function LessonPage() {
