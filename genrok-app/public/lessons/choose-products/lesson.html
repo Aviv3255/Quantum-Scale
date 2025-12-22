@@ -104,26 +104,59 @@
       </div>
     );
 
+    const HollowCircle = ({ percentage, label, sublabel, color = '#10b981', size = 140, strokeWidth = 10 }) => {
+      const radius = (size - strokeWidth) / 2;
+      const circumference = radius * 2 * Math.PI;
+      const [progress, setProgress] = useState(0);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setProgress(percentage), 200);
+        return () => clearTimeout(timer);
+      }, [percentage]);
+
+      return (
+        <div className="flex flex-col items-center">
+          <div className="relative" style={{ width: size, height: size }}>
+            <svg width={size} height={size} className="transform -rotate-90">
+              <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#262626" strokeWidth={strokeWidth} />
+              <motion.circle
+                cx={size/2} cy={size/2} r={radius} fill="none" stroke={color} strokeWidth={strokeWidth}
+                strokeLinecap="round" strokeDasharray={circumference}
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: circumference - (progress / 100) * circumference }}
+                transition={{ duration: 2, ease: 'easeOut' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-3xl md:text-4xl font-bold text-white"><AnimatedCounter target={percentage} suffix="%" /></span>
+            </div>
+          </div>
+          <span className="text-base font-semibold text-white mt-4">{label}</span>
+          <span className="text-sm text-neutral-400 mt-1">{sublabel}</span>
+        </div>
+      );
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['The 2 rules that separate winning products from dead inventory', 'Why "special enough" matters more than perfect margins', 'How Fashion and Home Decor create repeat buyers (not one-timers)'] },
       { type: 'hook', headline: 'Your customer is on the couch. Tired. Wallet in the other room. They don\'t know you.', subtext: 'This is the reality of eCommerce product selection. They have zero reason to get up, walk to their bag, pull out their credit card, and give you money. Unless your product passes two tests. Fail either one, and they scroll past. Pass both, and they\'re pulling out that card.' },
       { type: 'content', title: 'The Product Selection Paradox', body: 'Most store owners choose products backwards. They find cheap suppliers, decent margins, trending items - and wonder why nobody buys. The issue isn\'t your price or your ads. It\'s that your product doesn\'t pass the Couch Test: Is this special enough to justify the effort of ordering from a stranger online?' },
+      { type: 'customer-questions', title: 'The Customer\'s Internal Questions', questions: [
+        { question: 'Is there no risk here?', answer: 'They need guarantees, reviews, proof that it works', type: 'risk', color: '#ef4444' },
+        { question: 'Is this special enough?', answer: 'Must justify ordering from a stranger online', type: 'special', color: '#10b981' }
+      ]},
       { type: 'product-criteria', title: 'The 2 Rules for Winning Products', rules: [
         { number: 1, title: 'Special Enough', description: 'Must justify ordering from a stranger online', checkpoints: ['Can\'t get it locally', 'Unique design or customization', 'Clear upgrade over generic versions'], color: '#8b5cf6' },
         { number: 2, title: 'Broad Appeal', description: 'Appeals to 60-80% of your audience', checkpoints: ['No complex sizing', 'Not ultra-niche aesthetics', 'Works for most people'], color: '#10b981' }
       ]},
-      { type: 'example', scenario: 'Wall Clock Product', before: { label: 'Fails Couch Test', text: '"Plain white minimalist wall clock. $29.99. Ships in 5-7 days."' }, after: { label: 'Passes Couch Test', text: '"Personalized wooden clock with your family photos embedded. Custom engraving. Only available online. $59.99."' }, insight: 'Same category. One is generic (I can get that anywhere). One is special (I NEED this specific version).' },
+      { type: 'dark-example', scenario: 'Wall Clock Product', before: { label: 'Fails Couch Test', text: '"Plain white minimalist wall clock. $29.99. Ships in 5-7 days."' }, after: { label: 'Passes Couch Test', text: '"Personalized wooden clock with your family photos embedded. Custom engraving. Only available online. $59.99."' }, insight: 'Same category. One is generic (I can get that anywhere). One is special (I NEED this specific version).' },
       { type: 'content', title: 'Why Generic Products Die Online', body: 'If I can buy it at Target or Amazon in 2 clicks with Prime shipping, why would I trust YOUR unknown store? You\'re competing with convenience, trust, and speed. Your only weapon is UNIQUE. Special designs. Exclusive features. Customization. Bundles they can\'t get elsewhere. Make it special or die trying.' },
       { type: 'cards', title: 'Rule #2: Not Too Specific (Broad Appeal)', items: [
         { title: 'Avoid Tight Sizing', description: 'Clothing with complex fits = size anxiety = abandoned carts. Unless you solve sizing fear with guarantees and proof, avoid tight-fit items.' },
         { title: 'Avoid Ultra-Niche Styles', description: 'Bold patterns, extreme aesthetics, hyper-specific hobbies = tiny audience. You want 700 out of 1,000 people to like it, not 7.' }
       ]},
-      { type: 'example', scenario: 'T-Shirt Product', before: { label: 'Too Specific', text: '"Slim-fit graphic tee with neon anime print for hardcore gamers who love retro JRPGs."' }, after: { label: 'Broad Appeal', text: '"Oversized comfort-fit tee with subtle minimalist graphic. Fits most body types. Clean design 90% of people love."' }, insight: 'First product appeals to 50 people. Second appeals to 5,000. Same effort. Massive difference in market size.' },
-      { type: 'visual', title: 'The Sweet Spot', visualType: 'stats', data: [
-        { value: '70%', label: 'of 1000 people like it', subtext: 'Broad enough to scale' },
-        { value: '100%', label: 'can\'t get it locally', subtext: 'Special enough to order' },
-        { value: '$$$', label: 'winning product formula', subtext: 'Both rules aligned' }
-      ]},
+      { type: 'dark-example', scenario: 'T-Shirt Product', before: { label: 'Too Specific', text: '"Slim-fit graphic tee with neon anime print for hardcore gamers who love retro JRPGs."' }, after: { label: 'Broad Appeal', text: '"Oversized comfort-fit tee with subtle minimalist graphic. Fits most body types. Clean design 90% of people love."' }, insight: 'First product appeals to 50 people. Second appeals to 5,000. Same effort. Massive difference in market size.' },
+      { type: 'sweet-spot-circles', title: 'The Sweet Spot' },
       { type: 'content', title: 'Why Fashion and Home Decor Win Long-Term', body: 'These aren\'t products - they\'re journeys. Nobody buys ONE piece of decor and stops. Nobody buys ONE outfit and quits. They build collections. They come back. They browse. They get addicted to the curation. Selling a blender? One purchase, done forever. Selling aesthetic home goods? They\'ll be back next month for more.' },
       { type: 'cards', title: 'Product Categories That Build Journeys', items: [
         { title: 'Fashion & Apparel', description: 'Wardrobes are never "complete." Styles change. Seasons shift. Customers return for new pieces that match their identity and evolving taste.' },
@@ -131,7 +164,7 @@
         { title: 'Why These Work', description: 'Repeat buyers = higher LTV. You\'re not chasing new customers every sale - you\'re building a base of collectors who trust your curation.' }
       ]},
       { type: 'content', title: 'The Fatal Mistake: Commodity Products', body: 'Phone cases everyone sells. Generic kitchen gadgets. Bland workout gear. These require constant new customer acquisition because nobody comes back. No brand loyalty. No journey. Just price wars and ad spend bleed. If your product doesn\'t create a "I wonder what else they have" moment - you\'re in trouble.' },
-      { type: 'comparison-battle', title: 'One-Time vs. Journey Products', leftSide: { label: 'One Purchase Products', items: ['Buy once, done forever', 'Constant new customer acquisition', 'No brand loyalty built', 'Price war competition'], emoji: '⚠️', color: '#94a3b8' }, rightSide: { label: 'Journey Products', items: ['Customers return monthly', 'Build loyal collector base', 'Higher lifetime value', 'Curation creates moat'], emoji: '✨', color: '#10b981' }, winner: 'Fashion & Home Decor typically see 3-5x higher customer LTV' },
+      { type: 'journey-products', title: 'One-Time vs. Journey Products' },
       { type: 'quiz', question: 'Which product BEST fits both Rule #1 (Special Enough) and Rule #2 (Broad Appeal)?', options: ['"Custom birthstone necklace with name engraving - fits all styles"', '"Generic stainless steel water bottle - $12.99"', '"Hyper-limited edition sneakers for hardcore sneakerheads only"', '"Standard black hoodie - available everywhere"'], correctIndex: 0, feedback: { correct: 'Exactly! It\'s special enough (custom, personalized, can\'t get at Target) AND broad enough (fits all styles, appeals to wide audience). That\'s the sweet spot where eCommerce wins happen.', incorrect: 'Not quite. The winning product is custom + personalized (Rule #1: Special Enough) but also works for everyone (Rule #2: Broad Appeal). Generic items fail Rule #1. Hyper-niche items fail Rule #2. You need both.' }},
       { type: 'completion', sources: [{ name: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' }, { name: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }] }
     ];
@@ -385,6 +418,177 @@
       </div>
     );
 
+    const CustomerQuestionsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.questions.map((q, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              className="bg-neutral-800 rounded-2xl p-6 border-2"
+              style={{ borderColor: q.color }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: q.color + '20' }}>
+                  {q.type === 'risk' ? (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={q.color} strokeWidth="2"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  ) : (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={q.color} strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  )}
+                </div>
+                <h3 className="text-xl font-bold" style={{ color: q.color }}>{q.question}</h3>
+              </div>
+              <p className="text-neutral-300 text-sm leading-relaxed">{q.answer}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const DarkExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-800 border-2 border-red-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">{data.before.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-800 border-2 border-green-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">{data.after.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const SweetSpotCirclesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-8">The winning combination for eCommerce products</motion.p>
+
+        <div className="bg-neutral-900 rounded-2xl p-8 md:p-10">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
+              <HollowCircle
+                percentage={100}
+                label="Can't Get It Locally"
+                sublabel="Special enough to order"
+                color="#8b5cf6"
+                size={160}
+                strokeWidth={12}
+              />
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="text-4xl md:text-5xl text-neutral-600">+</motion.div>
+
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}>
+              <HollowCircle
+                percentage={70}
+                label="Broad Appeal"
+                sublabel="7 out of 10 people like it"
+                color="#10b981"
+                size={160}
+                strokeWidth={12}
+              />
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="border-t border-neutral-700 mt-10 pt-6 text-center">
+            <div className="flex items-center justify-center gap-4">
+              <span className="text-3xl">🎯</span>
+              <div className="text-left">
+                <div className="text-xl font-bold text-white">Winning Product Formula</div>
+                <div className="text-sm text-neutral-400">Both rules must align for eCommerce success</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const JourneyProductsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-800 rounded-2xl p-6 border border-neutral-700">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <span className="text-neutral-400 text-xs uppercase tracking-wider">The Problem</span>
+                <h3 className="text-white font-bold text-xl mt-1">One-Time Products</h3>
+              </div>
+              <div className="w-14 h-14 rounded-xl bg-neutral-700 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              </div>
+            </div>
+            <ul className="space-y-3">
+              {['Buy once, done forever', 'Constant new customer acquisition', 'No brand loyalty built', 'Race to the bottom on price'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </div>
+                  <span className="text-neutral-300 text-sm">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+            <div className="mt-6 pt-4 border-t border-neutral-700">
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-500 text-sm">Customer LTV</span>
+                <span className="text-red-400 font-bold">$47</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 border-2" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', borderColor: '#34d399' }}>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <span className="text-white/70 text-xs uppercase tracking-wider">The Solution</span>
+                <h3 className="text-white font-bold text-xl mt-1">Journey Products</h3>
+              </div>
+              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+            </div>
+            <ul className="space-y-3">
+              {['Customers return monthly', 'Build loyal collector base', 'Higher lifetime value', 'Curation creates moat'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="4"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <span className="text-white text-sm">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+            <div className="mt-6 pt-4 border-t border-white/20">
+              <div className="flex items-center justify-between">
+                <span className="text-white/70 text-sm">Customer LTV</span>
+                <span className="text-white font-bold">$185+</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="bg-neutral-900 rounded-xl p-5 text-center">
+          <p className="text-neutral-300 text-sm font-medium">Fashion & Home Decor typically see <span className="text-green-400 font-bold">3-5x higher customer LTV</span></p>
+        </motion.div>
+      </div>
+    );
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -429,6 +633,10 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'product-criteria': return <ProductCriteriaSlide data={slide} />;
           case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
+          case 'customer-questions': return <CustomerQuestionsSlide data={slide} />;
+          case 'dark-example': return <DarkExampleSlide data={slide} />;
+          case 'sweet-spot-circles': return <SweetSpotCirclesSlide data={slide} />;
+          case 'journey-products': return <JourneyProductsSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;

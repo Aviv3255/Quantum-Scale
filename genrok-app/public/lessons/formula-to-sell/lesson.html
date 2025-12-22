@@ -104,6 +104,38 @@
       </div>
     );
 
+    const CircularProgress = ({ percentage, label, color = '#8b5cf6', size = 120, strokeWidth = 8 }) => {
+      const radius = (size - strokeWidth) / 2;
+      const circumference = radius * 2 * Math.PI;
+      const [progress, setProgress] = useState(0);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setProgress(percentage), 100);
+        return () => clearTimeout(timer);
+      }, [percentage]);
+
+      return (
+        <div className="flex flex-col items-center">
+          <div className="relative" style={{ width: size, height: size }}>
+            <svg width={size} height={size} className="transform -rotate-90">
+              <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#262626" strokeWidth={strokeWidth} />
+              <motion.circle
+                cx={size/2} cy={size/2} r={radius} fill="none" stroke={color} strokeWidth={strokeWidth}
+                strokeLinecap="round" strokeDasharray={circumference}
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: circumference - (progress / 100) * circumference }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-2xl font-bold text-white"><AnimatedCounter target={percentage} suffix="%" /></span>
+            </div>
+          </div>
+          <span className="text-sm text-neutral-400 mt-3 text-center">{label}</span>
+        </div>
+      );
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['The 4 psychological variables that control all buying decisions', 'How to make your offer feel inevitable (not optional)', 'Why most stores optimize the wrong variables'] },
       { type: 'hook', headline: 'Every single purchase decision follows the same mathematical formula.', subtext: 'Whether someone\'s buying a $3 coffee or a $300,000 house. Whether it\'s impulse or years of research. The brain runs the exact same calculation every time. Master the formula, and you can sell anything to anyone. Ignore it, and you\'re burning ad spend hoping for luck.' },
@@ -114,31 +146,36 @@
         { name: 'Time Delay', direction: 'decrease', icon: '↓', description: 'How long until they get results', color: '#f59e0b', target: 20 },
         { name: 'Effort & Sacrifice', direction: 'decrease', icon: '↓', description: 'What they must give up', color: '#ef4444', target: 15 }
       ]},
+      { type: 'value-equation-extension', title: 'The Power of Alignment', content: 'Imagine this: What if we promised you that with just one shake (Low Effort), in only one week (Low Time Delay), you would achieve your dream body from head to toe, for the rest of your life (Dream Outcome)? Sounds nice, and ridiculous. But if you believed with 100% certainty, absolute conviction, without a single doubt, that it would actually happen—would you buy it? Of course. Would you pay a lot? Yes, more than you think. And that is it. Those are the four variables to sell anything to anyone.' },
       { type: 'cards', title: 'Variable #1: Dream Outcome (Increase It)', items: [
         { title: 'What It Is', description: 'The vivid future your customer imagines when they own your product. NOT features - transformation. The life upgrade.' },
         { title: 'Why It Matters', description: 'Bigger dream = higher perceived value. "Clear skin" is good. "Wake up confident without makeup" is a dream worth paying for.' },
         { title: 'How to Increase It', description: 'Paint the after-state, not the product. Use sensory details. Make them FEEL the transformation before they buy.' }
       ]},
-      { type: 'example', scenario: 'Skincare Product', before: { label: 'Weak Dream', text: '"Our serum improves skin texture and reduces blemishes over time."' }, after: { label: 'Strong Dream', text: '"Wake up to clear, glowing skin you\'re proud to show bare-faced - no filter needed."' }, insight: 'Same product. One sells features. One sells the dream of confidence and freedom.' },
+      { type: 'dark-example', scenario: 'Skincare Product', before: { label: 'Weak Dream', text: '"Our serum improves skin texture and reduces blemishes over time."' }, after: { label: 'Strong Dream', text: '"Wake up to clear, glowing skin you\'re proud to show bare-faced - no filter needed."' }, insight: 'Same product. One sells features. One sells the dream of confidence and freedom.' },
       { type: 'cards', title: 'Variable #2: Perceived Likelihood (Increase It)', items: [
         { title: 'What It Is', description: 'How convinced they are that YOUR offer will actually deliver the dream. Trust that it works for THEM specifically.' },
         { title: 'Why It Matters', description: 'Big dream with zero belief = skepticism. You need proof, social validation, guarantees, brand experience.' },
         { title: 'How to Increase It', description: 'Show receipts. Real reviews. Before/after proof. Money-back guarantees. Anything that removes doubt.' }
       ]},
+      { type: 'extreme-example', title: 'Extreme Example: Time Delay', examples: [
+        { type: 'negative', label: 'High Time Delay', text: '"This tea helps you lose around 200g per month. In about 6 months, you might start seeing results."', insight: 'Feels like forever. Brain heavily discounts distant rewards.' },
+        { type: 'positive', label: 'Low Time Delay', text: '"This tea triples your metabolism. Feel lighter in 48 hours. See visible results in 7 days."', insight: 'Immediate gratification. The brain is WIRED to choose this.' }
+      ]},
+      { type: 'extreme-example', title: 'Extreme Example: Likelihood of Achievement', examples: [
+        { type: 'negative', label: 'Low Likelihood (Skeptic Mode)', text: '"Try our program and hopefully you\'ll see some improvements. Results may vary."', insight: 'No proof. No certainty. Brain defaults to "probably won\'t work for me."' },
+        { type: 'positive', label: 'High Likelihood (Guaranteed Feeling)', text: '"97.3% of users report visible results within 14 days. 30-day money-back guarantee if you\'re not amazed."', insight: 'Social proof + guarantee = near-certain belief. Risk eliminated.' }
+      ]},
       { type: 'content', title: 'Variable #3: Time Delay (Decrease It)', body: 'This is psychological distance to the reward. NOT actual shipping time - the FEELING of how long until they get the outcome. "See results in 7 days" beats "long-term skincare solution." Even if both take the same time. The brain discounts future rewards heavily. Shorten the perceived gap between purchase and transformation.' },
       { type: 'content', title: 'Variable #4: Effort & Sacrifice (Decrease It)', body: 'What do they have to give up or go through to get the dream? Money is obvious, but also: time to learn, complexity, uncertainty, risk, lifestyle change. The lower the perceived cost (in every sense), the easier the decision. "Just add to coffee" beats "complex 12-step protocol."' },
-      { type: 'visual', title: 'The Formula in Action', visualType: 'comparison', data: {
-        left: { label: 'Weak Offer', value: 'LOW', result: 'Small dream, low belief, long wait, high effort', color: '#94a3b8' },
-        right: { label: 'Strong Offer', value: 'HIGH', result: 'Big dream, strong proof, fast results, zero friction', color: '#8b5cf6' },
-        center: { label: 'Potential Impact', value: '2-5X', result: 'Stores typically see substantial improvements', color: '#10b981' }
-      }},
+      { type: 'formula-action-visual', title: 'The Formula in Action' },
       { type: 'cards', title: 'How to Use This Formula', items: [
         { title: '1. Audit Your Current Offer', description: 'Score each variable 1-10. Where are you weak? Most stores focus only on Dream Outcome and ignore the other three.' },
         { title: '2. Fix the Weakest Link', description: 'The lowest-scoring variable is killing your conversions. Fix that first. A 10/10 dream with 2/10 likelihood = no sales.' },
         { title: '3. Stack the Variables', description: 'Increase Dream + Likelihood. Decrease Time + Effort. When all four align, buyers don\'t hesitate - they just buy.' },
         { title: '4. Test & Iterate', description: 'Small tweaks to any variable can 2-3x conversions. Test different dream states, add proof, reduce friction, shorten time.' }
       ]},
-      { type: 'example', scenario: 'Fitness Equipment Store', before: { label: 'Variables Misaligned', text: '"Professional home gym equipment. Build muscle and strength. Ships in 2-4 weeks. Assembly required. $1,299."' }, after: { label: 'Variables Aligned', text: '"Get toned arms in 21 days without leaving home. 4,847 transformations (see proof). Ships tomorrow, setup in 10 minutes. $1,299 (or 4 payments of $325)."' }, insight: 'Same price, same product. But now: bigger dream, higher belief, shorter time, less effort. Formula aligned.' },
+      { type: 'dark-example', scenario: 'Fitness Equipment Store', before: { label: 'Variables Misaligned', text: '"Professional home gym equipment. Build muscle and strength. Ships in 2-4 weeks. Assembly required. $1,299."' }, after: { label: 'Variables Aligned', text: '"Get toned arms in 21 days without leaving home. 4,847 transformations (see proof). Ships tomorrow, setup in 10 minutes. $1,299 (or 4 payments of $325)."' }, insight: 'Same price, same product. But now: bigger dream, higher belief, shorter time, less effort. Formula aligned.' },
       { type: 'content', title: 'Why Most Stores Fail This', body: 'They obsess over Variable #1 (Dream Outcome) and completely ignore Variables 2-4. Big promises with no proof = skepticism. Complex checkout = abandoned carts. Vague timelines = procrastination. Your job isn\'t just to create desire - it\'s to remove every barrier between desire and action.' },
       { type: 'quiz', question: 'Which change would MOST improve conversion using the formula?', options: ['"Order now and start your transformation!" (urgency)', '"Join 12,487 customers who saw results in 14 days" (proof + time)', '"Premium quality ingredients from organic farms" (features)', '"Limited stock - only 3 left!" (scarcity)'], correctIndex: 1, feedback: { correct: 'Exactly! This increases Variable #2 (Perceived Likelihood via social proof) AND decreases Variable #3 (Time Delay with "14 days"). Two variables improved in one sentence. That\'s how you stack the formula.', incorrect: 'Not quite. The winning answer improves TWO variables at once: social proof (12,487 customers = higher Perceived Likelihood) + fast results (14 days = lower Time Delay). Stacking variables is more powerful than any single tactic.' }},
       { type: 'completion', sources: [
@@ -371,6 +408,119 @@
       </div>
     );
 
+    const ValueEquationExtensionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Insight</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black leading-tight mb-4">{data.title}</h2>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-900 rounded-2xl p-6 md:p-8">
+          <p className="text-neutral-200 text-base md:text-lg leading-relaxed">{data.content}</p>
+        </motion.div>
+      </div>
+    );
+
+    const DarkExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-800 border-2 border-red-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">{data.before.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-800 border-2 border-green-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">{data.after.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ExtremeExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.examples.map((example, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              className={`bg-neutral-800 rounded-xl p-6 border-2 ${example.type === 'negative' ? 'border-red-500' : 'border-green-500'}`}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${example.type === 'negative' ? 'bg-red-500' : 'bg-green-500'}`}>
+                  {example.type === 'negative' ? <Icons.X /> : <Icons.Check />}
+                </div>
+                <span className={`font-bold text-base ${example.type === 'negative' ? 'text-red-400' : 'text-green-400'}`}>{example.label}</span>
+              </div>
+              <p className="text-neutral-200 text-sm md:text-base leading-relaxed italic mb-4">"{example.text}"</p>
+              <div className={`text-xs md:text-sm font-medium ${example.type === 'negative' ? 'text-red-300' : 'text-green-300'}`}>{example.insight}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const FormulaActionVisualSlide = ({ data }) => {
+      const variables = [
+        { name: 'Dream Outcome', icon: '↑', percentage: 92, color: '#8b5cf6', description: 'Maximize the vision' },
+        { name: 'Perceived Likelihood', icon: '↑', percentage: 87, color: '#10b981', description: 'Build certainty' },
+        { name: 'Time Delay', icon: '↓', percentage: 15, invertDisplay: true, color: '#f59e0b', description: 'Faster = better' },
+        { name: 'Effort Required', icon: '↓', percentage: 12, invertDisplay: true, color: '#ef4444', description: 'Remove friction' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-8">Optimized offer variables for maximum conversion</motion.p>
+
+          <div className="bg-neutral-900 rounded-2xl p-6 md:p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
+              {variables.map((v, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }}>
+                  <CircularProgress
+                    percentage={v.invertDisplay ? 100 - v.percentage : v.percentage}
+                    label={v.name}
+                    color={v.color}
+                    size={100}
+                    strokeWidth={6}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="border-t border-neutral-700 pt-6">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-1"><AnimatedCounter target={347} suffix="%" /></div>
+                  <div className="text-xs text-neutral-400">Value Perception Increase</div>
+                </div>
+                <div className="text-4xl text-neutral-600">→</div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold" style={{ color: '#10b981' }}><AnimatedCounter target={2.8} suffix="x" /></div>
+                  <div className="text-xs text-neutral-400">Conversion Rate Lift</div>
+                </div>
+              </div>
+              <p className="text-center text-neutral-500 text-xs">When all 4 variables align, buying becomes inevitable</p>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -416,6 +566,10 @@
           case 'formula-breakdown': return <FormulaBreakdownSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
+          case 'dark-example': return <DarkExampleSlide data={slide} />;
+          case 'extreme-example': return <ExtremeExampleSlide data={slide} />;
+          case 'value-equation-extension': return <ValueEquationExtensionSlide data={slide} />;
+          case 'formula-action-visual': return <FormulaActionVisualSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;

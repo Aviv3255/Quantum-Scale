@@ -118,7 +118,7 @@
         { element: '"new and improved"', explanation: 'Implies innovation and advancement' },
         { element: '"earplugs"', explanation: 'Specific. Not "sleep solution" or "noise blockers"' }
       ]},
-      { type: 'visual', title: 'The Winning Ad', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-05_164210.png?v=1759671783', caption: '"Why you need our new and improved earplugs" - 12,000 sales, <$6.50 CAC' },
+      { type: 'visual', title: 'The Winning Ad', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-10-05_164210.png?v=1759671783', caption: '"Why you need our new and improved earplugs" - 12,000 sales, <$6.50 CAC', originalFormat: true },
       { type: 'content', title: 'What Strong Headlines Activate', body: 'Your brain is lazy. It filters. It ignores. It scrolls. But certain triggers FORCE attention. Curiosity - "Why you need..." opens a loop the brain must close. FOMO - "Before you..." creates urgency. Tension - "Still struggling with..." calls out pain. Emotional engagement - "Imagine never..." paints a picture. These aren\'t tricks. They\'re how the brain works. Use them.' },
       { type: 'cards', title: 'What Strong Headlines Do', items: [
         { title: 'Curiosity', description: '"Why you need..." or "The secret to..." - Brain can\'t leave a gap unclosed.' },
@@ -135,6 +135,9 @@
         { title: 'Before/After', description: '"From [pain] to [pleasure] in [timeframe]"' },
         { title: 'Question Hook', description: '"What if you could [desired outcome]?"' }
       ]},
+      { type: 'headline-templates', title: 'Interactive Headline Builder' },
+      { type: 'headline-psychology', title: 'The Psychology Behind Headlines' },
+      { type: 'power-words', title: 'Power Words That Convert' },
       { type: 'content', title: 'Test Headlines, Not Images', body: 'Most marketers test ad creatives. Different images. Different colors. Different layouts. All noise. The REAL leverage? Headlines. Same image. Same offer. Different headline. 5x difference in results. Try 10 headlines. Pick the top 3. Test them. Find the winner. Scale it. Your creative is secondary. Your headline is everything.' },
       { type: 'quiz', question: 'According to Ogilvy, how many more people read headlines than body copy?', options: ['2x more', '3x more', '5x more', '10x more'], correctIndex: 2, feedback: { correct: 'Exactly! 5x more people read headlines than body copy. This is why your headline IS your ad. If it fails, nobody reads the rest. Master headlines, master advertising. Those 2 out of 100 ads that work? They nailed the headline. Be one of the 2.', incorrect: 'Not quite. The answer is 5x more. Ogilvy proved it. 5 times more people read headlines than body. Your headline decides everything. Weak headline = failed ad. Strong headline = money. Write killer headlines or waste your budget.' }},
       { type: 'completion', sources: [{ name: '85 Meta Ad Headlines & Hooks Templates', url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks' }] }
@@ -314,8 +317,8 @@
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white mb-4">
-              <img src={data.image} alt={data.title} className="w-full h-auto" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className={`rounded-xl overflow-hidden border-2 border-neutral-200 bg-white mb-4 ${data.originalFormat ? 'flex items-center justify-center' : ''}`}>
+              <img src={data.image} alt={data.title} loading="eager" decoding="sync" className={data.originalFormat ? 'max-h-[55vh] w-auto object-contain' : 'w-full h-auto'} />
             </motion.div>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 text-sm md:text-base italic">{data.caption}</motion.p>
           </div>
@@ -337,6 +340,103 @@
         </div>
       </div>
     );
+
+    const HeadlineTemplatesSlide = ({ data }) => {
+      const [activeTab, setActiveTab] = useState(0);
+      const templates = [
+        { type: 'Curiosity Gap', formula: 'Why [target audience] needs [solution]', example: 'Why busy moms need our 5-minute meal prep system', blank: 'Why _______ needs _______' },
+        { type: 'Transformation', formula: 'How to [outcome] without [obstacle]', example: 'How to lose 20 lbs without giving up carbs', blank: 'How to _______ without _______' },
+        { type: 'Before/After', formula: 'From [pain] to [pleasure] in [timeframe]', example: 'From exhausted to energized in 7 days', blank: 'From _______ to _______ in _______' },
+        { type: 'Question Hook', formula: 'What if you could [desired outcome]?', example: 'What if you could sleep through the night again?', blank: 'What if you could _______?' },
+        { type: 'Fear of Missing', formula: 'Don\'t [action] until you [condition]', example: 'Don\'t buy another skincare product until you read this', blank: 'Don\'t _______ until you _______' }
+      ];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-wrap justify-center gap-2 mb-6">
+            {templates.map((t, i) => (
+              <button key={i} onClick={() => setActiveTab(i)} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`} style={activeTab === i ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' } : {}}>
+                {t.type}
+              </button>
+            ))}
+          </motion.div>
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="space-y-4">
+              <div className="bg-neutral-900 rounded-xl p-6 text-center">
+                <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Formula</p>
+                <p className="text-xl md:text-2xl font-bold text-white">{templates[activeTab].formula}</p>
+              </div>
+              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+                <p className="text-green-700 text-xs uppercase tracking-wider mb-2 font-semibold">Example</p>
+                <p className="text-green-900 text-lg font-medium">"{templates[activeTab].example}"</p>
+              </div>
+              <div className="bg-neutral-50 border-2 border-neutral-200 rounded-xl p-5">
+                <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3 font-semibold">Fill In The Blank</p>
+                <p className="text-neutral-800 text-lg font-mono bg-white border border-dashed border-neutral-300 rounded-lg p-4 text-center">{templates[activeTab].blank}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const HeadlinePsychologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-xl p-5">
+            <h3 className="font-bold text-white mb-3 text-lg" style={{ color: 'var(--accent)' }}>Core Motivations</h3>
+            <ul className="space-y-2">
+              {['Fear of missing out (FOMO)', 'Desire to avoid pain', 'Curiosity & knowledge gaps', 'Social proof & belonging', 'Identity & self-image'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.05 }} className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }}></span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
+            <h3 className="font-bold text-white mb-3 text-lg" style={{ color: 'var(--accent)' }}>Psychological Techniques</h3>
+            <ul className="space-y-2">
+              {['Open loops (curiosity gaps)', 'Specificity beats vague', 'Numbers create credibility', 'Negative framing outperforms', 'Questions engage the brain'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }}></span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+          <p className="text-white font-semibold">Key Insight: Headlines work because they trigger emotional responses faster than rational thought.</p>
+        </motion.div>
+      </div>
+    );
+
+    const PowerWordsSlide = ({ data }) => {
+      const powerWords = [
+        'Free', 'New', 'You', 'Secret', 'Now', 'Proven', 'Easy', 'Discover',
+        'Results', 'Guaranteed', 'Love', 'Save', 'Best', 'Exclusive', 'Limited',
+        'Instant', 'How to', 'Bonus', 'Amazing', 'Breakthrough', 'Unlock',
+        'Ultimate', 'Powerful', 'Revolutionary', 'Transform', 'Shocking',
+        'Simple', 'Fast', 'Stop', 'Warning', 'Mistake', 'Never', 'Always',
+        'Quick', 'Effortless', 'Banned', 'Weird', 'Strange', 'Little-known'
+      ];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-6">Words that trigger emotional responses and boost click-through rates</motion.p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-2">
+            {powerWords.map((word, i) => (
+              <motion.span key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.25 + i * 0.02 }} className="px-3 py-1.5 rounded-lg text-sm font-medium bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 hover:border-neutral-400 transition-all cursor-default">
+                {word}
+              </motion.span>
+            ))}
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="text-center text-neutral-500 text-xs mt-6 italic">Pro tip: Combine 1-2 power words with specificity for maximum impact</motion.p>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -456,6 +556,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'headline-templates': return <HeadlineTemplatesSlide data={slide} />;
+          case 'headline-psychology': return <HeadlinePsychologySlide data={slide} />;
+          case 'power-words': return <PowerWordsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

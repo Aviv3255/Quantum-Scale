@@ -75,7 +75,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why Gary Halbert outsold every marketer alive', 'The hungry crowd principle that changes everything', 'How to sell transformation instead of features'] },
       { type: 'hook', headline: 'Imagine a burger competition. You can pick ONE advantage. What would it be?', subtext: 'Better ingredients? Secret sauce? Premium buns? Perfect grill marks? Gary Halbert chose none of these. He chose the one thing that makes everything else irrelevant: a starving crowd of hungry people. That single insight made him the most dangerous salesman alive.' },
-      { type: 'visual', title: 'Who Was Gary Halbert?', visualType: 'image', imageUrl: 'https://carminemastropierro.com/wp-content/uploads/2020/09/Gary-Halbert.jpg', caption: 'The legendary copywriter who could sell anything to anyone' },
+      { type: 'visual', title: 'Who Was Gary Halbert?', visualType: 'image', imageUrl: 'https://carminemastropierro.com/wp-content/uploads/2020/09/Gary-Halbert.jpg', caption: 'The legendary copywriter who could sell anything to anyone', instantLoad: true },
       { type: 'quote-spotlight', quote: 'I only want one advantage: a starving crowd.', author: 'Gary Halbert', context: 'When asked what single advantage he would choose to win a burger selling competition, while others debated ingredients and location.' },
       { type: 'content', title: 'The Burger Competition Question', body: 'Gary asked his seminar students: "If we were in a burger selling competition and you could have ANY advantage you wanted, what would you choose?" Students shouted: Better meat! Secret recipes! Prime location! Celebrity chef! Lower prices! Gary smiled. "I only want one advantage," he said. "A starving crowd."' },
       { type: 'content', title: 'Why the Crowd Beats Everything', body: 'You can have the best product in the world. Premium ingredients. Perfect pricing. Stunning design. None of it matters if you show it to people who don\'t want it. But show a basic solution to people desperately looking for it? They throw money at you. The hunger in your market is worth more than perfection in your product.' },
@@ -92,9 +92,11 @@
         { title: 'Remove all complexity', description: 'Every detail you add is another reason not to buy. Simplify to the dream outcome only.' },
         { title: 'Speak their language', description: 'Use the exact words they use to describe their problem. Mirror their desperation back to them.' }
       ]},
-      { type: 'content', title: 'Find Your Hungry Crowd', body: 'Stop trying to convince people they need what you sell. Instead, find people who are already looking for it. Dehydrated people buy water. Tired people buy energy. Broke people buy wealth. Lonely people buy connection. Find the hunger. Feed it. That\'s the entire game.' },
-      { type: 'visual', title: 'The Psychology Behind It', visualType: 'image', imageUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*NZxA6EqiVBslZ5Evbg8gFA.jpeg', caption: 'Halbert understood human nature better than anyone' },
-      { type: 'example', scenario: 'Shopify Store', before: { label: 'Generic Positioning', text: '"Premium home decor with fast shipping and great customer service. Shop our bestsellers today!"' }, after: { label: 'Hungry Crowd Positioning', text: '"Turn your apartment into an Architectural Digest feature - for under $500. 3,847 renters already did it."' }, insight: 'Target the hunger: people who feel embarrassed about their living space and want instant transformation.' },
+      { type: 'hungry-crowd-finder', title: 'Find Your Hungry Crowd' },
+      { type: 'niche-survey-dropdown', title: 'Genius Post-Purchase Survey Questions' },
+      { type: 'visual', title: 'The Psychology Behind It', visualType: 'image', imageUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*NZxA6EqiVBslZ5Evbg8gFA.jpeg', caption: 'Halbert understood human nature better than anyone', instantLoad: true },
+      { type: 'example', scenario: 'Home Decor Store', before: { label: 'Generic Positioning', text: '"Premium home decor with fast shipping and great customer service. Shop our bestsellers today!"' }, after: { label: 'Hungry Crowd Positioning', text: '"Turn your apartment into an Architectural Digest feature - for under $500. 3,847 renters already did it."' }, insight: 'Target the hunger: people who feel embarrassed about their living space and want instant transformation.' },
+      { type: 'tool', title: 'Post-Purchase Survey Tool', toolName: 'Post-Purchase Surveys', toolDescription: 'Ask the right questions to uncover exactly what your hungry crowd wants. Get the data that reveals their deepest desires.', toolUrl: '/apps', buttonText: 'Explore Survey Tools' },
       { type: 'content', title: 'Why This Works Forever', body: 'Tactics expire. Platforms change. Algorithms update. But human psychology never changes. People will always chase transformation. They\'ll always have desires they can\'t fulfill alone. They\'ll always pay to skip pain and arrive at pleasure faster. This isn\'t a trend. It\'s biology. It\'s how humans are wired. Master this, and you can sell anything, anywhere, forever.' },
       { type: 'quiz', question: 'You\'re selling a productivity app. Which headline follows Halbert\'s method?', options: ['"Advanced task management with AI-powered scheduling and calendar integration"', '"The app used by 50,000+ professionals to organize their day"', '"Finally finish your to-do list and leave work at 5pm - guilt-free"', '"Boost your productivity with our award-winning software"'], correctIndex: 2, feedback: { correct: 'Exactly! It sells the dream outcome: leaving work at 5pm without guilt. That\'s what they REALLY want. Not features. Not social proof. The transformation. The life they fantasize about.', incorrect: 'Not quite. Halbert would sell the dream outcome: "Finally finish your to-do list and leave work at 5pm - guilt-free." That\'s the hungry crowd - people desperate to stop working late. Sell them the future they crave, not the tool.' }},
       { type: 'completion', sources: [] }
@@ -216,7 +218,7 @@
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden border-2 border-neutral-200 bg-white shadow-lg">
-              <img src={data.imageUrl} alt={data.title} className="w-full h-auto" />
+              <img src={data.imageUrl} alt={data.title} className="w-full h-auto" loading={data.instantLoad ? 'eager' : 'lazy'} decoding={data.instantLoad ? 'sync' : 'async'} />
             </motion.div>
             {data.caption && (
               <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 text-sm mt-4 italic">{data.caption}</motion.p>
@@ -361,6 +363,194 @@
       </div>
     );
 
+    const HungryCrowdFinderSlide = ({ data }) => {
+      const templates = [
+        { pain: 'Dehydrated', solution: 'Water', insight: 'Desperate thirst = instant sale' },
+        { pain: 'Exhausted', solution: 'Energy', insight: 'Chronic fatigue = premium prices' },
+        { pain: 'Broke', solution: 'Wealth methods', insight: 'Financial stress = high urgency' },
+        { pain: 'Lonely', solution: 'Connection', insight: 'Isolation = strong emotional buy' },
+        { pain: 'Overweight', solution: 'Weight loss', insight: 'Body shame = repeat customers' },
+        { pain: 'Overwhelmed', solution: 'Simplification', insight: 'Mental clutter = desperate relief' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-6">The template to find what they're already desperate for</motion.p>
+
+          <div className="bg-neutral-900 rounded-2xl p-6 md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {templates.map((t, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-800 rounded-xl p-4 border border-neutral-700">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-red-400 font-semibold text-sm">{t.pain}</span>
+                    <span className="text-neutral-600">→</span>
+                    <span className="text-green-400 font-semibold text-sm">{t.solution}</span>
+                  </div>
+                  <p className="text-neutral-400 text-xs italic">{t.insight}</p>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-6 pt-5 border-t border-neutral-700 text-center">
+              <p className="text-neutral-300 text-sm">Find the hunger. Feed it. That's the entire game.</p>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    const NicheSurveyDropdownSlide = ({ data }) => {
+      const [selectedNiche, setSelectedNiche] = useState(null);
+
+      const niches = {
+        'Fashion & Apparel': [
+          'What outfit made you feel the most confident recently?',
+          'What style do you wish you could pull off but feel you can\'t?',
+          'What\'s the #1 thing missing from your wardrobe right now?',
+          'Who do you want to look like when you get dressed?',
+          'What compliment would you love to receive about your style?'
+        ],
+        'Home Decor': [
+          'What room in your home makes you feel embarrassed?',
+          'What home do you see on Instagram that makes you jealous?',
+          'If you could wave a wand and transform one space, which would it be?',
+          'What vibe are you trying to create but can\'t quite achieve?',
+          'What would guests say if they walked into your dream home?'
+        ],
+        'Fitness & Health': [
+          'What transformation would make you cry happy tears?',
+          'What can\'t you do now that you wish your body could?',
+          'Who do you want to shock with your transformation?',
+          'What excuse have you been telling yourself for years?',
+          'What would you do differently if you had your dream body tomorrow?'
+        ],
+        'Beauty & Skincare': [
+          'What do you try to hide with makeup or avoid in photos?',
+          'What skin would make you confident to go bare-faced?',
+          'What compliment do you secretly crave about your appearance?',
+          'What age do you want people to guess when they see you?',
+          'What beauty routine feels like too much work right now?'
+        ],
+        'Pet Products': [
+          'What worries you most about your pet\'s health or happiness?',
+          'What would your pet say if they could talk to you?',
+          'What guilt do you feel about not giving your pet enough?',
+          'What would make you feel like the best pet parent ever?',
+          'What moment with your pet would you want to last forever?'
+        ],
+        'Baby & Kids': [
+          'What parenting moment made you feel like a failure recently?',
+          'What do you wish your child had that you didn\'t growing up?',
+          'What would other parents say if they saw your "perfect" setup?',
+          'What milestone are you anxiously waiting for?',
+          'What would make you feel like a calm, prepared parent?'
+        ],
+        'Tech & Gadgets': [
+          'What frustrating task takes way too long in your day?',
+          'What would you do with 2 extra hours every day?',
+          'What makes you feel behind or outdated compared to others?',
+          'What tech problem have you been tolerating for too long?',
+          'What would make you feel like a productivity superhero?'
+        ],
+        'Food & Kitchen': [
+          'What meal do you wish you could make but feels too hard?',
+          'What would your dream dinner party look like?',
+          'What health goal are you struggling to achieve through diet?',
+          'What cooking failure are you embarrassed to admit?',
+          'What would make you excited to cook instead of ordering out?'
+        ]
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-6">Select your niche to reveal 5 questions that uncover hungry crowds</motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mb-6">
+            <select
+              value={selectedNiche || ''}
+              onChange={(e) => setSelectedNiche(e.target.value || null)}
+              className="w-full p-4 rounded-xl border-2 border-neutral-200 bg-white text-neutral-800 font-medium text-base focus:outline-none focus:border-amber-500 transition-colors cursor-pointer"
+              style={{ background: 'white' }}
+            >
+              <option value="">Select your niche...</option>
+              {Object.keys(niches).map((niche) => (
+                <option key={niche} value={niche}>{niche}</option>
+              ))}
+            </select>
+          </motion.div>
+
+          <AnimatePresence mode="wait">
+            {selectedNiche && (
+              <motion.div
+                key={selectedNiche}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="bg-neutral-900 rounded-2xl p-6"
+              >
+                <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>5</span>
+                  Genius Questions for {selectedNiche} Store
+                </h3>
+                <ul className="space-y-3">
+                  {niches[selectedNiche].map((question, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -15 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.08 }}
+                      className="flex items-start gap-3"
+                    >
+                      <span className="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 text-xs font-bold flex-shrink-0 mt-0.5">{i + 1}</span>
+                      <span className="text-neutral-300 text-sm leading-relaxed">"{question}"</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-5 pt-4 border-t border-neutral-700 text-neutral-400 text-xs text-center">
+                  Use these in post-purchase surveys to uncover their deepest desires
+                </motion.p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {!selectedNiche && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} className="bg-neutral-100 rounded-2xl p-8 text-center border-2 border-dashed border-neutral-300">
+              <p className="text-neutral-500 text-sm">Select a niche above to reveal the questions</p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8 md:px-12 max-w-2xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center w-full">
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Free tool we use</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.toolName}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-sm md:text-base mb-6 leading-relaxed">{data.toolDescription}</motion.p>
+          <motion.a
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            href={data.toolUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm"
+            style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {data.buttonText}
+            <Icons.ExternalLink />
+          </motion.a>
+        </motion.div>
+      </div>
+    );
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -409,6 +599,9 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
           case 'timeline': return <TimelineSlide data={slide} />;
+          case 'hungry-crowd-finder': return <HungryCrowdFinderSlide data={slide} />;
+          case 'niche-survey-dropdown': return <NicheSurveyDropdownSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
