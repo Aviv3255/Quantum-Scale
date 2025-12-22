@@ -104,39 +104,158 @@
       </div>
     );
 
+    // Profit Flow Slide - minimalist visual
+    const ProfitFlowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex items-center gap-4 bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold">A</div>
+            <div>
+              <p className="font-bold text-green-700 text-sm">Customer A (Direct)</p>
+              <p className="text-neutral-600 text-xs">Ready to buy at full price</p>
+            </div>
+            <div className="text-2xl text-neutral-400 hidden md:block">&#8594;</div>
+            <div className="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm">Full Price</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="flex items-center gap-4 bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center text-white text-xl font-bold">B</div>
+            <div>
+              <p className="font-bold text-red-700 text-sm">Customer B (Honey)</p>
+              <p className="text-neutral-600 text-xs">Extension auto-applies code</p>
+            </div>
+            <div className="text-2xl text-neutral-400 hidden md:block">&#8594;</div>
+            <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm">20% OFF (Stolen)</div>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center text-neutral-500 text-sm mt-8">Both customers were ready to pay full price. Only one did.</motion.p>
+      </div>
+    );
+
+    // Real Example Slide
+    const RealExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-6 mb-6">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Scenario</p>
+          <p className="text-white text-sm leading-relaxed">You created a <span className="text-yellow-400 font-bold">20% discount code</span> intended for customers <span className="text-yellow-400 font-bold">30 days after abandoning</span> their cart.</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 mb-6">
+          <p className="text-red-600 text-xs uppercase tracking-wider font-bold mb-2">The Glitch</p>
+          <p className="text-neutral-700 text-sm leading-relaxed">A new customer with the <span className="font-bold">Honey extension</span> enters the site. The extension "pops up" your private code. They use it and get the discount immediately, even though they were <span className="font-bold">ready to buy at full price</span>.</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-2xl p-6">
+          <p className="text-neutral-600 text-xs uppercase tracking-wider font-bold mb-2">The Impact</p>
+          <p className="text-neutral-700 text-sm leading-relaxed">That <span className="font-bold text-red-600">20% hit</span> comes directly out of your net profit. This loss is significant and completely unnecessary.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Three Offenders Slide - clean and readable
+    const ThreeOffendersSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 text-center">
+            <div className="text-4xl mb-3">&#128029;</div>
+            <h3 className="font-bold text-neutral-900 text-lg mb-2">Honey</h3>
+            <p className="text-neutral-500 text-sm">17M+ users</p>
+            <p className="text-neutral-600 text-xs mt-2">Owned by PayPal</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 text-center">
+            <div className="text-4xl mb-3">&#128179;</div>
+            <h3 className="font-bold text-neutral-900 text-lg mb-2">Capital One</h3>
+            <p className="text-neutral-500 text-sm">10M+ users</p>
+            <p className="text-neutral-600 text-xs mt-2">Aggressive scraping</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 text-center">
+            <div className="text-4xl mb-3">&#128176;</div>
+            <h3 className="font-bold text-neutral-900 text-lg mb-2">Coupert</h3>
+            <p className="text-neutral-500 text-sm">8M+ users</p>
+            <p className="text-neutral-600 text-xs mt-2">Fast updates</p>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center text-neutral-500 text-sm mt-6">Combined: 30-40% of all browsers. Testing your codes at every checkout.</motion.p>
+      </div>
+    );
+
+    // Blocked Comparison Slide - clean layout
+    const BlockedComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-300 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-bold text-red-700 text-lg">Unblocked</span>
+              <span className="text-3xl font-black text-red-600">$87.50</span>
+            </div>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-red-500">&#10005;</span> Extensions test 50+ codes</li>
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-red-500">&#10005;</span> Codes leak to everyone</li>
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-red-500">&#10005;</span> Margin erodes silently</li>
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-300 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-bold text-green-700 text-lg">Blocked</span>
+              <span className="text-3xl font-black text-green-600">$100</span>
+            </div>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-green-500">&#10003;</span> Strategic codes only</li>
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-green-500">&#10003;</span> Full control maintained</li>
+              <li className="flex items-start gap-2 text-sm text-neutral-700"><span className="text-green-500">&#10003;</span> Margin protected</li>
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Solution Reveal Slide
+    const SolutionRevealSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-green-500 text-white px-8 py-4 rounded-2xl text-xl md:text-2xl font-bold mb-6">{data.subtitle}</motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-600 text-center text-sm md:text-base max-w-lg">Block coupon extensions from auto-injecting codes. Keep your strategic discounts private. Recover your lost margin instantly.</motion.p>
+      </div>
+    );
+
+    // Tool Minimal Slide - no photo, just logo
+    const ToolMinimalSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-6 border-2 border-neutral-200">
+          <img src={data.logoUrl} alt={data.toolName} className="w-16 h-16 object-contain" />
+        </motion.div>
+        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-neutral-900 mb-3">{data.toolName}</motion.h3>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-600 text-center text-sm md:text-base mb-6 max-w-md">{data.body}</motion.p>
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+          <span>Install {data.toolName} (FREE)</span>
+        </motion.a>
+      </div>
+    );
+
     const slides = [
-      { type: 'welcome', learningGoals: ['How browser extensions are silently stealing your profit', 'Why customers who\'d pay full price are getting unnecessary discounts', 'The simple solution that blocks coupon leaking extensions'] },
+      { type: 'welcome', learningGoals: ['How browser extensions are silently stealing your profit', 'Why customers who\'d pay full price are getting unnecessary discounts', 'The FREE solution that blocks coupon leaking extensions'] },
       { type: 'hook', headline: 'Browser extensions are leaking your discount codes to everyone. And you have no idea it\'s happening.', subtext: 'Every day, customers who would gladly pay full price are getting automatic discounts they never earned. Honey, Capital One Shopping, Coupert - these extensions scrape your coupon codes and apply them to every single visitor. You\'re losing pure profit. Silently. Invisibly. Every. Single. Day.' },
-      { type: 'content', title: 'The Silent Profit Killer', body: 'Here\'s what\'s happening right now on your store: A customer lands on your product page. They love it. They\'re ready to buy at full price. But they have Honey installed. At checkout, Honey automatically tests every coupon code ever created for your store. SAVE10, WELCOME15, VIP20 - codes meant for specific segments. Honey finds one. Applies it. Customer gets 15% off. You just lost 15% profit on a sale that was happening anyway.' },
-      { type: 'stat-countdown', title: 'The Scale of the Problem', stats: [
-        { value: 35, label: 'Shoppers with extensions', suffix: '%' },
-        { value: 12, label: 'Average profit lost per sale', suffix: '%' },
-        { value: 2520, label: 'Monthly revenue leak ($100K store)', suffix: '', prefix: '$' }
-      ]},
-      { type: 'content', title: 'The Problem: Public vs Private Codes', body: 'You create discount codes for specific purposes. SAVE10 for abandoned cart emails (people who were hesitant). WELCOME15 for new subscribers (building loyalty). VIP20 for top customers (rewarding repeat buyers). These codes are strategic. They\'re meant for specific people who need that incentive. But browser extensions don\'t care. They scrape everything. Test everything. And give discounts to everyone.' },
-      { type: 'example', scenario: 'Real Example: $50 Product Sale', before: { label: 'Without Extension', text: 'Customer lands on product. Loves it. Adds to cart. Checks out at $50. You make $50. They\'re happy. You\'re profitable.' }, after: { label: 'With Extension', text: 'Same customer. Same journey. But Honey is installed. At checkout, tests 47 codes. Finds SAVE10. Applies it. Customer pays $45. You make $45. You just lost $5 in pure profit.' }, insight: 'Multiply that by 30-40% of your traffic (who have these extensions installed). That\'s thousands in lost profit every month.' },
+      { type: 'profit-flow', title: 'The Silent Profit Killer' },
+      { type: 'real-example', title: 'Real Example: $50 Product Sale' },
       { type: 'cards', title: 'How Coupon Extensions Work', items: [
-        { title: 'Scrape Your Codes', description: 'Extensions like Honey, Capital One Shopping, and Coupert constantly scrape the internet for discount codes. They build massive databases of every code ever posted.' },
-        { title: 'Test Automatically', description: 'When a user reaches checkout, the extension automatically tests every code in their database - sometimes 50+ codes in seconds.' },
-        { title: 'Apply the Best One', description: 'The extension finds the highest discount code and applies it. Even if the customer never knew it existed or wasn\'t supposed to have it.' },
-        { title: 'Steal Your Margin', description: 'Customer gets discount they didn\'t earn. You lose profit you should have kept. They feel smart. You just got robbed.' }
+        { title: 'Scrape Your Codes', description: 'Extensions constantly scrape the internet for discount codes and build massive databases.' },
+        { title: 'Test Automatically', description: 'At checkout, the extension tests every code - sometimes 50+ codes in seconds.' },
+        { title: 'Apply the Best One', description: 'Finds the highest discount and applies it - even if the customer wasn\'t supposed to have it.' }
       ]},
-      { type: 'split-visual', title: 'The Math Behind the Leak', leftContent: { subtitle: 'Your Monthly Numbers', items: ['$100,000 in revenue', '35% have extensions installed', '60% of those find codes', '12% average discount applied'] }, rightContent: { result: '$2,520', label: 'Lost profit per month', subtext: 'That\'s $30,240 annually - pure margin erosion on sales that were already happening.' } },
-      { type: 'content', title: 'Why This is Different From Normal Discounts', body: 'Strategic discounting works. Offering 10% to cart abandoners brings them back. Giving 15% to new subscribers builds your list. These discounts have purpose. They convert people who wouldn\'t have bought otherwise. But coupon leaking is different. It gives discounts to people who were ALREADY buying at full price. It\'s not conversion optimization. It\'s pure profit destruction. No upside. Only downside.' },
-      { type: 'example', scenario: 'Who Should Get Discounts vs Who Does', before: { label: 'Your Strategy (Smart)', text: 'Cart abandoners: 10% off to recover sale. Email subscribers: 15% welcome offer. VIP customers: 20% loyalty reward. Strategic. Intentional. ROI-positive.' }, after: { label: 'What Actually Happens (Broken)', text: 'Everyone with Honey installed: gets your best code. Full-price buyers: unnecessary discount. High-intent customers: margin stolen. Completely random. Zero strategy.' }, insight: 'Your discounts should be weapons for conversion. Instead, they\'re leaking to people who don\'t need them.' },
-      { type: 'content', title: 'The Three Worst Offenders', body: 'Honey (owned by PayPal) - 17 million+ users. Tests 50+ codes per checkout. Capital One Shopping - 10 million+ users. Aggressive scraping and testing. Coupert - 8 million+ users. Fast code database updates. Combined, they\'re installed on 30-40% of all browsers. And every single one is testing your codes at checkout. Silently. Automatically. Relentlessly.' },
-      { type: 'comparison-battle', title: 'Extensions Blocked vs Unblocked', leftSide: { label: 'Unblocked', value: '$87.50', description: 'Extensions test 50+ codes', subItems: ['Codes leak to everyone', 'No control over discounts', 'Margin erodes silently'], color: '#ef4444' }, rightSide: { label: 'Blocked', value: '$100', description: 'Strategic codes only', subItems: ['Only intended recipients get codes', 'Full control maintained', 'Margin protected'], color: '#10b981' }, verdict: 'Stores typically recover 10-15% of lost margin when blocking extensions' },
-      { type: 'content', title: 'The Solution: Block Them', body: 'You can\'t stop people from installing browser extensions. But you CAN stop those extensions from working on your store. There are Shopify apps that detect and block coupon-finding extensions. When someone tries to test codes at checkout, the app blocks it. Your strategic codes stay private. Only the people you want to get discounts actually get them. Your margin stays protected.' },
-      { type: 'cards', title: 'What a Coupon Blocker Does', items: [
-        { title: 'Detects Extensions', description: 'Identifies when Honey, Capital One Shopping, or Coupert are active on your checkout page.' },
-        { title: 'Blocks Code Testing', description: 'Prevents extensions from automatically testing your discount codes at checkout.' },
-        { title: 'Protects Strategic Codes', description: 'Keeps your cart recovery, email welcome, and VIP codes private for intended recipients only.' }
-      ]},
-      { type: 'content', title: 'Will This Hurt Conversion?', body: 'No. Here\'s why: The customers using these extensions were already buying at full price before the extension found a code. You\'re not losing sales. You\'re recovering margin on sales that were happening anyway. Plus, customers who actually have your strategic codes (from cart abandonment emails, etc.) can still use them manually. You\'re only blocking automated scraping and testing. The right people still get discounts. The wrong people stop stealing them.' },
-      { type: 'example', scenario: 'Real Store Results', before: { label: 'Before Blocking Extensions', text: '35% of checkouts used leaked codes. Average discount: 12%. Margin erosion: $2,500/month. Giving away profit to customers who\'d pay full price.' }, after: { label: 'After Blocking Extensions', text: 'Extension code testing blocked. Only strategic codes work (manually entered). Margin recovered: $2,100/month. Same sales, higher profit.' }, insight: 'The store didn\'t lose customers. They just stopped giving unnecessary discounts to people who didn\'t need them.' },
-      { type: 'tool', title: 'Stop the Profit Leak', toolName: 'Coupon Blocker', toolUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/61.jpg?v=1763114928', body: 'Detects and blocks browser extensions like Honey, Capital One Shopping, and Coupert from scraping and auto-applying your discount codes. Protects your margin without hurting conversion.', questions: ['Blocks Honey, Capital One Shopping, Coupert, and other extension scrapers', 'Prevents automatic code testing at checkout', 'Keeps strategic codes private for intended recipients', 'Recovers 10-15% of lost profit margin immediately'], insight: 'Your discount codes are strategy. Stop letting browser extensions turn them into profit leaks.' },
-      { type: 'quiz', question: 'What percentage of online shoppers have coupon-finding extensions installed?', options: ['10-15%', '20-25%', '30-40%', '50-60%'], correctIndex: 2, feedback: { correct: 'Exactly right! Industry research shows 30-40% of online shoppers have extensions like Honey, Capital One Shopping, or Coupert installed. That means nearly 1 in 3 of your customers are automatically testing and applying codes they were never supposed to have. Stores that block these extensions typically recover 10-15% of lost margin - significant over time.', incorrect: 'Not quite. Research indicates 30-40% is the typical range - nearly 1 in 3 shoppers have these extensions installed. Honey alone has 17 million users. Capital One Shopping has 10 million. Combined with others like Coupert, these extensions are scraping and testing your codes on a substantial portion of your traffic. Blocking them can help protect strategic discount codes.' }},
-      { type: 'completion', sources: [{ name: 'Install Coupon Blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }] }
+      { type: 'three-offenders', title: 'The Three Worst Offenders' },
+      { type: 'blocked-comparison', title: 'Extensions Blocked vs Unblocked' },
+      { type: 'solution-reveal', title: 'The Solution', subtitle: 'And the best part? The fix is completely FREE.' },
+      { type: 'tool-minimal', title: 'Stop the Profit Leak', toolName: 'KeepCart', toolUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE', logoUrl: 'https://cdn.shopify.com/app-store/listing_images/8c0f5c0b6d7e4e2a8b9c0d1e2f3a4b5c/icon/CMbYnI-M4fkCEAE=.png', body: 'A FREE tool that blocks coupon extensions from auto-injecting codes. Protects your margin without hurting conversion.' },
+      { type: 'quiz', question: 'What percentage of online shoppers have coupon-finding extensions installed?', options: ['10-15%', '20-25%', '30-40%', '50-60%'], correctIndex: 2, feedback: { correct: 'Exactly right! Industry research shows 30-40% of online shoppers have extensions like Honey, Capital One Shopping, or Coupert installed. That means nearly 1 in 3 of your customers are automatically testing and applying codes they were never supposed to have. Stores that block these extensions typically recover 10-15% of lost margin.', incorrect: 'Not quite. Research indicates 30-40% is the typical range - nearly 1 in 3 shoppers have these extensions installed. Honey alone has 17 million users. Capital One Shopping has 10 million. Combined with others like Coupert, these extensions are scraping and testing your codes on a substantial portion of your traffic.' }},
+      { type: 'completion', sources: [{ name: 'Install KeepCart (FREE)', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }] }
     ];
 
     const Icons = {
@@ -438,7 +557,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how browser extensions like Honey, Capital One Shopping, and Coupert are leaking your discount codes to everyone - erasing 10-15% of your profit margin. The solution: block them. Keep your strategic codes private. Protect your profit.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how browser extensions are leaking your discount codes to everyone - erasing your profit margin. The solution is FREE: install KeepCart to block coupon extensions. Keep your strategic codes private. Protect your profit.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -506,10 +625,12 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'split-visual': return <SplitVisualSlide data={slide} />;
-          case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'profit-flow': return <ProfitFlowSlide data={slide} />;
+          case 'real-example': return <RealExampleSlide data={slide} />;
+          case 'three-offenders': return <ThreeOffendersSlide data={slide} />;
+          case 'blocked-comparison': return <BlockedComparisonSlide data={slide} />;
+          case 'solution-reveal': return <SolutionRevealSlide data={slide} />;
+          case 'tool-minimal': return <ToolMinimalSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
