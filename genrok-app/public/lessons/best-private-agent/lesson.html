@@ -52,16 +52,52 @@
       return <span>{count}{suffix}</span>;
     };
 
-    // Ranking Circles Component
-    const RankingCircles = ({ items }) => (
+    // Ranking Colors based on position
+    const getRankColor = (index) => {
+      const colors = ['#FFD700', '#C0C0C0', '#CD7F32', '#EF4444']; // Gold, Silver, Bronze, Red
+      return colors[index] || '#EF4444';
+    };
+
+    const getRankLabel = (index) => {
+      const labels = ['1st', '2nd', '3rd', '4th'];
+      return labels[index] || `${index + 1}th`;
+    };
+
+    // Ranking Circles Component with colored borders
+    const RankingCircles = ({ items, showLinks = false }) => (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         {items.map((item, i) => (
           <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex flex-col items-center">
-            <div className="w-20 h-20 rounded-full border-4 border-neutral-300 flex items-center justify-center mb-2">
-              <span className="text-2xl font-bold text-neutral-400">{i + 1}</span>
+            <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-2 bg-white" style={{ borderColor: getRankColor(i) }}>
+              <span className="text-2xl font-bold" style={{ color: getRankColor(i) }}>{i + 1}</span>
             </div>
             <p className="text-sm font-semibold text-neutral-900 text-center">{item.name}</p>
             <p className="text-xs text-neutral-600 text-center mt-1">{item.value}</p>
+            {showLinks && item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 px-3 py-1 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors">
+                Create Account
+              </a>
+            )}
+          </motion.div>
+        ))}
+      </div>
+    );
+
+    // Winner Highlight Circles (for "How we chose the winner" section)
+    const WinnerHighlightCircles = ({ items }) => (
+      <div className="grid grid-cols-3 gap-6 mt-6">
+        {items.map((item, i) => (
+          <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex flex-col items-center">
+            <div className="relative">
+              <div className="w-24 h-24 rounded-full border-4 border-neutral-200 flex items-center justify-center bg-white">
+                <span className="text-lg font-bold text-neutral-900 text-center">{item.value}</span>
+              </div>
+              {item.isWinner && (
+                <div className="absolute -inset-2 rounded-full border-4 border-red-500 pointer-events-none" />
+              )}
+            </div>
+            <p className="text-sm font-semibold text-neutral-900 text-center mt-3">{item.label}</p>
+            <p className="text-xs text-neutral-500 text-center">{item.sublabel}</p>
           </motion.div>
         ))}
       </div>
@@ -114,48 +150,59 @@
         { title: 'Support Response', description: 'When something goes wrong (and it will), you need answers in minutes, not days. Real humans on WhatsApp, not automated tickets.' },
         { title: 'Pricing at Scale', description: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress when you scale. Price is not the differentiator.' }
       ]},
-      { type: 'visual', title: 'Our Testing Results', visualType: 'stats', data: [
-        { value: '55+', label: 'Orders Placed', subtext: 'Across multiple agents' },
-        { value: '500+', label: 'Orders Tracked', subtext: 'Long-term at scale' },
-        { value: '3 Mo', label: 'Testing Period', subtext: 'Real-world conditions' }
+      { type: 'visual', title: 'Our Testing Results', visualType: 'singleStat', data: { value: 60000, label: 'Orders Tracked', subtext: 'Across 6 leading agents in 3 niches' }},
+      { type: 'agentRankings', title: 'The Agents We Tested', agents: [
+        { name: 'Mate', url: 'https://erp.matedropshipping.com/login?invite_id=915' },
+        { name: 'HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' },
+        { name: 'AutoDS', url: 'https://autods.com' },
+        { name: 'Other Companies', url: null }
       ]},
       { type: 'content', title: 'Finding #1: Shipping Speed', body: 'Customers who receive orders in under 7 days are significantly more likely to order again. The psychology is simple: fast delivery while the excitement is still fresh creates positive associations. Slow delivery lets doubt and regret creep in.', ranking: [
-        { name: 'Mate', value: '7 days' },
-        { name: 'HyperSKU', value: '9 days' },
-        { name: 'AutoDS', value: '14 days' },
+        { name: 'Mate', value: '7 days', url: 'https://erp.matedropshipping.com/login?invite_id=915' },
+        { name: 'HyperSKU', value: '9 days', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' },
+        { name: 'AutoDS', value: '14 days', url: 'https://autods.com' },
         { name: 'Others', value: '14-21 days' }
       ]},
-      { type: 'content', title: 'Finding #2: Pricing', body: 'Here\'s what surprised us: the best agents often cost the SAME or LESS than AliExpress at scale. The "AliExpress is cheaper" myth only holds for single orders. At volume, private agents match or beat AliExpress pricing - with better service included.', ranking: [
-        { name: 'Mate', value: '4% cheaper' },
-        { name: 'HyperSKU', value: '1% cheaper' },
-        { name: 'AutoDS', value: '~0%' },
+      { type: 'content', title: 'Finding #2: Pricing vs. AliExpress', body: 'Here\'s what surprised us: the best agents often cost the SAME or LESS than AliExpress at scale. The "AliExpress is cheaper" myth only holds for single orders. At volume, private agents match or beat AliExpress pricing - with better service included.', ranking: [
+        { name: 'Mate', value: '4% Cheaper', url: 'https://erp.matedropshipping.com/login?invite_id=915' },
+        { name: 'HyperSKU', value: '1% Cheaper', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' },
+        { name: 'AutoDS', value: 'Price Match', url: 'https://autods.com' },
+        { name: 'Others', value: '5-15% More' }
+      ]},
+      { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. Mate & HyperSKU offer 18/6 personal WhatsApp support with real humans answering in minutes. AutoDS has no personal support - only automated tickets. This is where most agents fail - and where the best ones shine.', ranking: [
+        { name: 'Mate', value: '18/6 WhatsApp' },
+        { name: 'HyperSKU', value: '18/6 WhatsApp' },
+        { name: 'AutoDS', value: 'No Personal' },
         { name: 'Others', value: 'Varies' }
       ]},
-      { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. Mate & HyperSKU offer 18/6 personal WhatsApp support with real humans answering in minutes. AutoDS has no personal support - only automated tickets. This is where most agents fail - and where the best ones shine.' },
-      { type: 'visual', title: 'After 3 Months of Testing...', visualType: 'comparison', data: {
-        left: { label: 'Others', value: '14-21', result: 'Days average delivery', color: '#94a3b8' },
-        right: { label: 'Winner', value: '5-7', result: 'Days average delivery', color: '#10b981' },
-        center: { label: 'The Winner', value: 'Mate', result: 'Dropshipping', color: '#10b981' }
+      { type: 'visual', title: 'After 3 Months of Testing...', visualType: 'testingResults', data: {
+        left: { label: 'Shipping', value: '7 days', sublabel: 'Fastest Consistent' },
+        center: { label: 'The Winner', value: 'Mate', sublabel: 'Dropshipping' },
+        right: { label: 'Pricing', value: '4%', sublabel: 'Cheaper Than AliExpress' }
       }},
+      { type: 'winnerHighlight', title: 'How We Chose the Winner', winners: [
+        { label: 'Shipping Speed', sublabel: 'Days to Delivery', value: '7 Days', isWinner: true },
+        { label: 'Pricing vs AliExpress', sublabel: 'Cost Difference', value: '4% Less', isWinner: true },
+        { label: 'Support Quality', sublabel: 'Response Time', value: '18/6', isWinner: true }
+      ]},
       { type: 'cards', title: 'Why Mate Dropshipping Won', items: [
         { title: 'Fastest Consistent Delivery', description: '5-7 day shipping to most destinations. Not "up to 7 days" - actually 5-7 days consistently.' },
         { title: 'Quality Inspection', description: 'They check products before shipping. Catches defects before your customer does. Fewer returns, fewer chargebacks.' },
         { title: 'WhatsApp Support', description: 'Real humans answering in minutes. 18/6 availability. When things go wrong, you get help immediately.' },
         { title: 'Competitive Pricing', description: 'Pricing that improves as you scale. At volume, often matches or beats AliExpress pricing.' }
       ]},
-      { type: 'cards', title: 'How It Works', items: [
-        { title: 'No Commitment', description: 'Free Shopify app. No monthly fees. No minimums. Start and stop anytime.' },
-        { title: 'Simple Payment', description: 'Order appears with price. Pay via PayPal or credit card. That\'s it.' },
-        { title: 'Full Service', description: 'They handle sourcing, quality control, repack, and branded packaging. You just collect orders.' }
+      { type: 'howItWorksFlow', title: 'How It Works', steps: [
+        { step: 1, title: 'Connect Your Primary Agent', description: 'Free Shopify app. No monthly fees. No minimums. When an order comes in, the price appears. Pay via PayPal or credit card.', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg' },
+        { step: 2, title: 'Sync Your Products', description: 'They handle sourcing, quality control, repack, and branded packaging. Products arrive at their warehouse, get inspected, and ship with your branding.', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg' }
       ]},
       { type: 'images', title: 'Real Warehouses, Real Quality Control', images: [
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg',
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg'
       ]},
-      { type: 'tool', title: 'Step #1: Connect Your Primary Agent', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg', body: 'Our testing winner. Fastest delivery, quality inspection, and support that actually responds. Free to set up with no monthly fees or minimums.', questions: ['5-7 day shipping consistently', '18/6 personal WhatsApp support', 'Quality inspection on every order', '4% cheaper pricing at scale'], insight: 'Free to set up. No commitment. No minimums. Connect and see the difference yourself.', buttonStyle: 'green' },
+      { type: 'tool', title: 'Connect with Mate', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg', body: 'Our testing winner. Fastest delivery, quality inspection, and support that actually responds. Free to set up with no monthly fees or minimums.', questions: ['5-7 day shipping consistently', '18/6 personal WhatsApp support', 'Quality inspection on every order', '4% cheaper pricing at scale'], insight: 'Free to set up. No commitment. No minimums. Connect and see the difference yourself.', buttonStyle: 'green' },
       { type: 'content', title: 'Smart Operators Use Two Agents', body: 'Even the best agent can\'t be perfect for every product. Sometimes one has better pricing on specific items. Sometimes stock runs out. Sometimes one shipping route is faster for certain regions. Your primary handles 80-90% of orders. Your backup covers the edge cases.' },
-      { type: 'tool', title: 'Step #2: Connect a Backup Agent', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg', body: 'When you need alternatives for specific products or faster routes to certain regions. Free to connect - use when needed.', questions: ['Different product sourcing options', 'Alternative shipping routes', 'Backup when primary is out of stock', 'Price comparison for specific items'], insight: 'Free to connect. Use when needed. Zero commitment. Having options costs nothing.' },
+      { type: 'tool', title: 'Connect Backup Agent', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg', body: 'When you need alternatives for specific products or faster routes to certain regions. Free to connect - use when needed.', questions: ['Different product sourcing options', 'Alternative shipping routes', 'Backup when primary is out of stock', 'Price comparison for specific items'], insight: 'Free to connect. Use when needed. Zero commitment. Having options costs nothing.' },
       { type: 'quiz', question: 'What\'s the main reason to have a backup fulfillment agent?', options: ['Backup agents are always cheaper', 'Sometimes one agent has better pricing or stock for specific products', 'You should split every order between agents', 'Primary agents are unreliable'], correctIndex: 1, feedback: { correct: 'Exactly! A backup agent gives you flexibility when one has better pricing, stock, or shipping for specific products. Free to connect, so why not have options?', incorrect: 'Not quite. The key is flexibility: sometimes one agent has better pricing or stock for specific products. And it\'s free to connect - so why not have options?' }},
       { type: 'completion', sources: [{ name: 'Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, { name: 'HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }] }
     ];
@@ -271,6 +318,44 @@
     };
 
     const VisualSlide = ({ data }) => {
+      if (data.visualType === 'singleStat') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center max-w-lg mx-auto">
+              <div className="text-5xl md:text-7xl font-bold mb-3" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter target={data.data.value} duration={2000} />+
+              </div>
+              <div className="text-lg md:text-xl font-semibold text-white mb-2">{data.data.label}</div>
+              <div className="text-sm text-neutral-400">{data.data.subtext}</div>
+            </motion.div>
+          </div>
+        );
+      }
+      if (data.visualType === 'testingResults') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-green-500 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.sublabel}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-black rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg">
+                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.center.sublabel}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-green-500 rounded-xl p-4 md:p-6 text-center">
+                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.sublabel}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
       if (data.visualType === 'comparison') {
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -315,6 +400,61 @@
       }
       return null;
     };
+
+    // Agent Rankings Slide
+    const AgentRankingsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {data.agents.map((agent, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-3 bg-white" style={{ borderColor: getRankColor(i) }}>
+                <span className="text-2xl font-bold" style={{ color: getRankColor(i) }}>{i + 1}</span>
+              </div>
+              <p className="text-sm font-semibold text-neutral-900 text-center mb-2">{agent.name}</p>
+              {agent.url && (
+                <a href={agent.url} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
+                  Create Account
+                </a>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Winner Highlight Slide
+    const WinnerHighlightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <WinnerHighlightCircles items={data.winners} />
+      </div>
+    );
+
+    // How It Works Flow Slide
+    const HowItWorksFlowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden">
+              <div className="aspect-video relative">
+                <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                    {step.step}
+                  </span>
+                  <h3 className="font-bold text-neutral-900">{step.title}</h3>
+                </div>
+                <p className="text-sm text-neutral-600 leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
 
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -501,6 +641,9 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'images': return <ImagesSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
+          case 'agentRankings': return <AgentRankingsSlide data={slide} />;
+          case 'winnerHighlight': return <WinnerHighlightSlide data={slide} />;
+          case 'howItWorksFlow': return <HowItWorksFlowSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
