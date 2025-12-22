@@ -36,6 +36,37 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // Ranking Circles Component
+    const RankingCircles = ({ items }) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        {items.map((item, i) => (
+          <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex flex-col items-center">
+            <div className="w-20 h-20 rounded-full border-4 border-neutral-300 flex items-center justify-center mb-2">
+              <span className="text-2xl font-bold text-neutral-400">{i + 1}</span>
+            </div>
+            <p className="text-sm font-semibold text-neutral-900 text-center">{item.name}</p>
+            <p className="text-xs text-neutral-600 text-center mt-1">{item.value}</p>
+          </motion.div>
+        ))}
+      </div>
+    );
+
     const LESSON_CONFIG = {
       id: 'best-private-agent',
       title: 'Who Is the Best Private Agent in the Market Today',
@@ -76,7 +107,7 @@
       { type: 'welcome', learningGoals: ['Why your fulfillment partner makes or breaks your brand', 'The criteria that actually matter when choosing an agent', 'Which agent won our testing - and how to connect'] },
       { type: 'hook', headline: 'Your customer just received their package. In the next 3 seconds, they decide if they\'ll ever buy from you again.', subtext: 'A thin plastic envelope. No branding. No note. Just... product. Their brain instantly processes: "cheap store." Decision made. Never ordering again. This happens thousands of times daily with AliExpress fulfillment.' },
       { type: 'example', scenario: 'The Fulfillment Experience Gap', before: { label: 'AliExpress Reality', text: '21-45 day shipping. Thin plastic packaging. Zero branding. No quality check. Customer thinks: "I could have gotten this cheaper on Wish."' }, after: { label: 'Private Agent', text: '5-7 day shipping. Branded packaging. Custom inserts. Quality inspection. Customer thinks: "This feels premium. I\'ll order again."' }, insight: 'Same product. Different experience. One creates customers, the other creates one-time buyers.' },
-      { type: 'content', title: 'So Which Private Agent Is Actually the Best?', body: 'We didn\'t just read reviews. We placed over 55 orders across multiple agents. We tracked over 500 orders at scale. We tested for 3 months in real-world conditions. Here\'s what we found - and why it matters for your business.' },
+      { type: 'content', title: 'So Which Private Agent Is Actually the Best?', body: 'For 3 months we worked with the 6 leading companies across 3 different niches: fashion, home decor, and kids clothing. Here\'s what we found.' },
       { type: 'cards', title: 'What We Measured', items: [
         { title: 'Shipping Speed', description: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers. This was our primary metric.' },
         { title: 'Quality Control', description: 'When defective products reach customers, you lose money on returns AND lose the customer forever. Proper inspection prevents both.' },
@@ -88,9 +119,19 @@
         { value: '500+', label: 'Orders Tracked', subtext: 'Long-term at scale' },
         { value: '3 Mo', label: 'Testing Period', subtext: 'Real-world conditions' }
       ]},
-      { type: 'content', title: 'Finding #1: Shipping Speed', body: 'Customers who receive orders in under 7 days are significantly more likely to order again. The psychology is simple: fast delivery while the excitement is still fresh creates positive associations. Slow delivery lets doubt and regret creep in.' },
-      { type: 'content', title: 'Finding #2: Pricing', body: 'Here\'s what surprised us: the best agents often cost the SAME or LESS than AliExpress at scale. The "AliExpress is cheaper" myth only holds for single orders. At volume, private agents match or beat AliExpress pricing - with better service included.' },
-      { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. 18/6 WhatsApp support means real humans answering in minutes, not automated tickets that take 48 hours. This is where most agents fail - and where the best ones shine.' },
+      { type: 'content', title: 'Finding #1: Shipping Speed', body: 'Customers who receive orders in under 7 days are significantly more likely to order again. The psychology is simple: fast delivery while the excitement is still fresh creates positive associations. Slow delivery lets doubt and regret creep in.', ranking: [
+        { name: 'Mate', value: '7 days' },
+        { name: 'HyperSKU', value: '9 days' },
+        { name: 'AutoDS', value: '14 days' },
+        { name: 'Others', value: '14-21 days' }
+      ]},
+      { type: 'content', title: 'Finding #2: Pricing', body: 'Here\'s what surprised us: the best agents often cost the SAME or LESS than AliExpress at scale. The "AliExpress is cheaper" myth only holds for single orders. At volume, private agents match or beat AliExpress pricing - with better service included.', ranking: [
+        { name: 'Mate', value: '4% cheaper' },
+        { name: 'HyperSKU', value: '1% cheaper' },
+        { name: 'AutoDS', value: '~0%' },
+        { name: 'Others', value: 'Varies' }
+      ]},
+      { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. Mate & HyperSKU offer 18/6 personal WhatsApp support with real humans answering in minutes. AutoDS has no personal support - only automated tickets. This is where most agents fail - and where the best ones shine.' },
       { type: 'visual', title: 'After 3 Months of Testing...', visualType: 'comparison', data: {
         left: { label: 'Others', value: '14-21', result: 'Days average delivery', color: '#94a3b8' },
         right: { label: 'Winner', value: '5-7', result: 'Days average delivery', color: '#10b981' },
@@ -102,9 +143,19 @@
         { title: 'WhatsApp Support', description: 'Real humans answering in minutes. 18/6 availability. When things go wrong, you get help immediately.' },
         { title: 'Competitive Pricing', description: 'Pricing that improves as you scale. At volume, often matches or beats AliExpress pricing.' }
       ]},
-      { type: 'tool', title: 'Connect With Mate Dropshipping', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Our testing winner. Fastest delivery, quality inspection, and support that actually responds. Free to set up with no monthly fees or minimums.', questions: ['Create a free account (no monthly fees)', 'Connect your Shopify store', 'Import your products', 'Start fulfilling orders'], insight: 'Free to set up. No commitment. No minimums. Connect and see the difference yourself.' },
+      { type: 'cards', title: 'How It Works', items: [
+        { title: 'No Commitment', description: 'Free Shopify app. No monthly fees. No minimums. Start and stop anytime.' },
+        { title: 'Simple Payment', description: 'Order appears with price. Pay via PayPal or credit card. That\'s it.' },
+        { title: 'Full Service', description: 'They handle sourcing, quality control, repack, and branded packaging. You just collect orders.' }
+      ]},
+      { type: 'images', title: 'Real Warehouses, Real Quality Control', images: [
+        'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg',
+        'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
+        'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg'
+      ]},
+      { type: 'tool', title: 'Step #1: Connect Your Primary Agent', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg', body: 'Our testing winner. Fastest delivery, quality inspection, and support that actually responds. Free to set up with no monthly fees or minimums.', questions: ['5-7 day shipping consistently', '18/6 personal WhatsApp support', 'Quality inspection on every order', '4% cheaper pricing at scale'], insight: 'Free to set up. No commitment. No minimums. Connect and see the difference yourself.', buttonStyle: 'green' },
       { type: 'content', title: 'Smart Operators Use Two Agents', body: 'Even the best agent can\'t be perfect for every product. Sometimes one has better pricing on specific items. Sometimes stock runs out. Sometimes one shipping route is faster for certain regions. Your primary handles 80-90% of orders. Your backup covers the edge cases.' },
-      { type: 'tool', title: 'Our Recommended Backup: HyperSKU', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'When you need alternatives for specific products or faster routes to certain regions. Free to connect - use when needed.', questions: ['Different product sourcing options', 'Alternative shipping routes', 'Backup when primary is out of stock', 'Price comparison for specific items'], insight: 'Free to connect. Use when needed. Zero commitment. Having options costs nothing.' },
+      { type: 'tool', title: 'Step #2: Connect a Backup Agent', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg', body: 'When you need alternatives for specific products or faster routes to certain regions. Free to connect - use when needed.', questions: ['Different product sourcing options', 'Alternative shipping routes', 'Backup when primary is out of stock', 'Price comparison for specific items'], insight: 'Free to connect. Use when needed. Zero commitment. Having options costs nothing.' },
       { type: 'quiz', question: 'What\'s the main reason to have a backup fulfillment agent?', options: ['Backup agents are always cheaper', 'Sometimes one agent has better pricing or stock for specific products', 'You should split every order between agents', 'Primary agents are unreliable'], correctIndex: 1, feedback: { correct: 'Exactly! A backup agent gives you flexibility when one has better pricing, stock, or shipping for specific products. Free to connect, so why not have options?', incorrect: 'Not quite. The key is flexibility: sometimes one agent has better pricing or stock for specific products. And it\'s free to connect - so why not have options?' }},
       { type: 'completion', sources: [{ name: 'Mate Dropshipping', url: 'https://erp.matedropshipping.com/login?invite_id=915' }, { name: 'HyperSKU', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }] }
     ];
@@ -162,30 +213,62 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        {data.ranking && <RankingCircles items={data.ranking} />}
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+    const ExampleSlide = ({ data }) => {
+      const aliexpressItems = [
+        '21-45 day shipping',
+        'Thin plastic packaging',
+        'Zero branding',
+        'No quality check'
+      ];
+      const privateAgentItems = [
+        '5-7 day shipping',
+        'Branded packaging',
+        'Custom inserts',
+        'Quality inspection'
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <h3 className="font-bold text-neutral-900 text-base mb-4">{data.before.label}</h3>
+              <ul className="space-y-2.5">
+                {aliexpressItems.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-red-500 mt-0.5 text-lg flex-shrink-0">❌</span>
+                    <span className="text-neutral-700 text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-neutral-500 text-xs mt-4 italic">Customer thinks: "I could have gotten this cheaper on Wish."</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <h3 className="font-bold text-neutral-900 text-base mb-4">{data.after.label}</h3>
+              <ul className="space-y-2.5">
+                {privateAgentItems.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-green-500 mt-0.5 text-lg flex-shrink-0">✓</span>
+                    <span className="text-neutral-700 text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-neutral-500 text-xs mt-4 italic">Customer thinks: "This feels premium. I'll order again."</p>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+            <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
     const VisualSlide = ({ data }) => {
       if (data.visualType === 'comparison') {
@@ -219,7 +302,9 @@
             <div className="grid md:grid-cols-3 gap-4">
               {data.data.map((stat, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                    {stat.value.includes('+') ? <><AnimatedCounter target={parseInt(stat.value)} duration={1500} />+</> : stat.value.includes('Mo') ? <><AnimatedCounter target={3} duration={1500} /> Mo</> : stat.value}
+                  </div>
                   <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
                   <div className="text-xs text-neutral-400">{stat.subtext}</div>
                 </motion.div>
@@ -245,40 +330,59 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">How It Works</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+    const ImagesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.images.map((img, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+              <img src={img} alt={`Warehouse ${i + 1}`} className="w-full h-auto object-cover" />
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
       </div>
     );
+
+    const ToolSlide = ({ data }) => {
+      const buttonStyle = data.buttonStyle === 'green'
+        ? { background: 'linear-gradient(135deg, #10b981, #059669)' }
+        : { background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+              <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+              <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+              <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+                <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Key Advantages</p>
+                <ul className="space-y-1.5">
+                  {data.questions.map((q, i) => (
+                    <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                      <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
+                      {q}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={buttonStyle}>
+                <span>Connect {data.toolName}</span>
+                <Icons.ExternalLink />
+              </a>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+            <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+          </motion.div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -395,6 +499,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'images': return <ImagesSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
