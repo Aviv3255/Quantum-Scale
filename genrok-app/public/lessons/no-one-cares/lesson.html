@@ -75,7 +75,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why customers only care about one thing: themselves', 'How to pass the Self-Interest Filter every time', 'The Authority Transfer that makes customers the hero'] },
       { type: 'hook', headline: 'Hard truth: No one cares about your brand story, your mission, or your values.', subtext: 'Customers have one filter for every word on your site: "How does this improve MY life?" If your copy talks about YOU, they disconnect. If your copy talks about THEM and their world, they lean in. The Self-Interest Bias is the most powerful psychological force in copywriting. Ignore it and you\'re invisible. Use it and you win.' },
-      { type: 'quote-spotlight', quote: 'No one cares about your product', attribution: 'Copywriting Psychology' },
+      { type: 'quote-spotlight', quote: '"No One Cares About You"', attribution: 'Copywriting Psychology' },
       { type: 'content', title: 'The Self-Interest Filter', body: 'Every human walks around with an invisible filter. Everything they see, hear, or read passes through this filter: "How does this affect ME? How does this improve MY life? What\'s in it for ME?" If the answer isn\'t obvious, they tune out. Instantly. Your brand story? Filtered out. Your 20 years of experience? Filtered out. Your values and mission? Filtered out. Unless you connect them to their world, their problems, their desires - they don\'t exist.' },
       { type: 'mindset-shift', title: 'The Copywriting Mindset Shift', before: ['Talk about your brand story', 'Highlight your experience', 'Show off your features', 'Prove how innovative you are'], after: ['Show how their life improves', 'Connect experience to their outcomes', 'Paint the picture of benefits', 'Demonstrate clear value for them'] },
       { type: 'example', scenario: 'Brand-Focused vs Customer-Focused Copy', before: { label: 'Brand-Focused (Ignored)', text: '"We have 20 years of experience crafting premium footwear. Our team is passionate about quality." - Customer thinks: "Cool story. How does this help ME?"' }, after: { label: 'Customer-Focused (Powerful)', text: '"For 20 years we refined one purpose: giving YOU shoes that feel weightless. Your feet don\'t hurt. Your day doesn\'t slow down." - Customer thinks: "Wait, shoes that don\'t hurt? Tell me more."' }, insight: 'Same 20 years. Different focus. One talks about the brand. One talks about the customer. Guess which one converts?' },
@@ -87,6 +87,30 @@
         { title: 'Transfer Authority', description: 'Stop saying how great YOU are. Start saying how great THEY can become with your product.' },
         { title: 'Focus On Outcomes', description: 'Don\'t list features. Paint the picture of their life improved. That\'s what they care about.' },
         { title: 'Kill Ego Copy', description: 'Delete any line that brags about your brand without connecting to their benefit. Be ruthless.' }
+      ]},
+      { type: 'copy-comparison-table', title: 'Good Copy vs Bad Copy', subtitle: '10 Real Examples', examples: [
+        { bad: 'We use premium materials', good: 'Feels soft on your skin all day' },
+        { bad: 'Our team has 15 years experience', good: 'Get results from day one' },
+        { bad: 'Innovative AI technology', good: 'Saves you 4 hours every week' },
+        { bad: 'Industry-leading quality', good: 'Lasts 3x longer than competitors' },
+        { bad: 'Our mission is sustainability', good: 'Guilt-free shopping for your family' },
+        { bad: 'Award-winning design', good: 'Looks amazing on your shelf' },
+        { bad: 'Patented formula', good: 'Visible results in 7 days' },
+        { bad: 'We ship worldwide', good: 'Arrives at your door in 3 days' },
+        { bad: 'Over 1M customers served', good: 'Join families who sleep better' },
+        { bad: 'Premium craftsmanship', good: 'Never worry about breaking again' }
+      ]},
+      { type: 'copy-templates', title: 'Fill-in-the-Blank Templates', templates: [
+        { category: 'Time Saving', formula: 'Save [X hours] every [week/month] on [task]', example: 'Save 4 hours every week on meal planning' },
+        { category: 'Pain Relief', formula: 'Finally stop [pain point] and start [desired state]', example: 'Finally stop struggling with back pain and start enjoying mornings' },
+        { category: 'Results', formula: 'Get [specific result] in [timeframe] without [common obstacle]', example: 'Get clearer skin in 14 days without harsh chemicals' },
+        { category: 'Transformation', formula: 'Go from [current state] to [desired state] in [timeframe]', example: 'Go from exhausted to energized in just 7 days' },
+        { category: 'Authority Transfer', formula: 'You deserve [benefit]. We make it [easy/possible/simple]', example: 'You deserve better sleep. We make it effortless.' },
+        { category: 'Fear Removal', formula: 'Never worry about [common fear] again', example: 'Never worry about running out of hot water again' },
+        { category: 'Identity', formula: 'For [identity] who want [desire] without [sacrifice]', example: 'For busy parents who want healthy meals without the stress' },
+        { category: 'Comparison', formula: '[X]x better than [alternative] at [benefit]', example: '3x more absorbent than regular towels at half the price' },
+        { category: 'Social Proof', formula: 'Join [number] [identities] who already [achieved outcome]', example: 'Join 50,000 moms who already simplified their mornings' },
+        { category: 'Urgency', formula: 'Start [benefit] today, not [time period] from now', example: 'Start sleeping better tonight, not months from now' }
       ]},
       { type: 'content', title: 'The Fatal Copywriting Mistake', body: 'Most brands write like they\'re talking to investors, not customers. "We\'re revolutionizing the industry!" "We\'re the leading provider!" "Our innovative approach!" Every word screams: THIS IS ABOUT US. And customers? They scroll past. Because none of that answers the only question they care about: "What\'s in it for me?" Fix this one thing - make every line about THEM - and your conversion rate transforms overnight.' },
       { type: 'example', scenario: 'The Authority Transfer In Action', before: { label: 'Your Authority (Weak)', text: '"We\'re the #1 rated fitness app with 5 million users and cutting-edge AI technology." - Customer thinks: "Great for you. I don\'t care."' }, after: { label: 'Their Authority (Strong)', text: '"You get results in 20 minutes. You skip the overwhelm. You finally stick to fitness because it fits YOUR life." - Customer thinks: "This is built for me. I\'m in."' }, insight: 'Stop proving how great YOU are. Start showing how great THEY become. That\'s the copy that converts.' },
@@ -295,6 +319,62 @@
       </div>
     );
 
+    const CopyComparisonTableSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-6">{data.subtitle}</motion.p>
+        <div className="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden">
+          <div className="grid grid-cols-2 bg-neutral-100 border-b-2 border-neutral-200">
+            <div className="p-3 text-center">
+              <span className="text-red-600 font-bold text-xs uppercase tracking-wider">Bad Copy (Feature)</span>
+            </div>
+            <div className="p-3 text-center border-l-2 border-neutral-200">
+              <span className="text-green-600 font-bold text-xs uppercase tracking-wider">Good Copy (Benefit)</span>
+            </div>
+          </div>
+          <div className="divide-y divide-neutral-100">
+            {data.examples.map((example, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.03 }} className="grid grid-cols-2 hover:bg-neutral-50 transition-colors">
+                <div className="p-3 text-neutral-600 text-xs md:text-sm bg-red-50/50">"{example.bad}"</div>
+                <div className="p-3 text-neutral-800 text-xs md:text-sm font-medium border-l-2 border-neutral-100 bg-green-50/50">"{example.good}"</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const CopyTemplatesSlide = ({ data }) => {
+      const [activeTemplate, setActiveTemplate] = useState(0);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-[200px,1fr] gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex md:flex-col gap-2 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+              {data.templates.map((template, i) => (
+                <button key={i} onClick={() => setActiveTemplate(i)} className={`px-3 py-2 rounded-lg text-left text-xs font-semibold whitespace-nowrap transition-all ${activeTemplate === i ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
+                  {template.category}
+                </button>
+              ))}
+            </motion.div>
+            <AnimatePresence mode="wait">
+              <motion.div key={activeTemplate} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-6">
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>{data.templates[activeTemplate].category}</span>
+                  <h3 className="font-bold text-neutral-900 text-lg mb-2">Formula</h3>
+                  <div className="bg-neutral-50 border-2 border-dashed border-neutral-300 rounded-lg p-4 font-mono text-sm text-neutral-700">{data.templates[activeTemplate].formula}</div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-neutral-900 text-sm mb-2">Example</h3>
+                  <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-green-800 text-sm font-medium">"{data.templates[activeTemplate].example}"</div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
     const ChecklistInteractiveSlide = ({ data }) => {
       const [checked, setChecked] = useState([]);
       const toggleCheck = (index) => {
@@ -438,6 +518,8 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
           case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
+          case 'copy-comparison-table': return <CopyComparisonTableSlide data={slide} />;
+          case 'copy-templates': return <CopyTemplatesSlide data={slide} />;
           case 'checklist-interactive': return <ChecklistInteractiveSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
