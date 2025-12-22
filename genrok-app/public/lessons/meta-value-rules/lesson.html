@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Value Rules: Teaching Meta What Customers Are Worth | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
+
+    const LESSON_CONFIG = {
+      id: 'meta-value-rules',
+      title: 'Value Rules: Teaching Meta What Customers Are Worth',
+      description: 'Tell Meta which customers are worth $2,400 vs $47 - and watch it prioritize them.',
+      accentColor: '#3b82f6',
+      duration: '5 min',
+      nextLesson: { id: 'meta-automated-rules', title: 'Automated Rules', teaser: 'Scale winners and kill losers automatically while you sleep.' }
+    };
+
+    const celebrationGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const Icons = {
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>),
+      TrendingUp: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>),
+      DollarSign: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>)
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why treating all customers equally wastes money', 'How to tell Meta which audiences are worth more', 'Real examples: Women 35+ vs Men 18-24 LTV differences'] },
+      { type: 'hook', headline: 'You spend $50 to acquire a customer. But some customers are worth $2,400. Others are worth $47. Meta treats them the same. Until you use Value Rules.', subtext: 'Imagine knowing that women 35+ spend 5x more than men 18-24. Now imagine telling Meta: "Bid 40% higher for women 35+ because they\'re worth it." That\'s Value Rules. You teach the algorithm which customers justify higher bids.' },
+      { type: 'content', title: 'The Problem: Not All Customers Are Equal', body: 'A 25-year-old male buys once. $47 total. A 38-year-old woman buys 6 times over 2 years. $1,200 total. Both cost you $40 to acquire. One is profitable. One barely breaks even. But Meta doesn\'t know this - unless you tell it.' },
+      { type: 'visual', title: 'Customer Value Gap', visualType: 'comparison', data: {
+        left: { label: 'Low-Value Segment', points: ['Male, 18-24', 'Single purchase: $47', 'LTV: $47', 'Bid: $40 (losing money)'], color: '#ef4444' },
+        right: { label: 'High-Value Segment', points: ['Female, 35-50', 'Repeat buyer: 6 purchases', 'LTV: $1,200', 'Bid: $60 (still profitable)'], color: '#10b981' }
+      }},
+      { type: 'content', title: 'What Are Value Rules?', body: 'Value Rules let you adjust bids based on audience characteristics. "Women 35+ are worth more - increase bid by 40%." "iPhone users convert better - increase bid by 20%." Meta then prioritizes these high-LTV segments automatically.' },
+      { type: 'valueRuleMockup', title: 'Value Rule Configuration Example', rule: { segment: 'Women, Age 35-50', ltv: '$1,200', currentBid: '$40', adjustment: '+40%', newBid: '$56', reasoning: 'Still profitable at higher bid due to 5x higher LTV' }},
+      { type: 'cards', title: 'Common Value Rule Examples', items: [
+        { title: 'Age-Based', description: 'Older audiences often have higher disposable income. Increase bids for 35+ demographics if data supports it.', color: '#3b82f6' },
+        { title: 'Gender-Based', description: 'In fashion/beauty, women often have higher LTV. Adjust bids accordingly based on your product category.', color: '#ec4899' },
+        { title: 'Device-Based', description: 'iPhone users typically spend 30% more than Android. Bid higher on iOS placements if this holds for your store.', color: '#8b5cf6' },
+        { title: 'Location-Based', description: 'Customers in high-income zip codes may justify 20-50% higher bids. Test by region.', color: '#10b981' }
+      ]},
+      { type: 'content', title: 'When to Use Value Rules', body: 'Only use them when you have DATA proving LTV differences. Don\'t guess. Pull your last 90 days of orders. Segment by age, gender, location, device. If women 35+ really do spend 5x more, set a Value Rule. If the difference is marginal (10-20%), don\'t bother.' },
+      { type: 'visual', title: 'Value Rules Impact', visualType: 'stats', data: [
+        { value: '34%', label: 'Higher ROAS', sublabel: 'By focusing on valuable segments', color: '#10b981' },
+        { value: '2.4x', label: 'LTV Increase', sublabel: 'Acquiring better customers', color: '#3b82f6' },
+        { value: '-18%', label: 'Wasted Spend', sublabel: 'Less money on low-LTV segments', color: '#ec4899' }
+      ]},
+      { type: 'quiz', question: 'When should you create a Value Rule?', options: [
+        { text: 'Always - for every campaign', isCorrect: false, feedback: 'No. Only when data proves a segment has significantly higher LTV. Guessing wastes money.' },
+        { text: 'When data shows a segment has 2x+ higher LTV', isCorrect: true, feedback: 'Correct! Value Rules work when there\'s a clear, DATA-BACKED difference in customer value. If women 35+ spend $1,200 vs men 18-24 spending $200, that 6x difference justifies bidding more for the valuable segment. No data = no rule.' },
+        { text: 'Never - let Meta figure it out', isCorrect: false, feedback: 'Meta can\'t optimize for LTV differences unless you tell it. Value Rules give it that information.' },
+        { text: 'Only for enterprise accounts', isCorrect: false, feedback: 'Any advertiser can use Value Rules. It\'s a standard feature in Ads Manager.' }
+      ]},
+      { type: 'completion', title: 'You Now Understand Value Rules', summary: [
+        'Not all customers are equal - some are worth 5-10x more than others',
+        'Value Rules tell Meta which segments justify higher bids',
+        'Only use when DATA proves significant LTV differences (2x+ minimum)',
+        'Common rules: age, gender, device, location - based on YOUR data'
+      ]}
+    ];
+
+    // Condensed slide components (using same structure as previous lessons but shorter code)
+    const WelcomeSlide = ({ goals, onStart }) => (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-6">
+            <Icons.TrendingUp />
+            <span className="text-sm font-semibold text-blue-900">Value Optimization</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black mb-4 text-neutral-900 title-font">{LESSON_CONFIG.title}</h1>
+          <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">{LESSON_CONFIG.description}</p>
+          <div className="bg-neutral-50 rounded-2xl p-8 mb-8 max-w-xl mx-auto text-left">
+            <h3 className="text-lg font-bold mb-4 text-neutral-900">What You'll Discover:</h3>
+            <ul className="space-y-3">
+              {goals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5"><Icons.Check /></div>
+                  <span className="text-neutral-700">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <motion.button onClick={onStart} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-blue-500 text-white rounded-full font-semibold text-lg hover:bg-blue-600 transition-colors">Start Learning →</motion.button>
+        </motion.div>
+      </div>
+    );
+
+    const HookSlide = ({ headline, subtext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl text-center">
+          <h2 className="text-3xl md:text-5xl font-black mb-6 text-neutral-900 title-font leading-tight">{headline}</h2>
+          <p className="text-xl text-neutral-600 leading-relaxed">{subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ContentSlide = ({ title, body }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-black mb-6 text-neutral-900 title-font">{title}</h2>
+          <p className="text-lg md:text-xl text-neutral-700 leading-relaxed">{body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ title, visualType, data }) => {
+      if (visualType === 'comparison') {
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                {[data.left, data.right].map((side, idx) => (
+                  <motion.div key={idx} initial={{ opacity: 0, x: idx === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: side.color, backgroundColor: side.color + '10' }}>
+                    <h3 className="text-2xl font-bold mb-6 text-neutral-900">{side.label}</h3>
+                    <ul className="space-y-3">{side.points.map((point, i) => (<li key={i} className="text-neutral-700">{point}</li>))}</ul>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+      if (visualType === 'stats') {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-12 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                {data.map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div className="text-5xl md:text-6xl font-black mb-3" style={{ color: stat.color }}>{stat.value}</div>
+                    <div className="text-xl font-bold text-neutral-900 mb-2">{stat.label}</div>
+                    <div className="text-sm text-neutral-600">{stat.sublabel}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
+
+    const ValueRuleMockupSlide = ({ title, rule }) => (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-6">
+        <div className="max-w-3xl w-full">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-white rounded-2xl p-8 shadow-2xl border-2 border-blue-200">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center pb-4 border-b-2 border-neutral-200">
+                <span className="text-neutral-600 font-semibold">Target Segment:</span>
+                <span className="text-neutral-900 font-bold">{rule.segment}</span>
+              </div>
+              <div className="flex justify-between items-center pb-4 border-b-2 border-neutral-200">
+                <span className="text-neutral-600 font-semibold">Average LTV:</span>
+                <span className="text-green-600 font-bold text-2xl">{rule.ltv}</span>
+              </div>
+              <div className="flex justify-between items-center pb-4 border-b-2 border-neutral-200">
+                <span className="text-neutral-600 font-semibold">Current Bid:</span>
+                <span className="text-neutral-900 font-bold">{rule.currentBid}</span>
+              </div>
+              <div className="flex justify-between items-center pb-4 border-b-2 border-neutral-200">
+                <span className="text-neutral-600 font-semibold">Bid Adjustment:</span>
+                <span className="text-blue-600 font-bold text-xl">{rule.adjustment}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-600 font-semibold">New Bid:</span>
+                <span className="text-purple-600 font-black text-3xl">{rule.newBid}</span>
+              </div>
+            </div>
+            <div className="mt-6 bg-blue-50 rounded-xl p-4 border-l-4 border-blue-500">
+              <p className="text-sm text-blue-900"><strong>Why this works:</strong> {rule.reasoning}</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const CardsSlide = ({ title, items }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+        <div className="max-w-5xl w-full py-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-2xl p-6 border-4" style={{ borderColor: item.color, backgroundColor: item.color + '10' }}>
+                <h3 className="text-xl font-bold mb-3 text-neutral-900">{item.title}</h3>
+                <p className="text-neutral-700 leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ question, options, onAnswer }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const handleSelect = (index) => { setSelected(index); setShowFeedback(true); setTimeout(() => { if (options[index].isCorrect) onAnswer(true); }, 3000); };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+          <div className="max-w-3xl w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-black mb-8 text-neutral-900 title-font text-center">{question}</motion.h2>
+            <div className="space-y-4">
+              {options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => !showFeedback && handleSelect(i)} disabled={showFeedback} className={`w-full p-6 rounded-xl text-left transition-all ${selected === i ? (option.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white') : 'bg-white hover:bg-neutral-50 border-2 border-neutral-200'} ${showFeedback && 'cursor-not-allowed'}`}>
+                  <div className="font-semibold text-lg">{option.text}</div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && selected !== null && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-8 p-6 bg-neutral-900 text-white rounded-2xl">
+                  <div className="flex items-start gap-4">
+                    <video autoPlay loop muted playsInline className="w-32 h-32 rounded-xl object-cover"><source src={options[selected].isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif()} type="video/mp4" /></video>
+                    <div>
+                      <h3 className="font-bold text-xl mb-2">{options[selected].isCorrect ? 'Exactly right!' : 'Not quite!'}</h3>
+                      <p className="text-neutral-300 leading-relaxed">{options[selected].feedback}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ title, summary, onNext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full text-center text-white">
+          <div className="text-6xl mb-6">💎</div>
+          <h2 className="text-4xl md:text-5xl font-black mb-6 title-font">{title}</h2>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8 text-left">
+            <h3 className="text-xl font-bold mb-4">Key Takeaways:</h3>
+            <ul className="space-y-3">
+              {summary.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5"><Icons.Check /></div>
+                  <span className="text-white/90">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          {LESSON_CONFIG.nextLesson && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
+              <div className="text-sm font-semibold mb-2 text-white/70">Up Next:</div>
+              <div className="text-2xl font-bold mb-2">{LESSON_CONFIG.nextLesson.title}</div>
+              <div className="text-white/80 mb-4">{LESSON_CONFIG.nextLesson.teaser}</div>
+              <button onClick={onNext} className="px-6 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors">Continue Learning →</button>
+            </div>
+          )}
+          <button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors">Back to Dashboard</button>
+        </motion.div>
+      </div>
+    );
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const nextSlide = useCallback(() => { setDirection(1); setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1)); }, []);
+      const prevSlide = useCallback(() => { setDirection(-1); setCurrentSlide(prev => Math.max(prev - 1, 0)); }, []);
+
+      useEffect(() => {
+        const handleKeyPress = (e) => { if (e.key === 'ArrowRight') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+      }, [nextSlide, prevSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide goals={slide.learningGoals} onStart={nextSlide} />;
+          case 'hook': return <HookSlide headline={slide.headline} subtext={slide.subtext} />;
+          case 'content': return <ContentSlide title={slide.title} body={slide.body} />;
+          case 'visual': return <VisualSlide title={slide.title} visualType={slide.visualType} data={slide.data} />;
+          case 'valueRuleMockup': return <ValueRuleMockupSlide title={slide.title} rule={slide.rule} />;
+          case 'cards': return <CardsSlide title={slide.title} items={slide.items} />;
+          case 'quiz': return <QuizSlide question={slide.question} options={slide.options} onAnswer={nextSlide} />;
+          case 'completion': return <CompletionSlide title={slide.title} summary={slide.summary} onNext={() => window.location.href = `/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`} />;
+          default: return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction * 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction * -100 }} transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}>
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-neutral-200 z-50">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors">
+                <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </button>
+              <div className="flex gap-1.5">
+                {slides.map((_, i) => (<div key={i} className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-neutral-300'}`} />))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors text-white"><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>
