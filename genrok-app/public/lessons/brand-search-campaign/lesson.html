@@ -112,6 +112,120 @@
       </div>
     );
 
+    // Customer Journey Code-Style Component
+    const CustomerJourneySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gray-900 rounded-xl p-6 md:p-8 font-mono text-sm md:text-base overflow-x-auto">
+          <div className="text-green-400 space-y-1">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>customer.search("{data.brandName}")</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="pl-4">→ competitor.ad.appears()</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="pl-4">→ customer.clicks(competitor)</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="pl-4">→ you.lose($sale)</motion.p>
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="my-4 border-t border-gray-700 pt-4">
+            <p className="text-white mb-2">// With Brand Campaign:</p>
+          </motion.div>
+          <div className="text-green-400 space-y-1">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>customer.search("{data.brandName}")</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }} className="pl-4">→ your.ad.appears(position: 1)</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="pl-4">→ customer.clicks(you)</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} className="pl-4">→ you.win($sale)</motion.p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Fill-in-the-blank Templates Component
+    const TemplatesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.templates.map((template, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <h3 className="font-bold text-neutral-900 mb-3 text-sm uppercase tracking-wide">{template.label}</h3>
+              <div className="space-y-2">
+                {template.examples.map((example, j) => (
+                  <div key={j} className="bg-neutral-50 rounded-lg p-3 font-mono text-sm text-neutral-700">
+                    {example}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {data.tip && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-500 text-sm mt-4 italic">{data.tip}</motion.p>
+        )}
+      </div>
+    );
+
+    // Interactive Brand Campaign Builder Component
+    const BrandCampaignBuilderSlide = ({ data }) => {
+      const [brandName, setBrandName] = useState('');
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-6 mb-4">
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">Enter Your Brand Name</label>
+            <input
+              type="text"
+              placeholder="e.g., BlueWave Apparel"
+              value={brandName}
+              onChange={(e) => setBrandName(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-400 focus:border-amber-500 focus:outline-none transition-colors"
+            />
+          </motion.div>
+
+          {brandName && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-black border-2 border-amber-600 rounded-xl p-6 md:p-8 space-y-4">
+              <div className="border-b border-amber-900 pb-3 mb-4">
+                <h3 className="text-amber-400 font-bold text-lg mb-1">Your Brand Campaign</h3>
+                <p className="text-amber-600 text-xs">Auto-generated based on your brand name</p>
+              </div>
+
+              <div>
+                <p className="text-amber-600 text-xs font-semibold mb-1">CAMPAIGN NAME</p>
+                <p className="text-amber-300 font-mono text-sm">{brandName} - Brand Protection</p>
+              </div>
+
+              <div>
+                <p className="text-amber-600 text-xs font-semibold mb-1">KEYWORDS (EXACT MATCH)</p>
+                <div className="space-y-1">
+                  <p className="text-amber-300 font-mono text-sm">[{brandName}]</p>
+                  <p className="text-amber-300 font-mono text-sm">[{brandName} store]</p>
+                  <p className="text-amber-300 font-mono text-sm">[buy {brandName}]</p>
+                  <p className="text-amber-300 font-mono text-sm">[{brandName} shop]</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-amber-600 text-xs font-semibold mb-1">AD HEADLINE</p>
+                <p className="text-amber-300 text-sm">Official {brandName} Store | Shop Direct</p>
+              </div>
+
+              <div>
+                <p className="text-amber-600 text-xs font-semibold mb-1">DESCRIPTION</p>
+                <p className="text-amber-300 text-sm">Shop the official {brandName} collection. Free shipping on orders over $50. Authentic products, trusted service.</p>
+              </div>
+
+              <div className="border-t border-amber-900 pt-3 mt-4">
+                <p className="text-amber-600 text-xs font-semibold mb-1">DAILY BUDGET</p>
+                <p className="text-amber-300 text-sm">$5-10/day to start</p>
+              </div>
+            </motion.div>
+          )}
+
+          {!brandName && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-neutral-400 text-sm italic py-8">
+              Enter your brand name above to see your campaign preview
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
@@ -152,20 +266,28 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why customers Google your brand name after seeing your ads', 'How to capture them with low-cost brand search campaigns', 'Exact setup: Exact Match keywords only'] },
-      { type: 'hook', headline: 'Your Meta ads work. People remember you. Then they Google your brand name.', subtext: 'And your competitor shows up first. You paid for the awareness. They got the sale. Brand Search campaigns fix this. Low daily budget. Exact Match on your brand name. High conversion rates because they already know you. It is not magic. It is just owning your own name.' },
+      { type: 'hook', headline: 'Your Meta ads work. People remember you. Then they Google your brand name.', subtext: 'And your competitor shows up first. You do not even appear in the first results. You paid for the awareness. They got the sale. Brand Search campaigns fix this. Low daily budget. Exact Match on your brand name. High conversion rates because they already know you. It is not magic. It is just owning your own name.' },
+      { type: 'content', title: 'The Problem: Competitors Stealing Your Brand', body: 'Right now, your competitors are bidding on YOUR brand name in Google Ads. When someone searches for "YourBrand", their ads appear first. These are customers who already wanted to buy from YOU. They saw your Meta ad. They remembered you. They searched for you specifically. And you are losing them to competitors who hijacked your brand traffic. Money bleeding to competition for your own customers. This is the silent killer most stores ignore.' },
       { type: 'search-mockup', title: 'What Customers Actually See', searchQuery: 'BlueWave Apparel', results: [
         { isAd: true, title: 'Premium Clothing Store - Free Shipping', url: 'competitor-store.com', description: 'Shop trending styles at unbeatable prices. Your competitor paid to appear here when YOUR brand was searched.' },
         { isAd: false, title: 'BlueWave Apparel - Official Site', url: 'bluewaveapparel.com', description: 'Without a brand search campaign, you appear below the fold. Many never scroll this far.' }
       ]},
+      { type: 'customer-journey', title: 'The Customer Journey', brandName: 'YourBrand' },
       { type: 'content', title: 'What Is Brand Search?', body: 'Someone sees your Meta ad. They do not buy immediately. They Google your brand name 3 days later. If you are not bidding on your own name, guess who is? Your competitors. They steal the click. You lose the sale. Brand Search protects your traffic.' },
       { type: 'visual', title: 'The Customer Journey', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-11-14T112255.482.png?v=1763112213', caption: 'Meta ad → Memory → Google search → Competitor wins (if you are not there)' },
       { type: 'content', title: 'Why Brand Search Converts Well', body: 'These people already know you. They are not browsing. They searched YOUR name. That is buying intent. Brand search typically shows strong conversion rates because they already decided. You are just making sure they find YOU, not a competitor bidding on your brand.' },
+      { type: 'brand-campaign-builder', title: 'Build Your Brand Campaign' },
       { type: 'step-by-step', title: 'Campaign Setup (Copy This)', steps: [
-        { title: 'Create Search Campaign', description: 'Not Display. Not Shopping. Pure Search only in Google Ads.' },
+        { title: 'Open Google Ads', description: 'Go to ads.google.com and create a new campaign. Not Display. Not Shopping. Pure Search only.' },
         { title: 'Add Exact Match Keywords', description: '[YourBrand], [YourBrand Store], [YourBrand Shop]. Brackets = Exact Match.' },
         { title: 'Set Low Daily Budget', description: 'Start with $5-10/day. Low volume, high intent. Scale when profitable.' },
         { title: 'Bid on Your Name', description: 'Starting bid around $0.50/click. You are bidding on your own name. Usually cheap.' }
       ]},
+      { type: 'templates', title: 'Ad Copy Templates', templates: [
+        { label: 'Headlines (Fill In)', examples: ['Official [YourBrand] Store | Shop Direct', '[YourBrand] - Official Website', 'Shop [YourBrand] Today | Free Shipping'] },
+        { label: 'Descriptions (Fill In)', examples: ['Shop the official [YourBrand] collection. Authentic products, trusted service. Free shipping on orders over $50.', 'The real [YourBrand]. Not a reseller. Direct from the source. Shop now and save.'] }
+      ], tip: 'Replace [YourBrand] with your actual brand name. Keep it simple and trustworthy.' },
+      { type: 'gold-insight', title: 'The Brand Protection Formula', body: 'This is not about scaling. This is about defense. Every customer searching your brand name is yours to lose. Competitors know this. They are bidding on your name right now. $5-10/day protects infinite future revenue from brand awareness you already paid for. Set it once, let it run forever.' },
       { type: 'pro-tip', title: 'Start Small, Protect Always', body: 'Even if you only get 10 brand searches per day, protect them. This is not a scaling campaign - it is a defense campaign. Build a moat around your brand name.', action: 'Set it up once, let it run forever. As your Meta spend grows, brand searches grow with it.' },
       { type: 'example', scenario: 'Real Store: "BlueWave Apparel"', before: { label: 'No Brand Search', text: 'Meta ad → Customer Googles "BlueWave" → Sees competitor ad → Clicks → Lost sale to someone else' }, after: { label: 'With Brand Search', text: 'Meta ad → Customer Googles "BlueWave" → Sees BlueWave ad at top → Clicks → High conversion rate' }, insight: 'You spent $0.50 to capture a customer who already wanted YOU.' },
       { type: 'content', title: 'What If You Skip This?', body: 'Three things happen. Competitors bid on YOUR name. Affiliate sites rank for "[YourBrand] reviews" and send traffic elsewhere. Google Shopping shows competitor products when people search your brand. You lose sales to laziness. For a minimal daily budget, protect your name.' },
@@ -342,6 +464,18 @@
       );
     };
 
+    // Gold Insight Component (Black with Gold Border)
+    const GoldInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
+          <div className="bg-black border-2 rounded-2xl p-8 md:p-10" style={{ borderColor: '#B8860B' }}>
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl mb-6" style={{ color: '#D4AF37' }}>{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg leading-relaxed" style={{ color: '#D4AF37' }}>{data.body}</motion.p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -402,7 +536,11 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'search-mockup': return <SearchMockupSlide data={slide} />;
+          case 'customer-journey': return <CustomerJourneySlide data={slide} />;
+          case 'brand-campaign-builder': return <BrandCampaignBuilderSlide data={slide} />;
           case 'step-by-step': return <StepByStepSlide data={slide} />;
+          case 'templates': return <TemplatesSlide data={slide} />;
+          case 'gold-insight': return <GoldInsightSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

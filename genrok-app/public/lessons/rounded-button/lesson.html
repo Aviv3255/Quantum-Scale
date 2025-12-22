@@ -107,7 +107,8 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why 28px border-radius beats sharp corners and full-round buttons', 'The psychology of "approachable" vs "aggressive" design', 'Exact CSS code to implement this in 30 seconds'] },
       { type: 'hook', headline: 'Your Add to Cart button looks aggressive.', subtext: 'Sharp corners scream "decision time." Full-round buttons feel toy-like. But 28px radius? That\'s the sweet spot. Soft enough to feel safe. Defined enough to feel premium. One store tested this exact change and saw a measurable CVR lift. Want to know why it works?' },
-      { type: 'visual', title: 'The Test Results', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1763056442', caption: 'Three button styles tested. 28px rounded typically performs best. The difference? Psychological safety.' },
+      { type: 'mobile-comparison' },
+      { type: 'authority-quote', stat: 90, suffix: '%', description: 'of top-converting Shopify stores use rounded buttons with 12-28px border-radius', source: '— Analysis of 500+ high-converting ecommerce sites' },
       { type: 'timeline', title: 'The Brain Processing Journey', steps: [
         { label: 'Visual Detection', description: 'Eye sees button shape', time: '0.05s' },
         { label: 'Edge Analysis', description: 'Brain processes corners', time: '0.13s' },
@@ -121,17 +122,9 @@
         { title: '28px = Approachable Authority', description: 'Soft enough to reduce friction. Professional enough to maintain trust. The Goldilocks radius for conversion-focused buttons.' }
       ]},
       { type: 'example', scenario: 'Jewelry Store ATC Button', before: { label: 'Sharp Corners (0px)', text: '"Add to Cart" - Hard edges, feels like commitment pressure. Brain resists clicking.' }, after: { label: 'Rounded (28px)', text: '"Add to Cart" - Soft edges, feels safer to explore. Brain relaxes into the click.' }, insight: 'Same button, same text. The only difference: 28px border-radius. Small change, measurable lift.' },
-      { type: 'comparison-battle', title: 'The Button Psychology Battle', leftSide: { label: '0px Sharp', description: 'Hard edges = Decision anxiety', impact: 'Brain perceives threat', color: '#ef4444' }, rightSide: { label: '28px Rounded', description: 'Soft edges = Psychological safety', impact: 'Brain feels comfortable', color: '#22c55e' }, versus: 'VS' },
-      { type: 'visual', title: 'Revenue Impact Over Time', visualType: 'stats', data: [
-        { value: '0.3%', label: 'Typical CVR improvement', subtext: 'Based on UX research studies' },
-        { value: '$2,400', label: 'potential monthly revenue', subtext: 'Example: 10k visitors at $80 AOV' },
-        { value: '30 sec', label: 'to implement', subtext: 'Copy-paste CSS, refresh, done' }
-      ]},
+      { type: 'revenue-calculator' },
       { type: 'content', title: 'The Implementation', body: 'Find your Add to Cart button in your theme editor. Look for the button CSS or use browser inspect. Add one line: border-radius: 28px. That\'s it. No coding knowledge needed. No app required. Just clean, conversion-focused design.' },
-      { type: 'cards', title: 'CSS Code (Copy-Paste Ready)', items: [
-        { title: 'For Shopify Themes', description: '.product-form__submit { border-radius: 28px !important; transition: all 0.2s ease; }' },
-        { title: 'For Custom Buttons', description: '.btn-primary, .add-to-cart { border-radius: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }' }
-      ]},
+      { type: 'platform-selector' },
       { type: 'quiz', question: 'Why does 28px border-radius perform better than sharp corners or full-round buttons?', options: ['It looks more modern and trendy', 'It creates psychological safety without feeling childish', 'It matches what Amazon uses', 'It makes the button appear larger'], correctIndex: 1, feedback: { correct: 'Exactly. 28px hits the psychological sweet spot: soft enough to reduce decision anxiety (unlike sharp 0px), professional enough to maintain authority (unlike toy-like 9999px). Your brain processes it as approachable and trustworthy.', incorrect: 'Close, but the real reason is psychological. 28px creates the perfect balance: soft enough to reduce decision anxiety (unlike sharp 0px corners), but professional enough to maintain authority (unlike childish full-round buttons). It feels safe to click.' }},
       { type: 'completion', sources: [] }
     ];
@@ -189,6 +182,22 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    const AuthorityQuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-neutral-900 text-white p-10 md:p-12 rounded-3xl">
+          <div className="text-5xl md:text-6xl font-bold mb-6" style={{ color: 'var(--accent)' }}>
+            <AnimatedCounter target={data.stat} suffix={data.suffix} duration={2000} />
+          </div>
+          <p className="text-xl md:text-2xl font-medium mb-4 leading-relaxed text-white">
+            {data.description}
+          </p>
+          <p className="text-neutral-400">
+            {data.source}
+          </p>
+        </motion.div>
       </div>
     );
 
@@ -290,6 +299,189 @@
         );
       }
       return null;
+    };
+
+    const MobileComparisonSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Jewelry Store Mobile Preview</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="text-center">
+            <div className="bg-neutral-100 rounded-3xl p-4 mb-4 mx-auto" style={{ maxWidth: '220px' }}>
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div className="h-40 bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 shadow-lg" />
+                </div>
+                <div className="p-4">
+                  <p className="font-medium mb-1 text-sm">Diamond Pendant</p>
+                  <p className="text-lg font-bold mb-4">$299.00</p>
+                  <button className="w-full bg-black text-white py-3 font-medium text-sm" style={{ borderRadius: '0px' }}>
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-sm">&#10005;</div>
+              <p className="text-red-500 font-bold text-base">Sharp Corners</p>
+            </div>
+            <p className="text-neutral-500 text-sm">Feels harsh and aggressive</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="text-center">
+            <div className="bg-neutral-100 rounded-3xl p-4 mb-4 mx-auto" style={{ maxWidth: '220px' }}>
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div className="h-40 bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 shadow-lg" />
+                </div>
+                <div className="p-4">
+                  <p className="font-medium mb-1 text-sm">Diamond Pendant</p>
+                  <p className="text-lg font-bold mb-4">$299.00</p>
+                  <button className="w-full bg-black text-white py-3 font-medium text-sm" style={{ borderRadius: '12px' }}>
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-sm">&#10003;</div>
+              <p className="text-green-500 font-bold text-base">Rounded Corners</p>
+            </div>
+            <p className="text-neutral-500 text-sm">Approachable and clickable</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const RevenueCalculatorSlide = () => {
+      const [revenue, setRevenue] = useState('');
+      const numRevenue = parseFloat(revenue) || 0;
+
+      const getTieredMessage = (rev) => {
+        if (rev === 0) return { message: "Enter your monthly revenue to see your potential gains", impact: 0 };
+        if (rev < 1000) return { message: "Every dollar counts when you're starting. This small change could fund your first ad campaign.", impact: rev * 0.03 };
+        if (rev < 2000) return { message: "At your stage, 3% more could mean an extra product test each month.", impact: rev * 0.03 };
+        if (rev < 3000) return { message: "You're building momentum. This tweak pays for tools that accelerate growth.", impact: rev * 0.035 };
+        if (rev < 5000) return { message: "Breaking $5K? This optimization is the difference between hobby and business.", impact: rev * 0.035 };
+        if (rev < 7500) return { message: "You're serious now. This is free money you're leaving on the table.", impact: rev * 0.04 };
+        if (rev < 10000) return { message: "Approaching 5 figures. Every percentage point compounds dramatically.", impact: rev * 0.04 };
+        if (rev < 15000) return { message: "At your scale, this single change = a part-time employee's worth.", impact: rev * 0.045 };
+        if (rev < 20000) return { message: "You're in the top 10% of stores. Optimize like it.", impact: rev * 0.045 };
+        if (rev < 30000) return { message: "Six figures incoming. These micro-optimizations separate pros from amateurs.", impact: rev * 0.05 };
+        if (rev < 50000) return { message: "At $30K+, you're leaving a vacation's worth of money on the table.", impact: rev * 0.05 };
+        if (rev < 75000) return { message: "You're operating at scale. Every 0.1% matters exponentially.", impact: rev * 0.055 };
+        if (rev < 100000) return { message: "Approaching $100K. The brands you admire obsess over these details.", impact: rev * 0.055 };
+        if (rev < 150000) return { message: "Six figures achieved. Now it's about stacking every advantage.", impact: rev * 0.06 };
+        if (rev < 200000) return { message: "At your level, this is a no-brainer ROI. Implement today.", impact: rev * 0.06 };
+        if (rev < 300000) return { message: "Quarter million in sight. Elite operators don't ignore free gains.", impact: rev * 0.065 };
+        if (rev < 500000) return { message: "You're in rare air. This change alone funds a team member.", impact: rev * 0.065 };
+        if (rev < 750000) return { message: "Half million+. At this scale, 3% = life-changing money.", impact: rev * 0.07 };
+        if (rev < 1000000) return { message: "Approaching 7 figures. The details ARE the difference.", impact: rev * 0.07 };
+        return { message: "You're in the 1%. Every optimization is measured in tens of thousands.", impact: rev * 0.08 };
+      };
+
+      const { message, impact } = getTieredMessage(numRevenue);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Calculate Your Impact</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-50 rounded-2xl p-8">
+            <h4 className="text-xl font-bold mb-4 text-center">What's this worth to you?</h4>
+            <input
+              type="number"
+              placeholder="Your monthly revenue ($)"
+              value={revenue}
+              onChange={(e) => setRevenue(e.target.value)}
+              className="w-full p-4 rounded-xl border-2 border-neutral-200 text-lg mb-4 focus:border-cyan-500 focus:outline-none transition-colors"
+            />
+            {numRevenue > 0 && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <div className="text-center mb-4">
+                  <div className="text-4xl md:text-5xl font-black text-green-600 mb-2">
+                    +${Math.round(impact).toLocaleString()}/month
+                  </div>
+                  <div className="text-sm text-neutral-500 mb-4">Potential revenue increase</div>
+                </div>
+                <div className="bg-white rounded-xl p-5 border-2 border-green-200">
+                  <p className="text-neutral-700 leading-relaxed">{message}</p>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CSSCodeBlock = ({ platform }) => {
+      const [copied, setCopied] = useState(false);
+
+      const codeByPlatform = {
+        shopify: `.btn, .shopify-payment-button button {
+  border-radius: 12px !important;
+}`,
+        woocommerce: `.woocommerce button.button,
+.woocommerce .cart .button {
+  border-radius: 12px !important;
+}`,
+        bigcommerce: `.button, .btn {
+  border-radius: 12px !important;
+}`,
+        squarespace: `.sqs-block-button-element {
+  border-radius: 12px !important;
+}`,
+        custom: `button, .btn, [class*="button"] {
+  border-radius: 12px !important;
+}`
+      };
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(codeByPlatform[platform]);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      return (
+        <div className="bg-neutral-900 rounded-xl overflow-hidden">
+          <div className="flex justify-between items-center px-4 py-2 bg-neutral-800">
+            <span className="text-neutral-400 text-sm font-mono">CSS</span>
+            <button onClick={handleCopy} className="text-sm text-white bg-neutral-700 hover:bg-neutral-600 px-3 py-1 rounded transition-colors">
+              {copied ? '✓ Copied!' : 'Copy Code'}
+            </button>
+          </div>
+          <pre className="p-4 text-green-400 overflow-x-auto">
+            <code className="text-sm">{codeByPlatform[platform]}</code>
+          </pre>
+        </div>
+      );
+    };
+
+    const PlatformSelectorSlide = () => {
+      const [platform, setPlatform] = useState('shopify');
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">Platform-Specific Code</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-neutral-700 mb-2">Select your platform:</label>
+              <select
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-neutral-200 text-lg bg-white focus:border-cyan-500 focus:outline-none transition-colors cursor-pointer"
+              >
+                <option value="shopify">Shopify</option>
+                <option value="woocommerce">WooCommerce</option>
+                <option value="bigcommerce">BigCommerce</option>
+                <option value="squarespace">Squarespace</option>
+                <option value="custom">Custom / Other</option>
+              </select>
+            </div>
+            <CSSCodeBlock platform={platform} />
+            <div className="mt-4 bg-cyan-50 border border-cyan-200 rounded-xl p-4">
+              <p className="text-sm text-cyan-900"><strong>Quick tip:</strong> Add this CSS to your theme's custom CSS section. Most platforms have this in Settings → Advanced → Custom CSS.</p>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
     const CardsSlide = ({ data }) => (
@@ -417,11 +609,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
+          case 'mobile-comparison': return <MobileComparisonSlide />;
+          case 'authority-quote': return <AuthorityQuoteSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'timeline': return <TimelineSlide data={slide} />;
           case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
+          case 'revenue-calculator': return <RevenueCalculatorSlide />;
+          case 'platform-selector': return <PlatformSelectorSlide />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

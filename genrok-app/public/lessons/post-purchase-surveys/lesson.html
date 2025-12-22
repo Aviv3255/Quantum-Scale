@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Do You Actually Know Everything About Your Customers? | Quantum Scale</title>
+  <title>Time to Read Minds | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -38,11 +38,11 @@
 
     const LESSON_CONFIG = {
       id: 'post-purchase-surveys',
-      title: 'Do You Actually Know Everything About Your Customers?',
-      description: 'Why 90% of store owners are wrong about what makes customers buy - and how to fix it.',
+      title: 'Time to Read Minds',
+      description: 'The most powerful weapon in copy is knowing your audience. Here\'s how to read their minds for free.',
       accentColor: '#0ea5e9',
       duration: '8 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more data-driven strategies.' }
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more conversion strategies.' }
     };
 
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
@@ -86,6 +86,110 @@
       }, [target, duration]);
       return <span>{count}{suffix}</span>;
     };
+
+    const WorkflowSteps = () => {
+      const Step = ({ number, title }) => (
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + number * 0.15 }} className="flex flex-col items-center gap-2">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-white font-bold text-xl md:text-2xl" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)' }}>
+            {number}
+          </div>
+          <span className="text-neutral-700 font-semibold text-sm md:text-base">{title}</span>
+        </motion.div>
+      );
+      const Arrow = () => (
+        <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }} className="hidden md:block text-neutral-300 text-2xl">→</motion.div>
+      );
+      return (
+        <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
+          <Step number={1} title="Install" />
+          <Arrow />
+          <Step number={2} title="Configure" />
+          <Arrow />
+          <Step number={3} title="Monitor" />
+        </div>
+      );
+    };
+
+    const WorkflowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <WorkflowSteps />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-8 grid md:grid-cols-3 gap-4">
+          {data.steps.map((step, i) => (
+            <div key={i} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{step.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{step.description}</p>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    );
+
+    const WhaleVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center mb-6">
+          <img src={data.image || 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/whale-analysis.png'} alt="Whale Analysis" className="w-full max-w-md h-auto mb-4" style={{ objectFit: 'contain' }} />
+          <p className="text-neutral-700 text-lg font-semibold mb-2 text-center">{data.metaphor}</p>
+          <p className="text-neutral-600 text-sm text-center max-w-lg">{data.explanation}</p>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center text-neutral-500 text-sm">{data.insight}</motion.p>
+      </div>
+    );
+
+    const SurveyResultsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Survey Results</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
+              <span className="font-bold text-green-700">Motivations</span>
+            </div>
+            <ul className="space-y-2">
+              {data.motivations.map((item, i) => (
+                <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
+                  <span className="text-green-500 mt-1">•</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">!</div>
+              <span className="font-bold text-red-700">Fears</span>
+            </div>
+            <ul className="space-y-2">
+              {data.fears.map((item, i) => (
+                <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
+                  <span className="text-red-500 mt-1">•</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg">$</div>
+              <span className="font-bold text-blue-700">Price Point</span>
+            </div>
+            <div className="text-center py-4">
+              <div className="text-3xl font-bold text-blue-600">{data.priceRange}</div>
+              <p className="text-neutral-500 text-xs mt-2">Sweet spot they're willing to pay</p>
+            </div>
+          </motion.div>
+        </div>
+        {data.insight && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+            <p className="text-neutral-300 text-sm">{data.insight}</p>
+          </motion.div>
+        )}
+      </div>
+    );
 
     const SurveyPreviewSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -163,41 +267,26 @@
     );
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why 90-95% of store owners are completely wrong about their customers', 'How to discover what REALLY makes people buy (not what you think)', 'The exact questions to ask that reveal customer psychology'] },
-      { type: 'hook', headline: '90-95% of store owners are completely wrong about what makes customers buy.', subtext: 'They guess based on feelings. They assume based on opinions. They spend thousands on ads targeting the wrong people, saying the wrong things, at the wrong time. Meanwhile, the winning 5% know exactly who buys, why they buy, and how to get more of them. The difference? Data. Not guesses. Not gut feelings. Cold, hard customer data.' },
-      { type: 'content', title: 'The Expensive Guessing Game', body: 'Here\'s the brutal truth: Most marketing decisions are based on what the store owner THINKS will work. "I think customers care about fast shipping." "I think they want more product photos." "I think they found us on Instagram." But thinking isn\'t knowing. And when you guess wrong, you waste money, time, and opportunities. Every. Single. Day.' },
-      { type: 'insight-reveal', setup: 'What if you could know, with certainty, exactly why people buy from you?', insight: 'You Can', explanation: 'And 60-70% of customers will tell you - if you just ask them at the right time.' },
-      { type: 'content', title: 'What If You Could Just... Ask?', body: 'Imagine knowing exactly what triggered every purchase. What made them hesitate. What finally convinced them. Where they first saw you. How many times they needed to see your brand before buying. Their age. Their style preference. Their buying frequency. Not guessing. Knowing. That\'s the power of Post-Purchase Surveys.' },
-      { type: 'survey-preview', title: 'The Survey That Prints Money', question: 'How did you first hear about us?', options: ['Instagram Ad', 'Google Search', 'Friend Recommendation', 'TikTok Video'], insight: 'Appears right after checkout when customers are most willing to share. 60-70% actually complete these surveys.' },
-      { type: 'tip-cards', title: 'What Post-Purchase Surveys Reveal', tips: [
+      { type: 'welcome', learningGoals: ['Why knowing your audience is the most powerful weapon in copy', 'How to read your customers\' minds with post-purchase surveys', 'The exact method to uncover their motivations, fears, and price points'] },
+      { type: 'hook', headline: 'Time to read minds', subtext: 'The most powerful weapon in copy isn\'t clever wordplay or persuasion tricks. It\'s knowing exactly what your customer is thinking. Their deepest motivations. Their hidden fears. The price they\'re willing to pay. Post-purchase surveys give you that power - for free. After this lesson, you\'ll never guess again.' },
+      { type: 'content', title: 'Your Customers Already Know Everything', body: 'Your best copy already exists. Your customers wrote it. They know why they bought, what almost stopped them, what they were searching for, and how much they\'re willing to pay. The problem? You\'ve never asked them. Post-purchase surveys capture this goldmine of data automatically. Every sale becomes an insight. Every customer becomes a teacher.' },
+      { type: 'insight-reveal', setup: 'What if 85% of your customers told you exactly why they bought?', insight: 'They Will - If You Ask', explanation: 'Post-purchase surveys capture responses from 60-85% of customers. They WANT to tell you.' },
+      { type: 'survey-preview', title: 'The Survey That Prints Money', question: 'How did you first hear about us?', options: ['Instagram/TikTok', 'Google Search', 'A friend told me', 'Saw an ad'], insight: 'This single question reveals your TRUE acquisition channels - often shocking how different it is from analytics.' },
+      { type: 'survey-results', title: 'Real Survey Results: Fashion Brand', motivations: ['Express my personal style', 'Feel confident at events', 'Quality that lasts'], fears: ['Will it look cheap?', 'Will it fit properly?', 'Is this too trendy?'], priceRange: '$80-120', insight: 'Now you know EXACTLY what copy to write. Address their fears. Amplify their motivations. Price perfectly.' },
+      { type: 'content', title: 'The Psychology of Copy', body: 'Here\'s the secret pro copywriters know: Your customers already wrote your best copy. They just don\'t know it yet. Post-purchase surveys capture the exact words customers use to describe why they bought, what they were looking for, and what almost stopped them. This is "Voice of Customer" data - the goldmine that transforms mediocre copy into conversion machines.' },
+      { type: 'tip-cards', title: 'What Surveys Reveal', tips: [
         { title: 'Purchase Trigger', description: 'What specifically made them decide to buy RIGHT NOW instead of later or never.' },
         { title: 'Hidden Friction', description: 'What almost stopped them from purchasing - your conversion killers you never knew existed.' },
-        { title: 'True Source', description: 'Where they actually found you, not where you think they found you. Often surprising.' }
+        { title: 'True Source', description: 'Where they actually found you, not where analytics think they found you. Often shocking.' }
       ]},
-      { type: 'cards', title: 'Deep Customer Intelligence', items: [
-        { title: 'Impression Count', description: 'How many times they saw your brand before they trusted you enough to buy.' },
-        { title: 'Demographics', description: 'Real age ranges, locations, and preferences of your ACTUAL paying customers.' },
-        { title: 'Return Intent', description: 'Whether they plan to buy again and what would make them come back sooner.' }
-      ]},
-      { type: 'example', scenario: 'Men\'s Fashion Store - Survey Questions', before: { label: 'Guessing (Wrong)', text: 'Store owner assumes: "Our customers are 25-34, found us on Instagram, and bought because of our sale." Reality: Completely different audience buying for completely different reasons.' }, after: { label: 'Asking (Right)', text: 'Survey reveals: 75% are 35-44, found you on Google, and bought because your style communicates "wealth" not "style." They needed 10+ brand impressions before purchasing.' }, insight: 'After 20-30 responses, patterns are crystal clear - often the exact opposite of what you assumed.' },
-      { type: 'survey-preview', title: 'Example Survey Structure', question: 'What best describes your style preference?', options: ['Old Money Elegance', 'Rugged Masculine', 'Classic Timeless', 'Modern Streetwear'], insight: 'After 20-30 responses, you\'ll see clear patterns emerge. 75% might choose the same answer.' },
-      { type: 'content', title: 'The Pattern Recognition Game', body: 'Here\'s where it gets powerful. After 20-30 survey responses, you start seeing patterns. Clear, undeniable patterns. 75% of your buyers are in the same age range. 80% discovered you the same way. 65% care about the same specific thing. These patterns reveal your TRUE customer - not who you think they are, but who they actually are.' },
+      { type: 'example', scenario: '85% Survey Response - Real Results', before: { label: 'Guessing (Wrong)', text: 'Store owner assumes: "Our customers are 25-34, found us on Instagram, and bought because of our sale." Reality: Completely different audience buying for completely different reasons.' }, after: { label: 'Asking (Right)', text: '85% responded! Survey reveals: 75% are 35-44, found you on Google, and bought because your style communicates "confidence" not "trendy." They needed 10+ brand impressions before purchasing.' }, insight: 'After 20-30 responses, patterns are crystal clear - often the exact opposite of what you assumed.' },
+      { type: 'content', title: 'The Pattern Recognition Game', body: 'Here\'s where it gets powerful. After 20-30 survey responses, you start seeing patterns. Clear, undeniable patterns. 75% of your buyers share the same motivation. 80% have the same fear. 65% fall in the same price range. These patterns reveal your TRUE customer - not who you think they are, but who they actually are.' },
       { type: 'insight-reveal', setup: 'Want to go next level?', insight: 'Analyze Your Whales', explanation: 'Don\'t just analyze all customers. Analyze your TOP customers - the ones generating 95% of your profit.' },
-      { type: 'content', title: 'The Advanced Move: Analyze Your Whales', body: 'Pull the 200 customers who spent $2,000+ in the last 6 months. Now look at THEIR survey answers. Find the commonalities: same age range, same style preference, same concerns, same discovery path. Now you know exactly who to target. Specificity eliminates waste. When you know WHO buys and WHY, you stop guessing and start winning.' },
-      { type: 'stat-counter', title: 'The Data Transformation', stats: [
-        { value: 5, suffix: '%', label: 'Before', subtext: 'Conversion rate targeting everyone', animated: true },
-        { value: 23, suffix: '%', label: 'After', subtext: 'Conversion rate targeting proven buyers', animated: true },
-        { value: '4.6x', label: 'Result', subtext: 'Better results with survey insights', animated: false }
-      ]},
-      { type: 'content', title: 'Stop Guessing. Start Knowing.', body: 'Analytics show you WHAT happened. "200 people visited. 10 bought." Cool. But WHY did those 10 buy while 190 didn\'t? What convinced them? What almost stopped them? Where did they come from? How many times did they see you first? Analytics can\'t tell you. Only surveys can. And once you know the answers, your entire marketing strategy transforms overnight.' },
-      { type: 'tip-cards', title: 'The Snowball Effect', tips: [
-        { title: 'Month 1-2', description: 'You collect data and patterns emerge. Crystal clear insights about your ACTUAL customers.' },
-        { title: 'Month 3-4', description: 'You adjust targeting to match your best customers. Conversion rates start climbing.' },
-        { title: 'Month 5-6', description: 'You double down on what works. Competitors wonder how you\'re crushing it.' }
-      ]},
-      { type: 'tool', title: 'The #1 Post-Purchase Survey Tool', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Displays simple surveys right after checkout when customers are most willing to share. Easy setup, high response rates, actionable insights.', questions: ['How did you first hear about us?', 'What made you decide to buy today?', 'Was there anything that almost stopped you?', 'How many times did you see our brand before ordering?'], insight: 'Out of 100 responses, 95 might give the same answer - and it will probably be the opposite of what you assumed.' },
-      { type: 'quiz', question: 'What percentage of customers typically complete post-purchase surveys?', options: ['20-30%', '40-50%', '60-70%', '80-90%'], correctIndex: 2, feedback: { correct: 'Exactly right! 60-70% of customers complete post-purchase surveys when they\'re displayed right after checkout. That\'s incredibly high compared to other survey methods. Why? Because they just bought, they\'re engaged, and they\'re willing to share. This response rate gives you real, actionable data from your actual buyers.', incorrect: 'Not quite. The answer is 60-70% - which is remarkably high! Post-purchase surveys get exceptional response rates because they appear right after checkout when customers are most engaged and willing to share. This high response rate means you get real data from real buyers, not just guesses.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+      { type: 'whale-visual', title: 'Finding Your Whales', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/whale-customers.png', metaphor: 'Hunt the Whales, Not the Minnows', explanation: 'Your top 5% of customers generate 95% of your lifetime value. Find what makes THEM tick.', insight: 'Filter survey data by high-LTV customers. Their patterns reveal your golden segment.' },
+      { type: 'content', title: 'The Whale Analysis Method', body: 'Pull the 200 customers who spent $2,000+ in the last 6 months. Now look at THEIR survey answers. Find the commonalities: same motivations, same fears, same price tolerance. These are your whales. Now you know exactly who to target. When you know WHO your whales are and WHY they buy, you stop fishing for minnows and start landing giants.' },
+      { type: 'tool', title: 'Install and Start Reading Minds', toolName: 'Fairing Post-Purchase Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Displays simple surveys right after checkout when customers are most willing to share. Free to start, easy 5-minute setup, 60-85% response rates. Uncover motivations, fears, and price points.', questions: ['How did you first hear about us?', 'What almost stopped you from buying?', 'What were you looking for?', 'What convinced you to buy TODAY?'], insight: 'Install it. Ask the right questions. Start reading minds today.' },
+      { type: 'quiz', question: 'What\'s the most valuable insight post-purchase surveys reveal for copywriting?', options: ['Customer demographics only', 'Motivations, fears, and price tolerance', 'Just acquisition channels', 'Only customer satisfaction'], correctIndex: 1, feedback: { correct: 'Exactly right! Post-purchase surveys reveal the holy trinity of copy: what motivates customers to buy (use in headlines), what fears almost stopped them (address in body copy), and their price tolerance (position your offers perfectly). Demographics and channels are useful, but motivations and fears are the conversion goldmine.', incorrect: 'Not quite. While surveys reveal demographics and channels, the real copywriting goldmine is understanding motivations (what drives them to buy), fears (what almost stopped them), and price tolerance. These three insights let you write copy that resonates deeply and converts consistently.' }},
+      { type: 'completion', sources: [{ name: 'Fairing Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
     ];
 
     const Icons = {
@@ -359,8 +448,8 @@
                 ))}
               </ul>
             </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Add Post Purchase Surveys</span>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <span>Install Now - FREE</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
@@ -418,7 +507,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why 90% of store owners are guessing - and how the winning 5% use post-purchase surveys to know exactly who buys, why they buy, and how to get more of them. Stop guessing. Start knowing.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know how to read your customers' minds. Post-purchase surveys reveal their motivations, fears, and price tolerance - the holy trinity of conversion copy. Install the app, ask the right questions, and let your customers write your best copy for you. Stop guessing. Start knowing.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -490,9 +579,12 @@
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           case 'survey-preview': return <SurveyPreviewSlide data={slide} />;
+          case 'survey-results': return <SurveyResultsSlide data={slide} />;
           case 'insight-reveal': return <InsightRevealSlide data={slide} />;
           case 'tip-cards': return <TipCardsSlide data={slide} />;
           case 'stat-counter': return <StatCounterSlide data={slide} />;
+          case 'workflow': return <WorkflowSlide data={slide} />;
+          case 'whale-visual': return <WhaleVisualSlide data={slide} />;
           default: return null;
         }
       };

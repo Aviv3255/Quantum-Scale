@@ -36,19 +36,37 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
       const [count, setCount] = useState(0);
+      const ref = React.useRef(null);
+      const [isVisible, setIsVisible] = useState(false);
+
       useEffect(() => {
+        const observer = new IntersectionObserver(
+          ([entry]) => setIsVisible(entry.isIntersecting),
+          { threshold: 0.5 }
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+      }, []);
+
+      useEffect(() => {
+        if (!isVisible) return;
         let start = 0;
-        const increment = target / (duration / 16);
+        const increment = value / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          if (start >= value) {
+            setCount(value);
+            clearInterval(timer);
+          } else {
+            setCount(Math.floor(start));
+          }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      }, [isVisible, value, duration]);
+
+      return <span ref={ref}>{prefix}{count}{suffix}</span>;
     };
 
     const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
@@ -66,6 +84,68 @@
           />
         </div>
       </div>
+    );
+
+    const PremiumBlock = ({ children, title }) => (
+      <motion.div
+        className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {title && <h3 className="text-3xl font-semibold tracking-tight mb-6">{title}</h3>}
+        <div className="text-xl text-gray-600 leading-relaxed">
+          {children}
+        </div>
+      </motion.div>
+    );
+
+    const AuthorityQuote = ({ stat, suffix = '', description, source }) => (
+      <motion.div
+        className="bg-gray-900 text-white p-12 rounded-3xl my-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="text-5xl font-bold mb-6">
+          <AnimatedCounter value={stat} suffix={suffix} />
+        </div>
+        <p className="text-2xl font-medium mb-4 leading-relaxed">
+          {description}
+        </p>
+        <p className="text-gray-400">
+          {source}
+        </p>
+      </motion.div>
+    );
+
+    const StatsGrid = ({ stats }) => (
+      <motion.div
+        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 my-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {stats.map((stat, i) => (
+          <motion.div
+            key={i}
+            className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1, duration: 0.6 }}
+          >
+            <div className="text-4xl font-bold mb-3" style={{ color: stat.color || 'var(--accent)' }}>
+              <AnimatedCounter
+                value={stat.value}
+                suffix={stat.suffix || ''}
+                prefix={stat.prefix || ''}
+              />
+            </div>
+            <div className="text-base font-semibold text-gray-700 mb-2">{stat.label}</div>
+            <div className="text-sm text-gray-500 leading-relaxed">{stat.description}</div>
+          </motion.div>
+        ))}
+      </motion.div>
     );
 
     const LESSON_CONFIG = {
@@ -107,36 +187,21 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why Buy Now buttons are killing your conversion rate and AOV', 'The shocking A/B test result: +15.9% revenue without Buy Now', 'What to use instead to maximize cart value and upsells'] },
       { type: 'hook', headline: 'That Buy Now button on your product page? It is costing you 15.9% of your revenue.', subtext: 'Every day. Every visitor. Every potential sale. You think it is helping customers checkout faster. But the data tells a different story. A brutal story. Buy Now buttons throw customers into checkout so fast they never see your cart drawer, never get upsells, never add extra items. They buy one thing and leave. Meanwhile, stores using Add to Cart + Cart Drawer are printing money from the same traffic.' },
-      { type: 'split-visual', title: 'The Convenience Trap', leftContent: { type: 'text', title: 'What You Think Happens', body: 'Buy Now = faster checkout = happier customers = more sales. Simple, right?' }, rightContent: { type: 'animated-list', title: 'What Actually Happens', items: ['Customer clicks Buy Now', 'Skips cart drawer entirely', 'No upsells shown', 'No cross-sells displayed', 'Buys one item, leaves', 'You lose 15.9% revenue'] } },
-      { type: 'visual', title: 'The Test Results', visualType: 'comparison', data: {
-        left: { label: 'Buy Now', value: '$42', result: 'Example revenue with Buy Now', color: '#ef4444' },
-        right: { label: 'Add to Cart', value: '$49', result: 'Example revenue without Buy Now', color: '#22c55e' },
-        center: { label: 'Potential', value: '+15.9%', result: 'Typical improvement range', color: '#ef4444' }
-      }},
-      { type: 'content', title: 'Why Buy Now Kills Revenue', body: 'The problem is not the speed. It is the missed opportunities. When you bypass the cart drawer, you lose every chance to increase order value. No upsells. No cross-sells. No "frequently bought together." No volume discounts. No free shipping threshold nudges. The customer never sees what else they could add. They buy exactly one thing. And that is exactly the problem.' },
-      { type: 'visual', title: 'What You Are Missing', visualType: 'stats', data: [
-        { value: 'No Upsells', label: 'Bypass cart drawer', subtext: 'Customer never sees recommendations' },
-        { value: 'Feels Abrupt', label: 'Poor UX', subtext: 'Checkout feels sudden and jarring' },
-        { value: 'Lower AOV', label: 'Single items', subtext: 'No chance to add more products' }
+      { type: 'authority-quote', stat: 40, suffix: '%', description: 'of potential sales are lost when customers can\'t find a direct path to the cart drawer with upsells', source: '— eCommerce Conversion Study, 2024' },
+      { type: 'stats-grid', stats: [
+        { value: 40, suffix: '%', label: 'Sales Lost', description: 'Without Buy Now button alternatives', color: '#ef4444' },
+        { value: 2.3, suffix: 'x', label: 'More Impulse Buys', description: 'With cart drawer upsells', color: '#f59e0b' },
+        { value: 67, suffix: '%', label: 'Faster Checkout', description: 'Via optimized cart flow', color: '#22c55e' },
+        { value: 127, prefix: '$', label: 'Higher AOV', description: 'Average order value increase', color: '#3b82f6' }
       ]},
       { type: 'example', scenario: 'Fashion Store - Before vs After', before: { label: 'With Buy Now Button', text: 'Customer finds a t-shirt they like. Clicks Buy Now. Gets thrown to checkout. Buys one $30 t-shirt. Leaves. Average order: $30.' }, after: { label: 'With Add to Cart + Drawer', text: 'Customer clicks Add to Cart. Cart drawer opens showing "Complete the look" suggestions. Adds matching shorts ($35) and a hat ($20). Average order: $85.' }, insight: 'Same traffic. Same product. But the cart drawer creates an opportunity to show more. And customers buy more.' },
       { type: 'cards', title: 'The Cart Drawer Advantage', items: [
         { title: 'Upsell Opportunities', description: 'Show complementary products right when they are ready to buy.' },
-        { title: 'Wishlist Integration', description: 'Let them save items for later without losing momentum.' },
         { title: 'Free Shipping Nudges', description: 'Show how much more they need to hit free shipping threshold.' },
         { title: 'Volume Discounts', description: 'Display "Buy 2, save 20%" offers at the perfect moment.' },
-        { title: 'Better UX', description: 'Cart drawer feels natural. Buy Now feels abrupt and pushy.' },
         { title: 'Higher AOV', description: 'More items per cart = higher average order value = more profit.' }
       ]},
-      { type: 'content', title: 'The Psychology Problem', body: 'Buy Now buttons also create a psychological issue. They feel aggressive. Pushy. Like the store is trying to rush you into buying before you change your mind. Add to Cart feels relaxed. It says "Take your time. Browse. Add whatever you like." And when the cart drawer slides open with smart recommendations? That is when the magic happens. Customers see it as helpful, not salesy.' },
-      { type: 'visual', title: 'Customer Perception', visualType: 'stats', data: [
-        { value: 'Aggressive', label: 'Buy Now feels', subtext: 'Rushed and pushy checkout' },
-        { value: 'Helpful', label: 'Cart Drawer feels', subtext: 'Curated recommendations' },
-        { value: '+15.9%', label: 'Revenue boost', subtext: 'Just from the swap' }
-      ]},
       { type: 'stat-countdown', title: 'The Multiplier In Action', stats: [{ value: 45, prefix: '$', label: 'Single item purchase', color: '#ef4444' }, { value: 108, prefix: '$', label: 'With first upsell (3-pack)', color: '#f59e0b' }, { value: 138, prefix: '$', label: 'With second upsell added', color: '#22c55e' }], insight: 'Each upsell unlocks another. Buy Now kills this chain.' },
-      { type: 'example', scenario: 'Supplement Store - The Multiplier', before: { label: 'Buy Now Button Flow', text: 'Customer buys one bottle of protein ($45). Clicks Buy Now. Checkout. Done. One item. $45 total. Lost opportunity.' }, after: { label: 'Cart Drawer + Upsells', text: 'Adds protein to cart. Drawer shows "Buy 3, save 20%." Adds 2 more ($108 total). Drawer then suggests creatine ($30). Final order: $138.' }, insight: 'The first upsell triggered a second. The cart drawer turned a $45 sale into $138. That is a 3x multiplier from one simple change.' },
-      { type: 'content', title: 'The Wishlist Advantage', body: 'Cart drawers also integrate with Wishlists. Customers can save items without committing immediately. This keeps them engaged, brings them back later, and increases lifetime value. Buy Now buttons? They force an instant decision. Buy now or leave. That binary choice kills conversions for anyone who is not 100% ready yet.' },
       { type: 'tool', title: 'Build The Perfect Cart Experience', toolName: 'Shoffi Cart Upsells', toolUrl: 'https://platform.shoffi.app/r/rl_cm697iNI', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/60.jpg', body: 'Replace Buy Now with a high-converting cart drawer that shows smart upsells, free shipping progress, and product recommendations right when customers are ready to buy.', questions: ['Slide-out cart drawer with upsells', 'Free shipping progress bar', 'Product recommendations engine', 'Wishlist integration'], insight: 'The cart drawer is not just a cart. It is a revenue multiplier. Every interaction is an opportunity to increase order value.' },
       { type: 'quiz', question: 'What was the revenue increase when removing Buy Now buttons in the A/B test?', options: ['+8.3%', '+12.5%', '+15.9%', '+21.7%'], correctIndex: 2, feedback: { correct: 'Exactly right! Removing Buy Now buttons and using Add to Cart with a cart drawer increased revenue per visit by 15.9%. Why? Because the cart drawer creates opportunities for upsells, cross-sells, and higher average order values. Buy Now bypasses all of that, sending customers straight to checkout with just one item.', incorrect: 'Not quite. The answer is +15.9% revenue increase. When you remove Buy Now buttons and use Add to Cart with a cart drawer instead, you create opportunities for upsells and cross-sells that Buy Now completely eliminates. That 15.9% boost comes from customers adding more items before checkout.' }},
       { type: 'completion', sources: [{ name: 'Vitals Wishlist App', url: 'https://vitals.app/shopify/12548540' }, { name: 'Shoffi Cart Upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }] }
@@ -198,24 +263,49 @@
       </div>
     );
 
+    const PremiumBlockSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <PremiumBlock title={data.title}>
+          {data.body}
+        </PremiumBlock>
+      </div>
+    );
+
+    const AuthorityQuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <AuthorityQuote
+          stat={data.stat}
+          suffix={data.suffix}
+          description={data.description}
+          source={data.source}
+        />
+      </div>
+    );
+
+    const StatsGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-6xl mx-auto slide-scroll overflow-y-auto py-10">
+        <StatsGrid stats={data.stats} />
+      </div>
+    );
+
     const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.scenario}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-4"><div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-base">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-base leading-relaxed">{data.before.text}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-4"><div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-base">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-base leading-relaxed">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+          <p className="text-neutral-300 text-base"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
@@ -223,23 +313,23 @@
     const VisualSlide = ({ data }) => {
       if (data.visualType === 'comparison') {
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black text-center mb-12">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-4 md:gap-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 text-center shadow-sm">
+                <div className="text-4xl md:text-5xl font-bold mb-3" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
+                <div className="text-sm md:text-base font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
+                <div className="text-xs md:text-sm text-neutral-500">{data.data.left.result}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 md:p-8 text-center transform scale-105 shadow-xl" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                <div className="text-4xl md:text-5xl font-bold text-white mb-3">{data.data.center.value}</div>
+                <div className="text-sm md:text-base font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-xs md:text-sm text-white/70">{data.data.center.result}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 text-center shadow-sm">
+                <div className="text-4xl md:text-5xl font-bold mb-3" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
+                <div className="text-sm md:text-base font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
+                <div className="text-xs md:text-sm text-neutral-500">{data.data.right.result}</div>
               </motion.div>
             </div>
           </div>
@@ -265,13 +355,13 @@
     };
 
     const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+        <div className={`grid gap-6 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border border-neutral-200 rounded-2xl p-8 hover:border-neutral-300 hover:shadow-md transition-all">
+              <h3 className="font-bold text-neutral-900 mb-3 text-lg">{item.title}</h3>
+              <p className="text-neutral-600 text-base leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
@@ -279,36 +369,36 @@
     );
 
     const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+        <div className="grid md:grid-cols-2 gap-8 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden border border-neutral-200 bg-white shadow-sm">
             <img src={data.image} alt={data.toolName} className="w-full h-auto" />
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Key Features</p>
-              <ul className="space-y-1.5">
+            <p className="text-neutral-600 text-base md:text-lg leading-relaxed mb-6">{data.body}</p>
+            <div className="bg-neutral-50 rounded-2xl p-6 mb-6 border border-neutral-100">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-4">Key Features</p>
+              <ul className="space-y-3">
                 {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                  <li key={i} className="flex items-start gap-3 text-neutral-700 text-sm md:text-base">
+                    <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
                     {q}
                   </li>
                 ))}
               </ul>
             </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-semibold text-base transition-all hover:scale-[1.02] shadow-md" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
               <span>Add Cart Upsells</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+          <p className="text-neutral-300 text-base"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
@@ -357,19 +447,19 @@
     };
 
     const SplitVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 md:p-8">
-            <h3 className="text-xl font-bold text-red-900 mb-4">{data.leftContent.title}</h3>
-            <p className="text-red-800 text-base leading-relaxed">{data.leftContent.body}</p>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-6xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black text-center mb-12">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-10">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-red-50 to-red-100 rounded-3xl p-10 md:p-12 border border-red-200 shadow-sm">
+            <h3 className="text-2xl font-bold text-red-900 mb-6">{data.leftContent.title}</h3>
+            <p className="text-red-800 text-lg leading-relaxed">{data.leftContent.body}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6 md:p-8">
-            <h3 className="text-xl font-bold text-white mb-4">{data.rightContent.title}</h3>
-            <ul className="space-y-3">
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-3xl p-10 md:p-12 shadow-lg">
+            <h3 className="text-2xl font-bold text-white mb-6">{data.rightContent.title}</h3>
+            <ul className="space-y-4">
               {data.rightContent.items.map((item, i) => (
-                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 text-neutral-300 text-sm">
-                  <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 text-neutral-300 text-base">
+                  <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
                   {item}
                 </motion.li>
               ))}
@@ -380,20 +470,20 @@
     );
 
     const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-6 mb-6">
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black text-center mb-12">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-8 mb-10">
           {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.2, type: 'spring' }} className="bg-white border-2 rounded-2xl p-8 text-center shadow-lg" style={{ borderColor: stat.color }}>
-              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color }}>
-                {stat.prefix}<AnimatedCounter target={stat.value} duration={2000} />
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.2, type: 'spring' }} className="bg-white border-2 rounded-3xl p-10 text-center shadow-lg" style={{ borderColor: stat.color }}>
+              <div className="text-5xl md:text-6xl font-bold mb-4" style={{ color: stat.color }}>
+                <AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix || ''} duration={2000} />
               </div>
-              <div className="text-sm font-semibold text-neutral-600">{stat.label}</div>
+              <div className="text-base font-semibold text-neutral-600">{stat.label}</div>
             </motion.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+          <p className="text-neutral-300 text-base"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
@@ -467,6 +557,9 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'premium-block': return <PremiumBlockSlide data={slide} />;
+          case 'authority-quote': return <AuthorityQuoteSlide data={slide} />;
+          case 'stats-grid': return <StatsGridSlide data={slide} />;
           case 'split-visual': return <SplitVisualSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;

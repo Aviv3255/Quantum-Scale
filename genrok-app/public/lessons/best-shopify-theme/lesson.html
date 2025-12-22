@@ -107,20 +107,18 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why Shrine beat Impulse by 34.9% CVR in a real head-to-head test', 'The 4 conversion killers hiding in most Shopify themes', 'How mobile loading speed is the silent profit leak'] },
       { type: 'hook', headline: 'Two themes. Same products. Same traffic. One destroyed the other by 34.9% CVR.', subtext: 'Shrine vs Impulse. Both premium Shopify themes. Both trusted by thousands of stores. But when tested side-by-side on identical traffic, Shrine obliterated Impulse. Why? Speed. Simplicity. Strategic information architecture. While Impulse showed off features, Shrine got people buying.' },
-      { type: 'visual', title: 'The Head-to-Head Results', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/61.jpg?v=1763114928', caption: 'Same store, same products, same traffic. Shrine won by 34.9%. The difference? What happens in the first 3 seconds.' },
+      { type: 'theme-comparison', title: 'Performance Columns Comparison' },
       { type: 'visual', title: 'The Performance Difference', visualType: 'stats', data: [
         { value: '34.9%', label: 'CVR improvement observed', subtext: 'In documented case study' },
         { value: '2.1s', label: 'faster typical load time', subtext: 'Lean vs feature-heavy themes' },
         { value: '47%', label: 'fewer page elements', subtext: 'Cleaner, focused layouts' }
       ]},
-      { type: 'spotlight-card', title: 'The Speed Equation', mainStat: '70-80%', statLabel: 'of traffic is mobile', insight: 'Every extra second of mobile load time destroys 7-10% of conversions. Shrine loads in under 2 seconds. Impulse takes 4-6 seconds. The math is brutal.' },
-      { type: 'cards', title: 'The 4 Conversion Killers in Most Themes', items: [
-        { title: '1. Slow Mobile Load Times', description: 'Every second of delay = 7% CVR drop. Most themes load in 4-6 seconds on mobile. Shrine loads in under 2 seconds. Speed is profit.' },
-        { title: '2. Cluttered Product Pages', description: 'Too many tabs, too many sections, too much scrolling. Shrine puts critical info above the fold. Clean. Fast. Conversion-focused.' },
-        { title: '3. Distracting Navigation', description: 'Mega menus and sidebar widgets pull attention away from the buy button. Shrine minimizes distractions. Singular focus: add to cart.' },
-        { title: '4. Poor Above-Fold Info', description: 'Visitors shouldn\'t scroll to see price, reviews, or shipping info. Shrine front-loads value. Everything critical is visible immediately.' }
-      ]},
-      { type: 'example', scenario: 'Product Page Comparison', before: { label: 'Impulse (Bloated)', text: 'Hero image, then scroll for price. Scroll more for reviews. Mega menu at top. Sidebar widgets. Pop-ups. 5.3s mobile load.' }, after: { label: 'Shrine (Lean)', text: 'Hero + price + reviews + ATC button all above fold. Minimal nav. No distractions. 1.8s mobile load. Clean path to purchase.' }, insight: 'Same product. One layout murders conversion. The other optimizes for it.' },
+      { type: 'speed-killers', title: 'Speed Equation + 4 Conversion Killers', mainStat: '70-80%', statLabel: 'of traffic is mobile', killers: [
+        { title: 'Slow Mobile Load', description: 'Every second = 7% CVR drop. Shrine loads in 2s vs 4-6s.' },
+        { title: 'Cluttered Pages', description: 'Too many sections. Shrine puts critical info above fold.' },
+        { title: 'Distracting Nav', description: 'Mega menus pull attention from buy button.' },
+        { title: 'Poor Info Hierarchy', description: 'Price and reviews should be visible immediately.' }
+      ] },
       { type: 'icon-grid', title: 'Clean vs Cluttered', items: [
         { icon: 'zap', label: 'Fast Load', value: 'Shrine', color: '#22c55e' },
         { icon: 'target', label: 'Focused Layout', value: 'Shrine', color: '#22c55e' },
@@ -129,9 +127,10 @@
         { icon: 'slow', label: 'Heavy JS', value: 'Impulse', color: '#ef4444' },
         { icon: 'distract', label: 'Too Many Options', value: 'Impulse', color: '#ef4444' }
       ], insight: 'Shrine eliminates what doesn\'t convert. Impulse shows off features. One sells, one stalls.' },
-      { type: 'content', title: 'The Mobile-First Reality', body: '70-80% of your traffic is on mobile. Most themes are designed desktop-first, then squeezed into mobile. Shrine is mobile-first from the ground up. Faster load. Better UX. Clearer hierarchy. Mobile users don\'t browse - they buy or bounce. Shrine is built for that behavior.' },
+      { type: 'mobile-opinion', title: 'The Mobile-First Reality' },
+      { type: 'theme-cta', title: 'Ready to Upgrade Your Store?' },
       { type: 'quiz', question: 'What was the PRIMARY reason Shrine beat Impulse by 34.9% CVR?', options: ['Better color scheme and design aesthetics', 'More features and customization options', 'Faster mobile loading and cleaner product pages', 'Lower price point for the theme'], correctIndex: 2, feedback: { correct: 'Exactly. Speed and simplicity win. Shrine loaded 2.1 seconds faster on mobile, had 47% fewer distractions, and placed critical info (price, reviews, ATC) above the fold. Clean beats cluttered. Always.', incorrect: 'Not quite. The winning factor was speed + simplicity. Shrine loaded 2.1 seconds faster on mobile, reduced distractions by 47%, and placed all critical info (price, reviews, ATC button) above the fold. Features don\'t convert - frictionless experiences do.' }},
-      { type: 'completion', sources: [{ name: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }] }
+      { type: 'completion', sources: [{ name: 'Add Shrine to your store (Use code QUANTUMSCALE for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }] }
     ];
 
     // [Rest of the React components code from the template - Icons, WelcomeSlide, HookSlide, ContentSlide, ExampleSlide, VisualSlide, CardsSlide, QuizSlide, CompletionSlide, and LessonApp remain exactly the same as in the first lesson file]
@@ -318,6 +317,71 @@
       </div>
     );
 
+    const SpeedKillersSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-8 text-center">
+            <div className="text-5xl md:text-6xl font-black text-white mb-2">{data.mainStat}</div>
+            <div className="text-lg font-semibold text-green-100">{data.statLabel}</div>
+          </motion.div>
+          <div className="grid grid-cols-2 gap-3">
+            {data.killers.map((killer, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+                <h4 className="font-bold text-neutral-900 mb-1 text-sm">{killer.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{killer.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const MobileOpinionSlide = ({ data }) => {
+      const [copied, setCopied] = useState(false);
+      const code = 'QUANTUMSCALE';
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-8 mb-6">
+            <div className="text-center mb-6">
+              <div className="text-5xl font-bold text-green-500 mb-2">30%</div>
+              <p className="text-neutral-300">of our members already use Shrine or Impulse</p>
+            </div>
+            <div className="bg-neutral-800 rounded-xl p-4 mb-6">
+              <p className="text-neutral-300 text-sm leading-relaxed italic">
+                "70-80% of your traffic is on mobile. Most themes are designed desktop-first, then squeezed into mobile. Shrine is mobile-first from the ground up. Faster load. Better UX. Clearer hierarchy. Mobile users don't browse - they buy or bounce."
+              </p>
+              <p className="text-neutral-500 text-xs mt-2 text-right">- Quantum Scale Team</p>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-400 rounded-2xl p-6 text-center">
+            <p className="text-green-700 font-medium mb-2">Exclusive Member Discount</p>
+            <div className="text-2xl font-bold text-green-900 mb-3">15% OFF with code</div>
+            <div className="inline-flex items-center bg-white rounded-xl border-2 border-green-400 overflow-hidden">
+              <span className="px-6 py-3 font-mono text-xl font-bold tracking-wider text-green-700">
+                {code}
+              </span>
+              <button
+                onClick={handleCopy}
+                className="px-4 py-3 text-white font-medium transition-colors"
+                style={{ background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)' }}
+              >
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
     const IconGridSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -337,6 +401,140 @@
         </motion.div>
       </div>
     );
+
+    const ThemeComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gray-100 rounded-2xl p-8 text-center">
+            <h4 className="text-lg text-gray-500 mb-4">Standard Theme</h4>
+            <div className="text-5xl font-bold text-gray-700 mb-2">4.78%</div>
+            <p className="text-gray-500 mb-6">Conversion Rate</p>
+            <div className="space-y-2 text-left text-sm text-gray-600">
+              <p>• Basic product pages</p>
+              <p>• Standard checkout flow</p>
+              <p>• Generic trust signals</p>
+              <p>• Template mobile experience</p>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-8 text-center border-2 border-green-500 relative">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+              RECOMMENDED
+            </div>
+            <h4 className="text-lg text-green-600 mb-4">Optimized Theme</h4>
+            <div className="text-5xl font-bold text-green-600 mb-2">6.45%</div>
+            <p className="text-green-600 mb-2">Conversion Rate</p>
+            <div className="text-2xl font-bold text-green-700 mb-4">+34.9% Higher</div>
+            <div className="space-y-2 text-left text-sm text-green-700">
+              <p>&#10003; High-converting product pages</p>
+              <p>&#10003; Optimized checkout flow</p>
+              <p>&#10003; Built-in trust architecture</p>
+              <p>&#10003; Mobile-first experience</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const ThemeBenefitsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid gap-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <h3 className="font-bold text-neutral-900 mb-2 text-base">Speed Optimized (Core Web Vitals)</h3>
+            <p className="text-neutral-600 text-sm leading-relaxed">Built from the ground up for lightning-fast loading times. Passes Google's Core Web Vitals standards, which means better rankings and higher conversions.</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <h3 className="font-bold text-neutral-900 mb-2 text-base">Mobile-First Design</h3>
+            <p className="text-neutral-600 text-sm leading-relaxed">Designed for mobile screens first, then scaled up. This means your 70-80% mobile traffic gets the best possible experience instead of a desktop design squeezed down.</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <h3 className="font-bold text-neutral-900 mb-2 text-base">Built-in Upsell Sections</h3>
+            <p className="text-neutral-600 text-sm leading-relaxed">Pre-built sections for cross-sells, upsells, and bundles. Increase average order value without needing expensive apps or custom code.</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <h3 className="font-bold text-neutral-900 mb-2 text-base">Conversion-Focused Layouts</h3>
+            <p className="text-neutral-600 text-sm leading-relaxed">Every element is positioned to guide visitors toward the buy button. Clear information hierarchy, strategic white space, and minimal distractions.</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <h3 className="font-bold text-neutral-900 mb-2 text-base">Regular Updates and Support</h3>
+            <p className="text-neutral-600 text-sm leading-relaxed">Active development team constantly improving performance, fixing bugs, and adding new features. Plus dedicated support when you need help.</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const ThemeCTASlide = ({ data }) => {
+      const [copied, setCopied] = useState(false);
+      const code = 'QUANTUMSCALE';
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-400 rounded-2xl p-8 text-center mb-8 w-full max-w-md">
+            <p className="text-amber-700 font-medium mb-2">Exclusive Discount</p>
+            <div className="text-3xl font-bold text-amber-900 mb-2">15% OFF</div>
+            <p className="text-amber-700 mb-4">Use code at checkout:</p>
+
+            <div className="inline-flex items-center bg-white rounded-xl border-2 border-amber-400 overflow-hidden">
+              <span className="px-6 py-3 font-mono text-xl font-bold tracking-wider">
+                {code}
+              </span>
+              <button
+                onClick={handleCopy}
+                className="px-4 py-3 bg-amber-400 hover:bg-amber-500 transition-colors font-medium"
+              >
+                {copied ? '✓ Copied!' : 'Copy'}
+              </button>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col sm:flex-row gap-4 justify-center w-full">
+            <motion.a
+              href="https://themes.shopify.com/themes/impulse"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white text-lg"
+              style={{
+                background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Connect Impulse
+            </motion.a>
+            <motion.a
+              href="https://themes.shopify.com/themes/shrine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white text-lg"
+              style={{
+                background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Connect Shrine
+            </motion.a>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-neutral-500 text-sm text-center mt-6">
+            Both themes are conversion-optimized. Choose based on your brand aesthetic.
+          </motion.p>
+        </div>
+      );
+    };
 
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
@@ -408,7 +606,12 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'spotlight-card': return <SpotlightCardSlide data={slide} />;
+          case 'speed-killers': return <SpeedKillersSlide data={slide} />;
+          case 'mobile-opinion': return <MobileOpinionSlide data={slide} />;
           case 'icon-grid': return <IconGridSlide data={slide} />;
+          case 'theme-comparison': return <ThemeComparisonSlide data={slide} />;
+          case 'theme-benefits': return <ThemeBenefitsSlide data={slide} />;
+          case 'theme-cta': return <ThemeCTASlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;

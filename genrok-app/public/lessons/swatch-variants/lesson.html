@@ -50,30 +50,92 @@
       return <span>{count}{suffix}</span>;
     };
 
-    // Product Preview Component
-    const ProductPreviewSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="bg-neutral-100 rounded-xl aspect-square flex items-center justify-center">
-            <span className="text-6xl">{data.productEmoji || '👕'}</span>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-            <h3 className="font-bold text-xl mb-4">{data.productName}</h3>
-            <p className="text-neutral-600 mb-4">{data.description}</p>
-            <div className="mb-4">
-              <p className="text-sm font-medium text-neutral-500 mb-2">Color</p>
-              <div className="flex gap-2">
-                {data.colors.map((color, i) => (
-                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.1 }} className="w-8 h-8 rounded-full border-2 border-neutral-300 cursor-pointer hover:scale-110 transition-transform" style={{ background: color }} />
-                ))}
+    // High-Fidelity Product Preview Component
+    const ProductPreviewSlide = ({ data }) => {
+      const [selectedColor, setSelectedColor] = useState(0);
+      const colors = [
+        { name: 'black', hex: '#1a1a1a' },
+        { name: 'white', hex: '#ffffff' },
+        { name: 'navy', hex: '#1e3a5f' },
+        { name: 'red', hex: '#dc2626' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="max-w-md mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-2xl shadow-lg p-8 border border-neutral-200">
+              {/* Product Image */}
+              <motion.div
+                key={selectedColor}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="aspect-square bg-neutral-100 rounded-xl mb-6 flex items-center justify-center relative overflow-hidden"
+              >
+                <div className="w-32 h-40 rounded-lg" style={{ backgroundColor: colors[selectedColor].hex, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
+              </motion.div>
+
+              {/* Product Title */}
+              <h3 className="text-xl font-semibold mb-2">Premium Cotton T-Shirt</h3>
+              <p className="text-2xl font-bold mb-4">$49.00</p>
+
+              {/* Color Swatches */}
+              <div className="mb-6">
+                <p className="text-sm text-gray-500 mb-2">Color: <span className="capitalize">{colors[selectedColor].name}</span></p>
+                <div className="flex gap-3">
+                  {colors.map((color, i) => (
+                    <motion.button
+                      key={i}
+                      onClick={() => setSelectedColor(i)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      className={`w-10 h-10 rounded-full border-2 transition-all ${
+                        selectedColor === i
+                          ? 'border-black scale-110'
+                          : 'border-gray-200'
+                      }`}
+                      style={{ backgroundColor: color.hex }}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-            <p className="text-sm text-neutral-500 italic">{data.insight}</p>
-          </motion.div>
+
+              {/* Add to Cart */}
+              <button className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-neutral-800 transition-colors">
+                Add to Cart
+              </button>
+            </motion.div>
+
+            {/* Benefits List */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 bg-neutral-50 rounded-xl p-6">
+              <h4 className="font-bold text-neutral-900 mb-3 text-sm">Why Swatches Matter:</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span className="text-green-500 mt-0.5">&#10003;</span>
+                  <span>Reduces cognitive load</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span className="text-green-500 mt-0.5">&#10003;</span>
+                  <span>Increases engagement time</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span className="text-green-500 mt-0.5">&#10003;</span>
+                  <span>Higher conversion rates</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span className="text-green-500 mt-0.5">&#10003;</span>
+                  <span>Better mobile experience</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     // Comparison Grid Component
     const ComparisonGridSlide = ({ data }) => (
@@ -178,7 +240,7 @@
       { type: 'content', title: 'What Are Image Swatches?', body: 'Image swatches are small visual thumbnails showing each variant option. Instead of reading "Ocean Blue," customers see a tiny image of the actual blue color. Instead of imagining "Marble Pattern," they see the pattern. Click. Done. The brain processes images much faster than text. You are not just showing options. You are removing the mental translation step entirely.' },
       { type: 'product-preview', title: 'How Swatches Work', productEmoji: '👕', productName: 'Premium Cotton T-Shirt', description: 'Soft, breathable, perfect fit. Available in multiple colors.', colors: ['#000000', '#ffffff', '#001f3f', '#228b22', '#800020'], insight: 'Instant visual selection reduces hesitation and speeds up purchase decisions.' },
       { type: 'content', title: 'Why This Works: Cognitive Load Theory', body: 'Your customer\'s brain has limited processing capacity. Every tiny decision drains that capacity. "What does Forest Green look like?" "Is Navy Blue dark or light?" "Does Charcoal Gray match my style?" These micro-questions create hesitation. Hesitation creates doubt. Doubt kills sales. Image swatches eliminate the questions. They SEE it. They KNOW it. They BUY it.' },
-      { type: 'visual', title: 'The Visual Comparison', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', caption: 'Left: Text labels force imagination. Right: Image swatches show instant reality.' },
+      { type: 'visual', title: 'The Visual Comparison', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', caption: 'Text labels force imagination. Image swatches show instant reality.' },
       { type: 'cards', title: 'Why Image Swatches Win', items: [
         { title: 'Instant Recognition', description: 'Brain processes images much faster than text. See it. Click it. Done.' },
         { title: 'Zero Imagination Required', description: 'No mental translation. No "what does that look like?" confusion.' },
@@ -194,7 +256,7 @@
         { title: 'Materials', description: 'Leather, suede, canvas - texture matters and images communicate it.' },
         { title: 'Styles', description: 'Different cuts, collars, or designs shown as mini previews.' }
       ]},
-      { type: 'example', scenario: 'Fashion Store Implementing Swatches', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
+      { type: 'example', scenario: 'The Customer Experience Difference', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
       { type: 'content', title: 'The Implementation Reality Check', body: 'Here is the good news: Most Shopify themes already support image swatches natively. You do not need custom code. You do not need a developer. You just need product images for each variant. Upload them. Enable swatches in theme settings. Done. 10 minutes of work for a conversion boost that compounds forever.' },
       { type: 'content', title: 'The Premium Perception Bonus', body: 'Beyond conversion rates, image swatches make your store look more professional. Compare Amazon (text dropdowns) to luxury brands (visual swatches). Which feels premium? Which builds trust? Visual swatches signal quality and attention to detail. Customers subconsciously associate this polish with product quality. It is not just about UX. It is about brand perception.' },
       { type: 'tool', title: 'Easiest Way to Add Swatches', toolName: 'Section Factory', toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', body: 'Drag-and-drop visual variant swatches for any product. No coding required. Works with your existing theme. Mobile-optimized. Lightning fast.', questions: ['Do your products have color or pattern variants?', 'Are customers hesitating at the variant selection step?', 'Do you want to look more premium and convert better?'], insight: 'One-time setup. Permanent conversion boost. The swatches work 24/7 removing friction you did not know existed.' },
@@ -348,8 +410,8 @@
                 ))}
               </ul>
             </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Add Swatches to your store</span>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <span>Add Swatches to Your Store</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
