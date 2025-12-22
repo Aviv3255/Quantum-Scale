@@ -1,610 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Magic Show Test: Influence vs Manipulation</title>
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #FFFFFF;
-            color: #111827;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 24px;
-            color: #000000;
-        }
-
-        .subtitle {
-            font-size: 20px;
-            color: #6B7280;
-            margin-bottom: 48px;
-            line-height: 1.6;
-        }
-
-        .section {
-            margin: 80px 0;
-        }
-
-        h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #000000;
-        }
-
-        p {
-            font-size: 18px;
-            color: #374151;
-            margin-bottom: 24px;
-            line-height: 1.8;
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #FEF3C7 0%, #FDE68A 100%);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .split-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin: 60px 0;
-            position: relative;
-        }
-
-        .split-comparison::before {
-            content: 'VS';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 16px 24px;
-            border-radius: 50%;
-            border: 3px solid #E5E7EB;
-            font-weight: 800;
-            font-size: 20px;
-            color: #6B7280;
-            z-index: 10;
-        }
-
-        .split-card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            border: 3px solid;
-            position: relative;
-        }
-
-        .split-card.bad {
-            border-color: #EF4444;
-            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
-        }
-
-        .split-card.good {
-            border-color: #10B981;
-            background: linear-gradient(135deg, #ECFDF5 0%, #FFFFFF 100%);
-        }
-
-        .split-icon {
-            font-size: 56px;
-            margin-bottom: 20px;
-        }
-
-        .split-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .split-card.bad .split-title {
-            color: #DC2626;
-        }
-
-        .split-card.good .split-title {
-            color: #059669;
-        }
-
-        .split-definition {
-            font-size: 16px;
-            color: #6B7280;
-            margin-bottom: 24px;
-            padding: 16px;
-            background: rgba(255,255,255,0.7);
-            border-radius: 12px;
-            font-style: italic;
-        }
-
-        .example-list {
-            list-style: none;
-        }
-
-        .example-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 16px;
-            padding: 12px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 8px;
-        }
-
-        .example-bullet {
-            font-size: 20px;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .example-text {
-            font-size: 15px;
-            color: #374151;
-            line-height: 1.6;
-        }
-
-        .magic-show-box {
-            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-            border-radius: 24px;
-            padding: 60px 40px;
-            margin: 80px 0;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .magic-show-box::before {
-            content: '✨';
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.05;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .magic-show-box h2 {
-            color: white;
-            font-size: 36px;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .magic-show-box p {
-            color: #CBD5E1;
-            font-size: 20px;
-            line-height: 1.8;
-            position: relative;
-            z-index: 1;
-        }
-
-        .question-card {
-            background: white;
-            border: 2px solid #E5E7EB;
-            border-radius: 20px;
-            padding: 32px;
-            margin: 24px 0;
-            border-left: 6px solid #3B82F6;
-        }
-
-        .question-card h3 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1E40AF;
-            margin-bottom: 16px;
-        }
-
-        .answer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .answer-option {
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .answer-option.manipulation {
-            border-color: #EF4444;
-            background: #FEF2F2;
-            color: #7F1D1D;
-        }
-
-        .answer-option.education {
-            border-color: #10B981;
-            background: #ECFDF5;
-            color: #065F46;
-        }
-
-        .answer-label {
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .stat-highlight {
-            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 64px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-        }
-
-        .stat-label {
-            font-size: 18px;
-            color: #6B7280;
-            font-weight: 600;
-        }
-
-        .callout {
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-            border-left: 4px solid #F59E0B;
-            border-radius: 12px;
-            padding: 32px;
-            margin: 40px 0;
-        }
-
-        .callout-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #92400E;
-            margin-bottom: 12px;
-        }
-
-        .callout-text {
-            font-size: 17px;
-            color: #78350F;
-            line-height: 1.7;
-        }
-
-        .principle-box {
-            background: white;
-            border: 3px solid #10B981;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 60px 0;
-        }
-
-        .principle-box h3 {
-            font-size: 24px;
-            font-weight: 800;
-            color: #059669;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .principle-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #E5E7EB;
-        }
-
-        .principle-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .principle-number {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-            margin-right: 16px;
-        }
-
-        .principle-text {
-            font-size: 16px;
-            color: #374151;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-            }
-
-            h2 {
-                font-size: 28px;
-            }
-
-            .split-comparison {
-                grid-template-columns: 1fr;
-            }
-
-            .split-comparison::before {
-                content: '↕';
-                top: 50%;
-            }
-
-            .answer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 40px 20px;
-            }
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.8s cubic-bezier(0.25, 0.4, 0.25, 1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Magic Show Test: Influence vs Manipulation | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #10B981; --accent-dark: #059669; --accent-light: #34D399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="fade-up">
-            <span class="badge">Ethical Marketing</span>
-            <h1>The Magic Show Test: Influence vs Manipulation</h1>
-            <p class="subtitle">One simple question that separates ethical persuasion from manipulative tactics—and why it matters for your brand's survival.</p>
-        </div>
-
-        <div class="section fade-up">
-            <h2>Here's the uncomfortable truth.</h2>
-            <p>Every brand is influencing customers.</p>
-            <p>Every ad. Every product page. Every email.</p>
-            <p>You're guiding decisions. Shaping perceptions. Persuading people to buy.</p>
-            <p>But there's a line.</p>
-            <p>On one side: <span class="highlight">ethical influence that builds trust</span>.</p>
-            <p>On the other: <span class="highlight">manipulation that destroys it</span>.</p>
-            <p>Most brands can't tell the difference.</p>
-        </div>
-
-        <div class="stat-highlight fade-up">
-            <div class="stat-number">35,000</div>
-            <div class="stat-label">Decisions the average person makes per day</div>
-        </div>
-
-        <div class="section fade-up">
-            <p>With 35,000 decisions a day, your customers rely on mental shortcuts.</p>
-            <p>Social proof. Scarcity. Authority. Reciprocity.</p>
-            <p>These shortcuts are REAL. They work because they're based on genuine human psychology.</p>
-            <p>But here's where it gets dangerous:</p>
-            <p><strong>You can use real psychology to provide reliable information.</strong></p>
-            <p><strong>Or you can use it to exploit with counterfeit evidence.</strong></p>
-        </div>
-
-        <div class="split-comparison fade-up">
-            <div class="split-card bad">
-                <div class="split-icon">🎭</div>
-                <div class="split-title">Manipulation</div>
-                <div class="split-definition">Influencing for YOUR benefit without their consent</div>
-                <ul class="example-list">
-                    <li class="example-item">
-                        <span class="example-bullet">✗</span>
-                        <span class="example-text">Fake reviews from bots</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✗</span>
-                        <span class="example-text">"Only 2 left!" when you have 500 in stock</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✗</span>
-                        <span class="example-text">Fake countdown timers that reset</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✗</span>
-                        <span class="example-text">"10,000 sold!" when it's 47</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✗</span>
-                        <span class="example-text">Hidden subscription fine print</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="split-card good">
-                <div class="split-icon">📚</div>
-                <div class="split-title">Education</div>
-                <div class="split-definition">Influencing for THEIR benefit with their consent</div>
-                <ul class="example-list">
-                    <li class="example-item">
-                        <span class="example-bullet">✓</span>
-                        <span class="example-text">Real reviews from verified buyers</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✓</span>
-                        <span class="example-text">Honest low-stock alerts based on real inventory</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✓</span>
-                        <span class="example-text">Clear value proposition with honest benefits</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✓</span>
-                        <span class="example-text">Transparent social proof from actual customers</span>
-                    </li>
-                    <li class="example-item">
-                        <span class="example-bullet">✓</span>
-                        <span class="example-text">Upfront pricing with no hidden fees</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="magic-show-box fade-up">
-            <h2>The Magic Show Test</h2>
-            <p>Frame your branding as a magic show.</p>
-            <p>Is your audience IN ON THE JOKE—willingly suspending disbelief because they're entertained?</p>
-            <p>Or are you CONVINCING THEM THE MAGIC IS REAL—deceiving them for your gain?</p>
-            <p>That's the difference between education and manipulation.</p>
-        </div>
-
-        <div class="section fade-up">
-            <h2>Apply the Test to Your Marketing</h2>
-        </div>
-
-        <div class="question-card fade-up">
-            <h3>Scenario 1: Scarcity Messaging</h3>
-            <div class="answer-grid">
-                <div class="answer-option manipulation">
-                    <div class="answer-label">❌ Manipulation</div>
-                    "Only 3 left in stock!" (you have 300 units, timer resets for every visitor)
-                </div>
-                <div class="answer-option education">
-                    <div class="answer-label">✅ Education</div>
-                    "12 in stock at this location, restocking next Tuesday" (real inventory data)
-                </div>
-            </div>
-        </div>
-
-        <div class="question-card fade-up">
-            <h3>Scenario 2: Social Proof</h3>
-            <div class="answer-grid">
-                <div class="answer-option manipulation">
-                    <div class="answer-label">❌ Manipulation</div>
-                    "47,000 happy customers!" (fake number, no verification, bots wrote reviews)
-                </div>
-                <div class="answer-option education">
-                    <div class="answer-label">✅ Education</div>
-                    "4.8/5 stars from 247 verified buyers" (linked to actual purchase records)
-                </div>
-            </div>
-        </div>
-
-        <div class="question-card fade-up">
-            <h3>Scenario 3: Urgency</h3>
-            <div class="answer-grid">
-                <div class="answer-option manipulation">
-                    <div class="answer-label">❌ Manipulation</div>
-                    "Sale ends tonight!" (sale has been running for 6 months, will continue tomorrow)
-                </div>
-                <div class="answer-option education">
-                    <div class="answer-label">✅ Education</div>
-                    "20% off until Dec 25, then back to regular price" (real end date, honored)
-                </div>
-            </div>
-        </div>
-
-        <div class="section fade-up">
-            <h2>Why This Actually Matters</h2>
-            <p>You might think: "But manipulation works! People fall for it!"</p>
-            <p>Short term? Sure.</p>
-            <p>Long term? It destroys your brand.</p>
-            <p>Because customers aren't stupid.</p>
-            <p>They catch on. They feel tricked. They tell others. They never come back.</p>
-            <p><strong>Manipulation is a sprint. Education is a marathon.</strong></p>
-            <p>And in DTC, where customer lifetime value determines survival, you need the marathon.</p>
-        </div>
-
-        <div class="callout fade-up">
-            <div class="callout-title">⚡ The Reality</div>
-            <div class="callout-text">Every manipulative tactic might win you ONE sale. But it costs you 10 future sales. The math doesn't work—unless you're planning to shut down next year.</div>
-        </div>
-
-        <div class="principle-box fade-up">
-            <h3>The Ethical Persuasion Principles</h3>
-            <div class="principle-item">
-                <div class="principle-number">1</div>
-                <div class="principle-text"><strong>Never fake the evidence.</strong> Use real data, real reviews, real inventory counts. If you can't prove it, don't claim it.</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-number">2</div>
-                <div class="principle-text"><strong>Make the benefit theirs, not yours.</strong> Does this tactic help THEM make a better decision? Or just trick them into buying?</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-number">3</div>
-                <div class="principle-text"><strong>The magic show test.</strong> Are they in on it? Or are you deceiving them? If you'd be embarrassed to explain how it works, it's manipulation.</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-number">4</div>
-                <div class="principle-text"><strong>Build for repeats, not one-offs.</strong> Every decision should strengthen trust for the NEXT purchase, not just secure this one.</div>
-            </div>
-            <div class="principle-item">
-                <div class="principle-number">5</div>
-                <div class="principle-text"><strong>Transparency wins.</strong> When in doubt, be MORE honest than necessary. It's the only sustainable competitive advantage.</div>
-            </div>
-        </div>
-
-        <div class="callout fade-up" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border-left-color: #10B981;">
-            <div class="callout-title" style="color: #065F46;">🎯 Your Move</div>
-            <div class="callout-text" style="color: #064E3B;">Audit your website right now. Every claim. Every countdown. Every review. Ask: "Is this education or manipulation?" If you hesitate even for a second—change it. Your long-term survival depends on it.</div>
-        </div>
-    </div>
-
-    <script>
-        // Scroll animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-up').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const LESSON_CONFIG = {
+      id: 'ethical-persuasion-compass',
+      title: 'The Magic Show Test: Influence vs Manipulation',
+      description: 'One simple question that separates ethical persuasion from manipulative tactics.',
+      accentColor: '#10B981',
+      duration: '8 min',
+      nextLesson: { id: 'two-worlds-mastery', title: 'The Two Worlds Every DTC Founder Must Master', teaser: 'Why most founders plateau by living in only one world.' }
+    };
+    const celebrationGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4','https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const empathyGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4','https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    const slides = [
+      { type: 'welcome', learningGoals: ['The difference between manipulation and ethical influence', 'The Magic Show Test framework for decision-making', 'Five principles for building sustainable trust'] },
+      { type: 'hook', headline: 'Every brand is influencing customers. But there is a line.', subtext: 'Every ad. Every product page. Every email. You are guiding decisions. Shaping perceptions. Persuading people to buy. On one side: ethical influence that builds trust. On the other: manipulation that destroys it. Most brands cannot tell the difference.' },
+      { type: 'visual', visualType: 'stats', title: 'The Decision Overload', data: [{ value: '35,000', label: 'Daily Decisions', subtext: 'Average person makes per day' },{ value: '100%', label: 'Mental Shortcuts', subtext: 'Everyone relies on them' },{ value: '2x', label: 'The Choice', subtext: 'Use psychology ethically or exploit it' }]},
+      { type: 'content', title: 'The Psychology Everyone Uses', body: 'With 35,000 decisions a day, your customers rely on mental shortcuts. Social proof. Scarcity. Authority. Reciprocity. These shortcuts are REAL. They work because they are based on genuine human psychology. But here is where it gets dangerous: You can use real psychology to provide reliable information. Or you can use it to exploit with counterfeit evidence.' },
+      { type: 'example', scenario: 'Manipulation vs Education', before: { label: 'Manipulation', text: 'Influencing for YOUR benefit without their consent. Fake reviews from bots. Only 2 left when you have 500. Fake countdown timers that reset. 10,000 sold when it is 47. Hidden subscription fine print.' }, after: { label: 'Education', text: 'Influencing for THEIR benefit with their consent. Real reviews from verified buyers. Honest low-stock alerts. Clear value proposition. Transparent social proof. Upfront pricing with no hidden fees.' }, insight: 'Manipulation wins one sale. Education builds lifetime value.' },
+      { type: 'content', title: 'The Magic Show Test', body: 'Frame your branding as a magic show. Is your audience IN ON THE JOKE—willingly suspending disbelief because they are entertained? Or are you CONVINCING THEM THE MAGIC IS REAL—deceiving them for your gain? That is the difference between education and manipulation. When customers feel tricked, they leave and never come back.' },
+      { type: 'cards', title: 'Apply the Test to Common Scenarios', items: [{ title: 'Scarcity - Manipulation', description: 'Only 3 left in stock! (You have 300 units, timer resets for every visitor)' },{ title: 'Scarcity - Education', description: '12 in stock at this location, restocking next Tuesday (Real inventory data)' },{ title: 'Social Proof - Manipulation', description: '47,000 happy customers! (Fake number, no verification, bots wrote reviews)' },{ title: 'Social Proof - Education', description: '4.8/5 stars from 247 verified buyers (Linked to actual purchase records)' },{ title: 'Urgency - Manipulation', description: 'Sale ends tonight! (Sale has been running for 6 months, will continue tomorrow)' },{ title: 'Urgency - Education', description: '20% off until Dec 25, then back to regular price (Real end date, honored)' }]},
+      { type: 'content', title: 'Why This Actually Matters', body: 'You might think: But manipulation works! People fall for it! Short term? Sure. Long term? It destroys your brand. Because customers are not stupid. They catch on. They feel tricked. They tell others. They never come back. Manipulation is a sprint. Education is a marathon. And in DTC, where customer lifetime value determines survival, you need the marathon.' },
+      { type: 'cards', title: 'The Ethical Persuasion Principles', items: [{ title: '1. Never Fake Evidence', description: 'Use real data, real reviews, real inventory counts. If you cannot prove it, do not claim it.' },{ title: '2. Make Benefit Theirs', description: 'Does this tactic help THEM make a better decision? Or just trick them into buying?' },{ title: '3. The Magic Show Test', description: 'Are they in on it? Or are you deceiving them? If you would be embarrassed to explain how it works, it is manipulation.' },{ title: '4. Build for Repeats', description: 'Every decision should strengthen trust for the NEXT purchase, not just secure this one.' },{ title: '5. Transparency Wins', description: 'When in doubt, be MORE honest than necessary. It is the only sustainable competitive advantage.' }]},
+      { type: 'quiz', question: 'What is the key difference between manipulation and education?', options: ['Manipulation uses psychology, education does not', 'Manipulation benefits you without their consent, education benefits them with consent', 'Manipulation is illegal, education is legal', 'There is no real difference'], correctIndex: 1, feedback: { correct: 'Exactly. This is the core distinction. Manipulation uses psychological triggers for YOUR benefit without the customer truly understanding or consenting. Education uses the same psychology to help THEM make better decisions with full transparency. Both influence behavior—but only one builds sustainable trust.', incorrect: 'Not quite. Both manipulation and education use the same psychological principles—social proof, scarcity, authority. The difference is intent and transparency. Manipulation benefits YOU without their true consent. Education benefits THEM with full transparency. One destroys trust. One builds it.' }},
+      { type: 'completion', sources: [] }
+    ];
+    const Icons = {Clock:()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,Check:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,X:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,ArrowLeft:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,ArrowRight:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,Zap:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,ExternalLink:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,Link:()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>};
+    const WelcomeSlide=({data,onStart,userName,onShowGif,onHideGif})=>{const welcomeData=useMemo(()=>getTimeBasedWelcome(),[]);const gifSide=useMemo(()=>Math.random()>0.5?'left':'right',[]);useEffect(()=>{onShowGif(welcomeData.gif,'65%',gifSide);return()=>onHideGif();},[welcomeData.gif,gifSide,onShowGif,onHideGif]);return(<div className="h-full w-full relative overflow-hidden"><div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20"><motion.h1 initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1><motion.p initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{__html:formatGreeting(welcomeData.greeting,`<span class="font-bold text-neutral-900">${userName}</span>`)}}/><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.15}} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock/><span>{LESSON_CONFIG.duration}</span></motion.div><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.2}} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto"><p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p><ul className="space-y-1.5 md:space-y-2">{data.learningGoals.map((goal,i)=>(<motion.li key={i} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{delay:0.25+i*0.05}} className="flex items-start gap-2 text-left"><span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{background:`linear-gradient(135deg, var(--accent), var(--accent-dark))`}}>{i+1}</span><span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span></motion.li>))}</ul></motion.div><motion.button initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.45}} onClick={onStart} whileHover={{scale:1.02}} whileTap={{scale:0.98}} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{background:`linear-gradient(135deg, var(--accent), var(--accent-dark))`}}>Let's Go</motion.button></div></div>);};
+    const HookSlide=({data})=>(<div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10"><motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} className="mb-6"><span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{background:`rgba(var(--accent-rgb), 0.1)`,color:'var(--accent)'}}>The Hook</span><h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2></motion.div><motion.p initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.15}} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p></div>);
+    const ContentSlide=({data})=>(<div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10"><motion.h2 initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2><motion.p initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p></div>);
+    const ExampleSlide=({data})=>(<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8"><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} className="text-center mb-6"><span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{background:`rgba(var(--accent-rgb), 0.1)`,color:'var(--accent)'}}>Real Example</span><h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2></motion.div><div className="grid md:grid-cols-2 gap-4 mb-6"><motion.div initial={{opacity:0,x:-20}} animate={{opacity:1,x:0}} transition={{delay:0.1}} className="bg-red-50 border-2 border-red-200 rounded-xl p-5"><div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X/></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div><p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p></motion.div><motion.div initial={{opacity:0,x:20}} animate={{opacity:1,x:0}} transition={{delay:0.2}} className="bg-green-50 border-2 border-green-200 rounded-xl p-5"><div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check/></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div><p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p></motion.div></div><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.3}} className="bg-neutral-900 rounded-xl p-4 text-center"><p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2"/>{data.insight}</p></motion.div></div>);
+    const VisualSlide=({data})=>{if(data.visualType==='stats'){return(<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8"><motion.h2 initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2><div className="grid md:grid-cols-3 gap-4">{data.data.map((stat,i)=>(<motion.div key={i} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:0.1+i*0.1}} className="bg-neutral-900 rounded-xl p-6 text-center"><div className="text-3xl md:text-4xl font-bold mb-2" style={{color:'var(--accent)'}}>{stat.value}</div><div className="text-sm font-semibold text-white mb-1">{stat.label}</div><div className="text-xs text-neutral-400">{stat.subtext}</div></motion.div>))}</div></div>);}return null;};
+    const CardsSlide=({data})=>(<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8"><motion.h2 initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2><div className={`grid gap-3 ${data.items.length===6?'md:grid-cols-3':data.items.length===5?'md:grid-cols-3':data.items.length===4?'md:grid-cols-2':'md:grid-cols-2'}`}>{data.items.map((item,i)=>(<motion.div key={i} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:0.1+i*0.06}} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors"><h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3><p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p></motion.div>))}</div></div>);
+    const QuizSlide=({data,onShowGif,onHideGif})=>{const [selected,setSelected]=useState(null);const [showFeedback,setShowFeedback]=useState(false);const celebrationGif=useMemo(()=>getRandomCelebrationGif(),[]);const empathyGif=useMemo(()=>getRandomEmpathyGif(),[]);const gifSide=useMemo(()=>Math.random()>0.5?'left':'right',[]);const handleSelect=(index)=>{if(showFeedback)return;setSelected(index);setShowFeedback(true);};const isCorrect=selected===data.correctIndex;useEffect(()=>{if(showFeedback){if(isCorrect){onShowGif(celebrationGif,'60%',gifSide);}else{onShowGif(empathyGif,'60%',gifSide);}}},[showFeedback,isCorrect,celebrationGif,empathyGif,gifSide,onShowGif]);useEffect(()=>{return()=>onHideGif();},[onHideGif]);return(<div className="h-full w-full relative overflow-hidden"><div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30"><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} className="text-center mb-6"><p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p><h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2></motion.div><div className="space-y-3 mb-6">{data.options.map((option,i)=>(<motion.button key={i} initial={{opacity:0,x:-15}} animate={{opacity:1,x:0}} transition={{delay:0.08+i*0.06}} onClick={()=>handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback?i===data.correctIndex?'border-green-500 bg-green-50':i===selected?'border-red-400 bg-red-50':'border-neutral-200 bg-white opacity-40':'border-neutral-200 bg-white hover:border-neutral-300'}`}><div className="flex items-center gap-3"><span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback&&i===data.correctIndex?'bg-green-500 text-white':showFeedback&&i===selected&&!isCorrect?'bg-red-400 text-white':'bg-neutral-100 text-neutral-500'}`}>{showFeedback&&i===data.correctIndex?<Icons.Check/>:showFeedback&&i===selected&&!isCorrect?<Icons.X/>:String.fromCharCode(65+i)}</span><span className="text-neutral-700 text-sm md:text-base">{option}</span></div></motion.button>))}</div><AnimatePresence>{showFeedback&&(<motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} className={`p-5 rounded-xl ${isCorrect?'bg-green-50 border border-green-200':'bg-amber-50 border border-amber-200'}`}><p className={`text-sm leading-relaxed ${isCorrect?'text-green-800':'text-amber-800'}`}>{isCorrect?data.feedback.correct:data.feedback.incorrect}</p></motion.div>)}</AnimatePresence></div></div>);};
+    const CompletionSlide=({data})=>(<div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8"><motion.div initial={{opacity:0,scale:0}} animate={{opacity:1,scale:1}} transition={{type:'spring',duration:0.5}} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{background:`linear-gradient(135deg, var(--accent), var(--accent-dark))`,boxShadow:`0 6px 24px rgba(var(--accent-rgb), 0.35)`}}><Icons.Check/></motion.div><motion.h2 initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.15}} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2><motion.p initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.25}} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the difference between manipulation and ethical persuasion. Use the Magic Show Test: Are they in on it, or are you deceiving them? Build for lifetime value, not one-time transactions.</motion.p><motion.div initial={{opacity:0,y:15}} animate={{opacity:1,y:0}} transition={{delay:0.35}} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4"><p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p><h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3><p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p></motion.div></div>);
+    const LessonApp=()=>{const [currentSlide,setCurrentSlide]=useState(0);const [direction,setDirection]=useState(1);const userName=useMemo(()=>getUserName(),[]);const currentSlideRef=React.useRef(0);const [gifConfig,setGifConfig]=useState(null);const [isAnimating,setIsAnimating]=useState(false);const showGif=useCallback((url,height,side)=>setGifConfig({url,height,side}),[]);const hideGif=useCallback(()=>setGifConfig(null),[]);React.useEffect(()=>{currentSlideRef.current=currentSlide;},[currentSlide]);const goToSlide=useCallback((newSlide)=>{if(isAnimating||newSlide<0||newSlide>=slides.length)return;setIsAnimating(true);setDirection(newSlide>currentSlideRef.current?1:-1);setCurrentSlide(newSlide);},[isAnimating]);const nextSlide=useCallback(()=>{if(currentSlideRef.current+1<slides.length)goToSlide(currentSlideRef.current+1);},[goToSlide]);const prevSlide=useCallback(()=>{if(currentSlideRef.current-1>=0)goToSlide(currentSlideRef.current-1);},[goToSlide]);useEffect(()=>{const handleKeyDown=(e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}if(e.key==='ArrowLeft'){e.preventDefault();prevSlide();}};window.addEventListener('keydown',handleKeyDown);return()=>window.removeEventListener('keydown',handleKeyDown);},[nextSlide,prevSlide]);const slideVariants={enter:(dir)=>({x:dir>0?'100%':'-100%',opacity:0}),center:{x:0,opacity:1},exit:(dir)=>({x:dir>0?'-100%':'100%',opacity:0})};const renderSlide=(slide)=>{switch(slide.type){case 'welcome':return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif}/>;case 'hook':return <HookSlide data={slide}/>;case 'content':return <ContentSlide data={slide}/>;case 'example':return <ExampleSlide data={slide}/>;case 'visual':return <VisualSlide data={slide}/>;case 'cards':return <CardsSlide data={slide}/>;case 'quiz':return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif}/>;case 'completion':return <CompletionSlide data={slide}/>;default:return null;}};const showPrev=currentSlide>0;const showNext=currentSlide<slides.length-1&&slides[currentSlide].type!=='welcome';return(<div className="w-full h-screen bg-white flex flex-col relative"><div className="flex-1 relative overflow-hidden z-20"><AnimatePresence mode="wait" custom={direction} onExitComplete={()=>setIsAnimating(false)}><motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{duration:0.3,ease:[0.25,0.1,0.25,1]}} className="absolute inset-0">{renderSlide(slides[currentSlide])}</motion.div></AnimatePresence>{showPrev&&<button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft/></button>}{showNext&&<button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight/></button>}</div><div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10"><div className="flex items-center justify-center gap-2.5">{slides.map((_,i)=><button key={i} onClick={()=>goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{background:i===currentSlide?'var(--accent)':'#d4d4d4',transform:i===currentSlide?'scale(1.3)':'scale(1)'}}/>)}</div></div><AnimatePresence>{gifConfig&&(<motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} exit={{opacity:0,y:30}} transition={{type:'spring',stiffness:100}} className={`absolute ${gifConfig.side==='left'?'left-4 md:left-8':'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{zIndex:15,height:gifConfig.height}}><video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{background:'transparent',border:'none',boxShadow:'none'}}><source src={gifConfig.url} type="video/mp4"/></video></motion.div>)}</AnimatePresence></div>);};
+    ReactDOM.render(<LessonApp/>,document.getElementById('root'));
+  </script>
 </body>
 </html>

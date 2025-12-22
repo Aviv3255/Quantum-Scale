@@ -5378,6 +5378,101 @@ Premium brands think differently. From product-first to customer-first. From fea
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/luxury-mindset-shift/lesson.html' }
       ]
+    },
+    {
+      id: 184,
+      thumbnail: '/images/lessons/three-cro-tests.png',
+      title: 'The Three High-Impact CRO Tests',
+      intro: 'The Oodie made $2.83M with these 3 simple changes.',
+      directUrl: '/learn/lessons/three-cro-tests',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The Three High-Impact CRO Tests
+
+The Oodie generated $1.73M extra revenue from a floating add-to-cart button. Another $1.1M from simple product badges. These aren't complex optimizations—they're psychology principles hiding in plain sight.
+
+**Open the interactive lesson to discover the 3 highest-impact CRO tests.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-cro-tests/lesson.html' }
+      ]
+    },
+    {
+      id: 185,
+      thumbnail: '/images/lessons/digital-velvet-rope.png',
+      title: 'The Digital Velvet Rope Effect',
+      intro: 'Password-protected pages create explosive desire.',
+      directUrl: '/learn/lessons/digital-velvet-rope',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Exclusivity', label: 'Focus' }
+      ],
+      content: `## The Digital Velvet Rope Effect
+
+Luxury stores use velvet ropes to create desire. Online, password-protected "VIP access" pages do the same thing. Access restriction triggers the psychology of exclusivity.
+
+**Open the interactive lesson to build your digital velvet rope.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/digital-velvet-rope/lesson.html' }
+      ]
+    },
+    {
+      id: 186,
+      thumbnail: '/images/lessons/hidden-menu-psychology.png',
+      title: 'The Hidden Menu Psychology',
+      intro: 'Rolex has watches you can\'t see anywhere—for $1M+ spenders only.',
+      directUrl: '/learn/lessons/hidden-menu-psychology',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Loyalty', label: 'Focus' }
+      ],
+      content: `## The Hidden Menu Psychology
+
+Rolex has "off-catalog" items you can't see online or in-store. Access only for VIPs who've spent $1M+. This creates incredible incentive to remain loyal and feel special.
+
+**Open the interactive lesson to create your hidden menu.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/hidden-menu-psychology/lesson.html' }
+      ]
+    },
+    {
+      id: 187,
+      thumbnail: '/images/lessons/celebrity-gifting-flywheel.png',
+      title: 'The Celebrity Gifting Flywheel',
+      intro: 'Drake has 140+ Rolexes. He didn\'t buy most of them.',
+      directUrl: '/learn/lessons/celebrity-gifting-flywheel',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Marketing', label: 'Focus' }
+      ],
+      content: `## The Celebrity Gifting Flywheel
+
+Rolex gifts watches to celebrities. Drake has 140+ in his collection. It's NOT seen as advertising—so it's more powerful. These "invisible billboards" generate millions in influence.
+
+**Open the interactive lesson to build your celebrity flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/celebrity-gifting-flywheel/lesson.html' }
+      ]
+    },
+    {
+      id: 188,
+      thumbnail: '/images/lessons/forbidden-coffee-hook.png',
+      title: 'The Forbidden Coffee Hook',
+      intro: 'It\'s not "Brazilian Blend"—it\'s forbidden coffee for Amazonian warriors.',
+      directUrl: '/learn/lessons/forbidden-coffee-hook',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Storytelling', label: 'Focus' }
+      ],
+      content: `## The Forbidden Coffee Hook
+
+Your product isn't "Brazilian Blend Coffee"—it's "Forbidden coffee once reserved for Amazonian warriors." The psychology of mystery and exclusivity wrapped in a story.
+
+**Open the interactive lesson to find your forbidden hook.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forbidden-coffee-hook/lesson.html' }
+      ]
     }
   ];
 

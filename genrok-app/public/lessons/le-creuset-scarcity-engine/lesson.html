@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Creuset's Scarcity Engine | Quantum Scale</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            color: #1D1D1F;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px 120px;
+            position: relative;
+        }
+        .slide-content {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #000000;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #1D1D1F;
+            margin-bottom: 16px;
+        }
+        .subtitle {
+            font-size: 20px;
+            color: #86868B;
+            line-height: 1.5;
+        }
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #000000;
+            color: #FFFFFF;
+        }
+        .btn-primary:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
+        .card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .progress-bar {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+            background: rgba(255,255,255,0.9);
+            padding: 12px 24px;
+            border-radius: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D1D6;
+            transition: all 0.3s;
+        }
+        .progress-dot.active {
+            background: #000000;
+            width: 24px;
+            border-radius: 4px;
+        }
+        .nav-buttons {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #000000;
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            background: #1a1a1a;
+            transform: scale(1.05);
+        }
+        .nav-btn:disabled {
+            background: #D1D1D6;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        .scarcity-wheel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 40px 0;
+        }
+        .wheel-stage {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+        }
+        .wheel-stage::after {
+            content: '→';
+            position: absolute;
+            right: -32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #D1D1D6;
+        }
+        .wheel-stage:nth-child(2)::after {
+            content: '↓';
+            right: auto;
+            left: 50%;
+            top: auto;
+            bottom: -32px;
+            transform: translateX(-50%);
+        }
+        .wheel-stage:nth-child(3)::after {
+            content: '←';
+            right: auto;
+            left: -32px;
+        }
+        .wheel-stage:nth-child(4)::after {
+            content: '↑';
+            right: auto;
+            left: 50%;
+            top: -32px;
+            bottom: auto;
+            transform: translateX(-50%);
+        }
+        .stage-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #000000;
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 40px;
+            margin-bottom: 16px;
+        }
+        .quiz-option {
+            background: #FFFFFF;
+            border: 2px solid #E5E5E7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: #000000;
+            transform: translateX(4px);
+        }
+        .quiz-option.correct {
+            border-color: #34C759;
+            background: #F0FFF4;
+        }
+        .quiz-option.incorrect {
+            border-color: #FF3B30;
+            background: #FFF5F5;
+        }
+        .color-palette {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 32px 0;
+        }
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            h2 { font-size: 24px; }
+            .slide-container { padding: 60px 20px 140px; }
+            .scarcity-wheel { grid-template-columns: 1fr; }
+            .wheel-stage::after { display: none; }
+            .nav-buttons { right: 20px; bottom: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="../shared/greetings.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = Motion;
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: "Le Creuset's Scarcity Engine",
+                subtitle: "How to create scarcity without limited stock"
+            },
+            {
+                type: 'hook',
+                content: "Le Creuset sells pots. They're worth $2.5B. Here's their secret."
+            },
+            {
+                type: 'content',
+                title: "The Annual Color Cycle",
+                content: [
+                    "Le Creuset doesn't compete on features or price.",
+                    "They compete on COLOR.",
+                    "Every year, they introduce a new color palette. Every year, they retire colors forever.",
+                    "The product stays the same. The scarcity is manufactured. The demand is real."
+                ]
+            },
+            {
+                type: 'visual',
+                title: "The 4-Stage Scarcity Wheel"
+            },
+            {
+                type: 'cards',
+                title: "4 Marketing Touchpoints Per Year",
+                cards: [
+                    {
+                        title: "1. New Colors Announced",
+                        description: "Tease upcoming palette. Build anticipation. Let affiliates prepare content."
+                    },
+                    {
+                        title: "2. New Colors Released",
+                        description: "Launch day. Fresh inventory. Peak media coverage. High engagement."
+                    },
+                    {
+                        title: "3. Colors Retiring Announced",
+                        description: "Create urgency. 'Last chance' messaging. FOMO kicks in hard."
+                    },
+                    {
+                        title: "4. Final Days Campaign",
+                        description: "Countdown clocks. Sold out messaging. Affiliates push hard."
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: "DTC Application",
+                content: [
+                    "You don't need Le Creuset's manufacturing complexity.",
+                    "APPAREL: Launch 'Colorway of the Month' drops. Retire last month's color.",
+                    "SUPPLEMENTS: Introduce limited-batch flavors. Rotate them quarterly.",
+                    "ACCESSORIES: Seasonal color releases tied to fashion trends.",
+                    "The principle: Turn your product calendar into recurring, manufactured scarcity."
+                ]
+            },
+            {
+                type: 'example',
+                title: "How to Apply to Your Store",
+                steps: [
+                    "Pick ONE product line to test this on",
+                    "Create a 12-month color/variant calendar",
+                    "Announce Q1 variants, retire Q4 from last year",
+                    "Build email sequences around each touchpoint",
+                    "Let affiliates know the schedule in advance",
+                    "Measure: Which touchpoint drives most sales?",
+                    "Refine and expand to other product lines"
+                ]
+            },
+            {
+                type: 'quiz',
+                question: "What makes Le Creuset's scarcity strategy work?",
+                options: [
+                    "They actually produce limited quantities",
+                    "They use color as the anchor of marketing and retire colors annually",
+                    "They have celebrity endorsements",
+                    "They offer steep discounts on retiring colors"
+                ],
+                correct: 1,
+                explanation: "Le Creuset creates scarcity through their annual color cycle - introducing new colors and retiring old ones forever. The product stays the same, but the color creates perceived scarcity and multiple marketing touchpoints."
+            },
+            {
+                type: 'completion',
+                title: "Scarcity Manufactured",
+                message: "You now understand how to create recurring scarcity without actually limiting stock. The product stays the same. The calendar creates the urgency.",
+                next: "Apply this to one product line this quarter."
+            }
+        ];
+
+        function Slide({ slide, index, total }) {
+            const [quizAnswer, setQuizAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+
+            if (slide.type === 'welcome') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <div style={{ textAlign: 'center' }}>
+                            <div className="color-palette">
+                                <div className="color-swatch" style={{ background: '#C8102E' }}></div>
+                                <div className="color-swatch" style={{ background: '#003B5C' }}></div>
+                                <div className="color-swatch" style={{ background: '#FFD700' }}></div>
+                                <div className="color-swatch" style={{ background: '#2C5F2D' }}></div>
+                            </div>
+                            <h1>{slide.title}</h1>
+                            <p className="subtitle">{slide.subtitle}</p>
+                        </div>
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'hook') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                    >
+                        <div style={{ textAlign: 'center' }}>
+                            <h1>{slide.content}</h1>
+                        </div>
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'content') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <h2>{slide.title}</h2>
+                        {slide.content.map((paragraph, i) => (
+                            <motion.p
+                                key={i}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                {paragraph}
+                            </motion.p>
+                        ))}
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'visual') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <h2 style={{ textAlign: 'center', marginBottom: '48px' }}>{slide.title}</h2>
+                        <div className="scarcity-wheel">
+                            <motion.div
+                                className="wheel-stage"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.1 }}
+                            >
+                                <div className="stage-number">1</div>
+                                <h3>Announced</h3>
+                                <p style={{ fontSize: '16px', color: '#86868B' }}>New colors teased</p>
+                            </motion.div>
+                            <motion.div
+                                className="wheel-stage"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <div className="stage-number">2</div>
+                                <h3>Released</h3>
+                                <p style={{ fontSize: '16px', color: '#86868B' }}>Available to buy</p>
+                            </motion.div>
+                            <motion.div
+                                className="wheel-stage"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <div className="stage-number">3</div>
+                                <h3>Last Chance</h3>
+                                <p style={{ fontSize: '16px', color: '#86868B' }}>Retiring announced</p>
+                            </motion.div>
+                            <motion.div
+                                className="wheel-stage"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.4 }}
+                            >
+                                <div className="stage-number">4</div>
+                                <h3>Retired</h3>
+                                <p style={{ fontSize: '16px', color: '#86868B' }}>Gone forever</p>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'cards') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <h2>{slide.title}</h2>
+                        {slide.cards.map((card, i) => (
+                            <motion.div
+                                key={i}
+                                className="card"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                <h3>{card.title}</h3>
+                                <p style={{ marginBottom: 0 }}>{card.description}</p>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'example') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <h2>{slide.title}</h2>
+                        <div className="card">
+                            {slide.steps.map((step, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.1 }}
+                                    style={{
+                                        marginBottom: '20px',
+                                        paddingLeft: '32px',
+                                        position: 'relative'
+                                    }}
+                                >
+                                    <span style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        width: '24px',
+                                        height: '24px',
+                                        borderRadius: '50%',
+                                        background: '#000000',
+                                        color: '#FFFFFF',
+                                        fontSize: '12px',
+                                        fontWeight: '700',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        {i + 1}
+                                    </span>
+                                    <p style={{ marginBottom: 0 }}>{step}</p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'quiz') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                    >
+                        <h2>{slide.question}</h2>
+                        {slide.options.map((option, i) => (
+                            <motion.div
+                                key={i}
+                                className={`quiz-option ${
+                                    quizAnswer === i
+                                        ? (i === slide.correct ? 'correct' : 'incorrect')
+                                        : ''
+                                }`}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                onClick={() => {
+                                    setQuizAnswer(i);
+                                    setShowExplanation(true);
+                                }}
+                            >
+                                <p style={{ marginBottom: 0, fontWeight: '500' }}>{option}</p>
+                            </motion.div>
+                        ))}
+                        {showExplanation && (
+                            <motion.div
+                                className="card"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                style={{
+                                    marginTop: '24px',
+                                    background: quizAnswer === slide.correct ? '#F0FFF4' : '#FFF5F5',
+                                    borderLeft: `4px solid ${quizAnswer === slide.correct ? '#34C759' : '#FF3B30'}`
+                                }}
+                            >
+                                <p style={{ marginBottom: 0 }}>{slide.explanation}</p>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                );
+            }
+
+            if (slide.type === 'completion') {
+                return (
+                    <motion.div
+                        className="slide-content"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                    >
+                        <div style={{ textAlign: 'center' }}>
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.2, type: 'spring' }}
+                                style={{
+                                    fontSize: '80px',
+                                    marginBottom: '24px'
+                                }}
+                            >
+                                ✓
+                            </motion.div>
+                            <h1>{slide.title}</h1>
+                            <p className="subtitle">{slide.message}</p>
+                            <div style={{
+                                marginTop: '40px',
+                                padding: '24px',
+                                background: '#000000',
+                                color: '#FFFFFF',
+                                borderRadius: '12px'
+                            }}>
+                                <p style={{ marginBottom: 0, color: '#FFFFFF', fontWeight: '600' }}>
+                                    Next: {slide.next}
+                                </p>
+                            </div>
+                        </div>
+                    </motion.div>
+                );
+            }
+
+            return null;
+        }
+
+        function App() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setCurrentSlide(currentSlide + 1);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setCurrentSlide(currentSlide - 1);
+                }
+            };
+
+            useEffect(() => {
+                const handleKeyPress = (e) => {
+                    if (e.key === 'ArrowRight') nextSlide();
+                    if (e.key === 'ArrowLeft') prevSlide();
+                };
+                window.addEventListener('keydown', handleKeyPress);
+                return () => window.removeEventListener('keydown', handleKeyPress);
+            }, [currentSlide]);
+
+            return (
+                <>
+                    <div className="slide-container">
+                        <AnimatePresence mode="wait">
+                            <Slide
+                                key={currentSlide}
+                                slide={slides[currentSlide]}
+                                index={currentSlide}
+                                total={slides.length}
+                            />
+                        </AnimatePresence>
+                    </div>
+
+                    <div className="progress-bar">
+                        {slides.map((_, i) => (
+                            <div
+                                key={i}
+                                className={`progress-dot ${i === currentSlide ? 'active' : ''}`}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="nav-buttons">
+                        <button
+                            className="nav-btn"
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                        >
+                            ←
+                        </button>
+                        <button
+                            className="nav-btn"
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                        >
+                            →
+                        </button>
+                    </div>
+                </>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

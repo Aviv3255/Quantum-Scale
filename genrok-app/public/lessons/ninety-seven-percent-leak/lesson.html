@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 42% Sales Trick (That's Not a Trick) | Quantum Scale</title>
+  <title>97% of Your Traffic Leaves Without Buying. Here's the Fix. | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3B82F6; --accent-dark: #2563EB; --accent-light: #60A5FA; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #dc2626; --accent-dark: #991b1b; --accent-light: #ef4444; --accent-rgb: 220, 38, 38; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,15 +34,30 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'reciprocity-engine',
-      title: 'The 42% Sales Trick (That\'s Not a Trick)',
-      description: 'Why giving something away for free can make you more money than any sales tactic ever could.',
-      accentColor: '#3B82F6',
-      duration: '6 min',
-      nextLesson: { id: 'luxury-mindset-shift', title: 'The 4 Mindset Shifts', teaser: 'How premium brands think differently about price, story, and value.' }
+      id: 'ninety-seven-percent-leak',
+      title: '97% of Your Traffic Leaves Without Buying. Here\'s the Fix.',
+      description: 'The Machine/Mind/Method system to plug your conversion leak and turn browsers into buyers.',
+      accentColor: '#dc2626',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more conversion optimization tactics.' }
     };
 
     const celebrationGifs = [
@@ -51,7 +66,9 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -60,35 +77,48 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why giving something away increases sales by 42%', 'The psychology of reciprocity and social debt', 'How effort multiplies the reciprocity effect', 'Five ways to implement this in your store'] },
-      { type: 'hook', headline: 'Why giving something away for free can make you more money than any sales tactic.', subtext: 'A candy shop in California started giving away free samples. Just one small piece. Free. No strings attached. Sales went up 42%. But customers did not buy more of the candy they tasted. They bought different candies. Completely different flavors. So it was not about liking the sample. It was about something far more powerful.' },
-      { type: 'visual', visualType: 'stats', title: 'The Candy Shop Experiment', data: [
-        { value: '42%', label: 'Sales Increase', subtext: 'From free samples alone' },
-        { value: '0%', label: 'Sample Conversion', subtext: 'They bought different flavors' },
-        { value: '100%', label: 'Reciprocity Trigger', subtext: 'Felt compelled to give back' }
+      { type: 'welcome', learningGoals: ['Why 97% of your traffic leaves without buying (and how top stores fix this)', 'The Machine/Mind/Method system to double your conversion rate', 'How to identify and plug the leaks in your funnel'] },
+      { type: 'hook', headline: '97 out of 100 visitors leave without buying. That is not a traffic problem.', subtext: 'You could have millions of visitors. If only 3% convert, you are leaving 97% of potential revenue on the table. Most stores assume they need more traffic. Wrong. They need better conversion. Top ecommerce stores convert at 4.7%+. That is 57% more revenue from the SAME traffic. The difference? They understand the Machine/Mind/Method system. Not tactics. Not hacks. A complete framework for turning browsers into buyers.' },
+      { type: 'visual', title: 'The 97% Leak', visualType: 'funnel', data: { visitors: 1000, converters: 30, leakers: 970 }, caption: 'Out of 1,000 visitors, 970 leave. That is $97,000 in lost revenue if your AOV is $100.' },
+      { type: 'content', title: 'This Is Not a Traffic Problem', body: 'Most store owners obsess over getting more visitors. More ads. More influencers. More SEO. But if 97% of visitors leave anyway, you are just paying to show your store to people who bounce. The real leverage is not in the top of the funnel. It is in the middle. Fix conversion first. THEN scale traffic. Otherwise you are pouring water into a leaky bucket.' },
+      { type: 'cards', title: 'The Machine/Mind/Method System', items: [
+        { title: 'THE MACHINE', description: 'The frictionless path to purchase. Speed, navigation, checkout flow. Remove every obstacle between desire and transaction.' },
+        { title: 'THE MIND', description: 'Engineering desire and trust. Identity alignment, psychological triggers, price perception. Make them WANT to buy.' },
+        { title: 'THE METHOD', description: 'Data-driven growth flywheel. See what is broken, test fixes, refine endlessly. Continuous improvement compounding forever.' }
       ]},
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired with a simple rule: When someone gives you something, you feel compelled to give back. It is not manipulation. It is biology. We hate the feeling of being indebted. It creates psychological tension. Discomfort. The only way to release that tension? Reciprocate. Those candy shop customers felt they owed the store something. Even though the sample was genuinely free, with no expectation. So they bought. Not because they wanted candy. Because they wanted to discharge the social debt.' },
-      { type: 'content', title: 'This Is Human Nature, Not a Hack', body: 'Give first. Value first. No strings. The reciprocity will follow automatically because that is how humans are built. This is not about tricking people. It is about understanding basic human psychology. When you genuinely give value without expectation, people naturally want to reciprocate. That is the reciprocity engine at work.' },
-      { type: 'content', title: 'But Wait—There Is a Multiplier', body: 'Not all giving triggers the same level of reciprocity. The secret? Effort. Imagine two scenarios. You get a mass email with a generic discount code. Copy-pasted to 10,000 people. Versus: You get a hand-written thank you note with a personalized gift in your order. Clearly took time. Which one makes you feel more obligated to reciprocate? The second one. Obviously.' },
-      { type: 'example', scenario: 'The Effort Multiplier', before: { label: 'Low Effort', text: 'Generic mass email with discount code. Copy-pasted to 10,000 people. Feels automated. No emotional connection. Weak reciprocity trigger.' }, after: { label: 'High Effort', text: 'Hand-written thank you note with personalized gift. Clearly took time and thought. Strong emotional connection. Powerful reciprocity trigger.' }, insight: 'Higher effort equals stronger reciprocity. This is why surprise gifts create loyal customers.' },
-      { type: 'content', title: 'Why High Effort Works', body: 'Higher effort equals stronger reciprocity trigger. This is why a hand-delivered envelope outperforms a standard one. Why a surprise gift in an order creates loyal customers. Why high-effort content like this lesson builds more trust than a generic blog post. The more effort you put into giving, the more powerful the reciprocity response.' },
-      { type: 'content', title: 'Read This Twice', body: 'You do not need to trick customers into buying. You need to give them so much value, for free, that they want to reciprocate. That is not a tactic. That is human psychology working in your favor. The candy shop did not manipulate anyone. They gave genuine value. The sales increase was a natural result of reciprocity.' },
-      { type: 'cards', title: 'How This Works in Your DTC Store', items: [
-        { title: 'Free Gift with Purchase', description: 'Include a small, unexpected gift in every order. Bonus points if it is personalized or hand-written note attached. Cost: $1-3. Value: Customer for life.' },
-        { title: 'High-Effort Free Content', description: 'Do not send generic emails. Send genuinely valuable guides, templates, or case studies. Put real work into it. They will feel it and reciprocate with purchases.' },
-        { title: 'Surprise Upgrades', description: 'Randomly upgrade shipping to express. Add an extra product sample. Double their order quantity. The surprise amplifies the reciprocity effect 10x.' },
-        { title: 'First-Time Customer Bonus', description: 'Give something valuable immediately after first purchase, not before. They just gave you money. Now you give them unexpected value. Reciprocity loop activated.' },
-        { title: 'Automate Post-Purchase Surprises', description: 'The thank you page is prime real estate for reciprocity. Offer surprise bonuses, free samples, or exclusive discounts right after checkout when reciprocity is at its peak.' }
+      { type: 'content', title: 'Pillar 1: The Machine', body: 'The Machine is your store infrastructure. Every click, scroll, and form field. If your site is slow, your conversion dies. If navigation is confusing, they leave. If checkout requires 8 steps, they abandon. The Machine must be frictionless. Fast load times. Intuitive navigation. One-click checkout. Mobile-optimized. Zero friction between interest and purchase.' },
+      { type: 'cards', title: 'Machine Optimization Checklist', items: [
+        { title: 'Speed', description: 'Page loads under 2 seconds. Every second of delay = 7% conversion loss.' },
+        { title: 'Navigation', description: 'Customers find what they want in 2 clicks max. Clear categories, search that works.' },
+        { title: 'Mobile UX', description: 'Thumb-friendly buttons. No pinch-to-zoom. Fast, responsive, smooth.' },
+        { title: 'Checkout Flow', description: 'Fewer steps = more sales. Autofill, guest checkout, saved payment methods.' }
       ]},
-      { type: 'pro-tip', title: 'The Tool Integration', body: 'Tools like ReConvert let you offer surprise bonuses, free samples, or exclusive discounts on the thank you page right after checkout. This is when reciprocity is at its peak. The customer just gave you money. They are primed to receive value. A well-timed surprise here turns first-time buyers into repeat customers.', action: 'Implement one reciprocity tactic this week. Watch your repeat purchase rate climb.' },
-      { type: 'content', title: 'The Reciprocity Loop', body: 'Give value. Customer feels indebted. Customer reciprocates by purchasing. You give more value post-purchase. Customer feels even more indebted. Customer becomes repeat buyer. This is not manipulation. This is how trust and loyalty are built. Every successful brand uses this loop. The difference is whether you do it intentionally or accidentally.' },
-      { type: 'quiz', question: 'Why did the candy shop customers buy different flavors than what they sampled?', options: ['They did not like the free sample', 'They wanted to try something new', 'They felt compelled to reciprocate the free gift by buying something', 'The other flavors were on sale'], correctIndex: 2, feedback: { correct: 'Exactly. This is the reciprocity engine in action. The free sample created a psychological debt. Customers felt they owed the store something. So they bought. Not because they wanted that specific candy. But because they needed to discharge the social obligation. The sample triggered the purchase, even though they bought different products. That is the power of reciprocity.', incorrect: 'Think deeper about the psychology. The customers bought different flavors because of reciprocity, not preference. When the store gave them something for free, it created a psychological debt. Humans hate feeling indebted. So they reciprocated by making a purchase. Any purchase. The free sample was not about selling that specific product. It was about triggering the reciprocity response.' }},
-      { type: 'completion', sources: [] }
+      { type: 'content', title: 'Pillar 2: The Mind', body: 'The Mind is psychology. Even if your Machine is perfect, people do not buy unless they WANT to buy. Desire must exceed price. Trust must defeat doubt. Your product must align with their identity. The Mind is about engineering that emotional shift. From "Maybe" to "I need this now."' },
+      { type: 'cards', title: 'Mind Engineering Tactics', items: [
+        { title: 'Identity Alignment', description: 'Show them who they become with this product. Not features - transformation.' },
+        { title: 'Price Anchoring', description: 'Make the price feel small compared to the value. Show what they lose by not buying.' },
+        { title: 'Social Proof', description: 'Real reviews. Real results. Real people like them who already bought and won.' },
+        { title: 'Urgency Without Manipulation', description: 'Real scarcity (low stock) or time-bound offers (sale ends). Never fake.' }
+      ]},
+      { type: 'content', title: 'Pillar 3: The Method', body: 'The Method is your system for continuous improvement. You cannot optimize what you do not measure. Install analytics. Track where people drop off. Test changes. Refine endlessly. Top stores do not guess. They see the data, form hypotheses, run tests, and compound small wins into massive gains.' },
+      { type: 'example', scenario: 'Real Store Applying the System', before: { label: 'Before (2.9% CVR)', text: 'Slow site. Confusing navigation. Generic product pages. No social proof. 8-step checkout. Visitors browse and leave. Revenue stagnant despite ad spend increases.' }, after: { label: 'After (4.8% CVR)', text: 'Fast load times. Clear navigation. Identity-focused copy. Verified reviews. 3-step checkout. Visitors buy. 65% revenue increase from SAME traffic.' }, insight: 'Machine + Mind + Method = 65% more revenue without spending a dollar more on ads.' },
+      { type: 'visual', title: 'Where the 97% Leak', visualType: 'stats', data: [
+        { value: '23%', label: 'Homepage Bounce', subtext: 'Never click deeper' },
+        { value: '51%', label: 'Product Page Exit', subtext: 'See product, leave' },
+        { value: '69%', label: 'Cart Abandonment', subtext: 'Add to cart, never checkout' }
+      ]},
+      { type: 'content', title: 'Plug the Leaks One by One', body: 'You do not fix everything overnight. Start with the biggest leak. For most stores, that is cart abandonment. 69% add to cart and leave. Why? Checkout friction. Surprise shipping costs. No trust badges. Complex forms. Fix cart abandonment first. Then product page optimization. Then homepage. One leak at a time. Each fix compounds.' },
+      { type: 'quiz', question: 'What is the PRIMARY reason most stores have low conversion rates?', options: ['Not enough traffic', 'Bad products', 'Friction in the buying process and weak psychological triggers', 'Poor branding'], correctIndex: 2, feedback: { correct: 'Exactly. Conversion problems are rarely about traffic volume or product quality. They are about friction (Machine) and psychology (Mind). When the path to purchase is smooth and the emotional triggers are strong, people buy. When there is friction or weak desire, they leave. Fix the Machine and Mind, THEN scale traffic with the Method.', incorrect: 'Not quite. The answer is friction in the buying process and weak psychological triggers. Most stores have enough traffic and decent products. What they lack is a frictionless path to purchase (Machine) and psychological engineering (Mind). Remove obstacles, engineer desire, measure results. That is the system.' }},
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -133,7 +163,7 @@
     const HookSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Problem</span>
           <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
@@ -170,6 +200,28 @@
     );
 
     const VisualSlide = ({ data }) => {
+      if (data.visualType === 'funnel') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="max-w-md mx-auto w-full space-y-4">
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-blue-500 text-white rounded-xl p-6 text-center">
+                <div className="text-5xl font-bold mb-2"><AnimatedCounter target={data.data.visitors} /></div>
+                <div className="text-sm font-semibold">Visitors</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-red-500 text-white rounded-xl p-6 text-center ml-8">
+                <div className="text-4xl font-bold mb-2"><AnimatedCounter target={data.data.leakers} /></div>
+                <div className="text-sm font-semibold">Leave Without Buying (97%)</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }} className="bg-green-500 text-white rounded-xl p-6 text-center ml-16">
+                <div className="text-3xl font-bold mb-2"><AnimatedCounter target={data.data.converters} /></div>
+                <div className="text-sm font-semibold">Actually Buy (3%)</div>
+              </motion.div>
+            </div>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="text-center text-neutral-600 text-sm italic mt-6">{data.caption}</motion.p>
+          </div>
+        );
+      }
       if (data.visualType === 'stats') {
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -177,7 +229,7 @@
             <div className="grid md:grid-cols-3 gap-4">
               {data.data.map((stat, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
                   <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
                   <div className="text-xs text-neutral-400">{stat.subtext}</div>
                 </motion.div>
@@ -200,23 +252,6 @@
             </motion.div>
           ))}
         </div>
-      </div>
-    );
-
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-violet-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-violet-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-violet-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-violet-700">Action: {data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
       </div>
     );
 
@@ -267,25 +302,12 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the reciprocity engine. Give value first. No strings. The reciprocity will follow automatically. Higher effort equals stronger response. This is not manipulation. This is human psychology working in your favor.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Machine/Mind/Method system for plugging the 97% leak. Fix the Machine (remove friction), engineer the Mind (create desire), apply the Method (measure and refine). Start with your biggest leak and compound wins from there.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -335,7 +357,6 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

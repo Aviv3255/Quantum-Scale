@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 42% Sales Trick (That's Not a Trick) | Quantum Scale</title>
+  <title>The Compound Testing Effect | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3B82F6; --accent-dark: #2563EB; --accent-light: #60A5FA; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fb923c; --accent-rgb: 249, 115, 22; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,16 +34,138 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
+    };
+
+    // Compound Growth Visualization
+    const CompoundGrowthSlide = ({ data }) => {
+      const weeks = data.weeks || 52;
+      const weeklyIncrease = data.weeklyIncrease || 0.01;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 border-2 border-orange-200 rounded-xl p-6">
+                <p className="text-xs uppercase tracking-wider text-orange-600 mb-2">Starting Point</p>
+                <div className="text-4xl font-bold text-orange-900 mb-2">100%</div>
+                <p className="text-sm text-orange-700">Baseline conversion rate</p>
+              </div>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6">
+                <p className="text-xs uppercase tracking-wider text-green-600 mb-2">After {weeks} Weeks</p>
+                <div className="text-4xl font-bold text-green-900 mb-2">
+                  <AnimatedCounter target={Math.pow(1 + weeklyIncrease, weeks) * 100} suffix="%" decimals={0} duration={2500} />
+                </div>
+                <p className="text-sm text-green-700">+{weeklyIncrease * 100}% improvement per week</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+              <div className="bg-neutral-900 rounded-xl p-6">
+                <p className="text-neutral-400 text-sm mb-4">The Math Behind the Magic</p>
+                <div className="space-y-3 text-sm text-neutral-300">
+                  <p>Week 1: 100% × 1.01 = 101%</p>
+                  <p>Week 2: 101% × 1.01 = 102.01%</p>
+                  <p>Week 3: 102.01% × 1.01 = 103.03%</p>
+                  <p className="text-neutral-500 italic">...</p>
+                  <p className="text-orange-400 font-bold border-t border-neutral-700 pt-3">Week {weeks}: {(Math.pow(1 + weeklyIncrease, weeks) * 100).toFixed(0)}%</p>
+                </div>
+                <p className="text-xs text-neutral-500 mt-4 italic">{data.insight}</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Comparison: Random vs Systematic
+    const ComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
+              <h3 className="font-bold text-red-700">{data.random.title}</h3>
+            </div>
+            <div className="space-y-3 mb-4">
+              {data.random.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white rounded-lg p-3 border border-red-100">
+                  <p className="text-sm text-neutral-700">{item}</p>
+                </motion.div>
+              ))}
+            </div>
+            <p className="text-sm text-red-700 italic font-medium">{data.random.insight}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
+              <h3 className="font-bold text-green-700">{data.systematic.title}</h3>
+            </div>
+            <div className="space-y-3 mb-4">
+              {data.systematic.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-white rounded-lg p-3 border border-green-100">
+                  <p className="text-sm text-neutral-700">{item}</p>
+                </motion.div>
+              ))}
+            </div>
+            <p className="text-sm text-green-700 italic font-medium">{data.systematic.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Timeline Visualization
+    const TimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.timeline.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative pl-12">
+              <div className="absolute left-0 top-1 w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-xs font-bold">
+                {item.week}
+              </div>
+              <div className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-orange-300 transition-all">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-bold text-neutral-900 text-sm">{item.test}</h3>
+                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">{item.improvement}</span>
+                </div>
+                <p className="text-neutral-600 text-xs">{item.description}</p>
+              </div>
+              {i < data.timeline.length - 1 && (
+                <div className="absolute left-4 top-10 w-0.5 h-4 bg-gradient-to-b from-orange-300 to-transparent"></div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'reciprocity-engine',
-      title: 'The 42% Sales Trick (That\'s Not a Trick)',
-      description: 'Why giving something away for free can make you more money than any sales tactic ever could.',
-      accentColor: '#3B82F6',
-      duration: '6 min',
-      nextLesson: { id: 'luxury-mindset-shift', title: 'The 4 Mindset Shifts', teaser: 'How premium brands think differently about price, story, and value.' }
+      id: 'compound-testing-effect',
+      title: 'The Compound Testing Effect',
+      description: 'Why 1% improvements tested weekly equal 67% improvement in a year. The psychology of systematic testing vs random changes.',
+      accentColor: '#f97316',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more conversion optimization tactics.' }
     };
+
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -51,7 +173,9 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -60,35 +184,43 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why giving something away increases sales by 42%', 'The psychology of reciprocity and social debt', 'How effort multiplies the reciprocity effect', 'Five ways to implement this in your store'] },
-      { type: 'hook', headline: 'Why giving something away for free can make you more money than any sales tactic.', subtext: 'A candy shop in California started giving away free samples. Just one small piece. Free. No strings attached. Sales went up 42%. But customers did not buy more of the candy they tasted. They bought different candies. Completely different flavors. So it was not about liking the sample. It was about something far more powerful.' },
-      { type: 'visual', visualType: 'stats', title: 'The Candy Shop Experiment', data: [
-        { value: '42%', label: 'Sales Increase', subtext: 'From free samples alone' },
-        { value: '0%', label: 'Sample Conversion', subtext: 'They bought different flavors' },
-        { value: '100%', label: 'Reciprocity Trigger', subtext: 'Felt compelled to give back' }
+      { type: 'welcome', learningGoals: ['Why 1% weekly improvements compound to 67% annual growth', 'The psychology difference between random changes and systematic testing', 'How to build a testing system that generates compounding wins'] },
+      { type: 'hook', headline: 'Most stores make random changes. The best stores run systematic tests.', subtext: 'One generates noise. The other generates compound growth. Think about it: If you improve your conversion rate by just 1% every week through A/B testing, you do not end the year 52% better. You end it 67% better. That is compound interest for your business. Random tweaks might get lucky once. Systematic testing wins every single week. The gains stack. The momentum builds. And after a year, you are not competing with stores making random changes anymore. You are in a completely different league.' },
+      { type: 'content', title: 'The Compound Testing Effect', body: 'Here is the psychology most people miss: Small improvements do not add up. They multiply. Week 1: You test button colors. Win: +1.2% conversion. Week 2: You test headline copy. Win: +0.8% conversion. Week 3: You test image placement. Win: +1.5% conversion. These are not three separate 1% wins that total 3%. They stack ON TOP of each other. 100 × 1.012 × 1.008 × 1.015 = 103.5%. Each win becomes the new baseline. The next win builds on ALL previous wins. That is compounding.' },
+      { type: 'compound-growth', title: '1% Weekly = 67% Yearly', weeks: 52, weeklyIncrease: 0.01, insight: 'Small systematic wins compound into massive advantages over time.' },
+      { type: 'content', title: 'Why Random Changes Fail', body: 'Random changes feel productive. You tweak the homepage. You adjust the pricing page. You change the CTA button. You feel busy. You feel like you are improving. But here is the problem: You have no idea what worked. You changed five things. Conversion went up 2%. Which change did it? Was it even the changes? Maybe it was seasonal traffic. Maybe it was a viral post. You learned nothing. You cannot repeat it. You are guessing.' },
+      { type: 'comparison', title: 'Random Changes vs Systematic Testing', random: { title: 'Random Changes', items: ['Change multiple things at once', 'No control group, no data', 'Cannot isolate what worked', 'Rely on gut feelings', 'Inconsistent, unpredictable results'], insight: 'You might get lucky once. But you cannot repeat it.' }, systematic: { title: 'Systematic Testing', items: ['Test one variable at a time', 'Run A/B tests with control groups', 'Measure exact impact of each change', 'Build knowledge week after week', 'Predictable, compounding improvements'], insight: 'Every test teaches. Every win stacks. Progress compounds.' }},
+      { type: 'content', title: 'The Psychology of Systematic Testing', body: 'Systematic testing works because of cumulative knowledge. Each test is not just about winning. It is about learning. You learn what your customers respond to. You learn what language resonates. You learn which friction points matter most. This knowledge accumulates. By week 10, you are not testing random ideas. You are testing informed hypotheses based on nine weeks of data. Your hit rate increases. Your wins get bigger. The compound effect accelerates.' },
+      { type: 'content', title: 'The Math That Changes Everything', body: 'Let us do the math. Store A makes random changes. Sometimes they work (+3%), sometimes they do not (-1%). No pattern. No data. Average annual improvement: Maybe 5-10% if lucky. Store B runs systematic A/B tests. Average win per test: +1%. Tests per week: 1. Weeks per year: 52. Annual improvement: 67%. Not 52%. Sixty-seven percent. Because each win compounds on the last. That is not a small edge. That is a different business entirely.' },
+      { type: 'timeline', title: 'A Year of Systematic Testing', timeline: [
+        { week: 'W1', test: 'Button Color Test', improvement: '+1.2%', description: 'Orange CTA button beat black by 1.2%. Learned: High contrast wins.' },
+        { week: 'W2', test: 'Headline Copy Test', improvement: '+0.8%', description: 'Benefit-focused headline beat feature list. Learned: Outcomes over specs.' },
+        { week: 'W3', test: 'Image Placement', improvement: '+1.5%', description: 'Product image above fold beat below fold. Learned: Visuals drive decisions.' },
+        { week: 'W4', test: 'Social Proof Position', improvement: '+0.9%', description: 'Reviews near CTA beat reviews at bottom. Learned: Proximity to action matters.' },
+        { week: 'W12', test: 'Checkout Flow Test', improvement: '+2.1%', description: 'One-page checkout beat multi-step. Learned: Friction kills conversions.' }
       ]},
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired with a simple rule: When someone gives you something, you feel compelled to give back. It is not manipulation. It is biology. We hate the feeling of being indebted. It creates psychological tension. Discomfort. The only way to release that tension? Reciprocate. Those candy shop customers felt they owed the store something. Even though the sample was genuinely free, with no expectation. So they bought. Not because they wanted candy. Because they wanted to discharge the social debt.' },
-      { type: 'content', title: 'This Is Human Nature, Not a Hack', body: 'Give first. Value first. No strings. The reciprocity will follow automatically because that is how humans are built. This is not about tricking people. It is about understanding basic human psychology. When you genuinely give value without expectation, people naturally want to reciprocate. That is the reciprocity engine at work.' },
-      { type: 'content', title: 'But Wait—There Is a Multiplier', body: 'Not all giving triggers the same level of reciprocity. The secret? Effort. Imagine two scenarios. You get a mass email with a generic discount code. Copy-pasted to 10,000 people. Versus: You get a hand-written thank you note with a personalized gift in your order. Clearly took time. Which one makes you feel more obligated to reciprocate? The second one. Obviously.' },
-      { type: 'example', scenario: 'The Effort Multiplier', before: { label: 'Low Effort', text: 'Generic mass email with discount code. Copy-pasted to 10,000 people. Feels automated. No emotional connection. Weak reciprocity trigger.' }, after: { label: 'High Effort', text: 'Hand-written thank you note with personalized gift. Clearly took time and thought. Strong emotional connection. Powerful reciprocity trigger.' }, insight: 'Higher effort equals stronger reciprocity. This is why surprise gifts create loyal customers.' },
-      { type: 'content', title: 'Why High Effort Works', body: 'Higher effort equals stronger reciprocity trigger. This is why a hand-delivered envelope outperforms a standard one. Why a surprise gift in an order creates loyal customers. Why high-effort content like this lesson builds more trust than a generic blog post. The more effort you put into giving, the more powerful the reciprocity response.' },
-      { type: 'content', title: 'Read This Twice', body: 'You do not need to trick customers into buying. You need to give them so much value, for free, that they want to reciprocate. That is not a tactic. That is human psychology working in your favor. The candy shop did not manipulate anyone. They gave genuine value. The sales increase was a natural result of reciprocity.' },
-      { type: 'cards', title: 'How This Works in Your DTC Store', items: [
-        { title: 'Free Gift with Purchase', description: 'Include a small, unexpected gift in every order. Bonus points if it is personalized or hand-written note attached. Cost: $1-3. Value: Customer for life.' },
-        { title: 'High-Effort Free Content', description: 'Do not send generic emails. Send genuinely valuable guides, templates, or case studies. Put real work into it. They will feel it and reciprocate with purchases.' },
-        { title: 'Surprise Upgrades', description: 'Randomly upgrade shipping to express. Add an extra product sample. Double their order quantity. The surprise amplifies the reciprocity effect 10x.' },
-        { title: 'First-Time Customer Bonus', description: 'Give something valuable immediately after first purchase, not before. They just gave you money. Now you give them unexpected value. Reciprocity loop activated.' },
-        { title: 'Automate Post-Purchase Surprises', description: 'The thank you page is prime real estate for reciprocity. Offer surprise bonuses, free samples, or exclusive discounts right after checkout when reciprocity is at its peak.' }
+      { type: 'content', title: 'Why This Is Pure Psychology', body: 'The Compound Testing Effect works because of how humans learn. Random action creates no pattern. No pattern means no learning. No learning means no improvement. Systematic testing creates patterns. Patterns reveal truths about customer behavior. Truths inform better tests. Better tests produce bigger wins. The cycle accelerates. You are not just testing for conversion lifts. You are building a knowledge engine that gets smarter every week.' },
+      { type: 'cards', title: 'What Makes a Good A/B Test', items: [
+        { title: 'One Variable at a Time', description: 'Change ONLY the thing you are testing. Otherwise you cannot know what worked.' },
+        { title: 'Sufficient Sample Size', description: 'Run tests long enough to reach statistical significance. Usually 1-2 weeks minimum.' },
+        { title: 'Clear Hypothesis', description: 'Test with intent: "I believe X will improve Y because customers value Z."' },
+        { title: 'Document Everything', description: 'Record what you tested, results, and insights. Build your knowledge base.' },
+        { title: 'Implement Winners Fast', description: 'Do not let winning tests sit. Deploy them and move to the next test.' }
       ]},
-      { type: 'pro-tip', title: 'The Tool Integration', body: 'Tools like ReConvert let you offer surprise bonuses, free samples, or exclusive discounts on the thank you page right after checkout. This is when reciprocity is at its peak. The customer just gave you money. They are primed to receive value. A well-timed surprise here turns first-time buyers into repeat customers.', action: 'Implement one reciprocity tactic this week. Watch your repeat purchase rate climb.' },
-      { type: 'content', title: 'The Reciprocity Loop', body: 'Give value. Customer feels indebted. Customer reciprocates by purchasing. You give more value post-purchase. Customer feels even more indebted. Customer becomes repeat buyer. This is not manipulation. This is how trust and loyalty are built. Every successful brand uses this loop. The difference is whether you do it intentionally or accidentally.' },
-      { type: 'quiz', question: 'Why did the candy shop customers buy different flavors than what they sampled?', options: ['They did not like the free sample', 'They wanted to try something new', 'They felt compelled to reciprocate the free gift by buying something', 'The other flavors were on sale'], correctIndex: 2, feedback: { correct: 'Exactly. This is the reciprocity engine in action. The free sample created a psychological debt. Customers felt they owed the store something. So they bought. Not because they wanted that specific candy. But because they needed to discharge the social obligation. The sample triggered the purchase, even though they bought different products. That is the power of reciprocity.', incorrect: 'Think deeper about the psychology. The customers bought different flavors because of reciprocity, not preference. When the store gave them something for free, it created a psychological debt. Humans hate feeling indebted. So they reciprocated by making a purchase. Any purchase. The free sample was not about selling that specific product. It was about triggering the reciprocity response.' }},
-      { type: 'completion', sources: [] }
+      { type: 'content', title: 'What to Test First', body: 'Start with high-impact, low-effort tests. Headlines and CTAs convert or kill sales, and they take 10 minutes to change. Product images drive instant reactions. Test the main image. Button colors create friction or flow. Test high-contrast options. Social proof positioning affects trust. Test where reviews appear. Do not start by rebuilding your entire site. Start by testing the elements customers see in the first 3 seconds. That is where most decisions happen.' },
+      { type: 'example', scenario: 'Store Running Systematic Tests for 6 Months', before: { label: 'Random Changes (Competitor)', text: 'Competitor redesigns their site every few months. Big launches. Lots of effort. No testing. Conversion improves 8% over 6 months. They celebrate. They think they won.' }, after: { label: 'Systematic Testing (You)', text: 'You run one small A/B test per week. Each test averages +1% lift. After 26 weeks of compounding wins, conversion improves 29%. Competitor has no idea how you are winning.' }, insight: 'Systematic beats dramatic. Compound growth beats one-time pushes. Consistency wins.' },
+      { type: 'tool', title: 'Run A/B Tests Without Slowing Down Your Store', toolName: 'ABConvert', toolUrl: 'https://apps.shopify.com/abconvert?mref=lsbqcbva', image: 'https://cdn.shopify.com/app-store/listing_images/aef1fcdb084bd0bcb57bae8e6be1f10a/icon/COqx8ffckogDEAE=.png', body: 'Zero-code A/B testing tool for Shopify. Test headlines, buttons, images, and layouts without a developer. Built-in statistical significance calculator. Automatically rolls out winners. Fast, lightweight, designed for eCommerce.', questions: ['Do you currently test changes before deploying them?', 'Are you guessing which version will convert better?', 'Do you want compounding growth instead of random wins?'], insight: 'Manual testing takes hours. Systematic testing with the right tool takes minutes. The compound effect starts week one.' },
+      { type: 'quiz', question: 'Why does 1% weekly improvement result in 67% annual growth instead of 52%?', options: ['Because you run more tests as you get better', 'Because each win compounds on top of all previous wins', 'Because customers respond better over time', 'Because 67% sounds better than 52%'], correctIndex: 1, feedback: { correct: 'Exactly right! Each win compounds on all previous wins. Week 1: 100 × 1.01 = 101. Week 2: 101 × 1.01 = 102.01. Week 3: 102.01 × 1.01 = 103.03. By week 52, you are not at 152. You are at 167. Each improvement becomes the new baseline. The next improvement builds on THAT. This is why systematic testing destroys random changes. The gains multiply instead of adding.', incorrect: 'Not quite. The answer is compounding. When you improve by 1% in week one, your baseline is now 101%. When you improve by 1% in week two, you are improving 101%, not 100%. That gives you 102.01%, not 102%. Each win stacks on ALL previous wins. By week 52, the compound effect has multiplied your gains from 52% to 67%. This is the same math that makes compound interest so powerful.' }},
+      { type: 'completion', sources: [{ name: 'Start A/B Testing Your Store', url: 'https://apps.shopify.com/abconvert?mref=lsbqcbva' }] }
     ];
 
     const Icons = {
@@ -169,26 +301,6 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
@@ -203,21 +315,39 @@
       </div>
     );
 
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-violet-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-violet-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-violet-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-violet-700">Action: {data.action}</p>
-              </motion.div>
-            )}
-          </div>
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
         </motion.div>
-      </div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white flex items-center justify-center p-8">
+            <img src={data.image} alt={data.toolName} className="w-32 h-32 object-contain" />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Start Testing Your Store</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </motion.div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -267,7 +397,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the reciprocity engine. Give value first. No strings. The reciprocity will follow automatically. Higher effort equals stronger response. This is not manipulation. This is human psychology working in your favor.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why systematic A/B testing beats random changes. Small 1% weekly improvements compound into 67% annual growth. Each test teaches. Each win stacks. The momentum builds. Start testing one element this week and watch your conversion rate compound.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -286,7 +416,7 @@
             </div>
           </motion.div>
         )}
-      </div>
+      </motion.div>
     );
 
     const LessonApp = () => {
@@ -333,9 +463,11 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
+          case 'compound-growth': return <CompoundGrowthSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
+          case 'timeline': return <TimelineSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

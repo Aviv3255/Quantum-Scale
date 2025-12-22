@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story You Tell Literally Changes How Your Product Tastes</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@11.11.11/dist/framer-motion.js"></script>
+    <script src="../shared/greetings.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            color: #1D1D1F;
+            overflow-x: hidden;
+        }
+
+        .lesson-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .slide {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 12px 24px rgba(0, 0, 0, 0.03);
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: #000000;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: #000000;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: #1D1D1F;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #86868B;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a1a1a;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #F5F5F7;
+            color: #000000;
+        }
+
+        .btn-secondary:hover {
+            background: #E8E8ED;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #F5F5F7;
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #000000;
+            transition: width 0.3s ease;
+        }
+
+        .progress-dots {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E8E8ED;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.active {
+            background: #000000;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            justify-content: space-between;
+        }
+
+        .highlight {
+            background: linear-gradient(180deg, transparent 60%, rgba(184, 134, 11, 0.2) 60%);
+            padding: 0 4px;
+        }
+
+        .card {
+            background: #FAFAFA;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-card {
+            background: #FAFAFA;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .comparison-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #86868B;
+            margin-bottom: 1rem;
+        }
+
+        .juice-glass {
+            width: 120px;
+            height: 180px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .glass-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px 8px 12px 12px;
+            position: relative;
+            box-shadow: inset 0 -60px 80px rgba(255, 165, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .juice-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 75%;
+            background: linear-gradient(180deg, #FFA500 0%, #FF8C00 100%);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quiz-option {
+            background: #FAFAFA;
+            border: 2px solid #E8E8ED;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: #000000;
+            background: white;
+        }
+
+        .quiz-option.correct {
+            border-color: #34C759;
+            background: rgba(52, 199, 89, 0.05);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #FF3B30;
+            background: rgba(255, 59, 48, 0.05);
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .feedback.correct {
+            background: rgba(52, 199, 89, 0.1);
+            color: #1D1D1F;
+        }
+
+        .feedback.incorrect {
+            background: rgba(255, 59, 48, 0.1);
+            color: #1D1D1F;
+        }
+
+        .stat-large {
+            font-family: 'Fraunces', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1;
+            margin: 1rem 0;
+        }
+
+        .example-box {
+            background: white;
+            border: 2px solid #E8E8ED;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .example-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #86868B;
+            margin-bottom: 0.75rem;
+        }
+
+        .emoji-large {
+            font-size: 4rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .slide {
+                padding: 2rem 1.5rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = Motion;
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: 'The Story You Tell Literally Changes How Your Product Tastes',
+                subtitle: 'How narrative becomes a measurable product feature'
+            },
+            {
+                type: 'hook',
+                content: 'What if I told you a story could change how your product literally TASTES?'
+            },
+            {
+                type: 'content',
+                title: 'The Orange Juice Experiment',
+                content: [
+                    'Researchers conducted a blind taste test with two cups of orange juice.',
+                    'The juice was identical. Same brand, same batch, poured from the same container.',
+                    'The only difference? The story told about each cup.'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'Two Cups. Two Stories.',
+                cups: [
+                    {
+                        label: 'Cup A',
+                        description: '"No added preservatives, rich in Vitamin C"',
+                        style: 'plain'
+                    },
+                    {
+                        label: 'Cup B',
+                        description: '"From the LaRon Family Farm... recipe from great-grandmother Nana Gabby... for hardworking men and women"',
+                        style: 'story'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Shocking Result',
+                content: [
+                    'People overwhelmingly preferred Cup B—the "story" juice.',
+                    'They described it as "tasting better," "more natural," and "higher quality."',
+                    'Remember: The juice was IDENTICAL. Same liquid. Same cup. Same temperature.',
+                    'The only thing that changed was the narrative.'
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Mind-Bending Takeaway',
+                highlight: 'The story you attach to your product becomes a FEATURE of the product itself.',
+                content: [
+                    'This isn\'t marketing fluff. This is measurable sensory perception.',
+                    'Your brain literally processes taste differently based on the context you\'re given.',
+                    'A compelling story doesn\'t just make people want to buy—it makes the product perform better in their experience.'
+                ]
+            },
+            {
+                type: 'example',
+                title: 'Applying This to Your Business',
+                examples: [
+                    {
+                        label: 'Generic Description',
+                        text: '"High-quality leather wallet. RFID blocking. 8 card slots."'
+                    },
+                    {
+                        label: 'Story-Driven Description',
+                        text: '"Crafted by third-generation leather artisans in Florence. The same hands that made wallets for your grandfather. Built to last decades, not seasons."'
+                    }
+                ],
+                note: 'Same wallet. Wildly different perceived value and quality.'
+            },
+            {
+                type: 'quiz',
+                question: 'What made the "story" juice taste better to participants?',
+                options: [
+                    { text: 'Different ingredients in Cup B', correct: false },
+                    { text: 'The narrative activated different sensory processing in the brain', correct: true },
+                    { text: 'Cup B actually was better quality', correct: false },
+                    { text: 'Participants were lying about their preference', correct: false }
+                ],
+                correctFeedback: 'Exactly right. The story literally changed how their brain processed the sensory input. Same juice, different neural pathway.',
+                incorrectFeedback: 'Not quite. The juice was identical. The story changed how their brain PROCESSED the taste—this is measurable neuroscience, not placebo.'
+            },
+            {
+                type: 'completion',
+                title: 'Your Product Is Your Story',
+                message: 'Stop treating copywriting as "just marketing." The words you choose become part of the product experience itself.',
+                action: 'Every product description is an opportunity to change how your product is experienced.'
+            }
+        ];
+
+        function WelcomeSlide({ slide, onNext }) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="slide"
+                >
+                    <div className="emoji-large">🧃</div>
+                    <h1>{slide.title}</h1>
+                    <p className="subtitle">{slide.subtitle}</p>
+                    <div className="nav-buttons">
+                        <div></div>
+                        <button className="btn btn-primary" onClick={onNext}>
+                            Begin Lesson →
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function HookSlide({ slide, onNext, onPrev }) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="slide"
+                >
+                    <h1>{slide.content}</h1>
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        <button className="btn btn-primary" onClick={onNext}>
+                            Show Me →
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function ContentSlide({ slide, onNext, onPrev }) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="slide"
+                >
+                    <h2>{slide.title}</h2>
+                    {slide.highlight && (
+                        <p style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1.5rem' }}>
+                            <span className="highlight">{slide.highlight}</span>
+                        </p>
+                    )}
+                    {slide.content.map((paragraph, index) => (
+                        <motion.p
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 + 0.2 }}
+                        >
+                            {paragraph}
+                        </motion.p>
+                    ))}
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        <button className="btn btn-primary" onClick={onNext}>
+                            Continue →
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function VisualSlide({ slide, onNext, onPrev }) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="slide"
+                >
+                    <h2>{slide.title}</h2>
+                    <div className="comparison-grid">
+                        {slide.cups.map((cup, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.2 + 0.3 }}
+                                className="comparison-card"
+                            >
+                                <div className="comparison-label">{cup.label}</div>
+                                <div className="juice-glass">
+                                    <div className="glass-container">
+                                        <div className="juice-fill"></div>
+                                    </div>
+                                </div>
+                                <p style={{ fontSize: '0.95rem', textAlign: 'center', fontStyle: 'italic', color: '#86868B' }}>
+                                    {cup.description}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
+                    <p style={{ textAlign: 'center', fontSize: '1.125rem', fontWeight: 600, marginTop: '2rem' }}>
+                        Same juice. Same everything. Only the story changed.
+                    </p>
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        <button className="btn btn-primary" onClick={onNext}>
+                            See Results →
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function ExampleSlide({ slide, onNext, onPrev }) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="slide"
+                >
+                    <h2>{slide.title}</h2>
+                    {slide.examples.map((example, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.15 + 0.2 }}
+                            className="example-box"
+                        >
+                            <div className="example-label">{example.label}</div>
+                            <p style={{ fontSize: '1rem', marginBottom: 0 }}>{example.text}</p>
+                        </motion.div>
+                    ))}
+                    <div className="card" style={{ marginTop: '2rem' }}>
+                        <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: 0 }}>
+                            💡 {slide.note}
+                        </p>
+                    </div>
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        <button className="btn btn-primary" onClick={onNext}>
+                            Continue →
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function QuizSlide({ slide, onNext, onPrev }) {
+            const [selectedOption, setSelectedOption] = useState(null);
+            const [showFeedback, setShowFeedback] = useState(false);
+
+            const handleOptionClick = (index) => {
+                if (showFeedback) return;
+                setSelectedOption(index);
+                setShowFeedback(true);
+            };
+
+            const isCorrect = selectedOption !== null && slide.options[selectedOption].correct;
+
+            return (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="slide"
+                >
+                    <h2>{slide.question}</h2>
+                    <div className="quiz-options">
+                        {slide.options.map((option, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 + 0.2 }}
+                                className={`quiz-option ${
+                                    showFeedback
+                                        ? option.correct
+                                            ? 'correct'
+                                            : selectedOption === index
+                                            ? 'incorrect'
+                                            : ''
+                                        : ''
+                                }`}
+                                onClick={() => handleOptionClick(index)}
+                            >
+                                {option.text}
+                            </motion.div>
+                        ))}
+                    </div>
+                    {showFeedback && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`feedback ${isCorrect ? 'correct' : 'incorrect'}`}
+                        >
+                            {isCorrect ? slide.correctFeedback : slide.incorrectFeedback}
+                        </motion.div>
+                    )}
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        {showFeedback && (
+                            <button className="btn btn-primary" onClick={onNext}>
+                                Continue →
+                            </button>
+                        )}
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function CompletionSlide({ slide, onPrev }) {
+            const [greeting, setGreeting] = useState('Great work');
+
+            useEffect(() => {
+                if (typeof getRandomGreeting === 'function') {
+                    setGreeting(getRandomGreeting());
+                }
+            }, []);
+
+            return (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6 }}
+                    className="slide"
+                >
+                    <div className="emoji-large">🎯</div>
+                    <h1>{greeting}</h1>
+                    <h2>{slide.title}</h2>
+                    <p className="subtitle">{slide.message}</p>
+                    <div className="card">
+                        <p style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 0 }}>
+                            {slide.action}
+                        </p>
+                    </div>
+                    <div className="nav-buttons">
+                        <button className="btn btn-secondary" onClick={onPrev}>
+                            ← Back
+                        </button>
+                        <button className="btn btn-primary" onClick={() => window.location.href = '/learn'}>
+                            Back to Learning Center
+                        </button>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        function Lesson() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setCurrentSlide(currentSlide + 1);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setCurrentSlide(currentSlide - 1);
+                }
+            };
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+
+            const renderSlide = () => {
+                const slide = slides[currentSlide];
+
+                switch (slide.type) {
+                    case 'welcome':
+                        return <WelcomeSlide slide={slide} onNext={nextSlide} />;
+                    case 'hook':
+                        return <HookSlide slide={slide} onNext={nextSlide} onPrev={prevSlide} />;
+                    case 'content':
+                        return <ContentSlide slide={slide} onNext={nextSlide} onPrev={prevSlide} />;
+                    case 'visual':
+                        return <VisualSlide slide={slide} onNext={nextSlide} onPrev={prevSlide} />;
+                    case 'example':
+                        return <ExampleSlide slide={slide} onNext={nextSlide} onPrev={prevSlide} />;
+                    case 'quiz':
+                        return <QuizSlide slide={slide} onNext={nextSlide} onPrev={prevSlide} />;
+                    case 'completion':
+                        return <CompletionSlide slide={slide} onPrev={prevSlide} />;
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="lesson-container">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            {renderSlide()}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    <div className="progress-bar">
+                        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                    </div>
+
+                    <div className="progress-dots">
+                        {slides.map((_, index) => (
+                            <div
+                                key={index}
+                                className={`progress-dot ${index === currentSlide ? 'active' : ''}`}
+                            ></div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Lesson />);
+    </script>
+</body>
+</html>

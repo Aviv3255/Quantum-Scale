@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>De Beers' Psychological Moat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAFAFA;
+      overflow-x: hidden;
+    }
+    .fraunces {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, AnimatePresence } = window.framerMotion;
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating4.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating5.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating6.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating7.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating8.mp4'
+    ];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy4.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy5.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy6.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy7.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy8.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy9.mp4'
+    ];
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const [greeting, setGreeting] = useState('Welcome back');
+
+      useEffect(() => {
+        const greetingsScript = document.createElement('script');
+        greetingsScript.src = '../shared/greetings.js';
+        greetingsScript.onload = () => {
+          if (window.getGreeting) {
+            setGreeting(window.getGreeting());
+          }
+        };
+        document.head.appendChild(greetingsScript);
+      }, []);
+
+      const slides = [
+        {
+          type: 'welcome',
+          content: {
+            greeting: greeting,
+            title: "De Beers' Psychological Moat",
+            description: "Lab diamonds are chemically IDENTICAL and cheaper. Yet mined diamonds survive. Why?",
+            accent: '#B8860B'
+          }
+        },
+        {
+          type: 'hook',
+          content: {
+            title: "A $100 Billion Industry Under Attack",
+            points: [
+              "Scientists create IDENTICAL diamonds in labs",
+              "Chemically the same. Structurally the same.",
+              "Price? 70% cheaper.",
+              "The mined diamond industry should have COLLAPSED.",
+              "It didn't. Why?"
+            ]
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: "The Campaign That Changed Culture",
+            subtitle: "\"A Diamond is Forever\"",
+            body: "De Beers launched this campaign in 1947.\n\nIt didn't just sell a product.\n\nIt INGRAINED a diamond into the cultural fabric of commitment.\n\nEngagement = Diamond.\n\nThis wasn't advertising. This was CULTURAL PROGRAMMING."
+          }
+        },
+        {
+          type: 'visual',
+          content: {
+            title: "The Two Months' Salary Rule",
+            stat: "2X",
+            label: "Monthly Salary",
+            description: "De Beers invented this \"rule\" through marketing. They ANCHORED the perceived value at an EXTREMELY high level. Pure psychological engineering."
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: "The Disruption Arrives",
+            body: "Lab-grown diamonds emerge.\n\nChemically IDENTICAL.\n\nSignificantly CHEAPER.\n\nBy all RATIONAL measures, the mined diamond industry should have collapsed.\n\nLogic says: buy the cheaper identical product.\n\nBut humans aren't logical."
+          }
+        },
+        {
+          type: 'example',
+          content: {
+            title: "The Psychological Moat",
+            scenario: "The decades of marketing created a powerful GUT FEELING:",
+            result: "The \"real\" diamond from the earth was EMOTIONALLY SUPERIOR.",
+            insight: "This moat didn't last FOREVER. But it bought the industry YEARS to adapt. A timeframe that would be IMPOSSIBLE without the brand equity."
+          }
+        },
+        {
+          type: 'cards',
+          content: {
+            title: "The 5 Heuristics That Shape Perceived Value",
+            cards: [
+              {
+                number: "1",
+                title: "Price-Quality Heuristic",
+                description: "We believe higher price = better product. A Birkin isn't 10x better than a $3K bag. But the price creates the perception."
+              },
+              {
+                number: "2",
+                title: "Brand Prestige",
+                description: "We use brand as a shortcut for quality. Would you pay the same for a bag without the logo? The brand IS the value."
+              },
+              {
+                number: "3",
+                title: "Scarcity",
+                description: "Desire for what's rare is incredibly powerful. Limited drops. \"Last chance.\" It's psychological manipulation that WORKS."
+              },
+              {
+                number: "4",
+                title: "Social Proof",
+                description: "We're influenced by perception in our social circle. Reviews. Influencers. What others value becomes what WE value."
+              },
+              {
+                number: "5",
+                title: "Aesthetic Appeal",
+                description: "We perceive attractive/elegant as higher quality. Apple products aren't technically superior. But they FEEL premium."
+              }
+            ]
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: "Brand = Economic Moat",
+            body: "Your brand is the sum of every gut feeling created at every touchpoint.\n\nIt's not your logo.\n\nIt's not your colors.\n\nIt's the ECONOMIC VALUE of a reputation.\n\nIt's what lets you survive when a cheaper competitor arrives.\n\nIt's your moat."
+          }
+        },
+        {
+          type: 'quiz',
+          content: {
+            question: "A competitor launches an identical product at 50% your price. What protects you?",
+            options: [
+              { id: 'a', text: "Lower your price to match", correct: false },
+              { id: 'b', text: "The psychological moat you've built through brand equity", correct: true },
+              { id: 'c', text: "Add more features to justify price", correct: false },
+              { id: 'd', text: "Nothing - cheaper always wins", correct: false }
+            ],
+            correctFeedback: "EXACTLY. Your brand is your defense. The emotional connection you've built lets you charge more because customers FEEL the difference, even when there isn't one.",
+            incorrectFeedback: "Not quite. Competing on price is a race to the bottom. Features can be copied. Your BRAND - the psychological moat - is what actually protects you."
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: "Holy Shit Moment",
+            body: "Your brand is your MOAT.\n\nIt's what lets you survive disruption.\n\nIt's what lets you charge more.\n\nIt's what keeps customers loyal when cheaper options exist.\n\nBuild it NOW.\n\nBefore the disruption arrives."
+          }
+        },
+        {
+          type: 'tools',
+          content: {
+            title: "Build Your Moat",
+            description: "Track and identify your most valuable customers:",
+            tools: [
+              {
+                name: "DataDrew",
+                description: "Shows who your \"diamond\" customers are - track customer value and identify your most loyal segment",
+                link: "#"
+              },
+              {
+                name: "Section Store",
+                description: "Build brand consistency across all touchpoints with premium design elements",
+                link: "#"
+              }
+            ]
+          }
+        },
+        {
+          type: 'completion',
+          content: {
+            title: "Moat Built",
+            message: "You now understand how psychological barriers create economic value. Use it.",
+            nextLesson: "Next: The Endowment Effect"
+          }
+        }
+      ];
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(currentSlide + 1);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(currentSlide - 1);
+        }
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({
+          x: direction > 0 ? 1000 : -1000,
+          opacity: 0
+        }),
+        center: {
+          x: 0,
+          opacity: 1
+        },
+        exit: (direction) => ({
+          x: direction < 0 ? 1000 : -1000,
+          opacity: 0
+        })
+      };
+
+      return (
+        <div className="min-h-screen bg-[#FAFAFA] flex flex-col">
+          <div className="flex-1 relative overflow-hidden">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 }
+                }}
+                className="absolute inset-0"
+              >
+                <SlideRenderer slide={slides[currentSlide]} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="p-8 flex items-center justify-between">
+            <button
+              onClick={prevSlide}
+              disabled={currentSlide === 0}
+              className="px-6 py-3 rounded-full bg-black text-white font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#1a1a1a] transition-all"
+            >
+              Previous
+            </button>
+
+            <div className="flex gap-2">
+              {slides.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-2 rounded-full transition-all ${
+                    index === currentSlide ? 'w-8 bg-[#B8860B]' : 'w-2 bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={nextSlide}
+              disabled={currentSlide === slides.length - 1}
+              className="px-6 py-3 rounded-full bg-black text-white font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#1a1a1a] transition-all"
+            >
+              {currentSlide === slides.length - 1 ? 'Complete' : 'Next'}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function SlideRenderer({ slide }) {
+      switch (slide.type) {
+        case 'welcome':
+          return <WelcomeSlide {...slide.content} />;
+        case 'hook':
+          return <HookSlide {...slide.content} />;
+        case 'content':
+          return <ContentSlide {...slide.content} />;
+        case 'visual':
+          return <VisualSlide {...slide.content} />;
+        case 'cards':
+          return <CardsSlide {...slide.content} />;
+        case 'example':
+          return <ExampleSlide {...slide.content} />;
+        case 'quiz':
+          return <QuizSlide {...slide.content} />;
+        case 'tools':
+          return <ToolsSlide {...slide.content} />;
+        case 'completion':
+          return <CompletionSlide {...slide.content} />;
+        default:
+          return null;
+      }
+    }
+
+    function WelcomeSlide({ greeting, title, description, accent }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl text-center"
+          >
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-[#86868B] uppercase tracking-wider text-sm font-semibold mb-6"
+            >
+              {greeting}
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="fraunces text-6xl md:text-7xl mb-6 text-black leading-tight"
+              style={{ letterSpacing: '-0.02em' }}
+            >
+              {title}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed"
+            >
+              {description}
+            </motion.p>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="h-1 w-24 mx-auto mt-8 rounded-full"
+              style={{ backgroundColor: accent }}
+            />
+          </motion.div>
+        </div>
+      );
+    }
+
+    function HookSlide({ title, points }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-5xl md:text-6xl mb-12 text-black"
+            >
+              {title}
+            </motion.h2>
+            <div className="space-y-6">
+              {points.map((point, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-4"
+                >
+                  <div className="w-2 h-2 rounded-full bg-[#B8860B] mt-3 flex-shrink-0" />
+                  <p className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed">
+                    {point}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function ContentSlide({ title, subtitle, body }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-5xl md:text-6xl mb-6 text-black"
+            >
+              {title}
+            </motion.h2>
+            {subtitle && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-2xl md:text-3xl text-[#B8860B] mb-8 font-semibold"
+              >
+                {subtitle}
+              </motion.p>
+            )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed whitespace-pre-line"
+            >
+              {body}
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function VisualSlide({ title, stat, label, description }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl text-center"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-4xl md:text-5xl mb-16 text-black"
+            >
+              {title}
+            </motion.h2>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="bg-black rounded-3xl p-16 mb-8 shadow-2xl"
+            >
+              <div className="fraunces text-9xl text-[#B8860B] mb-4">
+                {stat}
+              </div>
+              <div className="text-2xl text-white font-semibold">
+                {label}
+              </div>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl text-[#1D1D1F] leading-relaxed max-w-2xl mx-auto"
+            >
+              {description}
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function CardsSlide({ title, cards }) {
+      return (
+        <div className="h-full overflow-y-auto p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-6xl mx-auto"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-4xl md:text-5xl mb-12 text-black text-center"
+            >
+              {title}
+            </motion.h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {cards.map((card, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#B8860B] flex items-center justify-center flex-shrink-0">
+                      <span className="fraunces text-2xl text-white">{card.number}</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-black mt-2">{card.title}</h3>
+                  </div>
+                  <p className="text-lg text-[#1D1D1F] leading-relaxed">
+                    {card.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function ExampleSlide({ title, scenario, result, insight }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-5xl md:text-6xl mb-12 text-black"
+            >
+              {title}
+            </motion.h2>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#F5F5F7] rounded-2xl p-8 mb-6"
+            >
+              <p className="text-sm uppercase tracking-wider text-[#86868B] font-semibold mb-3">
+                Scenario
+              </p>
+              <p className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed">
+                {scenario}
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-black rounded-2xl p-8 mb-6"
+            >
+              <p className="text-sm uppercase tracking-wider text-[#B8860B] font-semibold mb-3">
+                Result
+              </p>
+              <p className="text-xl md:text-2xl text-white leading-relaxed">
+                {result}
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white rounded-2xl p-8 border-2 border-[#B8860B]"
+            >
+              <p className="text-sm uppercase tracking-wider text-[#B8860B] font-semibold mb-3">
+                The Insight
+              </p>
+              <p className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed">
+                {insight}
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function QuizSlide({ question, options, correctFeedback, incorrectFeedback }) {
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const [gifUrl, setGifUrl] = useState(null);
+
+      const handleAnswer = (option) => {
+        setSelectedAnswer(option);
+        setShowResult(true);
+
+        if (option.correct) {
+          const randomGif = celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+          setGifUrl(randomGif);
+        } else {
+          const randomGif = empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+          setGifUrl(randomGif);
+        }
+      };
+
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl w-full"
+          >
+            {!showResult ? (
+              <>
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="fraunces text-4xl md:text-5xl mb-12 text-black"
+                >
+                  {question}
+                </motion.h2>
+                <div className="space-y-4">
+                  {options.map((option, index) => (
+                    <motion.button
+                      key={option.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      onClick={() => handleAnswer(option)}
+                      className="w-full text-left p-6 rounded-2xl bg-white hover:bg-[#F5F5F7] transition-all border-2 border-transparent hover:border-black"
+                    >
+                      <span className="text-xl md:text-2xl text-[#1D1D1F]">
+                        {option.text}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center"
+              >
+                {gifUrl && (
+                  <motion.video
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    src={gifUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-64 h-64 mx-auto mb-8 rounded-2xl object-cover"
+                  />
+                )}
+                <motion.h3
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="fraunces text-4xl md:text-5xl mb-6 text-black"
+                >
+                  {selectedAnswer.correct ? "Exactly!" : "Not Quite"}
+                </motion.h3>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl md:text-2xl text-[#1D1D1F] leading-relaxed"
+                >
+                  {selectedAnswer.correct ? correctFeedback : incorrectFeedback}
+                </motion.p>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      );
+    }
+
+    function ToolsSlide({ title, description, tools }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fraunces text-4xl md:text-5xl mb-6 text-black text-center"
+            >
+              {title}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-[#86868B] mb-12 text-center"
+            >
+              {description}
+            </motion.p>
+            <div className="space-y-6">
+              {tools.map((tool, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all"
+                >
+                  <h3 className="text-2xl font-bold text-black mb-3">{tool.name}</h3>
+                  <p className="text-lg text-[#1D1D1F] leading-relaxed mb-4">
+                    {tool.description}
+                  </p>
+                  <a
+                    href={tool.link}
+                    className="inline-block text-[#B8860B] font-semibold hover:underline"
+                  >
+                    Learn more →
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    function CompletionSlide({ title, message, nextLesson }) {
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="w-24 h-24 rounded-full bg-[#B8860B] mx-auto mb-8 flex items-center justify-center"
+            >
+              <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="fraunces text-5xl md:text-6xl mb-6 text-black"
+            >
+              {title}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl md:text-2xl text-[#1D1D1F] mb-8 leading-relaxed"
+            >
+              {message}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg text-[#86868B]"
+            >
+              {nextLesson}
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

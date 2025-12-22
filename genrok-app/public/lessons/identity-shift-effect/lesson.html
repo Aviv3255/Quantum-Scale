@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 42% Sales Trick (That's Not a Trick) | Quantum Scale</title>
+  <title>The Identity Shift Effect | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3B82F6; --accent-dark: #2563EB; --accent-light: #60A5FA; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #f43f5e; --accent-dark: #e11d48; --accent-light: #fb7185; --accent-rgb: 244, 63, 94; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,16 +34,68 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    // Brand Identity Component
+    const BrandIdentitySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-rose-50 border-2 border-rose-200 rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="text-4xl">{data.old.emoji}</div>
+              <h3 className="font-bold text-rose-900 text-lg">{data.old.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-rose-100">
+              <p className="text-sm text-rose-700 font-medium mb-2">{data.old.pitch}</p>
+            </div>
+            <p className="text-sm text-rose-700 italic">{data.old.insight}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="text-4xl">{data.new.emoji}</div>
+              <h3 className="font-bold text-emerald-900 text-lg">{data.new.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-emerald-100">
+              <p className="text-sm text-emerald-700 font-medium mb-2">{data.new.pitch}</p>
+            </div>
+            <p className="text-sm text-emerald-700 italic">{data.new.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Identity Transformation Component
+    const IdentityTransformSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="flex items-center gap-4">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="flex-1 bg-neutral-100 rounded-xl p-6 text-center">
+            <div className="text-5xl mb-3">{data.before.emoji}</div>
+            <h3 className="font-bold text-neutral-900 mb-2">{data.before.label}</h3>
+            <p className="text-sm text-neutral-600">{data.before.description}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="text-4xl text-neutral-400">→</motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="flex-1 bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-300 rounded-xl p-6 text-center">
+            <div className="text-5xl mb-3">{data.after.emoji}</div>
+            <h3 className="font-bold text-rose-900 mb-2">{data.after.label}</h3>
+            <p className="text-sm text-rose-700">{data.after.description}</p>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center text-neutral-600 text-sm italic mt-6">{data.insight}</motion.p>
+      </div>
+    );
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'reciprocity-engine',
-      title: 'The 42% Sales Trick (That\'s Not a Trick)',
-      description: 'Why giving something away for free can make you more money than any sales tactic ever could.',
-      accentColor: '#3B82F6',
-      duration: '6 min',
-      nextLesson: { id: 'luxury-mindset-shift', title: 'The 4 Mindset Shifts', teaser: 'How premium brands think differently about price, story, and value.' }
+      id: 'identity-shift-effect',
+      title: 'The Identity Shift Effect',
+      description: 'How the best brands sell who you BECOME, not what you get.',
+      accentColor: '#f43f5e',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'More psychological design concepts coming soon.' }
     };
+
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -51,7 +103,9 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -60,34 +114,44 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why giving something away increases sales by 42%', 'The psychology of reciprocity and social debt', 'How effort multiplies the reciprocity effect', 'Five ways to implement this in your store'] },
-      { type: 'hook', headline: 'Why giving something away for free can make you more money than any sales tactic.', subtext: 'A candy shop in California started giving away free samples. Just one small piece. Free. No strings attached. Sales went up 42%. But customers did not buy more of the candy they tasted. They bought different candies. Completely different flavors. So it was not about liking the sample. It was about something far more powerful.' },
-      { type: 'visual', visualType: 'stats', title: 'The Candy Shop Experiment', data: [
-        { value: '42%', label: 'Sales Increase', subtext: 'From free samples alone' },
-        { value: '0%', label: 'Sample Conversion', subtext: 'They bought different flavors' },
-        { value: '100%', label: 'Reciprocity Trigger', subtext: 'Felt compelled to give back' }
+      { type: 'welcome', learningGoals: ['Why identity-based brands outsell feature-based competitors', 'The psychology behind "this is who I am" vs "this is what I need"', 'How to position your product as an identity upgrade, not just a purchase'] },
+      { type: 'hook', headline: 'Nike doesn\'t sell shoes. Apple doesn\'t sell computers. Patagonia doesn\'t sell jackets.', subtext: 'They sell who you BECOME when you buy them. The athlete. The creative. The environmental activist. This is the Identity Shift Effect. When customers buy your product, they are not just getting features and benefits. They are buying permission to see themselves differently. To BE different. The best brands understand this instinctively. They sell transformation, not transactions. Identity, not inventory. And when you nail this, price becomes irrelevant.' },
+      { type: 'content', title: 'The Psychology of Self-Concept', body: 'Every human has a self-concept. Who they believe they are. Who they want to become. The gap between these two creates psychological tension. And that tension drives behavior. When a brand positions itself as the bridge between current self and ideal self, it becomes irresistible. You are not selling a product. You are selling the identity upgrade. The permission to become who they aspire to be.' },
+      { type: 'brand-identity', title: 'Feature Selling vs Identity Selling', old: { emoji: '👟', title: 'Regular Shoe Brand', pitch: 'High-performance running shoes with responsive cushioning and breathable mesh upper.', insight: 'Focuses on what the product IS' }, new: { emoji: '✓', title: 'Nike', pitch: 'Just Do It. Become the athlete who doesn\'t make excuses. Who pushes harder. Who wins.', insight: 'Focuses on who the customer BECOMES' }},
+      { type: 'content', title: 'Why This Works So Powerfully', body: 'People do not buy rationally. They buy emotionally and justify logically. When you sell features, you engage the rational brain. "Does this have what I need?" When you sell identity, you engage the emotional brain. "Is this who I want to be?" Emotion wins. Every time. The customer who buys Nikes is not just buying cushioning technology. They are buying the right to call themselves an athlete. To feel like someone who takes action. Who conquers challenges.' },
+      { type: 'identity-transform', title: 'The Identity Transformation', before: { emoji: '😐', label: 'Current Self', description: 'Regular person with regular phone' }, after: { emoji: '🎨', label: 'Ideal Self', description: 'Creative professional, innovator, someone who thinks different' }, insight: 'Apple bridges this gap. When you buy a MacBook, you are buying permission to identify as a creative.' },
+      { type: 'content', title: 'The Three Pillars of Identity Brands', body: 'First: Clear Identity Definition. Nike = athletes. Apple = creatives. Patagonia = environmentalists. You instantly know who uses these brands. Second: Aspirational Positioning. These identities are desirable. People WANT to be athletes, creatives, environmentalists. Third: Permission Through Purchase. Buying the product gives you permission to adopt the identity. You are now part of the tribe.' },
+      { type: 'cards', title: 'Brands That Master Identity', items: [
+        { title: 'Nike - The Athlete', description: 'You are not buying shoes. You are buying the identity of someone who doesn\'t quit.' },
+        { title: 'Apple - The Creative', description: 'You are not buying a computer. You are buying permission to think different.' },
+        { title: 'Harley-Davidson - The Rebel', description: 'You are not buying a motorcycle. You are buying freedom and nonconformity.' },
+        { title: 'Patagonia - The Activist', description: 'You are not buying a jacket. You are buying environmental responsibility.' },
+        { title: 'Supreme - The Insider', description: 'You are not buying a t-shirt. You are buying cultural relevance and exclusivity.' },
+        { title: 'Tesla - The Innovator', description: 'You are not buying a car. You are buying the future and technological leadership.' }
       ]},
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired with a simple rule: When someone gives you something, you feel compelled to give back. It is not manipulation. It is biology. We hate the feeling of being indebted. It creates psychological tension. Discomfort. The only way to release that tension? Reciprocate. Those candy shop customers felt they owed the store something. Even though the sample was genuinely free, with no expectation. So they bought. Not because they wanted candy. Because they wanted to discharge the social debt.' },
-      { type: 'content', title: 'This Is Human Nature, Not a Hack', body: 'Give first. Value first. No strings. The reciprocity will follow automatically because that is how humans are built. This is not about tricking people. It is about understanding basic human psychology. When you genuinely give value without expectation, people naturally want to reciprocate. That is the reciprocity engine at work.' },
-      { type: 'content', title: 'But Wait—There Is a Multiplier', body: 'Not all giving triggers the same level of reciprocity. The secret? Effort. Imagine two scenarios. You get a mass email with a generic discount code. Copy-pasted to 10,000 people. Versus: You get a hand-written thank you note with a personalized gift in your order. Clearly took time. Which one makes you feel more obligated to reciprocate? The second one. Obviously.' },
-      { type: 'example', scenario: 'The Effort Multiplier', before: { label: 'Low Effort', text: 'Generic mass email with discount code. Copy-pasted to 10,000 people. Feels automated. No emotional connection. Weak reciprocity trigger.' }, after: { label: 'High Effort', text: 'Hand-written thank you note with personalized gift. Clearly took time and thought. Strong emotional connection. Powerful reciprocity trigger.' }, insight: 'Higher effort equals stronger reciprocity. This is why surprise gifts create loyal customers.' },
-      { type: 'content', title: 'Why High Effort Works', body: 'Higher effort equals stronger reciprocity trigger. This is why a hand-delivered envelope outperforms a standard one. Why a surprise gift in an order creates loyal customers. Why high-effort content like this lesson builds more trust than a generic blog post. The more effort you put into giving, the more powerful the reciprocity response.' },
-      { type: 'content', title: 'Read This Twice', body: 'You do not need to trick customers into buying. You need to give them so much value, for free, that they want to reciprocate. That is not a tactic. That is human psychology working in your favor. The candy shop did not manipulate anyone. They gave genuine value. The sales increase was a natural result of reciprocity.' },
-      { type: 'cards', title: 'How This Works in Your DTC Store', items: [
-        { title: 'Free Gift with Purchase', description: 'Include a small, unexpected gift in every order. Bonus points if it is personalized or hand-written note attached. Cost: $1-3. Value: Customer for life.' },
-        { title: 'High-Effort Free Content', description: 'Do not send generic emails. Send genuinely valuable guides, templates, or case studies. Put real work into it. They will feel it and reciprocate with purchases.' },
-        { title: 'Surprise Upgrades', description: 'Randomly upgrade shipping to express. Add an extra product sample. Double their order quantity. The surprise amplifies the reciprocity effect 10x.' },
-        { title: 'First-Time Customer Bonus', description: 'Give something valuable immediately after first purchase, not before. They just gave you money. Now you give them unexpected value. Reciprocity loop activated.' },
-        { title: 'Automate Post-Purchase Surprises', description: 'The thank you page is prime real estate for reciprocity. Offer surprise bonuses, free samples, or exclusive discounts right after checkout when reciprocity is at its peak.' }
+      { type: 'content', title: 'Feature Thinking vs Identity Thinking', body: 'Most brands think in features. "Our product has X, Y, and Z capabilities." They list specifications. Technical details. Benefits. And they wonder why customers shop on price. Identity brands think differently. "When you use our product, you become THIS type of person." They sell transformation. Status. Belonging. And customers pay premium prices willingly.' },
+      { type: 'example', scenario: 'Two Coffee Brands', before: { label: 'Feature Brand', text: 'Premium Arabica beans. Fair trade certified. Rich, smooth flavor with notes of chocolate and caramel. Available in whole bean or ground. Free shipping on orders over $30. Competes on quality and price.' }, after: { label: 'Identity Brand', text: 'For the discerning coffee connoisseur who appreciates craft and refuses to settle for ordinary. You are not just drinking coffee. You are experiencing artistry. Join the community of people who know the difference. Premium pricing without apology.' }, insight: 'The identity brand creates a tribe. Customers do not just buy coffee. They buy membership in an exclusive group of people who "get it."' },
+      { type: 'content', title: 'The Tribal Language Component', body: 'Identity brands use specific language that reinforces the identity. Nike: "Athletes." Apple: "Creatives." Harley: "Riders." This language creates in-group/out-group dynamics. If you own the product, you are IN the tribe. You use the tribal language. You adopt the identity. If you do not, you are out. This tribal belonging is incredibly powerful psychologically.' },
+      { type: 'cards', title: 'How to Build Identity Into Your Brand', items: [
+        { title: 'Define Your Tribe', description: 'Who do your customers want to become? Athletes? Entrepreneurs? Artists? Parents? Rebels?' },
+        { title: 'Name The Identity', description: 'Give them a label. Nike has athletes. Your brand needs a clear identity label too.' },
+        { title: 'Speak The Identity', description: 'Use language that reinforces who they are becoming. Not "customers." Use the identity label.' },
+        { title: 'Show The Transformation', description: 'Visualize the before and after. Who were they? Who are they becoming with your product?' },
+        { title: 'Create Belonging Signals', description: 'Badges, language, community spaces where tribe members can recognize each other.' }
       ]},
-      { type: 'pro-tip', title: 'The Tool Integration', body: 'Tools like ReConvert let you offer surprise bonuses, free samples, or exclusive discounts on the thank you page right after checkout. This is when reciprocity is at its peak. The customer just gave you money. They are primed to receive value. A well-timed surprise here turns first-time buyers into repeat customers.', action: 'Implement one reciprocity tactic this week. Watch your repeat purchase rate climb.' },
-      { type: 'content', title: 'The Reciprocity Loop', body: 'Give value. Customer feels indebted. Customer reciprocates by purchasing. You give more value post-purchase. Customer feels even more indebted. Customer becomes repeat buyer. This is not manipulation. This is how trust and loyalty are built. Every successful brand uses this loop. The difference is whether you do it intentionally or accidentally.' },
-      { type: 'quiz', question: 'Why did the candy shop customers buy different flavors than what they sampled?', options: ['They did not like the free sample', 'They wanted to try something new', 'They felt compelled to reciprocate the free gift by buying something', 'The other flavors were on sale'], correctIndex: 2, feedback: { correct: 'Exactly. This is the reciprocity engine in action. The free sample created a psychological debt. Customers felt they owed the store something. So they bought. Not because they wanted that specific candy. But because they needed to discharge the social obligation. The sample triggered the purchase, even though they bought different products. That is the power of reciprocity.', incorrect: 'Think deeper about the psychology. The customers bought different flavors because of reciprocity, not preference. When the store gave them something for free, it created a psychological debt. Humans hate feeling indebted. So they reciprocated by making a purchase. Any purchase. The free sample was not about selling that specific product. It was about triggering the reciprocity response.' }},
+      { type: 'content', title: 'Why Price Becomes Irrelevant', body: 'When someone is buying an identity, price objections disappear. Would a "real athlete" choose cheap shoes? Would a "serious creative" use a budget laptop? No. Because the purchase is a signal. To themselves and others. It says "I am this type of person." Paying premium prices actually reinforces the identity. It proves commitment. Cheap alternatives threaten the identity.' },
+      { type: 'brand-identity', title: 'The Psychology in Action', old: { emoji: '💻', title: 'Dell Laptop', pitch: 'High-performance laptop with 16GB RAM, 512GB SSD, Intel i7 processor. Great for productivity.', insight: 'Rational purchase. Comparison shopping. Price matters.' }, new: { emoji: '🍎', title: 'MacBook', pitch: 'The tool of choice for creatives, designers, and innovators who refuse to compromise their vision.', insight: 'Identity purchase. Premium pricing accepted. Brand loyalty fierce.' }},
+      { type: 'content', title: 'The Identity Shift in Your Marketing', body: 'Stop talking about features. Start talking about transformation. Not "Our product has X capability." Instead "When you use this, you become the type of person who..." Shift your copy from specifications to identity. From benefits to belonging. From what it does to who you become. This is the Identity Shift Effect in action.' },
+      { type: 'quiz', question: 'Why do identity-based brands command higher prices than feature-based brands?', options: ['Their products are actually better quality', 'Customers are buying an identity upgrade, not just a product', 'They spend more on advertising', 'They have better customer service'], correctIndex: 1, feedback: { correct: 'Exactly right! Identity-based brands command premium prices because customers are buying an identity upgrade, not just product features. When someone buys Nikes, they are buying permission to see themselves as an athlete. When someone buys Apple, they are buying membership in the creative tribe. The purchase becomes a signal of who they are and who they are becoming. Price objections disappear because the identity transformation has emotional value far beyond the functional product.', incorrect: 'Not quite. The answer is that customers are buying an identity upgrade, not just a product. Identity brands sell transformation and belonging. They position the purchase as permission to adopt a desirable identity - athlete, creative, rebel, activist. When you are buying who you BECOME, price becomes secondary to the emotional value of the identity shift. This is why Nike charges more than generic athletic shoes, even when the functional differences are minimal.' }},
       { type: 'completion', sources: [] }
     ];
 
@@ -124,7 +188,7 @@
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
           </div>
         </div>
       );
@@ -166,28 +230,8 @@
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
           <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
-      </div>
+      </motion.div>
     );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
 
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -200,23 +244,6 @@
             </motion.div>
           ))}
         </div>
-      </div>
-    );
-
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-violet-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-violet-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-violet-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-violet-700">Action: {data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
       </div>
     );
 
@@ -267,25 +294,12 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the reciprocity engine. Give value first. No strings. The reciprocity will follow automatically. Higher effort equals stronger response. This is not manipulation. This is human psychology working in your favor.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Identity Shift Effect. The best brands do not sell products, they sell who customers BECOME. When you position your brand as an identity upgrade, price becomes irrelevant and loyalty becomes fierce. Start thinking about who your customers want to become.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -333,9 +347,9 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
+          case 'brand-identity': return <BrandIdentitySlide data={slide} />;
+          case 'identity-transform': return <IdentityTransformSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 42% Sales Trick (That's Not a Trick) | Quantum Scale</title>
+  <title>Post-Purchase Momentum: The Highest-Trust Moment | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3B82F6; --accent-dark: #2563EB; --accent-light: #60A5FA; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #14b8a6; --accent-dark: #0d9488; --accent-light: #2dd4bf; --accent-rgb: 20, 184, 166; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,16 +34,107 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // Timeline Component
+    const TimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.stages.map((stage, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative pl-12">
+              <div className="absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ background: stage.color }}>
+                {i + 1}
+              </div>
+              {i < data.stages.length - 1 && <div className="absolute left-5 top-10 w-0.5 h-full bg-neutral-200" />}
+              <div className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+                <h3 className="font-bold text-lg mb-2">{stage.title}</h3>
+                <p className="text-neutral-600 text-sm mb-2">{stage.description}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-xs font-semibold px-2 py-1 rounded" style={{ background: `${stage.color}20`, color: stage.color }}>
+                    Trust Level: {stage.trust}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Comparison Grid Component
+    const ComparisonGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
+              <h3 className="font-bold text-red-700">{data.old.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-red-100">
+              <p className="text-sm text-neutral-700">{data.old.content}</p>
+            </div>
+            <p className="text-sm text-red-700 italic">{data.old.insight}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
+              <h3 className="font-bold text-green-700">{data.new.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-green-100">
+              <p className="text-sm text-neutral-700">{data.new.content}</p>
+            </div>
+            <p className="text-sm text-green-700 italic">{data.new.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Pro Tip Component
+    const ProTipSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
+          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-200 rounded-2xl p-8 relative">
+            <div className="absolute -top-4 left-6 px-4 py-1 bg-teal-500 text-white text-xs font-bold rounded-full">💡 PRO TIP</div>
+            <h2 className="slide-title text-2xl md:text-3xl text-teal-900 mb-4 pt-2">{data.title}</h2>
+            <p className="text-teal-800 leading-relaxed">{data.body}</p>
+            {data.action && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
+                <p className="text-sm font-medium text-teal-700">➜ {data.action}</p>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'reciprocity-engine',
-      title: 'The 42% Sales Trick (That\'s Not a Trick)',
-      description: 'Why giving something away for free can make you more money than any sales tactic ever could.',
-      accentColor: '#3B82F6',
-      duration: '6 min',
-      nextLesson: { id: 'luxury-mindset-shift', title: 'The 4 Mindset Shifts', teaser: 'How premium brands think differently about price, story, and value.' }
+      id: 'post-purchase-momentum',
+      title: 'Post-Purchase Momentum: The Highest-Trust Moment',
+      description: 'Why the moment AFTER payment is the most underutilized opportunity in ecommerce.',
+      accentColor: '#14b8a6',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more psychology-driven tactics.' }
     };
+
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -51,7 +142,9 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -60,35 +153,48 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why giving something away increases sales by 42%', 'The psychology of reciprocity and social debt', 'How effort multiplies the reciprocity effect', 'Five ways to implement this in your store'] },
-      { type: 'hook', headline: 'Why giving something away for free can make you more money than any sales tactic.', subtext: 'A candy shop in California started giving away free samples. Just one small piece. Free. No strings attached. Sales went up 42%. But customers did not buy more of the candy they tasted. They bought different candies. Completely different flavors. So it was not about liking the sample. It was about something far more powerful.' },
-      { type: 'visual', visualType: 'stats', title: 'The Candy Shop Experiment', data: [
-        { value: '42%', label: 'Sales Increase', subtext: 'From free samples alone' },
-        { value: '0%', label: 'Sample Conversion', subtext: 'They bought different flavors' },
-        { value: '100%', label: 'Reciprocity Trigger', subtext: 'Felt compelled to give back' }
+      { type: 'welcome', learningGoals: ['Why the moment after payment has the highest trust level in the entire customer journey', 'The psychology of commitment and consistency that makes post-purchase offers convert better', 'How to ethically leverage this momentum without breaking trust'] },
+      { type: 'hook', headline: 'Most stores waste their highest-trust moment.', subtext: 'Someone just gave you money. Their credit card was charged. The purchase is confirmed. Right now, in this exact moment, they trust you more than they ever will again. This is not a theory. This is commitment and consistency psychology. Once someone commits to a decision, they rationalize it. They convince themselves it was the right choice. And in that window, they are more likely to say yes to related offers. Yet most stores show a boring "Thank you for your order" page and send them away. The opportunity evaporates.' },
+      { type: 'content', title: 'The Commitment Psychology Window', body: 'When someone clicks "Complete Purchase," something shifts in their brain. Before payment: doubt, hesitation, comparison shopping. After payment: commitment. They have psychologically crossed a threshold. They are now a customer, not a visitor. And humans have a deep need for consistency. Once we commit to something, we want our future actions to align with that commitment. This is why the thank you page converts better than any other page on your site. They already said yes once. Saying yes again feels consistent.' },
+      { type: 'timeline', title: 'The Customer Trust Journey', stages: [
+        { title: 'First Visit', description: 'Who is this store? Can I trust them?', trust: 'Low', color: '#ef4444' },
+        { title: 'Product Page', description: 'Maybe this product is good...', trust: 'Medium', color: '#f59e0b' },
+        { title: 'Checkout Started', description: 'Okay, I am considering this seriously.', trust: 'High', color: '#eab308' },
+        { title: 'Payment Completed', description: 'I committed. This was the right choice.', trust: 'Highest', color: '#14b8a6' },
+        { title: 'Days Later', description: 'Was this worth it? Maybe I should have...', trust: 'Declining', color: '#6b7280' }
       ]},
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired with a simple rule: When someone gives you something, you feel compelled to give back. It is not manipulation. It is biology. We hate the feeling of being indebted. It creates psychological tension. Discomfort. The only way to release that tension? Reciprocate. Those candy shop customers felt they owed the store something. Even though the sample was genuinely free, with no expectation. So they bought. Not because they wanted candy. Because they wanted to discharge the social debt.' },
-      { type: 'content', title: 'This Is Human Nature, Not a Hack', body: 'Give first. Value first. No strings. The reciprocity will follow automatically because that is how humans are built. This is not about tricking people. It is about understanding basic human psychology. When you genuinely give value without expectation, people naturally want to reciprocate. That is the reciprocity engine at work.' },
-      { type: 'content', title: 'But Wait—There Is a Multiplier', body: 'Not all giving triggers the same level of reciprocity. The secret? Effort. Imagine two scenarios. You get a mass email with a generic discount code. Copy-pasted to 10,000 people. Versus: You get a hand-written thank you note with a personalized gift in your order. Clearly took time. Which one makes you feel more obligated to reciprocate? The second one. Obviously.' },
-      { type: 'example', scenario: 'The Effort Multiplier', before: { label: 'Low Effort', text: 'Generic mass email with discount code. Copy-pasted to 10,000 people. Feels automated. No emotional connection. Weak reciprocity trigger.' }, after: { label: 'High Effort', text: 'Hand-written thank you note with personalized gift. Clearly took time and thought. Strong emotional connection. Powerful reciprocity trigger.' }, insight: 'Higher effort equals stronger reciprocity. This is why surprise gifts create loyal customers.' },
-      { type: 'content', title: 'Why High Effort Works', body: 'Higher effort equals stronger reciprocity trigger. This is why a hand-delivered envelope outperforms a standard one. Why a surprise gift in an order creates loyal customers. Why high-effort content like this lesson builds more trust than a generic blog post. The more effort you put into giving, the more powerful the reciprocity response.' },
-      { type: 'content', title: 'Read This Twice', body: 'You do not need to trick customers into buying. You need to give them so much value, for free, that they want to reciprocate. That is not a tactic. That is human psychology working in your favor. The candy shop did not manipulate anyone. They gave genuine value. The sales increase was a natural result of reciprocity.' },
-      { type: 'cards', title: 'How This Works in Your DTC Store', items: [
-        { title: 'Free Gift with Purchase', description: 'Include a small, unexpected gift in every order. Bonus points if it is personalized or hand-written note attached. Cost: $1-3. Value: Customer for life.' },
-        { title: 'High-Effort Free Content', description: 'Do not send generic emails. Send genuinely valuable guides, templates, or case studies. Put real work into it. They will feel it and reciprocate with purchases.' },
-        { title: 'Surprise Upgrades', description: 'Randomly upgrade shipping to express. Add an extra product sample. Double their order quantity. The surprise amplifies the reciprocity effect 10x.' },
-        { title: 'First-Time Customer Bonus', description: 'Give something valuable immediately after first purchase, not before. They just gave you money. Now you give them unexpected value. Reciprocity loop activated.' },
-        { title: 'Automate Post-Purchase Surprises', description: 'The thank you page is prime real estate for reciprocity. Offer surprise bonuses, free samples, or exclusive discounts right after checkout when reciprocity is at its peak.' }
+      { type: 'content', title: 'Why This Moment Matters', body: 'Picture a customer immediately after checkout. Their brain is rationalizing the purchase. "This was a smart decision." "I needed this." "This will solve my problem." They are in peak trust mode. Now imagine showing them a complementary product. Something that enhances what they just bought. Not random. Not pushy. Just relevant. The psychology works in your favor. They already committed to solving this problem. Adding one more thing that helps solve it better? That feels like doubling down on a smart decision, not being upsold.' },
+      { type: 'comparison-grid', title: 'Thank You Page Reality Check', old: { title: 'What Most Stores Do', content: '"Thanks for your order! You will receive a confirmation email." [End of page]', insight: 'Wasting the highest-trust moment by saying nothing' }, new: { title: 'What Smart Stores Do', content: '"Perfect choice! Customers who bought this also loved [complementary product]. Add it now for 20% off."', insight: 'Leveraging commitment psychology when trust is highest' }},
+      { type: 'content', title: 'The Consistency Principle', body: 'Psychologist Robert Cialdini documented this in his research on influence. Once people commit to something, they will go to great lengths to appear consistent with that commitment. This is why post-purchase upsells convert at much higher rates than pre-purchase ones. You are not asking them to start fresh. You are asking them to continue the decision they already made. "You bought a yoga mat. Want the matching blocks?" That is consistent. "You bought running shoes. Want a blender?" That breaks the consistency.' },
+      { type: 'cards', title: 'What Makes Post-Purchase Offers Work', items: [
+        { title: 'Commitment is Already Made', description: 'They crossed the psychological threshold. They are a customer now, not a browser.' },
+        { title: 'Trust is at Peak Level', description: 'They just trusted you with their money. That trust carries forward immediately.' },
+        { title: 'Rationalization is Active', description: 'Their brain is justifying the purchase. Adding more feels like smart planning.' },
+        { title: 'Friction is Removed', description: 'Payment info already entered. One click to add, not another full checkout.' },
+        { title: 'Relevance is Clear', description: 'Complementary products feel like helpful additions, not random upsells.' }
       ]},
-      { type: 'pro-tip', title: 'The Tool Integration', body: 'Tools like ReConvert let you offer surprise bonuses, free samples, or exclusive discounts on the thank you page right after checkout. This is when reciprocity is at its peak. The customer just gave you money. They are primed to receive value. A well-timed surprise here turns first-time buyers into repeat customers.', action: 'Implement one reciprocity tactic this week. Watch your repeat purchase rate climb.' },
-      { type: 'content', title: 'The Reciprocity Loop', body: 'Give value. Customer feels indebted. Customer reciprocates by purchasing. You give more value post-purchase. Customer feels even more indebted. Customer becomes repeat buyer. This is not manipulation. This is how trust and loyalty are built. Every successful brand uses this loop. The difference is whether you do it intentionally or accidentally.' },
-      { type: 'quiz', question: 'Why did the candy shop customers buy different flavors than what they sampled?', options: ['They did not like the free sample', 'They wanted to try something new', 'They felt compelled to reciprocate the free gift by buying something', 'The other flavors were on sale'], correctIndex: 2, feedback: { correct: 'Exactly. This is the reciprocity engine in action. The free sample created a psychological debt. Customers felt they owed the store something. So they bought. Not because they wanted that specific candy. But because they needed to discharge the social obligation. The sample triggered the purchase, even though they bought different products. That is the power of reciprocity.', incorrect: 'Think deeper about the psychology. The customers bought different flavors because of reciprocity, not preference. When the store gave them something for free, it created a psychological debt. Humans hate feeling indebted. So they reciprocated by making a purchase. Any purchase. The free sample was not about selling that specific product. It was about triggering the reciprocity response.' }},
-      { type: 'completion', sources: [] }
+      { type: 'pro-tip', title: 'The Relevance Rule', body: 'This only works if the offer is genuinely complementary. If someone buys a camera, offer a memory card or lens. If they buy skincare, offer the matching serum. Irrelevant offers break the trust you just earned. Relevant offers deepen it by showing you understand their needs.', action: 'Ask: Would I want this if I just bought the main product?' },
+      { type: 'content', title: 'The Discount Accelerator', body: 'Here is where it gets interesting. Offering a small discount on the post-purchase offer makes it almost irresistible. Not because people need the discount. Because it signals "This is a special moment just for you." It reinforces that they made a smart choice. "You are already saving money by acting now." This aligns with their rationalization. They get to feel like they outsmarted the system twice in one session.' },
+      { type: 'example', scenario: 'Fitness Store Post-Purchase Flow', before: { label: 'Generic Thank You (Old)', text: 'Customer buys yoga mat for $40. Thank you page says "Order confirmed." Customer leaves. Session ends. Revenue: $40.' }, after: { label: 'Strategic Post-Purchase (New)', text: 'Customer buys yoga mat for $40. Thank you page offers yoga blocks for $18 (normally $25). "Complete your setup!" Customer adds it. Revenue: $58. 45% increase from one strategic offer.' }, insight: 'The offer converts because it is relevant, discounted, and presented when trust is highest.' },
+      { type: 'content', title: 'The One-Click Advantage', body: 'Another reason post-purchase offers convert better: friction is nearly zero. Payment information is already saved. Shipping address already entered. They do not have to re-enter anything. It is one click to add the item to their order. Compare that to a regular upsell on a product page. They have to add to cart. Go to checkout. Fill in all their info. Much higher friction. Much lower conversion. Post-purchase removes that entire barrier.' },
+      { type: 'cards', title: 'What to Offer Post-Purchase', items: [
+        { title: 'Complementary Products', description: 'Items that enhance what they just bought. Camera + memory card. Skincare + serum.' },
+        { title: 'Consumable Refills', description: 'If they bought something that runs out, offer a refill at a discount. Coffee, skincare, supplements.' },
+        { title: 'Upgraded Versions', description: 'They bought the basic model. Offer the premium version with added features for a small upcharge.' },
+        { title: 'Bundles', description: 'Add 2-3 related items as a bundle deal. "Get everything you need in one order."' }
+      ]},
+      { type: 'tool', title: 'Easiest Way to Add Post-Purchase Offers', toolName: 'ReConvert', toolUrl: 'https://apps.shopify.com/reconvert-upsell-cross-sell?surface_detail=post+purchase&surface_inter_position=1&surface_intra_position=3&surface_type=search', body: 'One-click post-purchase upsells on your thank you page. Fully customizable. Shows relevant offers based on what they bought. No coding. Works with Shopify checkout.', questions: ['Are you currently using your thank you page for anything?', 'Do you have complementary products that customers often buy together?', 'Would you like to increase average order value without adding friction to checkout?'], insight: 'Most stores see 10-15% of customers accept post-purchase offers. That is pure profit from a moment you were wasting.' },
+      { type: 'quiz', question: 'Why do post-purchase offers convert better than regular upsells?', options: ['They are cheaper', 'Commitment psychology makes customers more likely to stay consistent with their decision', 'Customers have more time to browse', 'The products are better'], correctIndex: 1, feedback: { correct: 'Exactly right. Post-purchase offers leverage commitment and consistency psychology. Once someone commits to a purchase, their brain rationalizes it as a smart decision. Adding a complementary product feels like continuing that smart decision, not starting a new one. Trust is at its peak. Payment info is saved. Friction is minimal. The psychology works in your favor.', incorrect: 'Not quite. The answer is commitment psychology. When customers complete a purchase, they have psychologically committed. Their brain rationalizes it as the right choice. Offering something complementary right after feels consistent with that commitment. They already said yes once. Saying yes again aligns with their decision. This is why thank you pages convert better than any other page.' }},
+      { type: 'completion', sources: [{ name: 'Add Post-Purchase Offers with ReConvert', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?surface_detail=post+purchase&surface_inter_position=1&surface_intra_position=3&surface_type=search' }] }
     ];
 
     const Icons = {
@@ -169,26 +275,6 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
@@ -203,19 +289,34 @@
       </div>
     );
 
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-violet-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-violet-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-violet-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-violet-700">Action: {data.action}</p>
-              </motion.div>
-            )}
-          </div>
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="bg-white border-2 border-neutral-200 rounded-xl p-6 mb-4">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Check out ReConvert</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
@@ -267,7 +368,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the reciprocity engine. Give value first. No strings. The reciprocity will follow automatically. Higher effort equals stronger response. This is not manipulation. This is human psychology working in your favor.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why the moment after payment is your highest-trust moment. By leveraging commitment psychology, you can turn a wasted thank you page into a revenue-generating asset. Implement strategic post-purchase offers and watch your average order value climb.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -333,9 +434,11 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'timeline': return <TimelineSlide data={slide} />;
+          case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The 42% Sales Trick (That's Not a Trick) | Quantum Scale</title>
+  <title>The Owned Audience Effect: Why Email Lists Beat Rented Attention | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #3B82F6; --accent-dark: #2563EB; --accent-light: #60A5FA; --accent-rgb: 59, 130, 246; }
+    :root { --accent: #22c55e; --accent-dark: #16a34a; --accent-light: #4ade80; --accent-rgb: 34, 197, 94; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,16 +34,121 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // Platform Risk Visualization
+    const PlatformRiskSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">⚠</div>
+              <h3 className="font-bold text-red-700">{data.rented.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-red-100">
+              <div className="space-y-2">
+                {data.rented.items.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="text-sm text-neutral-700 bg-neutral-50 px-3 py-2 rounded flex items-start gap-2">
+                    <span className="text-red-500 flex-shrink-0">✗</span>
+                    <span>{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-red-700 italic">{data.rented.insight}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
+              <h3 className="font-bold text-green-700">{data.owned.title}</h3>
+            </div>
+            <div className="bg-white rounded-lg p-4 mb-3 border border-green-100">
+              <div className="space-y-2">
+                {data.owned.items.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="text-sm text-neutral-700 bg-neutral-50 px-3 py-2 rounded flex items-start gap-2">
+                    <span className="text-green-500 flex-shrink-0">✓</span>
+                    <span>{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            <p className="text-sm text-green-700 italic">{data.owned.insight}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Stats Comparison Component
+    const StatsComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-red-50 rounded-2xl p-8 text-center border-2 border-red-200">
+            <div className="text-5xl md:text-6xl font-bold text-red-600 mb-3">
+              <AnimatedCounter target={data.paid.value} suffix={data.paid.suffix} duration={2000} />
+            </div>
+            <div className="text-sm font-semibold text-red-700 mb-2">{data.paid.label}</div>
+            <div className="text-xs text-red-600">{data.paid.context}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-green-50 rounded-2xl p-8 text-center border-2 border-green-200">
+            <div className="text-5xl md:text-6xl font-bold text-green-600 mb-3">
+              <AnimatedCounter target={data.owned.value} suffix={data.owned.suffix} duration={2000} />
+            </div>
+            <div className="text-sm font-semibold text-green-700 mb-2">{data.owned.label}</div>
+            <div className="text-xs text-green-600">{data.owned.context}</div>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Pro Tip Component
+    const ProTipSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8 relative">
+            <div className="absolute -top-4 left-6 px-4 py-1 bg-green-500 text-white text-xs font-bold rounded-full">💡 PRO TIP</div>
+            <h2 className="slide-title text-2xl md:text-3xl text-green-900 mb-4 pt-2">{data.title}</h2>
+            <p className="text-green-800 leading-relaxed">{data.body}</p>
+            {data.action && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
+                <p className="text-sm font-medium text-green-700">➜ {data.action}</p>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'reciprocity-engine',
-      title: 'The 42% Sales Trick (That\'s Not a Trick)',
-      description: 'Why giving something away for free can make you more money than any sales tactic ever could.',
-      accentColor: '#3B82F6',
-      duration: '6 min',
-      nextLesson: { id: 'luxury-mindset-shift', title: 'The 4 Mindset Shifts', teaser: 'How premium brands think differently about price, story, and value.' }
+      id: 'owned-audience-effect',
+      title: 'The Owned Audience Effect',
+      description: 'Why email lists are insurance against algorithm changes and platform risk.',
+      accentColor: '#22c55e',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Continue learning psychological design strategies.' }
     };
+
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -51,7 +156,9 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -60,35 +167,42 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why giving something away increases sales by 42%', 'The psychology of reciprocity and social debt', 'How effort multiplies the reciprocity effect', 'Five ways to implement this in your store'] },
-      { type: 'hook', headline: 'Why giving something away for free can make you more money than any sales tactic.', subtext: 'A candy shop in California started giving away free samples. Just one small piece. Free. No strings attached. Sales went up 42%. But customers did not buy more of the candy they tasted. They bought different candies. Completely different flavors. So it was not about liking the sample. It was about something far more powerful.' },
-      { type: 'visual', visualType: 'stats', title: 'The Candy Shop Experiment', data: [
-        { value: '42%', label: 'Sales Increase', subtext: 'From free samples alone' },
-        { value: '0%', label: 'Sample Conversion', subtext: 'They bought different flavors' },
-        { value: '100%', label: 'Reciprocity Trigger', subtext: 'Felt compelled to give back' }
+      { type: 'welcome', learningGoals: ['Why owned audiences compound while rented audiences drain', 'The psychology of platform dependency and algorithm anxiety', 'How to build direct relationships that survive any platform change'] },
+      { type: 'hook', headline: 'One algorithm change can kill your entire business overnight.', subtext: 'You wake up. Check your phone. Your ad account is restricted. No explanation. No appeal. Just gone. Or Instagram changes the algorithm. Your reach drops 80% overnight. Years of audience building. Vanished. This is the terror of rented audiences. You built your business on someone else\'s land. They change the rules. You lose everything. Email lists are different. They are yours. No platform can take them. No algorithm can hide them. When you own the relationship, you own your business.' },
+      { type: 'content', title: 'The Psychological Truth About Platforms', body: 'Every minute you spend building on someone else\'s platform, you are renting. Renting attention. Renting reach. Renting the ability to communicate with your own customers. And the landlord can change the rules anytime. Raise the rent (increase ad costs). Change the locks (restrict your account). Demolish the building (shut down the platform). You have zero control. This creates constant anxiety. "Will my ads still work tomorrow?" "What if they ban my account?" "What happens when reach drops again?" The psychology of rented audiences is fear-based. You are always one decision away from losing everything.' },
+      { type: 'platform-risk', title: 'Rented vs Owned Audiences', rented: { title: 'Rented (Platform-Dependent)', items: ['Algorithm decides who sees your content', 'Can be banned or restricted anytime', 'Reach decreases as platform monetizes', 'You pay more every year for same results', 'Zero guarantee of access tomorrow'], insight: 'You are building on rented land. The platform owns the relationship.' }, owned: { title: 'Owned (Direct Relationship)', items: ['You control who sees your message', 'No one can ban or restrict you', 'Reach stays consistent over time', 'Cost per email decreases as list grows', 'Guaranteed access to your audience'], insight: 'You own the relationship. No platform can take it away.' }},
+      { type: 'content', title: 'Why Email Feels Like Insurance', body: 'Here is the mental shift: Email is not just marketing. It is business insurance. Insurance against algorithm changes. Insurance against ad account bans. Insurance against platform collapses. When you have 50,000 email subscribers, you have direct access to 50,000 people who said yes to hearing from you. No Facebook needed. No Instagram required. No Google approval necessary. You write. You send. They receive. That is a direct relationship. And direct relationships are the only real business asset you control.' },
+      { type: 'stats-comparison', title: 'The Cost Reality Over Time', paid: { value: 8, suffix: 'x', label: 'Ad Costs Increase', context: 'Cost per click has increased 8x in 5 years on major platforms' }, owned: { value: 0, suffix: '¢', label: 'Email Cost (After Setup)', context: 'Marginal cost per email approaches zero as list grows' }, insight: 'Paid traffic gets more expensive every year. Owned audiences get cheaper.' },
+      { type: 'content', title: 'The Compound Effect of Ownership', body: 'This is where psychology meets business reality. When you rent, every dollar you spend is gone. You pay Facebook $1,000 for traffic. Traffic comes. Traffic leaves. You own nothing. Next month? Pay again. When you own, every subscriber compounds. Month 1: 1,000 subscribers. You can reach them anytime. Month 2: 2,000 subscribers. Now every email reaches twice as many people. Month 12: 20,000 subscribers. Every product launch, every promotion, every message reaches 20x more people than Month 1. Same effort. 20x the reach. That is compound growth. Rented audiences never compound. They only drain.' },
+      { type: 'cards', title: 'The Psychology of Permission', items: [
+        { title: 'Reciprocity Bias', description: 'When someone gives you their email, they feel they\'ve invested in you. They\'re more likely to engage because they chose to join.' },
+        { title: 'Consistency Principle', description: 'People who subscribe want to see themselves as interested in your content. They engage to stay consistent with that identity.' },
+        { title: 'Endowment Effect', description: 'Your subscribers feel ownership over their choice to join. They value the relationship more because they opted in.' },
+        { title: 'Loss Aversion', description: 'Subscribers who joined willingly don\'t want to lose access. They stay engaged to avoid losing what they have.' }
       ]},
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired with a simple rule: When someone gives you something, you feel compelled to give back. It is not manipulation. It is biology. We hate the feeling of being indebted. It creates psychological tension. Discomfort. The only way to release that tension? Reciprocate. Those candy shop customers felt they owed the store something. Even though the sample was genuinely free, with no expectation. So they bought. Not because they wanted candy. Because they wanted to discharge the social debt.' },
-      { type: 'content', title: 'This Is Human Nature, Not a Hack', body: 'Give first. Value first. No strings. The reciprocity will follow automatically because that is how humans are built. This is not about tricking people. It is about understanding basic human psychology. When you genuinely give value without expectation, people naturally want to reciprocate. That is the reciprocity engine at work.' },
-      { type: 'content', title: 'But Wait—There Is a Multiplier', body: 'Not all giving triggers the same level of reciprocity. The secret? Effort. Imagine two scenarios. You get a mass email with a generic discount code. Copy-pasted to 10,000 people. Versus: You get a hand-written thank you note with a personalized gift in your order. Clearly took time. Which one makes you feel more obligated to reciprocate? The second one. Obviously.' },
-      { type: 'example', scenario: 'The Effort Multiplier', before: { label: 'Low Effort', text: 'Generic mass email with discount code. Copy-pasted to 10,000 people. Feels automated. No emotional connection. Weak reciprocity trigger.' }, after: { label: 'High Effort', text: 'Hand-written thank you note with personalized gift. Clearly took time and thought. Strong emotional connection. Powerful reciprocity trigger.' }, insight: 'Higher effort equals stronger reciprocity. This is why surprise gifts create loyal customers.' },
-      { type: 'content', title: 'Why High Effort Works', body: 'Higher effort equals stronger reciprocity trigger. This is why a hand-delivered envelope outperforms a standard one. Why a surprise gift in an order creates loyal customers. Why high-effort content like this lesson builds more trust than a generic blog post. The more effort you put into giving, the more powerful the reciprocity response.' },
-      { type: 'content', title: 'Read This Twice', body: 'You do not need to trick customers into buying. You need to give them so much value, for free, that they want to reciprocate. That is not a tactic. That is human psychology working in your favor. The candy shop did not manipulate anyone. They gave genuine value. The sales increase was a natural result of reciprocity.' },
-      { type: 'cards', title: 'How This Works in Your DTC Store', items: [
-        { title: 'Free Gift with Purchase', description: 'Include a small, unexpected gift in every order. Bonus points if it is personalized or hand-written note attached. Cost: $1-3. Value: Customer for life.' },
-        { title: 'High-Effort Free Content', description: 'Do not send generic emails. Send genuinely valuable guides, templates, or case studies. Put real work into it. They will feel it and reciprocate with purchases.' },
-        { title: 'Surprise Upgrades', description: 'Randomly upgrade shipping to express. Add an extra product sample. Double their order quantity. The surprise amplifies the reciprocity effect 10x.' },
-        { title: 'First-Time Customer Bonus', description: 'Give something valuable immediately after first purchase, not before. They just gave you money. Now you give them unexpected value. Reciprocity loop activated.' },
-        { title: 'Automate Post-Purchase Surprises', description: 'The thank you page is prime real estate for reciprocity. Offer surprise bonuses, free samples, or exclusive discounts right after checkout when reciprocity is at its peak.' }
+      { type: 'content', title: 'The Algorithm Anxiety Effect', body: 'There is a psychological cost to platform dependency most people ignore: constant stress. Every algorithm update creates anxiety. "Did my reach drop?" "Are my ads still profitable?" "Will they ban me?" This is not paranoia. This is rational fear. Because platforms DO change algorithms. They DO ban accounts. They DO increase costs. Living in that uncertainty drains mental energy. Email removes that anxiety. Your list is yours. Tomorrow, next month, next year. That psychological freedom is worth more than most people realize.' },
+      { type: 'example', scenario: 'Brand Surviving a Platform Crisis', before: { label: '100% Facebook Dependent', text: 'A fashion brand builds their entire business on Facebook ads and Instagram. 50,000 followers. Profitable ads. Then overnight: Ad account restricted. Appeal rejected. No email list. No way to reach customers. Business stops. Revenue drops to zero. Panic.' }, after: { label: 'Email List as Backup', text: 'Same brand, but they built an email list of 20,000 subscribers. Ad account gets restricted. They email their list. "Hey, we\'re having platform issues, but you can still shop here." Sales continue. Revenue barely dips. They fix the ad account issue without the business collapsing.' }, insight: 'The difference between business failure and temporary inconvenience? Owning your audience.' },
+      { type: 'pro-tip', title: 'The 80/20 Rule for Audience Building', body: 'Spend 80% of your effort on rented platforms (ads, social media) to get traffic and customers quickly. But capture 20% of that traffic into your owned audience (email list). This balances short-term growth with long-term safety. You use platforms for their reach while building insurance against their risks.', action: 'Every landing page, every product page, every piece of content should have an email capture. Always be converting rented attention into owned relationships.' },
+      { type: 'content', title: 'Why Direct Relationships Beat Algorithms', body: 'Algorithms optimize for the platform, not for you. Facebook wants you on Facebook longer. So they show you content that keeps you scrolling. Your post? Only shown if it serves Facebook\'s goal. Email has no algorithm. You send. They receive. That is it. No middleman deciding if your message is "engaging enough" to show. No platform extracting value from your relationship. Direct access means direct value. You control the message, the timing, the offer. That control is the difference between renting and owning.' },
+      { type: 'cards', title: 'What Email Lists Actually Give You', items: [
+        { title: 'Launch Power', description: 'New product? Email your list. Instant sales on Day 1. No waiting for ads to optimize.' },
+        { title: 'Customer Lifetime Value', description: 'Repeat purchases happen via email. One-time customers become repeat buyers because you can reach them.' },
+        { title: 'Market Research', description: 'Ask your list what they want. Direct feedback from people who actually care about your brand.' },
+        { title: 'Platform Independence', description: 'If Instagram dies tomorrow, your business survives. You still have direct access to your audience.' },
+        { title: 'Predictable Revenue', description: 'You can forecast revenue because you control reach. Send email, get sales. Reliable and repeatable.' }
       ]},
-      { type: 'pro-tip', title: 'The Tool Integration', body: 'Tools like ReConvert let you offer surprise bonuses, free samples, or exclusive discounts on the thank you page right after checkout. This is when reciprocity is at its peak. The customer just gave you money. They are primed to receive value. A well-timed surprise here turns first-time buyers into repeat customers.', action: 'Implement one reciprocity tactic this week. Watch your repeat purchase rate climb.' },
-      { type: 'content', title: 'The Reciprocity Loop', body: 'Give value. Customer feels indebted. Customer reciprocates by purchasing. You give more value post-purchase. Customer feels even more indebted. Customer becomes repeat buyer. This is not manipulation. This is how trust and loyalty are built. Every successful brand uses this loop. The difference is whether you do it intentionally or accidentally.' },
-      { type: 'quiz', question: 'Why did the candy shop customers buy different flavors than what they sampled?', options: ['They did not like the free sample', 'They wanted to try something new', 'They felt compelled to reciprocate the free gift by buying something', 'The other flavors were on sale'], correctIndex: 2, feedback: { correct: 'Exactly. This is the reciprocity engine in action. The free sample created a psychological debt. Customers felt they owed the store something. So they bought. Not because they wanted that specific candy. But because they needed to discharge the social obligation. The sample triggered the purchase, even though they bought different products. That is the power of reciprocity.', incorrect: 'Think deeper about the psychology. The customers bought different flavors because of reciprocity, not preference. When the store gave them something for free, it created a psychological debt. Humans hate feeling indebted. So they reciprocated by making a purchase. Any purchase. The free sample was not about selling that specific product. It was about triggering the reciprocity response.' }},
-      { type: 'completion', sources: [] }
+      { type: 'tool', title: 'Build Your Owned Audience', toolName: 'Klaviyo', toolUrl: 'https://www.klaviyo.com/', body: 'Klaviyo is built for eCommerce email marketing. Automated flows for welcome sequences, abandoned carts, post-purchase follow-ups. Segmentation to send the right message to the right people. Analytics to see exactly what drives revenue. Your list becomes a revenue engine, not just a broadcast tool.', questions: ['Are you 100% dependent on paid ads or social platforms?', 'Do you have a way to reach customers if your ad account gets banned?', 'Are you building an asset that compounds, or just renting attention?'], insight: 'Every email subscriber is a direct relationship no platform can take away. Build the list, own the business.' },
+      { type: 'quiz', question: 'Why do owned audiences (email lists) compound while rented audiences (ads, social media) drain?', options: ['Email is free and ads cost money', 'Owned audiences grow in value over time while rented audiences reset every campaign', 'Email subscribers buy more than social media followers', 'Platforms intentionally sabotage businesses'], correctIndex: 1, feedback: { correct: 'Exactly. Owned audiences compound because every new subscriber adds permanent reach. Month 1 you email 1,000 people. Month 12 you email 20,000. Same effort, 20x reach. Rented audiences reset every time. You pay for 1,000 ad clicks today. Tomorrow? Pay again. You own nothing. Rented attention drains. Owned attention compounds. That is the fundamental difference.', incorrect: 'Not quite. The answer is that owned audiences grow in value over time while rented audiences reset every campaign. When you build an email list, each subscriber is permanent reach. You can email them monthly for years. Rented audiences (ads, social) reset constantly. You pay for reach, it disappears, you pay again. No compounding. Only draining. Owned audiences are assets. Rented audiences are expenses.' }},
+      { type: 'completion', sources: [{ name: 'Start Building Your Email List', url: 'https://www.klaviyo.com/' }] }
     ];
 
     const Icons = {
@@ -124,7 +238,7 @@
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
           </div>
         </div>
       );
@@ -169,26 +283,6 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
@@ -203,19 +297,32 @@
       </div>
     );
 
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-violet-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-violet-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-violet-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-violet-700">Action: {data.action}</p>
-              </motion.div>
-            )}
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-4">
+          <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+          <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
+            <ul className="space-y-1.5">
+              {data.questions.map((q, i) => (
+                <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                  <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                  {q}
+                </li>
+              ))}
+            </ul>
           </div>
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] w-full md:w-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <span>Learn More About {data.toolName}</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
       </div>
     );
@@ -267,7 +374,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the reciprocity engine. Give value first. No strings. The reciprocity will follow automatically. Higher effort equals stronger response. This is not manipulation. This is human psychology working in your favor.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why owned audiences compound while rented audiences drain. Email lists are business insurance against platform changes, algorithm updates, and account restrictions. Build direct relationships, own your business.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -333,9 +440,11 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'platform-risk': return <PlatformRiskSlide data={slide} />;
+          case 'stats-comparison': return <StatsComparisonSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

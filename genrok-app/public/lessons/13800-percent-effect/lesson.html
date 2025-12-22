@@ -1,543 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why 10% Better = 13,800% Better</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #FFFFFF;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            overflow-x: hidden;
-        }
-        .lesson-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-        .slide {
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-bottom: 80px;
-        }
-        h1 {
-            font-size: 42px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 24px;
-            color: #000000;
-        }
-        h2 {
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 20px;
-            color: #000000;
-        }
-        h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1a1a1a;
-        }
-        p {
-            font-size: 18px;
-            line-height: 1.7;
-            color: #1D1D1F;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            font-size: 20px;
-            color: #86868B;
-            line-height: 1.6;
-        }
-        .math-box {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            color: #FFFFFF;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-        .big-number {
-            font-size: 72px;
-            font-weight: 700;
-            background: linear-gradient(120deg, #B8860B 0%, #FFD700 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 20px 0;
-        }
-        .formula {
-            font-size: 24px;
-            font-weight: 600;
-            color: #E5E5E7;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-        }
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .comparison-card {
-            background: #FAFAFA;
-            border: 2px solid #E5E5E7;
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-        }
-        .comparison-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #86868B;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-        }
-        .comparison-number {
-            font-size: 48px;
-            font-weight: 700;
-            color: #000000;
-            margin: 16px 0;
-        }
-        .wrong {
-            color: #FF3B30;
-        }
-        .right {
-            color: #34C759;
-        }
-        .example-box {
-            background: #F5F5F7;
-            border-radius: 16px;
-            padding: 32px;
-            margin: 32px 0;
-        }
-        .example-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #86868B;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-        }
-        .quote-box {
-            border-left: 4px solid #000000;
-            padding: 24px 32px;
-            margin: 32px 0;
-            background: #FAFAFA;
-            border-radius: 8px;
-        }
-        .quote-text {
-            font-size: 22px;
-            font-weight: 500;
-            font-style: italic;
-            color: #1D1D1F;
-            line-height: 1.6;
-        }
-        .insight-box {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            color: #FFFFFF;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-        .timeline {
-            background: #FAFAFA;
-            border-radius: 16px;
-            padding: 32px;
-            margin: 32px 0;
-        }
-        .timeline-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #E5E5E7;
-            display: flex;
-            gap: 20px;
-        }
-        .timeline-item:last-child {
-            border-bottom: none;
-        }
-        .timeline-marker {
-            width: 40px;
-            height: 40px;
-            background: #000000;
-            color: #FFFFFF;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .highlight {
-            background: linear-gradient(120deg, #B8860B 0%, #FFD700 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-        }
-        .nav-dots {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 100;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #D1D1D6;
-            transition: all 0.3s ease;
-        }
-        .dot.active {
-            background: #000000;
-            width: 24px;
-            border-radius: 4px;
-        }
-        @media (max-width: 768px) {
-            .comparison-grid {
-                grid-template-columns: 1fr;
-            }
-            h1 { font-size: 32px; }
-            h2 { font-size: 26px; }
-            .big-number { font-size: 48px; }
-            .comparison-number { font-size: 36px; }
-            .quote-text { font-size: 18px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why 10% Better = 13,800% Better | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #B8860B; --accent-dark: #9A7409; --accent-light: #D4AF37; --accent-rgb: 184, 134, 11; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        const { motion } = window.Motion;
-        const { useState, useEffect } = React;
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-        function Lesson() {
-            const [currentSlide, setCurrentSlide] = useState(0);
-            const totalSlides = 9;
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
-            useEffect(() => {
-                const handleScroll = () => {
-                    const scrollPosition = window.scrollY;
-                    const windowHeight = window.innerHeight;
-                    const slide = Math.min(
-                        Math.floor(scrollPosition / (windowHeight * 0.7)),
-                        totalSlides - 1
-                    );
-                    setCurrentSlide(slide);
-                };
+    const LESSON_CONFIG = {
+      id: '13800-percent-effect',
+      title: 'Why 10% Better = 13,800% Better',
+      description: 'The math nobody shows you. The compounding effect that separates decade-long dominance from 18-month plateaus.',
+      accentColor: '#B8860B',
+      duration: '8 min',
+      nextLesson: { id: 'dior-pricing-secret', title: 'The $57 Bag That Sells for $3,500', teaser: 'What Dior and Rolex know about pricing psychology that you don\'t.' }
+    };
 
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
-            return (
-                <>
-                    <div className="lesson-container">
-                        {/* Slide 1: Title */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h1>Why 10% Better = 13,800% Better</h1>
-                            <p className="subtitle">
-                                The math nobody shows you. The compounding effect that separates decade-long dominance from 18-month plateaus.
-                            </p>
-                        </motion.div>
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-                        {/* Slide 2: The Setup */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>Everyone Gets This Wrong</h2>
-                            <p>
-                                Ask a founder: "If you get 10% better with each iteration over 100 reps, how much better will you be?"
-                            </p>
-                            <p>
-                                Most answer: "1000% better, obviously. 10% × 100 = 1000%."
-                            </p>
-                            <div className="comparison-grid">
-                                <div className="comparison-card">
-                                    <div className="comparison-label">Intuitive Guess</div>
-                                    <div className="comparison-number wrong">1,000%</div>
-                                    <p style={{ margin: '0', fontSize: '14px', color: '#86868B' }}>Linear thinking</p>
-                                </div>
-                                <div className="comparison-card">
-                                    <div className="comparison-label">Actual Result</div>
-                                    <div className="comparison-number right">13,800%</div>
-                                    <p style={{ margin: '0', fontSize: '14px', color: '#86868B' }}>Compound thinking</p>
-                                </div>
-                            </div>
-                            <p>
-                                That's not a typo. Getting 10% better each rep over 100 iterations doesn't make you 1,000% better. It makes you <strong>13,800% better.</strong>
-                            </p>
-                        </motion.div>
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why getting 10% better each iteration makes you 13,800% better (not 1,000%)', 'The dark period where most founders quit (reps 15-30)', 'How Casey Neistat and Nvidia used this to dominate their industries'] },
+      { type: 'hook', headline: 'Most founders think linearly. Winners think exponentially.', subtext: 'If you get 10% better with each iteration over 100 reps, how much better will you be? Most answer: "1,000% better, obviously. 10% × 100 = 1,000%." Wrong. The real answer? 13,800% better. That is not a typo. That is compound thinking vs linear thinking. And it explains why some brands dominate for decades while others plateau at 18 months.' },
+      { type: 'content', title: 'Everyone Gets This Wrong', body: 'Ask a founder: "If you get 10% better with each iteration over 100 reps, how much better will you be?" Most answer: "1000% better, obviously. 10% × 100 = 1000%." But that is linear thinking. Addition thinking. The real answer is 13,800% better. Because each improvement builds on the last. Not adds. Multiplies.' },
+      { type: 'visual', visualType: 'stats', title: 'Linear vs Compound Growth', data: [
+        { value: '1,000%', label: 'Linear Thinking', subtext: 'What most people guess' },
+        { value: '13,800%', label: 'Compound Reality', subtext: 'What actually happens' }
+      ]},
+      { type: 'content', title: 'The Math That Changes Everything', body: 'The formula is simple: 1.10^100 = 13,780.61. Each improvement builds on the last. Not adds. Multiplies. This is why consistency compounds. Why showing up matters more than trying hard. Why the founders who ship for years dominate those who sprint for months. The difference between linear growth and compound growth is the difference between addition and multiplication.' },
+      { type: 'content', title: 'How It Actually Compounds', body: 'After 10 reps: 2.59x better (159% improvement). After 25 reps: 10.8x better (983% improvement). After 50 reps: 117x better (11,639% improvement). After 100 reps: 13,781x better. Notice the pattern: The first 25 reps feel slow. The next 25 accelerate. By rep 50, you are in a different universe. By rep 100, you are incomparable.' },
+      { type: 'example', scenario: 'Casey Neistat: 800 Days Straight', before: { label: 'Most Creators', text: 'Post when inspired. Skip days. Wait for perfect conditions. Quit around video 30 when results do not come fast enough.' }, after: { label: 'Casey Neistat', text: '800 consecutive days of vlogging. Not when he felt like it. Every. Single. Day. By video 500, he had created a style nobody could copy. By video 800, he was the most influential vlogger alive.' }, insight: 'He did not get 800% better. He got exponentially better. Each video built on every lesson from before. That is the 13,800% effect in action.' },
+      { type: 'content', title: 'Why Most Founders Quit Too Early', body: 'Here is the brutal truth about compounding: it feels linear until it suddenly does not. Reps 1-25 feel like grinding. You are working hard, getting slightly better, but the results do not feel transformational. You are 10x better, but that just means you went from terrible to less terrible. This is where 90% of founders quit. They do not see exponential results because they have not reached the exponential part of the curve yet. Most founders quit between rep 15 and rep 30. Right before the curve starts bending. Right before compounding kicks into overdrive.' },
+      { type: 'example', scenario: 'Nvidia: Almost Dead, Now $1 Trillion', before: { label: 'The Easy Choice', text: 'In 1995, Nvidia was 30 days from bankruptcy. Competitors were crushing them. The obvious move? Quit. Most would have.' }, after: { label: 'The Jensen Huang Way', text: 'Jensen Huang did not quit. He kept iterating. Kept improving. Kept compounding through pain and suffering. Today, Nvidia is worth over $1 trillion.' }, insight: 'Not because they had one brilliant insight. Because they survived long enough for compounding to work its magic.' },
+      { type: 'content', title: 'Pain Contains the Kernel of Genius', body: 'Here is the insight most founders miss: the deepest challenges contain the kernel of genius. When things break, when strategies fail, when you are forced to rethink everything—that is not a setback. That is the 10% improvement hiding in disguise. Pain refines character. Character enables resilience. Resilience allows you to keep showing up. And showing up long enough is how you access the exponential part of the curve.' },
+      { type: 'quiz', question: 'What is the main reason most founders never reach 13,800% improvement?', options: ['They do not understand the math', 'They quit between reps 15-30 when it still feels linear', 'They focus on the wrong metrics', 'They do not have enough capital'], correctIndex: 1, feedback: { correct: 'Exactly. The compounding curve feels linear for the first 25-30 reps. You are improving, but it does not feel transformational yet. Most quit right before the exponential curve kicks in. The winners understand this and keep showing up through the dark period. That resilience is what separates decade-long dominance from 18-month plateaus.', incorrect: 'The math is simple. The real challenge is psychological. Most founders quit between reps 15-30 because compounding feels linear until it suddenly does not. The first 25 reps feel like grinding. Results do not look exponential yet. But that is exactly when you need to keep going—right before the curve bends upward.' }},
+      { type: 'content', title: 'Your 10-Year Question', body: 'Pick a craft. The one thing you will commit to for the next decade. Then ask yourself: Am I willing to do this 100 times, getting 10% better each time, even when it feels slow? If yes, you understand compounding. If no, you will quit at rep 25 like everyone else and wonder why you never reached 13,800%. Do not break the chain. The exponential curve is waiting on the other side.' },
+      { type: 'completion', sources: [] }
+    ];
 
-                        {/* Slide 3: The Math */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>The Math That Changes Everything</h2>
-                            <p>
-                                The difference between linear growth and compound growth is the difference between addition and multiplication.
-                            </p>
-                            <div className="math-box">
-                                <p style={{ fontSize: '18px', color: '#86868B', marginBottom: '20px' }}>The Formula:</p>
-                                <div className="formula">1.10^100 = 13,780.61</div>
-                                <p style={{ fontSize: '16px', color: '#E5E5E7', marginTop: '20px', marginBottom: '0' }}>
-                                    Each improvement builds on the last.<br/>
-                                    Not adds. Multiplies.
-                                </p>
-                            </div>
-                            <p>
-                                This is why consistency compounds. Why "showing up" matters more than "trying hard." Why the founders who ship for years dominate those who sprint for months.
-                            </p>
-                        </motion.div>
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    };
 
-                        {/* Slide 4: Breaking Down the Growth */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>How It Actually Compounds</h2>
-                            <p>
-                                Let's break down what happens at key milestones when you improve 10% each iteration:
-                            </p>
-                            <div className="timeline">
-                                <div className="timeline-item">
-                                    <div className="timeline-marker">10</div>
-                                    <div>
-                                        <h3 style={{ marginBottom: '8px' }}>After 10 Reps</h3>
-                                        <p style={{ margin: '0', color: '#86868B' }}>2.59x better (159% improvement)</p>
-                                    </div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-marker">25</div>
-                                    <div>
-                                        <h3 style={{ marginBottom: '8px' }}>After 25 Reps</h3>
-                                        <p style={{ margin: '0', color: '#86868B' }}>10.8x better (983% improvement)</p>
-                                    </div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-marker">50</div>
-                                    <div>
-                                        <h3 style={{ marginBottom: '8px' }}>After 50 Reps</h3>
-                                        <p style={{ margin: '0', color: '#86868B' }}>117x better (11,639% improvement)</p>
-                                    </div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-marker">100</div>
-                                    <div>
-                                        <h3 style={{ marginBottom: '8px' }}>After 100 Reps</h3>
-                                        <p style={{ margin: '0', color: '#86868B' }}>13,781x better (1,378,061% improvement)</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>
-                                Notice the pattern: The first 25 reps feel slow. The next 25 accelerate. By rep 50, you're in a different universe. By rep 100, you're incomparable.
-                            </p>
-                        </motion.div>
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
-                        {/* Slide 5: Casey Neistat Example */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>Real World: Casey Neistat</h2>
-                            <div className="example-box">
-                                <div className="example-label">The Consistency Experiment</div>
-                                <p style={{ fontSize: '24px', fontWeight: '700', marginBottom: '16px' }}>
-                                    800 days. No breaks.
-                                </p>
-                                <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#1D1D1F' }}>
-                                    Casey Neistat vlogged every single day for 800 consecutive days. Not when he "felt like it." Not when it was convenient. Every. Single. Day.
-                                </p>
-                            </div>
-                            <p>
-                                The first 100 videos? Decent. The next 100? Noticeably better. By video 500, he'd created a style nobody could copy. By video 800, he was the most influential vlogger alive.
-                            </p>
-                            <p>
-                                He didn't get 800% better. He got <strong>exponentially</strong> better. Each video built on every lesson from before.
-                            </p>
-                            <div className="insight-box">
-                                <p style={{ fontSize: '20px', color: '#E5E5E7', lineHeight: '1.7', marginBottom: '0' }}>
-                                    That's the 13,800% effect in action. Most people quit around video 30 and wonder why they never "made it."
-                                </p>
-                            </div>
-                        </motion.div>
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
 
-                        {/* Slide 6: The Dark Period */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>Why Most Founders Quit Too Early</h2>
-                            <p>
-                                Here's the brutal truth about compounding: <strong>it feels linear until it suddenly doesn't.</strong>
-                            </p>
-                            <p>
-                                Reps 1-25 feel like grinding. You're working hard, getting slightly better, but the results don't feel transformational. You're 10x better, but that just means you went from terrible to less terrible.
-                            </p>
-                            <p>
-                                This is where 90% of founders quit. They don't see exponential results because they haven't reached the exponential part of the curve yet.
-                            </p>
-                            <div className="example-box">
-                                <div className="example-label">The Quitting Zone</div>
-                                <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px' }}>
-                                    Most founders quit between rep 15 and rep 30.
-                                </p>
-                                <p style={{ margin: '0', color: '#86868B' }}>
-                                    Right before the curve starts bending. Right before compounding kicks into overdrive.
-                                </p>
-                            </div>
-                        </motion.div>
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-                        {/* Slide 7: Nvidia Story */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>Real World: Nvidia's Near-Death</h2>
-                            <p>
-                                In 1995, Nvidia almost went out of business. They were 30 days from bankruptcy. Competitors were crushing them. The obvious move? Quit.
-                            </p>
-                            <p>
-                                Jensen Huang didn't quit. He kept iterating. Kept improving. Kept compounding through "pain and suffering."
-                            </p>
-                            <div className="quote-box">
-                                <p className="quote-text">
-                                    "People with very high expectations have very low resilience. Unfortunately, resilience matters in success."
-                                </p>
-                                <p style={{ fontSize: '16px', fontWeight: '600', color: '#86868B', marginTop: '12px' }}>
-                                    — Jensen Huang
-                                </p>
-                            </div>
-                            <p>
-                                Today, Nvidia is worth over $1 trillion. Not because they had one brilliant insight. Because they survived long enough for compounding to work its magic.
-                            </p>
-                            <p>
-                                That "pain and suffering" Jensen talks about? It forged the resilience needed to reach rep 100, not quit at rep 25.
-                            </p>
-                        </motion.div>
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
 
-                        {/* Slide 8: The Kernel of Genius */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <h2>Pain Contains the Kernel of Genius</h2>
-                            <p>
-                                Here's the insight most founders miss: the deepest challenges contain the "kernel of genius."
-                            </p>
-                            <p>
-                                When things break, when strategies fail, when you're forced to rethink everything—that's not a setback. That's the 10% improvement hiding in disguise.
-                            </p>
-                            <div className="insight-box">
-                                <p style={{ fontSize: '22px', color: '#FFFFFF', fontWeight: '600', marginBottom: '20px' }}>
-                                    The Formula for Legendary Brands:
-                                </p>
-                                <p style={{ fontSize: '18px', color: '#E5E5E7', lineHeight: '1.7', marginBottom: '0' }}>
-                                    Consistency (reps) × Improvement per rep (10%) × Resilience (surviving the dark periods) = <span className="highlight">13,800% compounding effect</span>
-                                </p>
-                            </div>
-                            <p>
-                                Pain refines character. Character enables resilience. Resilience allows you to keep showing up. And showing up long enough is how you access the exponential part of the curve.
-                            </p>
-                        </motion.div>
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-                        {/* Slide 9: The Challenge */}
-                        <motion.div
-                            className="slide"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                        >
-                            <div className="math-box">
-                                <h2 style={{ color: '#FFFFFF', marginBottom: '20px' }}>Your 10-Year Question</h2>
-                                <p style={{ fontSize: '20px', color: '#E5E5E7', lineHeight: '1.7' }}>
-                                    Pick a craft. The one thing you'll commit to for the next decade.
-                                </p>
-                                <p style={{ fontSize: '20px', color: '#E5E5E7', lineHeight: '1.7' }}>
-                                    Then ask yourself:
-                                </p>
-                                <p style={{ fontSize: '24px', color: '#FFFFFF', fontWeight: '600', lineHeight: '1.6', marginBottom: '0' }}>
-                                    "Am I willing to do this 100 times, getting 10% better each time, even when it feels slow?"
-                                </p>
-                            </div>
-                            <p style={{ marginTop: '40px', fontSize: '20px', fontWeight: '500' }}>
-                                If yes, you understand compounding.
-                            </p>
-                            <p style={{ fontSize: '20px', fontWeight: '500' }}>
-                                If no, you'll quit at rep 25 like everyone else and wonder why you never reached 13,800%.
-                            </p>
-                            <div className="example-box">
-                                <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', textAlign: 'center' }}>
-                                    Don't break the chain.
-                                </p>
-                                <p style={{ margin: '0', color: '#86868B', textAlign: 'center' }}>
-                                    The exponential curve is waiting on the other side.
-                                </p>
-                            </div>
-                        </motion.div>
-                    </div>
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className={`grid ${data.data.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-4`}>
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
 
-                    {/* Navigation Dots */}
-                    <div className="nav-dots">
-                        {[...Array(totalSlides)].map((_, i) => (
-                            <div
-                                key={i}
-                                className={`dot ${currentSlide === i ? 'active' : ''}`}
-                            />
-                        ))}
-                    </div>
-                </>
-            );
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why 10% better equals 13,800% better. Compounding beats linear thinking. Consistency beats intensity. The founders who show up for 100 reps win. Do not break the chain.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
         }
+      };
 
-        ReactDOM.render(<Lesson />, document.getElementById('root'));
-    </script>
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
 </body>
 </html>
