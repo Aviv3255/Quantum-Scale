@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Optimization Rhythm | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fdba74; --accent-rgb: 249, 115, 22; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'google-optimization-cadence',
+      title: 'The Optimization Rhythm',
+      description: 'Stop random tinkering - follow a disciplined cadence.',
+      accentColor: '#f97316',
+      duration: '5 min',
+      nextLesson: { id: 'google-shopping-intent', title: 'Active Intent', teaser: 'Learn why Google Shopping beats social ads.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why random daily changes kill campaign performance', 'The weekly "light check" routine that protects your budget', 'Monthly "deep dives" that compound performance over time', 'How to let the algorithm breathe while staying in control'] },
+      { type: 'hook', headline: 'You check your campaign every morning. Change a bid here. Pause an ad there. Adjust targeting. The algorithm never stabilizes. Performance gets worse. Sound familiar?', subtext: 'Successful optimization isn\'t random tinkering. It\'s a disciplined routine. Weekly light checks. Monthly deep dives. Let the algorithm breathe between changes.' },
+      { type: 'content', title: 'From Guesswork to Process', body: 'Most advertisers lose because they optimize on emotion, not rhythm.\n\nThey wake up. Check performance. See a bad day. Panic. Make changes.\n\nThe algorithm was learning. Now it has to start over.\n\nThis cycle repeats. Performance never stabilizes. Budget gets wasted.\n\nThe winning move: Stop reacting to daily noise. Follow a disciplined cadence.\n\nSuccessful optimization isn\'t about making more changes. It\'s about making the RIGHT changes at the RIGHT time.\n\nHere\'s the framework that works:\n\nWeekly "Light Checks" - Quick maintenance to catch obvious issues\nMonthly "Deep Dives" - Strategic adjustments based on real data\n\nDon\'t make daily changes. Let the algorithm breathe.' },
+      { type: 'mockup', title: 'The Optimization Cadence', description: 'Weekly light checks keep things running. Monthly deep dives drive strategic improvements. Daily panic kills performance.', mockupType: 'calendar' },
+      { type: 'content', title: 'Weekly "Light Checks"', body: 'Every week (same day, same time), run these three quick checks:\n\n1. Review Search Terms Report\nLook for new search terms triggering your ads.\nAdd negative keywords for obvious waste.\nTakes 10 minutes. Saves hundreds.\n\n2. Review Asset Performance\nCheck which headlines, descriptions, and images are winning.\nPause clear losers (bottom 10%).\nTest new variations to replace them.\n\n3. Check Budget Pacing\nAre you spending your full budget?\nAre certain campaigns eating all the budget?\nReallocate spend from underperformers to winners.\n\nThese weekly checks are maintenance, not strategy. You\'re removing obvious waste and keeping things running smoothly.\n\nThat\'s it. Don\'t touch anything else. Let the algorithm learn.' },
+      { type: 'content', title: 'Monthly "Deep Dives"', body: 'Once a month (first Monday works well), make strategic adjustments:\n\n1. Adjust Bidding Strategy\nReview your ROAS or CPA targets.\nAre you hitting your goals consistently?\nIf yes: Push targets slightly more aggressive.\nIf no: Give the algorithm more flexibility or more data.\n\n2. Full Creative Refresh\nIntroduce new images and videos.\nAd fatigue hits every 2-4 weeks depending on budget.\nFresh creative = renewed attention = better performance.\n\n3. Update Audience Signals\nUpload new customer lists.\nAdd recent purchaser data.\nRefresh demographic insights.\nThe algorithm uses these signals to find better prospects.\n\nThese monthly dives are strategic. You\'re making bigger moves based on real patterns, not daily noise.\n\nAfter changes: Wait. Give the algorithm 7-14 days to stabilize before judging results.' },
+      { type: 'content', title: 'Why This Rhythm Wins', body: 'This cadence works because it balances two opposing forces:\n\n1. Active Management\nYou\'re not "set and forget." You\'re actively monitoring and improving.\n\n2. Algorithm Stability\nYou\'re not constantly disrupting the learning process. The algorithm gets time to optimize.\n\nMost advertisers fail at one or both:\n- They make too many changes (disrupts learning)\n- They make too few changes (miss opportunities)\n\nThe optimization rhythm solves this:\n\nWeekly: Remove waste, test small variations\nMonthly: Make strategic shifts, refresh creative\nDaily: Do nothing. Check if you must, but don\'t change.\n\nThis isn\'t sexy. It won\'t make you feel busy. But it will make you profitable.\n\nDiscipline beats activity. Process beats panic.\n\nFollow the rhythm.' },
+      { type: 'quiz', question: 'Why should you avoid making daily changes to your Google Ads campaigns?', options: ['Daily changes cost more money', 'The algorithm needs time to learn and stabilize - constant changes disrupt optimization', 'Google penalizes accounts that make frequent changes', 'You should make daily changes for best results'], correctIndex: 1, feedback: { correct: 'Exactly! The algorithm needs stability to learn what works. When you make daily changes, you restart the learning process before it can gather meaningful data. This is why the optimization rhythm works: weekly light checks remove obvious waste, monthly deep dives make strategic shifts, and daily discipline lets the algorithm breathe. Stability + strategic adjustments = compounding performance.', incorrect: 'Not quite. The real issue is algorithm disruption. Google\'s machine learning needs time to test, learn, and optimize. Daily changes restart this learning cycle before useful patterns emerge. That\'s why successful advertisers follow a disciplined cadence: weekly maintenance for obvious issues, monthly strategy adjustments, and daily patience. Let the algorithm breathe between changes. Discipline beats panic.' }},
+      { type: 'completion', sources: [{ name: 'Google Ads Optimization Best Practices', url: 'https://support.google.com/google-ads/answer/6167166' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'calendar') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full max-w-3xl mx-auto">
+              <svg viewBox="0 0 600 380" className="w-full">
+                <defs>
+                  <linearGradient id="weeklyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#2563eb" stopOpacity="0.4" />
+                  </linearGradient>
+                  <linearGradient id="monthlyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.4" />
+                  </linearGradient>
+                  <linearGradient id="panicGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#ef4444" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#dc2626" stopOpacity="0.2" />
+                  </linearGradient>
+                </defs>
+
+                {/* Title */}
+                <text x="300" y="30" fontSize="16" fontWeight="700" textAnchor="middle" fill="#1f2937">Your Monthly Optimization Rhythm</text>
+
+                {/* Calendar grid */}
+                <motion.rect initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} x="50" y="60" width="500" height="280" fill="white" stroke="#d1d5db" strokeWidth="2" rx="8"/>
+
+                {/* Week headers */}
+                <text x="100" y="90" fontSize="11" fontWeight="600" fill="#6b7280">Week 1</text>
+                <text x="225" y="90" fontSize="11" fontWeight="600" fill="#6b7280">Week 2</text>
+                <text x="350" y="90" fontSize="11" fontWeight="600" fill="#6b7280">Week 3</text>
+                <text x="475" y="90" fontSize="11" fontWeight="600" fill="#6b7280">Week 4</text>
+
+                {/* Week 1 - Monthly Deep Dive */}
+                <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+                  <rect x="70" y="110" width="100" height="70" fill="url(#monthlyGradient)" stroke="#8b5cf6" strokeWidth="2" rx="6"/>
+                  <text x="120" y="135" fontSize="10" fontWeight="700" textAnchor="middle" fill="#ffffff">DEEP DIVE</text>
+                  <text x="120" y="150" fontSize="7" textAnchor="middle" fill="#e9d5ff">Adjust Bidding</text>
+                  <text x="120" y="160" fontSize="7" textAnchor="middle" fill="#e9d5ff">Creative Refresh</text>
+                  <text x="120" y="170" fontSize="7" textAnchor="middle" fill="#e9d5ff">Update Audiences</text>
+                </motion.g>
+
+                {/* Week 2 - Light Check */}
+                <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                  <rect x="195" y="110" width="100" height="40" fill="url(#weeklyGradient)" stroke="#3b82f6" strokeWidth="2" rx="6"/>
+                  <text x="245" y="127" fontSize="10" fontWeight="600" textAnchor="middle" fill="#ffffff">Light Check</text>
+                  <text x="245" y="140" fontSize="7" textAnchor="middle" fill="#dbeafe">Quick maintenance</text>
+
+                  {/* Daily X marks below */}
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity }}>
+                    <line x1="205" y1="165" x2="215" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="215" y1="165" x2="205" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <text x="210" y="188" fontSize="6" textAnchor="middle" fill="#dc2626">No daily</text>
+                    <text x="210" y="196" fontSize="6" textAnchor="middle" fill="#dc2626">changes</text>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}>
+                    <line x1="235" y1="165" x2="245" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="245" y1="165" x2="235" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}>
+                    <line x1="265" y1="165" x2="275" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="275" y1="165" x2="265" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                </motion.g>
+
+                {/* Week 3 - Light Check */}
+                <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                  <rect x="320" y="110" width="100" height="40" fill="url(#weeklyGradient)" stroke="#3b82f6" strokeWidth="2" rx="6"/>
+                  <text x="370" y="127" fontSize="10" fontWeight="600" textAnchor="middle" fill="#ffffff">Light Check</text>
+                  <text x="370" y="140" fontSize="7" textAnchor="middle" fill="#dbeafe">Quick maintenance</text>
+
+                  {/* Daily X marks below */}
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}>
+                    <line x1="330" y1="165" x2="340" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="340" y1="165" x2="330" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <text x="335" y="188" fontSize="6" textAnchor="middle" fill="#dc2626">Algorithm</text>
+                    <text x="335" y="196" fontSize="6" textAnchor="middle" fill="#dc2626">learning</text>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}>
+                    <line x1="360" y1="165" x2="370" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="370" y1="165" x2="360" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.8 }}>
+                    <line x1="390" y1="165" x2="400" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="400" y1="165" x2="390" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                </motion.g>
+
+                {/* Week 4 - Light Check */}
+                <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+                  <rect x="445" y="110" width="100" height="40" fill="url(#weeklyGradient)" stroke="#3b82f6" strokeWidth="2" rx="6"/>
+                  <text x="495" y="127" fontSize="10" fontWeight="600" textAnchor="middle" fill="#ffffff">Light Check</text>
+                  <text x="495" y="140" fontSize="7" textAnchor="middle" fill="#dbeafe">Quick maintenance</text>
+
+                  {/* Daily X marks below */}
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}>
+                    <line x1="455" y1="165" x2="465" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="465" y1="165" x2="455" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <text x="460" y="188" fontSize="6" textAnchor="middle" fill="#dc2626">Let it</text>
+                    <text x="460" y="196" fontSize="6" textAnchor="middle" fill="#dc2626">breathe</text>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}>
+                    <line x1="485" y1="165" x2="495" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="495" y1="165" x2="485" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                  <motion.g animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}>
+                    <line x1="515" y1="165" x2="525" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                    <line x1="525" y1="165" x2="515" y2="175" stroke="#ef4444" strokeWidth="2"/>
+                  </motion.g>
+                </motion.g>
+
+                {/* Bottom legend */}
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
+                  <rect x="80" y="230" width="15" height="15" fill="url(#monthlyGradient)" stroke="#8b5cf6" strokeWidth="1" rx="3"/>
+                  <text x="102" y="242" fontSize="10" fill="#374151">Monthly Deep Dive - Strategic adjustments</text>
+
+                  <rect x="80" y="255" width="15" height="15" fill="url(#weeklyGradient)" stroke="#3b82f6" strokeWidth="1" rx="3"/>
+                  <text x="102" y="267" fontSize="10" fill="#374151">Weekly Light Check - Quick maintenance</text>
+
+                  <line x1="85" y1="285" x2="90" y2="290" stroke="#ef4444" strokeWidth="1.5"/>
+                  <line x1="90" y1="285" x2="85" y2="290" stroke="#ef4444" strokeWidth="1.5"/>
+                  <text x="102" y="292" fontSize="10" fill="#374151">Daily - Do nothing (let algorithm learn)</text>
+                </motion.g>
+
+                {/* Performance arrow */}
+                <motion.g initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.1 }}>
+                  <line x1="70" y1="320" x2="540" y2="250" stroke="#22c55e" strokeWidth="3" strokeDasharray="5,5"/>
+                  <polygon points="540,245 545,250 540,255" fill="#22c55e"/>
+                  <text x="300" y="310" fontSize="11" fontWeight="600" textAnchor="middle" fill="#16a34a">Performance compounds over time</text>
+                </motion.g>
+              </svg>
+            </div>
+          </div>
+        );
+      }
+    };
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-orange-300 hover:bg-orange-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-orange-50 border-2 border-orange-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now have a disciplined optimization rhythm. Weekly light checks, monthly deep dives, and daily patience.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          {gif.src && (
+            <motion.div animate={{ opacity: gif.opacity }} initial={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+              <video src={gif.src} autoPlay loop muted playsInline className="h-2/3 object-contain" style={{ [gif.side]: '10%' }} />
+            </motion.div>
+          )}
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center hover:border-orange-300 disabled:opacity-30 disabled:cursor-not-allowed transition-all"><Icons.ArrowLeft /></button>
+              <div className="flex gap-1">
+                {slides.map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d8' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

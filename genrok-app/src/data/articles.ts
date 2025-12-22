@@ -5872,6 +5872,142 @@ Google suspends accounts that don't meet their standards. Before spending on ads
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/google-ai-max-decision/lesson.html' }
       ]
+    },
+    // Google Growth Engine lessons
+    {
+      id: 207,
+      thumbnail: '/images/lessons/google-negative-keyword-colander.png',
+      title: 'The Negative Keyword Colander',
+      intro: 'Filter out waste clicks - your job is not reach, it\'s return. Only profitable clicks get through.',
+      directUrl: '/learn/lessons/google-negative-keyword-colander',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Negative Keyword Colander
+
+**The Mindset Shift:** Your job isn't to get ads in front of as many people as possible. It's to get the best return possible by being hyper-focused.
+
+**Two-Step Process:**
+1. Build a 'Common Sense' list before launch
+2. Review Search Terms Report weekly (Level 1: Obvious, Level 2: Strategic)
+
+**Quote:** "It's much better to miss out on a few potential searches than to have searches cost you money that never become customers."
+
+**Open the interactive lesson to build your negative keyword strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-negative-keyword-colander/lesson.html' }
+      ]
+    },
+    {
+      id: 208,
+      thumbnail: '/images/lessons/google-optimization-cadence.png',
+      title: 'The Optimization Rhythm',
+      intro: 'Stop random tinkering. Successful optimization is a disciplined routine - let the algorithm breathe.',
+      directUrl: '/learn/lessons/google-optimization-cadence',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Optimization Rhythm
+
+**From Guesswork to Process:** Don't make daily changes; let the algorithm breathe.
+
+**Weekly "Light Checks":**
+- Review Search Terms Report
+- Review Asset Performance
+- Check Budget Pacing
+
+**Monthly "Deep Dives":**
+- Adjust Bidding Strategy
+- Full Creative Refresh
+- Update Audience Signals
+
+**Open the interactive lesson to build your optimization cadence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-optimization-cadence/lesson.html' }
+      ]
+    },
+    {
+      id: 209,
+      thumbnail: '/images/lessons/google-ad-assets-arsenal.png',
+      title: 'Free Real Estate: Ad Assets',
+      intro: 'Ad Assets (formerly Extensions) are FREE additions that make your ads bigger and more clickable. Most advertisers ignore them.',
+      directUrl: '/learn/lessons/google-ad-assets-arsenal',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Free Real Estate: Ad Assets
+
+**The Opportunity:** Ad Assets are free additions that make your ads bigger, more informative, and more clickable.
+
+**Key Assets to Use:**
+- Sitelinks (About Us, Services, Contact)
+- Promotion Extensions
+- Structured Snippets
+- Image Extensions
+
+**Benefits:** Increased visibility, higher CTR, better user experience.
+
+**Open the interactive lesson to maximize your ad real estate.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ad-assets-arsenal/lesson.html' }
+      ]
+    },
+    {
+      id: 210,
+      thumbnail: '/images/lessons/google-landing-page-bridge.png',
+      title: 'The Click is Only Half the Battle',
+      intro: 'What happens AFTER the click determines your success. Most advertisers optimize ads but ignore landing pages.',
+      directUrl: '/learn/lessons/google-landing-page-bridge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Click is Only Half the Battle
+
+**The Challenge:** It's easier to tweak headlines than optimize your website. This is where most advertisers fall short.
+
+**High-Impact Optimizations:**
+1. Add social proof (testimonials, reviews, ratings)
+2. Simplify design for frictionless checkout
+3. Highlight benefits, not just features
+4. Add high-quality video demos
+
+**The Payoff:** Small conversion rate improvements = massive profitability unlocks.
+
+**Open the interactive lesson to optimize your landing pages.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-landing-page-bridge/lesson.html' }
+      ]
+    },
+    {
+      id: 211,
+      thumbnail: '/images/lessons/google-ai-overviews-opportunity.png',
+      title: 'Ads in AI Overviews: The 2026 Opportunity',
+      intro: 'Google\'s AI Overviews are changing search. Your ads can now appear INSIDE AI-generated answers.',
+      directUrl: '/learn/lessons/google-ai-overviews-opportunity',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Ads in AI Overviews
+
+**What's Changing:** Google is rolling out AI-generated answers at the top of search results. Your ads can appear directly within these overviews.
+
+**The Opportunity:** Capture high-intent users even in informational queries. Google's AI detects commercial intent and shows relevant products.
+
+**How to Be Eligible:**
+- For Search: Use Broad Match keywords
+- For All Campaigns: Use Smart Bidding
+
+**The era of manual control is giving way to AI-powered targeting. Embrace it to win.**
+
+**Open the interactive lesson to capitalize on AI Overviews.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ai-overviews-opportunity/lesson.html' }
+      ]
     }
   ];
 
