@@ -203,6 +203,27 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
     title: 'Competitor Conquest',
     description: 'Steal market share legally with Google Ads',
   },
+  // Google Shopping Blueprint lessons
+  'google-shopping-intent': {
+    title: 'Active Intent: Why Google Shopping Wins',
+    description: 'Capture users who are actively searching to buy',
+  },
+  'google-store-trust-checklist': {
+    title: 'Earn Google\'s Trust First',
+    description: 'The store readiness checklist to avoid suspension',
+  },
+  'google-hero-product-funnel': {
+    title: 'Find Your Hero Products',
+    description: 'From clicks to winners - buying data not profit',
+  },
+  'google-click-fraud-shield': {
+    title: 'Shield Your Budget from Click Fraud',
+    description: 'Protect your data from bots and competitors',
+  },
+  'google-ai-max-decision': {
+    title: 'AI Max: Power vs Control',
+    description: 'The decision framework for Google\'s AI automation',
+  },
 };
 
 export default function LessonPage() {

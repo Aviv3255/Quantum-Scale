@@ -5739,6 +5739,139 @@ The **Google Ads Transparency Center** is a free tool that lets you see the ads 
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/google-competitor-conquest/lesson.html' }
       ]
+    },
+    // Google Shopping Blueprint lessons
+    {
+      id: 202,
+      thumbnail: '/images/lessons/google-shopping-intent.png',
+      title: 'Active Intent: Why Google Shopping Wins',
+      intro: 'Google Shopping captures users who are actively searching to buy - the highest intent traffic source available.',
+      directUrl: '/learn/lessons/google-shopping-intent',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Why Google Shopping Wins
+
+Google Shopping captures **Active Intent** - users who are already searching with their wallets ready.
+
+**The Funnel Math:**
+- Meta: 2.5% of audience is in-market NOW
+- Google Shopping: 100% are actively searching to buy
+
+**This changes everything about CAC, conversion rates, and scaling strategy.**
+
+**Open the interactive lesson to understand intent-based advertising.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-shopping-intent/lesson.html' }
+      ]
+    },
+    {
+      id: 203,
+      thumbnail: '/images/lessons/google-store-trust-checklist.png',
+      title: 'Earn Google\'s Trust First',
+      intro: 'Before you spend a dollar on Google Ads, your store must pass Google\'s trust checklist - or risk suspension.',
+      directUrl: '/learn/lessons/google-store-trust-checklist',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Store Trust Checklist
+
+Google suspends accounts that don't meet their standards. Before spending on ads, verify:
+
+1. **Legal Pages:** Shipping, Returns, Privacy, Terms (all accessible)
+2. **Contact Info:** Real email, phone, physical address
+3. **Secure Checkout:** SSL everywhere
+4. **Professional Design:** No broken images or placeholder text
+5. **Product Accuracy:** Matches what customers receive
+
+**Open the interactive lesson to audit your store.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-store-trust-checklist/lesson.html' }
+      ]
+    },
+    {
+      id: 204,
+      thumbnail: '/images/lessons/google-hero-product-funnel.png',
+      title: 'Find Your Hero Products',
+      intro: 'Use Google Shopping as a data-buying machine to find winners - you\'re buying clicks, not profit.',
+      directUrl: '/learn/lessons/google-hero-product-funnel',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Hero Product Funnel
+
+**Phase 1: Cast Wide Net** (100+ products, low bids)
+**Phase 2: Identify Winners** (Products with 50+ clicks and sales)
+**Phase 3: Double Down** (Increase budget on heroes only)
+
+**Key insight:** You're BUYING DATA, not profit. Treat early spend as market research.
+
+**Open the interactive lesson to build your hero product funnel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-hero-product-funnel/lesson.html' }
+      ]
+    },
+    {
+      id: 205,
+      thumbnail: '/images/lessons/google-click-fraud-shield.png',
+      title: 'Shield Your Budget from Click Fraud',
+      intro: 'Bots, competitors, and fraud networks are clicking your ads. Protect your data and budget.',
+      directUrl: '/learn/lessons/google-click-fraud-shield',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Click Fraud Problem
+
+**Who's clicking your ads without buying?**
+- Competitor employees
+- Bot networks
+- Click farms
+- Accidental clicks
+
+**The real damage:** Polluted data = Bad AI decisions = Wasted budget
+
+**Your Shield:**
+1. Monitor for suspicious patterns
+2. Use click fraud protection tools
+3. Set up IP exclusions
+4. Review geographic anomalies
+
+**Open the interactive lesson to protect your campaigns.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-click-fraud-shield/lesson.html' }
+      ]
+    },
+    {
+      id: 206,
+      thumbnail: '/images/lessons/google-ai-max-decision.png',
+      title: 'AI Max: Power vs Control',
+      intro: 'Google\'s AI automation offers power but demands sacrifice. Know when to use it and when to stay manual.',
+      directUrl: '/learn/lessons/google-ai-max-decision',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The AI Max Decision Framework
+
+**Use AI Max (PMax, AI Campaigns) when:**
+- You have strong conversion data (50+ conversions/month)
+- You trust your feed quality
+- You want scale over granular control
+
+**Stay Manual when:**
+- Testing new products
+- Limited budget (<$100/day)
+- Need keyword-level insights
+- Building initial data foundation
+
+**Open the interactive lesson for the complete decision framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ai-max-decision/lesson.html' }
+      ]
     }
   ];
 
