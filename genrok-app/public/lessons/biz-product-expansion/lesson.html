@@ -2,508 +2,571 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Ridge Playbook: How to Engineer High LTV | Quantum Scale</title>
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
-  <script src="../shared/greetings.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Ridge Playbook | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    :root {
+      --accent: #D4A017;
+      --accent-dark: #B8860B;
+      --accent-light: #F4D03F;
+      --accent-rgb: 212, 160, 23;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
-    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
-    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .title-font { font-family: 'Fraunces', Georgia, serif; }
     ::selection { background: var(--accent); color: white; }
-    .slide-scroll::-webkit-scrollbar { display: none; }
-    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .float-animation { animation: float 3s ease-in-out infinite; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useMemo, useCallback, useRef } = React;
     const { motion, AnimatePresence } = window.Motion;
 
+    // ==================== LESSON CONFIG ====================
+    const LESSON_CONFIG = {
+      id: 'biz-product-expansion',
+      title: 'The Ridge Playbook',
+      subtitle: 'How to Engineer High LTV',
+      accentColor: '#D4A017',
+      duration: '7 min',
+      nextLesson: {
+        id: 'biz-zero-cac-engine',
+        title: 'The $0 CAC Engine',
+        teaser: 'Build organic systems that drive revenue before you spend on ads.'
+      }
+    };
+
+    // ==================== GIF LIBRARIES ====================
+    const celebrationGifs = [
+      'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif',
+      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+      'https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif',
+      'https://media.giphy.com/media/xUPGGDNsLvqsBOhuU0/giphy.gif',
+      'https://media.giphy.com/media/l3q2Z6S6n38zjPswo/giphy.gif',
+      'https://media.giphy.com/media/3o6fJ1BM7R2EBRDnxK/giphy.gif'
+    ];
+
+    const empathyGifs = [
+      'https://media.giphy.com/media/3o7btYc0vx9pNkgFry/giphy.gif',
+      'https://media.giphy.com/media/3o7TKnO6Wve6502iJ2/giphy.gif',
+      'https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.gif',
+      'https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif'
+    ];
+
+    const getRandomGif = (gifs) => gifs[Math.floor(Math.random() * gifs.length)];
+
+    // ==================== ICONS ====================
+    const Icons = {
+      Clock: () => (<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeWidth="2" d="M12 6v6l4 2"/></svg>),
+      ChevronLeft: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>),
+      ChevronRight: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>),
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"/></svg>),
+      X: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>),
+      Sparkles: () => (<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>),
+      Quote: () => (<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>)
+    };
+
+    // ==================== SLIDE DATA ====================
     const slides = [
       {
         type: 'welcome',
-        title: 'The Ridge Playbook',
-        subtitle: 'How to Engineer High LTV',
-        lessonNumber: 'Business Fundamentals',
-        learningGoals: [
-          'Learn how Ridge went from wallets to $200M+ with product expansion',
-          'Understand why selling "more of the same" kills LTV',
-          'Discover the customer data strategy that unlocks new categories'
+        greeting: true,
+        goals: [
+          'How Ridge went from wallets to $200M+',
+          "Why 'more of the same' kills LTV",
+          'The trust transfer strategy for expansion'
         ]
       },
       {
         type: 'hook',
         headline: 'Ridge sells wallets.',
-        subtext: 'But over half their revenue comes from... not wallets. Here\'s how.'
+        subtext: "But over 50% of their revenue comes from... not wallets. Here's how they did it."
       },
       {
         type: 'quote',
-        text: '"Our core wallet business is strong... but most people only need one. Our returning customer revenue was our biggest weakness. We had 97% NPS, but when we\'d email a customer to buy another wallet, they\'d say, \'Of course not.\'"',
+        text: '"When we emailed happy customers to buy another wallet, they said: Of course not. I already have your wallet."',
         author: 'Sean Frank',
-        role: 'CEO, Ridge',
+        role: 'CEO of Ridge ($200M+ Revenue)',
         image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png'
       },
       {
         type: 'content',
-        title: 'The Problem',
-        body: `Ridge had everything right:
-
-97% NPS. Customers LOVED the product.
-Strong brand loyalty. People raved about their wallets.
-Excellent retention data. Low return rates.
-
-But they hit a ceiling.
-
-Most people only need one wallet. Maybe two.
-
-When Ridge emailed happy customers asking them to buy again... crickets.
-
-"Of course not. I already have your wallet."
-
-High NPS, low repeat revenue. This is the trap.`
+        title: 'The Trap',
+        body: "Ridge had 97% NPS. Customers LOVED the product. But most people only need one wallet. High satisfaction, low repeat revenue. This is the trap most DTC brands fall into.",
+        highlight: "You can't sell someone a second wallet."
       },
       {
-        type: 'content',
-        title: 'The Mistake Most Brands Make',
-        body: `When faced with low repeat revenue, most brands do this:
-
-"Let's launch Wallet 2.0!"
-"Limited edition colorways!"
-"Premium wallet with more features!"
-
-Same product. Slightly different. Same problem.
-
-Your customer still doesn't need another wallet.
-
-You're trying to sell ice to someone who already owns a freezer.
-
-This doesn't fix LTV. It delays the inevitable.`
+        type: 'example',
+        title: 'The Wrong vs Right Move',
+        before: {
+          label: 'The Wrong Move',
+          items: ['Launch Wallet 2.0', 'Limited edition colors', 'Premium wallet upgrade', 'Same product, same problem']
+        },
+        after: {
+          label: 'The Ridge Move',
+          items: ['Launch phone cases', 'Launch rings & keychains', 'Launch luggage & bags', 'Same customer, NEW reasons to buy']
+        }
       },
       {
-        type: 'content',
-        title: 'The Ridge Solution',
-        body: `Ridge didn't try to sell more wallets.
-
-They asked a better question:
-
-"What ELSE do our customers need that aligns with our brand?"
-
-The answer? A lot.
-
-Rings. Phone cases. Keycases. Luggage. Backpacks. Accessories.
-
-Same customer. Same trust. Different needs.
-
-Now they had reasons to email happy customers that actually made sense.`
-      },
-      {
-        type: 'stats-grid',
-        title: 'Ridge\'s Product Expansion Results',
-        items: [
-          {
-            value: '50%+',
-            label: 'Revenue from Non-Wallets',
-            description: 'Over half of Ridge\'s business now comes from products that didn\'t exist 5 years ago.'
-          },
-          {
-            value: '97%',
-            label: 'NPS Score',
-            description: 'Customer love remained sky-high throughout expansion. Trust transferred to new categories.'
-          },
-          {
-            value: '3-5x',
-            label: 'LTV Increase',
-            description: 'Same customer, multiple purchases over time. LTV skyrocketed without acquiring a single new customer.'
-          },
-          {
-            value: '$200M+',
-            label: 'Annual Revenue',
-            description: 'Built on the foundation of strategic product expansion, not just selling more wallets.'
-          }
+        type: 'cards',
+        title: "Ridge's Expansion Strategy",
+        cards: [
+          { emoji: '📱', title: 'Phone Cases', desc: 'Same minimalist design, new category' },
+          { emoji: '💍', title: 'Rings', desc: 'Trust transferred from wallets' },
+          { emoji: '🧳', title: 'Luggage', desc: 'Premium quality, loyal customers' },
+          { emoji: '🎒', title: 'Backpacks', desc: 'Everyday carry lifestyle brand' }
         ]
       },
       {
-        type: 'content',
-        title: 'How to Do This for Your Brand',
-        body: `Step 1: Identify your "wallet problem"
-Is your core product a one-time purchase? Low natural repeat rate?
-
-Step 2: Mine your customer data
-What else do they buy? What problems do they have? What do they ask for?
-
-Step 3: Test adjacent categories
-Don't launch 10 products. Test 1-2 that align with your brand and solve real problems.
-
-Step 4: Watch LTV compound
-Same happy customer, now buying 3-5 different products over 2 years instead of 1.`
-      },
-      {
-        type: 'content',
-        title: 'The Data Strategy',
-        body: `This only works if you KNOW your customers.
-
-Not surface-level demographics. Deep behavioral data.
-
-What do they browse? What do they buy elsewhere? What problems do they mention?
-
-Ridge didn't guess. They looked at their customer data and found patterns.
-
-Their wallet buyers also bought phone cases. Keychains. Travel gear.
-
-The data pointed the way. They just had to listen.`
-      },
-      {
-        type: 'tool',
-        title: 'Find Your High-NPS, Low-Repeat Customers',
-        toolName: 'DataDrew',
-        description: 'Export customer segments with high satisfaction but low repeat purchases. See exactly who loves you but isn\'t buying again—and what categories to expand into.',
-        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202025-12-19%20144624.png',
-        link: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
-        context: 'Manual customer analysis takes weeks and misses patterns. DataDrew shows you high-NPS segments with low LTV, automates cohort exports, and reveals expansion opportunities your spreadsheet would never catch.'
-      },
-      {
-        type: 'quiz',
-        question: 'Why did Ridge expand into rings, phone cases, and luggage instead of just making more wallets?',
-        options: [
-          'To compete with other wallet brands',
-          'Because wallet margins were too low',
-          'Most customers only need one wallet—new categories created repeat purchase opportunities',
-          'To increase their average order value'
+        type: 'visual',
+        title: 'The Results',
+        subtitle: "Product expansion that actually worked:",
+        items: [
+          { icon: '📊', label: '50%+ Non-Wallet Revenue' },
+          { icon: '📈', label: '3-5x LTV Increase' },
+          { icon: '💰', label: '$200M+ Annual' },
+          { icon: '⭐', label: '97% NPS Maintained' }
         ],
-        correctIndex: 2,
-        feedback: {
-          correct: 'Exactly! Ridge had 97% NPS but low repeat revenue. You can\'t sell someone a second wallet. But you CAN sell them a phone case, a ring, and luggage. Same customer, multiple purchases, exploding LTV.',
-          incorrect: 'Not quite. Ridge didn\'t expand to compete or boost AOV. They expanded because happy customers don\'t need another wallet. New categories = new reasons to buy again = higher LTV.'
-        },
-        celebrationGif: 'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif',
-        empathyGif: 'https://media.giphy.com/media/3o7TKv4Pb3gN6Vz5zq/giphy.gif'
+        footer: 'Same customers. Multiple purchases. Exploding LTV.'
       },
       {
         type: 'content',
         title: 'The Trust Transfer',
-        body: `Here's the magic part:
-
-When a customer trusts you in one category, they'll trust you in others.
-
-Ridge proved they could make exceptional wallets. Minimalist. Premium. High-quality.
-
-When they launched phone cases with the same design language... customers bought.
-
-When they launched rings... customers bought.
-
-When they launched luggage... customers bought.
-
-Trust transferred. LTV compounded. Revenue exploded.`
+        body: "When customers trust you in one category, they trust you in others. Ridge proved they could make exceptional wallets. When they launched phone cases with the same design language... customers bought.",
+        highlight: "Trust transferred. LTV compounded. Revenue exploded."
+      },
+      {
+        type: 'quiz',
+        question: 'Why did Ridge expand into rings, phone cases, and luggage instead of making more wallets?',
+        options: [
+          'To compete with other wallet brands',
+          'Because wallet margins were too low',
+          'Happy customers only need one wallet—new categories create repeat purchases',
+          'To increase their average order value'
+        ],
+        correctIndex: 2,
+        feedback: {
+          correct: "Exactly! 97% NPS but low repeat revenue. You can't sell someone a second wallet. But you CAN sell them phone cases, rings, and luggage.",
+          incorrect: "Not quite. Ridge expanded because happy customers don't need another wallet. New categories = new reasons to buy again."
+        }
       },
       {
         type: 'content',
         title: 'The Warning',
-        body: `This only works if your core product is EXCEPTIONAL.
-
-If customers don't love your first product, expansion kills you.
-
-You can't fake trust. You can't force loyalty.
-
-Ridge earned 97% NPS before they expanded.
-
-Earn trust first. Expand second.
-
-Reverse this order and you'll just have more products nobody wants.`
+        body: "This only works if your core product is EXCEPTIONAL. If customers don't love your first product, expansion kills you. Ridge earned 97% NPS before they expanded.",
+        highlight: "Earn trust first. Expand second."
       },
       {
-        type: 'content',
-        title: 'The Payoff',
-        body: `Product expansion done right = infinite LTV.
-
-You're no longer limited by how many times someone needs your core product.
-
-You're limited only by how many problems you can solve for the same customer.
-
-Ridge went from "wallet company" to "everyday carry lifestyle brand."
-
-Same customer. Infinite purchase opportunities.
-
-This is how you engineer high LTV.`
-      },
-      {
-        type: 'completion',
-        title: 'You Just Learned the Ridge Playbook',
-        summary: 'High NPS with low repeat revenue is a trap. Product expansion creates new reasons for happy customers to buy again. Mine your data, test adjacent categories, watch LTV compound. Trust transfers when you earn it.',
-        nextSteps: [
+        type: 'action-checklist',
+        title: 'Apply The Ridge Playbook',
+        items: [
           'Calculate your repeat purchase rate for core products',
-          'Use DataDrew to find high-NPS, low-repeat customer segments',
-          'Identify 2-3 adjacent product categories your customers already buy elsewhere'
-        ],
-        sources: [
-          { title: 'Sean Frank Interview on Ridge Growth Strategy', url: 'https://ridge.com' },
-          { title: 'DataDrew Customer Analytics', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+          'Identify 2-3 adjacent categories your customers already buy',
+          'Test ONE expansion product that fits your brand DNA',
+          'Watch LTV compound as trust transfers'
         ]
+      },
+      {
+        type: 'completion'
       }
     ];
 
-    function LessonViewer() {
+    // ==================== SLIDE COMPONENTS ====================
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour < 12) return { text: 'Early riser?', sub: `${userName || 'Builder'} builds empires before noon.` };
+        if (hour < 17) return { text: 'Afternoon session?', sub: `${userName || 'Builder'} never stops learning.` };
+        if (hour < 21) return { text: 'Evening study?', sub: `${userName || 'Builder'} plays the long game.` };
+        return { text: 'Night owl?', sub: `${userName || 'Builder'} outworks everyone.` };
+      };
+      const greeting = getGreeting();
+
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-6 py-8 md:py-12 text-center overflow-y-auto hide-scrollbar">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="max-w-xl w-full">
+            <h1 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 mb-3 tracking-tight">{LESSON_CONFIG.title}</h1>
+            <p className="text-lg md:text-xl text-neutral-500 mb-6">{greeting.text} <span className="font-semibold text-neutral-700">{userName || 'Builder'}</span> {greeting.sub.split(userName || 'Builder')[1]}</p>
+            <div className="flex items-center justify-center gap-2 text-sm text-neutral-400 mb-8">
+              <Icons.Clock /><span>{LESSON_CONFIG.duration}</span>
+            </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="bg-neutral-800 rounded-2xl p-6 text-left mb-8">
+              <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: 'var(--accent)' }}>In This Lesson</p>
+              <div className="space-y-3">
+                {data.goals.map((goal, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-neutral-900" style={{ backgroundColor: 'var(--accent)' }}>{i + 1}</span>
+                    <span className="text-neutral-200 text-sm md:text-base leading-relaxed">{goal}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.button onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onHoverStart={onShowGif} onHoverEnd={onHideGif} className="px-8 py-4 rounded-xl font-semibold text-neutral-900 transition-all shadow-lg" style={{ backgroundColor: 'var(--accent)' }}>
+              Let's Go
+            </motion.button>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 text-center bg-neutral-900">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl">
+          <h2 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">{data.headline}</h2>
+          <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed">{data.subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 relative overflow-hidden">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.03 }} className="absolute -top-20 -left-10 text-[300px] font-black text-white pointer-events-none select-none">"</motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl text-center relative z-10">
+          <Icons.Quote />
+          <p className="title-font text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-6 mb-8 leading-snug">{data.text}</p>
+          <div className="flex items-center justify-center gap-4">
+            <div className="text-right">
+              <p className="font-bold text-lg" style={{ color: 'var(--accent)' }}>— {data.author}</p>
+              <p className="text-neutral-400 text-sm">{data.role}</p>
+            </div>
+          </div>
+        </motion.div>
+        {data.image && (
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="absolute right-4 md:right-12 bottom-0" style={{ zIndex: 15 }}>
+            <img src={data.image} alt={data.author} className="h-40 md:h-52 w-auto object-contain" />
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-2xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-6">{data.title}</h2>
+          <p className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-6">{data.body}</p>
+          {data.highlight && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl border-l-4" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.1)', borderColor: 'var(--accent)' }}>
+              <p className="text-neutral-800 font-medium">{data.highlight}</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">❌</span>
+                <span className="font-bold text-red-700 text-lg">{data.before.label}</span>
+              </div>
+              <ul className="space-y-3">
+                {data.before.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-red-900">
+                    <span className="text-red-400 mt-1">•</span>
+                    <span className="text-sm md:text-base">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">✅</span>
+                <span className="font-bold text-green-700 text-lg">{data.after.label}</span>
+              </div>
+              <ul className="space-y-3">
+                {data.after.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-green-900">
+                    <span className="text-green-500 mt-1">•</span>
+                    <span className="text-sm md:text-base">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {data.cards.map((card, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }} className="bg-white border border-neutral-200 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow">
+                <span className="text-3xl mb-3 block">{card.emoji}</span>
+                <h3 className="font-bold text-neutral-900 text-sm md:text-base mb-1">{card.title}</h3>
+                <p className="text-neutral-500 text-xs md:text-sm leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full text-center">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-2">{data.title}</h2>
+          <p className="text-neutral-500 mb-8">{data.subtitle}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 * i }} className="bg-neutral-900 rounded-xl p-4 md:p-6">
+                <span className="text-3xl md:text-4xl mb-2 block">{item.icon}</span>
+                <p className="text-white text-xs md:text-sm font-medium">{item.label}</p>
+              </motion.div>
+            ))}
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-600 font-medium px-6 py-4 rounded-xl" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.1)' }}>{data.footer}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, showFeedback, selectedAnswer, gifConfig }) => {
+      const isCorrect = selectedAnswer === data.correctIndex;
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-2xl w-full">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.15)', color: 'var(--accent-dark)' }}>
+              <Icons.Sparkles /> Quick Check
+            </div>
+            <h2 className="title-font text-2xl md:text-3xl font-black text-neutral-900 mb-8">{data.question}</h2>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => {
+                const isSelected = selectedAnswer === i;
+                const isCorrectOption = i === data.correctIndex;
+                let btnClass = "w-full p-4 md:p-5 text-left rounded-xl border-2 transition-all ";
+                if (showFeedback) {
+                  if (isCorrectOption) btnClass += "border-green-500 bg-green-50";
+                  else if (isSelected && !isCorrectOption) btnClass += "border-red-500 bg-red-50";
+                  else btnClass += "border-neutral-200 opacity-50";
+                } else {
+                  btnClass += "border-neutral-200 hover:border-neutral-400 cursor-pointer";
+                }
+                return (
+                  <motion.button key={i} onClick={() => !showFeedback && onAnswer(i)} disabled={showFeedback} className={btnClass} whileHover={!showFeedback ? { scale: 1.01 } : {}} whileTap={!showFeedback ? { scale: 0.99 } : {}}>
+                    <div className="flex items-center gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: isSelected ? (isCorrectOption ? '#22c55e' : '#ef4444') : 'var(--accent)', color: isSelected ? 'white' : '#1a1a1a' }}>
+                        {showFeedback && isSelected ? (isCorrectOption ? <Icons.Check /> : <Icons.X />) : String.fromCharCode(65 + i)}
+                      </span>
+                      <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-5 rounded-xl border-2 ${isCorrect ? 'bg-green-50 border-green-300' : 'bg-amber-50 border-amber-300'}`}>
+                  <p className="font-bold mb-2 text-lg">{isCorrect ? '🎉 Brilliant!' : '💪 Almost!'}</p>
+                  <p className="text-neutral-700 text-sm md:text-base">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} transition={{ delay: 0.2 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <img src={isCorrect ? gifConfig.celebrationGif : gifConfig.empathyGif} alt="" className="h-full w-auto object-contain rounded-lg" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const ActionChecklistSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-2xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+          <div className="space-y-4">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 * i }} className="flex items-start gap-4 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-neutral-900" style={{ backgroundColor: 'var(--accent)' }}>{i + 1}</span>
+                <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const CompletionSlide = ({ nextLesson }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 bg-neutral-900 text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-xl">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }} className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'var(--accent)' }}>
+            <Icons.Check />
+          </motion.div>
+          <h2 className="title-font text-3xl md:text-4xl font-black text-white mb-4">Ridge Playbook Unlocked</h2>
+          <p className="text-neutral-400 text-lg mb-10">Product expansion creates infinite LTV. Earn trust first with one exceptional product. Then expand into adjacent categories your customers already want.</p>
+          {nextLesson && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-800 rounded-2xl p-6 text-left">
+              <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'var(--accent)' }}>Up Next</p>
+              <h3 className="title-font text-xl font-bold text-white mb-2">{nextLesson.title}</h3>
+              <p className="text-neutral-400 text-sm mb-4">{nextLesson.teaser}</p>
+              <a href={`../${nextLesson.id}/lesson.html`} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-neutral-900 transition-all hover:scale-105" style={{ backgroundColor: 'var(--accent)' }}>
+                Start Next Lesson <Icons.ArrowRight />
+              </a>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    // ==================== MAIN LESSON APP ====================
+    const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(0);
+      const [userName, setUserName] = useState('Builder');
+      const [showGif, setShowGif] = useState(false);
       const [selectedAnswer, setSelectedAnswer] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const [quizAnswered, setQuizAnswered] = useState(false);
+      const slideRef = useRef(null);
+
+      const gifConfig = useMemo(() => ({
+        celebrationGif: getRandomGif(celebrationGifs),
+        empathyGif: getRandomGif(empathyGifs),
+        height: `${60 + Math.random() * 5}%`,
+        side: Math.random() > 0.5 ? 'left' : 'right'
+      }), []);
 
       const slide = slides[currentSlide];
-      const progress = ((currentSlide + 1) / slides.length) * 100;
+      const isFirstSlide = currentSlide === 0;
+      const isLastSlide = currentSlide === slides.length - 1;
 
-      const nextSlide = () => {
-        if (currentSlide < slides.length - 1) {
+      const nextSlide = useCallback(() => {
+        if (!isLastSlide) {
           setDirection(1);
-          setCurrentSlide(currentSlide + 1);
-          resetQuizState();
+          setCurrentSlide(prev => prev + 1);
+          setSelectedAnswer(null);
+          setShowFeedback(false);
         }
-      };
+      }, [isLastSlide]);
 
-      const prevSlide = () => {
-        if (currentSlide > 0) {
+      const prevSlide = useCallback(() => {
+        if (!isFirstSlide) {
           setDirection(-1);
-          setCurrentSlide(currentSlide - 1);
-          resetQuizState();
+          setCurrentSlide(prev => prev - 1);
+          setSelectedAnswer(null);
+          setShowFeedback(false);
         }
-      };
+      }, [isFirstSlide]);
 
-      const resetQuizState = () => {
-        setSelectedAnswer(null);
-        setShowFeedback(false);
-        setQuizAnswered(false);
-      };
+      const goToSlide = useCallback((index) => {
+        if (index >= 0 && index < slides.length) {
+          setDirection(index > currentSlide ? 1 : -1);
+          setCurrentSlide(index);
+          setSelectedAnswer(null);
+          setShowFeedback(false);
+        }
+      }, [currentSlide]);
 
-      const handleAnswerSelect = (index) => {
-        if (quizAnswered) return;
+      const handleAnswer = useCallback((index) => {
         setSelectedAnswer(index);
         setShowFeedback(true);
-        setQuizAnswered(true);
-      };
+      }, []);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' && !isLastSlide) nextSlide();
+          if (e.key === 'ArrowLeft' && !isFirstSlide) prevSlide();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide, isFirstSlide, isLastSlide]);
 
       const slideVariants = {
-        enter: (direction) => ({ x: direction > 0 ? 1000 : -1000, opacity: 0 }),
-        center: { zIndex: 1, x: 0, opacity: 1 },
-        exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 1000 : -1000, opacity: 0 })
+        enter: (d) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (d) => ({ x: d < 0 ? '100%' : '-100%', opacity: 0 })
       };
 
       const renderSlide = () => {
         switch(slide.type) {
-          case 'welcome':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-white">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                  <div className="inline-block px-4 py-2 mb-6 text-sm font-semibold tracking-wider uppercase bg-black/5 rounded-full" style={{ color: 'var(--accent-dark)' }}>
-                    {slide.lessonNumber}
-                  </div>
-                  <h1 className="mb-4 text-5xl md:text-7xl title-font" style={{ color: '#000' }}>{slide.title}</h1>
-                  <p className="mb-12 text-2xl md:text-3xl" style={{ color: '#666' }}>{slide.subtitle}</p>
-                  <div className="max-w-2xl mx-auto space-y-4 text-left">
-                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase" style={{ color: 'var(--accent-dark)' }}>You'll Learn:</p>
-                    {slide.learningGoals.map((goal, i) => (
-                      <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1" style={{ background: 'var(--accent)' }}>{i + 1}</div>
-                        <p className="text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{goal}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            );
-
-          case 'hook':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black text-white">
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
-                  <h2 className="mb-6 text-5xl md:text-7xl title-font leading-tight">{slide.headline}</h2>
-                  <p className="text-2xl md:text-3xl opacity-80">{slide.subtext}</p>
-                </motion.div>
-              </div>
-            );
-
-          case 'quote':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white relative overflow-hidden">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.05 }} className="absolute text-[400px] font-bold" style={{ top: '-100px', left: '-50px', color: 'var(--accent)' }}>"</motion.div>
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 max-w-4xl">
-                  <p className="mb-8 text-3xl md:text-5xl title-font leading-tight">{slide.text}</p>
-                  <div className="flex items-center justify-center gap-4">
-                    <div className="text-right">
-                      <p className="text-xl font-bold" style={{ color: 'var(--accent)' }}>— {slide.author}</p>
-                      <p className="opacity-70">{slide.role}</p>
-                    </div>
-                  </div>
-                </motion.div>
-                {slide.image && (
-                  <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="absolute right-4 bottom-0" style={{ zIndex: 15 }}>
-                    <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
-                  </motion.div>
-                )}
-              </div>
-            );
-
-          case 'content':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
-                  <h2 className="mb-8 text-4xl md:text-6xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
-                  <div className="text-xl md:text-2xl leading-relaxed whitespace-pre-line" style={{ color: '#1a1a1a' }}>{slide.body}</div>
-                </motion.div>
-              </div>
-            );
-
-          case 'stats-grid':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-50">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full">
-                  <h2 className="mb-12 text-4xl md:text-5xl title-font text-center" style={{ color: '#000' }}>{slide.title}</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {slide.items.map((item, i) => (
-                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-white p-8 rounded-2xl shadow-lg">
-                        <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{item.value}</div>
-                        <div className="text-xl font-semibold mb-3" style={{ color: '#000' }}>{item.label}</div>
-                        <div className="text-base leading-relaxed" style={{ color: '#666' }}>{item.description}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            );
-
-          case 'tool':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-gray-50 to-white">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
-                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
-                    Tool Spotlight
-                  </div>
-                  <h2 className="mb-4 text-4xl md:text-5xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
-                  <p className="mb-8 text-xl opacity-70">{slide.context}</p>
-                  <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-                    <img src={slide.image} alt={slide.toolName} className="w-full h-64 object-cover" />
-                    <div className="p-8">
-                      <h3 className="mb-4 text-3xl title-font" style={{ color: '#000' }}>{slide.toolName}</h3>
-                      <p className="mb-6 text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{slide.description}</p>
-                      <a href={slide.link} target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
-                        Explore {slide.toolName} →
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            );
-
-          case 'quiz':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full">
-                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
-                    Quick Check
-                  </div>
-                  <h2 className="mb-8 text-3xl md:text-4xl title-font" style={{ color: '#000' }}>{slide.question}</h2>
-                  <div className="space-y-4 mb-8">
-                    {slide.options.map((option, index) => (
-                      <button key={index} onClick={() => handleAnswerSelect(index)} disabled={quizAnswered} className={`w-full p-6 text-left text-lg rounded-xl border-2 transition-all ${selectedAnswer === index ? (index === slide.correctIndex ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : 'border-gray-200 hover:border-gray-400'} ${quizAnswered ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-                        <span className="font-semibold mr-3" style={{ color: 'var(--accent)' }}>{String.fromCharCode(65 + index)}.</span>
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-                  <AnimatePresence>
-                    {showFeedback && (
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-6 rounded-xl ${selectedAnswer === slide.correctIndex ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
-                        {selectedAnswer === slide.correctIndex && slide.celebrationGif && (
-                          <img src={slide.celebrationGif} alt="Celebration" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
-                        )}
-                        {selectedAnswer !== slide.correctIndex && slide.empathyGif && (
-                          <img src={slide.empathyGif} alt="Try again" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
-                        )}
-                        <p className="text-lg leading-relaxed">{selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              </div>
-            );
-
-          case 'completion':
-            return (
-              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white">
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl text-center">
-                  <div className="mb-6 text-6xl">🚀</div>
-                  <h2 className="mb-6 text-4xl md:text-6xl title-font">{slide.title}</h2>
-                  <p className="mb-12 text-xl md:text-2xl opacity-80">{slide.summary}</p>
-                  <div className="text-left mb-12">
-                    <p className="mb-4 text-lg font-semibold" style={{ color: 'var(--accent)' }}>Next Steps:</p>
-                    <ul className="space-y-3">
-                      {slide.nextSteps.map((step, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-black text-sm font-bold" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                          <span className="text-lg">{step}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="text-left">
-                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase opacity-70">Sources:</p>
-                    <div className="space-y-2">
-                      {slide.sources.map((source, i) => (
-                        <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="block opacity-70 hover:opacity-100 transition-opacity">
-                          {source.title} →
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            );
-
-          default:
-            return null;
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={() => setShowGif(true)} onHideGif={() => setShowGif(false)} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} showFeedback={showFeedback} selectedAnswer={selectedAnswer} gifConfig={gifConfig} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'completion': return <CompletionSlide nextLesson={LESSON_CONFIG.nextLesson} />;
+          default: return null;
         }
       };
 
-      return (
-        <div className="relative w-full h-screen overflow-hidden bg-white">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }} className="absolute w-full h-full">
-              {renderSlide()}
-            </motion.div>
-          </AnimatePresence>
+      const showPrev = !isFirstSlide;
+      const showNext = !isLastSlide && slide.type !== 'welcome';
 
-          {/* Progress bar */}
-          <div className="fixed bottom-0 left-0 w-full h-1 bg-gray-200 z-50">
-            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+      return (
+        <div className="relative w-full h-screen flex flex-col bg-white overflow-hidden">
+          <div className="flex-1 relative overflow-hidden">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div key={currentSlide} ref={slideRef} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="absolute inset-0">
+                {renderSlide()}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Navigation */}
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
-            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 bg-white border-2 border-black text-black rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all">
-              ← Previous
+          {showPrev && (
+            <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:scale-110 transition-all z-20" aria-label="Previous">
+              <Icons.ChevronLeft />
             </button>
-            <div className="px-4 py-2 bg-white rounded-full border-2 border-black font-semibold">
-              {currentSlide + 1} / {slides.length}
+          )}
+          {showNext && (
+            <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-neutral-900 hover:scale-110 transition-all z-20" style={{ backgroundColor: 'var(--accent)' }} aria-label="Next">
+              <Icons.ChevronRight />
+            </button>
+          )}
+
+          <AnimatePresence>
+            {showGif && (
+              <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <img src={gifConfig.celebrationGif} alt="" className="h-full w-auto object-contain rounded-lg" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => goToSlide(i)} className={`w-2.5 h-2.5 rounded-full transition-all ${i === currentSlide ? 'scale-125' : 'bg-neutral-300 hover:bg-neutral-400'}`} style={i === currentSlide ? { backgroundColor: 'var(--accent)' } : {}} aria-label={`Go to slide ${i + 1}`} />
+              ))}
             </div>
-            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 text-white rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all" style={{ background: 'var(--accent)' }}>
-              Next →
-            </button>
           </div>
         </div>
       );
-    }
+    };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<LessonViewer />);
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
