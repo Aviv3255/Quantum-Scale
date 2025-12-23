@@ -3,827 +3,367 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Barbell Strategy | Quantum Scale</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.11.11/dist/framer-motion.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>The Barbell Strategy: Extreme Positioning for Maximum Profit | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#10b981',
-            'accent-dark': '#059669',
-            'accent-light': '#34d399',
-          },
-          fontFamily: {
-            'display': ['Fraunces', 'serif'],
-            'sans': ['Inter', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #FAFAFA;
-      overflow-x: hidden;
-    }
-    * {
-      box-sizing: border-box;
-    }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
-    const { motion, AnimatePresence } = Motion;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-barbell-strategy',
+      title: 'The Barbell Strategy: Extreme Positioning for Maximum Profit',
+      description: 'Go extreme on both ends - ultra-premium AND budget, skip the dangerous middle. The barbell strategy protects downside while capturing massive upside.',
+      accentColor: '#10b981',
+      duration: '7 min',
+      nextLesson: { id: 'biz-positioning-ladder', title: 'The Positioning Ladder', teaser: 'Learn how to climb from commodity to category king.' }
+    };
 
     const celebrationGifs = [
-      'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
-      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-      'https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif',
-      'https://media.giphy.com/media/l4FGGafcOHmrlQxG0/giphy.gif',
-      'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
-      'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
-      'https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why the middle market is where brands go to die', 'How to position at extremes: ultra-premium AND budget simultaneously', 'Real examples: Häagen-Dazs, Toyota, and Amazon\'s strategy'] },
+      { type: 'hook', headline: 'The middle is death. Average positioning gets squeezed from both sides - undercut by budget brands, outclassed by premium players. You end up competing on price with no brand moat.', subtext: 'The Barbell Strategy flips this. Go extreme on both ends. Capture the premium customer who wants the absolute best. Capture the budget customer who wants the absolute cheapest. Skip the dangerous middle entirely.' },
+      { type: 'content', title: 'What the Barbell Strategy Is', body: 'The Barbell Strategy is a positioning framework where you operate at two extremes simultaneously, avoiding the middle ground completely.\n\nOne end: Ultra-premium. High margin, low volume, maximum brand value. The best money can buy.\n\nOther end: Budget-friendly. Low margin, high volume, maximum market penetration. Accessible to everyone.\n\nMiddle: Nothing. You don\'t compete here. The middle is where you get squeezed from both sides with no defensible position.\n\nThis isn\'t about being schizophrenic. It\'s about recognizing that different customer segments want radically different things. Premium buyers don\'t care about price. Budget buyers don\'t care about prestige. Trying to serve both with one "middle" product serves neither well.' },
+      { type: 'mockup', title: 'The Barbell Visualization', description: 'Heavy weight on both ends, nothing in the middle. This is how you avoid being squeezed by competitors.', mockupType: 'barbell-diagram' },
+      { type: 'content', title: 'Why the Middle Is Dangerous', body: 'The middle market looks safe. It feels like the biggest opportunity because it\'s where most customers are. But it\'s a trap.\n\nYou get undercut on price. Budget brands can always go cheaper. They have lower costs, leaner operations, and they\'re willing to sacrifice margin for volume.\n\nYou get outclassed on quality. Premium brands can invest more in product development, customer experience, and brand building. They charge 3-10x more and customers happily pay.\n\nYou have no moat. There\'s nothing defensible about being "pretty good" and "reasonably priced." That\'s the definition of a commodity.\n\nThe middle is where you compete on price, margin erodes to zero, and you\'re one competitor away from irrelevance. It\'s the worst place to be in any market.' },
+      { type: 'content', title: 'Premium End: The Margin Paradise', body: 'The premium end is where you make real money. High margin, strong brand, loyal customers who don\'t shop on price.\n\nHäagen-Dazs: A Bronx ice cream company invented a Danish-sounding name, added European branding, and positioned as ultra-premium. Same product, 3x the price. Customers bought the story.\n\nApple: Charges 2-3x more than comparable products. Customers line up to pay the premium because Apple owns "premium tech" in their minds.\n\nPremium positioning gives you pricing power, brand equity, and protection from price competition. You\'re no longer selling a product. You\'re selling status, identity, and aspiration.\n\nThe premium customer doesn\'t want a deal. They want the best. Give it to them and charge accordingly.' },
+      { type: 'content', title: 'Budget End: The Volume Machine', body: 'The budget end is where you capture massive market share. Low margin per unit, but huge volume makes it wildly profitable.\n\nAmazon Basics: Commoditized products at the lowest possible price. No brand story, no premium positioning. Just cheap and reliable.\n\nToyota Corolla: Basic transportation at the lowest cost. Massive volume, thin margins per car, but Toyota sells millions annually.\n\nBudget positioning gives you market penetration, cash flow, and the ability to starve competitors who can\'t match your efficiency.\n\nThe budget customer doesn\'t care about your brand story. They want the cheapest option that works. Give it to them and win on volume.' },
+      { type: 'stats-grid', title: 'Barbell Strategy Advantages', items: [
+        { value: '60%', label: 'Premium Margin', description: 'Ultra-premium products capture 60%+ margins' },
+        { value: '80%', label: 'Market Coverage', description: 'Serving both extremes covers 80% of customers' },
+        { value: 'Zero', label: 'Price Wars', description: 'No middle-market price competition' },
+        { value: '3-10x', label: 'Premium Pricing', description: 'Premium end charges 3-10x budget pricing' }
+      ]},
+      { type: 'quote', data: {
+        quote: 'The middle is not a safe place. It\'s where you get squeezed from both sides with no defensible position.',
+        context: 'Why extreme positioning beats moderate positioning'
+      }},
+      { type: 'content', title: 'How to Implement in Your Business', body: 'Step 1: Identify your premium offering. What\'s the absolute best version you could create? Charge 3-10x more. Deliver 10x the experience.\n\nStep 2: Identify your budget offering. What\'s the stripped-down, no-frills version? Cut everything non-essential. Price to volume.\n\nStep 3: Kill the middle. If you have products positioned in the middle, either elevate them to premium or strip them down to budget. No in-between.\n\nStep 4: Separate the brands. Don\'t confuse customers by selling both under one brand. Toyota (budget) created Lexus (premium) as a separate brand. Amazon (volume) keeps Amazon Basics (budget) visually distinct.\n\nYou don\'t need two products day one. Start with one extreme. Once it\'s profitable, attack the other end. But never settle in the middle.' },
+      { type: 'quiz', question: 'What is the PRIMARY reason the middle market is dangerous?', options: ['It has too many competitors fighting for share', 'You get squeezed from both sides - undercut by budget brands, outclassed by premium players', 'Customers in the middle are less loyal than other segments', 'Marketing costs are higher in the middle market'], correctIndex: 1, feedback: { correct: 'Exactly! The middle is death because you get attacked from both directions. Budget brands undercut you on price. Premium brands outclass you on quality and brand. You have no defensible position. You compete on price, margins erode, and you\'re one competitor away from irrelevance. This is why the Barbell Strategy skips the middle entirely - there\'s nothing to defend.', incorrect: 'Not quite. The core danger of the middle market is positional: you get squeezed from both sides. Budget brands can always undercut your price. Premium brands can always outclass your quality and brand. You end up with no defensible moat - not premium enough to charge high prices, not cheap enough to win on volume. The Barbell Strategy avoids this trap by positioning at the extremes where you have clear advantages.' }},
+      { type: 'completion', sources: [{ name: 'Nassim Taleb - Antifragile: Things That Gain from Disorder', url: 'https://www.amazon.com/Antifragile-Things-That-Disorder-Incerto/dp/0812979680' }] }
     ];
 
-    function LessonApp() {
-      const [currentSlide, setCurrentSlide] = useState(0);
-      const [direction, setDirection] = useState(1);
-      const [selectedAnswer, setSelectedAnswer] = useState(null);
-      const [showQuizResult, setShowQuizResult] = useState(false);
-      const [userName, setUserName] = useState('Builder');
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Barbell: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7v10M20 7v10M4 12h16M7 7v10M17 7v10"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+    };
 
-      useEffect(() => {
-        const script = document.createElement('script');
-        script.src = '/greetings.js';
-        script.async = true;
-        script.onload = () => {
-          if (window.getGreeting) {
-            const greeting = window.getGreeting();
-            if (greeting.userName) {
-              setUserName(greeting.userName);
-            }
-          }
-        };
-        document.body.appendChild(script);
-        return () => document.body.removeChild(script);
-      }, []);
-
-      const totalSlides = 8;
-
-      const nextSlide = () => {
-        if (currentSlide < totalSlides - 1) {
-          setDirection(1);
-          setCurrentSlide(prev => prev + 1);
-          setSelectedAnswer(null);
-          setShowQuizResult(false);
-        }
-      };
-
-      const prevSlide = () => {
-        if (currentSlide > 0) {
-          setDirection(-1);
-          setCurrentSlide(prev => prev - 1);
-          setSelectedAnswer(null);
-          setShowQuizResult(false);
-        }
-      };
-
-      const handleAnswerSelect = (answerIndex) => {
-        setSelectedAnswer(answerIndex);
-        setShowQuizResult(true);
-        if (answerIndex === 1) {
-          setTimeout(nextSlide, 2500);
-        }
-      };
-
-      const slideVariants = {
-        enter: (direction) => ({
-          x: direction > 0 ? '100%' : '-100%',
-          opacity: 0
-        }),
-        center: {
-          x: 0,
-          opacity: 1
-        },
-        exit: (direction) => ({
-          x: direction > 0 ? '-100%' : '100%',
-          opacity: 0
-        })
-      };
-
-      const BarbellVisual = () => (
-        <svg viewBox="0 0 800 400" className="w-full max-w-5xl mx-auto">
-          {/* Left weight (Big Swings) */}
-          <g>
-            <rect x="40" y="100" width="140" height="200" rx="8" fill="#DC2626" stroke="#991B1B" strokeWidth="3"/>
-            <rect x="60" y="120" width="100" height="160" rx="4" fill="#B91C1C"/>
-
-            <text x="110" y="185" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
-              BIG
-            </text>
-            <text x="110" y="210" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
-              SWINGS
-            </text>
-            <text x="110" y="240" fontSize="28" fontWeight="700" fill="#FCA5A5" textAnchor="middle">
-              5%
-            </text>
-          </g>
-
-          {/* Bar */}
-          <rect x="180" y="185" width="440" height="30" rx="15" fill="#374151" stroke="#1F2937" strokeWidth="2"/>
-          <rect x="380" y="170" width="40" height="60" rx="6" fill="#1F2937" stroke="#111827" strokeWidth="2"/>
-
-          {/* Right weight (Small Swings) */}
-          <g>
-            <rect x="620" y="100" width="140" height="200" rx="8" fill="#10b981" stroke="#059669" strokeWidth="3"/>
-            <rect x="640" y="120" width="100" height="160" rx="4" fill="#059669"/>
-
-            <text x="690" y="175" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
-              SMALL
-            </text>
-            <text x="690" y="200" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
-              SWINGS
-            </text>
-            <text x="690" y="230" fontSize="28" fontWeight="700" fill="#A7F3D0" textAnchor="middle">
-              95%
-            </text>
-          </g>
-
-          {/* Labels below */}
-          <text x="110" y="330" fontSize="13" fill="#991B1B" textAnchor="middle" fontWeight="600">
-            High Risk
-          </text>
-          <text x="110" y="350" fontSize="13" fill="#991B1B" textAnchor="middle" fontWeight="600">
-            High Reward
-          </text>
-
-          <text x="690" y="330" fontSize="13" fill="#059669" textAnchor="middle" fontWeight="600">
-            Low Risk
-          </text>
-          <text x="690" y="350" fontSize="13" fill="#059669" textAnchor="middle" fontWeight="600">
-            Compounding
-          </text>
-        </svg>
-      );
-
-      const CompoundCurve = () => (
-        <svg viewBox="0 0 600 400" className="w-full max-w-3xl mx-auto">
-          {/* Grid */}
-          <line x1="60" y1="340" x2="560" y2="340" stroke="#E5E7EB" strokeWidth="2"/>
-          <line x1="60" y1="340" x2="60" y2="40" stroke="#E5E7EB" strokeWidth="2"/>
-
-          {/* Exponential curve */}
-          <path
-            d="M 60 340 Q 200 320, 300 200 T 540 50"
-            stroke="#10b981"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Shaded area under curve */}
-          <path
-            d="M 60 340 Q 200 320, 300 200 T 540 50 L 540 340 Z"
-            fill="url(#gradient)"
-            opacity="0.3"
-          />
-
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#D1FAE5" />
-            </linearGradient>
-          </defs>
-
-          {/* Data points */}
-          <circle cx="60" cy="340" r="6" fill="#10b981"/>
-          <circle cx="180" cy="310" r="6" fill="#10b981"/>
-          <circle cx="300" cy="240" r="6" fill="#10b981"/>
-          <circle cx="420" cy="130" r="6" fill="#10b981"/>
-          <circle cx="540" cy="50" r="6" fill="#10b981"/>
-
-          {/* Labels */}
-          <text x="60" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 1</text>
-          <text x="180" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 90</text>
-          <text x="300" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 180</text>
-          <text x="420" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 270</text>
-          <text x="540" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 365</text>
-
-          {/* Y-axis labels */}
-          <text x="50" y="345" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">1x</text>
-          <text x="50" y="260" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">5x</text>
-          <text x="50" y="180" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">15x</text>
-          <text x="50" y="100" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">30x</text>
-          <text x="50" y="45" fontSize="14" fill="#10b981" textAnchor="end" fontWeight="700">38x</text>
-
-          {/* Title */}
-          <text x="300" y="25" fontSize="16" fill="#1F2937" textAnchor="middle" fontWeight="700">
-            +1% Daily = 38x Better in 365 Days
-          </text>
-        </svg>
-      );
-
-      const slides = [
-        // Slide 1: Welcome
-        <motion.div
-          key="slide-0"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="max-w-3xl text-center">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <h1 className="font-display text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-                The Barbell Strategy
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed">
-                5% big swings. 95% small wins. Avoid the dangerous middle.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">You'll Learn:</h2>
-              <div className="space-y-4 text-left">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">1</span>
-                  </div>
-                  <p className="text-lg text-gray-700">How Häagen-Dazs used a 5% big swing to reposition as luxury</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">2</span>
-                  </div>
-                  <p className="text-lg text-gray-700">Why 1% daily improvement = 38x better in a year</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">3</span>
-                  </div>
-                  <p className="text-lg text-gray-700">The execution framework for balancing innovation with optimization</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.p
-              className="text-gray-500 mt-8 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              4 minutes • Execution
-            </motion.p>
-          </div>
-        </motion.div>,
-
-        // Slide 2: Hook
-        <motion.div
-          key="slide-1"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-4xl">
-            <motion.div
-              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 md:p-16 shadow-2xl text-white"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.div
-                className="text-6xl mb-8"
-                animate={{ rotate: [0, 10, -10, 10, 0] }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                💰
-              </motion.div>
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                "Compound interest is the eighth wonder of the world."
-              </h2>
-              <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
-                "He who understands it, <span className="text-accent-light font-bold">earns it</span>. He who doesn't, <span className="text-red-400 font-bold">pays it</span>."
-              </p>
-              <p className="text-accent-light mt-6 font-semibold text-lg">
-                — Albert Einstein
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Most entrepreneurs fail because they're stuck in the <span className="font-bold text-red-600">dangerous middle</span>:
-                actions that are neither safe nor transformative.
-              </p>
-              <p className="text-xl text-gray-700 mt-6 leading-relaxed">
-                <span className="font-bold text-accent">The Barbell Strategy</span> splits your actions into two extremes. Nothing in between.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 3: The Barbell Visual
-        <motion.div
-          key="slide-2"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-5xl w-full">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Barbell Framework
-            </motion.h2>
-
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <BarbellVisual />
-            </motion.div>
-
-            <motion.div
-              className="grid md:grid-cols-2 gap-8 mt-12"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-red-900 mb-4">Big Swings (5%)</h3>
-                <p className="text-lg text-red-800 mb-4">
-                  Fundamental, high-risk, high-reward changes
-                </p>
-                <div className="bg-white rounded-lg p-4 text-sm text-red-900">
-                  <p className="font-semibold mb-2">Example: Häagen-Dazs</p>
-                  <p>Bronx ice cream company invented Danish-sounding name + European branding to reposition as luxury. Complete brand transformation.</p>
-                </div>
-              </div>
-
-              <div className="bg-green-50 border-2 border-accent rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-green-900 mb-4">Small Swings (95%)</h3>
-                <p className="text-lg text-green-800 mb-4">
-                  Safe, measurable, compounding 1% improvements
-                </p>
-                <div className="bg-white rounded-lg p-4 text-sm text-green-900">
-                  <p className="font-semibold mb-2">Example: A/B Testing</p>
-                  <p>Relentless testing on ads, landing pages, offers. Each win stacks. 300 tests/year = 90% revenue uplift.</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 4: The Dangerous Middle
-        <motion.div
-          key="slide-3"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-4xl">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Dangerous Middle
-            </motion.h2>
-
-            <motion.div
-              className="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl p-12 shadow-2xl text-white mb-8"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <div className="text-center mb-8">
-                <div className="text-6xl mb-4">⚠️</div>
-                <h3 className="text-3xl font-bold mb-4">Avoid This Zone</h3>
-              </div>
-              <p className="text-xl leading-relaxed text-center mb-6">
-                Medium-risk, medium-reward actions that feel productive but compound nothing.
-              </p>
-              <div className="bg-white/20 backdrop-blur rounded-2xl p-6 border border-white/30">
-                <p className="text-lg font-semibold mb-3">Examples of the Dangerous Middle:</p>
-                <ul className="space-y-2 text-base">
-                  <li>• Redesigning your logo (not transformative enough)</li>
-                  <li>• Random feature additions (no systematic testing)</li>
-                  <li>• "Kinda" changing your positioning (confuses the market)</li>
-                  <li>• Sporadic marketing experiments (no compounding data)</li>
-                </ul>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-white rounded-2xl p-8 shadow-lg"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p className="text-xl text-gray-700 leading-relaxed text-center">
-                <span className="font-bold text-accent">The rule:</span> Every action should be either a <span className="font-bold text-red-600">big swing</span> or a <span className="font-bold text-green-600">small swing</span>. Nothing in between.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 5: The Compound Curve
-        <motion.div
-          key="slide-4"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-5xl w-full">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Power of 1% Daily
-            </motion.h2>
-
-            <motion.div
-              className="bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-100 mb-8"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <CompoundCurve />
-            </motion.div>
-
-            <motion.div
-              className="grid md:grid-cols-3 gap-6"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="bg-gradient-to-br from-accent to-accent-dark rounded-xl p-6 text-white shadow-lg">
-                <div className="text-3xl mb-3">📈</div>
-                <div className="text-4xl font-bold mb-2">1.01</div>
-                <p className="text-sm text-accent-light">Compounded Daily</p>
-              </div>
-              <div className="bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl p-6 text-white shadow-lg">
-                <div className="text-3xl mb-3">📅</div>
-                <div className="text-4xl font-bold mb-2">365</div>
-                <p className="text-sm text-gray-300">Days of Testing</p>
-              </div>
-              <div className="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="text-3xl mb-3">🚀</div>
-                <div className="text-4xl font-bold mb-2">38x</div>
-                <p className="text-sm text-yellow-200">Better Than Start</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            >
-              <p className="text-lg text-blue-900 text-center">
-                <span className="font-bold">The math is brutal:</span> 1% worse daily = 97% worse in a year. 1% better daily = 3,778% better.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 6: Tool Integration
-        <motion.div
-          key="slide-5"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-4xl">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Compound Testing System
-            </motion.h2>
-
-            <motion.div
-              className="bg-white rounded-3xl p-10 shadow-xl border-2 border-gray-100 mb-8"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Tests Per Year = Revenue Uplift
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between bg-gray-50 rounded-xl p-5">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">60 tests/year</span>
-                    <p className="text-sm text-gray-600">(~5 per month)</p>
-                  </div>
-                  <div className="text-3xl font-bold text-accent">+18%</div>
-                </div>
-                <div className="flex items-center justify-between bg-green-50 rounded-xl p-5 border-2 border-accent">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">120 tests/year</span>
-                    <p className="text-sm text-gray-600">(~10 per month)</p>
-                  </div>
-                  <div className="text-3xl font-bold text-accent">+36%</div>
-                </div>
-                <div className="flex items-center justify-between bg-gradient-to-r from-accent to-accent-dark rounded-xl p-5 text-white">
-                  <div>
-                    <span className="text-lg font-bold">300 tests/year</span>
-                    <p className="text-sm text-accent-light">(~25 per month)</p>
-                  </div>
-                  <div className="text-4xl font-bold">+90%</div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-xl"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-4">How do you run 300 tests/year?</h3>
-              <p className="text-lg text-gray-300 mb-6">
-                Manual testing is impossible at this scale. You need automation.
-              </p>
-
-              <div className="bg-white rounded-xl p-6 mb-6">
-                <img
-                  src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(12).jpg"
-                  alt="ABConvert Results"
-                  className="w-full rounded-lg mb-4"
-                />
-                <p className="text-sm text-gray-600 text-center italic">
-                  Real result: 520% increase from systematic testing
-                </p>
-              </div>
-
-              <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
-                <h4 className="text-xl font-bold text-white mb-3">ABConvert</h4>
-                <p className="text-gray-300 mb-4">
-                  Automated A/B testing for prices, offers, and layouts. Run 25+ tests/month on autopilot.
-                </p>
-                <div className="flex flex-wrap gap-3 items-center">
-                  <a
-                    href="https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-accent hover:bg-accent-dark text-white font-bold py-3 px-6 rounded-lg transition-all inline-block"
-                  >
-                    View on Shopify
-                  </a>
-                  <div className="bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-lg">
-                    Code: LASERCRO (10% off)
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 7: Quiz
-        <motion.div
-          key="slide-6"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-3xl w-full">
-            <motion.h2
-              className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              What percentage of your actions should be "big swings"?
-            </motion.h2>
-
-            <motion.div
-              className="space-y-4"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              {[
-                { text: 'A) 50% (balanced approach)', correct: false },
-                { text: 'B) 5% (rare, transformative)', correct: true },
-                { text: 'C) 95% (constant innovation)', correct: false }
-              ].map((answer, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  className={`w-full p-6 rounded-xl text-left text-lg font-semibold transition-all ${
-                    selectedAnswer === null
-                      ? 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-accent'
-                      : selectedAnswer === index
-                      ? answer.correct
-                        ? 'bg-green-100 border-2 border-green-500'
-                        : 'bg-red-100 border-2 border-red-500'
-                      : 'bg-gray-100 border-2 border-gray-200 opacity-50'
-                  }`}
-                  disabled={selectedAnswer !== null}
-                  whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
-                  whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
-                >
-                  {answer.text}
-                </motion.button>
-              ))}
-            </motion.div>
-
-            <AnimatePresence>
-              {showQuizResult && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="mt-8"
-                >
-                  {selectedAnswer === 1 ? (
-                    <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8">
-                      <div className="flex items-center gap-4 mb-4">
-                        <img src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} alt="Celebration" className="w-20 h-20 rounded-lg" />
-                        <div>
-                          <h3 className="text-2xl font-bold text-green-900 mb-2">Perfect!</h3>
-                          <p className="text-green-800 text-lg">
-                            5% big swings, 95% small swings. Big swings are rare and transformative. Small swings compound relentlessly.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8">
-                      <div className="flex items-center gap-4 mb-4">
-                        <img src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} alt="Thinking" className="w-20 h-20 rounded-lg" />
-                        <div>
-                          <h3 className="text-2xl font-bold text-blue-900 mb-2">Not quite!</h3>
-                          <p className="text-blue-800 text-lg">
-                            The answer is B (5%). Big swings should be <span className="font-bold">rare</span> - fundamental transformations like Häagen-Dazs rebranding. 95% should be safe, compounding improvements.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>,
-
-        // Slide 8: Completion
-        <motion.div
-          key="slide-7"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-3xl text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="text-8xl mb-8"
-            >
-              🏋️
-            </motion.div>
-
-            <motion.h2
-              className="font-display text-4xl md:text-6xl font-bold text-gray-900 mb-6"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              You've Got the System, {userName}!
-            </motion.h2>
-
-            <motion.p
-              className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              You now understand how to balance innovation with optimization using the Barbell Strategy.
-            </motion.p>
-
-            <motion.div
-              className="bg-white rounded-2xl p-8 shadow-lg mb-8"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Takeaway:</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Split your actions into two extremes: <span className="font-bold text-red-600">5% big swings</span> (transformative risks) and <span className="font-bold text-accent">95% small swings</span> (compounding improvements). Avoid the dangerous middle.
-              </p>
-              <div className="bg-accent/10 border-2 border-accent rounded-xl p-4">
-                <p className="text-accent font-bold text-lg">
-                  300 tests/year = 90% revenue uplift. That's the compound power of systematic optimization.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-            >
-              <a
-                href="/dashboard"
-                className="inline-block bg-accent hover:bg-accent-dark text-white font-bold py-4 px-10 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl"
-              >
-                Back to Learning Center
-              </a>
-            </motion.div>
-          </div>
-        </motion.div>
-      ];
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
-        <div className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={currentSlide}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              {slides[currentSlide]}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation */}
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-            <div className="bg-white rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
-              <button
-                onClick={prevSlide}
-                disabled={currentSlide === 0}
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-gray-700"
-              >
-                ←
-              </button>
-
-              <div className="flex gap-2">
-                {Array.from({ length: totalSlides }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={`h-2 rounded-full transition-all ${
-                      index === currentSlide
-                        ? 'w-8 bg-accent'
-                        : 'w-2 bg-gray-300'
-                    }`}
-                  />
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
                 ))}
-              </div>
-
-              <button
-                onClick={nextSlide}
-                disabled={currentSlide === totalSlides - 1}
-                className="w-10 h-10 rounded-full bg-accent hover:bg-accent-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-white"
-              >
-                →
-              </button>
-            </div>
-          </div>
-
-          {/* Progress indicator */}
-          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-            <motion.div
-              className="h-full bg-accent"
-              initial={{ width: 0 }}
-              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
-              transition={{ duration: 0.3 }}
-            />
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
-    }
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'barbell-diagram') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full max-w-3xl mx-auto">
+              <svg viewBox="0 0 800 300" className="w-full">
+                <defs>
+                  <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#dc2626" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#991b1b" stopOpacity="0.7" />
+                  </linearGradient>
+                  <linearGradient id="budgetGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#059669" stopOpacity="0.7" />
+                  </linearGradient>
+                </defs>
+
+                {/* Left weight - Premium */}
+                <motion.g initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, type: 'spring' }}>
+                  <rect x="40" y="80" width="140" height="140" rx="8" fill="url(#premiumGradient)" stroke="#991b1b" strokeWidth="3"/>
+                  <rect x="60" y="95" width="100" height="110" rx="4" fill="#b91c1c" opacity="0.4"/>
+                  <text x="110" y="135" fontSize="14" fontWeight="700" fill="white" textAnchor="middle">PREMIUM</text>
+                  <text x="110" y="165" fontSize="28" fontWeight="900" fill="#fca5a5" textAnchor="middle">60%</text>
+                  <text x="110" y="185" fontSize="11" fill="#fca5a5" textAnchor="middle">margin</text>
+                </motion.g>
+
+                {/* Bar */}
+                <motion.g initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.4, duration: 0.6 }} style={{ transformOrigin: 'center' }}>
+                  <rect x="180" y="135" width="440" height="30" rx="15" fill="#374151" stroke="#1f2937" strokeWidth="2"/>
+                  <rect x="380" y="120" width="40" height="60" rx="6" fill="#1f2937" stroke="#111827" strokeWidth="2"/>
+                </motion.g>
+
+                {/* Right weight - Budget */}
+                <motion.g initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6, type: 'spring' }}>
+                  <rect x="620" y="80" width="140" height="140" rx="8" fill="url(#budgetGradient)" stroke="#059669" strokeWidth="3"/>
+                  <rect x="640" y="95" width="100" height="110" rx="4" fill="#059669" opacity="0.4"/>
+                  <text x="690" y="135" fontSize="14" fontWeight="700" fill="white" textAnchor="middle">BUDGET</text>
+                  <text x="690" y="165" fontSize="28" fontWeight="900" fill="#a7f3d0" textAnchor="middle">10x</text>
+                  <text x="690" y="185" fontSize="11" fill="#a7f3d0" textAnchor="middle">volume</text>
+                </motion.g>
+
+                {/* Labels */}
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} x="110" y="245" fontSize="12" fill="#991b1b" textAnchor="middle" fontWeight="600">High Margin</motion.text>
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} x="110" y="265" fontSize="12" fill="#991b1b" textAnchor="middle" fontWeight="600">Brand Power</motion.text>
+
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} x="690" y="245" fontSize="12" fill="#059669" textAnchor="middle" fontWeight="600">Low Margin</motion.text>
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} x="690" y="265" fontSize="12" fill="#059669" textAnchor="middle" fontWeight="600">Market Share</motion.text>
+
+                {/* Middle warning */}
+                <motion.g initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
+                  <rect x="340" y="35" width="120" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2"/>
+                  <text x="400" y="55" fontSize="11" fontWeight="700" fill="#92400e" textAnchor="middle">DANGEROUS</text>
+                  <text x="400" y="72" fontSize="11" fontWeight="700" fill="#92400e" textAnchor="middle">MIDDLE</text>
+                </motion.g>
+              </svg>
+            </div>
+          </div>
+        );
+      }
+    };
+
+    const StatsGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-emerald-300 hover:bg-emerald-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-emerald-50 border-2 border-emerald-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand the Barbell Strategy - how to position at extremes and avoid the dangerous middle market where brands go to die.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'stats-grid': return <StatsGridSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          {gif.src && (
+            <motion.div animate={{ opacity: gif.opacity }} initial={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+              <video src={gif.src} autoPlay loop muted playsInline className="h-2/3 object-contain" style={{ [gif.side]: '10%' }} />
+            </motion.div>
+          )}
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center hover:border-emerald-300 disabled:opacity-30 disabled:cursor-not-allowed transition-all"><Icons.ArrowLeft /></button>
+              <div className="flex gap-1">
+                {slides.map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d8' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<LessonApp />);

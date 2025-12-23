@@ -4,776 +4,378 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The One-Pager Blueprint | Quantum Scale</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/scripts/greetings.js"></script>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #FAFAFA;
-      color: #1D1D1F;
-      overflow-x: hidden;
-    }
-    .title-font { font-family: 'Fraunces', serif; }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#10b981',
-            'accent-dark': '#059669',
-            'accent-light': '#34d399',
-          }
-        }
-      }
-    }
-  </script>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
-    const { motion, AnimatePresence } = Motion;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Entrepreneur images
-    const entrepreneurImages = {
-      'Davie Fogarty': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png',
-      'Alex Hormozi': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png'
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-one-pager-blueprint',
+      title: 'The One-Pager Blueprint',
+      description: 'Everything on one page - your entire business strategy. Davie Fogarty\'s framework for clarity, alignment, and ruthless focus.',
+      accentColor: '#10b981',
+      duration: '5 min',
+      nextLesson: { id: 'biz-startup-checklist', title: 'Pre-Launch Startup Checklist', teaser: 'Learn what to do before day one.' }
     };
 
     const celebrationGifs = [
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTg5anRqMnZ5dGZhZjRvN3F5OXJ4OGNzYzRoMm1oM3gyZnN5ZDRsZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/g9582DNuQppxC/giphy.gif',
-      'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif',
-      'https://media.giphy.com/media/1136UBdSNn6Bu8/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://media.giphy.com/media/3oEjI5VtIhHvK37WYo/giphy.gif',
-      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
-      'https://media.giphy.com/media/ISOckXUybVfQ4/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['The 4 questions that define your entire business strategy', 'How to kill shiny object syndrome with one simple document', 'Why a business plan is useless but a one-pager is a weapon'] },
+      { type: 'hook', headline: 'Shiny object syndrome has killed more businesses than bad products. New opportunity appears, focus fractures, resources drain. Three products. Five marketing channels. Zero traction.', subtext: 'The antidote? A one-pager that makes saying "no" effortless. If you can\'t fit your business on one page, you don\'t understand it. Davie Fogarty built multiple eight-figure brands using this exact framework.' },
+      { type: 'content', title: 'Business Plan vs One-Pager', body: 'A business plan is 40 pages of projections that nobody reads and becomes outdated in three months. It\'s useless for making decisions.\n\nA one-pager is four critical questions that never change. You memorize it instantly. It makes every decision effortless.\n\nBusiness plan: "Let me review the 15-page market analysis section."\n\nOne-pager: "Does this align with my four questions? No? Then no."\n\nThe one-pager is your filter. Everything gets run through it. Alignment means yes. Misalignment means no. No confusion. No hesitation.' },
+      { type: 'mockup', title: 'The One-Pager Document', description: 'Four questions. One page. Your entire business strategy locked in place.', mockupType: 'one-pager-doc' },
+      { type: 'content', title: 'The 4 Questions That Define Everything', body: '1. The problem I am solving - Not a vague market gap. A specific pain point people feel every day.\n\n2. My solution - Not a feature list. The transformation you deliver in one sentence.\n\n3. My unique positioning - Not "quality" or "affordability." The ONE thing that makes you different from everyone else.\n\n4. My primary marketing channel - Not "we\'re everywhere." The single channel where your audience lives and you double down.\n\nThese four questions become your North Star. Every opportunity gets filtered through them. Partnership offer? Check the one-pager. New product idea? Check the one-pager. Marketing channel suggestion? Check the one-pager.' },
+      { type: 'content', title: 'Real Example: Ice Bath Business', body: 'Problem: Athletes experiencing joint pain and slow recovery times.\n\nSolution: Portable ice bath that fits in your home.\n\nPositioning: Recovery tool for everyday athletes (not just pros).\n\nPrimary channel: TikTok and Instagram (visual demonstration of the product in use).\n\nSomeone pitches a YouTube sponsorship opportunity? Check the one-pager. Not your primary channel. The answer is NO.\n\nSomeone suggests targeting professional sports teams? Check the one-pager. Not your positioning. The answer is NO.\n\nThe one-pager makes saying no effortless because the decision is already made.' },
+      { type: 'stats-grid', title: 'The Power of a One-Pager', items: [
+        { value: '4', label: 'Critical Questions', description: 'Everything else is noise' },
+        { value: '1', label: 'Page Total', description: 'If it doesn\'t fit, you don\'t get it' },
+        { value: '100%', label: 'Decision Clarity', description: 'Every choice becomes effortless' },
+        { value: '0', label: 'Shiny Objects', description: 'Your filter kills distractions' }
+      ]},
+      { type: 'quote', data: {
+        quote: 'A business plan is useless. A one-pager is a weapon.',
+        context: 'Davie Fogarty on strategic clarity'
+      }},
+      { type: 'content', title: 'How Davie Uses This for Every Business', body: 'Davie Fogarty doesn\'t launch a business without first filling out his one-pager. Not a draft. Not a rough version. A locked, final document.\n\nBefore any product development. Before any marketing. Before any hiring. The one-pager gets created and protected.\n\nEvery team member memorizes it. Every meeting references it. Every decision flows through it.\n\nWhen someone brings an opportunity, Davie doesn\'t debate. He checks the one-pager. If it aligns, they explore it. If it doesn\'t, the conversation ends.\n\nThis is how you scale without losing focus. This is how you say no to 99% of opportunities so you can dominate the 1% that matters.' },
+      { type: 'content', title: 'Your One-Pager Template', body: 'Grab a blank document. Answer these four questions in one sentence each:\n\n1. The problem I am solving: [One specific pain point]\n\n2. My solution: [One clear transformation]\n\n3. My unique positioning: [One differentiator]\n\n4. My primary marketing channel: [One platform]\n\nThat\'s it. Print it. Frame it. Memorize it.\n\nEvery opportunity gets filtered through these four questions. Alignment means yes. Misalignment means no.\n\nGuard this document with your life. It\'s not a living document that evolves. It\'s a locked strategy that protects your focus.\n\nIf you need to change it, you\'re pivoting your entire business. That\'s fine. But changing it casually is how you lose.' },
+      { type: 'quiz', question: 'When should you say NO to a new opportunity?', options: ['When it requires significant investment', 'When it doesn\'t align with your one-pager', 'When it feels risky', 'When competitors are doing it'], correctIndex: 1, feedback: { correct: 'Perfect! Your one-pager is your filter. If an opportunity doesn\'t align with those four questions, it\'s a distraction pulling you off course. Say no with confidence. The one-pager has already made the decision for you. This is how you scale without losing focus.', incorrect: 'Not quite. Your one-pager is your North Star. If an opportunity doesn\'t align with your four questions - problem, solution, positioning, channel - it\'s pulling you off course. Investment level and risk don\'t matter if it breaks your focus. Say no, stay locked in.' }},
+      { type: 'completion', sources: [{ name: 'Davie Fogarty - Business Strategy Framework', url: 'https://www.ociusocreative.com/' }] }
     ];
 
-    const OnePagerBlueprintLesson = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
-      const [selectedAnswer, setSelectedAnswer] = useState(null);
-      const [showFeedback, setShowFeedback] = useState(false);
-      const [userName, setUserName] = useState('Builder');
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      FileText: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+    };
 
-      useEffect(() => {
-        if (window.getGreeting) {
-          const greeting = window.getGreeting();
-          setUserName(greeting.split(' ')[1] || 'Builder');
-        }
-      }, []);
-
-      const totalSlides = 7;
-
-      const nextSlide = () => {
-        if (currentSlide < totalSlides - 1) {
-          setCurrentSlide(currentSlide + 1);
-          setSelectedAnswer(null);
-          setShowFeedback(false);
-        }
-      };
-
-      const prevSlide = () => {
-        if (currentSlide > 0) {
-          setCurrentSlide(currentSlide - 1);
-          setSelectedAnswer(null);
-          setShowFeedback(false);
-        }
-      };
-
-      const handleQuizAnswer = (answer) => {
-        setSelectedAnswer(answer);
-        setShowFeedback(true);
-      };
-
-      const OnePagerDocumentSVG = () => (
-        <svg viewBox="0 0 400 500" className="w-full max-w-md mx-auto">
-          {/* Document */}
-          <motion.rect
-            x="50"
-            y="20"
-            width="300"
-            height="460"
-            fill="white"
-            stroke="#10b981"
-            strokeWidth="3"
-            rx="8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          />
-
-          {/* Header */}
-          <motion.text
-            x="200"
-            y="60"
-            textAnchor="middle"
-            fill="#1D1D1F"
-            fontSize="20"
-            fontWeight="700"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            BUSINESS ONE-PAGER
-          </motion.text>
-
-          {/* Question 1 */}
-          <motion.g
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <rect x="70" y="100" width="260" height="70" fill="#F0FDF4" rx="6"/>
-            <text x="80" y="120" fill="#10b981" fontSize="11" fontWeight="700">
-              1. THE PROBLEM I AM SOLVING
-            </text>
-            <text x="80" y="140" fill="#374151" fontSize="10">
-              Athletes experiencing
-            </text>
-            <text x="80" y="155" fill="#374151" fontSize="10">
-              joint pain and slow recovery
-            </text>
-          </motion.g>
-
-          {/* Question 2 */}
-          <motion.g
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            <rect x="70" y="190" width="260" height="70" fill="#F0FDF4" rx="6"/>
-            <text x="80" y="210" fill="#10b981" fontSize="11" fontWeight="700">
-              2. MY SOLUTION
-            </text>
-            <text x="80" y="230" fill="#374151" fontSize="10">
-              Portable ice bath that fits
-            </text>
-            <text x="80" y="245" fill="#374151" fontSize="10">
-              in your home
-            </text>
-          </motion.g>
-
-          {/* Question 3 */}
-          <motion.g
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.9 }}
-          >
-            <rect x="70" y="280" width="260" height="70" fill="#F0FDF4" rx="6"/>
-            <text x="80" y="300" fill="#10b981" fontSize="11" fontWeight="700">
-              3. MY UNIQUE POSITIONING
-            </text>
-            <text x="80" y="320" fill="#374151" fontSize="10">
-              Recovery tool for
-            </text>
-            <text x="80" y="335" fill="#374151" fontSize="10">
-              everyday athletes
-            </text>
-          </motion.g>
-
-          {/* Question 4 */}
-          <motion.g
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.1 }}
-          >
-            <rect x="70" y="370" width="260" height="70" fill="#F0FDF4" rx="6"/>
-            <text x="80" y="390" fill="#10b981" fontSize="11" fontWeight="700">
-              4. PRIMARY MARKETING CHANNEL
-            </text>
-            <text x="80" y="410" fill="#374151" fontSize="10">
-              TikTok + Instagram
-            </text>
-            <text x="80" y="425" fill="#374151" fontSize="10">
-              (visual demonstration)
-            </text>
-          </motion.g>
-
-          {/* Lock icon */}
-          <motion.g
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 1.5, type: "spring" }}
-          >
-            <circle cx="200" cy="470" r="15" fill="#10b981"/>
-            <path
-              d="M 195 468 L 195 465 Q 195 461 200 461 Q 205 461 205 465 L 205 468"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-            />
-            <rect x="193" y="468" width="14" height="8" fill="white" rx="1"/>
-          </motion.g>
-        </svg>
-      );
-
-      const slides = [
-        // Slide 1: Welcome
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl w-full"
-          >
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="bg-black text-white rounded-3xl p-12 shadow-2xl"
-            >
-              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-8 mx-auto">
-                <span className="text-3xl">📄</span>
-              </div>
-              <h1 className="title-font text-4xl md:text-5xl font-bold mb-6 text-center">
-                The One-Pager Blueprint
-              </h1>
-              <p className="text-xl text-gray-300 text-center mb-8 leading-relaxed">
-                Kill shiny object syndrome with the 4 questions that become your North Star.
-              </p>
-              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                <p className="text-sm font-semibold text-accent mb-3">YOU'LL LEARN:</p>
-                <ul className="space-y-2 text-gray-200">
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>The 4 questions that define your entire business</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>How to say "no" to distractions with confidence</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>Why a business plan is useless but a one-pager is a weapon</span>
-                  </li>
-                </ul>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>,
-
-        // Slide 2: Hook
-        <div className="min-h-screen flex items-center justify-center p-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-3xl w-full"
-          >
-            <motion.div
-              initial={{ y: 30 }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-center mb-12"
-            >
-              <h2 className="title-font text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                Shiny object syndrome has killed{' '}
-                <span className="text-accent">more businesses than bad products</span>
-              </h2>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-white rounded-2xl p-10 shadow-lg space-y-6"
-            >
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">💥</span>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold mb-2">New opportunity appears</p>
-                  <p className="text-gray-600">"This could be huge! Let me chase it..."</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">🔀</span>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold mb-2">Focus fractures</p>
-                  <p className="text-gray-600">Three products. Five marketing channels. Zero traction.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">💸</span>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold mb-2">Resources drain</p>
-                  <p className="text-gray-600">Time, money, energy scattered across 10 half-finished ideas.</p>
-                </div>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="bg-emerald-50 rounded-xl p-6 mt-8 border-2 border-accent"
-              >
-                <p className="text-lg font-semibold text-center">
-                  The antidote? A one-pager that makes saying "no" effortless.
-                </p>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>,
-
-        // Slide 3: The Concept
-        <div className="min-h-screen flex items-center justify-center p-6 relative">
-          {/* Entrepreneur image - positioned on right side, behind text */}
-          <motion.img
-            src={entrepreneurImages['Davie Fogarty']}
-            alt="Davie Fogarty"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 0.15, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="absolute z-0 pointer-events-none select-none"
-            style={{
-              right: '5%',
-              bottom: '5%',
-              maxHeight: '60vh',
-              width: 'auto',
-              objectFit: 'contain'
-            }}
-          />
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-3xl w-full relative z-10"
-          >
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-center mb-12"
-            >
-              <p className="text-sm font-semibold text-accent mb-4 tracking-wide uppercase">
-                Davie Fogarty's Framework
-              </p>
-              <h2 className="title-font text-4xl md:text-5xl font-bold mb-8">
-                Business Plan vs One-Pager
-              </h2>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="grid md:grid-cols-2 gap-8 mb-8"
-            >
-              <div className="bg-gray-100 rounded-2xl p-8 shadow-lg">
-                <div className="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center mb-4">
-                  <span className="text-2xl">📋</span>
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Business Plan</h3>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>40 pages of projections</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Outdated in 3 months</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Nobody reads it</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Useless for decisions</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-black text-white rounded-2xl p-8 shadow-2xl border-2 border-accent">
-                <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mb-4">
-                  <span className="text-2xl">⚡</span>
-                </div>
-                <h3 className="text-2xl font-bold mb-4">One-Pager</h3>
-                <ul className="space-y-3 text-gray-200">
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>4 critical questions</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>Never changes</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>Memorized instantly</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-accent mr-2">✓</span>
-                    <span>Makes decisions easy</span>
-                  </li>
-                </ul>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="bg-white rounded-2xl p-8 shadow-lg text-center"
-            >
-              <p className="text-2xl font-bold mb-3 title-font">
-                "A business plan is useless. A one-pager is a weapon."
-              </p>
-              <p className="text-gray-500">— Davie Fogarty</p>
-            </motion.div>
-          </motion.div>
-        </div>,
-
-        // Slide 4: The 4 Questions
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-3xl w-full"
-          >
-            <motion.div
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              className="text-center mb-12"
-            >
-              <h2 className="title-font text-4xl md:text-5xl font-bold mb-6">
-                The 4 Questions
-              </h2>
-              <p className="text-xl text-gray-600">
-                Answer these. Never stray from them.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white rounded-3xl p-8 shadow-xl mb-8"
-            >
-              <OnePagerDocumentSVG />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="bg-black text-white rounded-2xl p-6"
-            >
-              <p className="text-center text-lg font-semibold">
-                If an opportunity doesn't align with this one-pager,{' '}
-                <span className="text-accent">the answer is always NO</span>
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>,
-
-        // Slide 5: Real Example
-        <div className="min-h-screen flex items-center justify-center p-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-4xl w-full"
-          >
-            <motion.div
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              className="text-center mb-12"
-            >
-              <h2 className="title-font text-4xl md:text-5xl font-bold mb-6">
-                Real Example Breakdown
-              </h2>
-              <p className="text-xl text-gray-600">
-                Ice bath business in action
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="space-y-6"
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold text-accent">1</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">The Problem I Am Solving</h3>
-                    <p className="text-gray-600">Athletes experiencing joint pain and slow recovery times</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold text-accent">2</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">My Solution</h3>
-                    <p className="text-gray-600">Portable ice bath that fits in your home</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold text-accent">3</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">My Unique Positioning</h3>
-                    <p className="text-gray-600">Recovery tool for everyday athletes (not just pros)</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold text-accent">4</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">My Primary Marketing Channel</h3>
-                    <p className="text-gray-600">TikTok + Instagram (visual demonstration of the product in use)</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="mt-8 bg-emerald-50 rounded-2xl p-6 border-2 border-accent"
-            >
-              <p className="text-center font-semibold text-lg">
-                Someone pitches a YouTube sponsorship? Check the one-pager. Not your primary channel? NO.
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>,
-
-        // Slide 6: Quiz
-        <div className="min-h-screen flex items-center justify-center p-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-2xl w-full"
-          >
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-3xl">🎯</span>
-              </div>
-              <h2 className="title-font text-3xl md:text-4xl font-bold mb-4">
-                Quick Check
-              </h2>
-              <p className="text-xl text-gray-600">
-                When should you say NO to an opportunity?
-              </p>
-            </div>
-
-            <div className="space-y-4 mb-8">
-              {[
-                { id: 'A', text: 'When it's risky', correct: false },
-                { id: 'B', text: 'When it doesn't align with your one-pager', correct: true },
-                { id: 'C', text: 'When it requires investment', correct: false }
-              ].map((option) => (
-                <motion.button
-                  key={option.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleQuizAnswer(option.id)}
-                  disabled={showFeedback}
-                  className={`w-full p-6 rounded-2xl text-left font-semibold text-lg transition-all ${
-                    selectedAnswer === option.id
-                      ? option.correct
-                        ? 'bg-accent text-white shadow-lg'
-                        : 'bg-red-500 text-white shadow-lg'
-                      : 'bg-white hover:bg-gray-50 shadow-md'
-                  } ${showFeedback ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                >
-                  <span className="text-accent-dark mr-3">{option.id}.</span>
-                  {option.text}
-                </motion.button>
-              ))}
-            </div>
-
-            <AnimatePresence>
-              {showFeedback && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="bg-white rounded-2xl p-8 shadow-xl"
-                >
-                  {selectedAnswer === 'B' ? (
-                    <>
-                      <div className="flex items-center justify-center mb-6">
-                        <img
-                          src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
-                          alt="Celebration"
-                          className="w-32 h-32 rounded-xl"
-                        />
-                      </div>
-                      <h3 className="text-2xl font-bold text-accent mb-3 text-center">
-                        Perfect answer!
-                      </h3>
-                      <p className="text-gray-600 text-center text-lg">
-                        Your one-pager is your filter. If an opportunity doesn't align with those 4 questions, it's a distraction. Say no with confidence.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center justify-center mb-6">
-                        <img
-                          src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
-                          alt="Learning moment"
-                          className="w-32 h-32 rounded-xl"
-                        />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-                        Not quite!
-                      </h3>
-                      <p className="text-gray-600 text-center text-lg">
-                        The one-pager is your North Star. If an opportunity doesn't align with your 4 questions, it's pulling you off course. Say no, stay focused.
-                      </p>
-                    </>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>,
-
-        // Slide 7: Completion
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="max-w-2xl w-full"
-          >
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="bg-black text-white rounded-3xl p-12 shadow-2xl text-center"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="w-20 h-20 bg-accent rounded-3xl flex items-center justify-center mx-auto mb-8"
-              >
-                <span className="text-4xl">✓</span>
-              </motion.div>
-
-              <h2 className="title-font text-4xl md:text-5xl font-bold mb-6">
-                You Have Your Blueprint
-              </h2>
-
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Answer the 4 questions. Guard them fiercely. Say no to everything else.
-              </p>
-
-              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm mb-8">
-                <p className="text-accent font-semibold mb-3">KEY TAKEAWAY:</p>
-                <p className="text-lg text-gray-200">
-                  Your one-pager is your compass. Every opportunity gets filtered through it. Alignment = yes. Misalignment = no.
-                </p>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="pt-6 border-t border-white/20"
-              >
-                <p className="text-sm text-gray-400 mb-3">WHAT'S NEXT:</p>
-                <p className="text-lg text-gray-200">
-                  Create your one-pager. Lock it in. Let it guide every decision you make.
-                </p>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
-      ];
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
-        <div className="relative">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {slides[currentSlide]}
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'one-pager-doc') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full max-w-lg mx-auto">
+              <svg viewBox="0 0 400 520" className="w-full">
+                <defs>
+                  <linearGradient id="docGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#f9fafb" />
+                  </linearGradient>
+                </defs>
+                <motion.rect initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} x="50" y="20" width="300" height="480" fill="url(#docGradient)" stroke="var(--accent)" strokeWidth="3" rx="12" />
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} x="200" y="65" textAnchor="middle" fill="#1D1D1F" fontSize="18" fontWeight="700">ONE-PAGER BLUEPRINT</motion.text>
+
+                <motion.g initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
+                  <rect x="70" y="100" width="260" height="75" fill="#ecfdf5" rx="8"/>
+                  <text x="85" y="120" fill="var(--accent)" fontSize="11" fontWeight="700">1. PROBLEM I AM SOLVING</text>
+                  <text x="85" y="140" fill="#374151" fontSize="10">Athletes experiencing joint</text>
+                  <text x="85" y="155" fill="#374151" fontSize="10">pain and slow recovery</text>
+                </motion.g>
+
+                <motion.g initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
+                  <rect x="70" y="195" width="260" height="75" fill="#ecfdf5" rx="8"/>
+                  <text x="85" y="215" fill="var(--accent)" fontSize="11" fontWeight="700">2. MY SOLUTION</text>
+                  <text x="85" y="235" fill="#374151" fontSize="10">Portable ice bath that fits</text>
+                  <text x="85" y="250" fill="#374151" fontSize="10">in your home</text>
+                </motion.g>
+
+                <motion.g initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                  <rect x="70" y="290" width="260" height="75" fill="#ecfdf5" rx="8"/>
+                  <text x="85" y="310" fill="var(--accent)" fontSize="11" fontWeight="700">3. MY UNIQUE POSITIONING</text>
+                  <text x="85" y="330" fill="#374151" fontSize="10">Recovery tool for everyday</text>
+                  <text x="85" y="345" fill="#374151" fontSize="10">athletes (not just pros)</text>
+                </motion.g>
+
+                <motion.g initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
+                  <rect x="70" y="385" width="260" height="75" fill="#ecfdf5" rx="8"/>
+                  <text x="85" y="405" fill="var(--accent)" fontSize="11" fontWeight="700">4. PRIMARY MARKETING CHANNEL</text>
+                  <text x="85" y="425" fill="#374151" fontSize="10">TikTok + Instagram</text>
+                  <text x="85" y="440" fill="#374151" fontSize="10">(visual demonstration)</text>
+                </motion.g>
+
+                <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8, type: 'spring' }} cx="200" cy="485" r="12" fill="var(--accent)"/>
+                <motion.path initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} d="M 196 485 L 198 487 L 204 481" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        );
+      }
+    };
+
+    const StatsGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          {data.items.slice(0, 2).map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.slice(2).map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
+        <motion.img
+          src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png"
+          alt="Davie Fogarty"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 0.12, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="absolute right-0 bottom-0 pointer-events-none select-none z-0"
+          style={{ maxHeight: '65vh', width: 'auto', objectFit: 'contain' }}
+        />
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-2xl p-8 md:p-12 relative z-10">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-emerald-300 hover:bg-emerald-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-emerald-50 border-2 border-emerald-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now have Davie Fogarty's one-pager framework. Four questions. One page. Your entire business strategy locked in place.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </motion.div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'stats-grid': return <StatsGridSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          {gif.src && (
+            <motion.div animate={{ opacity: gif.opacity }} initial={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+              <video src={gif.src} autoPlay loop muted playsInline className="h-2/3 object-contain" style={{ [gif.side]: '10%' }} />
+            </motion.div>
+          )}
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+              {renderSlide(slides[currentSlide])}
             </motion.div>
           </AnimatePresence>
-
-          {/* Navigation */}
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white rounded-full px-6 py-4 shadow-2xl z-50">
-            <button
-              onClick={prevSlide}
-              disabled={currentSlide === 0}
-              className="w-10 h-10 rounded-full bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors flex items-center justify-center font-bold"
-            >
-              ←
-            </button>
-
-            <div className="flex gap-2">
-              {Array.from({ length: totalSlides }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className={`h-2 rounded-full transition-all ${
-                    idx === currentSlide ? 'w-8 bg-accent' : 'w-2 bg-gray-300'
-                  }`}
-                />
-              ))}
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center hover:border-emerald-300 disabled:opacity-30 disabled:cursor-not-allowed transition-all"><Icons.ArrowLeft /></button>
+              <div className="flex gap-1">
+                {slides.map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d8' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.ArrowRight /></button>
             </div>
-
-            <button
-              onClick={nextSlide}
-              disabled={currentSlide === totalSlides - 1 || (currentSlide === 5 && !showFeedback)}
-              className="w-10 h-10 rounded-full bg-accent text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-accent-dark transition-colors flex items-center justify-center font-bold"
-            >
-              →
-            </button>
-          </div>
-
-          {/* Progress indicator */}
-          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-            <motion.div
-              className="h-full bg-accent"
-              initial={{ width: '0%' }}
-              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
+          )}
         </div>
       );
     };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<OnePagerBlueprintLesson />);
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

@@ -3,708 +3,404 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Counter-Position Strategy | Quantum Scale</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.11.11/dist/framer-motion.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>The Counter-Position Strategy: When Giants Zig, You Zag | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#10b981',
-            'accent-dark': '#059669',
-            'accent-light': '#34d399',
-          },
-          fontFamily: {
-            'display': ['Fraunces', 'serif'],
-            'sans': ['Inter', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #FAFAFA;
-      overflow-x: hidden;
-    }
-    * {
-      box-sizing: border-box;
-    }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
-    const { motion, AnimatePresence } = Motion;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Entrepreneur images
-    const entrepreneurImages = {
-      'Davie Fogarty': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png',
-      'Alex Hormozi': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png'
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-counter-position',
+      title: 'The Counter-Position Strategy: When Giants Zig, You Zag',
+      description: 'Learn Davie Fogarty\'s framework for creating a battlefield where giants\' budgets become worthless - the strategy that built $850M+ in sales.',
+      accentColor: '#10b981',
+      duration: '7 min',
+      nextLesson: { id: 'biz-business-strategy', title: 'Business Strategy Fundamentals', teaser: 'Master the core principles of competitive strategy.' }
     };
 
     const celebrationGifs = [
-      'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
-      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-      'https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif',
-      'https://media.giphy.com/media/l4FGGafcOHmrlQxG0/giphy.gif',
-      'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
-      'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
-      'https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['What counter-positioning is and why it beats infinite budgets', 'How Dr. Squatch dominated Dove without outspending them', 'The 3-step framework to find your counter-position angle'] },
+      { type: 'hook', headline: 'You will never have the budget to beat Amazon at being Amazon. Or Dove at being Dove. The trap? Most entrepreneurs still try. They burn cash competing on the same battlefield, wondering why their CAC keeps climbing while giants spend 100x more without blinking.', subtext: 'Counter-positioning is different. It\'s the strategy that lets you win not by fighting harder, but by fighting on a completely different battlefield - one where the giant\'s advantages become fatal weaknesses. Davie Fogarty used it to build $850M+ in sales. Here\'s how it works.' },
+      { type: 'content', title: 'The Fatal Flaw in "Compete Harder"', body: 'Most businesses die trying to outspend the market leader. Bigger ad budgets. Better product features. Faster shipping. Lower prices.\n\nThe problem? You\'re competing on their battlefield. They have infinite money, decades of brand equity, and economies of scale you\'ll never match.\n\nYou can\'t beat Amazon at logistics. You can\'t beat Nike at athlete endorsements. You can\'t beat Dove at mass-market soap positioning.\n\nEvery dollar you spend competing directly is a dollar wasted. You\'re fighting a war you\'ve already lost before the first shot was fired.' },
+      { type: 'content', title: 'Counter-Positioning: The David vs Goliath Strategy', body: 'Counter-positioning means doing the exact opposite of what the market leader does. Not just different - diametrically opposed.\n\nThe genius? Giants can\'t respond without destroying their entire business model. Dove can\'t become "rugged and masculine" without alienating their core audience. Amazon can\'t become "boutique and curated" without killing their everything-store positioning.\n\nWhen you counter-position correctly, you create customers who are actively repelled by the giant\'s marketing. They\'re not just choosing you - they\'re running away from them.\n\nThis is how Dr. Squatch dominated a category owned by billion-dollar brands. They made Dove\'s strength their fatal weakness.' },
+      { type: 'mockup', title: 'The Counter-Position Battlefield', description: 'Dove went modern, caring, gentle, and urban. Dr. Squatch went natural, tough, rugged, and wilderness. Customers who wanted one were repelled by the other. Zero overlap. Zero competition.', mockupType: 'counter-position-diagram' },
+      { type: 'stats-grid', title: 'Why Counter-Positioning Wins', items: [
+        { value: '80%', label: 'Lower CAC', description: 'No bidding war with giants' },
+        { value: '3x', label: 'Higher LTV', description: 'Tribal loyalty vs commodity' },
+        { value: '0%', label: 'Direct Competition', description: 'Different battlefield entirely' },
+        { value: '5x', label: 'Word-of-Mouth', description: 'Identity-based sharing' }
+      ]},
+      { type: 'content', title: 'The Dr. Squatch Case Study', body: 'Dove spent hundreds of millions positioning soap as modern, caring, and gentle. Their entire brand identity was built on sensitivity and urban sophistication.\n\nDr. Squatch did the exact opposite. Natural ingredients. Tough masculinity. Rugged wilderness imagery. "Soap for men who aren\'t afraid of dirt."\n\nResult? Men who felt emasculated by Dove\'s marketing became fiercely loyal Dr. Squatch customers. The more Dove leaned into caring and gentle, the more they pushed customers toward Dr. Squatch.\n\nDove couldn\'t respond. Changing their positioning would alienate their massive existing customer base. They were trapped. Dr. Squatch owned a niche so specific that the giant\'s budget became worthless.' },
+      { type: 'quote', data: {
+        quote: 'You will never have the budget to outspend the giants. But you can always out-position them.',
+        context: 'Davie Fogarty - $850M+ in sales from counter-positioning strategy',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png'
+      }},
+      { type: 'content', title: 'How to Find Your Counter-Position', body: 'Step 1: Identify the giant\'s core positioning. What do they stand for? Modern? Cheap? Fast? Convenient?\n\nStep 2: List the opposite of every positioning pillar. If they\'re modern, you\'re timeless. If they\'re cheap, you\'re premium. If they\'re fast, you\'re thoughtful.\n\nStep 3: Find the customers actively repelled by the giant. Who hates what they stand for? Who feels excluded by their marketing?\n\nStep 4: Build your entire brand around attracting those customers. Make the giant\'s strength your enemy. Make their message push people toward you.\n\nThe goal: Create a niche so specific that customers self-select. They either want you desperately or don\'t want you at all. No middle ground. No competition.' },
+      { type: 'mockup', title: 'The Counter-Position Framework', description: 'When giants zig, you zag. Their advantages become your opportunity. Their positioning pushes customers directly into your arms.', mockupType: 'framework-diagram' },
+      { type: 'quiz', question: 'What makes counter-positioning so powerful against giants?', options: ['It lets you build a better product than theirs', 'Giants can\'t respond without destroying their own business model', 'It requires less marketing budget overall', 'It works best in established markets with no innovation'], correctIndex: 1, feedback: { correct: 'Exactly right! The genius of counter-positioning is that giants are trapped. Dove can\'t become rugged and masculine without alienating their core audience. Amazon can\'t become boutique without killing their everything-store model. When you counter-position correctly, you create a battlefield where their size becomes a liability. They\'re locked into their positioning by billions in brand equity and millions of existing customers. You\'re free to own the opposite.', incorrect: 'Not quite. Counter-positioning works because giants CAN\'T respond without destroying their business. Dove spent billions on "caring and gentle." They can\'t suddenly become "tough and rugged" without alienating their entire customer base. Their positioning is locked in by decades of branding. When you take the opposite position, you attract customers actively repelled by their message - and they can do nothing about it. That\'s the power.' }},
+      { type: 'completion', sources: [{ name: 'Davie Fogarty - The Oodie', url: 'https://www.theoodie.com/' }] }
     ];
 
-    function LessonApp() {
-      const [currentSlide, setCurrentSlide] = useState(0);
-      const [direction, setDirection] = useState(1);
-      const [selectedAnswer, setSelectedAnswer] = useState(null);
-      const [showQuizResult, setShowQuizResult] = useState(false);
-      const [userName, setUserName] = useState('Builder');
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    };
 
-      useEffect(() => {
-        const script = document.createElement('script');
-        script.src = '/greetings.js';
-        script.async = true;
-        script.onload = () => {
-          if (window.getGreeting) {
-            const greeting = window.getGreeting();
-            if (greeting.userName) {
-              setUserName(greeting.userName);
-            }
-          }
-        };
-        document.body.appendChild(script);
-        return () => document.body.removeChild(script);
-      }, []);
-
-      const totalSlides = 7;
-
-      const nextSlide = () => {
-        if (currentSlide < totalSlides - 1) {
-          setDirection(1);
-          setCurrentSlide(prev => prev + 1);
-          setSelectedAnswer(null);
-          setShowQuizResult(false);
-        }
-      };
-
-      const prevSlide = () => {
-        if (currentSlide > 0) {
-          setDirection(-1);
-          setCurrentSlide(prev => prev - 1);
-          setSelectedAnswer(null);
-          setShowQuizResult(false);
-        }
-      };
-
-      const handleAnswerSelect = (answerIndex) => {
-        setSelectedAnswer(answerIndex);
-        setShowQuizResult(true);
-        if (answerIndex === 2) {
-          setTimeout(nextSlide, 2500);
-        }
-      };
-
-      const slideVariants = {
-        enter: (direction) => ({
-          x: direction > 0 ? '100%' : '-100%',
-          opacity: 0
-        }),
-        center: {
-          x: 0,
-          opacity: 1
-        },
-        exit: (direction) => ({
-          x: direction > 0 ? '-100%' : '100%',
-          opacity: 0
-        })
-      };
-
-      const DoveSquatchComparison = () => (
-        <svg viewBox="0 0 800 400" className="w-full max-w-4xl mx-auto">
-          {/* Dove Side */}
-          <g>
-            <rect x="20" y="20" width="360" height="360" rx="16" fill="#E0F2FE" stroke="#0EA5E9" strokeWidth="2"/>
-            <text x="200" y="60" fontSize="28" fontWeight="700" fill="#0C4A6E" textAnchor="middle" fontFamily="Inter">
-              DOVE
-            </text>
-            <text x="200" y="95" fontSize="14" fill="#0C4A6E" textAnchor="middle" fontFamily="Inter">
-              The Goliath
-            </text>
-
-            {/* Modern icon */}
-            <circle cx="100" cy="150" r="30" fill="#BFDBFE"/>
-            <text x="100" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Modern</text>
-
-            {/* Caring icon */}
-            <circle cx="200" cy="150" r="30" fill="#BFDBFE"/>
-            <path d="M 200 140 Q 190 130, 200 125 Q 210 130, 200 140" fill="#0C4A6E"/>
-            <text x="200" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Caring</text>
-
-            {/* Gentle icon */}
-            <circle cx="300" cy="150" r="30" fill="#BFDBFE"/>
-            <text x="300" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Gentle</text>
-
-            {/* Urban icon */}
-            <rect x="85" y="240" width="30" height="40" fill="#BFDBFE"/>
-            <rect x="125" y="230" width="30" height="50" fill="#BFDBFE"/>
-            <rect x="165" y="220" width="30" height="60" fill="#BFDBFE"/>
-            <text x="135" y="300" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Urban</text>
-
-            <text x="200" y="340" fontSize="13" fill="#0C4A6E" textAnchor="middle" fontStyle="italic">
-              "Care makes a man stronger"
-            </text>
-          </g>
-
-          {/* VS Divider */}
-          <line x1="400" y1="60" x2="400" y2="340" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="8,4"/>
-          <circle cx="400" cy="200" r="30" fill="#FAFAFA" stroke="#9CA3AF" strokeWidth="2"/>
-          <text x="400" y="210" fontSize="20" fontWeight="700" fill="#1F2937" textAnchor="middle">VS</text>
-
-          {/* Dr. Squatch Side */}
-          <g>
-            <rect x="420" y="20" width="360" height="360" rx="16" fill="#ECFDF5" stroke="#10b981" strokeWidth="2"/>
-            <text x="600" y="60" fontSize="28" fontWeight="700" fill="#065F46" textAnchor="middle" fontFamily="Inter">
-              DR. SQUATCH
-            </text>
-            <text x="600" y="95" fontSize="14" fill="#065F46" textAnchor="middle" fontFamily="Inter">
-              The Counter-Position
-            </text>
-
-            {/* Natural icon */}
-            <circle cx="500" cy="150" r="30" fill="#A7F3D0"/>
-            <path d="M 500 135 L 505 145 L 500 160 L 495 145 Z" fill="#065F46"/>
-            <text x="500" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Natural</text>
-
-            {/* Tough icon */}
-            <circle cx="600" cy="150" r="30" fill="#A7F3D0"/>
-            <rect x="590" y="140" width="20" height="20" fill="#065F46"/>
-            <text x="600" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Tough</text>
-
-            {/* Rugged icon */}
-            <circle cx="700" cy="150" r="30" fill="#A7F3D0"/>
-            <text x="700" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Rugged</text>
-
-            {/* Wilderness icon */}
-            <polygon points="530,260 550,230 570,260" fill="#A7F3D0"/>
-            <polygon points="560,270 585,235 610,270" fill="#A7F3D0"/>
-            <polygon points="580,275 605,245 630,275" fill="#A7F3D0"/>
-            <text x="580" y="300" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Wilderness</text>
-
-            <text x="600" y="340" fontSize="13" fill="#065F46" textAnchor="middle" fontStyle="italic">
-              "We make soap for a tough man"
-            </text>
-          </g>
-        </svg>
-      );
-
-      const slides = [
-        // Slide 1: Welcome
-        <motion.div
-          key="slide-0"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="max-w-3xl text-center">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <h1 className="font-display text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-                The Counter-Position Strategy
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed">
-                Create a battlefield where the giants' money is worthless.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">You'll Learn:</h2>
-              <div className="space-y-4 text-left">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">1</span>
-                  </div>
-                  <p className="text-lg text-gray-700">How Dr. Squatch beat Dove without a bigger budget</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">2</span>
-                  </div>
-                  <p className="text-lg text-gray-700">Why fighting harder keeps you broke</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-sm font-bold">3</span>
-                  </div>
-                  <p className="text-lg text-gray-700">The framework to acquire customers for pennies</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.p
-              className="text-gray-500 mt-8 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              3 minutes • Strategy
-            </motion.p>
-          </div>
-        </motion.div>,
-
-        // Slide 2: Hook
-        <motion.div
-          key="slide-1"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-4xl">
-            <motion.div
-              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 md:p-16 shadow-2xl text-white"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.div
-                className="text-6xl mb-8"
-                animate={{ rotate: [0, -5, 5, -5, 0] }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                🪨
-              </motion.div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold mb-8 leading-tight">
-                David didn't beat Goliath by fighting harder.
-              </h2>
-              <p className="text-2xl md:text-3xl text-gray-300 leading-relaxed">
-                He fought <span className="text-accent-light font-bold">differently</span>.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p className="text-xl text-gray-700 leading-relaxed">
-                <span className="font-bold text-gray-900">The trap:</span> You see a giant dominating your market.
-                You think, "I need more ad spend. Better product. Bigger team."
-              </p>
-              <p className="text-xl text-gray-700 mt-6 leading-relaxed">
-                <span className="font-bold text-accent">The truth:</span> You'll never outspend them.
-                But you can always <span className="font-bold">out-position</span> them.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 3: The Principle
-        <motion.div
-          key="slide-2"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12 relative"
-        >
-          {/* Entrepreneur image - positioned on right side, behind text */}
-          <motion.img
-            src={entrepreneurImages['Davie Fogarty']}
-            alt="Davie Fogarty"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 0.15, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="absolute z-0 pointer-events-none select-none"
-            style={{
-              right: '5%',
-              bottom: '5%',
-              maxHeight: '60vh',
-              width: 'auto',
-              objectFit: 'contain'
-            }}
-          />
-          <div className="max-w-4xl w-full relative z-10">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Counter-Position Principle
-            </motion.h2>
-
-            <motion.div
-              className="bg-white rounded-3xl p-10 shadow-xl border-2 border-gray-100 mb-8"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 mb-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-3xl">❌</span>
-                  <h3 className="text-2xl font-bold text-red-900">DON'T Try to Outspend</h3>
-                </div>
-                <p className="text-lg text-red-800 leading-relaxed">
-                  Competing on the same battlefield = burning money against infinite budgets
-                </p>
-              </div>
-
-              <div className="bg-green-50 border-2 border-accent rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-3xl">✓</span>
-                  <h3 className="text-2xl font-bold text-green-900">DO Out-Position</h3>
-                </div>
-                <p className="text-lg text-green-800 leading-relaxed">
-                  Create a new battlefield where their advantages become <span className="font-bold">weaknesses</span>
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-r from-accent to-accent-dark rounded-2xl p-8 text-white shadow-xl"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p className="text-xl md:text-2xl font-bold text-center leading-relaxed">
-                "You will never have the budget to outspend the giants. But you can always out-position them."
-              </p>
-              <p className="text-center mt-4 text-accent-light font-semibold">
-                — Davie Fogarty ($850M+ in sales)
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 4: The Comparison
-        <motion.div
-          key="slide-3"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-6xl w-full">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              Case Study: Dr. Squatch vs Dove
-            </motion.h2>
-
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <DoveSquatchComparison />
-            </motion.div>
-
-            <motion.div
-              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <p className="text-xl text-gray-700 leading-relaxed text-center">
-                Dr. Squatch didn't try to beat Dove at their own game.
-              </p>
-              <p className="text-2xl font-bold text-accent mt-4 text-center">
-                They changed the game entirely.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 5: The Result
-        <motion.div
-          key="slide-4"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-4xl">
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              The Result
-            </motion.h2>
-
-            <motion.div
-              className="bg-gradient-to-br from-accent to-accent-dark rounded-3xl p-12 shadow-2xl text-white mb-8"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <div className="text-center mb-8">
-                <div className="text-6xl mb-4">🎯</div>
-                <h3 className="text-3xl font-bold mb-4">Highly-Defined Niche</h3>
-              </div>
-              <p className="text-xl leading-relaxed text-center mb-8">
-                Customers who were <span className="font-bold text-black bg-white px-3 py-1 rounded">ACTIVELY REPELLED</span> by Dove's marketing
-              </p>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <p className="text-2xl font-bold text-center">
-                  = Incredibly cheap to acquire
-                </p>
-                <p className="text-lg text-center mt-3 text-accent-light">
-                  (Low CAC, high LTV)
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="grid md:grid-cols-3 gap-6"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-                <div className="text-3xl mb-3">💰</div>
-                <h4 className="font-bold text-gray-900 mb-2">Low CAC</h4>
-                <p className="text-sm text-gray-600">No bidding war with giants</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-                <div className="text-3xl mb-3">❤️</div>
-                <h4 className="font-bold text-gray-900 mb-2">High Loyalty</h4>
-                <p className="text-sm text-gray-600">You're speaking their language</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-                <div className="text-3xl mb-3">🚀</div>
-                <h4 className="font-bold text-gray-900 mb-2">Fast Growth</h4>
-                <p className="text-sm text-gray-600">Word-of-mouth explodes</p>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>,
-
-        // Slide 6: Quiz
-        <motion.div
-          key="slide-5"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-3xl w-full">
-            <motion.h2
-              className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              How did Dr. Squatch beat Dove?
-            </motion.h2>
-
-            <motion.div
-              className="space-y-4"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              {[
-                { text: 'A) Bigger ad budget', correct: false },
-                { text: 'B) Better product quality', correct: false },
-                { text: 'C) Different battlefield (Counter-Position)', correct: true }
-              ].map((answer, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  className={`w-full p-6 rounded-xl text-left text-lg font-semibold transition-all ${
-                    selectedAnswer === null
-                      ? 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-accent'
-                      : selectedAnswer === index
-                      ? answer.correct
-                        ? 'bg-green-100 border-2 border-green-500'
-                        : 'bg-red-100 border-2 border-red-500'
-                      : 'bg-gray-100 border-2 border-gray-200 opacity-50'
-                  }`}
-                  disabled={selectedAnswer !== null}
-                  whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
-                  whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
-                >
-                  {answer.text}
-                </motion.button>
-              ))}
-            </motion.div>
-
-            <AnimatePresence>
-              {showQuizResult && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="mt-8"
-                >
-                  {selectedAnswer === 2 ? (
-                    <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8">
-                      <div className="flex items-center gap-4 mb-4">
-                        <img src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} alt="Celebration" className="w-20 h-20 rounded-lg" />
-                        <div>
-                          <h3 className="text-2xl font-bold text-green-900 mb-2">Exactly right!</h3>
-                          <p className="text-green-800 text-lg">
-                            You understand the power of positioning. Giants can't follow you without abandoning their identity.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8">
-                      <div className="flex items-center gap-4 mb-4">
-                        <img src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} alt="Thinking" className="w-20 h-20 rounded-lg" />
-                        <div>
-                          <h3 className="text-2xl font-bold text-blue-900 mb-2">Not quite!</h3>
-                          <p className="text-blue-800 text-lg">
-                            The answer is C. Dr. Squatch won by creating a <span className="font-bold">different battlefield</span> where Dove's advantages became weaknesses.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>,
-
-        // Slide 7: Completion
-        <motion.div
-          key="slide-6"
-          className="min-h-screen flex items-center justify-center p-6 md:p-12"
-        >
-          <div className="max-w-3xl text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="text-8xl mb-8"
-            >
-              🎯
-            </motion.div>
-
-            <motion.h2
-              className="font-display text-4xl md:text-6xl font-bold text-gray-900 mb-6"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              You've Got It, {userName}!
-            </motion.h2>
-
-            <motion.p
-              className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              You now understand how to create a battlefield where the giants' money is worthless.
-            </motion.p>
-
-            <motion.div
-              className="bg-white rounded-2xl p-8 shadow-lg mb-8"
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Takeaway:</h3>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Don't try to outspend the giants. <span className="font-bold text-accent">Out-position them.</span> Create a niche so specific that customers are actively repelled by the competition's marketing.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-            >
-              <a
-                href="/dashboard"
-                className="inline-block bg-accent hover:bg-accent-dark text-white font-bold py-4 px-10 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl"
-              >
-                Back to Learning Center
-              </a>
-            </motion.div>
-          </div>
-        </motion.div>
-      ];
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
-        <div className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={currentSlide}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              {slides[currentSlide]}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation */}
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-            <div className="bg-white rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
-              <button
-                onClick={prevSlide}
-                disabled={currentSlide === 0}
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-gray-700"
-              >
-                ←
-              </button>
-
-              <div className="flex gap-2">
-                {Array.from({ length: totalSlides }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={`h-2 rounded-full transition-all ${
-                      index === currentSlide
-                        ? 'w-8 bg-accent'
-                        : 'w-2 bg-gray-300'
-                    }`}
-                  />
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
                 ))}
-              </div>
-
-              <button
-                onClick={nextSlide}
-                disabled={currentSlide === totalSlides - 1}
-                className="w-10 h-10 rounded-full bg-accent hover:bg-accent-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-white"
-              >
-                →
-              </button>
-            </div>
-          </div>
-
-          {/* Progress indicator */}
-          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-            <motion.div
-              className="h-full bg-accent"
-              initial={{ width: 0 }}
-              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
-              transition={{ duration: 0.3 }}
-            />
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
-    }
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'counter-position-diagram') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full grid md:grid-cols-2 gap-8">
+              <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-blue-900 mb-6 text-center">DOVE</h3>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-blue-900">Modern</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-blue-900">Caring</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-blue-900">Gentle</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-blue-900">Urban</p>
+                  </div>
+                </div>
+                <p className="text-xs text-blue-700 italic text-center mt-6">"Care makes a man stronger"</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-500 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-green-900 mb-6 text-center">DR. SQUATCH</h3>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-green-900">Natural</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-green-900">Tough</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-green-900">Rugged</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-sm font-semibold text-green-900">Wilderness</p>
+                  </div>
+                </div>
+                <p className="text-xs text-green-700 italic text-center mt-6">"Soap for men who work with their hands"</p>
+              </motion.div>
+            </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-8 text-center">
+              <div className="inline-block bg-neutral-900 text-white px-6 py-3 rounded-xl">
+                <p className="text-sm font-semibold">Zero Overlap = Zero Competition</p>
+              </div>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (data.mockupType === 'framework-diagram') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="relative w-full max-w-2xl mx-auto">
+              <svg viewBox="0 0 400 300" className="w-full">
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                  <rect x="20" y="80" width="140" height="140" rx="12" fill="#DBEAFE" stroke="#3B82F6" strokeWidth="3"/>
+                  <text x="90" y="110" fontSize="14" fontWeight="700" fill="#1E3A8A" textAnchor="middle">GIANT</text>
+                  <text x="90" y="135" fontSize="10" fill="#1E40AF" textAnchor="middle">Massive Budget</text>
+                  <text x="90" y="155" fontSize="10" fill="#1E40AF" textAnchor="middle">Brand Equity</text>
+                  <text x="90" y="175" fontSize="10" fill="#1E40AF" textAnchor="middle">Market Share</text>
+                  <text x="90" y="195" fontSize="10" fill="#1E40AF" textAnchor="middle">Locked Position</text>
+                </motion.g>
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                  <rect x="240" y="80" width="140" height="140" rx="12" fill="#D1FAE5" stroke="#10B981" strokeWidth="3"/>
+                  <text x="310" y="110" fontSize="14" fontWeight="700" fill="#065F46" textAnchor="middle">YOU</text>
+                  <text x="310" y="135" fontSize="10" fill="#047857" textAnchor="middle">Small Budget</text>
+                  <text x="310" y="155" fontSize="10" fill="#047857" textAnchor="middle">No Brand Yet</text>
+                  <text x="310" y="175" fontSize="10" fill="#047857" textAnchor="middle">Zero Share</text>
+                  <text x="310" y="195" fontSize="10" fill="#047857" textAnchor="middle">Free to Pivot</text>
+                </motion.g>
+                <motion.line initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.8 }} x1="90" y1="230" x2="90" y2="270" stroke="#3B82F6" strokeWidth="2" />
+                <motion.polygon initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} points="90,270 85,260 95,260" fill="#3B82F6" />
+                <motion.line initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.8 }} x1="310" y1="230" x2="310" y2="70" stroke="#10B981" strokeWidth="2" />
+                <motion.polygon initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} points="310,70 305,80 315,80" fill="#10B981" />
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} x="200" y="25" fontSize="12" fontWeight="700" fill="#000000" textAnchor="middle">When Giants Zig</motion.text>
+                <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} x="200" y="45" fontSize="12" fontWeight="700" fill="#10B981" textAnchor="middle">You Zag</motion.text>
+              </svg>
+            </div>
+          </div>
+        );
+      }
+    };
+
+    const StatsGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-500 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
+        {data.data.image && (
+          <motion.img
+            src={data.data.image}
+            alt="Davie Fogarty"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 0.12, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="absolute right-0 bottom-0 h-3/4 object-contain pointer-events-none select-none z-0"
+          />
+        )}
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-500 rounded-2xl p-8 md:p-12 relative z-10">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-green-300 hover:bg-green-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-blue-50 border-2 border-blue-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand how to create a battlefield where giants' budgets become worthless through strategic counter-positioning.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'stats-grid': return <StatsGridSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          {gif.src && (
+            <motion.div animate={{ opacity: gif.opacity }} initial={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+              <video src={gif.src} autoPlay loop muted playsInline className="h-2/3 object-contain" style={{ [gif.side]: '10%' }} />
+            </motion.div>
+          )}
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center hover:border-green-300 disabled:opacity-30 disabled:cursor-not-allowed transition-all"><Icons.ArrowLeft /></button>
+              <div className="flex gap-1">
+                {slides.map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d8' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<LessonApp />);
