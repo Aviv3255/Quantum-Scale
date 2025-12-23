@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Creative is the New Targeting | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -12,811 +12,461 @@
   <script src="../shared/greetings.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #D4A017;
-      --accent-light: #F4D03F;
-    }
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #FAFAFA; overflow: hidden; }
-    .font-display { font-family: 'Fraunces', Georgia, serif; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: transparent; overflow: hidden; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', Georgia, serif; }
+    ::selection { background: var(--accent); color: white; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .slide-title { font-family: 'Fraunces', Georgia, serif; font-weight: 800; }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { useState, useEffect, useMemo, useCallback } = React;
-    const { motion, AnimatePresence } = Motion;
+    const { useState, useEffect, useMemo, useCallback, useRef } = React;
+    const { motion, AnimatePresence } = window.Motion;
 
-    // ===========================================
-    // LESSON CONFIGURATION
-    // ===========================================
     const LESSON_CONFIG = {
       id: 'biz-creative-targeting',
       title: 'Creative is the New Targeting',
-      category: 'Business Strategy',
-      categoryIcon: '🎨',
-      accent: '#D4A017',
-      nextLesson: {
-        id: 'biz-infinite-money-loop',
-        title: 'The Infinite Money Loop',
-        teaser: 'Discover the flywheel that turns $1 into $10 repeatedly'
-      }
+      accentColor: '#D4A017',
+      duration: '7 min',
+      nextLesson: { id: 'biz-infinite-money-loop', title: 'The Infinite Money Loop', teaser: 'Discover the flywheel that turns $1 into $10 repeatedly.' }
     };
 
-    // ===========================================
-    // CELEBRATION & EMPATHY GIFS
-    // ===========================================
     const celebrationGifs = [
-      'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjd0Z2V5OHRxcWx1NHBqbXNudmNjYnVtMjFtOXdmOXRrY3N2dGx6dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/artj92V8o75VPL7AeQ/giphy.gif',
-      'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWVqYW0ybG5hZG1hMDRlcXNlcmhraWZhOXRzd2RhdXpuaHB6cXphYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUPGGDNsLvqsBOhuU0/giphy.gif',
-      'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHBjOGRmMGJtaGdsYjNvcWd4NG1hcng5aDRlcXRrYnZrd2VjcjcwcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6fJ1BM7R2EBRDnxK/giphy.gif',
-      'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDlqaGR5d2szbWZ6ZjdyZHczNGYyamhzajd4cWJnOXpsOWR3YXg1ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT0xezQGU5xCDJuCPe/giphy.gif',
-      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-      'https://media.giphy.com/media/3oz8xRF0v9WMAUVLNK/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_giving_a_double_thumbs_up_huge_grin_leaning_sl_14c9727f-6fe9-43d1-9d6d-59fc30831817_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_mini_celebration_fist_bump_to_the_sky__ca048b03-4638-44da-b995-bffdb6e16c60_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_giving_an_encouraging_nod_with_a_slight_smile__9399498c-7bb5-4e58-9541-09b5207832f1_2.mp4'
     ];
-
     const empathyGifs = [
-      'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTBjNXUwbjN3M2tkdXM1YWM3eHQ1dzZyYXV3NTUwMWRoNGNqZXpjeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xmxGoENM1V81q/giphy.gif',
-      'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3N4czR6cWtjcnJicnNnY2c2cHVncWtxdGR2MWpxdXY3YjZrM3RtYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKwmnDgQb5jemjK/giphy.gif',
-      'https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.gif',
-      'https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shrugging_casually_with_a_knowing_smile_Its_o_e1c91bfc-ed8e-4d00-b5fd-adaa5b52c53b_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_so-so_hand_gesture_with_encouraging_ex_e8d19ac3-3d26-4442-9c4f-2b6eb0e0e7ee_2.mp4'
     ];
+    const getRandomGif = (gifs) => gifs[Math.floor(Math.random() * gifs.length)];
 
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    // ===========================================
-    // ICONS
-    // ===========================================
     const Icons = {
-      ChevronLeft: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>,
-      ChevronRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
-      Clock: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
-      Sparkles: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
-      Target: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Layers: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
-      BarChart: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
-      Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Repeat: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>,
-      ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      Clock: () => (<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeWidth="2" d="M12 6v6l4 2"/></svg>),
+      ChevronLeft: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>),
+      ChevronRight: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>),
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"/></svg>),
+      X: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>),
+      Sparkles: () => (<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>),
+      Layers: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7zM4 12h16M12 4v16"/></svg>),
+      BarChart: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>),
+      Palette: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>),
+      Target: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><circle cx="12" cy="12" r="6" strokeWidth="2"/><circle cx="12" cy="12" r="2" strokeWidth="2"/></svg>),
+      Zap: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+      Repeat: () => (<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>)
     };
 
-    // ===========================================
-    // SLIDE DATA (MAX 70 WORDS PER SLIDE)
-    // ===========================================
     const slides = [
-      {
-        type: 'welcome',
-        goals: [
-          'Why creative volume beats audience targeting',
-          'The 3 pillars: Volume, Diversity, Measurement',
-          'How to feed the Meta AI beast'
-        ]
-      },
-      {
-        type: 'hook',
-        headline: 'Targeting is dead.',
-        subtext: 'Meta\'s AI knows who to show your ads to better than you ever could. Your biggest lever isn\'t WHO you target. It\'s WHAT they see.'
-      },
-      {
-        type: 'content',
-        title: 'The Old Playbook is Gone',
-        body: 'Hyper-targeted audiences. Interest stacking. Custom lookalikes. All outdated. Meta\'s Andromeda AI handles targeting now. Your job changed: give the AI options. 100 ads? It finds winners. 5 ads? You\'re gambling. The bottleneck shifted from finding customers to producing creative.'
-      },
-      {
-        type: 'visual',
-        title: 'The Creative Triangle',
-        subtitle: 'Master all three to win at scale',
-        svg: `<svg viewBox="0 0 400 350" class="w-full max-w-md mx-auto">
-          <defs>
-            <linearGradient id="volumeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.2" />
-              <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:0.05" />
-            </linearGradient>
-            <linearGradient id="diversityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.2" />
-              <stop offset="100%" style="stop-color:#10B981;stop-opacity:0.05" />
-            </linearGradient>
-            <linearGradient id="measureGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:0.2" />
-              <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0.05" />
-            </linearGradient>
-          </defs>
-          <path d="M200 40 L350 280 L50 280 Z" fill="none" stroke="#D4A017" stroke-width="2" stroke-dasharray="8,4"/>
-          <circle cx="200" cy="40" r="45" fill="url(#volumeGrad)" stroke="#3B82F6" stroke-width="2"/>
-          <text x="200" y="35" text-anchor="middle" fill="#3B82F6" font-weight="700" font-size="14">VOLUME</text>
-          <text x="200" y="52" text-anchor="middle" fill="#6B7280" font-size="10">100s of ads</text>
-          <circle cx="50" cy="280" r="45" fill="url(#diversityGrad)" stroke="#10B981" stroke-width="2"/>
-          <text x="50" y="275" text-anchor="middle" fill="#10B981" font-weight="700" font-size="14">DIVERSITY</text>
-          <text x="50" y="292" text-anchor="middle" fill="#6B7280" font-size="10">Different angles</text>
-          <circle cx="350" cy="280" r="45" fill="url(#measureGrad)" stroke="#F59E0B" stroke-width="2"/>
-          <text x="350" y="275" text-anchor="middle" fill="#F59E0B" font-weight="700" font-size="14">MEASURE</text>
-          <text x="350" y="292" text-anchor="middle" fill="#6B7280" font-size="10">Track what works</text>
-          <circle cx="200" cy="190" r="35" fill="#D4A017" fill-opacity="0.15" stroke="#D4A017" stroke-width="2"/>
-          <text x="200" y="186" text-anchor="middle" fill="#1F2937" font-weight="700" font-size="12">WINNING</text>
-          <text x="200" y="200" text-anchor="middle" fill="#1F2937" font-weight="700" font-size="12">SYSTEM</text>
-        </svg>`
-      },
-      {
-        type: 'cards',
-        title: 'The Three Pillars',
-        cards: [
-          {
-            icon: 'Layers',
-            title: 'Volume',
-            description: 'Launch hundreds of ads per week. One winner might max at $100K/day. Need more winners to spend more.',
-            color: '#3B82F6'
-          },
-          {
-            icon: 'Sparkles',
-            title: 'Diversity',
-            description: 'A new background color isn\'t enough. Different formats, angles, hooks, talent. Radically different.',
-            color: '#10B981'
-          },
-          {
-            icon: 'BarChart',
-            title: 'Measurement',
-            description: 'Track concepts, hooks, edits with MTA tools. Data drives decisions. Gut instinct gets expensive.',
-            color: '#F59E0B'
-          }
-        ]
-      },
-      {
-        type: 'example',
-        title: 'Old Way vs New Way',
-        before: {
-          label: 'Targeting Focus',
-          items: ['Hyper-targeted audiences', 'Interest stacking', 'Custom lookalikes', '5-10 ads per month']
-        },
-        after: {
-          label: 'Creative Focus',
-          items: ['Broad targeting', 'Volume production', 'Diverse creative', '100+ ads per week']
-        }
-      },
-      {
-        type: 'content',
-        title: 'Volume: The Math',
-        body: 'One winning ad maxes out at ~$100K/day spend. To spend $1M/day? You need 10 winners running. To spend $10M/day? 100 winners. You can\'t find winners without volume. The AI needs options to test. Feed the beast or starve.'
-      },
-      {
-        type: 'content',
-        title: 'Diversity: What It Means',
-        body: 'Tweaking a background isn\'t diversity. You need: UGC vs studio production, pain point A vs pain point B, question hooks vs statement hooks, "pretty people" vs "real people". Radically different creative = more signals for the AI to test.'
-      },
-      {
-        type: 'visual',
-        title: 'The Creative Flywheel',
-        subtitle: 'Never stop spinning',
-        svg: `<svg viewBox="0 0 400 300" class="w-full max-w-md mx-auto">
-          <defs>
-            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-              <polygon points="0 0, 10 3.5, 0 7" fill="#D4A017"/>
-            </marker>
-          </defs>
-          <circle cx="200" cy="150" r="90" fill="none" stroke="#D4A017" stroke-width="2" stroke-dasharray="8,4"/>
-          <circle cx="200" cy="60" r="35" fill="#3B82F6" fill-opacity="0.15" stroke="#3B82F6" stroke-width="2"/>
-          <text x="200" y="57" text-anchor="middle" fill="#3B82F6" font-weight="700" font-size="12">LAUNCH</text>
-          <text x="200" y="70" text-anchor="middle" fill="#6B7280" font-size="9">100s of ads</text>
-          <circle cx="290" cy="150" r="35" fill="#10B981" fill-opacity="0.15" stroke="#10B981" stroke-width="2"/>
-          <text x="290" y="147" text-anchor="middle" fill="#10B981" font-weight="700" font-size="12">MEASURE</text>
-          <text x="290" y="160" text-anchor="middle" fill="#6B7280" font-size="9">MTA tracking</text>
-          <circle cx="200" cy="240" r="35" fill="#F59E0B" fill-opacity="0.15" stroke="#F59E0B" stroke-width="2"/>
-          <text x="200" y="237" text-anchor="middle" fill="#F59E0B" font-weight="700" font-size="12">LEARN</text>
-          <text x="200" y="250" text-anchor="middle" fill="#6B7280" font-size="9">Find patterns</text>
-          <circle cx="110" cy="150" r="35" fill="#EF4444" fill-opacity="0.15" stroke="#EF4444" stroke-width="2"/>
-          <text x="110" y="147" text-anchor="middle" fill="#EF4444" font-weight="700" font-size="12">ITERATE</text>
-          <text x="110" y="160" text-anchor="middle" fill="#6B7280" font-size="9">More winners</text>
-          <path d="M235 75 Q260 100 270 115" fill="none" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowhead)"/>
-          <path d="M275 185 Q260 210 235 225" fill="none" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowhead)"/>
-          <path d="M165 225 Q140 200 125 185" fill="none" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowhead)"/>
-          <path d="M125 115 Q140 90 165 75" fill="none" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowhead)"/>
-        </svg>`
-      },
-      {
-        type: 'content',
-        title: 'Naming Convention System',
-        body: 'Every ad needs a naming convention. Format: [Product]_[Angle]_[Hook]_[Format]_[Version]. Example: Skincare_AntiAging_Question_UGC_v1. Now you can see: "Question hooks outperform stats by 30%" or "UGC beats studio for this product." Data drives better creative.'
-      },
-      {
-        type: 'quiz',
-        question: 'What is the biggest lever in Meta ads at scale?',
-        options: [
-          'Hyper-targeted audience segmentation',
-          'Creative volume and diversity',
-          'Increasing daily ad spend',
-          'Retargeting campaigns'
-        ],
-        correctIndex: 1,
-        correctFeedback: 'Exactly! Creative volume and diversity is the biggest lever. The AI needs OPTIONS to find winners.',
-        incorrectFeedback: 'Not quite. Andromeda is so advanced that creative matters more than targeting. Give the AI more options.'
-      },
-      {
-        type: 'completion',
-        title: 'You Now Have The System',
-        summary: 'Creative volume and diversity is the biggest lever. Launch hundreds of ads, track what works, iterate. The AI handles targeting. You handle creative.',
-        nextSteps: [
-          'Set up naming conventions for all your ads',
-          'Build a creative production system',
-          'Implement MTA tracking to measure what works'
-        ]
-      }
+      { type: 'welcome', goals: ['Why creative volume beats audience targeting', 'The 3 pillars: Volume, Diversity, Measurement', 'How to feed the Meta AI beast'] },
+      { type: 'hook', headline: 'Targeting is dead.', subtext: 'Meta\'s AI knows who to show your ads to better than you ever could. Your biggest lever isn\'t WHO you target. It\'s WHAT they see.' },
+      { type: 'stats', title: 'The New Reality of Meta Ads', subtitle: 'Andromeda AI changed everything in 2024', stats: [
+        { value: '100s', label: 'Ads launched per week by winners', color: '#3b82f6' },
+        { value: '4x', label: 'More winning creatives from volume', color: '#22c55e' },
+        { value: '$100K', label: 'Daily cap per winning creative', color: 'var(--accent)' },
+        { value: '10+', label: 'Winners needed for $1M/day spend', color: '#8b5cf6' }
+      ] },
+      { type: 'content', title: 'The Old Playbook is Gone', body: "Hyper-targeted audiences. Interest stacking. Custom lookalikes. All outdated. Meta's Andromeda AI handles targeting now. Your job changed: give the AI options. 100 ads? It finds winners. 5 ads? You're gambling.", highlight: "The bottleneck shifted from finding customers to producing creative." },
+      { type: 'triangle', title: 'The Creative Triangle', subtitle: 'Master all three to win at scale', pillars: [
+        { name: 'VOLUME', color: '#3B82F6', desc: '100s of ads', position: 'top' },
+        { name: 'DIVERSITY', color: '#10B981', desc: 'Different angles', position: 'left' },
+        { name: 'MEASURE', color: '#F59E0B', desc: 'Track what works', position: 'right' }
+      ] },
+      { type: 'cards', title: 'The Three Pillars Explained', cards: [
+        { icon: 'Layers', title: 'Volume', desc: 'Launch hundreds of ads per week. One winner might max at $100K/day. Need more winners to spend more.', color: '#3B82F6' },
+        { icon: 'Palette', title: 'Diversity', desc: 'A new background color isn\'t enough. Different formats, angles, hooks, talent. Radically different.', color: '#10B981' },
+        { icon: 'BarChart', title: 'Measurement', desc: 'Track concepts, hooks, edits with MTA tools. Data drives decisions. Gut instinct gets expensive.', color: '#F59E0B' }
+      ] },
+      { type: 'example', title: 'Old Way vs New Way', before: { label: 'Targeting Focus', items: ['Hyper-targeted audiences', 'Interest stacking', 'Custom lookalikes', '5-10 ads per month'] }, after: { label: 'Creative Focus', items: ['Broad targeting', 'Volume production', 'Diverse creative', '100+ ads per week'] } },
+      { type: 'content', title: 'Volume: The Math', body: "One winning ad maxes out at ~$100K/day spend. To spend $1M/day? You need 10 winners running. To spend $10M/day? 100 winners. You can't find winners without volume.", highlight: "The AI needs options to test. Feed the beast or starve." },
+      { type: 'content', title: 'Diversity: What It Actually Means', body: "Tweaking a background isn't diversity. You need: UGC vs studio production, pain point A vs pain point B, question hooks vs statement hooks, \"pretty people\" vs \"real people\".", highlight: "Radically different creative = more signals for the AI to test." },
+      { type: 'flywheel', title: 'The Creative Flywheel', steps: [
+        { label: 'LAUNCH', desc: '100s of ads', color: '#3B82F6' },
+        { label: 'MEASURE', desc: 'MTA tracking', color: '#10B981' },
+        { label: 'LEARN', desc: 'Find patterns', color: '#F59E0B' },
+        { label: 'ITERATE', desc: 'More winners', color: '#EF4444' }
+      ] },
+      { type: 'content', title: 'Naming Convention System', body: "Every ad needs a naming convention. Format: [Product]_[Angle]_[Hook]_[Format]_[Version]. Example: Skincare_AntiAging_Question_UGC_v1. Now you can see which hooks outperform, which formats win.", highlight: "Data drives better creative. 'Question hooks beat stats by 30%' - that's actionable." },
+      { type: 'quiz', question: 'What is the biggest lever in Meta ads at scale?', options: ['Hyper-targeted audience segmentation', 'Creative volume and diversity', 'Increasing daily ad spend', 'Retargeting campaigns'], correctIndex: 1, feedback: { correct: "Exactly! Creative volume and diversity is the biggest lever. The AI needs OPTIONS to find winners.", incorrect: "Not quite. Andromeda is so advanced that creative matters more than targeting. Give the AI more options." } },
+      { type: 'action-checklist', title: 'Your Creative System', items: ['Set up naming conventions for all ads', 'Build a creative production pipeline (aim for 100+/week)', 'Implement MTA tracking to measure what works', 'Kill losers fast, scale winners hard'] },
+      { type: 'completion' }
     ];
 
-    // ===========================================
-    // SLIDE COMPONENTS
-    // ===========================================
-    function WelcomeSlide({ data, gifConfig }) {
-      const greeting = typeof window !== 'undefined' && window.getGreeting ? window.getGreeting() : 'Welcome';
-
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Hey', subtitle: 'Ready to learn?' };
+      const formattedGreeting = typeof formatGreeting === 'function' ? formatGreeting(welcomeData.greeting, userName) : `${welcomeData.greeting}, ${userName}!`;
       return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8 text-center">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-            style={{ backgroundColor: 'rgba(212, 160, 23, 0.1)' }}
-          >
-            <span className="text-lg">{LESSON_CONFIG.categoryIcon}</span>
-            <span className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{LESSON_CONFIG.category}</span>
-          </motion.div>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-neutral-500 text-lg mb-2"
-          >
-            {greeting}!
-          </motion.p>
-
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-8 leading-tight"
-          >
-            {LESSON_CONFIG.title}
-          </motion.h1>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100 w-full max-w-md"
-          >
-            <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">What you'll learn</h3>
-            <ul className="space-y-3">
-              {data.goals.map((goal, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 + i * 0.1 }}
-                  className="flex items-start gap-3 text-left"
-                >
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: 'var(--accent)' }}>
-                    <Icons.Check />
-                  </div>
-                  <span className="text-neutral-700">{goal}</span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Celebration GIF */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className={`absolute bottom-20 ${gifConfig.side} hidden md:block`}
-            style={{ height: gifConfig.height, zIndex: 5 }}
-          >
-            <img
-              src={gifConfig.url}
-              alt="Welcome"
-              className="h-full w-auto object-contain rounded-lg"
-              style={{ maxHeight: '280px' }}
-            />
+        <div className="h-full flex flex-col items-center justify-center px-6 py-8 md:py-12 text-center overflow-y-auto hide-scrollbar">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-xl w-full">
+            <h1 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 mb-3">{LESSON_CONFIG.title}</h1>
+            <p className="text-lg md:text-xl text-neutral-500 mb-2">{formattedGreeting}</p>
+            <p className="text-base text-neutral-400 mb-6">{welcomeData.subtitle}</p>
+            <div className="flex items-center justify-center gap-2 text-sm text-neutral-400 mb-8"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 rounded-2xl p-6 text-left mb-8">
+              <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: 'var(--accent)' }}>In This Lesson</p>
+              <div className="space-y-3">{data.goals.map((goal, i) => (<motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-3"><span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-neutral-900" style={{ backgroundColor: 'var(--accent)' }}>{i + 1}</span><span className="text-neutral-200 text-sm md:text-base">{goal}</span></motion.div>))}</div>
+            </motion.div>
+            <motion.button onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onHoverStart={() => onShowGif(getRandomGif(celebrationGifs), '55%', 'right')} onHoverEnd={onHideGif} className="px-8 py-4 rounded-xl font-semibold text-neutral-900 shadow-lg" style={{ backgroundColor: 'var(--accent)' }}>Let's Go</motion.button>
           </motion.div>
         </div>
       );
-    }
+    };
 
-    function HookSlide({ data }) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8 text-center bg-gradient-to-br from-neutral-900 to-black">
-          <motion.h2
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight max-w-3xl"
-          >
-            {data.headline}
-          </motion.h2>
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 text-center bg-neutral-900">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-3xl">
+          <h2 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">{data.headline}</h2>
+          <p className="text-xl md:text-2xl text-neutral-400">{data.subtext}</p>
+        </motion.div>
+      </div>
+    );
 
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-xl md:text-2xl text-neutral-400 max-w-2xl leading-relaxed"
-          >
-            {data.subtext}
-          </motion.p>
-        </div>
-      );
-    }
-
-    function ContentSlide({ data }) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8">
-          <div className="max-w-2xl w-full">
-            <motion.h2
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="font-display text-3xl md:text-4xl font-bold text-neutral-900 mb-8 text-center"
-            >
-              {data.title}
-            </motion.h2>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-neutral-600 leading-relaxed text-center"
-            >
-              {data.body}
-            </motion.p>
+    const StatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl w-full">
+          <h2 className="slide-title text-3xl md:text-4xl text-black text-center mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-center mb-8">{data.subtitle}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {data.stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-5 text-center">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 + i * 0.1, type: 'spring' }} className="text-3xl md:text-4xl font-black mb-2" style={{ color: stat.color }}>{stat.value}</motion.div>
+                <p className="text-neutral-400 text-xs md:text-sm">{stat.label}</p>
+              </motion.div>
+            ))}
           </div>
-        </div>
-      );
-    }
+        </motion.div>
+      </div>
+    );
 
-    function VisualSlide({ data }) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8">
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="font-display text-3xl md:text-4xl font-bold text-neutral-900 mb-2 text-center"
-          >
-            {data.title}
-          </motion.h2>
-
-          {data.subtitle && (
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="text-neutral-500 mb-8 text-center"
-            >
-              {data.subtitle}
-            </motion.p>
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-6">{data.title}</h2>
+          <p className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-6">{data.body}</p>
+          {data.highlight && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl border-l-4" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.1)', borderColor: 'var(--accent)' }}>
+              <p className="text-neutral-800 font-medium">{data.highlight}</p>
+            </motion.div>
           )}
+        </motion.div>
+      </div>
+    );
 
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="w-full max-w-lg"
-            dangerouslySetInnerHTML={{ __html: data.svg }}
-          />
+    const TriangleSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg w-full text-center">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-2">{data.title}</h2>
+          <p className="text-neutral-500 mb-10">{data.subtitle}</p>
+          <div className="relative" style={{ height: '280px' }}>
+            {/* Triangle lines */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 250">
+              <path d="M150 30 L270 220 L30 220 Z" fill="none" stroke="var(--accent)" strokeWidth="2" strokeDasharray="8,4" opacity="0.5" />
+            </svg>
+            {/* Top - Volume */}
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="absolute top-0 left-1/2 -translate-x-1/2">
+              <div className="w-20 h-20 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)', border: '2px solid #3B82F6' }}>
+                <span className="font-bold text-xs" style={{ color: '#3B82F6' }}>VOLUME</span>
+                <span className="text-[10px] text-neutral-500">100s of ads</span>
+              </div>
+            </motion.div>
+            {/* Bottom Left - Diversity */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="absolute bottom-0 left-0">
+              <div className="w-20 h-20 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', border: '2px solid #10B981' }}>
+                <span className="font-bold text-xs" style={{ color: '#10B981' }}>DIVERSITY</span>
+                <span className="text-[10px] text-neutral-500">Diff angles</span>
+              </div>
+            </motion.div>
+            {/* Bottom Right - Measure */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="absolute bottom-0 right-0">
+              <div className="w-20 h-20 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', border: '2px solid #F59E0B' }}>
+                <span className="font-bold text-xs" style={{ color: '#F59E0B' }}>MEASURE</span>
+                <span className="text-[10px] text-neutral-500">Track what</span>
+              </div>
+            </motion.div>
+            {/* Center - Winning System */}
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4">
+              <div className="w-16 h-16 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.15)', border: '2px solid var(--accent)' }}>
+                <span className="font-bold text-[10px] text-neutral-800">WINNING</span>
+                <span className="font-bold text-[10px] text-neutral-800">SYSTEM</span>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const CardsSlide = ({ data }) => {
+      const IconComponent = ({ name }) => {
+        const icons = { Layers: Icons.Layers, Palette: Icons.Palette, BarChart: Icons.BarChart };
+        const Icon = icons[name];
+        return Icon ? <Icon /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl w-full">
+            <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.cards.map((card, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }} className="bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${card.color}15`, color: card.color }}>
+                    <IconComponent name={card.icon} />
+                  </div>
+                  <h3 className="font-bold text-neutral-900 text-lg mb-2">{card.title}</h3>
+                  <p className="text-neutral-500 text-sm">{card.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       );
-    }
+    };
 
-    function CardsSlide({ data }) {
-      const iconMap = {
-        Layers: Icons.Layers,
-        Sparkles: Icons.Sparkles,
-        BarChart: Icons.BarChart,
-        Target: Icons.Target,
-        Zap: Icons.Zap,
-        Repeat: Icons.Repeat
-      };
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">❌</span>
+                <span className="font-bold text-red-700 text-lg">{data.before.label}</span>
+              </div>
+              <ul className="space-y-3">{data.before.items.map((item, i) => (<li key={i} className="flex items-start gap-2 text-red-900"><span className="text-red-400 mt-1">•</span><span className="text-sm md:text-base">{item}</span></li>))}</ul>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">✅</span>
+                <span className="font-bold text-green-700 text-lg">{data.after.label}</span>
+              </div>
+              <ul className="space-y-3">{data.after.items.map((item, i) => (<li key={i} className="flex items-start gap-2 text-green-900"><span className="text-green-500 mt-1">•</span><span className="text-sm md:text-base">{item}</span></li>))}</ul>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    );
 
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8">
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="font-display text-3xl md:text-4xl font-bold text-neutral-900 mb-8 text-center"
-          >
-            {data.title}
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
-            {data.cards.map((card, i) => {
-              const IconComponent = iconMap[card.icon] || Icons.Sparkles;
+    const FlywheelSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg w-full text-center">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-10">{data.title}</h2>
+          <div className="relative" style={{ height: '260px' }}>
+            {/* Circle connector */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 260">
+              <circle cx="150" cy="130" r="85" fill="none" stroke="var(--accent)" strokeWidth="2" strokeDasharray="8,4" opacity="0.5" />
+              {/* Arrows */}
+              <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--accent)"/></marker></defs>
+              <path d="M200 55 Q230 85 230 115" fill="none" stroke="var(--accent)" strokeWidth="2" markerEnd="url(#arrow)" />
+              <path d="M220 165 Q200 195 170 205" fill="none" stroke="var(--accent)" strokeWidth="2" markerEnd="url(#arrow)" />
+              <path d="M100 195 Q70 175 60 145" fill="none" stroke="var(--accent)" strokeWidth="2" markerEnd="url(#arrow)" />
+              <path d="M70 95 Q90 65 120 55" fill="none" stroke="var(--accent)" strokeWidth="2" markerEnd="url(#arrow)" />
+            </svg>
+            {/* Steps */}
+            {data.steps.map((step, i) => {
+              const positions = [
+                { top: '0', left: '50%', transform: 'translateX(-50%)' },
+                { top: '35%', right: '0' },
+                { bottom: '0', left: '50%', transform: 'translateX(-50%)' },
+                { top: '35%', left: '0' }
+              ];
               return (
-                <motion.div
-                  key={i}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  className="bg-white rounded-xl p-5 shadow-sm border border-neutral-100"
-                >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                    style={{ backgroundColor: `${card.color}15`, color: card.color }}
-                  >
-                    <IconComponent />
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 * i }} className="absolute" style={positions[i]}>
+                  <div className="w-16 h-16 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: `${step.color}20`, border: `2px solid ${step.color}` }}>
+                    <span className="font-bold text-[10px]" style={{ color: step.color }}>{step.label}</span>
+                    <span className="text-[8px] text-neutral-500">{step.desc}</span>
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">{card.title}</h3>
-                  <p className="text-sm text-neutral-600">{card.description}</p>
                 </motion.div>
               );
             })}
           </div>
-        </div>
-      );
-    }
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-neutral-600 font-medium mt-4 text-sm">Never stop spinning. Volume creates options. Options create winners.</motion.p>
+        </motion.div>
+      </div>
+    );
 
-    function ExampleSlide({ data }) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8">
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="font-display text-3xl md:text-4xl font-bold text-neutral-900 mb-8 text-center"
-          >
-            {data.title}
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-            {/* Before */}
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="bg-red-50 rounded-xl p-6 border-2 border-red-100"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">❌</span>
-                <span className="font-semibold text-red-700">{data.before.label}</span>
-              </div>
-              <ul className="space-y-2">
-                {data.before.items.map((item, i) => (
-                  <li key={i} className="text-red-600 text-sm flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* After */}
-            <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="bg-green-50 rounded-xl p-6 border-2 border-green-100"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">✅</span>
-                <span className="font-semibold text-green-700">{data.after.label}</span>
-              </div>
-              <ul className="space-y-2">
-                {data.after.items.map((item, i) => (
-                  <li key={i} className="text-green-600 text-sm flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      );
-    }
-
-    function QuizSlide({ data, onAnswer, showFeedback, selectedAnswer }) {
+    const QuizSlide = ({ data, onAnswer, showFeedback, selectedAnswer, onShowGif, onHideGif }) => {
       const isCorrect = selectedAnswer === data.correctIndex;
-
-      const gifConfig = useMemo(() => ({
-        url: isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif(),
-        side: Math.random() > 0.5 ? 'left-4' : 'right-4'
-      }), [showFeedback]);
-
+      useEffect(() => {
+        if (showFeedback) {
+          const gif = isCorrect ? getRandomGif(celebrationGifs) : getRandomGif(empathyGifs);
+          const side = Math.random() > 0.5 ? 'left' : 'right';
+          onShowGif(gif, '60%', side);
+        }
+        return () => { if (showFeedback) onHideGif(); };
+      }, [showFeedback, isCorrect, onShowGif, onHideGif]);
       return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8">
-          <div className="max-w-2xl w-full">
-            {!showFeedback ? (
-              <>
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                  style={{ backgroundColor: 'rgba(212, 160, 23, 0.1)' }}
-                >
-                  <span className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>Quick Check</span>
+        <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl w-full">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6" style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.15)', color: 'var(--accent-dark)' }}><Icons.Sparkles /> Quick Check</div>
+            <h2 className="title-font text-2xl md:text-3xl font-black text-neutral-900 mb-8">{data.question}</h2>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => {
+                const isSelected = selectedAnswer === i;
+                const isCorrectOption = i === data.correctIndex;
+                let btnClass = "w-full p-4 md:p-5 text-left rounded-xl border-2 transition-all ";
+                if (showFeedback) {
+                  if (isCorrectOption) btnClass += "border-green-500 bg-green-50";
+                  else if (isSelected && !isCorrectOption) btnClass += "border-red-500 bg-red-50";
+                  else btnClass += "border-neutral-200 opacity-50";
+                } else {
+                  btnClass += "border-neutral-200 hover:border-neutral-400 cursor-pointer";
+                }
+                return (
+                  <motion.button key={i} onClick={() => !showFeedback && onAnswer(i)} disabled={showFeedback} className={btnClass}>
+                    <div className="flex items-center gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ backgroundColor: isSelected ? (isCorrectOption ? '#22c55e' : '#ef4444') : 'var(--accent)', color: isSelected ? 'white' : '#1a1a1a' }}>
+                        {showFeedback && isSelected ? (isCorrectOption ? <Icons.Check /> : <Icons.X />) : String.fromCharCode(65 + i)}
+                      </span>
+                      <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-5 rounded-xl border-2 ${isCorrect ? 'bg-green-50 border-green-300' : 'bg-amber-50 border-amber-300'}`}>
+                  <p className="font-bold mb-2 text-lg">{isCorrect ? '🎉 Brilliant!' : '💪 Almost!'}</p>
+                  <p className="text-neutral-700 text-sm md:text-base">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
                 </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      );
+    };
 
-                <motion.h2
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  className="font-display text-2xl md:text-3xl font-bold text-neutral-900 mb-8"
-                >
-                  {data.question}
-                </motion.h2>
-
-                <div className="space-y-3">
-                  {data.options.map((option, i) => (
-                    <motion.button
-                      key={i}
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 + i * 0.1 }}
-                      onClick={() => onAnswer(i)}
-                      className="w-full text-left p-4 rounded-xl border-2 border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm transition-all"
-                    >
-                      <span className="font-medium text-neutral-500 mr-3">{String.fromCharCode(65 + i)}.</span>
-                      <span className="text-neutral-700">{option}</span>
-                    </motion.button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className={`rounded-2xl p-8 text-center ${isCorrect ? 'bg-green-50 border-2 border-green-200' : 'bg-amber-50 border-2 border-amber-200'}`}
-              >
-                <div className="text-5xl mb-4">{isCorrect ? '🎉' : '💪'}</div>
-                <h3 className={`text-2xl font-bold mb-4 ${isCorrect ? 'text-green-700' : 'text-amber-700'}`}>
-                  {isCorrect ? 'Correct!' : 'Not Quite!'}
-                </h3>
-                <p className={`text-lg ${isCorrect ? 'text-green-600' : 'text-amber-600'}`}>
-                  {isCorrect ? data.correctFeedback : data.incorrectFeedback}
-                </p>
+    const ActionChecklistSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 overflow-y-auto hide-scrollbar">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl w-full">
+          <h2 className="title-font text-3xl md:text-4xl font-black text-neutral-900 mb-8 text-center">{data.title}</h2>
+          <div className="space-y-4">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 * i }} className="flex items-start gap-4 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-neutral-900" style={{ backgroundColor: 'var(--accent)' }}>{i + 1}</span>
+                <p className="text-neutral-700 text-sm md:text-base pt-1">{item}</p>
               </motion.div>
-            )}
+            ))}
           </div>
+        </motion.div>
+      </div>
+    );
 
-          {/* Feedback GIF */}
-          {showFeedback && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className={`absolute bottom-20 ${gifConfig.side} hidden md:block`}
-              style={{ height: '60%', zIndex: 5 }}
-            >
-              <img
-                src={gifConfig.url}
-                alt="Feedback"
-                className="h-full w-auto object-contain rounded-lg"
-                style={{ maxHeight: '260px' }}
-              />
-            </motion.div>
-          )}
-        </div>
-      );
-    }
-
-    function CompletionSlide({ data, nextLesson }) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8 text-center bg-gradient-to-br from-neutral-900 to-black">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', duration: 0.6 }}
-            className="text-6xl mb-6"
-          >
-            🎯
-          </motion.div>
-
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="font-display text-3xl md:text-4xl font-bold text-white mb-4"
-          >
-            {data.title}
-          </motion.h2>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-neutral-400 text-lg max-w-xl mb-8"
-          >
-            {data.summary}
-          </motion.p>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="bg-white/5 rounded-xl p-6 max-w-md w-full mb-6 border border-white/10"
-          >
-            <h3 className="text-white font-semibold mb-4 text-left">Next Steps:</h3>
-            <ul className="space-y-3 text-left">
-              {data.nextSteps.map((step, i) => (
-                <li key={i} className="flex items-start gap-3 text-neutral-300">
-                  <Icons.ArrowRight />
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
+    const CompletionSlide = ({ nextLesson }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 py-12 bg-neutral-900 text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }} className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'var(--accent)' }}><Icons.Check /></motion.div>
+          <h2 className="title-font text-3xl md:text-4xl font-black text-white mb-4">Creative Machine Unlocked</h2>
+          <p className="text-neutral-400 text-lg mb-10">You have the formula: Volume + Diversity + Measurement = Winning system. The AI handles targeting. You handle creative production.</p>
           {nextLesson && (
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="bg-white/10 rounded-xl p-5 max-w-md w-full border border-white/20"
-            >
-              <p className="text-neutral-500 text-sm mb-2">Up Next</p>
-              <p className="text-white font-semibold mb-1">{nextLesson.title}</p>
-              <p className="text-neutral-400 text-sm">{nextLesson.teaser}</p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-800 rounded-2xl p-6 text-left">
+              <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'var(--accent)' }}>Up Next</p>
+              <h3 className="title-font text-xl font-bold text-white mb-2">{nextLesson.title}</h3>
+              <p className="text-neutral-400 text-sm mb-4">{nextLesson.teaser}</p>
+              <a href={`../${nextLesson.id}/lesson.html`} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-neutral-900 hover:scale-105 transition-all" style={{ backgroundColor: 'var(--accent)' }}>Start Next Lesson <Icons.ArrowRight /></a>
             </motion.div>
           )}
+        </motion.div>
+      </div>
+    );
 
-          <motion.button
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')}
-            className="mt-8 px-8 py-4 rounded-xl font-semibold text-neutral-900 transition-all hover:scale-105"
-            style={{ backgroundColor: 'var(--accent)' }}
-          >
-            Back to Learning Center
-          </motion.button>
-        </div>
-      );
-    }
-
-    // ===========================================
-    // MAIN LESSON APP
-    // ===========================================
-    function LessonApp() {
+    const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
-      const [quizAnswers, setQuizAnswers] = useState({});
-      const [showQuizFeedback, setShowQuizFeedback] = useState({});
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState('Builder');
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [gifConfig, setGifConfig] = useState(null);
 
-      const gifConfig = useMemo(() => ({
-        url: getRandomCelebrationGif(),
-        height: '65%',
-        side: Math.random() > 0.5 ? 'left-4' : 'right-4'
-      }), []);
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
-      const nextSlide = useCallback(() => {
-        if (currentSlide < slides.length - 1) {
-          setCurrentSlide(prev => prev + 1);
-        }
-      }, [currentSlide]);
+      const slide = slides[currentSlide];
+      const isFirstSlide = currentSlide === 0;
+      const isLastSlide = currentSlide === slides.length - 1;
 
-      const prevSlide = useCallback(() => {
-        if (currentSlide > 0) {
-          setCurrentSlide(prev => prev - 1);
-        }
-      }, [currentSlide]);
+      const nextSlide = useCallback(() => { if (!isLastSlide) { setDirection(1); setCurrentSlide(prev => prev + 1); setSelectedAnswer(null); setShowFeedback(false); hideGif(); } }, [isLastSlide, hideGif]);
+      const prevSlide = useCallback(() => { if (!isFirstSlide) { setDirection(-1); setCurrentSlide(prev => prev - 1); setSelectedAnswer(null); setShowFeedback(false); hideGif(); } }, [isFirstSlide, hideGif]);
+      const goToSlide = useCallback((index) => { if (index >= 0 && index < slides.length) { setDirection(index > currentSlide ? 1 : -1); setCurrentSlide(index); setSelectedAnswer(null); setShowFeedback(false); hideGif(); } }, [currentSlide, hideGif]);
+      const handleAnswer = useCallback((index) => { setSelectedAnswer(index); setShowFeedback(true); }, []);
 
-      const goToSlide = useCallback((index) => {
-        setCurrentSlide(index);
-      }, []);
-
-      const handleQuizAnswer = useCallback((slideIndex, answerIndex) => {
-        setQuizAnswers(prev => ({ ...prev, [slideIndex]: answerIndex }));
-        setShowQuizFeedback(prev => ({ ...prev, [slideIndex]: true }));
-      }, []);
-
-      // Keyboard navigation
       useEffect(() => {
         const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight') nextSlide();
-          if (e.key === 'ArrowLeft') prevSlide();
+          if (e.key === 'ArrowRight' && !isLastSlide) nextSlide();
+          if (e.key === 'ArrowLeft' && !isFirstSlide) prevSlide();
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [nextSlide, prevSlide]);
+      }, [nextSlide, prevSlide, isFirstSlide, isLastSlide]);
 
-      const slide = slides[currentSlide];
-      const showPrev = currentSlide > 0 && slide.type !== 'welcome';
-      const showNext = currentSlide < slides.length - 1 && slide.type !== 'quiz';
-      const isQuizSlide = slide.type === 'quiz';
-      const quizAnswered = showQuizFeedback[currentSlide];
+      const slideVariants = {
+        enter: (d) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (d) => ({ x: d < 0 ? '100%' : '-100%', opacity: 0 })
+      };
 
       const renderSlide = () => {
-        switch (slide.type) {
-          case 'welcome':
-            return <WelcomeSlide data={slide} gifConfig={gifConfig} />;
-          case 'hook':
-            return <HookSlide data={slide} />;
-          case 'content':
-            return <ContentSlide data={slide} />;
-          case 'visual':
-            return <VisualSlide data={slide} />;
-          case 'cards':
-            return <CardsSlide data={slide} />;
-          case 'example':
-            return <ExampleSlide data={slide} />;
-          case 'quiz':
-            return (
-              <QuizSlide
-                data={slide}
-                onAnswer={(i) => handleQuizAnswer(currentSlide, i)}
-                showFeedback={showQuizFeedback[currentSlide]}
-                selectedAnswer={quizAnswers[currentSlide]}
-              />
-            );
-          case 'completion':
-            return <CompletionSlide data={slide} nextLesson={LESSON_CONFIG.nextLesson} />;
-          default:
-            return null;
+        switch(slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'stats': return <StatsSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'triangle': return <TriangleSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'flywheel': return <FlywheelSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} showFeedback={showFeedback} selectedAnswer={selectedAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'completion': return <CompletionSlide nextLesson={LESSON_CONFIG.nextLesson} />;
+          default: return null;
         }
       };
 
+      const showPrev = !isFirstSlide;
+      const showNext = !isLastSlide && slide.type !== 'welcome';
+
       return (
-        <div className="h-screen w-screen bg-neutral-50 flex flex-col overflow-hidden">
-          {/* Main Content */}
+        <div className="relative w-full h-screen flex flex-col bg-white overflow-hidden">
           <div className="flex-1 relative overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0"
-              >
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="absolute inset-0">
                 {renderSlide()}
               </motion.div>
             </AnimatePresence>
-
-            {/* Navigation Arrows */}
-            {showPrev && (
-              <button
-                onClick={prevSlide}
-                className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:shadow-xl transition-all z-20"
-              >
-                <Icons.ChevronLeft />
-              </button>
-            )}
-
-            {(showNext || (isQuizSlide && quizAnswered)) && (
-              <button
-                onClick={nextSlide}
-                className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-all z-20"
-                style={{ backgroundColor: 'var(--accent)' }}
-              >
-                <Icons.ChevronRight />
-              </button>
-            )}
           </div>
 
-          {/* Dot Navigation Footer */}
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10 bg-white/80 backdrop-blur-sm">
+          {showPrev && (<button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-600 hover:text-neutral-900 hover:scale-110 transition-all z-20"><Icons.ChevronLeft /></button>)}
+          {showNext && (<button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-neutral-900 hover:scale-110 transition-all z-20" style={{ backgroundColor: 'var(--accent)' }}><Icons.ChevronRight /></button>)}
+
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goToSlide(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    i === currentSlide
-                      ? 'scale-125'
-                      : 'bg-neutral-300 hover:bg-neutral-400'
-                  }`}
-                  style={i === currentSlide ? { backgroundColor: 'var(--accent)' } : {}}
-                />
-              ))}
+              {slides.map((_, i) => (<button key={i} onClick={() => goToSlide(i)} className={`w-2.5 h-2.5 rounded-full transition-all ${i === currentSlide ? 'scale-125' : 'bg-neutral-300 hover:bg-neutral-400'}`} style={i === currentSlide ? { backgroundColor: 'var(--accent)' } : {}} />))}
             </div>
           </div>
         </div>
       );
-    }
+    };
 
-    // ===========================================
-    // RENDER
-    // ===========================================
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<LessonApp />);
   </script>
