@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inside Andromeda: How Meta Finds Your Buyers | Quantum Scale</title>
+  <title>The Hybrid Adset: Teaching AI Your Perfect Customer | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -36,12 +36,12 @@
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
-      id: 'meta-andromeda-engine',
-      title: 'Inside Andromeda: How Meta Finds Your Buyers',
-      description: 'Meta rebuilt their entire ad system in late 2023. Here\'s why your best creative never even reached the auction - and how the new brain works.',
+      id: 'meta-hybrid-adset',
+      title: 'The Hybrid Adset: Teaching AI Your Perfect Customer',
+      description: 'Don\'t use detailed interest targeting. Instead, provide GEM with a rich "curriculum" of warm audiences as suggestions - then let it find statistically identical cold audiences.',
       accentColor: '#3b82f6',
-      duration: '6 min',
-      nextLesson: { id: 'meta-consolidation-principle', title: 'The Consolidation Principle', teaser: 'Learn why one campaign beats ten campaigns.' }
+      duration: '5 min',
+      nextLesson: null
     };
 
     const celebrationGifs = [
@@ -61,67 +61,32 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
-    };
-
-    const ProgressBar = ({ percentage, label, color = 'var(--accent)', delay = 0 }) => {
-      const [width, setWidth] = useState(0);
-      useEffect(() => {
-        const timer = setTimeout(() => setWidth(percentage), delay);
-        return () => clearTimeout(timer);
-      }, [percentage, delay]);
-      return (
-        <div className="mb-4">
-          <div className="flex justify-between mb-1">
-            <span className="text-sm font-medium text-neutral-700">{label}</span>
-            <span className="text-sm font-medium" style={{ color }}>{percentage}%</span>
-          </div>
-          <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
-            <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.5, ease: "easeOut", delay: delay/1000 }} className="h-full rounded-full" style={{ background: color }} />
-          </div>
-        </div>
-      );
-    };
-
     const slides = [
-      { type: 'welcome', learningGoals: ['Why your best creative never reached the auction', 'The 3-stage pipeline: Retrieve → Rank → Deliver', 'How NVIDIA Grace Hopper superchips power Andromeda'] },
-      { type: 'hook', headline: 'You spend $500 testing creatives. Three are absolute winners. High CTR. Great copy. Perfect hook. They never even enter the auction. Meta filtered them out before anyone saw them.', subtext: 'The game changed in late 2023. Meta rebuilt their entire ad brain. It\'s not about bidding anymore. It\'s about being CHOSEN to compete. Here\'s how the new gatekeeper works.' },
-      { type: 'content', title: 'Your Best Creative Never Reached the Auction', body: 'Meta processes 15 million+ new ads every month. Before Andromeda, they showed everything to small audiences first, then optimized. Slow. Expensive. Broken. Now? Meta filters ads BEFORE the auction even begins. Near-duplicates get killed instantly. Similar hooks compete against themselves. Only distinct creatives get through. If your three "winners" look similar in the first 3 seconds, Meta picks ONE and discards the rest. You never even know it happened.' },
-      { type: 'content', title: 'Meet Andromeda: The New Retrieval Engine', body: 'Announced late 2023. Complete re-architecture. Meta faced two impossible problems: Creative Explosion - 15 million+ new ads every month flooding the system. Need for Speed - Decisions in milliseconds, not minutes. Old system couldn\'t handle it. So they rebuilt everything from scratch. New hardware. New AI brain. New rules. Andromeda is the gatekeeper now.' },
-      { type: 'pipeline', title: 'How The New Brain Thinks', steps: [
-        { number: 1, label: 'Retrieval', description: 'New gatekeeper filters ads BEFORE auction', detail: 'Eliminates near-duplicates, similarity clusters, low-quality signals' },
-        { number: 2, label: 'Ranking', description: 'Survivors compete in auction', detail: 'Traditional bidding, quality score, predicted performance' },
-        { number: 3, label: 'Delivery', description: 'Winners get optimization', detail: 'Budget allocation, audience expansion, performance tracking' }
+      { type: 'welcome', learningGoals: ['Why you should NEVER use detailed interest targeting in 2025', 'How to add warm audiences as suggestions (not constraints)', 'Why leaving demographics completely open is the most powerful approach'] },
+      { type: 'hook', headline: 'You have website visitors. Email subscribers. Video viewers. People who engaged with your content. These people are gold. But you\'re using them wrong. You\'re constraining the AI instead of teaching it.', subtext: 'The Hybrid Adset is how you craft the AI\'s "curriculum" - providing GEM with a high-fidelity dataset of what your perfect customer looks like, then letting it autonomously find new, cold audiences that are statistically identical. This is the most powerful way to prospect and scale in 2025.' },
+      { type: 'content', title: 'The Old Way vs. The New Way', body: 'The Old Way (Detailed Targeting):\nManually defining audiences: "Women, 25-45, interested in yoga and wellness."\nForcing the AI into narrow boxes.\nMissing massive opportunities outside your assumptions.\n\nThe New Way (Hybrid Adset):\nProviding warm audiences as SUGGESTIONS, not constraints.\nTeaching GEM what success looks like through real behavioral data.\nLetting the AI find statistically similar cold audiences you never would have thought of.\n\nDetailed interest targeting is dead. It was built for a world where humans needed to tell the algorithm exactly who to target. GEM doesn\'t need that anymore. It needs examples, not instructions.' },
+      { type: 'content', title: 'Crafting the AI\'s Curriculum: The Hybrid Adset', body: 'We don\'t use detailed interest targeting. Instead, we provide the AI with a rich "curriculum" based on our most valuable data assets.\n\nThe Setup: Go to the Advantage+ Audience section in your ad set.\n\nStep 1: Add all your warm Custom Audiences as SUGGESTIONS.\n\nThese are not constraints. They are training data for GEM. You\'re giving GEM a high-fidelity dataset of what your perfect customer looks like.\n\nThe AI starts by learning the thousands of nuanced signals from this group, then autonomously finds new, cold audiences that are statistically identical.' },
+      { type: 'mockup', title: 'The Hybrid Adset Setup', description: 'Add warm audiences as suggestions in Advantage+ Audience, then leave all demographics completely open.', mockupType: 'advantage-plus-setup' },
+      { type: 'list', title: 'What Warm Audiences to Include', items: [
+        { icon: 'Globe', label: 'Website Visitors (180 days)', description: 'People who have shown interest by visiting your site' },
+        { icon: 'Mail', label: 'Customer / Email Lists', description: 'Your highest-value audience - existing customers and subscribers' },
+        { icon: 'Users', label: 'Instagram & Facebook Page Engagers (365 days)', description: 'People who have engaged with your organic content' },
+        { icon: 'Video', label: 'Video Viewers (365 days)', description: 'People who have watched your video content' }
       ]},
-      { type: 'content', title: 'Stage 1: Retrieval (The New Gatekeeper)', body: 'This is where the magic happens. And where most advertisers lose without knowing it. Retrieval scans your creatives in milliseconds. Checks: Are these too similar to each other? Are these too similar to what\'s already running? Do these have distinct hooks, angles, messaging? If YES to similarity → One survives, rest die. If NO to distinctness → Filtered out. You only compete if you pass Retrieval. Most ads never do.' },
-      { type: 'stats-grid', title: 'The Engine Room: NVIDIA Grace Hopper Superchips', items: [
-        { value: '+6%', label: 'Retrieval Recall', description: 'More relevant ads found faster' },
-        { value: '+8%', label: 'Ad Quality', description: 'Better matches between ads and audiences' },
-        { value: '15M+', label: 'Ads/Month', description: 'Processed in milliseconds, not minutes' }
-      ]},
-      { type: 'content', title: 'Why This Changes Everything', body: 'The old game: Make 6 ads. Test them all. See which wins. The new game: Make 8-12 DISTINCT ads. Pass Retrieval. THEN compete. Similarity is death now. If your ads look alike, sound alike, or start alike - Andromeda picks one and kills the rest. You\'re competing against yourself before you even reach real buyers. The auction happens AFTER Retrieval. If you don\'t pass the gatekeeper, bidding doesn\'t matter.' },
+      { type: 'content', title: 'Step 2: Leave Demographics Completely Open', body: 'This is the hardest part for most advertisers. Leave age, gender, and detailed targeting COMPLETELY open.\n\nNo age restrictions. No gender targeting. No interest targeting.\n\nWhy? Because your assumptions are limiting. You think your customer is "women 25-45," but GEM might discover that men 35-55 convert just as well - if you let it explore.\n\nGEM is 2x more effective at knowledge transfer than standard techniques. It can identify patterns across demographics that humans never would. Let it work.\n\nYour warm audiences teach GEM WHAT success looks like (behaviors, intent signals, engagement patterns). GEM then finds WHO else matches those patterns, regardless of traditional demographics.' },
+      { type: 'mockup', title: 'Leave Demographics Open', description: 'No age, gender, or interest constraints. Let GEM explore and discover patterns you never would have found.', mockupType: 'open-demographics' },
+      { type: 'content', title: 'Why This Is The Most Powerful Approach', body: 'You are giving GEM a high-fidelity dataset of what your perfect customer looks like. Website visitors, email subscribers, engagers, and video viewers represent real behavioral data - not guesses.\n\nThe AI starts by learning the thousands of nuanced signals from this group, then autonomously finds new, cold audiences that are statistically identical. It discovers patterns you never would have considered.\n\nThis is teaching, not commanding. You\'re not telling GEM "target women 25-45." You\'re showing GEM "here are 10,000 people who love our brand - find more like them."\n\nGEM\'s 23x increase in training FLOPS and 4x efficiency gains mean it can process these signals at a scale and speed impossible before. It sees connections across billions of users that manual targeting never could.\n\nThe result: You prospect beyond your assumptions. You scale without hitting audience saturation. You let the most advanced recommendation model in the industry do what it does best - find your perfect customers.' },
       { type: 'quote', data: {
-        quote: 'Andromeda doesn\'t just rank your ads better. It decides which ads get to compete at all.',
-        context: 'The core insight behind Meta\'s 2023 re-architecture'
+        quote: 'Your new job is not to tell the AI WHO to find. It\'s to teach the AI WHAT a perfect customer looks like.',
+        context: 'The fundamental shift from Commander to Collaborator'
       }},
-      { type: 'cards', title: 'Old Brain vs New Brain', items: [
-        { label: 'Old System', title: 'Test Everything', description: 'Show all ads to small audiences first. Optimize winners. Slow and expensive.' },
-        { label: 'New System', title: 'Filter First', description: 'Retrieval eliminates near-duplicates BEFORE auction. Only distinct creatives compete.' }
+      { type: 'cards', title: 'Old Targeting vs. Hybrid Adset', items: [
+        { label: 'Old Targeting', title: 'Detailed Interests', description: 'Manually define: "Women 25-45, interested in yoga." Limits AI. Misses opportunities.' },
+        { label: 'Hybrid Adset', title: 'Warm Audience Suggestions', description: 'Add website visitors, email lists, engagers. Leave demographics open. Let GEM find patterns.' }
       ]},
-      { type: 'quiz', question: 'What is the PRIMARY function of Meta\'s Andromeda Retrieval stage?', options: ['Optimize ad delivery to the best audiences', 'Filter out near-duplicate ads BEFORE they enter the auction', 'Calculate the optimal bid for each ad', 'Track conversion data from your pixel'], correctIndex: 1, feedback: { correct: 'Exactly! Retrieval is the NEW gatekeeper. It filters ads BEFORE the auction even begins. Near-duplicates die here. Similar creatives compete against themselves and lose. Only distinct ads pass through to Ranking and Delivery. This is why the old "test 6 similar ads" playbook is dead.', incorrect: 'Not quite. Retrieval is the FIRST stage - the gatekeeper. It happens BEFORE auction, BEFORE optimization, BEFORE delivery. Its job: eliminate near-duplicate ads so only distinct creatives compete. If your ads are too similar, Retrieval kills them before anyone sees them. That\'s why radical creative diversity matters now.' }},
-      { type: 'completion', sources: [{ name: 'Meta Andromeda Announcement (2023)', url: 'https://www.facebook.com/business/news/announcing-new-ads-system' }] }
+      { type: 'content', title: 'The Signal to GEM', body: 'When you use the Hybrid Adset approach, you\'re sending a clear signal to Meta\'s central brain:\n\n"These are my best customers. Study their behavior. Learn their patterns. Find more people EXACTLY like them - wherever they are."\n\nGEM processes this curriculum through its pyramid-parallel structure, analyzing sequence features (all their behaviors over time) and non-sequence features (their demographics and context).\n\nIt identifies micro-patterns invisible to humans. Maybe your best customers all watched 3+ videos before converting. Maybe they engage more on weekends. Maybe they share common interests you never targeted.\n\nGEM learns all of this and applies it to cold prospecting at scale. You get the precision of warm audience targeting applied to completely new audiences.\n\nThis is the most powerful way to prospect and scale in 2025. You\'re not fighting the AI. You\'re collaborating with the most advanced recommendation engine ever built.' },
+      { type: 'quiz', question: 'In the Hybrid Adset approach, warm Custom Audiences should be added as:', options: ['Required targeting constraints that limit who can see your ads', 'Suggestions that teach GEM what your perfect customer looks like', 'Exclusions to prevent showing ads to existing customers', 'Budget priorities that get more spend than cold audiences'], correctIndex: 1, feedback: { correct: 'Exactly! Warm audiences are SUGGESTIONS, not constraints. You\'re providing GEM with a high-fidelity "curriculum" - teaching it what success looks like through real behavioral data (website visitors, email lists, engagers, video viewers). GEM then learns the thousands of nuanced signals from these audiences and autonomously finds new, cold audiences that are statistically identical. This is teaching, not commanding. Combined with leaving demographics completely open, this lets GEM discover your perfect customers wherever they are - beyond your manual assumptions.', incorrect: 'Not quite. Warm audiences are SUGGESTIONS - training data for GEM, not constraints. You\'re teaching the AI what a perfect customer looks like by showing it real behavioral data: website visitors, email subscribers, engagers, video viewers. GEM learns the nuanced patterns from these audiences, then finds statistically identical cold audiences. You\'re not limiting who sees ads - you\'re showing GEM examples of success and saying "find more like these." Combined with leaving demographics open, this is the most powerful prospecting method in 2025.' }},
+      { type: 'completion', sources: [{ name: 'Meta - The Meta Iceberg: Unlocking AI Mastery', url: 'https://www.facebook.com/business/' }] }
     ];
 
     const Icons = {
@@ -130,10 +95,11 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Filter: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
-      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      Cpu: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>,
+      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Video: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>,
+      UserX: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -181,61 +147,82 @@
       </div>
     );
 
-    const PipelineSlide = ({ data }) => (
+    const ListSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="space-y-4">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-              <div className="bg-white border-2 rounded-xl p-5" style={{ borderColor: i === 0 ? 'var(--accent)' : '#e5e7eb' }}>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xl" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.number}</div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-black mb-1">{step.label}</h3>
-                    <p className="text-sm text-neutral-600 mb-2">{step.description}</p>
-                    <p className="text-xs text-neutral-400 italic">{step.detail}</p>
-                  </div>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-blue-200 rounded-xl p-5 flex items-start gap-4">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                {Icons[item.icon] && React.createElement(Icons[item.icon])}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-black mb-1">{item.label}</h3>
+                <p className="text-sm text-neutral-600">{item.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'advantage-plus-setup') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="bg-white border-2 border-neutral-200 rounded-xl p-6 max-w-2xl mx-auto w-full">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-200">
+                <h3 className="text-lg font-bold text-black">Advantage+ Audience</h3>
+                <div className="w-12 h-6 bg-blue-500 rounded-full flex items-center justify-end px-1">
+                  <div className="w-4 h-4 bg-white rounded-full" />
                 </div>
               </div>
-              {i < data.steps.length - 1 && (
-                <div className="flex justify-center my-2">
-                  <Icons.ArrowRight className="text-neutral-300" />
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+              <p className="text-sm text-neutral-600 mb-4">Add Custom Audiences as suggestions:</p>
+              <div className="space-y-2 mb-4">
+                {['Website Visitors (180D)', 'Email List', 'IG/FB Engagers (365D)', 'Video Viewers (365D)'].map((audience, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex items-center justify-between">
+                    <span className="text-sm text-neutral-700">{audience}</span>
+                    <span className="text-xs text-blue-600 font-semibold">SUGGESTION</span>
+                  </motion.div>
+                ))}
+              </div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-green-50 border-2 border-green-300 rounded-lg p-3">
+                <p className="text-xs text-green-700 font-semibold">Demographics: OPEN (No restrictions)</p>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
 
-    const StatsGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.items.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
-              <div className="text-xs text-neutral-500">{stat.description}</div>
+      if (data.mockupType === 'open-demographics') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {[
+                { label: 'Age', value: 'All Ages', icon: <Icons.UserX /> },
+                { label: 'Gender', value: 'All Genders', icon: <Icons.Users /> },
+                { label: 'Interests', value: 'No Targeting', icon: <Icons.X /> }
+              ].map((field, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-xl p-6 text-center">
+                  <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white mx-auto mb-3">
+                    {field.icon}
+                  </div>
+                  <p className="text-sm font-semibold text-neutral-700 mb-1">{field.label}</p>
+                  <p className="text-xs text-green-700 font-bold">{field.value}</p>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-center max-w-2xl mx-auto">
+              <p className="text-sm text-blue-700">Let GEM discover patterns across ALL demographics based on your warm audience signals.</p>
             </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 bg-neutral-900 rounded-xl p-4 text-center flex items-center justify-center gap-2">
-          <Icons.Cpu className="text-blue-400" />
-          <p className="text-neutral-300 text-sm">Powered by NVIDIA Grace Hopper Superchips + Meta MTIA</p>
-        </motion.div>
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8 md:p-12">
-          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
-          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
-          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
-        </motion.div>
-      </div>
-    );
+          </div>
+        );
+      }
+    };
 
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -249,6 +236,16 @@
             </motion.div>
           ))}
         </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
       </div>
     );
 
@@ -304,12 +301,12 @@
           </div>
         </motion.div>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand how Andromeda's Retrieval engine works and why creative diversity matters more than ever.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand how to use the Hybrid Adset to teach GEM your perfect customer through warm audience suggestions and open demographics.</motion.p>
         {data.sources && data.sources.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
             <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
             {data.sources.map((source, i) => (
-              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline flex items-center gap-1 mb-1" style={{ color: 'var(--accent)' }}><Icons.Link />{source.name}</a>
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
             ))}
           </motion.div>
         )}
@@ -354,10 +351,10 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'pipeline': return <PipelineSlide data={slide} />;
-          case 'stats-grid': return <StatsGridSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
+          case 'list': return <ListSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return <ContentSlide data={slide} />;
@@ -371,7 +368,7 @@
         <div className="w-full h-screen bg-white flex flex-col relative">
           <div className="flex-1 relative overflow-hidden z-20">
             <AnimatePresence mode="wait" custom={direction}>
-              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? '100%' : '-100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? '-100%' : '100%' }} transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
               </motion.div>
             </AnimatePresence>
@@ -380,12 +377,12 @@
           </div>
           <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+              {slides.map((_, i) => <button key={i} onClick={() => { if (Math.abs(i - currentSlide) === 1 || i === currentSlide) { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); } }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gif.src && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: gif.opacity === 0 ? 0 : 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : gif.side === 'right' ? 'right-4 md:right-8' : 'left-1/2 -translate-x-1/2'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: '65%' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gif.opacity }}>
                 <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
                   <source src={gif.src} type="video/mp4" />
                 </video>
