@@ -6008,6 +6008,110 @@ Google suspends accounts that don't meet their standards. Before spending on ads
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/google-ai-overviews-opportunity/lesson.html' }
       ]
+    },
+    // Google Ads Advanced lessons
+    {
+      id: 212,
+      thumbnail: '/images/lessons/google-brand-moat.png',
+      title: 'Brand is the Ultimate Moat',
+      intro: 'The barrier competitors can\'t copy with a bigger budget. Brand lets Nike sell a t-shirt for 10x.',
+      directUrl: '/learn/lessons/google-brand-moat',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Brand is the Ultimate Moat
+
+**The Nike Effect:** Brand is what allows Nike to sell a t-shirt for 10x what an identical, unbranded shirt sells for.
+
+A strong brand lets you:
+- Play Google Ads on easy mode
+- Command higher prices
+- Earn customer loyalty that transcends clicks
+
+**Your brand is a moat that competitors can't copy with a bigger budget.**
+
+**Open the interactive lesson to build your unfair advantage.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-brand-moat/lesson.html' }
+      ]
+    },
+    {
+      id: 213,
+      thumbnail: '/images/lessons/google-budget-reallocation.png',
+      title: 'Feed Your Winners: 2.8x to 5.1x ROAS',
+      intro: 'The easiest win in Google Ads. Stop spreading budget evenly - concentrate it where it works best.',
+      directUrl: '/learn/lessons/google-budget-reallocation',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Feed Your Winners
+
+**The Easiest Win:** Don't spread your budget evenly; concentrate it where it works best.
+
+**BEFORE:** 4 campaigns @ $1000 each → Total ROAS: 2.8x
+**AFTER:** Reallocate to winner ($2500) → Total ROAS: 5.1x
+
+**Key insight:** Continuously audit your campaigns and feed your winners.
+
+**Open the interactive lesson to optimize your budget allocation.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-budget-reallocation/lesson.html' }
+      ]
+    },
+    {
+      id: 214,
+      thumbnail: '/images/lessons/google-focus-firepower.png',
+      title: 'Focus Your Firepower on Bestsellers',
+      intro: 'Spreading budget across dozens of products starves the algorithm. Consolidate on winners.',
+      directUrl: '/learn/lessons/google-focus-firepower',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Focus Your Firepower
+
+**The Common Mistake:** Spreading a small budget across dozens of products starves the algorithm.
+
+**The Pro's Edge:** Consolidate budget onto your best-selling products for cold audiences.
+
+**Why it Works:** Google learns faster, optimizing for time, demographics, and placements.
+
+**The Result:** Profitability on winners → cash flow to reinvest and expand.
+
+**Open the interactive lesson to focus your ad spend.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-focus-firepower/lesson.html' }
+      ]
+    },
+    {
+      id: 215,
+      thumbnail: '/images/lessons/google-influencer-creative.png',
+      title: 'Outsource Your Creative Genius',
+      intro: 'The scaling hack: hire influencers to create your ad content. Expertise + credibility + efficiency.',
+      directUrl: '/learn/lessons/google-influencer-creative',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Outsource Your Creative Genius
+
+**The Scaling Problem:** YouTube and Display campaigns need steady video creative. Most entrepreneurs lack skills/equipment.
+
+**The Hack:** Hire influencers and content creators.
+
+**Triple Benefit:**
+1. **Expertise:** Professionals at engaging content
+2. **Credibility:** Their endorsement stops the scroll
+3. **Efficiency:** Faster and more cost-effective
+
+**Result:** Influencer-based creative = significantly higher ROAS.
+
+**Open the interactive lesson to scale your creative.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-influencer-creative/lesson.html' }
+      ]
     }
   ];
 
