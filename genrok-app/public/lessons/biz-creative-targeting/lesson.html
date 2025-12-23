@@ -124,11 +124,12 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6 py-12 text-center bg-neutral-900">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-3xl">
-          <h2 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">{data.headline}</h2>
-          <p className="text-xl md:text-2xl text-neutral-400">{data.subtext}</p>
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto hide-scrollbar overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
@@ -363,20 +364,17 @@
     );
 
     const CompletionSlide = ({ nextLesson }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6 py-12 bg-neutral-900 text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }} className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'var(--accent)' }}><Icons.Check /></motion.div>
-          <h2 className="title-font text-3xl md:text-4xl font-black text-white mb-4">Creative Machine Unlocked</h2>
-          <p className="text-neutral-400 text-lg mb-10">You have the formula: Volume + Diversity + Measurement = Winning system. The AI handles targeting. You handle creative production.</p>
-          {nextLesson && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-800 rounded-2xl p-6 text-left">
-              <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'var(--accent)' }}>Up Next</p>
-              <h3 className="title-font text-xl font-bold text-white mb-2">{nextLesson.title}</h3>
-              <p className="text-neutral-400 text-sm mb-4">{nextLesson.teaser}</p>
-              <a href={`../${nextLesson.id}/lesson.html`} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-neutral-900 hover:scale-105 transition-all" style={{ backgroundColor: 'var(--accent)' }}>Start Next Lesson <Icons.ArrowRight /></a>
-            </motion.div>
-          )}
-        </motion.div>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 hide-scrollbar overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You have the formula: Volume + Diversity + Measurement = Winning system. The AI handles targeting. You handle creative production.</motion.p>
+        {nextLesson && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+            <h3 className="text-white font-bold text-lg mb-1">{nextLesson.title}</h3>
+            <p className="text-neutral-400 text-xs">{nextLesson.teaser}</p>
+          </motion.div>
+        )}
       </div>
     );
 
