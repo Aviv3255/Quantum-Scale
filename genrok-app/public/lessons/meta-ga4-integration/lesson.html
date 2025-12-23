@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The GA4 Signal Hack | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-card: #ffffff; --meta-text: #1c1e21; --meta-muted: #65676b; --meta-border: #dddfe2; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-ga4-integration',
+      title: 'The GA4 Signal Hack',
+      description: 'How to feed Meta better data than your competitors using Google Analytics 4.',
+      accentColor: '#3b82f6',
+      duration: '8 min',
+      nextLesson: { id: 'meta-1-1-x-structure', title: 'The 1-1-X Structure', teaser: 'Why fewer ad sets mean better results - the campaign structure that top buyers use.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    // Clean SVG Icons - No emojis
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowDown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Camera: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
+      Microscope: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>,
+      Search: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+      Sprout: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Link: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Plug: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6h0a6 6 0 0 1-6-6V8Z"/></svg>,
+      Settings: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Database: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
+      Signal: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      ToggleRight: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="5" width="22" height="14" rx="7" ry="7"/><circle cx="16" cy="12" r="3"/></svg>,
+      Share: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why GA4 + Meta integration is a competitive advantage', 'The "all traffic" setting that most advertisers miss', 'How enhanced conversions feed Meta higher-quality signals'] },
+      { type: 'hook', headline: 'Your competitors are feeding Meta blurry photos. You can feed it 4K.', subtext: 'Most advertisers only send Meta their Facebook traffic data. That\'s like giving someone a puzzle with 70% of the pieces missing. GA4 integration lets you share ALL your traffic data - including organic, Google Ads, email - giving Meta\'s AI complete night vision to find your best customers.' },
+      { type: 'content', title: 'Why GA4 Integration Matters', body: 'Meta\'s Andromeda AI learns who to target based on conversion signals. More signals = better learning. But here\'s what 90% of advertisers don\'t realize: you can feed Meta your ENTIRE GA4 audience - not just Facebook traffic. That means Meta sees customers who came from Google, organic, email, direct - everywhere. It learns patterns invisible to competitors who only share Meta-only data.' },
+      { type: 'visual-comparison', title: 'Data Quality: Standard vs GA4 Enhanced', leftCard: { label: 'Standard Setup', icon: 'camera', quality: 'Blurry', items: ['Only sees Meta traffic', 'Misses 60-70% of conversions', 'Learning period: weeks', 'Optimization: limited'], color: '#EF4444' }, rightCard: { label: 'GA4 Integration', icon: 'microscope', quality: '4K Ultra HD', items: ['Sees ALL traffic sources', 'Captures 95%+ of conversions', 'Learning period: days', 'Optimization: surgical precision'], color: '#10B981' }},
+      { type: 'ga4-mockup', title: 'Inside GA4: Data Collection Settings', description: 'This is where most advertisers stop. They enable basic tracking but miss the critical setting that shares ALL traffic data with advertising partners.' },
+      { type: 'content', title: 'The "All Traffic" Setting Nobody Uses', body: 'In GA4\'s Google signals settings, there\'s an option to share data with advertising partners. Most advertisers leave this off or only share Google Ads traffic. The hack? Enable "All website traffic" sharing with Meta. Suddenly, Meta sees your Google Ads converters, your organic searchers, your email clickers - everyone. It builds a 360-degree picture of who converts, not just a Meta-centric slice.' },
+      { type: 'signal-flow', title: 'How The Data Flows', steps: [
+        { source: 'Google Ads', icon: 'search', description: 'Search intent signals' },
+        { source: 'Organic Traffic', icon: 'sprout', description: 'Brand awareness patterns' },
+        { source: 'Email/SMS', icon: 'mail', description: 'High-intent engaged users' },
+        { source: 'Direct Traffic', icon: 'target', description: 'Repeat customer behavior' }
+      ], destination: 'Meta AI', insight: 'All sources flow into GA4, GA4 shares with Meta, Meta builds complete customer profiles' },
+      { type: 'cards', title: 'What Meta Learns From Cross-Channel Data', items: [
+        { title: 'Search Intent Patterns', description: 'People who search "best protein powder" on Google then convert? Meta finds others who behave similarly.' },
+        { title: 'Content Consumption', description: 'Blog readers who become customers? Meta identifies the content-to-purchase journey.' },
+        { title: 'Multi-Touch Attribution', description: 'Users who need 7 touchpoints? Meta learns the full journey, not just last-click.' }
+      ]},
+      { type: 'meta-connection-mockup', title: 'Connecting GA4 to Meta Business Suite', description: 'Once GA4 is configured, link it to Meta to start feeding comprehensive conversion data.' },
+      { type: 'example', scenario: 'Fitness Brand - Before/After GA4 Integration', before: { label: 'Meta-Only Data', text: 'CPL: $23.40. Learning phase: 14 days. Audience suggestions: broad fitness interests. Lookalike quality: mediocre (based on ~200 conversions/month from FB traffic only).' }, after: { label: 'GA4 All-Traffic Integration', text: 'CPL: $14.80 (-37%). Learning phase: 5 days. Audience: precision-targeted. Lookalike quality: excellent (based on ~900 total conversions/month from all sources).' }, insight: 'Same budget. 4x more signal data. 37% lower cost per lead.' },
+      { type: 'setup-checklist', title: 'Setting Up GA4 to Meta Integration', steps: [
+        { step: 1, title: 'Enable Google Signals in GA4', description: 'Admin > Data Settings > Data Collection > Turn on Google Signals', icon: 'zap' },
+        { step: 2, title: 'Configure Data Sharing', description: 'Admin > Data Settings > Data Sharing > Enable "Advertising personalization"', icon: 'link' },
+        { step: 3, title: 'Link GA4 to Meta', description: 'In Meta Business Suite, connect your GA4 property as a data source', icon: 'plug' },
+        { step: 4, title: 'Share All Traffic (Critical!)', description: 'Select "All website traffic" not just "Specific channels" when configuring', icon: 'target' }
+      ]},
+      { type: 'content', title: 'Enhanced Conversions: The Extra Mile', body: 'GA4\'s enhanced conversions go beyond basic event tracking. They capture hashed user data (email, phone) to match conversions across devices and sessions. When Meta receives enhanced conversion data, it can: 1) De-duplicate across devices 2) Build more accurate lookalikes 3) Attribute conversions that pixel alone would miss. This is especially powerful post-iOS 14.5 when client-side tracking got crippled.' },
+      { type: 'signal-quality', title: 'Signal Quality Comparison', competitors: { label: 'Your Competitors', quality: 35, sources: ['Meta Pixel only', 'No cross-channel data'] }, you: { label: 'You (With GA4)', quality: 92, sources: ['Meta Pixel + CAPI', 'GA4 All Traffic', 'Enhanced Conversions'] }},
+      { type: 'quiz', question: 'You want to improve Meta\'s ability to find customers similar to your Google Ads converters. What should you do?', options: ['Create a lookalike based on your Facebook pixel audience only', 'Enable GA4 "All Traffic" data sharing with Meta as an advertising partner', 'Upload a CSV of Google Ads converters to Meta manually each month', 'Run identical creative on both Google and Meta to "teach" the algorithm'], correctIndex: 1, feedback: { correct: 'Correct! By enabling "All Traffic" data sharing in GA4, Meta automatically receives conversion signals from Google Ads (and all other sources). This gives Meta a complete picture of who converts, allowing it to build much stronger lookalikes and targeting models than Facebook-only data ever could.', incorrect: 'Not the best approach. The most effective method is enabling GA4 "All Traffic" data sharing with Meta. This automatically and continuously feeds Meta your Google Ads conversions (plus organic, email, etc.) without manual uploads. Meta\'s AI then uses this complete dataset to build better lookalikes and targeting.' }},
+      { type: 'action-checklist', title: 'GA4 Integration Action Items', items: [
+        { task: 'Verify Google Signals is enabled in your GA4 property', done: false },
+        { task: 'Check that "All Traffic" data sharing is on (not channel-specific)', done: false },
+        { task: 'Link GA4 property to Meta Business Suite', done: false },
+        { task: 'Enable enhanced conversions in GA4 for cross-device matching', done: false },
+        { task: 'Wait 7-14 days, then compare CPL/ROAS before vs after', done: false }
+      ], bottomNote: 'This setup takes 30 minutes but can improve performance by 20-40%. Don\'t skip it.' },
+      { type: 'completion', sources: [] }
+    ];
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    // Enhanced Visual Comparison with SVG icons
+    const VisualComparisonSlide = ({ data }) => {
+      const getIcon = (iconName, color) => {
+        const iconProps = { style: { color } };
+        if (iconName === 'camera') return <span {...iconProps}><Icons.Camera /></span>;
+        if (iconName === 'microscope') return <span {...iconProps}><Icons.Microscope /></span>;
+        return null;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: data.leftCard.color }}>
+              <div className="text-center mb-4">
+                <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: `${data.leftCard.color}15` }}>
+                  {getIcon(data.leftCard.icon, data.leftCard.color)}
+                </div>
+                <div className="font-bold text-lg" style={{ color: data.leftCard.color }}>{data.leftCard.label}</div>
+                <div className="text-sm text-neutral-500">Quality: {data.leftCard.quality}</div>
+              </div>
+              <div className="space-y-2">
+                {data.leftCard.items.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-neutral-600">
+                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: data.leftCard.color }}></div>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: data.rightCard.color }}>
+              <div className="text-center mb-4">
+                <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: `${data.rightCard.color}15` }}>
+                  {getIcon(data.rightCard.icon, data.rightCard.color)}
+                </div>
+                <div className="font-bold text-lg" style={{ color: data.rightCard.color }}>{data.rightCard.label}</div>
+                <div className="text-sm text-neutral-500">Quality: {data.rightCard.quality}</div>
+              </div>
+              <div className="space-y-2">
+                {data.rightCard.items.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-neutral-600">
+                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: data.rightCard.color }}></div>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // GA4 Admin Panel Mockup - Realistic Google Analytics 4 UI
+    const GA4MockupSlide = ({ data }) => {
+      const [googleSignals, setGoogleSignals] = useState(false);
+      const [dataSharing, setDataSharing] = useState(false);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-4 max-w-lg mx-auto">{data.description}</motion.p>
+
+          {/* GA4 Interface Mockup */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border border-neutral-200 shadow-lg overflow-hidden">
+            {/* GA4 Header */}
+            <div className="bg-[#1a73e8] px-4 py-3 flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded bg-white/20 flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22.84 12.13a11 11 0 1 0-4.17 8.93l-2.07-2.07a8 8 0 1 1 3.36-6.22h-6.62v2.93h9.64a11.05 11.05 0 0 0-.14-3.57z"/></svg>
+                </div>
+                <span className="text-white font-medium text-sm">Analytics</span>
+              </div>
+              <div className="flex-1"></div>
+              <div className="text-white/80 text-xs">Your Property</div>
+            </div>
+
+            <div className="flex">
+              {/* Sidebar */}
+              <div className="w-48 bg-[#f8f9fa] border-r border-neutral-200 p-3 hidden md:block">
+                <div className="space-y-1">
+                  <div className="px-3 py-2 text-xs text-neutral-500 font-medium">ADMIN</div>
+                  <div className="px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 rounded cursor-pointer flex items-center gap-2">
+                    <Icons.Settings />
+                    <span>Account</span>
+                  </div>
+                  <div className="px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 rounded cursor-pointer flex items-center gap-2">
+                    <Icons.Database />
+                    <span>Property</span>
+                  </div>
+                  <div className="px-3 py-2 text-sm bg-blue-50 text-[#1a73e8] rounded cursor-pointer flex items-center gap-2 font-medium">
+                    <Icons.Signal />
+                    <span>Data Settings</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="flex-1 p-4 md:p-6">
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-neutral-800 mb-1">Data Collection</h3>
+                  <p className="text-sm text-neutral-500">Configure how data is collected and shared</p>
+                </div>
+
+                {/* Google Signals Toggle */}
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className={`p-4 rounded-lg border-2 mb-4 transition-all cursor-pointer ${googleSignals ? 'border-[#1a73e8] bg-blue-50' : 'border-neutral-200 bg-white'}`}
+                  onClick={() => setGoogleSignals(!googleSignals)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${googleSignals ? 'bg-[#1a73e8]' : 'bg-neutral-100'}`}>
+                        <span className={googleSignals ? 'text-white' : 'text-neutral-500'}><Icons.Signal /></span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-neutral-800 text-sm">Google Signals Data Collection</div>
+                        <div className="text-xs text-neutral-500">Enable demographics and cross-device data</div>
+                      </div>
+                    </div>
+                    <motion.div
+                      className={`w-12 h-7 rounded-full p-1 transition-colors ${googleSignals ? 'bg-[#1a73e8]' : 'bg-neutral-300'}`}
+                      animate={{ backgroundColor: googleSignals ? '#1a73e8' : '#d1d5db' }}
+                    >
+                      <motion.div
+                        className="w-5 h-5 rounded-full bg-white shadow"
+                        animate={{ x: googleSignals ? 20 : 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      />
+                    </motion.div>
+                  </div>
+                  {googleSignals && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mt-3 pt-3 border-t border-blue-200"
+                    >
+                      <div className="flex items-center gap-2 text-sm text-[#1a73e8]">
+                        <Icons.Check />
+                        <span>Enabled - Cross-device data active</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+
+                {/* Data Sharing Toggle */}
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${dataSharing ? 'border-[#1a73e8] bg-blue-50' : 'border-neutral-200 bg-white'}`}
+                  onClick={() => setDataSharing(!dataSharing)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${dataSharing ? 'bg-[#1a73e8]' : 'bg-neutral-100'}`}>
+                        <span className={dataSharing ? 'text-white' : 'text-neutral-500'}><Icons.Share /></span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-neutral-800 text-sm">Advertising Personalization</div>
+                        <div className="text-xs text-neutral-500">Share data with advertising partners</div>
+                      </div>
+                    </div>
+                    <motion.div
+                      className={`w-12 h-7 rounded-full p-1 transition-colors ${dataSharing ? 'bg-[#1a73e8]' : 'bg-neutral-300'}`}
+                      animate={{ backgroundColor: dataSharing ? '#1a73e8' : '#d1d5db' }}
+                    >
+                      <motion.div
+                        className="w-5 h-5 rounded-full bg-white shadow"
+                        animate={{ x: dataSharing ? 20 : 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      />
+                    </motion.div>
+                  </div>
+                  {dataSharing && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mt-3 pt-3 border-t border-blue-200"
+                    >
+                      <div className="text-sm text-neutral-700 mb-2">Traffic to share:</div>
+                      <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <input type="radio" name="traffic" className="text-[#1a73e8]" />
+                          <span className="text-neutral-600">Google Ads traffic only</span>
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <input type="radio" name="traffic" className="text-[#1a73e8]" defaultChecked />
+                          <span className="text-[#1a73e8] font-medium">All website traffic</span>
+                          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Recommended</span>
+                        </label>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+
+                {/* Instruction hint */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg"
+                >
+                  <p className="text-sm text-amber-800 flex items-start gap-2">
+                    <span className="mt-0.5"><Icons.Zap /></span>
+                    <span>Click the toggles above to see how this configuration enables the GA4 signal hack</span>
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Enhanced Signal Flow with SVG icons
+    const SignalFlowSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = {
+          search: <Icons.Search />,
+          sprout: <Icons.Sprout />,
+          mail: <Icons.Mail />,
+          target: <Icons.Target />
+        };
+        return icons[iconName] || <Icons.Globe />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="flex flex-col items-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 w-full">
+              {data.steps.map((step, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-3 text-center">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 mx-auto mb-2 flex items-center justify-center text-[var(--accent)]">
+                    {getIcon(step.icon)}
+                  </div>
+                  <div className="font-bold text-neutral-900 text-xs mb-1">{step.source}</div>
+                  <div className="text-neutral-500 text-[10px]">{step.description}</div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="flex flex-col items-center mb-4">
+              <div className="w-0.5 h-6 bg-gradient-to-b from-neutral-300 to-[var(--accent)]"></div>
+              <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[var(--accent)]">
+                <Icons.ArrowDown />
+              </div>
+              <div className="w-0.5 h-6 bg-gradient-to-b from-[var(--accent)] to-neutral-300"></div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }} className="px-8 py-4 rounded-xl text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+              {data.destination}
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-6 text-center">
+            <p className="text-sm text-neutral-600 bg-blue-50 border border-blue-200 rounded-lg p-3">{data.insight}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Meta Business Suite Connection Mockup
+    const MetaConnectionMockupSlide = ({ data }) => {
+      const [connected, setConnected] = useState(false);
+      const [step, setStep] = useState(0);
+
+      const connectGA4 = () => {
+        setStep(1);
+        setTimeout(() => setStep(2), 1000);
+        setTimeout(() => {
+          setStep(3);
+          setConnected(true);
+        }, 2000);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-500 text-center mb-4 max-w-lg mx-auto">{data.description}</motion.p>
+
+          {/* Meta Business Suite Mockup */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border border-neutral-200 shadow-lg overflow-hidden">
+            {/* Meta Header */}
+            <div className="bg-[#1877f2] px-4 py-3 flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded bg-white flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </div>
+                <span className="text-white font-semibold text-sm">Business Suite</span>
+              </div>
+              <div className="flex-1"></div>
+              <div className="text-white/80 text-xs">Your Business</div>
+            </div>
+
+            <div className="flex">
+              {/* Sidebar */}
+              <div className="w-48 bg-[#f0f2f5] border-r border-neutral-200 p-3 hidden md:block">
+                <div className="space-y-1">
+                  <div className="px-3 py-2 text-sm text-neutral-600 hover:bg-white rounded cursor-pointer flex items-center gap-2">
+                    <Icons.Layers />
+                    <span>Overview</span>
+                  </div>
+                  <div className="px-3 py-2 text-sm bg-white text-[#1877f2] rounded cursor-pointer flex items-center gap-2 font-medium shadow-sm">
+                    <Icons.Database />
+                    <span>Data Sources</span>
+                  </div>
+                  <div className="px-3 py-2 text-sm text-neutral-600 hover:bg-white rounded cursor-pointer flex items-center gap-2">
+                    <Icons.Target />
+                    <span>Events Manager</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="flex-1 p-4 md:p-6">
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-[#1c1e21] mb-1">Connect Data Sources</h3>
+                  <p className="text-sm text-[#65676b]">Link external analytics platforms to enhance your targeting</p>
+                </div>
+
+                {/* GA4 Connection Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className={`p-4 rounded-xl border-2 transition-all ${connected ? 'border-green-400 bg-green-50' : 'border-[#dddfe2] bg-white'}`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-white border border-neutral-200 flex items-center justify-center shadow-sm">
+                        <svg width="28" height="28" viewBox="0 0 24 24">
+                          <path fill="#F9AB00" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10"/>
+                          <path fill="#E37400" d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10"/>
+                          <circle fill="#fff" cx="12" cy="12" r="5"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-[#1c1e21]">Google Analytics 4</div>
+                        <div className="text-xs text-[#65676b]">{connected ? 'Connected - Sharing all traffic data' : 'Import audiences and conversions'}</div>
+                      </div>
+                    </div>
+                    {connected ? (
+                      <div className="flex items-center gap-2 text-green-600 font-medium text-sm">
+                        <Icons.Check />
+                        <span>Connected</span>
+                      </div>
+                    ) : (
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={connectGA4}
+                        disabled={step > 0}
+                        className="px-4 py-2 bg-[#1877f2] text-white rounded-lg text-sm font-medium disabled:opacity-50"
+                      >
+                        {step === 0 ? 'Connect' : step === 1 ? 'Authenticating...' : step === 2 ? 'Syncing...' : 'Done'}
+                      </motion.button>
+                    )}
+                  </div>
+
+                  {/* Connection Progress */}
+                  {step > 0 && !connected && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="pt-4 border-t border-neutral-200"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-[#1877f2] text-white' : 'bg-neutral-200'}`}>
+                            {step > 1 ? <Icons.Check /> : <span className="text-xs">1</span>}
+                          </div>
+                          <span className={step >= 1 ? 'text-[#1c1e21]' : 'text-neutral-400'}>Authenticating with Google</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-[#1877f2] text-white' : 'bg-neutral-200'}`}>
+                            {step > 2 ? <Icons.Check /> : <span className="text-xs">2</span>}
+                          </div>
+                          <span className={step >= 2 ? 'text-[#1c1e21]' : 'text-neutral-400'}>Syncing property data</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Connected State */}
+                  {connected && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="pt-4 border-t border-green-200"
+                    >
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div className="p-2 bg-white rounded-lg border border-green-200">
+                          <div className="text-lg font-bold text-[#1c1e21]">4</div>
+                          <div className="text-xs text-[#65676b]">Traffic Sources</div>
+                        </div>
+                        <div className="p-2 bg-white rounded-lg border border-green-200">
+                          <div className="text-lg font-bold text-[#1c1e21]">892</div>
+                          <div className="text-xs text-[#65676b]">Conversions/mo</div>
+                        </div>
+                        <div className="p-2 bg-white rounded-lg border border-green-200">
+                          <div className="text-lg font-bold text-green-600">4.5x</div>
+                          <div className="text-xs text-[#65676b]">More Data</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+
+                {/* Hint */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg"
+                >
+                  <p className="text-sm text-[#1877f2] flex items-start gap-2">
+                    <span className="mt-0.5"><Icons.Zap /></span>
+                    <span>Click "Connect" to see how Meta receives your GA4 data</span>
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 border-2 border-red-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-400 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 border-2 rounded-xl p-5" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div><span className="font-semibold text-sm" style={{ color: 'var(--accent-light)' }}>{data.after.label}</span></div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Enhanced Setup Checklist with SVG icons
+    const SetupChecklistSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = {
+          zap: <Icons.Zap />,
+          link: <Icons.Link />,
+          plug: <Icons.Plug />,
+          target: <Icons.Target />
+        };
+        return icons[iconName] || <Icons.Settings />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                    {getIcon(step.icon)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-bold text-neutral-400">STEP {step.step}</span>
+                    </div>
+                    <h3 className="font-bold text-neutral-900 text-sm mb-1">{step.title}</h3>
+                    <p className="text-neutral-600 text-xs font-mono bg-neutral-50 px-2 py-1 rounded">{step.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Signal Quality Comparison Visual
+    const SignalQualitySlide = ({ data }) => {
+      const [animated, setAnimated] = useState(false);
+
+      useEffect(() => {
+        setTimeout(() => setAnimated(true), 500);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Competitors */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white border-2 border-neutral-200 rounded-xl p-5"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-500">
+                  <Icons.Eye />
+                </div>
+                <span className="font-semibold text-neutral-700">{data.competitors.label}</span>
+              </div>
+
+              {/* Quality Meter */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-neutral-500">Signal Quality</span>
+                  <span className="text-lg font-bold text-red-500">{data.competitors.quality}%</span>
+                </div>
+                <div className="h-4 bg-neutral-100 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: animated ? `${data.competitors.quality}%` : 0 }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    className="h-full bg-gradient-to-r from-red-400 to-red-500 rounded-full"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {data.competitors.sources.map((source, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-neutral-500">
+                    <Icons.X />
+                    <span>{source}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* You */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white border-2 border-green-400 rounded-xl p-5"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
+                  <Icons.TrendingUp />
+                </div>
+                <span className="font-semibold text-green-700">{data.you.label}</span>
+              </div>
+
+              {/* Quality Meter */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-neutral-500">Signal Quality</span>
+                  <span className="text-lg font-bold text-green-600">{data.you.quality}%</span>
+                </div>
+                <div className="h-4 bg-neutral-100 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: animated ? `${data.you.quality}%` : 0 }}
+                    transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
+                    className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {data.you.sources.map((source, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-green-600">
+                    <Icons.Check />
+                    <span>{source}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-6 text-center"
+          >
+            <div className="inline-block px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
+              <span className="text-green-700 font-medium text-sm">
+                2.6x more signal data = 37% lower acquisition costs
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const ActionChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState({});
+      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
+                    {checkedItems[i] && <Icons.Check />}
+                  </div>
+                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the GA4 signal hack: sharing all traffic data with Meta gives it complete customer visibility. While competitors run blind, you're feeding Meta 4K data to find your best customers faster.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'visual-comparison': return <VisualComparisonSlide data={slide} />;
+          case 'ga4-mockup': return <GA4MockupSlide data={slide} />;
+          case 'signal-flow': return <SignalFlowSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'meta-connection-mockup': return <MetaConnectionMockupSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'setup-checklist': return <SetupChecklistSlide data={slide} />;
+          case 'signal-quality': return <SignalQualitySlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>

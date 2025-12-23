@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Commander to Collaborator: Your New Role in the AI Era | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #8b5cf6; --accent-dark: #7c3aed; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-commander-collaborator',
+      title: 'From Commander to Collaborator',
+      description: 'Your job has fundamentally changed. Stop commanding the algorithm. Start collaborating with it.',
+      accentColor: '#8b5cf6',
+      duration: '6 min',
+      nextLesson: { id: 'meta-sequence-learning', title: 'How GEM Reads Your Customer\'s Story', teaser: 'Discover how GEM processes thousands of events to predict exactly what your customer will do next.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why trying to outsmart Meta\'s AI is a losing battle in 2026', 'The fundamental mindset shift from Commander to Collaborator', 'How to teach the AI what a perfect customer looks like (instead of telling it WHO to find)'] },
+      { type: 'hook', headline: 'You\'re still playing chess against an opponent who can calculate 10 billion moves per second. And you\'re trying to outsmart it with manual targeting.', subtext: 'In 2026, the advertisers who win are the ones who stopped fighting the algorithm. They became partners with it. The machine\'s understanding is simply too vast for human micro-management. Your job has fundamentally shifted - and most advertisers haven\'t caught on yet.' },
+      { type: 'content', title: 'The Old Game: Playing Commander', body: 'For years, being a "good media buyer" meant one thing: control.\n\nYou manually defined detailed audiences. Age 25-45. Interest: fitness. Behavior: online shoppers. Location: major cities. You forced specific placements. Only Instagram Feed. Only Mobile. Never Audience Network. You fought the algorithm at every turn. "Don\'t you DARE put my ad there."\n\nThis worked because Meta\'s AI was... dumb. It needed your guidance. It needed your human intuition. Without your commands, it would waste your budget on irrelevant audiences.\n\nThat era is over.' },
+      { type: 'comparison', title: 'The Fundamental Shift', oldWay: {
+        title: 'The Commander (Old Way)',
+        icon: 'chess',
+        items: ['Manually defining detailed audiences', 'Forcing specific placements', 'Fighting the algorithm', 'Telling the AI WHO to find', 'Micro-managing every variable'],
+        result: 'You vs. the machine'
+      }, newWay: {
+        title: 'The Collaborator (New Way)',
+        icon: 'handshake',
+        items: ['Teaching AI what perfect customers look like', 'Providing high-quality data signals', 'Guiding the algorithm strategically', 'Letting the AI find WHO based on WHAT', 'Setting direction, not micro-managing'],
+        result: 'You + the machine'
+      }},
+      { type: 'content', title: 'Why Collaboration Beats Command', body: 'GEM - Meta\'s Generative Ads Recommendation Model - processes data at a scale impossible for humans to match.\n\n23x more computational power than previous systems. It analyzes thousands of signals per user: what they click, what they ignore, how long they pause, what they buy, who their friends are, what time they\'re most likely to convert.\n\nYou think you know your customer better than GEM? GEM has observed billions of purchases, trillions of interactions, patterns you couldn\'t spot in a lifetime of analysis.\n\nFighting this system is like trying to outswim a speedboat. You might be a great swimmer, but the physics just don\'t work in your favor.' },
+      { type: 'insight', title: 'The New Mandate', quote: 'Your new job is not to tell the AI WHO to find. It\'s to teach the AI WHAT a perfect customer looks like.', explanation: 'This is the most important mindset shift in modern advertising. Stop giving commands. Start providing curriculum. Stop restricting. Start educating. The AI is your student, not your servant.' },
+      { type: 'framework', title: 'How to Collaborate Effectively', steps: [
+        { number: '01', title: 'Feed High-Quality Data', description: 'Give GEM clean, accurate conversion signals. Proper Pixel setup. CAPI implementation. Event match quality above 8.0. The better your data, the faster GEM learns what "success" looks like for your business.', icon: 'data' },
+        { number: '02', title: 'Provide Strategic Direction', description: 'Use Custom Audiences as "suggestions" not restrictions. Add your top customers, website visitors, and engagers as signals. GEM uses these to understand your ideal customer profile, then finds millions more like them.', icon: 'compass' },
+        { number: '03', title: 'Let Creative Do the Targeting', description: 'Your ad creative itself teaches GEM who to target. Luxury visuals attract high spenders. UGC attracts social-proof seekers. Different creative = different signals = different audiences discovered.', icon: 'creative' },
+        { number: '04', title: 'Trust the Process', description: 'Stop panicking in the learning phase. Let GEM gather data. Don\'t make changes every 12 hours. The algorithm needs time to learn - your impatience is the enemy of performance.', icon: 'trust' }
+      ]},
+      { type: 'mockup', title: 'The Collaborator\'s Dashboard', description: 'Instead of 47 ad sets with hyper-specific targeting, the Collaborator runs 1-3 broad campaigns with diverse creatives. They watch different metrics. They optimize differently.', mockupType: 'dashboard-comparison' },
+      { type: 'content', title: 'What This Looks Like in Practice', body: 'The Commander: "I need 12 ad sets. One for women 25-34 interested in yoga. One for men 35-44 interested in fitness. One for..." Result: 47 fragmented campaigns, none with enough data to learn.\n\nThe Collaborator: "I need 1 campaign. Broad targeting. 15 diverse creatives. I\'ll let GEM figure out who resonates with each creative style." Result: GEM rapidly tests millions of combinations, finds customers you never would have thought to target.\n\nThe Collaborator\'s campaign might show your luxury product ad to a 22-year-old who doesn\'t "look" wealthy - but GEM knows from her purchase history that she spends $500/month on skincare. You would never have targeted her. GEM found her in hours.' },
+      { type: 'quiz', question: 'In the AI Era, what is your PRIMARY role as an advertiser?', options: ['Manually define the most precise audience segments possible', 'Fight against Advantage+ settings to maintain control', 'Teach the AI what a perfect customer looks like through data and creative', 'Manage 50+ ad sets to test every targeting variable'], correctIndex: 2, feedback: { correct: 'Exactly! Your role has shifted from Commander to Collaborator. Instead of telling the AI WHO to find, you teach it WHAT a perfect customer looks like. You do this through high-quality conversion data, strategic Custom Audience suggestions, and diverse creative that signals different buyer types. The AI then finds audiences you never could have discovered manually.', incorrect: 'Not quite. The Commander mentality - controlling every variable, fighting the algorithm, managing dozens of hyper-targeted ad sets - is the old playbook. In 2026, your job is to COLLABORATE with GEM: provide clean data, give strategic direction through Custom Audiences, and use diverse creative to teach the AI what different buyers look like. Stop commanding. Start teaching.' }},
+      { type: 'completion', sources: [{ name: 'The Meta Iceberg: Unlocking AI Mastery', url: '#' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Chess: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 16l-1.447.724a1 1 0 0 0-.553.894V20h12v-2.382a1 1 0 0 0-.553-.894L16 16"/><path d="M8.5 16a5.5 5.5 0 0 1 7 0"/><path d="M12 3v4"/><path d="M10 5h4"/><circle cx="12" cy="10" r="3"/></svg>,
+      Handshake: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>,
+      Data: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>,
+      Compass: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>,
+      Creative: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>,
+      Trust: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center text-white">
+                <Icons.Chess />
+              </div>
+              <h3 className="text-xl font-bold text-red-700">{data.oldWay.title}</h3>
+            </div>
+            <ul className="space-y-3 mb-4">
+              {data.oldWay.items.map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-red-800">
+                  <span className="text-red-500 mt-0.5">×</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="bg-red-100 rounded-lg p-3">
+              <span className="text-xs uppercase tracking-wider text-red-500 block mb-1">Result</span>
+              <span className="text-sm font-bold text-red-700">{data.oldWay.result}</span>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
+                <Icons.Handshake />
+              </div>
+              <h3 className="text-xl font-bold" style={{ color: 'var(--accent-dark)' }}>{data.newWay.title}</h3>
+            </div>
+            <ul className="space-y-3 mb-4">
+              {data.newWay.items.map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm" style={{ color: '#581c87' }}>
+                  <span className="mt-0.5" style={{ color: 'var(--accent)' }}>✓</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="rounded-lg p-3" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+              <span className="text-xs uppercase tracking-wider block mb-1" style={{ color: 'var(--accent)' }}>Result</span>
+              <span className="text-sm font-bold" style={{ color: 'var(--accent-dark)' }}>{data.newWay.result}</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const InsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="rounded-2xl p-8 md:p-12 mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+          <p className="text-xl md:text-2xl font-bold text-white text-center leading-relaxed">"{data.quote}"</p>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-base md:text-lg text-neutral-600 text-center leading-relaxed">{data.explanation}</motion.p>
+      </div>
+    );
+
+    const FrameworkSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-purple-300 transition-all">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                  <span className="text-lg font-bold">{step.number}</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-black mb-2">{step.title}</h3>
+                  <p className="text-sm text-neutral-600 leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-red-200 rounded-xl overflow-hidden">
+            <div className="bg-red-50 px-4 py-3 border-b border-red-200">
+              <span className="text-sm font-bold text-red-700">Commander's Ads Manager</span>
+            </div>
+            <div className="p-4 space-y-2">
+              {['Women 25-34 Yoga', 'Men 35-44 Fitness', 'Parents Wellness', 'Urban Professionals'].map((item, i) => (
+                <div key={i} className="flex items-center justify-between bg-red-50 rounded-lg p-3">
+                  <span className="text-xs text-red-700">{item}</span>
+                  <span className="text-xs text-red-500 font-mono">47 impressions</span>
+                </div>
+              ))}
+              <div className="text-center pt-2 text-xs text-red-400">...and 43 more ad sets</div>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-purple-200 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-purple-200" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+              <span className="text-sm font-bold" style={{ color: 'var(--accent-dark)' }}>Collaborator's Ads Manager</span>
+            </div>
+            <div className="p-4 space-y-2">
+              <div className="flex items-center justify-between rounded-lg p-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs" style={{ color: 'var(--accent-dark)' }}>Broad - All Creatives</span>
+                <span className="text-xs font-mono" style={{ color: 'var(--accent)' }}>124,000 impressions</span>
+              </div>
+              <div className="pt-2 text-xs text-neutral-500">
+                <div className="flex justify-between mb-1"><span>15 creative variations</span><span className="text-green-600">↑ 34% CTR</span></div>
+                <div className="flex justify-between"><span>GEM learning rate</span><span style={{ color: 'var(--accent)' }}>Optimal</span></div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-purple-300 hover:bg-purple-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-purple-50 border-2 border-purple-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand the fundamental mindset shift from Commander to Collaborator. Stop fighting the AI. Start teaching it.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <div key={i} className="text-sm flex items-center gap-1 mb-1" style={{ color: 'var(--accent)' }}>{source.name}</div>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
+          case 'insight': return <InsightSlide data={slide} />;
+          case 'framework': return <FrameworkSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => { if (Math.abs(i - currentSlide) === 1 || i === currentSlide) { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); } }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gif.src && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gif.opacity }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gif.src} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

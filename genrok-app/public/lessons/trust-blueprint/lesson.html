@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Trust Blueprint</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="../shared/greetings.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow: hidden; }
+    .font-display { font-family: 'Fraunces', serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const LESSON_CONFIG = {
+      id: 'trust-blueprint',
+      title: 'The Trust Blueprint',
+      description: 'Build instant credibility that converts strangers into buyers',
+      accentColor: '#22c55e',
+      duration: '9 min',
+      nextLesson: {
+        id: 'identity-marketing',
+        title: 'Identity Marketing',
+        teaser: "Sell to who they WANT to be, not who they are."
+      }
+    };
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: '{GREETING}',
+        subtitle: "In a world of scams and skepticism, trust isn't just nice to have—it's the ultimate conversion currency.",
+        gifUrl: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/welcome-wave.mp4'
+      },
+      {
+        type: 'hook',
+        title: 'The Digital Skeptic',
+        content: 'Every visitor arrives with their guard up. They\'ve been burned before.',
+        highlight: 'Your #1 job: eliminate perceived risk.',
+        subtext: 'Do that, and conversions skyrocket.'
+      },
+      {
+        type: 'bigStatement',
+        statement: 'Trust is the ultimate',
+        emphasis: 'Conversion Currency.',
+        footer: 'Without it, nothing else matters. With it, price becomes secondary.'
+      },
+      {
+        type: 'trustTriggers',
+        title: 'The Trust Control Panel',
+        triggers: [
+          { name: 'Social Proof', description: '"People like me do this"', level: 90 },
+          { name: 'Halo Effect', description: 'First impressions matter', level: 85 },
+          { name: 'Risk Reversal', description: 'Eliminate fear completely', level: 95 }
+        ]
+      },
+      {
+        type: 'socialProof',
+        title: 'Trigger #1: Social Proof',
+        principle: 'We look to others to determine our own actions.',
+        elements: [
+          { type: 'Reviews', example: '4.9/5 from 2,341 reviews', impact: 'High' },
+          { type: 'Testimonials', example: '"This changed my business" - Sarah L.', impact: 'Very High' },
+          { type: 'Numbers', example: 'Join 50,000+ marketers', impact: 'High' },
+          { type: 'Live Notifications', example: 'John from NYC just purchased...', impact: 'Medium' }
+        ]
+      },
+      {
+        type: 'example',
+        context: 'E-commerce Blueprint',
+        title: 'Social Proof Stack',
+        before: {
+          label: 'Weak Trust',
+          content: 'Great Product\n\nBuy Now'
+        },
+        after: {
+          label: 'Trust Stack',
+          content: '★★★★★ 4.9/5 (2,341 reviews)\n"This tool changed the game for our ROI."\n- Sarah L., Head of Growth\n\nJoin 50,000+ Marketers Who Trust Us\n\nStart Your Free Trial'
+        },
+        result: '+89% conversion with full trust stack'
+      },
+      {
+        type: 'haloEffect',
+        title: 'Trigger #2: The Halo Effect',
+        principle: 'A positive first impression colors ALL future judgments.',
+        applications: [
+          { area: 'Design', impact: 'Professional design = trustworthy business' },
+          { area: 'First Touch', impact: 'First ad/email must be exceptional quality' },
+          { area: 'Load Speed', impact: 'Fast = modern = reliable' }
+        ],
+        insight: 'One strong positive impression creates a "halo" that protects against minor issues.'
+      },
+      {
+        type: 'content',
+        title: 'First Impressions Checklist',
+        points: [
+          { title: 'Landing Page Design', detail: 'Clean, professional, loads in under 2 seconds. No clutter.' },
+          { title: 'First Email', detail: 'Deliver exceptional value immediately. Over-deliver early.' },
+          { title: 'Social Presence', detail: 'Your social profiles ARE your first impression for many.' }
+        ]
+      },
+      {
+        type: 'riskReversal',
+        title: 'Trigger #3: Risk Reversal',
+        principle: 'The closer to zero perceived risk, the higher the conversion rate.',
+        levels: [
+          { level: 'Standard', example: '30-Day Money-Back Guarantee', strength: 60 },
+          { level: 'Strong', example: '"Love it or it\'s FREE"', strength: 80 },
+          { level: 'Ultimate', example: '"Make $X or we refund 2X"', strength: 100 }
+        ]
+      },
+      {
+        type: 'guaranteeBuilder',
+        title: 'Building Powerful Guarantees',
+        components: [
+          { element: 'Time Frame', examples: ['30 days', '60 days', 'Lifetime'] },
+          { element: 'Condition', examples: ['No questions asked', 'If you don\'t see results', 'If you\'re not 100% satisfied'] },
+          { element: 'Stakes', examples: ['Full refund', 'Double your money back', 'Keep the bonuses anyway'] }
+        ],
+        formula: '[Time Frame] + [Condition] + [Stakes] = Irresistible Guarantee'
+      },
+      {
+        type: 'visual',
+        title: 'The Trust Pyramid',
+        diagram: 'pyramid',
+        layers: [
+          { label: 'Risk Reversal', description: 'Foundation: Remove all fear' },
+          { label: 'Social Proof', description: 'Validation: Others trust you' },
+          { label: 'Halo Effect', description: 'Perception: Premium = Trustworthy' }
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'Which guarantee is most likely to convert hesitant buyers?',
+        options: [
+          { text: '"30-day money-back guarantee"', correct: false },
+          { text: '"Try risk-free"', correct: false },
+          { text: '"Double your revenue or we pay you $500"', correct: true },
+          { text: '"Satisfaction guaranteed"', correct: false }
+        ],
+        explanation: 'Specific, bold guarantees that stake something real convert best. Vague guarantees like "satisfaction guaranteed" are forgettable. Putting skin in the game builds trust.',
+        celebrationGif: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/celebration-2.mp4'
+      },
+      {
+        type: 'actionSlide',
+        title: 'Trust Building Checklist',
+        actions: [
+          'Add social proof above the fold on every landing page',
+          'Audit your first impression (design, speed, first email)',
+          'Upgrade your guarantee from generic to specific and bold',
+          'Display trust badges, logos, and certifications prominently'
+        ]
+      },
+      {
+        type: 'completion',
+        title: 'Trust Lever: Mastered',
+        message: 'You now know how to turn skeptical strangers into confident buyers. Trust isn\'t built by accident—it\'s engineered.',
+        nextLessonTeaser: 'Next: Identity Marketing—sell to who they WANT to be, not who they are.'
+      }
+    ];
+
+    const WelcomeSlide = ({ slide, accentColor, userName }) => {
+      const [showVideo, setShowVideo] = useState(true);
+      const title = slide.title.replace('{GREETING}', window.getGreeting ? window.getGreeting(userName) : `Hey${userName ? `, ${userName}` : ''}`);
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          {showVideo && slide.gifUrl && (
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-8">
+              <video autoPlay loop muted playsInline className="w-40 h-40 rounded-full object-cover border-4" style={{ borderColor: accentColor }} onError={() => setShowVideo(false)}>
+                <source src={slide.gifUrl} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+          <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-6xl font-bold mb-6" style={{ color: accentColor }}>{title}</motion.h1>
+          <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl md:text-2xl text-gray-300 max-w-2xl">{slide.subtitle}</motion.p>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-6xl font-bold mb-8">{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl">{slide.content}</motion.p>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl max-w-xl" style={{ background: `${accentColor}15`, border: `2px solid ${accentColor}` }}>
+          <p className="text-2xl font-bold" style={{ color: accentColor }}>{slide.highlight}</p>
+        </motion.div>
+        {slide.subtext && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-6">{slide.subtext}</motion.p>}
+      </div>
+    );
+
+    const BigStatementSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.p initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-2xl md:text-3xl text-gray-400 mb-4">{slide.statement}</motion.p>
+        <motion.h1 initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-7xl font-black" style={{ color: accentColor }}>{slide.emphasis}</motion.h1>
+        {slide.footer && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-8 text-lg">{slide.footer}</motion.p>}
+      </div>
+    );
+
+    const TrustTriggersSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="w-full max-w-2xl space-y-6">
+          {slide.triggers.map((trigger, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gray-900 rounded-xl p-6 border border-gray-800">
+              <div className="flex justify-between mb-3">
+                <span className="font-bold text-lg">{trigger.name}</span>
+                <span className="text-gray-400">{trigger.description}</span>
+              </div>
+              <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${trigger.level}%` }} transition={{ delay: 0.5 + i * 0.15, duration: 0.8 }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${accentColor}, ${accentColor}99)` }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const SocialProofSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10">{slide.principle}</motion.p>
+        <div className="grid md:grid-cols-2 gap-4 max-w-3xl w-full">
+          {slide.elements.map((el, i) => (
+            <motion.div key={i} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-bold" style={{ color: accentColor }}>{el.type}</h3>
+                <span className={`text-xs px-2 py-1 rounded-full ${el.impact === 'Very High' ? 'bg-green-500/20 text-green-400' : el.impact === 'High' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-700 text-gray-400'}`}>{el.impact}</span>
+              </div>
+              <p className="text-gray-300 text-sm italic">"{el.example}"</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ExampleSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.context}</motion.span>
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <p className="text-red-400 text-sm uppercase tracking-wider mb-4">{slide.before.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.before.content}</p>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.after.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.after.content}</p>
+          </motion.div>
+        </div>
+        {slide.result && <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 px-6 py-3 rounded-full font-bold" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.result}</motion.div>}
+      </div>
+    );
+
+    const HaloEffectSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10 text-center max-w-xl">{slide.principle}</motion.p>
+        <div className="space-y-4 max-w-xl w-full">
+          {slide.applications.map((app, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-16 text-center font-bold text-sm px-2 py-1 rounded-full" style={{ background: `${accentColor}20`, color: accentColor }}>{app.area}</div>
+              <p className="flex-1 text-gray-300">{app.impact}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 text-gray-500 text-center max-w-md">{slide.insight}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-6 max-w-2xl w-full">
+          {slide.points.map((point, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-black flex-shrink-0" style={{ background: accentColor }}>{i + 1}</div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">{point.title}</h3>
+                <p className="text-gray-400">{point.detail}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const RiskReversalSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10">{slide.principle}</motion.p>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.levels.map((level, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+              <div className="flex justify-between mb-3">
+                <span className="font-bold" style={{ color: i === 2 ? accentColor : 'white' }}>{level.level}</span>
+                <span className="text-gray-400 italic">"{level.example}"</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${level.strength}%` }} transition={{ delay: 0.5 + i * 0.15, duration: 0.6 }} className="h-full rounded-full" style={{ background: accentColor }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const GuaranteeBuilderSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl w-full mb-8">
+          {slide.components.map((comp, i) => (
+            <motion.div key={i} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+              <h3 className="font-bold mb-3" style={{ color: accentColor }}>{comp.element}</h3>
+              <ul className="space-y-2">
+                {comp.examples.map((ex, j) => (
+                  <li key={j} className="text-gray-400 text-sm flex items-center gap-2">
+                    <span style={{ color: accentColor }}>•</span>{ex}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="p-4 rounded-xl font-mono text-center" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.formula}</motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="flex flex-col items-center gap-2 max-w-md w-full">
+          {slide.layers.map((layer, i) => (
+            <motion.div key={i} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 + i * 0.2 }} className="w-full p-6 rounded-2xl text-center" style={{ background: i === 0 ? accentColor : i === 1 ? `${accentColor}60` : `${accentColor}30`, width: `${100 - i * 15}%` }}>
+              <p className={`font-bold ${i === 0 ? 'text-black' : ''}`}>{layer.label}</p>
+              <p className={`text-sm ${i === 0 ? 'text-black/70' : 'text-gray-300'}`}>{layer.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ slide, accentColor }) => {
+      const [selected, setSelected] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const handleSelect = (i) => { if (selected === null) { setSelected(i); setShowResult(true); }};
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-8">
+          <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-3xl md:text-4xl font-bold mb-8 text-center max-w-2xl">{slide.question}</motion.h1>
+          <div className="grid gap-4 max-w-xl w-full">
+            {slide.options.map((opt, i) => (
+              <motion.button key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={selected !== null} className={`p-4 rounded-xl text-left transition-all border-2 ${selected === i ? (opt.correct ? 'border-green-500 bg-green-500/20' : 'border-red-500 bg-red-500/20') : selected !== null && opt.correct ? 'border-green-500 bg-green-500/20' : 'border-gray-700 hover:border-gray-500 bg-gray-900'}`}>{opt.text}</motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 rounded-2xl max-w-xl text-center" style={{ background: `${accentColor}20` }}>
+                {slide.options[selected]?.correct && slide.celebrationGif && (
+                  <video autoPlay loop muted playsInline className="w-24 h-24 mx-auto mb-4 rounded-full"><source src={slide.celebrationGif} type="video/mp4" /></video>
+                )}
+                <p className="text-lg">{slide.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const ActionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.actions.map((action, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-black font-bold" style={{ background: accentColor }}>{i + 1}</div>
+              <p className="text-lg">{action}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CompletionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 rounded-full flex items-center justify-center mb-8" style={{ background: accentColor }}>
+          <svg className="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+        </motion.div>
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="font-display text-4xl md:text-5xl font-bold mb-4" style={{ color: accentColor }}>{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-xl text-gray-300 max-w-xl mb-8">{slide.message}</motion.p>
+        {slide.nextLessonTeaser && (
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="p-6 rounded-2xl bg-gray-900 border border-gray-800 max-w-md">
+            <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">Up Next</p>
+            <p className="text-lg">{slide.nextLessonTeaser}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const SlideRenderer = ({ slide, accentColor, userName }) => {
+      const props = { slide, accentColor, userName };
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide {...props} />;
+        case 'hook': return <HookSlide {...props} />;
+        case 'bigStatement': return <BigStatementSlide {...props} />;
+        case 'trustTriggers': return <TrustTriggersSlide {...props} />;
+        case 'socialProof': return <SocialProofSlide {...props} />;
+        case 'example': return <ExampleSlide {...props} />;
+        case 'haloEffect': return <HaloEffectSlide {...props} />;
+        case 'content': return <ContentSlide {...props} />;
+        case 'riskReversal': return <RiskReversalSlide {...props} />;
+        case 'guaranteeBuilder': return <GuaranteeBuilderSlide {...props} />;
+        case 'visual': return <VisualSlide {...props} />;
+        case 'quiz': return <QuizSlide {...props} />;
+        case 'actionSlide': return <ActionSlide {...props} />;
+        case 'completion': return <CompletionSlide {...props} />;
+        default: return <div className="h-full flex items-center justify-center"><p>Unknown slide type</p></div>;
+      }
+    };
+
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [userName, setUserName] = useState('');
+      useEffect(() => { const params = new URLSearchParams(window.location.search); if (params.get('userName')) setUserName(params.get('userName')); }, []);
+      const nextSlide = useCallback(() => { if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide]);
+      const prevSlide = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }}; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [nextSlide, prevSlide]);
+      return (
+        <div className="h-screen w-screen flex flex-col bg-[#0a0a0a] overflow-hidden">
+          <div className="flex-1 relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                <SlideRenderer slide={slides[currentSlide]} accentColor={LESSON_CONFIG.accentColor} userName={userName} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="p-6 flex items-center justify-between border-t border-gray-800">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all">Back</button>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (<div key={i} className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'w-8' : ''}`} style={{ background: i === currentSlide ? LESSON_CONFIG.accentColor : '#374151' }} />))}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 rounded-xl font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: LESSON_CONFIG.accentColor, color: 'black' }}>Continue</button>
+          </div>
+        </div>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

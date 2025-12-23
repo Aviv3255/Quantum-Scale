@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Framing Effect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="../shared/greetings.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow: hidden; }
+    .font-display { font-family: 'Fraunces', serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const LESSON_CONFIG = {
+      id: 'framing-effect-mastery',
+      title: 'The Framing Effect',
+      description: 'Same facts. Wildly different decisions.',
+      accentColor: '#06b6d4',
+      duration: '9 min',
+      nextLesson: {
+        id: 'fomo-engineering',
+        title: 'FOMO Engineering',
+        teaser: 'Turn passive interest into urgent action.'
+      }
+    };
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: '{GREETING}',
+        subtitle: "Ready to discover why '90% lean' and '10% fat' are the exact same thing... but feel completely different?",
+        gifUrl: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/welcome-wave.mp4'
+      },
+      {
+        type: 'hook',
+        title: 'The Mind-Bending Truth',
+        content: '$365/year sounds expensive. $1/day sounds like nothing.',
+        highlight: 'Same price. Completely different emotional response.',
+        subtext: "This isn't math. It's psychology."
+      },
+      {
+        type: 'bigStatement',
+        statement: 'The frame you choose',
+        emphasis: 'Determines their decision.',
+        footer: 'Facts don\'t change. Perception does. And perception drives action.'
+      },
+      {
+        type: 'framingComparison',
+        title: 'The Framing Effect Revealed',
+        pairs: [
+          { negative: '20% chance of failure', positive: '80% chance of success' },
+          { negative: '$1,200/year', positive: 'Just $3.30/day' },
+          { negative: '10% fat', positive: '90% lean' }
+        ],
+        insight: 'Identical information. Opposite emotional responses.'
+      },
+      {
+        type: 'content',
+        title: 'Why Framing Works',
+        points: [
+          { title: 'Loss Aversion', detail: 'We feel losses 2x stronger than gains. Frame to avoid loss, not gain benefit.' },
+          { title: 'Cognitive Ease', detail: 'Small numbers feel manageable. $3/day is easier to process than $1,095/year.' },
+          { title: 'Emotional Anchoring', detail: 'The frame sets the emotional tone before logic kicks in.' }
+        ]
+      },
+      {
+        type: 'priceFrame',
+        title: 'The Affordability Illusion',
+        frames: [
+          { label: 'Intimidating', amount: '$1,200', period: 'per year', reaction: '"That\'s a lot of money..."' },
+          { label: 'Approachable', amount: '$99', period: 'per month', reaction: '"That\'s manageable."' },
+          { label: 'No-Brainer', amount: '$3.30', period: 'per day', reaction: '"Less than a coffee!"' }
+        ],
+        result: 'Same price. +120% conversion on daily frame.'
+      },
+      {
+        type: 'example',
+        context: 'E-commerce Blueprint',
+        title: 'Feature vs. Benefit Framing',
+        before: {
+          label: 'Feature Frame',
+          content: '10GB cloud storage\nAdvanced AI algorithm\n24/7 customer support'
+        },
+        after: {
+          label: 'Benefit Frame',
+          content: 'Never lose a critical file again\nSave 4+ hours every week\nHelp whenever you need it'
+        },
+        result: 'Benefit frames convert 34% better'
+      },
+      {
+        type: 'twoColumn',
+        title: 'Positive vs. Negative Framing',
+        left: {
+          label: 'Negative Frame',
+          items: ['Don\'t miss out on savings', 'Stop losing customers', 'Avoid costly mistakes'],
+          style: 'danger'
+        },
+        right: {
+          label: 'Positive Frame',
+          items: ['Unlock exclusive savings', 'Win loyal customers', 'Make confident decisions'],
+          style: 'success'
+        },
+        bottom: 'Test both. Negative frames often work for urgent/fear-based products. Positive for aspirational.'
+      },
+      {
+        type: 'visual',
+        title: 'The Framing Hierarchy',
+        diagram: 'ladder',
+        rungs: [
+          { label: 'Features', description: 'What it does (weakest)' },
+          { label: 'Benefits', description: 'What you get' },
+          { label: 'Transformation', description: 'Who you become (strongest)' }
+        ]
+      },
+      {
+        type: 'cards',
+        title: 'Framing Formulas',
+        cards: [
+          { icon: '💰', title: 'Price Frames', description: 'Break annual into daily. "$1 per day" beats "$365/year"' },
+          { icon: '🎯', title: 'Outcome Frames', description: '"Gain X" vs "Stop losing X" - test both' },
+          { icon: '⏱️', title: 'Time Frames', description: '"5 minutes" vs "300 seconds" - smaller units feel faster' }
+        ]
+      },
+      {
+        type: 'quiz',
+        question: 'You\'re selling a $2,400/year software. Which frame will likely convert best?',
+        options: [
+          { text: '$2,400/year - full transparency', correct: false },
+          { text: '$200/month - standard monthly pricing', correct: false },
+          { text: '$6.50/day - less than lunch', correct: true },
+          { text: '$80/day - premium positioning', correct: false }
+        ],
+        explanation: 'The daily frame ($6.50/day) makes the price feel trivial and comparable to everyday small purchases. It removes price as an objection entirely.',
+        celebrationGif: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/celebration-2.mp4'
+      },
+      {
+        type: 'actionSlide',
+        title: 'Framing Checklist',
+        actions: [
+          'Convert all prices to daily equivalents for testing',
+          'Rewrite every feature as a benefit (what → so what)',
+          'Test negative vs positive frames on the same audience',
+          'Frame transformations around identity, not just outcomes'
+        ]
+      },
+      {
+        type: 'completion',
+        title: 'Frame Master Unlocked',
+        message: 'You now see what others miss: the invisible frames that shape every decision. Use this power wisely.',
+        nextLessonTeaser: 'Next: FOMO Engineering—turn "maybe later" into "I need this NOW"'
+      }
+    ];
+
+    const WelcomeSlide = ({ slide, accentColor, userName }) => {
+      const [showVideo, setShowVideo] = useState(true);
+      const title = slide.title.replace('{GREETING}', window.getGreeting ? window.getGreeting(userName) : `Hey${userName ? `, ${userName}` : ''}`);
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          {showVideo && slide.gifUrl && (
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-8">
+              <video autoPlay loop muted playsInline className="w-40 h-40 rounded-full object-cover border-4" style={{ borderColor: accentColor }} onError={() => setShowVideo(false)}>
+                <source src={slide.gifUrl} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+          <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-6xl font-bold mb-6" style={{ color: accentColor }}>{title}</motion.h1>
+          <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl md:text-2xl text-gray-300 max-w-2xl">{slide.subtitle}</motion.p>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-6xl font-bold mb-8">{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl">{slide.content}</motion.p>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl max-w-xl" style={{ background: `${accentColor}15`, border: `2px solid ${accentColor}` }}>
+          <p className="text-2xl font-bold" style={{ color: accentColor }}>{slide.highlight}</p>
+        </motion.div>
+        {slide.subtext && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-6">{slide.subtext}</motion.p>}
+      </div>
+    );
+
+    const BigStatementSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.p initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-2xl md:text-3xl text-gray-400 mb-4">{slide.statement}</motion.p>
+        <motion.h1 initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-7xl font-black" style={{ color: accentColor }}>{slide.emphasis}</motion.h1>
+        {slide.footer && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-8 text-lg">{slide.footer}</motion.p>}
+      </div>
+    );
+
+    const FramingComparisonSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-3xl w-full">
+          {slide.pairs.map((pair, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="grid grid-cols-5 gap-4 items-center">
+              <div className="col-span-2 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-center">
+                <p className="text-red-400">{pair.negative}</p>
+              </div>
+              <div className="flex justify-center">
+                <motion.div animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-2xl" style={{ color: accentColor }}>→</motion.div>
+              </div>
+              <div className="col-span-2 p-4 rounded-xl border-2 text-center" style={{ background: `${accentColor}15`, borderColor: accentColor }}>
+                <p style={{ color: accentColor }}>{pair.positive}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-8 text-gray-400 text-center max-w-md">{slide.insight}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-6 max-w-2xl w-full">
+          {slide.points.map((point, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-black flex-shrink-0" style={{ background: accentColor }}>{i + 1}</div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">{point.title}</h3>
+                <p className="text-gray-400">{point.detail}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const PriceFrameSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="flex gap-6 max-w-4xl">
+          {slide.frames.map((frame, i) => (
+            <motion.div key={i} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className={`flex-1 rounded-2xl p-6 text-center border-2 ${i === 2 ? 'scale-105' : ''}`} style={i === 2 ? { borderColor: accentColor, background: `${accentColor}10` } : { borderColor: '#374151', background: '#1a1a1a' }}>
+              <p className={`text-sm uppercase tracking-wider mb-2 ${i === 2 ? '' : 'text-gray-500'}`} style={i === 2 ? { color: accentColor } : {}}>{frame.label}</p>
+              <p className="text-4xl font-black mb-1" style={i === 2 ? { color: accentColor } : {}}>{frame.amount}</p>
+              <p className="text-gray-400 mb-4">{frame.period}</p>
+              <p className="text-sm italic text-gray-400">{frame.reaction}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 px-6 py-3 rounded-full font-bold" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.result}</motion.div>
+      </div>
+    );
+
+    const ExampleSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.context}</motion.span>
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <p className="text-red-400 text-sm uppercase tracking-wider mb-4">{slide.before.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.before.content}</p>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.after.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.after.content}</p>
+          </motion.div>
+        </div>
+        {slide.result && (
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 px-6 py-3 rounded-full font-bold" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.result}</motion.div>
+        )}
+      </div>
+    );
+
+    const TwoColumnSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 border border-red-500/30 bg-red-500/5">
+            <p className="text-red-400 text-sm uppercase tracking-wider mb-4">{slide.left.label}</p>
+            <ul className="space-y-3">
+              {slide.left.items.map((item, i) => (
+                <li key={i} className="flex items-center gap-3"><span className="text-red-400">−</span><span>{item}</span></li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ borderColor: accentColor, background: `${accentColor}10` }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.right.label}</p>
+            <ul className="space-y-3">
+              {slide.right.items.map((item, i) => (
+                <li key={i} className="flex items-center gap-3"><span style={{ color: accentColor }}>+</span><span>{item}</span></li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+        {slide.bottom && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 text-gray-400 text-center max-w-xl">{slide.bottom}</motion.p>}
+      </div>
+    );
+
+    const VisualSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="flex flex-col items-center gap-1 max-w-md w-full">
+          {slide.rungs.map((rung, i) => (
+            <motion.div key={i} initial={{ x: i % 2 === 0 ? -30 : 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.2 }} className="w-full flex items-center gap-4">
+              <div className="w-16 h-3 rounded-full" style={{ background: `${accentColor}${i === 2 ? 'ff' : i === 1 ? '99' : '44'}` }} />
+              <div className="flex-1 p-4 rounded-xl border" style={{ borderColor: i === 2 ? accentColor : '#374151', background: i === 2 ? `${accentColor}20` : '#1a1a1a' }}>
+                <p className="font-bold" style={i === 2 ? { color: accentColor } : {}}>{rung.label}</p>
+                <p className="text-gray-400 text-sm">{rung.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CardsSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl">
+          {slide.cards.map((card, i) => (
+            <motion.div key={i} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800 text-center hover:border-gray-600 transition-colors">
+              <span className="text-4xl mb-4 block">{card.icon}</span>
+              <h3 className="font-bold text-lg mb-2" style={{ color: accentColor }}>{card.title}</h3>
+              <p className="text-gray-400 text-sm">{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ slide, accentColor }) => {
+      const [selected, setSelected] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const handleSelect = (i) => { if (selected === null) { setSelected(i); setShowResult(true); }};
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-8">
+          <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-3xl md:text-4xl font-bold mb-8 text-center max-w-2xl">{slide.question}</motion.h1>
+          <div className="grid gap-4 max-w-xl w-full">
+            {slide.options.map((opt, i) => (
+              <motion.button key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={selected !== null} className={`p-4 rounded-xl text-left transition-all border-2 ${selected === i ? (opt.correct ? 'border-green-500 bg-green-500/20' : 'border-red-500 bg-red-500/20') : selected !== null && opt.correct ? 'border-green-500 bg-green-500/20' : 'border-gray-700 hover:border-gray-500 bg-gray-900'}`}>{opt.text}</motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 rounded-2xl max-w-xl text-center" style={{ background: `${accentColor}20` }}>
+                {slide.options[selected]?.correct && slide.celebrationGif && (
+                  <video autoPlay loop muted playsInline className="w-24 h-24 mx-auto mb-4 rounded-full"><source src={slide.celebrationGif} type="video/mp4" /></video>
+                )}
+                <p className="text-lg">{slide.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const ActionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.actions.map((action, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-black font-bold" style={{ background: accentColor }}>{i + 1}</div>
+              <p className="text-lg">{action}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CompletionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 rounded-full flex items-center justify-center mb-8" style={{ background: accentColor }}>
+          <svg className="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+        </motion.div>
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="font-display text-4xl md:text-5xl font-bold mb-4" style={{ color: accentColor }}>{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-xl text-gray-300 max-w-xl mb-8">{slide.message}</motion.p>
+        {slide.nextLessonTeaser && (
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="p-6 rounded-2xl bg-gray-900 border border-gray-800 max-w-md">
+            <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">Up Next</p>
+            <p className="text-lg">{slide.nextLessonTeaser}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const SlideRenderer = ({ slide, accentColor, userName }) => {
+      const props = { slide, accentColor, userName };
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide {...props} />;
+        case 'hook': return <HookSlide {...props} />;
+        case 'bigStatement': return <BigStatementSlide {...props} />;
+        case 'framingComparison': return <FramingComparisonSlide {...props} />;
+        case 'content': return <ContentSlide {...props} />;
+        case 'priceFrame': return <PriceFrameSlide {...props} />;
+        case 'example': return <ExampleSlide {...props} />;
+        case 'twoColumn': return <TwoColumnSlide {...props} />;
+        case 'visual': return <VisualSlide {...props} />;
+        case 'cards': return <CardsSlide {...props} />;
+        case 'quiz': return <QuizSlide {...props} />;
+        case 'actionSlide': return <ActionSlide {...props} />;
+        case 'completion': return <CompletionSlide {...props} />;
+        default: return <div className="h-full flex items-center justify-center"><p>Unknown slide type: {slide.type}</p></div>;
+      }
+    };
+
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [userName, setUserName] = useState('');
+      useEffect(() => { const params = new URLSearchParams(window.location.search); if (params.get('userName')) setUserName(params.get('userName')); }, []);
+      const nextSlide = useCallback(() => { if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide]);
+      const prevSlide = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }}; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [nextSlide, prevSlide]);
+      return (
+        <div className="h-screen w-screen flex flex-col bg-[#0a0a0a] overflow-hidden">
+          <div className="flex-1 relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                <SlideRenderer slide={slides[currentSlide]} accentColor={LESSON_CONFIG.accentColor} userName={userName} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="p-6 flex items-center justify-between border-t border-gray-800">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all">Back</button>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (<div key={i} className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'w-8' : ''}`} style={{ background: i === currentSlide ? LESSON_CONFIG.accentColor : '#374151' }} />))}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 rounded-xl font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: LESSON_CONFIG.accentColor, color: 'black' }}>Continue</button>
+          </div>
+        </div>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

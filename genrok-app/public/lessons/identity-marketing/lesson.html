@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identity Marketing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="../shared/greetings.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow: hidden; }
+    .font-display { font-family: 'Fraunces', serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const LESSON_CONFIG = {
+      id: 'identity-marketing',
+      title: 'Identity Marketing',
+      description: "Sell to who they WANT to be, not who they are",
+      accentColor: '#a855f7',
+      duration: '10 min',
+      nextLesson: {
+        id: 'value-perception-lever',
+        title: 'The Value Perception Lever',
+        teaser: 'Engineer perceived worth that makes price irrelevant.'
+      }
+    };
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: '{GREETING}',
+        subtitle: "People don't buy products. They buy better versions of themselves. Let's unlock this lever.",
+        gifUrl: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/welcome-hi.mp4'
+      },
+      {
+        type: 'hook',
+        title: 'The Identity Secret',
+        content: 'Apple doesn\'t sell phones. They sell "creative" identity. Nike doesn\'t sell shoes. They sell "athlete" identity.',
+        highlight: 'People buy to become who they want to be.',
+        subtext: 'Your product is just the vehicle.'
+      },
+      {
+        type: 'bigStatement',
+        statement: 'The most powerful marketing',
+        emphasis: 'Sells identity, not features.',
+        footer: 'Features satisfy needs. Identity satisfies the soul.'
+      },
+      {
+        type: 'identityTriggers',
+        title: 'The Identity Control Panel',
+        triggers: [
+          { name: 'IKEA Effect', description: 'We value what we create', power: 85 },
+          { name: 'Confirmation Bias', description: 'We seek what affirms us', power: 90 },
+          { name: 'Identity Priming', description: 'Speak to who they want to be', power: 95 }
+        ]
+      },
+      {
+        type: 'ikeaEffect',
+        title: 'Trigger #1: The IKEA Effect',
+        principle: 'We place higher value on things we help create or customize.',
+        applications: [
+          { method: 'Personalization', example: '"Build your own bundle"' },
+          { method: 'Co-creation', example: '"Help us design our next feature"' },
+          { method: 'Customization', example: '"Choose your color/size/configuration"' }
+        ],
+        insight: 'The more they invest in creating it, the more they value it.'
+      },
+      {
+        type: 'example',
+        context: 'E-commerce Blueprint',
+        title: 'IKEA Effect in Action',
+        before: {
+          label: 'No Customization',
+          content: 'Skincare Bundle\n$89\n\nContains: Cleanser, Toner, Moisturizer\n\nBuy Now'
+        },
+        after: {
+          label: 'IKEA Effect Applied',
+          content: 'Build Your Perfect Routine\n\nStep 1: Choose your cleanser type\nStep 2: Select your skin concern\nStep 3: Pick your moisturizer weight\n\nYour Custom Bundle: $89'
+        },
+        result: '+34% conversion, +56% satisfaction'
+      },
+      {
+        type: 'confirmationBias',
+        title: 'Trigger #2: Confirmation Bias',
+        principle: 'We actively seek information that confirms our existing beliefs.',
+        insight: 'Speak to their self-image. Affirm who they believe they are.',
+        examples: [
+          { audience: 'Entrepreneurs', message: '"You\'re the kind of person who takes bold action. This is your next move."' },
+          { audience: 'Eco-Conscious', message: '"You\'re making a difference, one purchase at a time."' },
+          { audience: 'High Performers', message: '"For those who demand excellence from themselves and their tools."' }
+        ]
+      },
+      {
+        type: 'identityPriming',
+        title: 'Trigger #3: Identity Priming',
+        principle: 'Prime them with the identity BEFORE the ask.',
+        sequence: [
+          { step: '1. Prime Identity', example: '"As a serious entrepreneur..."' },
+          { step: '2. Confirm Belief', example: '"...you know that time is your most valuable asset."' },
+          { step: '3. Present Solution', example: '"This tool saves you 10+ hours per week."' },
+          { step: '4. Affirm Choice', example: '"Smart entrepreneurs don\'t hesitate on ROI like this."' }
+        ]
+      },
+      {
+        type: 'content',
+        title: 'Identity Categories',
+        points: [
+          { title: 'Aspirational Self', detail: 'Who do they want to become? (entrepreneur, athlete, creative)' },
+          { title: 'Tribal Identity', detail: 'What group do they want to belong to? (innovators, elite, rebels)' },
+          { title: 'Values-Based', detail: 'What do they stand for? (sustainability, quality, innovation)' }
+        ]
+      },
+      {
+        type: 'identityMapping',
+        title: 'Identity Mapping Exercise',
+        framework: {
+          question1: 'Who does my customer want to become?',
+          question2: 'What tribe do they want to belong to?',
+          question3: 'What values drive their decisions?',
+          question4: 'How does my product help them BE that person?'
+        },
+        example: {
+          product: 'Premium Productivity Tool',
+          identity: 'High-performing entrepreneur',
+          tribe: 'The 1% who execute',
+          value: 'Excellence, efficiency, results',
+          message: '"For builders who refuse to settle for average."'
+        }
+      },
+      {
+        type: 'twoColumn',
+        title: 'Feature vs. Identity Copy',
+        left: {
+          label: 'Feature-Focused',
+          items: ['Our software has AI automation', 'Save 10 hours per week', 'Used by 50,000 businesses'],
+          style: 'neutral'
+        },
+        right: {
+          label: 'Identity-Focused',
+          items: ['Built for entrepreneurs who demand more', 'Reclaim your time, reclaim your life', 'Join the builders who refuse to settle'],
+          style: 'accent'
+        },
+        bottom: 'Features tell. Identity sells.'
+      },
+      {
+        type: 'quiz',
+        question: 'Which headline best uses identity marketing?',
+        options: [
+          { text: '"Our protein powder has 25g protein per serving"', correct: false },
+          { text: '"High-quality ingredients for better nutrition"', correct: false },
+          { text: '"For athletes who refuse to plateau"', correct: true },
+          { text: '"Try our new chocolate flavor protein"', correct: false }
+        ],
+        explanation: '"For athletes who refuse to plateau" speaks directly to identity—the type of person they want to be. It primes the athlete identity and positions the product as their natural choice.',
+        celebrationGif: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/celebration-1.mp4'
+      },
+      {
+        type: 'cards',
+        title: 'Identity Marketing Formulas',
+        cards: [
+          { icon: '🎯', title: 'Prime + Ask', description: '"As a [identity], you need [product]"' },
+          { icon: '🔥', title: 'Tribe Language', description: '"Built for [tribe] who [behavior]"' },
+          { icon: '✨', title: 'Become Statement', description: '"Become the [identity] you were meant to be"' }
+        ]
+      },
+      {
+        type: 'actionSlide',
+        title: 'Identity Marketing Checklist',
+        actions: [
+          'Define the aspirational identity your customer wants',
+          'Rewrite your main headline using identity language',
+          'Add customization/personalization to increase ownership',
+          'Create copy that affirms their self-image and values'
+        ]
+      },
+      {
+        type: 'completion',
+        title: 'Identity Lever: Unlocked',
+        message: 'You now sell more than products—you sell transformation. Help customers become who they want to be, and loyalty follows.',
+        nextLessonTeaser: 'You\'ve completed the Neuromarketing Control Panel series. Go apply these 4 levers to your business.'
+      }
+    ];
+
+    const WelcomeSlide = ({ slide, accentColor, userName }) => {
+      const [showVideo, setShowVideo] = useState(true);
+      const title = slide.title.replace('{GREETING}', window.getGreeting ? window.getGreeting(userName) : `Hey${userName ? `, ${userName}` : ''}`);
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          {showVideo && slide.gifUrl && (
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-8">
+              <video autoPlay loop muted playsInline className="w-40 h-40 rounded-full object-cover border-4" style={{ borderColor: accentColor }} onError={() => setShowVideo(false)}>
+                <source src={slide.gifUrl} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+          <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-6xl font-bold mb-6" style={{ color: accentColor }}>{title}</motion.h1>
+          <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl md:text-2xl text-gray-300 max-w-2xl">{slide.subtitle}</motion.p>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-6xl font-bold mb-8">{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl">{slide.content}</motion.p>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl max-w-xl" style={{ background: `${accentColor}15`, border: `2px solid ${accentColor}` }}>
+          <p className="text-2xl font-bold" style={{ color: accentColor }}>{slide.highlight}</p>
+        </motion.div>
+        {slide.subtext && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-6">{slide.subtext}</motion.p>}
+      </div>
+    );
+
+    const BigStatementSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.p initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-2xl md:text-3xl text-gray-400 mb-4">{slide.statement}</motion.p>
+        <motion.h1 initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-7xl font-black" style={{ color: accentColor }}>{slide.emphasis}</motion.h1>
+        {slide.footer && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-8 text-lg">{slide.footer}</motion.p>}
+      </div>
+    );
+
+    const IdentityTriggersSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="w-full max-w-2xl space-y-6">
+          {slide.triggers.map((trigger, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gray-900 rounded-xl p-6 border border-gray-800">
+              <div className="flex justify-between mb-3">
+                <span className="font-bold text-lg">{trigger.name}</span>
+                <span className="text-gray-400">{trigger.description}</span>
+              </div>
+              <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${trigger.power}%` }} transition={{ delay: 0.5 + i * 0.15, duration: 0.8 }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${accentColor}, ${accentColor}99)` }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const IkeaEffectSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10 text-center max-w-xl">{slide.principle}</motion.p>
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl w-full">
+          {slide.applications.map((app, i) => (
+            <motion.div key={i} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-gray-900 rounded-xl p-5 border border-gray-800 text-center">
+              <h3 className="font-bold mb-2" style={{ color: accentColor }}>{app.method}</h3>
+              <p className="text-gray-400 text-sm italic">"{app.example}"</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 text-gray-500 text-center max-w-md">{slide.insight}</motion.p>
+      </div>
+    );
+
+    const ExampleSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.context}</motion.span>
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <p className="text-red-400 text-sm uppercase tracking-wider mb-4">{slide.before.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.before.content}</p>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.after.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.after.content}</p>
+          </motion.div>
+        </div>
+        {slide.result && <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 px-6 py-3 rounded-full font-bold" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.result}</motion.div>}
+      </div>
+    );
+
+    const ConfirmationBiasSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-4">{slide.principle}</motion.p>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-lg mb-8" style={{ color: accentColor }}>{slide.insight}</motion.p>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.examples.map((ex, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 + i * 0.1 }} className="bg-gray-900 rounded-xl p-5 border border-gray-800">
+              <span className="text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3 inline-block" style={{ background: `${accentColor}20`, color: accentColor }}>{ex.audience}</span>
+              <p className="text-gray-300 italic">"{ex.message}"</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const IdentityPrimingSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10">{slide.principle}</motion.p>
+        <div className="space-y-3 max-w-xl w-full">
+          {slide.sequence.map((item, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="flex items-center gap-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-black font-bold flex-shrink-0" style={{ background: accentColor }}>{i + 1}</div>
+              <div className="flex-1 p-4 rounded-xl bg-gray-900 border border-gray-800">
+                <p className="font-bold text-sm mb-1" style={{ color: accentColor }}>{item.step}</p>
+                <p className="text-gray-300 italic">"{item.example}"</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ContentSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-6 max-w-2xl w-full">
+          {slide.points.map((point, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-black flex-shrink-0" style={{ background: accentColor }}>{i + 1}</div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">{point.title}</h3>
+                <p className="text-gray-400">{point.detail}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const IdentityMappingSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-8">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <h3 className="font-bold mb-4" style={{ color: accentColor }}>Questions to Ask</h3>
+            <ul className="space-y-3">
+              {Object.values(slide.framework).map((q, i) => (
+                <li key={i} className="flex items-start gap-2 text-gray-300">
+                  <span style={{ color: accentColor }}>?</span>{q}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <h3 className="font-bold mb-4" style={{ color: accentColor }}>Example: {slide.example.product}</h3>
+            <div className="space-y-2 text-sm">
+              <p><span className="text-gray-400">Identity:</span> {slide.example.identity}</p>
+              <p><span className="text-gray-400">Tribe:</span> {slide.example.tribe}</p>
+              <p><span className="text-gray-400">Value:</span> {slide.example.value}</p>
+              <p className="pt-2 font-bold italic">{slide.example.message}</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const TwoColumnSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 border border-gray-700 bg-gray-900">
+            <p className="text-gray-400 text-sm uppercase tracking-wider mb-4">{slide.left.label}</p>
+            <ul className="space-y-3">
+              {slide.left.items.map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-gray-400"><span>−</span><span>{item}</span></li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ borderColor: accentColor, background: `${accentColor}10` }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.right.label}</p>
+            <ul className="space-y-3">
+              {slide.right.items.map((item, i) => (
+                <li key={i} className="flex items-center gap-3"><span style={{ color: accentColor }}>+</span><span>{item}</span></li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+        {slide.bottom && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 text-xl font-bold" style={{ color: accentColor }}>{slide.bottom}</motion.p>}
+      </div>
+    );
+
+    const QuizSlide = ({ slide, accentColor }) => {
+      const [selected, setSelected] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const handleSelect = (i) => { if (selected === null) { setSelected(i); setShowResult(true); }};
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-8">
+          <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-3xl md:text-4xl font-bold mb-8 text-center max-w-2xl">{slide.question}</motion.h1>
+          <div className="grid gap-4 max-w-xl w-full">
+            {slide.options.map((opt, i) => (
+              <motion.button key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={selected !== null} className={`p-4 rounded-xl text-left transition-all border-2 ${selected === i ? (opt.correct ? 'border-green-500 bg-green-500/20' : 'border-red-500 bg-red-500/20') : selected !== null && opt.correct ? 'border-green-500 bg-green-500/20' : 'border-gray-700 hover:border-gray-500 bg-gray-900'}`}>{opt.text}</motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 rounded-2xl max-w-xl text-center" style={{ background: `${accentColor}20` }}>
+                {slide.options[selected]?.correct && slide.celebrationGif && (
+                  <video autoPlay loop muted playsInline className="w-24 h-24 mx-auto mb-4 rounded-full"><source src={slide.celebrationGif} type="video/mp4" /></video>
+                )}
+                <p className="text-lg">{slide.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CardsSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl">
+          {slide.cards.map((card, i) => (
+            <motion.div key={i} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800 text-center hover:border-gray-600 transition-colors">
+              <span className="text-4xl mb-4 block">{card.icon}</span>
+              <h3 className="font-bold text-lg mb-2" style={{ color: accentColor }}>{card.title}</h3>
+              <p className="text-gray-400 text-sm">{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ActionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.actions.map((action, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-black font-bold" style={{ background: accentColor }}>{i + 1}</div>
+              <p className="text-lg">{action}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CompletionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 rounded-full flex items-center justify-center mb-8" style={{ background: accentColor }}>
+          <svg className="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+        </motion.div>
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="font-display text-4xl md:text-5xl font-bold mb-4" style={{ color: accentColor }}>{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-xl text-gray-300 max-w-xl mb-8">{slide.message}</motion.p>
+        {slide.nextLessonTeaser && (
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="p-6 rounded-2xl bg-gray-900 border border-gray-800 max-w-md">
+            <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">What's Next</p>
+            <p className="text-lg">{slide.nextLessonTeaser}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const SlideRenderer = ({ slide, accentColor, userName }) => {
+      const props = { slide, accentColor, userName };
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide {...props} />;
+        case 'hook': return <HookSlide {...props} />;
+        case 'bigStatement': return <BigStatementSlide {...props} />;
+        case 'identityTriggers': return <IdentityTriggersSlide {...props} />;
+        case 'ikeaEffect': return <IkeaEffectSlide {...props} />;
+        case 'example': return <ExampleSlide {...props} />;
+        case 'confirmationBias': return <ConfirmationBiasSlide {...props} />;
+        case 'identityPriming': return <IdentityPrimingSlide {...props} />;
+        case 'content': return <ContentSlide {...props} />;
+        case 'identityMapping': return <IdentityMappingSlide {...props} />;
+        case 'twoColumn': return <TwoColumnSlide {...props} />;
+        case 'quiz': return <QuizSlide {...props} />;
+        case 'cards': return <CardsSlide {...props} />;
+        case 'actionSlide': return <ActionSlide {...props} />;
+        case 'completion': return <CompletionSlide {...props} />;
+        default: return <div className="h-full flex items-center justify-center"><p>Unknown slide type</p></div>;
+      }
+    };
+
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [userName, setUserName] = useState('');
+      useEffect(() => { const params = new URLSearchParams(window.location.search); if (params.get('userName')) setUserName(params.get('userName')); }, []);
+      const nextSlide = useCallback(() => { if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide]);
+      const prevSlide = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }}; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [nextSlide, prevSlide]);
+      return (
+        <div className="h-screen w-screen flex flex-col bg-[#0a0a0a] overflow-hidden">
+          <div className="flex-1 relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                <SlideRenderer slide={slides[currentSlide]} accentColor={LESSON_CONFIG.accentColor} userName={userName} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="p-6 flex items-center justify-between border-t border-gray-800">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all">Back</button>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (<div key={i} className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'w-8' : ''}`} style={{ background: i === currentSlide ? LESSON_CONFIG.accentColor : '#374151' }} />))}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 rounded-xl font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: LESSON_CONFIG.accentColor, color: 'white' }}>Continue</button>
+          </div>
+        </div>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

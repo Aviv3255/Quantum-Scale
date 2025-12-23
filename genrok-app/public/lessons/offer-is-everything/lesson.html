@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Offer is 90% of the Battle</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAFAFA;
+      overflow-x: hidden;
+    }
+    .fraunces {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+    }
+    #root {
+      width: 100%;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const greetingsScript = document.createElement('script');
+    greetingsScript.src = '../shared/greetings.js';
+    document.head.appendChild(greetingsScript);
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating4.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating5.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating6.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating7.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/celebrating8.mp4'
+    ];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy4.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy5.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy6.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy7.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy8.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/gifs/empathy9.mp4'
+    ];
+
+    const ACCENT_COLOR = '#10B981';
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const [quizAnswer, setQuizAnswer] = useState(null);
+      const [showQuizResult, setShowQuizResult] = useState(false);
+
+      const slides = [
+        {
+          type: 'welcome',
+          content: {
+            greeting: typeof window.getGreeting === 'function' ? window.getGreeting() : 'Welcome back',
+            title: 'The Offer is 90% of the Battle',
+            subtitle: 'Your offer isn\'t just your product. It\'s price + bundles + guarantee + positioning.',
+            duration: '4 min'
+          }
+        },
+        {
+          type: 'hook',
+          content: {
+            text: 'Your offer is NOT just your product.',
+            subtext: 'It\'s the FULL PACKAGE.'
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: 'What IS an offer?',
+            points: [
+              'Price (the number)',
+              'Bundles (multi-packs, kits)',
+              'Upsells (complementary products)',
+              'Guarantee (risk reversal)',
+              'Positioning (how you frame value)'
+            ]
+          }
+        },
+        {
+          type: 'visual',
+          content: {
+            title: 'The Luxury Lens',
+            example: 'Dior Tote Bag',
+            cost: '$57',
+            price: '$3,500',
+            insight: 'They\'re not selling cotton. They\'re selling STATUS.'
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: 'Sabri Suby\'s First Move',
+            quote: '"The first thing I do when a client wires me 50k... I tell them to double your prices."',
+            subtext: 'Why? Because most brands UNDERVALUE themselves.',
+            attribution: '— Sabri Suby, King Kong Agency'
+          }
+        },
+        {
+          type: 'cards',
+          content: {
+            title: 'Engineer Value with Bundles',
+            cards: [
+              {
+                title: 'Multi-Packs',
+                description: 'Buy 1 for $50, Buy 3 for $120',
+                icon: '📦'
+              },
+              {
+                title: 'Premium Versions',
+                description: 'Standard $50, Deluxe w/ Travel Case $75',
+                icon: '✨'
+              },
+              {
+                title: 'Decoy Pricing',
+                description: 'Good $50, Better $75, Best $80',
+                icon: '🎯'
+              }
+            ]
+          }
+        },
+        {
+          type: 'content',
+          content: {
+            title: 'Tools That Make This Easy',
+            description: 'For bundles and quantity breaks, check out Upsell Koala. For premium upsells at checkout, Cart Drawer Upsell works well.',
+            note: 'Both methods work. Manual or tool. Your call.'
+          }
+        },
+        {
+          type: 'quiz',
+          content: {
+            question: 'What happens when you double your prices?',
+            options: [
+              { id: 'a', text: 'Conversion drops 50%', correct: false },
+              { id: 'b', text: 'Nothing changes', correct: false },
+              { id: 'c', text: 'Conversion often stays the same or increases', correct: true },
+              { id: 'd', text: 'You lose all your customers', correct: false }
+            ],
+            correctFeedback: 'Exactly! Higher prices often INCREASE perceived value. RPV/PPV explodes.',
+            incorrectFeedback: 'Not quite. Most brands are shocked to find conversion stays steady or even INCREASES with higher prices.'
+          }
+        },
+        {
+          type: 'example',
+          content: {
+            title: 'The Action',
+            steps: [
+              'Pick one product',
+              'Test a 2X price point',
+              'Watch conversion (it probably won\'t drop)',
+              'Watch RPV/PPV (it will probably skyrocket)',
+              'Repeat with other products'
+            ]
+          }
+        },
+        {
+          type: 'completion',
+          content: {
+            title: 'Holy Shit Moment',
+            insight: 'Stop competing on price. Test doubling your prices. You might be shocked.',
+            cta: 'Next Lesson',
+            nextLesson: '/learn'
+          }
+        }
+      ];
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(currentSlide + 1);
+          setQuizAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(currentSlide - 1);
+          setQuizAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const handleQuizAnswer = (optionId) => {
+        setQuizAnswer(optionId);
+        setShowQuizResult(true);
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({
+          x: direction > 0 ? 1000 : -1000,
+          opacity: 0
+        }),
+        center: {
+          x: 0,
+          opacity: 1
+        },
+        exit: (direction) => ({
+          x: direction < 0 ? 1000 : -1000,
+          opacity: 0
+        })
+      };
+
+      const renderSlide = () => {
+        const slide = slides[currentSlide];
+
+        switch (slide.type) {
+          case 'welcome':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="mb-4 text-sm font-semibold tracking-wider uppercase"
+                  style={{ color: ACCENT_COLOR }}
+                >
+                  {slide.content.greeting}
+                </motion.div>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="fraunces text-5xl md:text-7xl mb-6 max-w-4xl leading-tight"
+                >
+                  {slide.content.title}
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="text-xl md:text-2xl text-gray-600 max-w-2xl mb-8"
+                >
+                  {slide.content.subtitle}
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-sm text-gray-500"
+                >
+                  {slide.content.duration}
+                </motion.div>
+              </div>
+            );
+
+          case 'hook':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8 text-center">
+                <motion.h2
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="fraunces text-6xl md:text-8xl mb-8 max-w-5xl leading-tight"
+                >
+                  {slide.content.text}
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-2xl md:text-3xl font-semibold"
+                  style={{ color: ACCENT_COLOR }}
+                >
+                  {slide.content.subtext}
+                </motion.p>
+              </div>
+            );
+
+          case 'content':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8">
+                <div className="max-w-3xl w-full">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="fraunces text-5xl md:text-6xl mb-12"
+                  >
+                    {slide.content.title}
+                  </motion.h2>
+                  {slide.content.points && (
+                    <div className="space-y-6">
+                      {slide.content.points.map((point, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 * index }}
+                          className="flex items-start gap-4"
+                        >
+                          <div
+                            className="w-2 h-2 rounded-full mt-3 flex-shrink-0"
+                            style={{ backgroundColor: ACCENT_COLOR }}
+                          />
+                          <p className="text-xl md:text-2xl text-gray-800 leading-relaxed">
+                            {point}
+                          </p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                  {slide.content.quote && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-8"
+                    >
+                      <p className="text-3xl md:text-4xl fraunces mb-4 leading-tight">
+                        {slide.content.quote}
+                      </p>
+                      {slide.content.subtext && (
+                        <p className="text-xl text-gray-600 mb-4">
+                          {slide.content.subtext}
+                        </p>
+                      )}
+                      {slide.content.attribution && (
+                        <p className="text-lg text-gray-500 italic">
+                          {slide.content.attribution}
+                        </p>
+                      )}
+                    </motion.div>
+                  )}
+                  {slide.content.description && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-8"
+                    >
+                      <p className="text-xl md:text-2xl text-gray-700 leading-relaxed mb-4">
+                        {slide.content.description}
+                      </p>
+                      {slide.content.note && (
+                        <p className="text-lg text-gray-500 italic">
+                          {slide.content.note}
+                        </p>
+                      )}
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            );
+
+          case 'visual':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="fraunces text-5xl md:text-6xl mb-16 text-center"
+                >
+                  {slide.content.title}
+                </motion.h2>
+                <div className="bg-white rounded-3xl p-12 shadow-2xl max-w-2xl w-full">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-center mb-8"
+                  >
+                    <p className="text-2xl font-semibold mb-4">{slide.content.example}</p>
+                    <div className="flex justify-around items-center gap-8 my-12">
+                      <div>
+                        <p className="text-sm text-gray-500 mb-2">Cost to Make</p>
+                        <p className="text-4xl font-bold text-gray-800">{slide.content.cost}</p>
+                      </div>
+                      <div className="text-6xl" style={{ color: ACCENT_COLOR }}>→</div>
+                      <div>
+                        <p className="text-sm text-gray-500 mb-2">Sells For</p>
+                        <p className="text-4xl font-bold" style={{ color: ACCENT_COLOR }}>
+                          {slide.content.price}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-2xl fraunces text-center leading-tight"
+                  >
+                    {slide.content.insight}
+                  </motion.p>
+                </div>
+              </div>
+            );
+
+          case 'cards':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="fraunces text-5xl md:text-6xl mb-16 text-center"
+                >
+                  {slide.content.title}
+                </motion.h2>
+                <div className="grid md:grid-cols-3 gap-8 max-w-6xl w-full">
+                  {slide.content.cards.map((card, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                      className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow"
+                    >
+                      <div className="text-5xl mb-4">{card.icon}</div>
+                      <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">{card.description}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            );
+
+          case 'quiz':
+            const selectedOption = slide.content.options.find(opt => opt.id === quizAnswer);
+            const isCorrect = selectedOption?.correct;
+
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8">
+                <div className="max-w-3xl w-full">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="fraunces text-4xl md:text-5xl mb-12 text-center"
+                  >
+                    {slide.content.question}
+                  </motion.h2>
+                  <div className="space-y-4 mb-8">
+                    {slide.content.options.map((option, index) => (
+                      <motion.button
+                        key={option.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 * index }}
+                        onClick={() => !showQuizResult && handleQuizAnswer(option.id)}
+                        disabled={showQuizResult}
+                        className={`w-full p-6 rounded-xl text-left text-lg transition-all ${
+                          showQuizResult
+                            ? option.correct
+                              ? 'bg-green-100 border-2 border-green-500'
+                              : option.id === quizAnswer
+                              ? 'bg-red-100 border-2 border-red-500'
+                              : 'bg-gray-100'
+                            : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300'
+                        }`}
+                        style={{
+                          cursor: showQuizResult ? 'default' : 'pointer'
+                        }}
+                      >
+                        {option.text}
+                      </motion.button>
+                    ))}
+                  </div>
+                  <AnimatePresence>
+                    {showQuizResult && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="text-center"
+                      >
+                        <video
+                          autoPlay
+                          muted
+                          playsInline
+                          className="w-48 h-48 mx-auto mb-6 rounded-2xl object-cover"
+                          src={
+                            isCorrect
+                              ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                              : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                          }
+                        />
+                        <p className="text-2xl font-semibold mb-4">
+                          {isCorrect ? slide.content.correctFeedback : slide.content.incorrectFeedback}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            );
+
+          case 'example':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8">
+                <div className="max-w-3xl w-full">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="fraunces text-5xl md:text-6xl mb-12 text-center"
+                  >
+                    {slide.content.title}
+                  </motion.h2>
+                  <div className="bg-white rounded-2xl p-10 shadow-xl">
+                    <div className="space-y-6">
+                      {slide.content.steps.map((step, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 * index }}
+                          className="flex items-start gap-4"
+                        >
+                          <div
+                            className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0"
+                            style={{ backgroundColor: ACCENT_COLOR }}
+                          >
+                            {index + 1}
+                          </div>
+                          <p className="text-xl text-gray-800 leading-relaxed pt-1">
+                            {step}
+                          </p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+
+          case 'completion':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen px-8 text-center">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-8"
+                >
+                  <div className="text-8xl mb-8">🚀</div>
+                  <h2 className="fraunces text-5xl md:text-6xl mb-6">
+                    {slide.content.title}
+                  </h2>
+                  <p className="text-2xl md:text-3xl text-gray-700 max-w-3xl leading-relaxed mb-12">
+                    {slide.content.insight}
+                  </p>
+                </motion.div>
+                <motion.a
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  href={slide.content.nextLesson}
+                  className="px-12 py-5 text-xl font-semibold text-white rounded-full transition-all hover:scale-105 hover:shadow-2xl"
+                  style={{ backgroundColor: ACCENT_COLOR }}
+                >
+                  {slide.content.cta}
+                </motion.a>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      return (
+        <div className="relative">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={currentSlide}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+            >
+              {renderSlide()}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-0 right-0 flex justify-center items-center gap-6 px-8">
+            <button
+              onClick={prevSlide}
+              disabled={currentSlide === 0}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                currentSlide === 0
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-white shadow-lg hover:shadow-xl text-gray-800'
+              }`}
+            >
+              ←
+            </button>
+
+            <div className="flex-1 max-w-md">
+              <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ backgroundColor: ACCENT_COLOR }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+              <div className="text-center mt-2 text-sm text-gray-600">
+                {currentSlide + 1} / {slides.length}
+              </div>
+            </div>
+
+            <button
+              onClick={nextSlide}
+              disabled={currentSlide === slides.length - 1 || (slides[currentSlide].type === 'quiz' && !showQuizResult)}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                currentSlide === slides.length - 1 || (slides[currentSlide].type === 'quiz' && !showQuizResult)
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-white shadow-lg hover:shadow-xl text-gray-800'
+              }`}
+            >
+              →
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

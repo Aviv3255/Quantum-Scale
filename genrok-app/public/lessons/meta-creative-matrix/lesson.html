@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 3×5 Creative Matrix (15 Ads in 30 Minutes) | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-creative-matrix',
+      title: 'The 3×5 Creative Matrix (15 Ads in 30 Minutes)',
+      description: 'How to feed Meta\'s AI the volume and diversity it craves - without burning out.',
+      accentColor: '#3b82f6',
+      duration: '6 min',
+      nextLesson: { id: 'meta-ad-scheduling', title: 'Time-Based Performance', teaser: 'When your ads run determines if you profit or burn money.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const Icons = {
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>),
+      Grid: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" /></svg>),
+      Sparkles: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>),
+      Video: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>),
+      Image: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>),
+      Chat: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>),
+      Fire: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" /></svg>)
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why Meta craves volume and diversity (not one perfect ad)', 'The 3×5 matrix that produces 15 ads in 30 minutes', 'The 5 high-impact creative formats that actually work'] },
+
+      { type: 'hook', headline: 'Post-Andromeda, the game changed. One winning ad? Dead strategy. Meta wants a PORTFOLIO.', subtext: 'The algorithm doesn\'t want you to find THE perfect ad anymore. It wants OPTIONS. Diversity. Volume. Feed it 15 different creatives and watch it find patterns you never would. Here\'s how to produce that volume without losing your mind.' },
+
+      { type: 'content', title: 'The Old Way Is Killing Your Results', body: 'Before 2024, you tested 5 ads. Found one winner. Scaled it. That worked. Not anymore. Andromeda changed Meta\'s appetite. Now it wants to see DIFFERENT angles, formats, and messages. Why? Because it finds micro-audiences you can\'t manually target. But only if you give it enough data to learn from.' },
+
+      { type: 'visual', title: 'The Algorithmic Shift', visualType: 'comparison', data: {
+        left: { label: 'Old Strategy (Pre-2024)', points: ['Test 5 ads', 'Find 1 winner', 'Scale that winner', 'Narrow targeting'], color: '#ef4444' },
+        right: { label: 'New Strategy (Post-Andromeda)', points: ['Launch 15 creatives', 'Let AI pick winners', 'Feed diversity constantly', 'Broad targeting'], color: '#10b981' }
+      }},
+
+      { type: 'content', title: 'The Problem: How Do You Create 15 Ads Without Going Insane?', body: 'Most people hear "15 creatives" and think: impossible. That\'s weeks of work. Expensive. Exhausting. But here\'s the secret: you don\'t need 15 DIFFERENT products. You need 3 different ANGLES × 5 different FORMATS. That\'s the matrix. And it takes 30 minutes, not 30 days.' },
+
+      { type: 'matrixVisualization', title: 'The 3×5 Creative Matrix', angles: ['Angle 1: Problem/Solution', 'Angle 2: Social Proof', 'Angle 3: Transformation'], formats: ['Format 1: Founder VSL', 'Format 2: Static Image', 'Format 3: Social Proof', 'Format 4: Us vs Them', 'Format 5: Offer-Based'] },
+
+      { type: 'content', title: 'How It Works', body: '3 angles are the MESSAGES you\'re testing. "This solves your problem." "Everyone\'s buying this." "Transform from X to Y." Then you take each angle and produce it in 5 different FORMATS: video, static, testimonial, comparison, offer. 3 × 5 = 15 unique creatives. All saying something different. All testing a hypothesis.' },
+
+      { type: 'angles', title: 'The 3 Angles (Messages)', items: [
+        { title: 'Problem/Solution', description: 'Call out the pain point. Show how your product solves it. Direct. Clear. Works for high-intent buyers.', example: '"Tired of slow shipping? Our 5-day fulfillment fixes that."' },
+        { title: 'Social Proof', description: 'Show that others are buying. "Everyone else is doing this - don\'t get left behind." FOMO-driven.', example: '"12,000 store owners switched to this in 30 days."' },
+        { title: 'Transformation', description: 'Before vs After. Show the life change. Emotional. Aspirational. Works for lifestyle products.', example: '"From 0 orders to $50K/month in 90 days."' }
+      ]},
+
+      { type: 'formats', title: 'The 5 High-Impact Formats', items: [
+        { icon: Icons.Video, title: 'Founder-Led VSL', description: 'You talking to camera. Raw. Authentic. Builds trust. 30-60 seconds explaining the benefit.', color: '#3b82f6' },
+        { icon: Icons.Image, title: 'Problem/Solution Static', description: 'Simple image. Bold headline. Clear CTA. Fast to produce. Still converts.', color: '#8b5cf6' },
+        { icon: Icons.Chat, title: 'Social Proof Ad', description: 'Screenshots of reviews, testimonials, or UGC. "Real people, real results." Lowers skepticism.', color: '#ec4899' },
+        { icon: Icons.Fire, title: 'Us vs. Them Ad', description: 'Comparison format. "AliExpress vs Private Agent." "Before vs After." Highlights your advantage.', color: '#f59e0b' },
+        { icon: Icons.Sparkles, title: 'Offer-Based Ad', description: 'Lead with the deal. "Free shipping." "50% off." "Bundle saves $40." Works for impulse buys.', color: '#10b981' }
+      ]},
+
+      { type: 'matrixBuilder', title: 'Interactive: Build Your Matrix', description: 'Pick 3 angles and 5 formats. Meta will test all 15 combinations and tell you what works.' },
+
+      { type: 'content', title: 'Why This Works', body: 'Meta\'s AI is designed to find patterns in diversity. When you give it 15 different creatives, it can micro-segment audiences in ways you never could manually. "Women 35+ respond to transformation angle in VSL format." You\'d never discover that testing one ad at a time. The matrix unlocks the algorithm\'s full potential.' },
+
+      { type: 'visual', title: 'What Meta Learns From Your Matrix', visualType: 'stats', data: [
+        { value: '15', label: 'Test Combinations', sublabel: 'Meta explores all possibilities', color: '#3b82f6' },
+        { value: '3-5', label: 'Winners Emerge', sublabel: 'Algorithm picks best performers', color: '#10b981' },
+        { value: '∞', label: 'Micro-Audiences', sublabel: 'Finds segments you never would', color: '#ec4899' }
+      ]},
+
+      { type: 'quiz', question: 'Why does Meta want 15 creatives instead of 1 perfect ad?', options: [
+        { text: 'Because it likes wasting your time', isCorrect: false, feedback: 'Meta doesn\'t care about your time. It cares about data. More creatives = more learning signals.' },
+        { text: 'To find micro-audiences through pattern recognition', isCorrect: true, feedback: 'Exactly! With 15 creatives, Meta can discover: "Women 35+ love transformation VSLs" while "Men 25-34 respond to social proof statics." You\'d never find these patterns testing one ad. Diversity unlocks precision.' },
+        { text: 'To charge you more money', isCorrect: false, feedback: 'You spend the same budget either way. More creatives doesn\'t mean more spend - it means smarter spend.' },
+        { text: 'It doesn\'t - one ad is still best', isCorrect: false, feedback: 'That was true in 2019. Post-Andromeda, one ad starves the algorithm of data. You\'ll hit walls fast.' }
+      ]},
+
+      { type: 'completion', title: 'You\'ve Got the Matrix', summary: [
+        '3 angles (messages) × 5 formats (creative types) = 15 diverse ads',
+        'Meta uses this diversity to find micro-audiences through pattern recognition',
+        'The 5 formats: Founder VSL, Problem/Solution Static, Social Proof, Us vs Them, Offer-Based',
+        'Post-Andromeda, volume and diversity beat one "perfect" ad every time'
+      ]}
+    ];
+
+    // Slide Components
+    const WelcomeSlide = ({ goals, onStart }) => (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-6">
+            <Icons.Grid />
+            <span className="text-sm font-semibold text-blue-900">Creative Strategy</span>
+          </div>
+          <h1 id="lesson-title" className="text-4xl md:text-6xl font-black mb-4 text-neutral-900 title-font">
+            {LESSON_CONFIG.title}
+          </h1>
+          <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">{LESSON_CONFIG.description}</p>
+          <div className="bg-neutral-50 rounded-2xl p-8 mb-8 max-w-xl mx-auto text-left">
+            <h3 className="text-lg font-bold mb-4 text-neutral-900">What You'll Discover:</h3>
+            <ul className="space-y-3">
+              {goals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icons.Check />
+                  </div>
+                  <span className="text-neutral-700">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <motion.button onClick={onStart} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-blue-500 text-white rounded-full font-semibold text-lg hover:bg-blue-600 transition-colors">
+            Start Learning →
+          </motion.button>
+        </motion.div>
+      </div>
+    );
+
+    const HookSlide = ({ headline, subtext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl text-center">
+          <h2 className="text-3xl md:text-5xl font-black mb-6 text-neutral-900 title-font leading-tight">{headline}</h2>
+          <p className="text-xl text-neutral-600 leading-relaxed">{subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ContentSlide = ({ title, body }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-black mb-6 text-neutral-900 title-font">{title}</h2>
+          <p className="text-lg md:text-xl text-neutral-700 leading-relaxed">{body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ title, visualType, data }) => {
+      if (visualType === 'comparison') {
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: data.left.color, backgroundColor: data.left.color + '10' }}>
+                  <h3 className="text-2xl font-bold mb-6 text-neutral-900">{data.left.label}</h3>
+                  <ul className="space-y-3">
+                    {data.left.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-neutral-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: data.right.color, backgroundColor: data.right.color + '10' }}>
+                  <h3 className="text-2xl font-bold mb-6 text-neutral-900">{data.right.label}</h3>
+                  <ul className="space-y-3">
+                    {data.right.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-neutral-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      if (visualType === 'stats') {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-12 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                {data.map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div className="text-5xl md:text-6xl font-black mb-3" style={{ color: stat.color }}>{stat.value}</div>
+                    <div className="text-xl font-bold text-neutral-900 mb-2">{stat.label}</div>
+                    <div className="text-sm text-neutral-600">{stat.sublabel}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return null;
+    };
+
+    const MatrixVisualizationSlide = ({ title, angles, formats }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center p-6">
+        <div className="max-w-6xl w-full">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-white title-font text-center">{title}</motion.h2>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border-2 border-white/20">
+            <div className="grid grid-cols-6 gap-2">
+              <div className="col-span-1"></div>
+              {formats.map((format, i) => (
+                <div key={i} className="text-center text-white text-xs font-semibold p-2">{format.split(': ')[1]}</div>
+              ))}
+              {angles.map((angle, angleIdx) => (
+                <React.Fragment key={angleIdx}>
+                  <div className="text-white text-xs font-semibold p-2 flex items-center">{angle.split(': ')[1]}</div>
+                  {formats.map((format, formatIdx) => (
+                    <motion.div key={`${angleIdx}-${formatIdx}`} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 + (angleIdx * 5 + formatIdx) * 0.05 }} className="aspect-square bg-white/20 rounded-lg flex items-center justify-center border-2 border-white/30 hover:bg-white/30 transition-colors cursor-pointer">
+                      <div className="text-white text-xl font-black">{angleIdx * 5 + formatIdx + 1}</div>
+                    </motion.div>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="mt-6 text-center">
+              <div className="text-white text-2xl font-black mb-2">3 × 5 = 15 Unique Creatives</div>
+              <div className="text-white/80 text-sm">Each cell is a different ad. Same product, different angle + format.</div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const AnglesSlide = ({ title, items }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <div className="max-w-4xl w-full">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="space-y-6">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-gradient-to-br from-neutral-50 to-white rounded-2xl p-6 border-2 border-neutral-200">
+                <h3 className="text-2xl font-bold mb-3 text-neutral-900">{item.title}</h3>
+                <p className="text-neutral-700 mb-3 leading-relaxed">{item.description}</p>
+                <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                  <div className="text-xs font-semibold text-blue-900 mb-1">Example:</div>
+                  <div className="text-blue-900 font-medium italic">{item.example}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const FormatsSlide = ({ title, items }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+        <div className="max-w-5xl w-full py-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-neutral-50 to-white rounded-2xl p-6 border border-neutral-200">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: item.color + '20', color: item.color }}>
+                    <item.icon />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-neutral-900">{item.title}</h3>
+                    <p className="text-neutral-600 leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const MatrixBuilderSlide = ({ title, description }) => {
+      const [selectedAngles, setSelectedAngles] = useState([]);
+      const [selectedFormats, setSelectedFormats] = useState([]);
+
+      const angles = ['Problem/Solution', 'Social Proof', 'Transformation'];
+      const formats = ['Founder VSL', 'Static Image', 'Social Proof', 'Us vs Them', 'Offer-Based'];
+
+      const totalCombinations = selectedAngles.length * selectedFormats.length;
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+          <div className="max-w-4xl w-full py-12">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-4 text-neutral-900 title-font text-center">{title}</motion.h2>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 mb-8">{description}</motion.p>
+
+            <div className="bg-white rounded-2xl p-8 mb-6 shadow-lg">
+              <h3 className="text-xl font-bold mb-4 text-neutral-900">Select 3 Angles:</h3>
+              <div className="grid grid-cols-3 gap-3">
+                {angles.map((angle, i) => (
+                  <button key={i} onClick={() => setSelectedAngles(prev => prev.includes(angle) ? prev.filter(a => a !== angle) : [...prev, angle])} className={`p-4 rounded-xl font-semibold transition-all ${selectedAngles.includes(angle) ? 'bg-purple-500 text-white' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}>
+                    {angle}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 mb-6 shadow-lg">
+              <h3 className="text-xl font-bold mb-4 text-neutral-900">Select 5 Formats:</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {formats.map((format, i) => (
+                  <button key={i} onClick={() => setSelectedFormats(prev => prev.includes(format) ? prev.filter(f => f !== format) : [...prev, format])} className={`p-4 rounded-xl font-semibold transition-all ${selectedFormats.includes(format) ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}>
+                    {format}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {totalCombinations > 0 && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-8 text-center text-white shadow-xl">
+                <div className="text-6xl font-black mb-3">{totalCombinations}</div>
+                <div className="text-2xl font-bold mb-2">Unique Creatives Ready</div>
+                <div className="text-white/90">Meta will test all combinations and find what works.</div>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    const QuizSlide = ({ question, options, onAnswer }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+
+      const handleSelect = (index) => {
+        setSelected(index);
+        setShowFeedback(true);
+        setTimeout(() => {
+          if (options[index].isCorrect) {
+            onAnswer(true);
+          }
+        }, 3000);
+      };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+          <div className="max-w-3xl w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-black mb-8 text-neutral-900 title-font text-center">{question}</motion.h2>
+            <div className="space-y-4">
+              {options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => !showFeedback && handleSelect(i)} disabled={showFeedback} className={`w-full p-6 rounded-xl text-left transition-all ${selected === i ? (option.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white') : 'bg-white hover:bg-neutral-50 border-2 border-neutral-200'} ${showFeedback && 'cursor-not-allowed'}`}>
+                  <div className="font-semibold text-lg">{option.text}</div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && selected !== null && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-8 p-6 bg-neutral-900 text-white rounded-2xl">
+                  <div className="flex items-start gap-4">
+                    <video autoPlay loop muted playsInline className="w-32 h-32 rounded-xl object-cover">
+                      <source src={options[selected].isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif()} type="video/mp4" />
+                    </video>
+                    <div>
+                      <h3 className="font-bold text-xl mb-2">{options[selected].isCorrect ? 'Exactly right!' : 'Not quite!'}</h3>
+                      <p className="text-neutral-300 leading-relaxed">{options[selected].feedback}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ title, summary, onNext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full text-center text-white">
+          <div className="text-6xl mb-6">🎯</div>
+          <h2 className="text-4xl md:text-5xl font-black mb-6 title-font">{title}</h2>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8 text-left">
+            <h3 className="text-xl font-bold mb-4">Key Takeaways:</h3>
+            <ul className="space-y-3">
+              {summary.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icons.Check />
+                  </div>
+                  <span className="text-white/90">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          {LESSON_CONFIG.nextLesson && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
+              <div className="text-sm font-semibold mb-2 text-white/70">Up Next:</div>
+              <div className="text-2xl font-bold mb-2">{LESSON_CONFIG.nextLesson.title}</div>
+              <div className="text-white/80 mb-4">{LESSON_CONFIG.nextLesson.teaser}</div>
+              <button onClick={onNext} className="px-6 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                Continue Learning →
+              </button>
+            </div>
+          )}
+          <button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors">
+            Back to Dashboard
+          </button>
+        </motion.div>
+      </div>
+    );
+
+    // Main App
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+
+      const nextSlide = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1));
+      }, []);
+
+      const prevSlide = useCallback(() => {
+        setDirection(-1);
+        setCurrentSlide(prev => Math.max(prev - 1, 0));
+      }, []);
+
+      useEffect(() => {
+        const handleKeyPress = (e) => {
+          if (e.key === 'ArrowRight') nextSlide();
+          if (e.key === 'ArrowLeft') prevSlide();
+        };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+      }, [nextSlide, prevSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide goals={slide.learningGoals} onStart={nextSlide} />;
+          case 'hook': return <HookSlide headline={slide.headline} subtext={slide.subtext} />;
+          case 'content': return <ContentSlide title={slide.title} body={slide.body} />;
+          case 'visual': return <VisualSlide title={slide.title} visualType={slide.visualType} data={slide.data} />;
+          case 'matrixVisualization': return <MatrixVisualizationSlide title={slide.title} angles={slide.angles} formats={slide.formats} />;
+          case 'angles': return <AnglesSlide title={slide.title} items={slide.items} />;
+          case 'formats': return <FormatsSlide title={slide.title} items={slide.items} />;
+          case 'matrixBuilder': return <MatrixBuilderSlide title={slide.title} description={slide.description} />;
+          case 'quiz': return <QuizSlide question={slide.question} options={slide.options} onAnswer={nextSlide} />;
+          case 'completion': return <CompletionSlide title={slide.title} summary={slide.summary} onNext={() => window.location.href = `/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`} />;
+          default: return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction * 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction * -100 }} transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}>
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-neutral-200 z-50">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors">
+                <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </button>
+              <div className="flex gap-1.5">
+                {slides.map((_, i) => (
+                  <div key={i} className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-neutral-300'}`} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors text-white">
+                <Icons.ArrowRight />
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

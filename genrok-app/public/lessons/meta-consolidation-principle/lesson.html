@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Consolidation Principle: Less Structure, More Results | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #93c5fd; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-consolidation-principle',
+      title: 'The Consolidation Principle: Less Structure, More Results',
+      description: 'The old playbook of granular segmentation is dead. One campaign, one ad set, 8-12+ distinct creatives. Here\'s why it works.',
+      accentColor: '#3b82f6',
+      duration: '5 min',
+      nextLesson: { id: 'meta-radical-diversity', title: 'Radical Creative Diversity', teaser: 'Learn why 8-12+ distinct ads beat 6 similar ads.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why fragmented campaigns starve Meta\'s AI', 'One campaign, one ad set, all creatives in one place', 'How consolidation gives the AI enough data to learn'] },
+      { type: 'hook', headline: 'You split your budget across 5 campaigns. Each campaign has 3 ad sets. Each ad set has 6 ads. You think you\'re testing. You\'re actually starving the AI.', subtext: 'Meta\'s algorithm needs DATA to learn. When you fragment your structure, each piece gets a tiny slice of budget. None get enough signal to optimize. The old playbook is deprecated. Here\'s the new one.' },
+      { type: 'content', title: 'The Old Playbook is Deprecated', body: 'Old Way:\n• Granular segmentation (women 25-34, men 35-44, etc.)\n• Multiple campaigns per objective\n• 3-5 ad sets per campaign\n• 6 ads per ad set\n\nSeemed logical. Test everything. Find winners.\n\nNew Reality:\n• Each segment gets tiny budget\n• AI can\'t learn fast enough\n• You\'re competing against yourself\n• Retrieval filters out duplicates\n\nThe game changed. The old structure doesn\'t work anymore.' },
+      { type: 'comparison', title: 'Old Structure vs New Structure', data: {
+        old: {
+          label: 'Old Playbook (Fragmented)',
+          structure: [
+            '5 Campaigns',
+            '3 Ad Sets Each',
+            '6 Ads Per Ad Set',
+            '= 90 total ads competing for budget'
+          ],
+          problem: 'Each ad gets 1.1% of budget. AI starves.'
+        },
+        new: {
+          label: 'New Playbook (Consolidated)',
+          structure: [
+            '1 Campaign',
+            '1 Primary Ad Set',
+            '8-12 Distinct Ads',
+            '= All budget to one learning system'
+          ],
+          benefit: 'AI gets 100% of data. Learns fast. Optimizes hard.'
+        }
+      }},
+      { type: 'content', title: 'Principle #1: Consolidate to Dominate', body: 'One campaign per objective.\nOne primary ad set.\nBroad targeting with smart exclusions.\n8-12+ distinct creatives in that one ad set.\n\nWhy this works:\n• AI gets ALL the data from ALL the traffic\n• Learns faster which creative works for which person\n• No budget fragmentation\n• Retrieval sees distinct creatives (not duplicates)\n• Ranking and Delivery optimize at scale\n\nYou\'re not testing less. You\'re testing SMARTER.' },
+      { type: 'visual-structure', title: 'What Consolidation Looks Like', data: {
+        campaign: 'Sales Campaign',
+        adSet: 'Broad Targeting (exclude existing customers)',
+        creatives: [
+          { id: 1, type: 'Hook: Problem-aware' },
+          { id: 2, type: 'Hook: Solution-aware' },
+          { id: 3, type: 'Hook: Curiosity gap' },
+          { id: 4, type: 'Angle: Pain point' },
+          { id: 5, type: 'Angle: Desire state' },
+          { id: 6, type: 'Format: UGC' },
+          { id: 7, type: 'Format: Product demo' },
+          { id: 8, type: 'Format: Testimonial' },
+          { id: 9, type: 'Tone: Casual' },
+          { id: 10, type: 'Tone: Authoritative' },
+          { id: 11, type: 'Avatar: Beginner' },
+          { id: 12, type: 'Avatar: Advanced' }
+        ]
+      }},
+      { type: 'content', title: 'Why Fragmented Structures Starve the AI', body: 'Think of Meta\'s AI like a brain learning a new skill.\n\nFragmented structure = 10 separate brains, each seeing 10% of the data.\nEach brain tries to learn, but doesn\'t have enough reps to get good.\n\nConsolidated structure = 1 brain seeing 100% of the data.\nSame brain learns from every impression, every click, every conversion.\nGets smart FAST.\n\nThe AI doesn\'t need "tests."\nIt needs VOLUME.\nOne consolidated campaign gives it that volume.' },
+      { type: 'quote', data: {
+        quote: 'Stop thinking in campaigns and ad sets. Think in creative portfolios. One campaign. Multiple distinct angles. Let the AI do the matching.',
+        context: 'The mindset shift from old Meta to new Meta'
+      }},
+      { type: 'stats', title: 'Why Consolidation Wins', items: [
+        { value: '+22%', label: 'ROAS Improvement', description: 'When switching from fragmented to consolidated' },
+        { value: '+7%', label: 'Conversion Rate', description: 'AI learns faster with more data' },
+        { value: '-40%', label: 'Management Time', description: 'One structure instead of ten' }
+      ]},
+      { type: 'content', title: 'But What About Targeting?', body: 'Old You: "I need to target women 25-34 separately from men 35-44!"\n\nNew Reality: Meta KNOWS who\'s who. Better than you.\n\nYour job isn\'t to segment audiences manually.\nYour job is to provide DIVERSE CREATIVES that speak to different people.\n\nMeta will show:\n• Creative #1 to women 25-34\n• Creative #5 to men 35-44\n• Creative #8 to both if it works for both\n\nYou provide the creative portfolio.\nMeta does the matching.\nThat\'s the new game.' },
+      { type: 'quiz', question: 'Why does ONE consolidated campaign outperform FIVE fragmented campaigns?', options: ['It costs less to manage', 'The AI gets 100% of the data and learns faster', 'It looks cleaner in Ads Manager', 'Meta gives preferential treatment to consolidated accounts'], correctIndex: 1, feedback: { correct: 'Exactly! Fragmentation starves the AI. When you split budget across 5 campaigns, each piece gets a tiny slice of data. None learn fast enough. ONE campaign = ALL data flows to ONE learning system. The AI gets smart fast, optimizes hard, and finds the best creative-to-audience matches at scale.', incorrect: 'Not quite. The core reason is DATA. Fragmented campaigns = fragmented learning. Each campaign gets 20% of the data. None learn fast enough. ONE consolidated campaign = 100% of data flows to ONE AI system. It learns faster, optimizes harder, and matches creatives to audiences with full intelligence.' }},
+      { type: 'completion', sources: [{ name: 'Meta Advantage+ Campaign Best Practices', url: 'https://www.facebook.com/business/help/advantage-plus' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const ComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 bg-red-500 text-white">{data.data.old.label}</div>
+            <div className="space-y-2 mb-4">
+              {data.data.old.structure.map((item, i) => (
+                <div key={i} className="text-sm text-neutral-700">{item}</div>
+              ))}
+            </div>
+            <div className="bg-red-100 rounded-lg p-3">
+              <p className="text-xs text-red-700 font-semibold">Problem:</p>
+              <p className="text-xs text-red-600">{data.data.old.problem}</p>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 bg-green-500 text-white">{data.data.new.label}</div>
+            <div className="space-y-2 mb-4">
+              {data.data.new.structure.map((item, i) => (
+                <div key={i} className="text-sm text-neutral-700">{item}</div>
+              ))}
+            </div>
+            <div className="bg-green-100 rounded-lg p-3">
+              <p className="text-xs text-green-700 font-semibold">Benefit:</p>
+              <p className="text-xs text-green-600">{data.data.new.benefit}</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const VisualStructureSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="max-w-2xl mx-auto w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 mb-4 text-white text-center">
+            <Icons.Layers className="inline-block mb-2" />
+            <div className="font-bold text-lg">{data.data.campaign}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl p-5 mb-4 text-white text-center ml-6">
+            <div className="font-semibold">{data.data.adSet}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-blue-200 rounded-xl p-5 ml-12">
+            <div className="text-sm font-semibold text-neutral-600 mb-3">{data.data.creatives.length} Distinct Creatives:</div>
+            <div className="grid grid-cols-2 gap-2">
+              {data.data.creatives.map((creative, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 + i * 0.05 }} className="bg-blue-50 rounded-lg p-2 text-xs text-neutral-700 text-center">
+                  {creative.type}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const StatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.items.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
+              <div className="text-xs text-neutral-500">{stat.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-blue-300 hover:bg-blue-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-blue-50 border-2 border-blue-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand why one consolidated campaign beats ten fragmented ones - and how to structure for the new Meta.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline flex items-center gap-1 mb-1" style={{ color: 'var(--accent)' }}><Icons.Link />{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'comparison': return <ComparisonSlide data={slide} />;
+          case 'visual-structure': return <VisualStructureSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'stats': return <StatsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? '100%' : '-100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? '-100%' : '100%' }} transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gif.src && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: gif.opacity === 0 ? 0 : 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : gif.side === 'right' ? 'right-4 md:right-8' : 'left-1/2 -translate-x-1/2'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: '65%' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gif.src} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

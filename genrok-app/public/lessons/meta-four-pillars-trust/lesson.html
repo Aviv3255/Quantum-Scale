@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 4 Pillars of Trust: 14 Ads That Build Relationships | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #93c5fd; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-four-pillars-trust',
+      title: 'The 4 Pillars of Trust: 14 Ads That Build Relationships',
+      description: 'The Omnipresent Content strategy uses 14 carefully structured ads across 4 pillars to teach Meta\'s AI what makes you valuable - and become the only logical choice when prospects are ready to buy.',
+      accentColor: '#3b82f6',
+      duration: '7 min',
+      nextLesson: { id: 'meta-whatsapp-ai', title: 'Click-to-WhatsApp: High-Touch Sales at Scale', teaser: 'Learn how 3 billion monthly users + Business AI = your competitive edge.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why 14 ads organized into 4 strategic pillars', 'How each pillar teaches Meta AI a different aspect of your value', 'The frequency cap that creates 2 touchpoints daily without fatigue'] },
+      { type: 'hook', headline: 'You run 20 ads. All blast "BUY NOW." Meta\'s AI learns one thing: you\'re desperate. Prospects see you once, ignore you, never see you again. Zero relationship. Zero trust. Zero conversions.', subtext: 'The Omnipresent Content strategy flips this completely. 14 carefully structured ads teach Meta\'s AI what makes you valuable. Prospects see 2 unique touchpoints daily. You become the only logical choice when they\'re ready to buy.' },
+      { type: 'content', title: 'The Old Game Is Dead', body: 'Most advertisers treat Meta Ads like a slot machine. Blast 20 "BUY NOW" ads. Hope something hits. What actually happens:\n\nMeta\'s AI learns: "This brand only pushes sales."\nProspects see: Desperation. Pressure. Noise.\nResult: Ignored, forgotten, scrolled past.\n\nThe AI Era demands a completely different approach. You\'re not just optimizing for conversions. You\'re teaching Meta\'s Generative Ads Recommendation Model (GEM) what a perfect customer looks like and why your brand matters.\n\nThis requires strategic architecture, not random testing.' },
+      { type: 'content', title: 'Meet the Omnipresent Content Strategy', body: 'The framework that turns Meta\'s AI into your sales team.\n\nBest suited for:\n• Businesses with customer lifetime value over $1,000\n• Expertise-based services (coaches, consultants, agencies)\n• High-end or bespoke products with longer sales cycles\n\nThe Goal: Become "famous" within your niche audience by delivering consistent value, building unshakeable trust, and being perpetually top-of-mind.\n\nHow it works: One campaign. 14 ad sets. 14 unique ads. Each designed to build a different facet of the customer relationship. Each teaching Meta\'s AI a different aspect of your value proposition.' },
+      { type: 'architecture', title: 'The Architecture: Omnipresent Without Annoying', structure: {
+        campaign: '1 Campaign (Awareness/Engagement Objective)',
+        adSets: '14 Ad Sets (Identical Targeting & Budget)',
+        ads: '14 Unique Ads (1 per ad set)',
+        frequencyCap: '1 impression per 7 days (per ad set)',
+        experience: 'Prospects see max 14 different ads over 7 days = 2 unique touchpoints daily',
+        signal: 'This gentle persistence teaches GEM: "My brand is valuable, not annoying"'
+      }},
+      { type: 'pillars', title: 'The 4 Pillars of Trust', pillars: [
+        {
+          icon: 'lightbulb',
+          number: 1,
+          title: 'Value Ads',
+          count: '4 Ads',
+          purpose: 'Deliver helpful, valuable information that solves a problem for your prospect.',
+          teaches: '"My brand is a source of expertise and help."',
+          color: '#3b82f6'
+        },
+        {
+          icon: 'flowchart',
+          number: 2,
+          title: 'Demonstration Ads',
+          count: '4 Ads',
+          purpose: 'Show exactly how your product or service works, what the process looks like, and what to expect.',
+          teaches: '"My brand delivers a clear, tangible solution."',
+          color: '#8b5cf6'
+        },
+        {
+          icon: 'trophy',
+          number: 3,
+          title: 'Testimonial Ads',
+          count: '4 Ads',
+          purpose: 'Provide social proof, case studies, and reviews to build credibility and reduce risk.',
+          teaches: '"My brand is trusted and delivers proven results."',
+          color: '#ec4899'
+        },
+        {
+          icon: 'arrow-next',
+          number: 4,
+          title: 'Call-to-Action Ads',
+          count: '2 Ads',
+          purpose: 'Clearly and gently state the next logical step for a prospect who is ready.',
+          teaches: '"This is the ultimate conversion action we are optimizing for."',
+          color: '#10b981'
+        }
+      ]},
+      { type: 'breakdown', title: 'Pillar 1: Value Ads (4 Ads)', content: {
+        description: 'These ads give away genuinely helpful information. No pitch. No pressure. Pure value.',
+        examples: [
+          'Educational posts teaching a framework or strategy',
+          'Quick tips that solve immediate pain points',
+          'Industry insights prospects can use right now',
+          'Free tools, templates, or checklists'
+        ],
+        psychology: 'When you teach without asking for anything, prospects think: "If the free stuff is this good, imagine what they charge for." Trust begins here.',
+        aiSignal: 'Meta learns: This brand educates. This brand helps. This audience engages with educational content from this brand.'
+      }},
+      { type: 'breakdown', title: 'Pillar 2: Demonstration Ads (4 Ads)', content: {
+        description: 'Show how it works. Walk through the process. Remove mystery and fear.',
+        examples: [
+          'Behind-the-scenes videos of your service delivery',
+          'Product demos showing the transformation',
+          'Step-by-step walkthroughs of what clients experience',
+          'Before/after case study breakdowns'
+        ],
+        psychology: 'People buy when they can visualize themselves getting results. Demonstration ads bridge the gap between "I don\'t know how this works" and "I can see myself doing this."',
+        aiSignal: 'Meta learns: This brand delivers a tangible solution. This audience watches demos and process content.'
+      }},
+      { type: 'breakdown', title: 'Pillar 3: Testimonial Ads (4 Ads)', content: {
+        description: 'Social proof. Results. Real humans vouching for you. The trust accelerator.',
+        examples: [
+          'Video testimonials from happy customers',
+          'Screenshot reviews with specific results',
+          'Case studies with numbers and outcomes',
+          'Influencer or expert endorsements'
+        ],
+        psychology: 'Prospects don\'t fully trust you yet. But they trust other customers. Testimonials transfer trust from your clients to your brand.',
+        aiSignal: 'Meta learns: This brand is proven. This brand delivers results. This audience responds to social proof.'
+      }},
+      { type: 'breakdown', title: 'Pillar 4: Call-to-Action Ads (2 Ads)', content: {
+        description: 'Now that trust is built, the ask is gentle and logical. Not pushy. Just the next step.',
+        examples: [
+          '"Ready to get started? Book a call."',
+          '"Join 500+ businesses already using [solution]."',
+          '"Limited spots available this month. Apply here."',
+          '"Try it free for 14 days. No credit card needed."'
+        ],
+        psychology: 'After seeing value, demos, and testimonials, the CTA feels natural. It\'s not "Buy from a stranger." It\'s "Take the next step with a brand I trust."',
+        aiSignal: 'Meta learns: THIS is the conversion action we\'re optimizing for. When prospects reach this readiness level, show them this CTA.'
+      }},
+      { type: 'frequency', title: 'The Critical Setting: Frequency Cap', data: {
+        setting: '1 Impression Per 7 Days (per ad set)',
+        math: '14 ad sets × 1 impression each = 14 different ads over 7 days',
+        experience: 'Prospects see 2 unique, non-fatiguing touchpoints every single day',
+        result: 'Omnipresent without being annoying'
+      }},
+      { type: 'results', title: 'How Success Is Measured', metrics: [
+        {
+          icon: 'gear',
+          title: 'Improved Performance in Other Campaigns',
+          description: 'A noticeable lift in conversion rates and ROAS in your direct-response sales campaigns.',
+          why: 'Omnipresent Content builds the trust that makes sales campaigns convert better.'
+        },
+        {
+          icon: 'chat',
+          title: 'Qualitative Feedback',
+          description: 'Prospects say: "I see you guys everywhere." New customers say: "I\'ve been following you for a while."',
+          why: 'You\'ve successfully occupied mental real estate. You\'re top-of-mind when they\'re ready.'
+        },
+        {
+          icon: 'trending',
+          title: 'Growth in Brand Metrics',
+          description: 'Steady increase in social media followers, positive engagement on ads, and organic reach.',
+          why: 'Trust and value delivery compound over time. Your brand becomes a magnet.'
+        },
+        {
+          icon: 'door',
+          title: 'Increased Inbound Demand',
+          description: 'More organic traffic, more direct messages, more leads saying they\'ve been "following you for a while."',
+          why: 'Omnipresence creates inevitability. When they\'re ready, you\'re the only option.'
+        }
+      ]},
+      { type: 'quote', data: {
+        quote: 'This is a marathon, not a sprint. Omnipresent Content will not have a high direct ROAS in Ads Manager. Its true impact is measured by its effect on your entire ecosystem.',
+        context: 'The long-term asset-building strategy behind the 4 Pillars'
+      }},
+      { type: 'hybrid', title: 'Teaching the AI: The Hybrid Adset', setup: [
+        { step: '1', text: 'Go to Advantage+ Audience section in Ads Manager' },
+        { step: '2', text: 'Add all your warm Custom Audiences as suggestions:', items: [
+          'Website Visitors (180 days)',
+          'Customer / Email Lists',
+          'Instagram & Facebook Page Engagers (365 days)',
+          'Video Viewers (365 days)'
+        ]},
+        { step: '3', text: 'Leave demographic and detailed targeting completely open' }
+      ], why: 'You\'re giving GEM a high-fidelity dataset of what your perfect customer looks like. The AI starts by learning from this group, then autonomously finds new, cold audiences that are statistically identical. This is the most powerful way to prospect and scale in 2025.' },
+      { type: 'quiz', question: 'What is the PRIMARY purpose of the 4 Pillars of Trust framework?', options: ['To generate immediate conversions and high ROAS', 'To teach Meta\'s AI different aspects of your value and build deep customer relationships over time', 'To replace all other ad campaigns with one omnipresent strategy', 'To reduce ad spend by running fewer total ads'], correctIndex: 1, feedback: { correct: 'Exactly! The 4 Pillars aren\'t about instant conversions. They\'re about teaching Meta\'s GEM what makes you valuable across 4 dimensions: expertise (Value), solution clarity (Demo), credibility (Testimonial), and desired action (CTA). This builds trust that makes all your other campaigns perform better. It\'s a marathon, not a sprint.', incorrect: 'Not quite. The 4 Pillars strategy isn\'t designed for immediate ROAS or to replace direct-response campaigns. It\'s an asset-building framework that teaches Meta\'s AI your complete value proposition across Value, Demo, Testimonial, and CTA ads. The ROI shows up in improved performance across your entire funnel, qualitative feedback like "I see you everywhere," and increased inbound demand over time.' }},
+      { type: 'completion', sources: [{ name: 'The Meta Iceberg: Unlocking AI Mastery', url: '#' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Flowchart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/><line x1="12" y1="15" x2="12" y2="12"/></svg>,
+      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      ArrowNext: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>,
+      Gear: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"/></svg>,
+      Chat: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Trending: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Door: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const ArchitectureSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-lg font-bold text-neutral-700 mb-2">{data.structure.campaign}</div>
+              <div className="text-sm text-neutral-500 mb-4">↓</div>
+              <div className="text-lg font-bold text-neutral-700 mb-2">{data.structure.adSets}</div>
+              <div className="text-sm text-neutral-500 mb-4">↓</div>
+              <div className="text-lg font-bold text-neutral-700">{data.structure.ads}</div>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
+            <div className="text-blue-400 text-sm font-bold mb-2">The Critical Setting</div>
+            <div className="text-white text-base mb-3">{data.structure.frequencyCap}</div>
+            <div className="text-neutral-400 text-sm">{data.structure.experience}</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">Signal to the AI</div>
+            <div className="text-neutral-700 text-base">{data.structure.signal}</div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const PillarsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.pillars.map((pillar, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: pillar.color }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: pillar.color }}>
+                  {pillar.icon === 'lightbulb' && <Icons.Lightbulb />}
+                  {pillar.icon === 'flowchart' && <Icons.Flowchart />}
+                  {pillar.icon === 'trophy' && <Icons.Trophy />}
+                  {pillar.icon === 'arrow-next' && <Icons.ArrowNext />}
+                </div>
+                <div>
+                  <div className="text-xs text-neutral-400 font-semibold">Pillar {pillar.number}</div>
+                  <div className="text-lg font-bold text-black">{pillar.title}</div>
+                  <div className="text-xs font-semibold" style={{ color: pillar.color }}>{pillar.count}</div>
+                </div>
+              </div>
+              <div className="text-sm text-neutral-600 mb-3">{pillar.purpose}</div>
+              <div className="bg-neutral-50 rounded-lg p-3">
+                <div className="text-xs text-neutral-400 mb-1">Teaches the AI:</div>
+                <div className="text-sm text-neutral-700 italic">{pillar.teaches}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const BreakdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 mb-4">{data.content.description}</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl p-5 mb-4">
+          <div className="text-xs uppercase tracking-wider text-blue-600 mb-2">Examples</div>
+          <ul className="space-y-2">
+            {data.content.examples.map((example, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
+                <span className="text-blue-500 mt-0.5">•</span>
+                <span>{example}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-5 mb-4">
+          <div className="text-xs uppercase tracking-wider text-blue-400 mb-2">Psychology</div>
+          <p className="text-sm text-neutral-300 leading-relaxed">{data.content.psychology}</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+          <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">What Meta Learns</div>
+          <p className="text-sm text-neutral-700 italic">{data.content.aiSignal}</p>
+        </motion.div>
+      </div>
+    );
+
+    const FrequencySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-6 text-center">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl p-8 mb-6">
+          <div className="text-center">
+            <div className="text-5xl font-bold mb-2">1/7</div>
+            <div className="text-xl mb-4">{data.data.setting}</div>
+            <div className="text-sm opacity-90">(per ad set)</div>
+          </div>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-4">
+          <div className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+            <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">The Math</div>
+            <div className="text-base text-neutral-700">{data.data.math}</div>
+          </div>
+          <div className="bg-white border-2 border-blue-200 rounded-xl p-5">
+            <div className="text-xs uppercase tracking-wider text-blue-600 mb-2">The Experience</div>
+            <div className="text-base text-neutral-700 font-semibold">{data.data.experience}</div>
+          </div>
+          <div className="bg-neutral-900 rounded-xl p-5">
+            <div className="text-xs uppercase tracking-wider text-blue-400 mb-2">The Result</div>
+            <div className="text-lg text-white font-bold">{data.data.result}</div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const ResultsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.metrics.map((metric, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                  {metric.icon === 'gear' && <Icons.Gear />}
+                  {metric.icon === 'chat' && <Icons.Chat />}
+                  {metric.icon === 'trending' && <Icons.Trending />}
+                  {metric.icon === 'door' && <Icons.Door />}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-black mb-2">{metric.title}</h3>
+                  <p className="text-sm text-neutral-600 mb-2">{metric.description}</p>
+                  <p className="text-xs text-neutral-400 italic">{metric.why}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const HybridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.setup.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+              <div className="flex items-start gap-3 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold flex-shrink-0">{item.step}</div>
+                <div className="text-base text-neutral-700 flex-1">{item.text}</div>
+              </div>
+              {item.items && (
+                <ul className="ml-11 space-y-1 mt-3">
+                  {item.items.map((subitem, j) => (
+                    <li key={j} className="text-sm text-neutral-600 flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5">•</span>
+                      <span>{subitem}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 mt-6">
+          <div className="text-xs uppercase tracking-wider mb-2 opacity-90">The Why</div>
+          <p className="text-base leading-relaxed">{data.why}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-blue-300 hover:bg-blue-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-blue-50 border-2 border-blue-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand how the 4 Pillars of Trust framework teaches Meta's AI your complete value proposition and builds deep customer relationships at scale.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <div key={i} className="text-sm flex items-center gap-1 mb-1" style={{ color: 'var(--accent)' }}>{source.name}</div>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'architecture': return <ArchitectureSlide data={slide} />;
+          case 'pillars': return <PillarsSlide data={slide} />;
+          case 'breakdown': return <BreakdownSlide data={slide} />;
+          case 'frequency': return <FrequencySlide data={slide} />;
+          case 'results': return <ResultsSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'hybrid': return <HybridSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? '100%' : '-100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? '-100%' : '100%' }} transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gif.src && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: gif.opacity === 0 ? 0 : 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : gif.side === 'right' ? 'right-4 md:right-8' : 'left-1/2 -translate-x-1/2'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: '65%' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gif.src} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPI + Pixel Setup | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; --meta-blue: #1877f2; --meta-bg: #f0f2f5; --meta-card: #ffffff; --meta-text: #1c1e21; --meta-muted: #65676b; --meta-success: #31a24c; --meta-warning: #f7b928; --meta-border: #dddfe2; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    .meta-ui { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-capi-pixel-setup',
+      title: 'CAPI + Pixel Setup',
+      description: 'Why running pixel-only in 2025 is like driving with half your dashboard broken.',
+      accentColor: '#3b82f6',
+      duration: '9 min',
+      nextLesson: { id: 'meta-andromeda', title: 'Meta\'s New Brain: Andromeda', teaser: 'The AI engine that changed everything about how Facebook Ads work.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why pixel-only tracking loses 30-40% of conversion data', 'How CAPI (Conversions API) fills the iOS 14.5+ gaps', 'The dual-tracking setup that gives Andromeda complete data'] },
+      { type: 'hook', headline: 'iOS 14.5 didn\'t just change privacy. It blinded your ads.', subtext: 'When Apple introduced App Tracking Transparency, pixel tracking broke for 70%+ of iPhone users. Your ads kept running. But Meta stopped seeing conversions. It optimized based on incomplete data. Costs went up. ROAS went down. CAPI is the fix most advertisers still haven\'t implemented properly.' },
+      { type: 'problem-visual', title: 'The Problem: Pixel Tracking Is Broken', problems: [
+        { icon: 'shield', text: 'Safari blocks third-party cookies by default' },
+        { icon: 'chrome', text: 'Chrome is phasing out cookies in 2025' },
+        { icon: 'phone', text: 'iPhone users opt out of tracking (~80% do)' },
+        { icon: 'block', text: 'Ad blockers prevent pixel fires entirely' }
+      ], stat: { value: '50-70%', label: 'of conversions your pixel misses' }},
+      { type: 'tracking-comparison', title: 'Pixel vs CAPI: How They Work', pixel: { label: 'Pixel (Browser-Side)', flow: ['User clicks ad', 'Lands on your site', 'Pixel fires in browser', 'Cookie tracks user', 'Conversion recorded (maybe)'], problems: ['Blocked by iOS 14.5+', 'Ad blockers kill it', 'Cookies expire/get cleared', 'Only sees ~60% of events'] }, capi: { label: 'CAPI (Server-Side)', flow: ['User clicks ad', 'Lands on your site', 'Server records event', 'Server sends to Meta', 'Conversion recorded (reliable)'], benefits: ['Bypasses iOS restrictions', 'Immune to ad blockers', 'More accurate data', 'Sees ~95% of events'] }},
+      { type: 'architecture-diagram', title: 'Dual Tracking Architecture' },
+      { type: 'meta-events-mockup', title: 'What You\'ll See in Events Manager' },
+      { type: 'cards', title: 'What CAPI Gives You', items: [
+        { icon: 'target', title: 'Accurate Attribution', description: 'See the true source of conversions. No more guessing which ads actually drove sales.' },
+        { icon: 'cpu', title: 'Better Optimization', description: 'Meta\'s AI receives complete data. It finds buyers faster and wastes less budget.' },
+        { icon: 'trending-down', title: 'Lower CPAs', description: 'Advertisers report 15-30% CPA reduction after proper CAPI setup.' },
+        { icon: 'shield-check', title: 'Future-Proof', description: 'As cookies die completely, CAPI becomes your primary tracking method.' }
+      ]},
+      { type: 'shopify-setup', title: 'Shopify CAPI Setup (Step-by-Step)' },
+      { type: 'event-match-quality', title: 'Check Your Event Match Quality' },
+      { type: 'example', scenario: 'Skincare Brand - Before/After CAPI', before: { label: 'Pixel Only', metrics: [{ label: 'Reported Conversions', value: '45/day' }, { label: 'Actual Shopify Orders', value: '68/day' }, { label: 'Data Visibility', value: '66%' }, { label: 'CPA', value: '$34.50' }] }, after: { label: 'Pixel + CAPI', metrics: [{ label: 'Reported Conversions', value: '65/day' }, { label: 'Match Rate', value: '96%' }, { label: 'CPA', value: '$24.20' }, { label: 'ROAS', value: '2.9x' }] }, insight: 'Same product. Same ads. 30% lower CPA just by giving Meta accurate data.' },
+      { type: 'quiz', question: 'Your pixel shows 50 conversions/day but Shopify shows 80 orders. What\'s the most likely cause?', options: ['The pixel is counting wrong - remove it', 'iOS 14.5+ and ad blockers are preventing pixel fires', 'Shopify\'s numbers are inflated', 'You need to lower your budget'], correctIndex: 1, feedback: { correct: 'Exactly right. The 30-conversion gap (37% missing) is classic iOS 14.5+ impact combined with ad blockers. CAPI would capture those missing events by sending data server-side, bypassing browser restrictions.', incorrect: 'The discrepancy is caused by iOS 14.5+ privacy changes and ad blockers. 30%+ of conversions are commonly lost. The solution is CAPI to send conversion data directly from your server.' }},
+      { type: 'action-checklist', title: 'Implement CAPI Today', items: [
+        { task: 'Go to Events Manager and check current Event Match Quality score', path: 'Events Manager > Data Sources > Your Pixel > Overview' },
+        { task: 'Enable CAPI in your platform settings', path: 'Shopify: Settings > Apps > Facebook & Instagram > Data Sharing' },
+        { task: 'Set Data Sharing to "Maximum" for best results', path: 'This enables server-side event sending' },
+        { task: 'Verify both Pixel AND CAPI are firing (check Events Manager)', path: 'Look for "Browser" and "Server" event sources' },
+        { task: 'Send enhanced parameters: email, phone for better matching', path: 'Configure in your CAPI integration settings' }
+      ], bottomNote: 'CAPI setup typically takes 15-30 minutes on Shopify. The ROI is immediate.' },
+      { type: 'completion', sources: [] }
+    ];
+
+    // Clean SVG Icons
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Globe: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Server: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      ShieldCheck: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
+      Phone: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      Chrome: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>,
+      Block: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Cpu: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>,
+      TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Activity: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Database: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
+      ArrowDown: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
+      Settings: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      ExternalLink: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+    };
+
+    const getIconComponent = (name) => {
+      const iconMap = { shield: Icons.Shield, chrome: Icons.Chrome, phone: Icons.Phone, block: Icons.Block, target: Icons.Target, cpu: Icons.Cpu, 'trending-down': Icons.TrendingDown, 'shield-check': Icons.ShieldCheck };
+      return iconMap[name] || Icons.Zap;
+    };
+
+    // Welcome Slide
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    // Hook Slide
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Reality</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    // Problem Visual Slide (replaces plain text bullets)
+    const ProblemVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4 mb-8">
+          {data.problems.map((problem, i) => {
+            const IconComp = getIconComponent(problem.icon);
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-4 bg-red-50 border border-red-200 rounded-xl p-4">
+                <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-500 flex-shrink-0">
+                  <IconComp />
+                </div>
+                <span className="text-neutral-700 text-sm font-medium">{problem.text}</span>
+              </motion.div>
+            );
+          })}
+        </div>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
+          <div className="text-red-400 text-4xl md:text-5xl font-bold mb-2">{data.stat.value}</div>
+          <div className="text-neutral-400 text-sm">{data.stat.label}</div>
+        </motion.div>
+      </div>
+    );
+
+    // Tracking Comparison Slide
+    const TrackingComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="text-center mb-4">
+              <span className="inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">{data.pixel.label}</span>
+            </div>
+            <div className="space-y-2 mb-4">
+              {data.pixel.flow.map((step, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm text-neutral-700">
+                  <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                  <span>{step}</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-red-200 pt-3">
+              <div className="text-xs font-bold text-red-600 mb-2">PROBLEMS</div>
+              {data.pixel.problems.map((p, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs text-red-600 mb-1">
+                  <Icons.X /><span>{p}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="text-center mb-4">
+              <span className="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">{data.capi.label}</span>
+            </div>
+            <div className="space-y-2 mb-4">
+              {data.capi.flow.map((step, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm text-neutral-700">
+                  <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                  <span>{step}</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-green-200 pt-3">
+              <div className="text-xs font-bold text-green-600 mb-2">BENEFITS</div>
+              {data.capi.benefits.map((b, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs text-green-600 mb-1">
+                  <Icons.Check /><span>{b}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Architecture Diagram Slide (with clean icons instead of emojis)
+    const ArchitectureDiagramSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="relative">
+          <div className="flex justify-between items-start mb-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center flex-1">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 border-2 border-red-200 rounded-xl mb-3">
+                <Icons.Globe />
+              </div>
+              <div className="text-sm font-semibold text-neutral-700">Browser (Pixel)</div>
+              <div className="text-xs text-red-500 font-medium mt-1">~60% reliable</div>
+              <div className="mt-3 w-0.5 h-8 bg-red-200 mx-auto"></div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center flex-1">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-50 border-2 border-green-200 rounded-xl mb-3">
+                <Icons.Server />
+              </div>
+              <div className="text-sm font-semibold text-neutral-700">Server (CAPI)</div>
+              <div className="text-xs text-green-500 font-medium mt-1">~95% reliable</div>
+              <div className="mt-3 w-0.5 h-8 bg-green-200 mx-auto"></div>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="flex justify-center">
+            <div className="text-center p-6 rounded-xl w-full max-w-md" style={{ background: 'linear-gradient(135deg, var(--meta-blue), #1565c0)' }}>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Icons.Database />
+              </div>
+              <div className="text-white text-sm font-semibold mb-1">Meta's AI Engine</div>
+              <div className="text-blue-100 text-xs mb-3">Receives both data streams</div>
+              <div className="bg-white/20 rounded-lg p-3">
+                <div className="text-white text-2xl font-bold">98%+ Match Rate</div>
+                <div className="text-blue-100 text-xs">Combined event coverage</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-sm text-neutral-500 text-center mt-6">Pixel + CAPI together gives Meta nearly complete conversion visibility</motion.p>
+      </div>
+    );
+
+    // Meta Events Manager Mockup Slide
+    const MetaEventsMockupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-4">{data.title}</motion.h2>
+
+        {/* Meta UI Mockup */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="meta-ui bg-[#f0f2f5] rounded-xl overflow-hidden shadow-lg border border-neutral-200">
+          {/* Meta Header */}
+          <div className="bg-white border-b border-[#dddfe2] px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#1877f2] flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </div>
+              <span className="font-semibold text-[#1c1e21] text-sm">Events Manager</span>
+            </div>
+            <div className="text-xs text-[#65676b]">Data Sources</div>
+          </div>
+
+          {/* Events Overview */}
+          <div className="p-4">
+            <div className="bg-white rounded-lg border border-[#dddfe2] overflow-hidden">
+              <div className="px-4 py-3 border-b border-[#dddfe2] flex items-center justify-between">
+                <span className="font-semibold text-sm text-[#1c1e21]">Your Store Pixel</span>
+                <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">Active</span>
+              </div>
+
+              {/* Event Rows */}
+              <div className="divide-y divide-[#dddfe2]">
+                <div className="px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                      <Icons.Activity />
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm text-[#1c1e21]">Purchase</div>
+                      <div className="text-xs text-[#65676b]">Last 7 days</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Browser</div>
+                      <div className="font-semibold text-sm text-[#1c1e21]">847</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Server</div>
+                      <div className="font-semibold text-sm text-green-600">1,245</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Deduplicated</div>
+                      <div className="font-semibold text-sm text-[#1877f2]">1,312</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                      <Icons.Target />
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm text-[#1c1e21]">Add to Cart</div>
+                      <div className="text-xs text-[#65676b]">Last 7 days</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Browser</div>
+                      <div className="font-semibold text-sm text-[#1c1e21]">2,341</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Server</div>
+                      <div className="font-semibold text-sm text-green-600">3,567</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-[#65676b]">Deduplicated</div>
+                      <div className="font-semibold text-sm text-[#1877f2]">3,892</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Event Match Quality */}
+            <div className="mt-4 bg-white rounded-lg border border-[#dddfe2] p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-semibold text-sm text-[#1c1e21]">Event Match Quality</span>
+                <span className="text-xs text-green-600 font-medium">Good</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-2 bg-[#e4e6eb] rounded-full overflow-hidden">
+                  <div className="h-full bg-green-500 rounded-full" style={{ width: '78%' }}></div>
+                </div>
+                <span className="text-lg font-bold text-[#1c1e21]">7.8</span>
+              </div>
+              <p className="text-xs text-[#65676b] mt-2">Server events are improving your match rate by 47%</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-xs text-neutral-500 text-center mt-3">This is what proper CAPI setup looks like. Notice "Server" events alongside "Browser" events.</motion.p>
+      </div>
+    );
+
+    // Cards Slide
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.items.map((item, i) => {
+            const IconComp = getIconComponent(item.icon);
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-3">
+                  <IconComp />
+                </div>
+                <h3 className="font-bold text-neutral-900 mb-2">{item.title}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Shopify Setup Mockup Slide
+    const ShopifySetupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-4">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Step 1 */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">1</span>
+              <span className="font-semibold text-sm">Go to Sales Channels</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3 text-sm">
+                <div className="flex items-center gap-2 text-[#1c1e21] mb-2">
+                  <Icons.Settings />
+                  <span className="font-medium">Settings</span>
+                </div>
+                <div className="ml-6 space-y-1">
+                  <div className="text-[#65676b] text-xs">Apps and sales channels</div>
+                  <div className="flex items-center gap-2 bg-white rounded px-2 py-1.5 border border-blue-300">
+                    <div className="w-5 h-5 rounded bg-[#1877f2]"></div>
+                    <span className="text-xs font-medium">Facebook & Instagram</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Step 2 */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">2</span>
+              <span className="font-semibold text-sm">Open Data Sharing Settings</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3 text-sm">
+                <div className="text-xs text-[#65676b] mb-2">Facebook & Instagram app</div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between bg-white rounded px-3 py-2 border border-neutral-200">
+                    <span className="text-xs">Settings</span>
+                    <Icons.ArrowRight />
+                  </div>
+                  <div className="flex items-center justify-between bg-white rounded px-3 py-2 border border-blue-300 bg-blue-50">
+                    <span className="text-xs font-medium text-blue-700">Data sharing settings</span>
+                    <Icons.ArrowRight />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Step 3 */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">3</span>
+              <span className="font-semibold text-sm">Select Maximum Data Sharing</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3">
+                <div className="text-xs text-[#65676b] mb-3">Customer data sharing level</div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 bg-white rounded px-3 py-2 border border-neutral-200">
+                    <div className="w-4 h-4 rounded-full border-2 border-neutral-300"></div>
+                    <span className="text-xs">Standard</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-white rounded px-3 py-2 border border-neutral-200">
+                    <div className="w-4 h-4 rounded-full border-2 border-neutral-300"></div>
+                    <span className="text-xs">Enhanced</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-green-50 rounded px-3 py-2 border-2 border-green-400">
+                    <div className="w-4 h-4 rounded-full border-2 border-green-500 flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    </div>
+                    <span className="text-xs font-medium text-green-700">Maximum</span>
+                    <span className="text-[10px] bg-green-100 text-green-600 px-1.5 py-0.5 rounded ml-auto">Recommended</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Step 4 */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center">4</span>
+              <span className="font-semibold text-sm">Verify in Events Manager</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3">
+                <div className="text-xs text-[#65676b] mb-2">Connection Status</div>
+                <div className="bg-white rounded-lg p-3 border border-neutral-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span className="text-xs font-medium">CAPI Connected</span>
+                  </div>
+                  <div className="text-[10px] text-[#65676b]">
+                    Events received: Browser + Server
+                  </div>
+                  <div className="mt-2 flex gap-2">
+                    <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded">Pixel</span>
+                    <span className="text-[10px] bg-green-50 text-green-600 px-2 py-1 rounded">CAPI</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Event Match Quality Slide
+    const EventMatchQualitySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="meta-ui bg-white rounded-xl border-2 border-neutral-200 p-6 mb-6">
+          <div className="text-center mb-6">
+            <div className="text-sm text-[#65676b] mb-2">Your Event Match Quality Score</div>
+            <div className="flex items-center justify-center gap-1">
+              {[1,2,3,4,5,6,7,8,9,10].map((n) => (
+                <div key={n} className={`w-8 h-12 rounded flex items-center justify-center text-xs font-bold ${n <= 7 ? 'bg-green-100 text-green-700' : n <= 3 ? 'bg-red-100 text-red-700' : 'bg-neutral-100 text-neutral-400'}`}>
+                  {n}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-red-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-red-600 mb-1">1-3</div>
+              <div className="text-xs text-red-700 font-medium mb-2">Poor</div>
+              <div className="text-xs text-red-600">Most events can't be matched. CAPI isn't working properly.</div>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-yellow-600 mb-1">4-6</div>
+              <div className="text-xs text-yellow-700 font-medium mb-2">Okay</div>
+              <div className="text-xs text-yellow-600">Basic matching. Room for improvement.</div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 text-center border-2 border-green-300">
+              <div className="text-2xl font-bold text-green-600 mb-1">7-10</div>
+              <div className="text-xs text-green-700 font-medium mb-2">Excellent</div>
+              <div className="text-xs text-green-600">Meta sees almost everything. Optimization works well.</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="font-semibold text-blue-800 text-sm mb-2">How to improve your score:</div>
+          <ul className="text-sm text-blue-700 space-y-1">
+            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Send customer email with every event</span></li>
+            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Include phone number when available</span></li>
+            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Pass first name, last name, and address</span></li>
+          </ul>
+        </motion.div>
+      </div>
+    );
+
+    // Example Slide (enhanced with metrics cards)
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 border-2 border-red-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">{data.before.label}</span>
+            </div>
+            <div className="space-y-3">
+              {data.before.metrics.map((m, i) => (
+                <div key={i} className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-xs">{m.label}</span>
+                  <span className="text-white font-semibold text-sm">{m.value}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 border-2 border-green-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">{data.after.label}</span>
+            </div>
+            <div className="space-y-3">
+              {data.after.metrics.map((m, i) => (
+                <div key={i} className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-xs">{m.label}</span>
+                  <span className="text-white font-semibold text-sm">{m.value}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+          <p className="text-green-800 text-sm font-medium">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Action Checklist Slide (with paths)
+    const ActionChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState({});
+      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+                <div className="flex items-start gap-3">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
+                    {checkedItems[i] && <Icons.Check />}
+                  </div>
+                  <div className="flex-1">
+                    <span className={`text-sm font-medium ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
+                    {item.path && <div className="text-xs text-neutral-400 mt-1 font-mono">{item.path}</div>}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Quiz Slide
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand CAPI + Pixel dual tracking. Pixel-only misses 30-40% of conversions. CAPI fills the gaps. Together they achieve 95%+ event match rate - essential for Meta's AI optimization.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Main App
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'problem-visual': return <ProblemVisualSlide data={slide} />;
+          case 'tracking-comparison': return <TrackingComparisonSlide data={slide} />;
+          case 'architecture-diagram': return <ArchitectureDiagramSlide data={slide} />;
+          case 'meta-events-mockup': return <MetaEventsMockupSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'shopify-setup': return <ShopifySetupSlide data={slide} />;
+          case 'event-match-quality': return <EventMatchQualitySlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>

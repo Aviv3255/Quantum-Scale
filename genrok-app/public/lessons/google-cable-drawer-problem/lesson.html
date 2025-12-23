@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cable Drawer Problem: Why Your Google Ads Account is a Mess | Quantum Scale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
+    <script src="../shared/greetings.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { margin: 0; overflow: hidden; background: #000; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const { motion, AnimatePresence } = Motion;
+
+// ============================================
+// LESSON CONFIGURATION
+// ============================================
+const LESSON_CONFIG = {
+    id: 'google-cable-drawer-problem',
+    title: 'The Cable Drawer Problem',
+    description: 'Why Your Google Ads Account is a Mess',
+    accentColor: '#3b82f6',
+    accentColorLight: '#dbeafe',
+    duration: '7 min',
+    nextLesson: {
+        id: 'google-pmax-blueprint',
+        title: 'The PMax Blueprint'
+    }
+};
+
+// ============================================
+// ICONS (SVG Components)
+// ============================================
+const Icons = {
+    cable: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <path d="M6 3v18"/>
+            <path d="M18 3v18"/>
+            <path d="M6 12h12"/>
+            <circle cx="6" cy="6" r="2"/>
+            <circle cx="18" cy="6" r="2"/>
+            <circle cx="6" cy="18" r="2"/>
+            <circle cx="18" cy="18" r="2"/>
+        </svg>
+    ),
+    drawer: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <rect x="3" y="4" width="18" height="4" rx="1"/>
+            <rect x="3" y="10" width="18" height="4" rx="1"/>
+            <rect x="3" y="16" width="18" height="4" rx="1"/>
+            <line x1="6" y1="6" x2="6.01" y2="6"/>
+            <line x1="6" y1="12" x2="6.01" y2="12"/>
+            <line x1="6" y1="18" x2="6.01" y2="18"/>
+        </svg>
+    ),
+    consolidate: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+    ),
+    target: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+        </svg>
+    ),
+    chart: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <line x1="12" y1="20" x2="12" y2="10"/>
+            <line x1="18" y1="20" x2="18" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="16"/>
+        </svg>
+    ),
+    check: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+    ),
+    x: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+    ),
+    arrow: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+        </svg>
+    ),
+    lightbulb: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <path d="M9 18h6"/>
+            <path d="M10 22h4"/>
+            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+        </svg>
+    ),
+    zap: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+    ),
+    trophy: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+    ),
+    alert: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+    )
+};
+
+// ============================================
+// SLIDES DATA
+// ============================================
+const slides = [
+    {
+        type: 'welcome',
+        title: LESSON_CONFIG.title,
+        subtitle: 'Why Your Google Ads Account is a Mess',
+        duration: LESSON_CONFIG.duration
+    },
+    {
+        type: 'hook',
+        hookLine: 'You start with one clean campaign.',
+        followUp: 'Two years later, you have 47 campaigns doing who-knows-what.',
+        reveal: 'Welcome to the Cable Drawer Problem.'
+    },
+    {
+        type: 'cable-drawer-visual',
+        title: 'The Cable Drawer Evolution',
+        stages: [
+            { year: 'Year 1', campaigns: '3', status: 'Clean & organized', color: '#10b981' },
+            { year: 'Year 2', campaigns: '12', status: 'Getting messy', color: '#f59e0b' },
+            { year: 'Year 3', campaigns: '47', status: 'Total chaos', color: '#ef4444' }
+        ]
+    },
+    {
+        type: 'content',
+        title: 'The Pre-AI Approach',
+        content: 'For years, "best practice" was SKAGs (Single Keyword Ad Groups).',
+        highlight: 'One keyword per ad group. Hyper-specific control. Like using a carrier pigeon in 2026.',
+        icon: 'alert'
+    },
+    {
+        type: 'problem-list',
+        title: 'Why SKAGs Are Dead',
+        problems: [
+            {
+                issue: 'Splits data into tiny fragments',
+                result: 'AI has nothing to learn from',
+                icon: 'chart'
+            },
+            {
+                issue: 'Creates volatility',
+                result: 'One campaign gets all budget, others starve',
+                icon: 'zap'
+            },
+            {
+                issue: 'Maintenance nightmare',
+                result: 'You become a campaign manager, not a strategist',
+                icon: 'drawer'
+            }
+        ]
+    },
+    {
+        type: 'insight',
+        title: 'The 2026 Truth',
+        insight: 'Google AI doesn\'t need hyper-specific campaigns anymore.',
+        highlight: 'It needs volume. Give it 15+ conversions per campaign in 30 days, and it will print money.',
+        icon: 'lightbulb'
+    },
+    {
+        type: 'consolidate-principle',
+        title: 'Consolidate to Dominate',
+        principle: 'Combine similar campaigns into single powerhouses',
+        benefits: [
+            { text: 'Feeds the AI algorithm with data', icon: 'zap' },
+            { text: 'Reduces volatility', icon: 'target' },
+            { text: 'Focuses budget where it works', icon: 'chart' },
+            { text: 'Less management, more strategy', icon: 'consolidate' }
+        ]
+    },
+    {
+        type: 'before-after',
+        title: 'Consolidation in Action',
+        before: {
+            label: 'Before: Fragmented',
+            items: [
+                'Campaign: "Nike Shoes"',
+                'Campaign: "Adidas Shoes"',
+                'Campaign: "Running Shoes"',
+                'Campaign: "Sports Shoes"'
+            ],
+            problem: '4 campaigns, each gets 3 conversions/month'
+        },
+        after: {
+            label: 'After: Consolidated',
+            items: [
+                'Campaign: "Performance Athletic Shoes"',
+                '(All keywords combined)'
+            ],
+            benefit: '1 campaign gets 12 conversions/month = AI learns fast'
+        }
+    },
+    {
+        type: 'quiz',
+        question: 'What is the minimum conversions per campaign Google AI needs in 30 days to optimize effectively?',
+        options: [
+            '5+ conversions',
+            '10+ conversions',
+            '15+ conversions',
+            '50+ conversions'
+        ],
+        correctIndex: 2,
+        explanation: '15+ conversions in 30 days gives Google AI enough data to learn patterns and optimize effectively. Less than that, and it\'s flying blind.'
+    },
+    {
+        type: 'warning-slide',
+        title: 'Don\'t Consolidate Everything',
+        warnings: [
+            'Different product categories = separate campaigns',
+            'Different audience intent = separate campaigns',
+            'Brand vs Generic = separate campaigns'
+        ],
+        rule: 'Consolidate similar. Keep different things separate.'
+    },
+    {
+        type: 'action-framework',
+        title: 'Your Consolidation Action Plan',
+        steps: [
+            {
+                number: '1',
+                title: 'Audit Your Account',
+                action: 'List all campaigns. Group by similar intent and products.',
+                icon: 'drawer'
+            },
+            {
+                number: '2',
+                title: 'Check Conversion Volume',
+                action: 'Which campaigns have less than 15 conversions/month?',
+                icon: 'chart'
+            },
+            {
+                number: '3',
+                title: 'Consolidate Low-Volume',
+                action: 'Merge similar low-volume campaigns into powerhouses.',
+                icon: 'consolidate'
+            },
+            {
+                number: '4',
+                title: 'Monitor & Adjust',
+                action: 'Watch for 2 weeks. AI needs time to re-learn.',
+                icon: 'target'
+            }
+        ]
+    },
+    {
+        type: 'insight',
+        title: 'The Ultimate Rule',
+        insight: 'Your account structure should serve the AI, not your need for control.',
+        highlight: 'Clean, consolidated campaigns with volume = AI mastery.',
+        icon: 'trophy'
+    },
+    {
+        type: 'completion',
+        title: 'Lesson Complete!',
+        summary: [
+            'SKAGs are dead. Consolidation is king in 2026.',
+            '15+ conversions per campaign in 30 days = AI optimization threshold',
+            'Merge similar campaigns. Keep different things separate.',
+            'Your account structure should serve the AI, not your ego.'
+        ],
+        nextLessonId: LESSON_CONFIG.nextLesson.id,
+        nextLessonTitle: LESSON_CONFIG.nextLesson.title
+    }
+];
+
+// ============================================
+// CELEBRATION & EMPATHY GIFS
+// ============================================
+const celebrationGifs = [
+    'https://media1.tenor.com/m/1VjHHcaOrrQAAAAC/great-job-yes.gif',
+    'https://media1.tenor.com/m/uK0tLjpHLDcAAAAC/girl-kid.gif',
+    'https://media1.tenor.com/m/aKS6MJHP60YAAAAC/nice-happy.gif',
+    'https://media1.tenor.com/m/FNhN8wBBh1sAAAAC/winners-toby.gif',
+];
+
+const empathyGifs = [
+    'https://media1.tenor.com/m/XNH4l5P7RXgAAAAC/not-quite-almost.gif',
+    'https://media1.tenor.com/m/QVBVOOIyv2gAAAAC/a-for-effort.gif',
+    'https://media1.tenor.com/m/pM_5-PEg_agAAAAC/good-try-nice-try.gif',
+];
+
+// ============================================
+// SLIDE COMPONENTS
+// ============================================
+const WelcomeSlide = ({ data }) => {
+    const greeting = typeof getGreeting === 'function' ? getGreeting() : 'Welcome';
+
+    return (
+        <div className="min-h-screen bg-black flex items-center justify-center p-8">
+            <motion.div
+                className="text-center max-w-3xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+            >
+                <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                    className="w-20 h-20 mx-auto mb-8 rounded-2xl flex items-center justify-center"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}
+                >
+                    <div className="w-10 h-10" style={{ color: LESSON_CONFIG.accentColor }}>
+                        <Icons.cable />
+                    </div>
+                </motion.div>
+
+                <motion.p
+                    className="text-gray-400 text-lg mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    {greeting}
+                </motion.p>
+
+                <motion.h1
+                    className="text-5xl md:text-6xl font-bold text-white mb-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                >
+                    {data.title}
+                </motion.h1>
+
+                <motion.p
+                    className="text-xl text-gray-400 mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 }}
+                >
+                    {data.subtitle}
+                </motion.p>
+
+                <motion.div
+                    className="flex items-center justify-center gap-2 text-gray-500"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.1 }}
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>{data.duration}</span>
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+};
+
+const HookSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="text-center max-w-4xl">
+            <motion.p
+                className="text-3xl md:text-4xl text-gray-400 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                {data.hookLine}
+            </motion.p>
+
+            <motion.p
+                className="text-2xl text-gray-500 mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+            >
+                {data.followUp}
+            </motion.p>
+
+            <motion.div
+                className="text-4xl md:text-5xl font-bold"
+                style={{ color: LESSON_CONFIG.accentColor }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
+            >
+                {data.reveal}
+            </motion.div>
+        </div>
+    </div>
+);
+
+const CableDrawerVisualSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-5xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <div className="grid md:grid-cols-3 gap-6">
+                {data.stages.map((stage, index) => (
+                    <motion.div
+                        key={index}
+                        className="bg-gray-900/50 rounded-2xl p-6 border"
+                        style={{ borderColor: stage.color + '40' }}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + index * 0.2 }}
+                    >
+                        <div className="text-center mb-4">
+                            <div className="text-gray-500 text-sm mb-2">{stage.year}</div>
+                            <div className="text-5xl font-bold mb-3" style={{ color: stage.color }}>
+                                {stage.campaigns}
+                            </div>
+                            <div className="text-gray-400 text-sm">campaigns</div>
+                        </div>
+
+                        <div className="space-y-2 mb-4">
+                            {[...Array(Math.min(parseInt(stage.campaigns), 8))].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="h-2 rounded-full opacity-40"
+                                    style={{ backgroundColor: stage.color, width: `${70 + Math.random() * 30}%` }}
+                                />
+                            ))}
+                        </div>
+
+                        <div className="text-center p-3 rounded-lg" style={{ backgroundColor: stage.color + '20' }}>
+                            <span className="text-sm font-medium" style={{ color: stage.color }}>
+                                {stage.status}
+                            </span>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    </div>
+);
+
+const ContentSlide = ({ data }) => {
+    const IconComponent = Icons[data.icon];
+
+    return (
+        <div className="min-h-screen bg-black flex items-center justify-center p-8">
+            <div className="max-w-4xl w-full">
+                <motion.div
+                    className="text-center mb-12"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    {IconComponent && (
+                        <div className="w-16 h-16 mx-auto mb-6 text-gray-600">
+                            <IconComponent />
+                        </div>
+                    )}
+                    <h2 className="text-4xl font-bold text-white mb-6">{data.title}</h2>
+                </motion.div>
+
+                <motion.p
+                    className="text-2xl text-gray-400 text-center mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    {data.content}
+                </motion.p>
+
+                <motion.div
+                    className="p-6 rounded-2xl text-center"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor + '15' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                >
+                    <p className="text-xl font-medium" style={{ color: LESSON_CONFIG.accentColor }}>
+                        {data.highlight}
+                    </p>
+                </motion.div>
+            </div>
+        </div>
+    );
+};
+
+const ProblemListSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <div className="space-y-6">
+                {data.problems.map((problem, index) => {
+                    const IconComponent = Icons[problem.icon];
+                    return (
+                        <motion.div
+                            key={index}
+                            className="bg-gray-900/50 rounded-2xl p-6 border border-red-500/30"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + index * 0.2 }}
+                        >
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-6 h-6 text-red-500">
+                                        {IconComponent && <IconComponent />}
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-gray-300 text-lg mb-2">{problem.issue}</div>
+                                    <div className="text-red-400 text-sm">→ {problem.result}</div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </div>
+    </div>
+);
+
+const ConsolidatePrincipleSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <motion.p
+                className="text-xl text-gray-400 text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+            >
+                {data.principle}
+            </motion.p>
+
+            <div className="grid md:grid-cols-2 gap-6">
+                {data.benefits.map((benefit, index) => {
+                    const IconComponent = Icons[benefit.icon];
+                    return (
+                        <motion.div
+                            key={index}
+                            className="flex items-center gap-4 p-5 bg-gray-900/50 rounded-xl border border-gray-800"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                        >
+                            <div
+                                className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}
+                            >
+                                <div className="w-6 h-6" style={{ color: LESSON_CONFIG.accentColor }}>
+                                    {IconComponent && <IconComponent />}
+                                </div>
+                            </div>
+                            <span className="text-gray-300">{benefit.text}</span>
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </div>
+    </div>
+);
+
+const BeforeAfterSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-5xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                <motion.div
+                    className="bg-gray-900/50 rounded-2xl p-6 border border-red-500/30"
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    <div className="flex items-center gap-2 mb-6">
+                        <div className="w-6 h-6 text-red-500">
+                            <Icons.x />
+                        </div>
+                        <span className="text-xl font-bold text-red-400">{data.before.label}</span>
+                    </div>
+
+                    <div className="space-y-3 mb-6">
+                        {data.before.items.map((item, i) => (
+                            <div key={i} className="p-3 bg-red-500/10 rounded-lg text-gray-400 text-sm">
+                                {item}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                        <p className="text-red-400 text-sm">{data.before.problem}</p>
+                    </div>
+                </motion.div>
+
+                <motion.div
+                    className="bg-gray-900/50 rounded-2xl p-6 border border-green-500/30"
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <div className="flex items-center gap-2 mb-6">
+                        <div className="w-6 h-6 text-green-500">
+                            <Icons.check />
+                        </div>
+                        <span className="text-xl font-bold text-green-400">{data.after.label}</span>
+                    </div>
+
+                    <div className="space-y-3 mb-6">
+                        {data.after.items.map((item, i) => (
+                            <div key={i} className="p-3 bg-green-500/10 rounded-lg text-gray-300 text-sm">
+                                {item}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
+                        <p className="text-green-400 text-sm">{data.after.benefit}</p>
+                    </div>
+                </motion.div>
+            </div>
+        </div>
+    </div>
+);
+
+const WarningSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-3xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <div className="space-y-4 mb-8">
+                {data.warnings.map((warning, index) => (
+                    <motion.div
+                        key={index}
+                        className="flex items-center gap-3 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 + index * 0.1 }}
+                    >
+                        <div className="w-5 h-5 text-amber-500">
+                            <Icons.alert />
+                        </div>
+                        <span className="text-gray-300">{warning}</span>
+                    </motion.div>
+                ))}
+            </div>
+
+            <motion.div
+                className="p-6 rounded-2xl border"
+                style={{ backgroundColor: LESSON_CONFIG.accentColor + '10', borderColor: LESSON_CONFIG.accentColor + '30' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+            >
+                <p className="text-xl text-center font-medium" style={{ color: LESSON_CONFIG.accentColor }}>
+                    {data.rule}
+                </p>
+            </motion.div>
+        </div>
+    </div>
+);
+
+const QuizSlide = ({ data, onAnswer }) => {
+    const [selected, setSelected] = useState(null);
+    const [showResult, setShowResult] = useState(false);
+    const [gifUrl, setGifUrl] = useState('');
+
+    const handleSelect = (index) => {
+        if (showResult) return;
+        setSelected(index);
+        setShowResult(true);
+        const isCorrect = index === data.correctIndex;
+        const gifs = isCorrect ? celebrationGifs : empathyGifs;
+        setGifUrl(gifs[Math.floor(Math.random() * gifs.length)]);
+        setTimeout(() => onAnswer?.(isCorrect), 2000);
+    };
+
+    return (
+        <div className="min-h-screen bg-black flex items-center justify-center p-8">
+            <div className="max-w-3xl w-full">
+                <motion.div
+                    className="text-center mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <span
+                        className="inline-block px-4 py-1 rounded-full text-sm font-medium mb-6"
+                        style={{ backgroundColor: LESSON_CONFIG.accentColor + '20', color: LESSON_CONFIG.accentColor }}
+                    >
+                        Quick Check
+                    </span>
+                    <h2 className="text-3xl font-bold text-white">{data.question}</h2>
+                </motion.div>
+
+                <div className="space-y-4 mb-8">
+                    {data.options.map((option, index) => (
+                        <motion.button
+                            key={index}
+                            onClick={() => handleSelect(index)}
+                            className={`w-full p-5 rounded-xl text-left transition-all ${
+                                showResult
+                                    ? index === data.correctIndex
+                                        ? 'bg-green-500/20 border-2 border-green-500'
+                                        : index === selected
+                                        ? 'bg-red-500/20 border-2 border-red-500'
+                                        : 'bg-gray-800/50 border-2 border-gray-700 opacity-50'
+                                    : 'bg-gray-800/50 border-2 border-gray-700 hover:border-gray-500'
+                            }`}
+                            disabled={showResult}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                        >
+                            <span className="text-white">{option}</span>
+                        </motion.button>
+                    ))}
+                </div>
+
+                <AnimatePresence>
+                    {showResult && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-center"
+                        >
+                            <img
+                                src={gifUrl}
+                                alt="Result"
+                                className="w-48 h-48 object-cover rounded-2xl mx-auto mb-4"
+                            />
+                            <p className={`text-lg font-medium mb-2 ${
+                                selected === data.correctIndex ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                                {selected === data.correctIndex ? 'Correct!' : 'Not quite!'}
+                            </p>
+                            <p className="text-gray-400">{data.explanation}</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
+};
+
+const ActionFrameworkSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+            <motion.h2
+                className="text-4xl font-bold text-white text-center mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <div className="space-y-6">
+                {data.steps.map((step, index) => {
+                    const IconComponent = Icons[step.icon];
+                    return (
+                        <motion.div
+                            key={index}
+                            className="flex items-start gap-6 p-6 bg-gray-900/50 rounded-2xl border border-gray-800"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + index * 0.2 }}
+                        >
+                            <div
+                                className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}
+                            >
+                                <span className="text-2xl font-bold" style={{ color: LESSON_CONFIG.accentColor }}>
+                                    {step.number}
+                                </span>
+                            </div>
+
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    {IconComponent && (
+                                        <div className="w-5 h-5 text-gray-500">
+                                            <IconComponent />
+                                        </div>
+                                    )}
+                                    <h3 className="text-xl font-bold text-white">{step.title}</h3>
+                                </div>
+                                <p className="text-gray-400">{step.action}</p>
+                            </div>
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </div>
+    </div>
+);
+
+const InsightSlide = ({ data }) => {
+    const IconComponent = Icons[data.icon];
+
+    return (
+        <div className="min-h-screen bg-black flex items-center justify-center p-8">
+            <div className="max-w-3xl w-full text-center">
+                <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                    className="w-24 h-24 mx-auto mb-8 rounded-2xl flex items-center justify-center"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}
+                >
+                    <div className="w-12 h-12" style={{ color: LESSON_CONFIG.accentColor }}>
+                        {IconComponent && <IconComponent />}
+                    </div>
+                </motion.div>
+
+                <motion.h2
+                    className="text-3xl font-bold text-white mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    {data.title}
+                </motion.h2>
+
+                <motion.p
+                    className="text-2xl text-gray-400 mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    {data.insight}
+                </motion.p>
+
+                <motion.div
+                    className="p-8 rounded-2xl"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor + '15' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                >
+                    <p className="text-xl font-medium" style={{ color: LESSON_CONFIG.accentColor }}>
+                        {data.highlight}
+                    </p>
+                </motion.div>
+            </div>
+        </div>
+    );
+};
+
+const CompletionSlide = ({ data }) => (
+    <div className="min-h-screen bg-black flex items-center justify-center p-8">
+        <div className="max-w-2xl w-full text-center">
+            <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200 }}
+                className="w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: LESSON_CONFIG.accentColor + '20' }}
+            >
+                <div className="w-12 h-12" style={{ color: LESSON_CONFIG.accentColor }}>
+                    <Icons.trophy />
+                </div>
+            </motion.div>
+
+            <motion.h2
+                className="text-4xl font-bold text-white mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+            >
+                {data.title}
+            </motion.h2>
+
+            <motion.div
+                className="bg-gray-900/50 rounded-2xl p-8 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+            >
+                <h3 className="text-lg font-medium text-gray-400 mb-4">Key Takeaways</h3>
+                <div className="space-y-3">
+                    {data.summary.map((item, index) => (
+                        <div key={index} className="flex items-start gap-3 text-left">
+                            <div className="w-5 h-5 mt-0.5" style={{ color: LESSON_CONFIG.accentColor }}>
+                                <Icons.check />
+                            </div>
+                            <span className="text-gray-300">{item}</span>
+                        </div>
+                    ))}
+                </div>
+            </motion.div>
+
+            <motion.a
+                href={`../${data.nextLessonId}/lesson.html`}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-medium text-white transition-transform hover:scale-105"
+                style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+            >
+                Next: {data.nextLessonTitle}
+                <div className="w-5 h-5">
+                    <Icons.arrow />
+                </div>
+            </motion.a>
+        </div>
+    </div>
+);
+
+// ============================================
+// MAIN APP COMPONENT
+// ============================================
+const LessonApp = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [direction, setDirection] = useState(1);
+
+    const goToSlide = (index, dir = 1) => {
+        if (index >= 0 && index < slides.length) {
+            setDirection(dir);
+            setCurrentSlide(index);
+        }
+    };
+
+    const nextSlide = () => goToSlide(currentSlide + 1, 1);
+    const prevSlide = () => goToSlide(currentSlide - 1, -1);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [currentSlide]);
+
+    const renderSlide = (slide) => {
+        switch (slide.type) {
+            case 'welcome':
+                return <WelcomeSlide data={slide} />;
+            case 'hook':
+                return <HookSlide data={slide} />;
+            case 'cable-drawer-visual':
+                return <CableDrawerVisualSlide data={slide} />;
+            case 'content':
+                return <ContentSlide data={slide} />;
+            case 'problem-list':
+                return <ProblemListSlide data={slide} />;
+            case 'consolidate-principle':
+                return <ConsolidatePrincipleSlide data={slide} />;
+            case 'before-after':
+                return <BeforeAfterSlide data={slide} />;
+            case 'warning-slide':
+                return <WarningSlide data={slide} />;
+            case 'quiz':
+                return <QuizSlide data={slide} onAnswer={() => setTimeout(nextSlide, 1000)} />;
+            case 'action-framework':
+                return <ActionFrameworkSlide data={slide} />;
+            case 'insight':
+                return <InsightSlide data={slide} />;
+            case 'completion':
+                return <CompletionSlide data={slide} />;
+            default:
+                return <div className="text-white">Unknown slide type: {slide.type}</div>;
+        }
+    };
+
+    return (
+        <div className="relative w-full h-screen overflow-hidden bg-black">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gray-800 z-50">
+                <motion.div
+                    className="h-full"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+                    transition={{ duration: 0.3 }}
+                />
+            </div>
+
+            <a
+                href="/lessons"
+                className="absolute top-6 left-6 z-50 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="text-sm font-medium">Back</span>
+            </a>
+
+            <div className="absolute top-6 right-6 z-50 text-gray-500 text-sm font-medium">
+                {currentSlide + 1} / {slides.length}
+            </div>
+
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={currentSlide}
+                    initial={{ opacity: 0, x: direction * 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction * -100 }}
+                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    className="w-full h-full"
+                >
+                    {renderSlide(slides[currentSlide])}
+                </motion.div>
+            </AnimatePresence>
+
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-4 z-50">
+                <button
+                    onClick={prevSlide}
+                    disabled={currentSlide === 0}
+                    className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <button
+                    onClick={nextSlide}
+                    disabled={currentSlide === slides.length - 1}
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: LESSON_CONFIG.accentColor }}
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div className="absolute bottom-8 right-8 text-gray-600 text-xs hidden md:block">
+                Use ← → keys to navigate
+            </div>
+        </div>
+    );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<LessonApp />);
+</script>
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hermès Infinite Game - Hermes Doctrine</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <!-- Shared Greetings -->
+    <script src="../shared/greetings.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // Supabase celebration GIFs
+        const celebrationGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-8.gif'
+        ];
+
+        const empathyGifs = [
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-1.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-2.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-3.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-4.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-5.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-6.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-7.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-8.gif',
+            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-9.gif'
+        ];
+
+        const ACCENT_COLOR = '#C0A062'; // Luxury gold for Hermès
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: 'The Hermès Infinite Game',
+                subtitle: 'Fashion chases trends and dies. Luxury builds timelessness and wins forever.',
+                accentText: 'Hermes Doctrine'
+            },
+            {
+                type: 'hook',
+                question: 'Hermès has hundreds of Birkin bags in stock. Why do customers wait 3-5 YEARS to buy one?',
+                options: [
+                    'Manufacturing is genuinely slow and artisanal',
+                    'They deliberately create scarcity to protect brand value',
+                    'Demand unexpectedly spiked beyond production capacity',
+                    'Leather supply is genuinely limited'
+                ],
+                correctIndex: 1,
+                explanation: 'Hermès CHOOSES to make you wait 3-5 years even though bags are in stock. This manufactured scarcity protects long-term brand value. Short-term: they could sell all bags immediately. Long-term: the mystique dies and they become "just another luxury brand."',
+                insight: 'Fashion brands optimize for quarterly sales. Luxury brands optimize for generational equity. Hermès is playing the infinite game - they\'re building a legacy that outlives trends.'
+            },
+            {
+                type: 'content',
+                title: 'Fashion vs Luxury: The Core Difference',
+                content: 'Most brands confuse fashion and luxury. They\'re fundamentally different business models with opposite strategies.',
+                points: [
+                    'FASHION: Relies on trends. What\'s hot now? Boom-bust cycle.',
+                    'LUXURY: Relies on timelessness. What will always be valuable?',
+                    'Fashion brands die when trends change. Luxury brands strengthen.',
+                    'Fashion optimizes for volume. Luxury optimizes for mystique.'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'Gucci\'s Billion-Dollar Mistake',
+                examples: [
+                    {
+                        label: 'THE TRAP',
+                        description: 'Gucci hit products in 2016-2019. Sales exploded. Stock soared. They responded by making MORE variations of hit products.'
+                    },
+                    {
+                        label: 'THE CONSEQUENCE',
+                        description: 'Overexposure. Every mall had Gucci belts, bags, shoes. Exclusive became ubiquitous. Desirability collapsed.'
+                    },
+                    {
+                        label: 'THE RESULT',
+                        description: 'Stock crashed 40% in 2023. Brand value eroded. Short-term greed destroyed long-term equity. Classic fashion brand mistake.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Hermès Model: Timeless Heritage',
+                content: 'Hermès and LVMH took the opposite approach. They build "heritage" products that transcend trends.',
+                points: [
+                    'Birkin bag: Designed in 1980s. STILL the most coveted bag 40+ years later.',
+                    'No trend-chasing. No seasonal gimmicks. Just timeless design.',
+                    'Scarcity is manufactured but PROTECTED - they never flood market',
+                    'Result: Brand equity compounds like interest over decades'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'The Hermès Scarcity Playbook',
+                examples: [
+                    {
+                        label: 'INVENTORY REALITY',
+                        description: 'Hermès warehouses have hundreds of Birkin bags in stock. Manufacturing capacity exists to sell them all immediately.'
+                    },
+                    {
+                        label: 'THE STRATEGIC MOVE',
+                        description: 'Create 3-5 YEAR waitlists. Refuse to sell to "wrong" customers. Make even billionaires wait and prove loyalty first.'
+                    },
+                    {
+                        label: 'THE PAYOFF',
+                        description: 'Mystique intensifies. Exclusivity is REAL (controlled). Bag value appreciates. Customers treasure purchases for life.'
+                    }
+                ]
+            },
+            {
+                type: 'cards',
+                title: 'Infinite Game Principles',
+                cards: [
+                    {
+                        title: 'Protect the Hero Product',
+                        description: 'Your "Birkin" is sacred. Don\'t discount it. Don\'t make 47 variations. Don\'t flood the market. Treat it like your legacy.'
+                    },
+                    {
+                        title: 'Build Around Timelessness',
+                        description: 'Ask: "Will this matter in 10 years?" Not: "Will this trend in 10 weeks?" Design for permanence, not virality.'
+                    },
+                    {
+                        title: 'Manufacture Scarcity Strategically',
+                        description: 'You CAN scale. But should you? Sometimes limiting access protects long-term value more than maximizing short-term sales.'
+                    },
+                    {
+                        title: 'Heritage Over Hype',
+                        description: 'Build stories around craftsmanship, origin, legacy. These narratives age like wine. Trend-chasing ages like milk.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'Why Gucci Failed, Hermès Won',
+                content: 'Same market. Same luxury tier. Opposite strategies. Opposite results.',
+                points: [
+                    'Gucci: Trend-based. Maximized sales when hot. Flooded market.',
+                    'Result: Brand became common. Mystique died. Stock crashed.',
+                    'Hermès: Heritage-based. Restricted supply despite demand. Protected mystique.',
+                    'Result: Brand strengthened. Prices increased. Generational loyalty.'
+                ]
+            },
+            {
+                type: 'visual',
+                title: 'The Waitlist Strategy',
+                examples: [
+                    {
+                        label: 'SHORT-TERM THINKING',
+                        description: '"We have 1000 customers who want our product. Sell to all of them NOW to maximize revenue this quarter!"'
+                    },
+                    {
+                        label: 'INFINITE GAME THINKING',
+                        description: '"We have 1000 customers who want our product. Sell to 200 this year. Make 800 wait. Desire intensifies. Brand mystique grows."'
+                    },
+                    {
+                        label: 'OUTCOME DIFFERENCE',
+                        description: 'Short-term: $1M revenue now, brand weakens. Infinite game: $200K now, but brand equity grows 10X over decade.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'DTC Application: Find Your Birkin',
+                content: 'You don\'t need to be Hermès. But you DO need to identify which product deserves "heritage" treatment.',
+                points: [
+                    'Which product could be timeless, not trendy?',
+                    'Which product defines your brand more than others?',
+                    'Which product should NEVER be discounted?',
+                    'That\'s your Birkin. Protect it. Build stories around it. Don\'t flood market.'
+                ]
+            },
+            {
+                type: 'example',
+                title: 'DTC Example: Premium Leather Goods',
+                scenario: 'You sell handmade leather bags. One design (the "Legacy Tote") is your best seller. Demand is high.',
+                approaches: [
+                    {
+                        label: 'GUCCI APPROACH (Fashion)',
+                        description: 'Launch Legacy Tote in 15 colors. Create mini version, maxi version, crossbody version. Run 20% off sale. Maximize sales.',
+                        result: 'Short-term revenue spike. Then: market saturation. "Legacy Tote" loses specialness. Becomes just another bag. Brand equity erodes.'
+                    },
+                    {
+                        label: 'HERMÈS APPROACH (Luxury)',
+                        description: 'Keep Legacy Tote in 3 classic colors only. No sales, ever. Limited production runs. Build story about craftsmanship and legacy.',
+                        result: 'Slower sales growth. But: each bag is treasured. Customers wait for it. Resale value INCREASES. Brand equity compounds over years.'
+                    }
+                ]
+            },
+            {
+                type: 'quiz',
+                question: 'Your hero product sells out in 2 weeks. What\'s the INFINITE GAME move?',
+                options: [
+                    'Make 10X more to meet demand and maximize revenue',
+                    'Raise price but keep production same to maintain scarcity',
+                    'Launch variations to capture more market share',
+                    'Keep doing exactly what you\'re doing - scarcity is working'
+                ],
+                correctIndex: 1,
+                celebration: 'EXACTLY. Selling out in 2 weeks means you\'re underpriced OR you\'ve hit the perfect scarcity. Raise price to match demand, but DON\'T flood the market. You\'re building long-term brand equity. Scarcity = desire. Desire = premium pricing power. Play the infinite game.',
+                empathy: 'Every instinct screams "make more, sell more!" But here\'s the paradox: scarcity IS your competitive advantage. Flooding the market kills mystique. Instead, raise price to slow demand to sustainable level. Yes, you leave money on the table SHORT-term. But you build generational brand value LONG-term.'
+            },
+            {
+                type: 'completion',
+                title: 'You\'re Now Dangerous',
+                summary: 'You understand the difference between fashion (trend-chasing, boom-bust) and luxury (timeless, infinite game). Gucci flooded the market with variations and crashed. Hermès manufactures scarcity with 3-5 year waitlists despite having inventory, protecting brand mystique for generations.',
+                keyTakeaway: 'Identify your "Birkin" - the hero product that defines your brand. Protect it ruthlessly. Don\'t discount it. Don\'t make endless variations. Build stories around craftsmanship and legacy. Optimize for long-term brand equity, not short-term sales spikes. Play the infinite game.',
+                nextSteps: [
+                    'Identify your hero product - your potential "Birkin"',
+                    'Remove it from sales/discounts permanently',
+                    'Write the "heritage story" - craftsmanship, origin, why it\'s special',
+                    'Consider limiting production even if demand is high'
+                ]
+            }
+        ];
+
+        function Lesson() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [userName, setUserName] = useState('');
+
+            useEffect(() => {
+                const name = window.getStoredUserName ? window.getStoredUserName() : '';
+                setUserName(name);
+            }, []);
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const nextSlide = () => {
+                setDirection(1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1));
+            };
+
+            const prevSlide = () => {
+                setDirection(-1);
+                setSelectedAnswer(null);
+                setShowExplanation(false);
+                setCurrentSlide((prev) => Math.max(prev - 1, 0));
+            };
+
+            const handleAnswerSelect = (index) => {
+                setSelectedAnswer(index);
+                setShowExplanation(true);
+            };
+
+            const slide = slides[currentSlide];
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+
+            return (
+                <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
+                    {/* Progress Bar */}
+                    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+                        <motion.div
+                            className="h-full"
+                            style={{ background: ACCENT_COLOR }}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.3 }}
+                        />
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 flex items-center justify-center p-4 md:p-8 pt-12">
+                        <div className="w-full max-w-4xl">
+                            <AnimatePresence mode="wait" custom={direction}>
+                                <motion.div
+                                    key={currentSlide}
+                                    custom={direction}
+                                    variants={slideVariants}
+                                    initial="enter"
+                                    animate="center"
+                                    exit="exit"
+                                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                >
+                                    {slide.type === 'welcome' && (
+                                        <div className="text-center space-y-8 py-12">
+                                            <motion.div
+                                                initial={{ scale: 0.9, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ delay: 0.2 }}
+                                            >
+                                                <div className="inline-block px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-6"
+                                                     style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                    {slide.accentText}
+                                                </div>
+                                                <h1 className="fraunces text-5xl md:text-7xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h1>
+                                                <p className="text-xl md:text-2xl" style={{ color: '#86868B' }}>
+                                                    {slide.subtitle}
+                                                </p>
+                                            </motion.div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'hook' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                                {slide.explanation}
+                                                            </p>
+                                                            <div className="p-4 rounded-xl" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                                <p className="font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                                    {slide.insight}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'content' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.content}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                {slide.points.map((point, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="flex gap-4 p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            <span className="font-bold">{index + 1}</span>
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {point}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'visual' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.examples.map((example, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: index * 0.15 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {example.label}
+                                                        </div>
+                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
+                                                            {example.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'cards' && (
+                                        <div className="max-w-4xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                {slide.cards.map((card, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, scale: 0.9 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="p-6 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                        whileHover={{ scale: 1.03 }}
+                                                    >
+                                                        <h3 className="font-bold text-xl mb-3" style={{ color: '#000' }}>
+                                                            {card.title}
+                                                        </h3>
+                                                        <p style={{ color: '#86868B' }}>
+                                                            {card.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'example' && (
+                                        <div className="max-w-3xl mx-auto space-y-8">
+                                            <div className="text-center mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl" style={{ color: '#86868B' }}>
+                                                    {slide.scenario}
+                                                </p>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {slide.approaches.map((approach, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.2 }}
+                                                        className="p-8 rounded-2xl"
+                                                        style={{ background: '#FFFFFF' }}
+                                                    >
+                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
+                                                             style={{ color: ACCENT_COLOR }}>
+                                                            {approach.label}
+                                                        </div>
+                                                        <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
+                                                            {approach.description}
+                                                        </p>
+                                                        <div className="p-4 rounded-xl" style={{ background: '#F5F5F7' }}>
+                                                            <p className="font-semibold" style={{ color: '#86868B' }}>
+                                                                {approach.result}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'quiz' && (
+                                        <div className="space-y-8">
+                                            <div className="text-center space-y-4 mb-12">
+                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
+                                                    {slide.question}
+                                                </h2>
+                                            </div>
+
+                                            <div className="grid gap-4 max-w-2xl mx-auto">
+                                                {slide.options.map((option, index) => (
+                                                    <motion.button
+                                                        key={index}
+                                                        onClick={() => handleAnswerSelect(index)}
+                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
+                                                        style={{
+                                                            background: selectedAnswer === index
+                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
+                                                                : '#FFFFFF',
+                                                            border: selectedAnswer === index
+                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
+                                                                : '2px solid #F5F5F7'
+                                                        }}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                        disabled={selectedAnswer !== null}
+                                                    >
+                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
+                                                            {option}
+                                                        </span>
+                                                    </motion.button>
+                                                ))}
+                                            </div>
+
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="mt-8 p-8 rounded-2xl space-y-4"
+                                                    style={{ background: '#FFFFFF' }}
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                                                            <img
+                                                                src={selectedAnswer === slide.correctIndex
+                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
+                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
+                                                                }
+                                                                alt="reaction"
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <p className="text-lg font-semibold" style={{ color: '#1D1D1F' }}>
+                                                                {selectedAnswer === slide.correctIndex ? slide.celebration : slide.empathy}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'completion' && (
+                                        <div className="text-center space-y-8 py-12 max-w-3xl mx-auto">
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ type: "spring", duration: 0.6 }}
+                                                className="w-24 h-24 mx-auto rounded-full flex items-center justify-center text-4xl mb-8"
+                                                style={{ background: `${ACCENT_COLOR}20` }}
+                                            >
+                                                👑
+                                            </motion.div>
+
+                                            <h2 className="fraunces text-4xl md:text-6xl mb-6" style={{ color: '#000' }}>
+                                                {slide.title}
+                                            </h2>
+
+                                            <p className="text-xl mb-8" style={{ color: '#86868B' }}>
+                                                {slide.summary}
+                                            </p>
+
+                                            <div className="p-8 rounded-2xl mb-8" style={{ background: `${ACCENT_COLOR}10` }}>
+                                                <p className="text-xl font-semibold" style={{ color: ACCENT_COLOR }}>
+                                                    {slide.keyTakeaway}
+                                                </p>
+                                            </div>
+
+                                            <div className="text-left space-y-4 p-8 rounded-2xl" style={{ background: '#FFFFFF' }}>
+                                                <h3 className="font-bold text-xl mb-4" style={{ color: '#000' }}>
+                                                    Next Steps:
+                                                </h3>
+                                                {slide.nextSteps.map((step, index) => (
+                                                    <div key={index} className="flex gap-3 items-start">
+                                                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm"
+                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
+                                                            {index + 1}
+                                                        </div>
+                                                        <p style={{ color: '#1D1D1F' }}>{step}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: '#FFFFFF',
+                                color: '#000',
+                                border: '2px solid #F5F5F7'
+                            }}
+                        >
+                            Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all duration-300"
+                                    style={{
+                                        background: index === currentSlide ? ACCENT_COLOR : '#E5E5E7'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
+                            style={{
+                                background: ACCENT_COLOR,
+                                color: '#FFFFFF'
+                            }}
+                        >
+                            {currentSlide === slides.length - 1 ? 'Complete' : 'Next'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Lesson />);
+    </script>
+</body>
+</html>

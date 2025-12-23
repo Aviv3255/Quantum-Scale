@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Three Canons of Craft | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #f59e0b;
+      --accent-dark: #d97706;
+      --accent-light: #fbbf24;
+      --accent-rgb: 245, 158, 11;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+    .title-font {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    h1, h2, h3, .slide-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    // ============================================
+    // GET USER NAME FROM URL PARAM
+    // ============================================
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
+
+    // ============================================
+    // LESSON CONFIGURATION
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'three-canons-of-craft',
+      title: 'The Three Canons of Craft',
+      description: 'Three simple tests that separate forgettable fluff from copy that converts.',
+      accentColor: '#f59e0b',
+      duration: '5 min',
+      nextLesson: {
+        id: 'cpppb-proof-loop',
+        title: 'The CPPPB Proof Loop',
+        teaser: 'Five elements in one sequence that builds bulletproof persuasion.'
+      }
+    };
+
+    // ============================================
+    // TIME-BASED WELCOME ANIMATIONS (GIF + Greeting pairs)
+    // Each time slot has matched GIF + greeting combinations
+    // ============================================
+    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', // Victory Dance
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4', // Jump Celebration
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4', // Air Guitar
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4', // Running Man
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4', // Standing Ovation
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4', // Fast Clap
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4', // Clap Above Head
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4' // Slow to Fast Clap
+    ];
+
+    const getRandomCelebrationGif = () => {
+      return celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    };
+
+    // ============================================
+    // EMPATHY GIFS (Quiz Incorrect Answer)
+    // Same settings as celebration GIFs: 60% height, bottom, behind content
+    // ============================================
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', // Thumbs Down
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4', // Sad Head Shake
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4', // Facepalm
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4', // Looking Down Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4', // Tear Wipe
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4', // Sad Sigh
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4', // Disappointed Slouch
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4', // Hand on Forehead Sad
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4' // Slow Sad Nod
+    ];
+
+    const getRandomEmpathyGif = () => {
+      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    };
+
+    // ============================================
+    // SLIDE DATA - ECOMMERCE FOCUSED
+    // ============================================
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why 95% of product descriptions sound exactly the same',
+        'The three-question filter that separates pros from amateurs',
+        'How to write copy your competitors can\'t steal'
+      ]},
+      { type: 'hook', title: 'Here\'s an Uncomfortable Truth', body: 'Your Shopify product page could have perfect grammar. Gorgeous layout. Compelling benefits. All the emotional triggers firing.', punchline: 'And it still says absolutely nothing.' },
+      { type: 'content', subtitle: 'The Problem', title: 'Corporate Nothing-Speak', body: '"We provide innovative solutions for modern businesses." Sounds professional, right? Wrong. It\'s invisible. Your brain can\'t hold onto it because there\'s nothing concrete to grab.', highlight: { label: 'The Reality', text: 'If you can\'t picture it, your brain treats it like it never existed.' }},
+      { type: 'content', subtitle: 'The Filter', title: 'Three Questions, Every Sentence', body: 'Marketing genius Harry Dry developed three questions that separate forgettable fluff from copy that converts. Before you publish ANY sentence on your store, it must pass all three.', callout: 'No exceptions. No excuses. This is the filter professionals use.' },
+      { type: 'visual', visualType: 'canons' },
+      { type: 'content', subtitle: 'Canon 1', title: 'Can I Visualize It?', body: 'Abstract words are invisible to the brain. You can\'t picture "solutions" or "quality." But you CAN picture "a red Ferrari" or "a stack of hundred dollar bills."', highlight: { label: 'Brain Science', text: 'Concrete images process 60,000X faster than abstract concepts.' }},
+      { type: 'example', subtitle: 'Canon 1 Example', bad: { label: 'Invisible', text: '"Premium quality skincare with innovative ingredients"' }, good: { label: 'Concrete', text: '"Korean glass skin in 14 days, even if you\'re 40+"' }, insight: 'The first one? Your brain can\'t hold it. The second? You instantly see the transformation.' },
+      { type: 'content', subtitle: 'Canon 2', title: 'Can I Falsify It?', body: '"We\'re the best" is just your opinion. So is "industry-leading" and "world-class." These claims can never be proven or disproven - which makes them worthless.', callout: 'You can\'t talk. You can only point to evidence.' },
+      { type: 'example', subtitle: 'Canon 2 Example', bad: { label: 'Opinion', text: '"Trusted by businesses worldwide for excellence"' }, good: { label: 'Provable', text: '"47,392 Shopify stores. $2.1B processed last year."' }, insight: 'Specific, verifiable claims build trust. Generic claims trigger skepticism.' },
+      { type: 'content', subtitle: 'Canon 3', title: 'Can Nobody Else Say It?', body: 'Here\'s the ultimate test: if competitors could swap their name into your copy and it would still make sense, you\'ve failed.', highlight: { label: 'The Test', text: 'Great copy is so specific to YOUR story that nobody else can steal it.' }},
+      { type: 'example', subtitle: 'Canon 3 Example', bad: { label: 'Generic', text: '"Quality products at competitive prices with fast shipping"' }, good: { label: 'Ownable', text: '"The only yoga mat tested by 200 pregnant women"' }, insight: 'The first one? Every store says it. The second? Only you can claim it.' },
+      { type: 'cards', title: 'Why This Matters for Your Store', cards: [
+        { icon: 'eye', title: 'Can I Visualize It?', desc: 'Concrete beats abstract. If you can\'t draw it, rewrite it.' },
+        { icon: 'check', title: 'Can I Falsify It?', desc: 'Back every claim with evidence. You can\'t talk, only point.' },
+        { icon: 'fingerprint', title: 'Can Nobody Else Say It?', desc: 'Own your message. Mine your unique story for details.' }
+      ]},
+      { type: 'visual', visualType: 'comparison' },
+      { type: 'quote', quote: 'If a competitor could swap their name into your copy, start over. Generic copy isn\'t safe. It\'s invisible.', attribution: 'Harry Dry' },
+      { type: 'cards', title: 'Real Shopify Examples', subtitle: 'These stores pass all three canons:', cards: [
+        { icon: 'store1', title: 'Allbirds', desc: '"World\'s most comfortable shoe, made from merino wool." Concrete. Provable. Ownable.' },
+        { icon: 'store2', title: 'Beardbrand', desc: '"Beards so thick you\'ll need to warn TSA." Visual. Specific. Memorable.' },
+        { icon: 'store3', title: 'Death Wish Coffee', desc: '"World\'s strongest coffee. 200% more caffeine." Clear. Measurable. Unique.' }
+      ]},
+      { type: 'quiz', question: 'Which product description passes all three canons?', options: ['"Premium quality leggings for active lifestyles"', '"The leggings Olympic gymnasts wear for splits"', '"High-performance athletic wear for everyone"', '"Comfortable, stylish, and affordable leggings"'], correctIndex: 1, feedback: { correct: 'Exactly! It\'s concrete (you see gymnasts doing splits), provable (Olympic gymnasts actually wore them), and ownable (nobody else can claim this specific detail). That\'s what makes copy unforgettable.', incorrect: 'Not quite. The correct answer passes all three: Can you visualize it? (gymnasts in splits). Can you falsify it? (Olympic gymnasts wore them). Can nobody else say it? (specific to this brand). Generic descriptions fail all three.' }},
+      { type: 'completion' }
+    ];
+
+    // ============================================
+    // ICONS (Minimalist SVG)
+    // ============================================
+    const Icons = {
+      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Sparkles: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Eye: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>,
+      CheckCircle: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>,
+      Fingerprint: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg>,
+      Store: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>
+    };
+
+    // ============================================
+    // VISUAL COMPONENTS
+    // ============================================
+    const CanonsVisual = () => {
+      const canons = [
+        { num: 1, title: 'Can I Visualize It?', icon: 'Eye', desc: 'Concrete beats abstract' },
+        { num: 2, title: 'Can I Falsify It?', icon: 'CheckCircle', desc: 'Evidence beats claims' },
+        { num: 3, title: 'Can Nobody Else Say It?', icon: 'Fingerprint', desc: 'Unique beats generic' }
+      ];
+      return (
+        <div className="w-full h-full flex items-center justify-center p-8">
+          <div className="w-full max-w-2xl">
+            <p className="text-center text-neutral-500 text-sm mb-8 uppercase tracking-widest">The Three Canons</p>
+            <div className="grid grid-cols-1 gap-4">
+              {canons.map((canon, i) => (
+                <motion.div key={canon.num} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15, duration: 0.4, type: 'spring' }}>
+                  <div className="bg-neutral-900 rounded-xl p-6 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)` }}>
+                      <span className="text-2xl font-bold">{canon.num}</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-white font-bold text-lg mb-1">{canon.title}</h3>
+                      <p className="text-neutral-400 text-sm">{canon.desc}</p>
+                    </div>
+                    <div className="text-amber-500" style={{ color: 'var(--accent)' }}>
+                      {Icons[canon.icon]()}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const ComparisonVisual = () => (
+      <div className="w-full h-full flex items-center justify-center p-6 md:p-8">
+        <div className="w-full max-w-3xl">
+          <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">The Difference</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl bg-neutral-200 flex items-center justify-center text-neutral-400"><Icons.X /></div>
+                <div>
+                  <span className="text-neutral-400 text-xs font-medium uppercase tracking-wider">Fails All Three</span>
+                  <p className="text-neutral-700 font-semibold text-lg">Generic Copy</p>
+                </div>
+              </div>
+              <p className="text-neutral-500 text-base italic leading-relaxed mb-5">"Premium quality fitness tracker with innovative features and reliable performance..."</p>
+              <div className="pt-4 border-t border-neutral-200 space-y-2">
+                <p className="text-neutral-400 text-sm">Can't visualize "premium quality"</p>
+                <p className="text-neutral-400 text-sm">Can't falsify "innovative"</p>
+                <p className="text-red-400 text-sm font-medium">Any competitor could say this</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="rounded-2xl p-6 border-2" style={{ background: 'white', borderColor: 'var(--accent)' }}>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></div>
+                <div>
+                  <span style={{ color: 'var(--accent)' }} className="text-xs font-medium uppercase tracking-wider">Passes All Three</span>
+                  <p className="text-neutral-900 font-semibold text-lg">Specific Copy</p>
+                </div>
+              </div>
+              <p className="text-neutral-700 text-base italic leading-relaxed mb-5">"Track your 10K splits like Eliud Kipchoge. 200-hour battery. Used by 47 Olympic athletes."</p>
+              <div className="pt-4 border-t border-neutral-100 space-y-2">
+                <p style={{ color: 'var(--accent)' }} className="text-sm">You see Kipchoge running</p>
+                <p className="text-neutral-500 text-sm">200-hour battery is measurable</p>
+                <p className="text-green-500 text-sm font-medium">Only this brand can claim this</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
+
+    // Welcome Slide - GIF rendered at app level
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
+              {LESSON_CONFIG.title}
+            </motion.h1>
+
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
+              <Icons.Clock />
+              <span>{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              Let's Go
+            </motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    // Hook Slide
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-8">{data.body}</motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-6">
+          <p className="text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--accent)' }}>{data.punchline}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-3xl md:text-4xl text-black mb-5">{data.title}</motion.h2>
+        {data.body && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-5">{data.body}</motion.p>}
+        {data.callout && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="text-neutral-500 text-base italic">{data.callout}</motion.p>}
+        {data.highlight && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+            <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    // Example Slide
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-5" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-100 rounded-xl p-5 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded bg-neutral-300 flex items-center justify-center text-neutral-500"><Icons.X /></div>
+              <span className="text-neutral-400 text-xs font-medium uppercase">{data.bad.label}</span>
+            </div>
+            <p className="text-neutral-500 text-base italic">{data.bad.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+              <span className="text-xs font-medium uppercase" style={{ color: 'var(--accent)' }}>{data.good.label}</span>
+            </div>
+            <p className="text-neutral-800 text-base italic font-medium">{data.good.text}</p>
+          </motion.div>
+        </div>
+        {data.insight && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-500 text-sm italic">{data.insight}</motion.p>}
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center">
+        {data.visualType === 'canons' && <CanonsVisual />}
+        {data.visualType === 'comparison' && <ComparisonVisual />}
+      </div>
+    );
+
+    // Cards Slide
+    const CardsSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const icons = { eye: Icons.Eye, check: Icons.CheckCircle, fingerprint: Icons.Fingerprint, store1: Icons.Store, store2: Icons.Store, store3: Icons.Store };
+        const IconComp = icons[iconName];
+        return IconComp ? <IconComp /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
+          <div className="text-center mb-6">
+            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {data.cards.map((card, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
+                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
+                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Quote Slide
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex items-center justify-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 max-w-xl text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15, type: 'spring' }} className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-8 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Sparkles /></motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-white text-xl md:text-2xl leading-relaxed mb-5">"{data.quote}"</motion.p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={{ color: 'var(--accent)' }} className="text-sm font-medium">{data.attribution}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // Quiz Slide - GIF rendered at app level on answer
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) {
+            onShowGif(celebrationGif, '60%', gifSide);
+          } else {
+            onShowGif(empathyGif, '60%', gifSide);
+          }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => {
+        return () => onHideGif();
+      }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the filter that separates pros from amateurs. Three questions. Every sentence. No exceptions.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => {
+        setGifConfig({ url, height, side });
+      }, []);
+
+      const hideGif = useCallback(() => {
+        setGifConfig(null);
+      }, []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ type: 'spring', stiffness: 100 }}
+                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
+                style={{ zIndex: 15, height: gifConfig.height }}
+              >
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-auto object-contain object-bottom"
+                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+                >
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

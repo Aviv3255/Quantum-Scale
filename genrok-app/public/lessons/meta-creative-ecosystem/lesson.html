@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Creative Ecosystem Blueprint | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-creative-ecosystem',
+      title: 'The Creative Ecosystem',
+      description: 'Why you need 20-50 meaningfully different ads - and how to build them systematically.',
+      accentColor: '#3b82f6',
+      duration: '9 min',
+      nextLesson: { id: 'meta-capi-pixel-setup', title: 'CAPI + Pixel Setup', teaser: 'Why running pixel-only tracking in 2025 is like driving with half your dashboard broken.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why Andromeda needs 20-50 meaningfully different creatives', 'What "meaningfully different" actually means', 'The systematic framework for building creative volume'] },
+      { type: 'hook', headline: 'Each creative is a key. More keys unlock more doors.', subtext: 'Think of Andromeda like a massive lock warehouse. Each user is a different lock. Your creatives are keys. One key might open 100 locks. But a different key opens 100 OTHER locks. With only 5 keys, you\'re leaving thousands of locks unopened. 20-50 keys? Now you\'re unlocking the full warehouse.' },
+      { type: 'content', title: 'Why Volume Matters Now More Than Ever', body: 'In the Andromeda era, creative IS targeting. Each meaningfully different creative attracts a different buyer segment. With 5 creatives, you\'re reaching 5 buyer profiles. With 50 creatives, you\'re reaching 50 profiles. More creative variety = more audience discovery. The advertisers scaling to $100K+/day aren\'t running 3 winning ads. They\'re running 30-50 diverse creatives that collectively reach everyone who might buy.' },
+      { type: 'key-visual', title: 'The Key Metaphor', data: { keys: [
+        { count: 5, label: '5 Creatives', doors: '500 potential buyers', color: '#EF4444' },
+        { count: 20, label: '20 Creatives', doors: '2,000 potential buyers', color: '#F59E0B' },
+        { count: 50, label: '50 Creatives', doors: '5,000+ potential buyers', color: '#10B981' }
+      ], insight: 'Each creative unlocks a different segment. More keys = more doors = more customers.' }},
+      { type: 'content', title: 'What "Meaningfully Different" Actually Means', body: 'Changing the CTA button color isn\'t meaningfully different. Swapping one word in the headline isn\'t meaningfully different. Meaningfully different means:\n\n• Different opening hook/first 3 seconds\n• Different primary message angle\n• Different visual format (static vs video vs carousel)\n• Different tone (UGC vs polished vs meme)\n• Different audience pain point addressed\n\nThe AI should classify them as reaching DIFFERENT people.' },
+      { type: 'example-grid', title: 'Meaningfully Different vs Minor Variations', examples: [
+        { type: 'wrong', label: 'NOT Meaningfully Different', items: ['Same video, different thumbnail', 'Same hook, different CTA', 'Same UGC, trimmed shorter', 'Same message, different font'] },
+        { type: 'right', label: 'MEANINGFULLY Different', items: ['UGC testimonial vs product demo', 'Problem-first hook vs benefit-first hook', 'Static image vs video', 'Social proof angle vs how-to angle'] }
+      ]},
+      { type: 'creative-matrix', title: 'The Creative Ecosystem Matrix', axes: { formats: ['Static', 'Video', 'Carousel', 'Stories'], angles: ['Problem Agitation', 'Social Proof', 'How-To/Demo', 'Transformation', 'Urgency/FOMO'] }, insight: 'Cross format × angle = 20 meaningfully different concepts before even changing hooks or visuals.' },
+      { type: 'creative-library-mockup', title: 'Your Creative Library (Organized)', data: {
+        folders: [
+          { name: 'Problem Agitation', count: 12, formats: { static: 3, video: 5, carousel: 2, story: 2 }, status: 'healthy', color: '#ef4444' },
+          { name: 'Social Proof', count: 15, formats: { static: 4, video: 6, carousel: 3, story: 2 }, status: 'healthy', color: '#f59e0b' },
+          { name: 'How-To/Demo', count: 8, formats: { static: 2, video: 4, carousel: 1, story: 1 }, status: 'needs-work', color: '#3b82f6' },
+          { name: 'Transformation', count: 10, formats: { static: 3, video: 4, carousel: 2, story: 1 }, status: 'healthy', color: '#10b981' },
+          { name: 'Urgency/FOMO', count: 5, formats: { static: 1, video: 2, carousel: 1, story: 1 }, status: 'critical', color: '#8b5cf6' }
+        ],
+        summary: { total: 50, target: 50, gaps: ['How-To needs more carousels', 'Urgency/FOMO needs volume boost'] }
+      }},
+      { type: 'cards', title: 'Building 50 Creatives Systematically', items: [
+        { title: 'Start With 5 Core Angles', description: 'Problem, Solution, Social Proof, Transformation, Urgency. Each angle attracts a different buyer mindset.' },
+        { title: 'Multiply By 4 Formats', description: 'Static image, UGC video, polished video, carousel. Same angle, 4 different presentations = 20 creatives.' },
+        { title: 'Add 2-3 Hook Variations Each', description: 'For each of those 20, create 2-3 different opening hooks. Now you\'re at 40-60 truly different creatives.' }
+      ]},
+      { type: 'production-pipeline', title: 'The Monthly Creative Pipeline', phases: [
+        { week: 'Week 1', task: 'Audit & Plan', description: 'Review top performers. Identify gaps in angles/formats. Plan 10-15 new concepts.' },
+        { week: 'Week 2', task: 'Produce', description: 'Film UGC. Design statics. Create variations. Aim for 10+ ready-to-launch.' },
+        { week: 'Week 3', task: 'Launch & Test', description: 'Deploy new creatives. Monitor early signals. Kill obvious losers fast.' },
+        { week: 'Week 4', task: 'Analyze & Iterate', description: 'Identify patterns. What angles work? What formats? Feed insights into next cycle.' }
+      ], bottomLine: 'Continuous creative production isn\'t optional. It\'s the new table stakes.' },
+      { type: 'content', title: 'The 80/20 of Creative Production', body: '80% of your results will come from 20% of your creatives. That\'s normal. But here\'s what most advertisers miss: you can\'t predict which 20% will win. You need to produce the volume to discover the winners. The advertisers with 5 creatives are hoping their 5 are winners. The advertisers with 50 are FINDING their winners. Volume isn\'t about quantity - it\'s about discovery.' },
+      { type: 'quiz', question: 'You have 1 winning creative style (UGC testimonial). How do you scale creative volume meaningfully?', options: ['Create 20 more UGC testimonials with different people', 'Create variations across formats: static testimonial quotes, video compilations, carousel testimonials, AND explore new angles', 'Run the winning creative longer before making new ones', 'Slightly edit the winning creative 20 times with small changes'], correctIndex: 1, feedback: { correct: 'Perfect! Scaling meaningfully means: 1) Take the winning ANGLE (social proof/testimonial) and adapt it across formats. 2) Also explore NEW angles (problem-focused, demo, transformation) that reach different buyers. Just filming 20 similar UGC videos creates redundancy, not diversity.', incorrect: 'The key is meaningful diversity. 20 similar UGC videos aren\'t meaningfully different - Meta sees them as variations of the same ad. Instead: adapt the winning angle across formats (static, carousel, compilation) AND explore entirely new angles (problem-first, demo, etc.) to unlock new audience segments.' }},
+      { type: 'action-checklist', title: 'Build Your Creative Ecosystem', items: [
+        { task: 'Audit current creatives - how many are meaningfully different?', done: false },
+        { task: 'List 5 core angles: problem, solution, social proof, transformation, urgency', done: false },
+        { task: 'Create format variations for each angle (static, video, carousel, story)', done: false },
+        { task: 'Add 2-3 hook variations for each format × angle combination', done: false },
+        { task: 'Establish monthly creative production cadence (10+ new per month)', done: false }
+      ], bottomNote: 'The goal: always have 20-50 meaningfully different creatives running. This is how you scale.' },
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      // Creative ecosystem icons
+      Key: ({ size = 32, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>,
+      Image: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
+      Video: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>,
+      Layers: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Grid: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
+      Play: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+      Folder: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16Z"/></svg>,
+      Users: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      TrendingUp: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      AlertCircle: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
+      Filter: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+      Search: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
+      </div>
+    );
+
+    const KeyVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          {data.data.keys.map((key, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="text-center p-6 rounded-xl" style={{ background: `${key.color}15`, border: `2px solid ${key.color}` }}>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: `${key.color}25` }}>
+                <Icons.Key size={28} color={key.color} />
+              </div>
+              <div className="text-3xl font-bold mb-1" style={{ color: key.color }}>{key.count}</div>
+              <div className="text-sm font-semibold text-neutral-700 mb-2">{key.label}</div>
+              <div className="text-xs text-neutral-500">{key.doors}</div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-white text-sm">{data.data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ExampleGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.examples.map((ex, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: i === 0 ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className={`rounded-xl p-5 ${ex.type === 'wrong' ? 'bg-red-50 border-2 border-red-200' : 'bg-green-50 border-2 border-green-200'}`}>
+              <div className="text-center mb-4">
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${ex.type === 'wrong' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>{ex.label}</span>
+              </div>
+              <div className="space-y-2">
+                {ex.items.map((item, j) => (
+                  <div key={j} className="flex items-center gap-2 text-sm text-neutral-700">
+                    {ex.type === 'wrong' ? <Icons.X /> : <Icons.Check />}
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CreativeMatrixSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 overflow-x-auto">
+          <table className="w-full min-w-[400px]">
+            <thead>
+              <tr>
+                <th className="p-2 text-left text-xs font-bold text-neutral-400"></th>
+                {data.axes.formats.map((format, i) => (
+                  <th key={i} className="p-2 text-center text-xs font-bold" style={{ color: 'var(--accent)' }}>{format}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.axes.angles.map((angle, i) => (
+                <tr key={i}>
+                  <td className="p-2 text-xs font-semibold text-neutral-700">{angle}</td>
+                  {data.axes.formats.map((_, j) => (
+                    <td key={j} className="p-2 text-center">
+                      <div className="w-6 h-6 rounded-lg mx-auto flex items-center justify-center text-white text-[10px] font-bold" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 text-center">
+          <p className="text-sm text-neutral-600 bg-blue-50 border border-blue-200 rounded-lg p-3">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const CreativeLibraryMockupSlide = ({ data }) => {
+      const [selectedFolder, setSelectedFolder] = useState(null);
+
+      const getStatusBadge = (status) => {
+        switch(status) {
+          case 'healthy': return { bg: '#dcfce7', color: '#16a34a', label: 'Healthy' };
+          case 'needs-work': return { bg: '#fef3c7', color: '#d97706', label: 'Needs Work' };
+          case 'critical': return { bg: '#fee2e2', color: '#dc2626', label: 'Critical' };
+          default: return { bg: '#f3f4f6', color: '#6b7280', label: 'Unknown' };
+        }
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: '#e7f3ff', color: '#1877f2' }}>Creative Library View</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Meta-style Creative Library UI */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-xl border border-neutral-200 overflow-hidden shadow-lg" style={{ background: '#f0f2f5' }}>
+            {/* Header bar */}
+            <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                  <Icons.Folder size={16} color="white" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-neutral-900">Creative Library</div>
+                  <div className="text-xs text-neutral-500">Organized by Angle</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-100 rounded-lg">
+                  <Icons.Search size={14} color="#6b7280" />
+                  <span className="text-xs text-neutral-500">Search creatives...</span>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1.5 bg-neutral-100 rounded-lg">
+                  <Icons.Filter size={14} color="#6b7280" />
+                </div>
+              </div>
+            </div>
+
+            {/* Summary bar */}
+            <div className="flex items-center justify-between px-4 py-2 bg-blue-50 border-b border-blue-100">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Icons.Layers size={14} color="#3b82f6" />
+                  <span className="text-xs font-semibold text-blue-700">{data.data.summary.total} / {data.data.summary.target} Creatives</span>
+                </div>
+                <div className="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(data.data.summary.total / data.data.summary.target) * 100}%` }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="h-full bg-blue-500 rounded-full"
+                  />
+                </div>
+              </div>
+              <span className="text-xs text-blue-600">Target: 20-50 meaningfully different</span>
+            </div>
+
+            {/* Folder Grid */}
+            <div className="p-4 bg-white">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                {data.data.folders.map((folder, i) => {
+                  const statusStyle = getStatusBadge(folder.status);
+                  return (
+                    <motion.div
+                      key={folder.name}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + i * 0.08 }}
+                      onClick={() => setSelectedFolder(selectedFolder === folder.name ? null : folder.name)}
+                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all ${selectedFolder === folder.name ? 'border-blue-400 bg-blue-50' : 'border-neutral-200 hover:border-neutral-300 bg-white'}`}
+                    >
+                      {/* Folder icon with color */}
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style={{ backgroundColor: `${folder.color}15` }}>
+                        <Icons.Folder size={20} color={folder.color} />
+                      </div>
+
+                      {/* Folder name & count */}
+                      <div className="text-sm font-semibold text-neutral-800 mb-1">{folder.name}</div>
+                      <div className="text-xs text-neutral-500 mb-2">{folder.count} creatives</div>
+
+                      {/* Status badge */}
+                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: statusStyle.bg, color: statusStyle.color }}>
+                        {statusStyle.label}
+                      </span>
+
+                      {/* Format breakdown (on hover/select) */}
+                      {selectedFolder === folder.name && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          className="mt-3 pt-2 border-t border-neutral-100"
+                        >
+                          <div className="grid grid-cols-2 gap-1 text-[10px]">
+                            <div className="flex items-center gap-1"><Icons.Image size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.static} Static</span></div>
+                            <div className="flex items-center gap-1"><Icons.Video size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.video} Video</span></div>
+                            <div className="flex items-center gap-1"><Icons.Grid size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.carousel} Carousel</span></div>
+                            <div className="flex items-center gap-1"><Icons.Layers size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.story} Story</span></div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Gaps Alert */}
+            <div className="px-4 py-3 bg-amber-50 border-t border-amber-200">
+              <div className="flex items-start gap-2">
+                <Icons.AlertCircle size={16} color="#f59e0b" />
+                <div>
+                  <span className="text-xs font-semibold text-amber-800">Gaps Identified: </span>
+                  <span className="text-xs text-amber-700">{data.data.summary.gaps.join(' • ')}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Tip */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-4 text-center">
+            <p className="text-xs text-neutral-500">Click a folder to see format breakdown</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ProductionPipelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          {data.phases.map((phase, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
+              <div className="text-xs font-bold text-neutral-400 mb-2">{phase.week}</div>
+              <div className="text-sm font-bold text-neutral-900 mb-2">{phase.task}</div>
+              <div className="text-xs text-neutral-500">{phase.description}</div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-white text-sm font-medium">{data.bottomLine}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ActionChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState({});
+      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
+                    {checkedItems[i] && <Icons.Check />}
+                  </div>
+                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the creative ecosystem: 20-50 meaningfully different creatives, systematically produced across angles and formats. Each creative is a key that unlocks new customer segments. Volume isn't vanity - it's discovery.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'key-visual': return <KeyVisualSlide data={slide} />;
+          case 'example-grid': return <ExampleGridSlide data={slide} />;
+          case 'creative-matrix': return <CreativeMatrixSlide data={slide} />;
+          case 'creative-library-mockup': return <CreativeLibraryMockupSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'production-pipeline': return <ProductionPipelineSlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>

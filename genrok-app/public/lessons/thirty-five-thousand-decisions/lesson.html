@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Brain Makes 35,000 Decisions a Day</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FAFAFA;
+            overflow-x: hidden;
+        }
+        #root {
+            width: 100%;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="../shared/greetings.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = Motion;
+
+        const slides = [
+            {
+                type: 'welcome',
+                title: 'Your Brain Makes 35,000 Decisions a Day',
+                subtitle: 'Here\'s How to Hijack It',
+                goals: [
+                    'Why your brain relies on mental shortcuts',
+                    'The 5 shortcuts that drive buying decisions',
+                    'How top brands use psychology to sell'
+                ]
+            },
+            {
+                type: 'hook',
+                content: '35,000 decisions. That\'s how many your brain makes every day.',
+                subcontent: 'What to eat. What to wear. Which email to open. Which ad to skip. Which product to buy.'
+            },
+            {
+                type: 'content',
+                title: 'Your Brain Can\'t Analyze Everything',
+                content: 'If you actually thought through every decision, you\'d be paralyzed. So your brain developed a shortcut system: use emotions, patterns, and quick cues to decide fast.',
+                highlight: 'This is where marketing psychology lives.'
+            },
+            {
+                type: 'visual',
+                title: '35,000 Decisions Per Day',
+                stat: '35,000',
+                label: 'Daily Decisions',
+                caption: 'Research by Daniel Kahneman',
+                subcaption: 'Your brain uses shortcuts for 95% of them'
+            },
+            {
+                type: 'cards',
+                title: '5 Mental Shortcuts Your Customers Use',
+                cards: [
+                    {
+                        title: 'Price = Quality',
+                        description: 'Higher price signals better product. Your brain assumes expensive means premium.'
+                    },
+                    {
+                        title: 'Brand Prestige',
+                        description: 'Recognizable brands feel safer. Your brain trusts what it knows.'
+                    },
+                    {
+                        title: 'Scarcity Effect',
+                        description: 'Limited quantity triggers urgency. Your brain fears missing out.'
+                    },
+                    {
+                        title: 'Social Proof',
+                        description: 'Others bought it, so it must be good. Your brain follows the crowd.'
+                    },
+                    {
+                        title: 'Aesthetic Appeal',
+                        description: 'Beautiful design signals quality. Your brain judges books by covers.'
+                    }
+                ]
+            },
+            {
+                type: 'content',
+                title: 'The Most Successful Brands Don\'t Fight This',
+                content: 'They don\'t rely on logic or detailed specs. They master the shortcuts. They sell a story, a feeling, a path to confident decisions.',
+                highlight: 'They make buying feel obvious.'
+            },
+            {
+                type: 'example',
+                title: 'Two Stores. Same Product. Different Psychology.',
+                examples: [
+                    {
+                        label: 'Generic Store',
+                        description: 'Blue t-shirt. $29. Cotton. Available in 3 sizes.',
+                        result: 'Brain reaction: meh, maybe later.'
+                    },
+                    {
+                        label: 'Story-Driven Store',
+                        description: 'Coastal Blue Tee. $29. Soft-washed organic cotton. Only 47 left. 2,341 five-star reviews.',
+                        result: 'Brain reaction: I need this now.'
+                    }
+                ]
+            },
+            {
+                type: 'quiz',
+                question: 'Why does understanding psychology matter in marketing?',
+                options: [
+                    'It helps you manipulate customers',
+                    'It lets you align with how brains naturally make decisions',
+                    'It makes your products more expensive',
+                    'It replaces the need for good products'
+                ],
+                correct: 1,
+                explanation: 'Psychology isn\'t manipulation. It\'s alignment. When you understand how brains decide, you can present your product in a way that feels natural and compelling.'
+            },
+            {
+                type: 'completion',
+                title: 'You Just Learned Decision Psychology',
+                summary: 'Your customers make 35,000 decisions a day using mental shortcuts. The best brands don\'t fight this - they design for it.',
+                keyTakeaway: 'Sell the story, the feeling, the shortcut to a confident decision.'
+            }
+        ];
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showExplanation, setShowExplanation] = useState(false);
+            const [greeting, setGreeting] = useState('');
+
+            useEffect(() => {
+                if (typeof getGreeting === 'function') {
+                    setGreeting(getGreeting());
+                }
+            }, []);
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setDirection(1);
+                    setCurrentSlide(currentSlide + 1);
+                    setSelectedAnswer(null);
+                    setShowExplanation(false);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setDirection(-1);
+                    setCurrentSlide(currentSlide - 1);
+                    setSelectedAnswer(null);
+                    setShowExplanation(false);
+                }
+            };
+
+            const slide = slides[currentSlide];
+
+            return (
+                <div className="min-h-screen bg-[#FAFAFA] flex flex-col">
+                    <div className="flex-1 flex items-center justify-center p-4 md:p-8">
+                        <div className="w-full max-w-4xl">
+                            <AnimatePresence mode="wait" custom={direction}>
+                                <motion.div
+                                    key={currentSlide}
+                                    custom={direction}
+                                    initial={{ opacity: 0, x: direction * 100 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: direction * -100 }}
+                                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                >
+                                    {slide.type === 'welcome' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm">
+                                            <div className="text-sm font-semibold text-[#86868B] uppercase tracking-wider mb-6">
+                                                {greeting}
+                                            </div>
+                                            <h1 className="text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">
+                                                {slide.title}
+                                            </h1>
+                                            <p className="text-xl text-[#1D1D1F] mb-12">
+                                                {slide.subtitle}
+                                            </p>
+                                            <div className="space-y-4">
+                                                <div className="text-sm font-semibold text-[#86868B] uppercase tracking-wider mb-4">
+                                                    What You'll Learn
+                                                </div>
+                                                {slide.goals.map((goal, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="flex items-start gap-4"
+                                                    >
+                                                        <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0 mt-1 text-sm font-semibold">
+                                                            {index + 1}
+                                                        </div>
+                                                        <p className="text-lg text-[#1D1D1F] pt-0.5">{goal}</p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'hook' && (
+                                        <div className="bg-black rounded-3xl p-8 md:p-16 shadow-lg">
+                                            <motion.div
+                                                initial={{ scale: 0.9, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                <p className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                                                    {slide.content}
+                                                </p>
+                                                <p className="text-xl text-gray-300 leading-relaxed">
+                                                    {slide.subcontent}
+                                                </p>
+                                            </motion.div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'content' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-black mb-8">
+                                                {slide.title}
+                                            </h2>
+                                            <p className="text-xl text-[#1D1D1F] mb-8 leading-relaxed">
+                                                {slide.content}
+                                            </p>
+                                            {slide.highlight && (
+                                                <div className="bg-[#FAFAFA] border-l-4 border-black p-6 rounded-r-xl">
+                                                    <p className="text-lg font-semibold text-black">
+                                                        {slide.highlight}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'visual' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm text-center">
+                                            <h2 className="text-2xl md:text-3xl font-bold text-black mb-12">
+                                                {slide.title}
+                                            </h2>
+                                            <motion.div
+                                                initial={{ scale: 0.5, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ duration: 0.6, ease: 'easeOut' }}
+                                                className="mb-8"
+                                            >
+                                                <div className="inline-block bg-black text-white rounded-3xl px-12 py-8 mb-4">
+                                                    <div className="text-7xl md:text-8xl font-bold mb-2">
+                                                        {slide.stat}
+                                                    </div>
+                                                    <div className="text-xl text-gray-300 uppercase tracking-wider">
+                                                        {slide.label}
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                            <p className="text-lg font-semibold text-[#1D1D1F] mb-2">
+                                                {slide.caption}
+                                            </p>
+                                            <p className="text-base text-[#86868B]">
+                                                {slide.subcaption}
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'cards' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-black mb-12 text-center">
+                                                {slide.title}
+                                            </h2>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                {slide.cards.map((card, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: index * 0.1 }}
+                                                        className="bg-[#FAFAFA] rounded-2xl p-6 hover:shadow-md transition-shadow"
+                                                    >
+                                                        <h3 className="text-xl font-bold text-black mb-3">
+                                                            {card.title}
+                                                        </h3>
+                                                        <p className="text-base text-[#1D1D1F] leading-relaxed">
+                                                            {card.description}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'example' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-black mb-12 text-center">
+                                                {slide.title}
+                                            </h2>
+                                            <div className="space-y-8">
+                                                {slide.examples.map((example, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: index * 0.2 }}
+                                                        className="border-2 border-[#F5F5F7] rounded-2xl p-8"
+                                                    >
+                                                        <div className="text-sm font-semibold text-[#86868B] uppercase tracking-wider mb-4">
+                                                            {example.label}
+                                                        </div>
+                                                        <p className="text-lg text-[#1D1D1F] mb-6 leading-relaxed">
+                                                            {example.description}
+                                                        </p>
+                                                        <div className="bg-[#FAFAFA] rounded-xl p-4">
+                                                            <p className="text-base font-semibold text-black">
+                                                                {example.result}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'quiz' && (
+                                        <div className="bg-white rounded-3xl p-8 md:p-16 shadow-sm">
+                                            <div className="text-sm font-semibold text-[#86868B] uppercase tracking-wider mb-6">
+                                                Quick Check
+                                            </div>
+                                            <h2 className="text-2xl md:text-3xl font-bold text-black mb-12">
+                                                {slide.question}
+                                            </h2>
+                                            <div className="space-y-4 mb-8">
+                                                {slide.options.map((option, index) => (
+                                                    <button
+                                                        key={index}
+                                                        onClick={() => {
+                                                            setSelectedAnswer(index);
+                                                            setShowExplanation(true);
+                                                        }}
+                                                        disabled={showExplanation}
+                                                        className={`w-full text-left p-6 rounded-2xl border-2 transition-all ${
+                                                            selectedAnswer === index
+                                                                ? index === slide.correct
+                                                                    ? 'border-[#34C759] bg-[#34C759]/5'
+                                                                    : 'border-[#FF3B30] bg-[#FF3B30]/5'
+                                                                : 'border-[#F5F5F7] hover:border-black'
+                                                        }`}
+                                                    >
+                                                        <span className="text-lg text-[#1D1D1F]">{option}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            {showExplanation && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className={`p-6 rounded-2xl ${
+                                                        selectedAnswer === slide.correct
+                                                            ? 'bg-[#34C759]/10 border-2 border-[#34C759]'
+                                                            : 'bg-[#FF3B30]/10 border-2 border-[#FF3B30]'
+                                                    }`}
+                                                >
+                                                    <p className="text-lg text-[#1D1D1F] leading-relaxed">
+                                                        {slide.explanation}
+                                                    </p>
+                                                </motion.div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {slide.type === 'completion' && (
+                                        <div className="bg-black rounded-3xl p-8 md:p-16 shadow-lg text-center">
+                                            <motion.div
+                                                initial={{ scale: 0.8, opacity: 0 }}
+                                                animate={{ scale: 1, opacity: 1 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                <div className="text-5xl mb-6">🧠</div>
+                                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                                                    {slide.title}
+                                                </h2>
+                                                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                                                    {slide.summary}
+                                                </p>
+                                                <div className="bg-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-sm">
+                                                    <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                                                        Key Takeaway
+                                                    </div>
+                                                    <p className="text-lg font-semibold text-white">
+                                                        {slide.keyTakeaway}
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    <div className="sticky bottom-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 p-4 md:p-6">
+                        <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+                            <button
+                                onClick={prevSlide}
+                                disabled={currentSlide === 0}
+                                className="px-6 py-3 rounded-full font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-100"
+                            >
+                                ← Back
+                            </button>
+
+                            <div className="flex gap-2">
+                                {slides.map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className={`h-2 rounded-full transition-all ${
+                                            index === currentSlide
+                                                ? 'w-8 bg-black'
+                                                : 'w-2 bg-gray-300'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={nextSlide}
+                                disabled={currentSlide === slides.length - 1}
+                                className="px-6 py-3 bg-black text-white rounded-full font-semibold hover:bg-[#1a1a1a] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                                {currentSlide === slides.length - 1 ? 'Finish' : 'Next →'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>

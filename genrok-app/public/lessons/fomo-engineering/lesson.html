@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOMO Engineering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="../shared/greetings.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow: hidden; }
+    .font-display { font-family: 'Fraunces', serif; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .timer-pulse { animation: pulse 1s infinite; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const LESSON_CONFIG = {
+      id: 'fomo-engineering',
+      title: 'FOMO Engineering',
+      description: 'Turn passive interest into urgent action',
+      accentColor: '#ef4444',
+      duration: '9 min',
+      nextLesson: {
+        id: 'trust-blueprint',
+        title: 'The Trust Blueprint',
+        teaser: 'Build instant credibility that converts strangers into buyers.'
+      }
+    };
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: '{GREETING}',
+        subtitle: "Time to learn why 'maybe later' is where conversions go to die... and how to engineer urgency ethically.",
+        gifUrl: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/welcome-hi.mp4'
+      },
+      {
+        type: 'hook',
+        title: "The Customer's Greatest Enemy",
+        content: "It's not price. It's not competitors. It's not even skepticism.",
+        highlight: "It's INERTIA.",
+        subtext: 'The comfortable "I\'ll think about it" that kills 80% of potential sales.'
+      },
+      {
+        type: 'bigStatement',
+        statement: 'The pain of missing out is',
+        emphasis: '2X more powerful than gaining.',
+        footer: 'This is Loss Aversion—and it\'s your most powerful conversion lever.'
+      },
+      {
+        type: 'motivationTriggers',
+        title: 'The Motivation Control Panel',
+        triggers: [
+          { name: 'Loss Aversion (FOMO)', description: 'Fear of missing out', power: 95 },
+          { name: 'Scarcity', description: 'Limited availability', power: 85 },
+          { name: 'Curiosity Gap', description: 'Open loops that demand closure', power: 80 }
+        ]
+      },
+      {
+        type: 'lossAversion',
+        title: 'Trigger #1: Loss Aversion',
+        principle: 'Frame inaction as a LOSS, not just a missed opportunity.',
+        examples: {
+          weak: "This is your chance to gain financial freedom.",
+          strong: "Don't miss out on financial freedom—it's slipping away."
+        },
+        insight: 'Same message. But one triggers loss aversion. Guess which converts better?'
+      },
+      {
+        type: 'timerDemo',
+        title: 'FOMO in Action: The Expiring Bonus',
+        mockup: {
+          product: 'Premium Marketing Course',
+          timer: '00:14:52',
+          bonus: 'Add the "Advanced Analytics Module" (value $497) FREE',
+          cta: 'Claim Before Timer Ends'
+        },
+        warning: 'WARNING: Only use authentic timers. Fake urgency destroys trust forever.'
+      },
+      {
+        type: 'scarcityTypes',
+        title: 'Trigger #2: Scarcity',
+        principle: 'The less available something is, the more valuable it feels.',
+        types: [
+          { type: 'Quantity Scarcity', example: '"Only 7 left in stock"', use: 'Physical products' },
+          { type: 'Access Scarcity', example: '"Limited to 100 members"', use: 'Memberships, courses' },
+          { type: 'Time Scarcity', example: '"Offer ends at midnight"', use: 'Promotions, launches' }
+        ]
+      },
+      {
+        type: 'example',
+        context: 'E-commerce Blueprint',
+        title: 'Scarcity Stack Example',
+        before: {
+          label: 'No Scarcity',
+          content: 'Premium Leather Folio\n$199\n\nAdd to Cart'
+        },
+        after: {
+          label: 'Scarcity Stack',
+          content: 'Premium Leather Folio\n$199\n\n⚠️ Only 3 left in stock\n👥 72 people viewing now\n\nAdd to Cart'
+        },
+        result: '+67% conversion with authentic scarcity'
+      },
+      {
+        type: 'curiosityGap',
+        title: 'Trigger #3: The Curiosity Gap',
+        principle: 'The brain HATES open loops. We\'re compelled to seek closure.',
+        pattern: {
+          hook: 'Open a loop (create curiosity)',
+          tension: 'Hold the answer (build tension)',
+          release: 'Deliver the payoff (satisfaction)'
+        },
+        examples: [
+          '"90% of eCommerce stores make this pricing mistake..."',
+          '"The 3 ingredients you should never combine..."',
+          '"What happened next shocked everyone..."'
+        ]
+      },
+      {
+        type: 'content',
+        title: 'Curiosity Gap Applications',
+        points: [
+          { title: 'Ad Headlines', detail: 'Open the loop in the headline, deliver in the landing page.' },
+          { title: 'Email Subjects', detail: '"The mistake I made with [topic]..." forces the open.' },
+          { title: 'Video Intros', detail: 'Start with a surprising stat or question that demands an answer.' }
+        ]
+      },
+      {
+        type: 'ethicsCheck',
+        title: 'The Ethics Checkpoint',
+        rules: [
+          { rule: 'Authentic Only', description: 'If the timer resets, scarcity is fake, or stock is infinite—don\'t use urgency.' },
+          { rule: 'Deliver Value', description: 'FOMO only works once. If the product sucks, you\'ve burned trust forever.' },
+          { rule: 'No Manipulation', description: 'You\'re reducing friction, not deceiving. The line matters.' }
+        ],
+        warning: 'Fake urgency = short-term gains, long-term destruction'
+      },
+      {
+        type: 'quiz',
+        question: 'Which headline uses loss aversion most effectively?',
+        options: [
+          { text: '"Get 20% more sales with our tool"', correct: false },
+          { text: '"Stop losing 20% of your sales today"', correct: true },
+          { text: '"Our tool helps increase sales"', correct: false },
+          { text: '"Many customers love our tool"', correct: false }
+        ],
+        explanation: '"Stop losing" triggers loss aversion—the pain of loss is 2x stronger than the pleasure of gain. The others focus on gains, which are psychologically weaker.',
+        celebrationGif: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/celebration-1.mp4'
+      },
+      {
+        type: 'actionSlide',
+        title: 'FOMO Engineering Checklist',
+        actions: [
+          'Rewrite 3 CTAs from "gain" to "stop losing" framing',
+          'Add authentic scarcity to your highest-traffic pages',
+          'Create 5 curiosity-gap headlines for your next campaign',
+          'Audit all urgency elements for authenticity'
+        ]
+      },
+      {
+        type: 'completion',
+        title: 'Motivation Lever: Armed',
+        message: 'You now understand how to turn "maybe later" into "I need this now"—ethically. Use it responsibly.',
+        nextLessonTeaser: 'Next: The Trust Blueprint—build instant credibility with skeptical strangers.'
+      }
+    ];
+
+    const WelcomeSlide = ({ slide, accentColor, userName }) => {
+      const [showVideo, setShowVideo] = useState(true);
+      const title = slide.title.replace('{GREETING}', window.getGreeting ? window.getGreeting(userName) : `Hey${userName ? `, ${userName}` : ''}`);
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8">
+          {showVideo && slide.gifUrl && (
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-8">
+              <video autoPlay loop muted playsInline className="w-40 h-40 rounded-full object-cover border-4" style={{ borderColor: accentColor }} onError={() => setShowVideo(false)}>
+                <source src={slide.gifUrl} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+          <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-6xl font-bold mb-6" style={{ color: accentColor }}>{title}</motion.h1>
+          <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl md:text-2xl text-gray-300 max-w-2xl">{slide.subtitle}</motion.p>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.h1 initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-6xl font-bold mb-8">{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl">{slide.content}</motion.p>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl max-w-xl" style={{ background: `${accentColor}15`, border: `2px solid ${accentColor}` }}>
+          <p className="text-3xl font-black" style={{ color: accentColor }}>{slide.highlight}</p>
+        </motion.div>
+        {slide.subtext && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-6">{slide.subtext}</motion.p>}
+      </div>
+    );
+
+    const BigStatementSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.p initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-2xl md:text-3xl text-gray-400 mb-4">{slide.statement}</motion.p>
+        <motion.h1 initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} className="font-display text-5xl md:text-7xl font-black" style={{ color: accentColor }}>{slide.emphasis}</motion.h1>
+        {slide.footer && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-gray-500 mt-8 text-lg">{slide.footer}</motion.p>}
+      </div>
+    );
+
+    const MotivationTriggersSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="w-full max-w-2xl space-y-6">
+          {slide.triggers.map((trigger, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gray-900 rounded-xl p-6 border border-gray-800">
+              <div className="flex justify-between mb-3">
+                <span className="font-bold text-lg">{trigger.name}</span>
+                <span className="text-gray-400">{trigger.description}</span>
+              </div>
+              <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${trigger.power}%` }} transition={{ delay: 0.5 + i * 0.15, duration: 0.8 }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${accentColor}, ${accentColor}99)` }} />
+              </div>
+              <div className="flex justify-end mt-1"><span className="text-sm text-gray-500">{trigger.power}% power</span></div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const LossAversionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10 text-center max-w-xl">{slide.principle}</motion.p>
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <p className="text-gray-500 text-sm uppercase tracking-wider mb-4">Weak (Gain Frame)</p>
+            <p className="text-lg italic">"{slide.examples.weak}"</p>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>Strong (Loss Frame)</p>
+            <p className="text-lg italic font-bold">"{slide.examples.strong}"</p>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8 text-gray-400 text-center max-w-md">{slide.insight}</motion.p>
+      </div>
+    );
+
+    const TimerDemoSlide = ({ slide, accentColor }) => {
+      const [time, setTime] = useState(slide.mockup.timer);
+      useEffect(() => {
+        const interval = setInterval(() => {
+          const [h, m, s] = time.split(':').map(Number);
+          const totalSeconds = h * 3600 + m * 60 + s - 1;
+          if (totalSeconds >= 0) {
+            const newH = Math.floor(totalSeconds / 3600);
+            const newM = Math.floor((totalSeconds % 3600) / 60);
+            const newS = totalSeconds % 60;
+            setTime(`${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}:${String(newS).padStart(2, '0')}`);
+          }
+        }, 1000);
+        return () => clearInterval(interval);
+      }, [time]);
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-8">
+          <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-8">{slide.title}</motion.h1>
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-8 border border-gray-700 max-w-md w-full">
+            <p className="text-xl font-bold mb-4">{slide.mockup.product}</p>
+            <div className="text-center mb-4">
+              <p className="text-gray-400 text-sm mb-2">Offer ends in:</p>
+              <p className="text-5xl font-mono font-black timer-pulse" style={{ color: accentColor }}>{time}</p>
+            </div>
+            <div className="p-4 rounded-xl mb-4" style={{ background: `${accentColor}20` }}>
+              <p className="text-sm" style={{ color: accentColor }}>Expiring Bonus: {slide.mockup.bonus}</p>
+            </div>
+            <button className="w-full py-3 rounded-xl font-bold text-black" style={{ background: accentColor }}>{slide.mockup.cta}</button>
+          </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 text-yellow-500 text-center max-w-md font-medium">{slide.warning}</motion.p>
+        </div>
+      );
+    };
+
+    const ScarcityTypesSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-10">{slide.principle}</motion.p>
+        <div className="grid gap-4 max-w-3xl w-full">
+          {slide.types.map((type, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-gray-900 rounded-xl p-6 border border-gray-800 flex items-center gap-6">
+              <div className="w-3 h-16 rounded-full" style={{ background: accentColor }} />
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-1" style={{ color: accentColor }}>{type.type}</h3>
+                <p className="text-gray-300 mb-1">{type.example}</p>
+                <p className="text-gray-500 text-sm">Best for: {type.use}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ExampleSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.context}</motion.span>
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+          <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+            <p className="text-red-400 text-sm uppercase tracking-wider mb-4">{slide.before.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.before.content}</p>
+          </motion.div>
+          <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6 border-2" style={{ background: `${accentColor}10`, borderColor: accentColor }}>
+            <p className="text-sm uppercase tracking-wider mb-4" style={{ color: accentColor }}>{slide.after.label}</p>
+            <p className="text-lg whitespace-pre-line">{slide.after.content}</p>
+          </motion.div>
+        </div>
+        {slide.result && <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 px-6 py-3 rounded-full font-bold" style={{ background: `${accentColor}20`, color: accentColor }}>{slide.result}</motion.div>}
+      </div>
+    );
+
+    const CuriosityGapSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-4">{slide.title}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl text-gray-400 mb-8 text-center max-w-xl">{slide.principle}</motion.p>
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} className="flex gap-4 mb-8 max-w-2xl">
+          {Object.entries(slide.pattern).map(([key, value], i) => (
+            <div key={key} className="flex-1 p-4 rounded-xl text-center" style={{ background: `${accentColor}${30 - i * 10}`, border: i === 0 ? `2px solid ${accentColor}` : 'none' }}>
+              <p className="font-bold capitalize mb-1">{key}</p>
+              <p className="text-sm text-gray-300">{value}</p>
+            </div>
+          ))}
+        </motion.div>
+        <div className="space-y-3 max-w-xl w-full">
+          {slide.examples.map((ex, i) => (
+            <motion.div key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 + i * 0.1 }} className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+              <p className="italic text-gray-300">{ex}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ContentSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-6 max-w-2xl w-full">
+          {slide.points.map((point, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-black flex-shrink-0" style={{ background: accentColor }}>{i + 1}</div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">{point.title}</h3>
+                <p className="text-gray-400">{point.detail}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const EthicsCheckSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-10">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.rules.map((rule, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex gap-4 items-start p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-green-400">{rule.rule}</h3>
+                <p className="text-gray-400">{rule.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-8 text-yellow-500 font-medium">{slide.warning}</motion.p>
+      </div>
+    );
+
+    const QuizSlide = ({ slide, accentColor }) => {
+      const [selected, setSelected] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const handleSelect = (i) => { if (selected === null) { setSelected(i); setShowResult(true); }};
+      return (
+        <div className="h-full flex flex-col items-center justify-center px-8">
+          <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-3xl md:text-4xl font-bold mb-8 text-center max-w-2xl">{slide.question}</motion.h1>
+          <div className="grid gap-4 max-w-xl w-full">
+            {slide.options.map((opt, i) => (
+              <motion.button key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={selected !== null} className={`p-4 rounded-xl text-left transition-all border-2 ${selected === i ? (opt.correct ? 'border-green-500 bg-green-500/20' : 'border-red-500 bg-red-500/20') : selected !== null && opt.correct ? 'border-green-500 bg-green-500/20' : 'border-gray-700 hover:border-gray-500 bg-gray-900'}`}>{opt.text}</motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-6 rounded-2xl max-w-xl text-center" style={{ background: `${accentColor}20` }}>
+                {slide.options[selected]?.correct && slide.celebrationGif && (
+                  <video autoPlay loop muted playsInline className="w-24 h-24 mx-auto mb-4 rounded-full"><source src={slide.celebrationGif} type="video/mp4" /></video>
+                )}
+                <p className="text-lg">{slide.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const ActionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center px-8">
+        <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-4xl md:text-5xl font-bold mb-12">{slide.title}</motion.h1>
+        <div className="space-y-4 max-w-2xl w-full">
+          {slide.actions.map((action, i) => (
+            <motion.div key={i} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl bg-gray-900 border border-gray-800">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-black font-bold" style={{ background: accentColor }}>{i + 1}</div>
+              <p className="text-lg">{action}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CompletionSlide = ({ slide, accentColor }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 rounded-full flex items-center justify-center mb-8" style={{ background: accentColor }}>
+          <svg className="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+        </motion.div>
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="font-display text-4xl md:text-5xl font-bold mb-4" style={{ color: accentColor }}>{slide.title}</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-xl text-gray-300 max-w-xl mb-8">{slide.message}</motion.p>
+        {slide.nextLessonTeaser && (
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="p-6 rounded-2xl bg-gray-900 border border-gray-800 max-w-md">
+            <p className="text-gray-400 text-sm uppercase tracking-wider mb-2">Up Next</p>
+            <p className="text-lg">{slide.nextLessonTeaser}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const SlideRenderer = ({ slide, accentColor, userName }) => {
+      const props = { slide, accentColor, userName };
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide {...props} />;
+        case 'hook': return <HookSlide {...props} />;
+        case 'bigStatement': return <BigStatementSlide {...props} />;
+        case 'motivationTriggers': return <MotivationTriggersSlide {...props} />;
+        case 'lossAversion': return <LossAversionSlide {...props} />;
+        case 'timerDemo': return <TimerDemoSlide {...props} />;
+        case 'scarcityTypes': return <ScarcityTypesSlide {...props} />;
+        case 'example': return <ExampleSlide {...props} />;
+        case 'curiosityGap': return <CuriosityGapSlide {...props} />;
+        case 'content': return <ContentSlide {...props} />;
+        case 'ethicsCheck': return <EthicsCheckSlide {...props} />;
+        case 'quiz': return <QuizSlide {...props} />;
+        case 'actionSlide': return <ActionSlide {...props} />;
+        case 'completion': return <CompletionSlide {...props} />;
+        default: return <div className="h-full flex items-center justify-center"><p>Unknown slide type</p></div>;
+      }
+    };
+
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [userName, setUserName] = useState('');
+      useEffect(() => { const params = new URLSearchParams(window.location.search); if (params.get('userName')) setUserName(params.get('userName')); }, []);
+      const nextSlide = useCallback(() => { if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide]);
+      const prevSlide = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }}; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [nextSlide, prevSlide]);
+      return (
+        <div className="h-screen w-screen flex flex-col bg-[#0a0a0a] overflow-hidden">
+          <div className="flex-1 relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                <SlideRenderer slide={slides[currentSlide]} accentColor={LESSON_CONFIG.accentColor} userName={userName} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="p-6 flex items-center justify-between border-t border-gray-800">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all">Back</button>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (<div key={i} className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'w-8' : ''}`} style={{ background: i === currentSlide ? LESSON_CONFIG.accentColor : '#374151' }} />))}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 rounded-xl font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: LESSON_CONFIG.accentColor, color: 'white' }}>Continue</button>
+          </div>
+        </div>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

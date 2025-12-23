@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Rules: Scale Winners, Kill Losers While You Sleep | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
+
+    const LESSON_CONFIG = {
+      id: 'meta-automated-rules',
+      title: 'Automated Rules: Scale Winners, Kill Losers While You Sleep',
+      description: 'Set it once. Meta adjusts budgets automatically based on performance. Forever.',
+      accentColor: '#3b82f6',
+      duration: '5 min',
+      nextLesson: null
+    };
+
+    const celebrationGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const Icons = {
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>),
+      Zap: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>),
+      Settings: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>)
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['How automated rules work (condition → action logic)', 'The 2 essential rules: Scale winners, protect losers', 'Real examples with actual numbers'] },
+      { type: 'hook', headline: 'It\'s 3am. An ad set hits $35 CPA (your target is $40). You\'re asleep. Meta automatically increases the budget by 5%. By morning, it scaled itself. Zero manual work.', subtext: 'Automated Rules are IF/THEN statements for your campaigns. IF performance meets criteria, THEN take action. Scale winners while you sleep. Kill losers before they burn money. Set it once, runs forever.' },
+      { type: 'content', title: 'The Problem: You Can\'t Watch Ads 24/7', body: 'Winners emerge at random times. An ad set crushes at 2am - you\'re asleep, miss the opportunity. A loser burns $200 by 6am - you wake up to wasted spend. Automated Rules solve this. They monitor performance constantly and act instantly based on rules YOU set.' },
+      { type: 'visual', title: 'Manual vs Automated', visualType: 'comparison', data: {
+        left: { label: 'Manual Management', points: ['Check Ads Manager every 2-4 hours', 'Miss opportunities overnight', 'Delayed reactions = wasted spend', 'Burnout from constant monitoring'], color: '#ef4444' },
+        right: { label: 'Automated Rules', points: ['Rules monitor 24/7 automatically', 'Instant action on performance changes', 'Scale winners immediately', 'Set once, runs forever'], color: '#10b981' }
+      }},
+      { type: 'content', title: 'How Automated Rules Work', body: 'Simple IF/THEN logic. IF (condition met) → THEN (take action). Example: IF CPA is less than $40 → THEN increase budget by 5%. You define the condition (what to watch) and the action (what to do). Meta handles the rest automatically.' },
+      { type: 'automatedRuleMockup', title: 'Rule #1: Scale Winners', rule: { name: 'Scale Low CPA Ad Sets', condition: 'IF Cost Per Purchase < $40', timeframe: 'Last 24 hours', action: 'THEN Increase daily budget by 5%', frequency: 'Check every 6 hours', reasoning: 'If an ad set is profitable (under target CPA), give it more budget to scale.' }},
+      { type: 'automatedRuleMockup', title: 'Rule #2: Protect Against Losers', rule: { name: 'Reduce High CPA Ad Sets', condition: 'IF Cost Per Purchase > $60', timeframe: 'Last 24 hours', action: 'THEN Decrease daily budget by 5%', frequency: 'Check every 6 hours', reasoning: 'If an ad set is unprofitable (above threshold), reduce spend to minimize damage.' }},
+      { type: 'cards', title: 'The Essential Rule Set', items: [
+        { title: 'Scale Rule (CPA < Target)', description: 'When performance beats your target, increase budget by 5-10%. Let winners run.', color: '#10b981' },
+        { title: 'Protection Rule (CPA > Max)', description: 'When performance exceeds acceptable threshold, decrease budget by 5-10%. Limit damage.', color: '#ef4444' },
+        { title: 'Kill Switch (No Conversions)', description: 'If no purchases after $X spend, pause completely. Stop bleeding money.', color: '#f59e0b' },
+        { title: 'Restart Rule (ROAS > Target)', description: 'If paused ad sets show strong ROAS, automatically turn back on. Capture comebacks.', color: '#3b82f6' }
+      ]},
+      { type: 'content', title: 'Best Practices for Rules', body: 'Don\'t set rules too aggressive (20% budget changes are chaotic). Keep it subtle: 5-10% adjustments. Check every 6-12 hours, not every 30 minutes (too frequent = unstable campaigns). Use 24-hour attribution windows minimum - Meta needs time to optimize.' },
+      { type: 'visual', title: 'Automated Rules Impact', visualType: 'stats', data: [
+        { value: '24/7', label: 'Monitoring', sublabel: 'Rules never sleep', color: '#3b82f6' },
+        { value: '67%', label: 'Less Manual Work', sublabel: 'Set once, runs forever', color: '#10b981' },
+        { value: '-42%', label: 'Wasted Spend', sublabel: 'Kill losers before damage', color: '#ec4899' }
+      ]},
+      { type: 'quiz', question: 'What happens when you set automated rules to check every 30 minutes?', options: [
+        { text: 'Better performance - faster reactions', isCorrect: false, feedback: 'No. Checking too frequently creates chaos. Meta needs time to optimize. Constant budget changes disrupt learning.' },
+        { text: 'Unstable campaigns - too much chaos', isCorrect: true, feedback: 'Correct! Checking every 30 minutes causes constant budget adjustments. Meta can\'t learn when budgets change hourly. Best practice: check every 6-12 hours. Give the algorithm breathing room to optimize before rules intervene.' },
+        { text: 'No difference - same as 6 hours', isCorrect: false, feedback: 'Big difference. Frequent checks create instability. Meta\'s algorithm needs consistent budgets to learn.' },
+        { text: 'Meta charges you more', isCorrect: false, feedback: 'Meta doesn\'t charge for rules. But overly aggressive rules waste money through instability.' }
+      ]},
+      { type: 'completion', title: 'You\'ve Mastered Automated Rules', summary: [
+        'Automated Rules = IF/THEN statements that monitor and adjust 24/7',
+        'Essential rules: Scale winners (CPA < target), protect losers (CPA > max)',
+        'Keep adjustments subtle (5-10%), check every 6-12 hours for stability',
+        'Set once, runs forever - no more 24/7 manual monitoring'
+      ]}
+    ];
+
+    const WelcomeSlide = ({ goals, onStart }) => (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-6">
+            <Icons.Settings />
+            <span className="text-sm font-semibold text-blue-900">Automation</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black mb-4 text-neutral-900 title-font">{LESSON_CONFIG.title}</h1>
+          <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">{LESSON_CONFIG.description}</p>
+          <div className="bg-neutral-50 rounded-2xl p-8 mb-8 max-w-xl mx-auto text-left">
+            <h3 className="text-lg font-bold mb-4 text-neutral-900">What You'll Discover:</h3>
+            <ul className="space-y-3">
+              {goals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5"><Icons.Check /></div>
+                  <span className="text-neutral-700">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <motion.button onClick={onStart} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-blue-500 text-white rounded-full font-semibold text-lg hover:bg-blue-600 transition-colors">Start Learning →</motion.button>
+        </motion.div>
+      </div>
+    );
+
+    const HookSlide = ({ headline, subtext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl text-center">
+          <h2 className="text-3xl md:text-5xl font-black mb-6 text-neutral-900 title-font leading-tight">{headline}</h2>
+          <p className="text-xl text-neutral-600 leading-relaxed">{subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ContentSlide = ({ title, body }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-black mb-6 text-neutral-900 title-font">{title}</h2>
+          <p className="text-lg md:text-xl text-neutral-700 leading-relaxed">{body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ title, visualType, data }) => {
+      if (visualType === 'comparison') {
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                {[data.left, data.right].map((side, idx) => (
+                  <motion.div key={idx} initial={{ opacity: 0, x: idx === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: side.color, backgroundColor: side.color + '10' }}>
+                    <h3 className="text-2xl font-bold mb-6 text-neutral-900">{side.label}</h3>
+                    <ul className="space-y-3">{side.points.map((point, i) => (<li key={i} className="text-neutral-700">{point}</li>))}</ul>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+      if (visualType === 'stats') {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-12 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                {data.map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div className="text-5xl md:text-6xl font-black mb-3" style={{ color: stat.color }}>{stat.value}</div>
+                    <div className="text-xl font-bold text-neutral-900 mb-2">{stat.label}</div>
+                    <div className="text-sm text-neutral-600">{stat.sublabel}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
+
+    const AutomatedRuleMockupSlide = ({ title, rule }) => (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-6">
+        <div className="max-w-3xl w-full">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-white rounded-2xl p-8 shadow-2xl border-2 border-purple-200">
+            <div className="mb-6">
+              <div className="text-xs font-semibold text-neutral-500 mb-2">RULE NAME</div>
+              <div className="text-xl font-bold text-neutral-900">{rule.name}</div>
+            </div>
+            <div className="space-y-6">
+              <div className="bg-blue-50 rounded-xl p-6 border-l-4 border-blue-500">
+                <div className="text-xs font-semibold text-blue-900 mb-2">CONDITION</div>
+                <div className="text-lg font-bold text-blue-900 mb-1">{rule.condition}</div>
+                <div className="text-sm text-blue-700">Timeframe: {rule.timeframe}</div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="text-4xl text-neutral-400">↓</div>
+              </div>
+              <div className="bg-green-50 rounded-xl p-6 border-l-4 border-green-500">
+                <div className="text-xs font-semibold text-green-900 mb-2">ACTION</div>
+                <div className="text-lg font-bold text-green-900 mb-1">{rule.action}</div>
+                <div className="text-sm text-green-700">Frequency: {rule.frequency}</div>
+              </div>
+            </div>
+            <div className="mt-6 bg-yellow-50 rounded-xl p-4 border-l-4 border-yellow-500">
+              <p className="text-sm text-yellow-900"><strong>Why this works:</strong> {rule.reasoning}</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const CardsSlide = ({ title, items }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+        <div className="max-w-5xl w-full py-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-2xl p-6 border-4" style={{ borderColor: item.color, backgroundColor: item.color + '10' }}>
+                <h3 className="text-xl font-bold mb-3 text-neutral-900">{item.title}</h3>
+                <p className="text-neutral-700 leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ question, options, onAnswer }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const handleSelect = (index) => { setSelected(index); setShowFeedback(true); setTimeout(() => { if (options[index].isCorrect) onAnswer(true); }, 3000); };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+          <div className="max-w-3xl w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-black mb-8 text-neutral-900 title-font text-center">{question}</motion.h2>
+            <div className="space-y-4">
+              {options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => !showFeedback && handleSelect(i)} disabled={showFeedback} className={`w-full p-6 rounded-xl text-left transition-all ${selected === i ? (option.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white') : 'bg-white hover:bg-neutral-50 border-2 border-neutral-200'} ${showFeedback && 'cursor-not-allowed'}`}>
+                  <div className="font-semibold text-lg">{option.text}</div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && selected !== null && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-8 p-6 bg-neutral-900 text-white rounded-2xl">
+                  <div className="flex items-start gap-4">
+                    <video autoPlay loop muted playsInline className="w-32 h-32 rounded-xl object-cover"><source src={options[selected].isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif()} type="video/mp4" /></video>
+                    <div>
+                      <h3 className="font-bold text-xl mb-2">{options[selected].isCorrect ? 'Exactly right!' : 'Not quite!'}</h3>
+                      <p className="text-neutral-300 leading-relaxed">{options[selected].feedback}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ title, summary }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full text-center text-white">
+          <div className="text-6xl mb-6">⚡</div>
+          <h2 className="text-4xl md:text-5xl font-black mb-6 title-font">{title}</h2>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8 text-left">
+            <h3 className="text-xl font-bold mb-4">Key Takeaways:</h3>
+            <ul className="space-y-3">
+              {summary.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5"><Icons.Check /></div>
+                  <span className="text-white/90">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
+            <div className="text-2xl font-bold mb-4">You've Completed All 5 Meta Lessons!</div>
+            <div className="text-white/90 mb-4">You now understand how Meta's AI really works - from the learning loop to automation.</div>
+          </div>
+          <button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors">Back to Dashboard</button>
+        </motion.div>
+      </div>
+    );
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const nextSlide = useCallback(() => { setDirection(1); setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1)); }, []);
+      const prevSlide = useCallback(() => { setDirection(-1); setCurrentSlide(prev => Math.max(prev - 1, 0)); }, []);
+
+      useEffect(() => {
+        const handleKeyPress = (e) => { if (e.key === 'ArrowRight') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+      }, [nextSlide, prevSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide goals={slide.learningGoals} onStart={nextSlide} />;
+          case 'hook': return <HookSlide headline={slide.headline} subtext={slide.subtext} />;
+          case 'content': return <ContentSlide title={slide.title} body={slide.body} />;
+          case 'visual': return <VisualSlide title={slide.title} visualType={slide.visualType} data={slide.data} />;
+          case 'automatedRuleMockup': return <AutomatedRuleMockupSlide title={slide.title} rule={slide.rule} />;
+          case 'cards': return <CardsSlide title={slide.title} items={slide.items} />;
+          case 'quiz': return <QuizSlide question={slide.question} options={slide.options} onAnswer={nextSlide} />;
+          case 'completion': return <CompletionSlide title={slide.title} summary={slide.summary} />;
+          default: return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction * 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction * -100 }} transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}>
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-neutral-200 z-50">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors">
+                <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </button>
+              <div className="flex gap-1.5">
+                {slides.map((_, i) => (<div key={i} className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-neutral-300'}`} />))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors text-white"><Icons.ArrowRight /></button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

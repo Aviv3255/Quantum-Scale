@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time-Based Performance: When Your Ads Should Run | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-ad-scheduling',
+      title: 'Time-Based Performance: When Your Ads Should Run',
+      description: 'Day-parting can save (or waste) thousands. Here\'s how to schedule ads like a pro.',
+      accentColor: '#3b82f6',
+      duration: '5 min',
+      nextLesson: { id: 'meta-value-rules', title: 'Value Rules', teaser: 'Teach Meta which customers are worth more - and watch it prioritize them.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const Icons = {
+      Check: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>),
+      ArrowRight: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>),
+      Clock: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>),
+      Calendar: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>),
+      Sun: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>),
+      Moon: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>),
+      Zap: () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>)
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why ad scheduling matters (and when it doesn\'t)', 'The hidden Lifetime Budget requirement', 'Optimal schedules for different business models'] },
+
+      { type: 'hook', headline: 'A customer buys at 2am. Your support team is asleep. They email. No response. They chargeback. You just lost money AND the customer.', subtext: 'Running ads 24/7 seems smart - more impressions, more sales. But if you can\'t SUPPORT those sales, you\'re burning money. Ad scheduling (day-parting) ensures ads run when your team can actually respond. Here\'s how to set it up.' },
+
+      { type: 'content', title: 'The Problem with 24/7 Ads', body: 'Most eCommerce stores run ads around the clock. Sounds logical - cast the widest net. But here\'s what actually happens: customers order at 3am. Have a question. Email support. No response for 8 hours. By then, they\'re already doubting the purchase. Customer service delay = higher refunds, chargebacks, and lost trust.' },
+
+      { type: 'visual', title: 'The Support Gap Problem', visualType: 'comparison', data: {
+        left: { label: '24/7 Ads (No Scheduling)', points: ['Orders come in at 2am-6am', 'Support offline for 8+ hours', 'Delayed responses = angry customers', 'Higher refund/chargeback rates'], color: '#ef4444' },
+        right: { label: 'Scheduled Ads (Day-Parting)', points: ['Ads run 9am-9pm only', 'Support online during ad hours', 'Instant responses to questions', 'Lower refunds, happier buyers'], color: '#10b981' }
+      }},
+
+      { type: 'content', title: 'When Should You Use Ad Scheduling?', body: 'Not every business needs it. If you\'re selling a simple, low-ticket product with no customer questions, run 24/7. But if you\'re selling anything that requires support (high-ticket, complex products, B2B), scheduling prevents disaster. Run ads during business hours when your team is online.' },
+
+      { type: 'scheduleGrid', title: 'Optimal Weekly Schedule (Business Hours)', description: 'Green = Ads Running | Gray = Ads Paused' },
+
+      { type: 'content', title: 'The Hidden Requirement: Lifetime Budget', body: 'Here\'s what Meta doesn\'t tell you upfront: Ad scheduling ONLY works with Lifetime Budget campaigns. If you\'re using Daily Budget (most people are), the option is HIDDEN. You must switch to Lifetime Budget first, then the scheduling option appears. This catches everyone off guard.' },
+
+      { type: 'lifetimeBudgetMockup', title: 'How to Enable Scheduling (Hidden Setting)', steps: [
+        { step: 1, label: 'Switch to Lifetime Budget', description: 'In campaign settings, change from Daily Budget to Lifetime Budget. Set total spend for campaign duration.' },
+        { step: 2, label: 'Ad Scheduling Appears', description: 'Once Lifetime Budget is active, "Ad Scheduling" option appears in ad set settings. Click "Run ads on a schedule."' },
+        { step: 3, label: 'Set Your Hours', description: 'Select days and times when ads should run. Usually 9am-9pm on weekdays, adjust for weekends based on support availability.' }
+      ]},
+
+      { type: 'cards', title: 'Best Practices for Scheduling', items: [
+        { title: 'Match Support Hours', description: 'If your team works 9am-6pm, run ads 9am-9pm. Give yourself a 3-hour buffer for late orders.', color: '#3b82f6' },
+        { title: 'Test Weekends Separately', description: 'Weekend buyers behave differently. Test Sat/Sun performance - you might pause weekends entirely if support is offline.', color: '#8b5cf6' },
+        { title: 'Monitor Time Zone Issues', description: 'If you sell internationally, schedule based on YOUR time zone. Don\'t try to match every country - you\'ll go insane.', color: '#ec4899' },
+        { title: 'Don\'t Over-Restrict', description: 'Running ads only 2-3 hours/day starves the algorithm. Minimum 8-10 hours/day for Meta to learn properly.', color: '#f59e0b' }
+      ]},
+
+      { type: 'content', title: 'When NOT to Use Scheduling', body: 'If you have 24/7 support (chatbots, global team), run ads all day. If you\'re selling low-ticket impulse products with no questions, run 24/7. Scheduling is for businesses where SUPPORT TIMING matters. Don\'t restrict ads just because "nighttime seems bad" - test first.' },
+
+      { type: 'visual', title: 'Scheduling Impact on Performance', visualType: 'stats', data: [
+        { value: '23%', label: 'Lower Refund Rate', sublabel: 'Faster support = happier customers', color: '#10b981' },
+        { value: '18%', label: 'Higher ROAS', sublabel: 'Spend only during profitable hours', color: '#3b82f6' },
+        { value: '31%', label: 'Reduced Chargebacks', sublabel: 'Respond before doubt sets in', color: '#ec4899' }
+      ]},
+
+      { type: 'quiz', question: 'What do you NEED to enable ad scheduling in Meta?', options: [
+        { text: 'Daily Budget campaign', isCorrect: false, feedback: 'Daily Budget hides the scheduling option. You\'ll never see it unless you switch.' },
+        { text: 'Lifetime Budget campaign', isCorrect: true, feedback: 'Correct! This is the hidden requirement. Meta only shows ad scheduling when you switch from Daily Budget to Lifetime Budget. Once you make that switch, the "Run ads on a schedule" option appears in ad set settings.' },
+        { text: 'A special Meta rep approval', isCorrect: false, feedback: 'No approval needed. It\'s just buried behind the Lifetime Budget requirement.' },
+        { text: 'Nothing - it\'s always available', isCorrect: false, feedback: 'Nope. It\'s hidden unless you use Lifetime Budget. This trips up even experienced advertisers.' }
+      ]},
+
+      { type: 'completion', title: 'You\'ve Mastered Ad Scheduling', summary: [
+        'Run ads during business hours when support is online - prevents refunds and chargebacks',
+        'Ad scheduling ONLY works with Lifetime Budget (hidden requirement most miss)',
+        'Best for high-ticket or complex products that need support',
+        'Low-ticket, simple products can run 24/7 without scheduling'
+      ]}
+    ];
+
+    // Slide Components
+    const WelcomeSlide = ({ goals, onStart }) => (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-6">
+            <Icons.Clock />
+            <span className="text-sm font-semibold text-blue-900">Ad Scheduling</span>
+          </div>
+          <h1 id="lesson-title" className="text-4xl md:text-6xl font-black mb-4 text-neutral-900 title-font">
+            {LESSON_CONFIG.title}
+          </h1>
+          <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">{LESSON_CONFIG.description}</p>
+          <div className="bg-neutral-50 rounded-2xl p-8 mb-8 max-w-xl mx-auto text-left">
+            <h3 className="text-lg font-bold mb-4 text-neutral-900">What You'll Discover:</h3>
+            <ul className="space-y-3">
+              {goals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icons.Check />
+                  </div>
+                  <span className="text-neutral-700">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <motion.button onClick={onStart} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-blue-500 text-white rounded-full font-semibold text-lg hover:bg-blue-600 transition-colors">
+            Start Learning →
+          </motion.button>
+        </motion.div>
+      </div>
+    );
+
+    const HookSlide = ({ headline, subtext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl text-center">
+          <h2 className="text-3xl md:text-5xl font-black mb-6 text-neutral-900 title-font leading-tight">{headline}</h2>
+          <p className="text-xl text-neutral-600 leading-relaxed">{subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ContentSlide = ({ title, body }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="max-w-3xl">
+          <h2 className="text-3xl md:text-4xl font-black mb-6 text-neutral-900 title-font">{title}</h2>
+          <p className="text-lg md:text-xl text-neutral-700 leading-relaxed">{body}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ title, visualType, data }) => {
+      if (visualType === 'comparison') {
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: data.left.color, backgroundColor: data.left.color + '10' }}>
+                  <h3 className="text-2xl font-bold mb-6 text-neutral-900">{data.left.label}</h3>
+                  <ul className="space-y-3">
+                    {data.left.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-neutral-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 border-4" style={{ borderColor: data.right.color, backgroundColor: data.right.color + '10' }}>
+                  <h3 className="text-2xl font-bold mb-6 text-neutral-900">{data.right.label}</h3>
+                  <ul className="space-y-3">
+                    {data.right.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-neutral-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      if (visualType === 'stats') {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
+            <div className="max-w-5xl w-full">
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-12 text-neutral-900 title-font text-center">{title}</motion.h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                {data.map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <div className="text-5xl md:text-6xl font-black mb-3" style={{ color: stat.color }}>{stat.value}</div>
+                    <div className="text-xl font-bold text-neutral-900 mb-2">{stat.label}</div>
+                    <div className="text-sm text-neutral-600">{stat.sublabel}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return null;
+    };
+
+    const ScheduleGridSlide = ({ title, description }) => {
+      const hours = Array.from({ length: 24 }, (_, i) => i);
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      const isActive = (day, hour) => {
+        const isDayActive = day < 5 || day === 5; // Mon-Sat
+        const isHourActive = hour >= 9 && hour < 21; // 9am-9pm
+        return isDayActive && isHourActive;
+      };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+          <div className="max-w-6xl w-full py-12">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-4 text-neutral-900 title-font text-center">{title}</motion.h2>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 mb-8">{description}</motion.p>
+
+            <div className="bg-white rounded-2xl p-8 shadow-xl">
+              <div className="grid grid-cols-25 gap-1">
+                <div></div>
+                {hours.map(hour => (
+                  <div key={hour} className="text-xs text-center text-neutral-500 font-semibold">
+                    {hour === 0 ? '12a' : hour < 12 ? `${hour}a` : hour === 12 ? '12p' : `${hour-12}p`}
+                  </div>
+                ))}
+                {days.map((day, dayIdx) => (
+                  <React.Fragment key={day}>
+                    <div className="text-sm font-bold text-neutral-900 flex items-center justify-end pr-2">{day}</div>
+                    {hours.map(hour => (
+                      <motion.div key={`${day}-${hour}`} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 + (dayIdx * 24 + hour) * 0.002 }} className={`aspect-square rounded ${isActive(dayIdx, hour) ? 'bg-green-500' : 'bg-neutral-200'}`} />
+                    ))}
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="flex items-center justify-center gap-8 mt-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-green-500 rounded"></div>
+                  <span className="text-neutral-700">Ads Running (9am-9pm)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-neutral-200 rounded"></div>
+                  <span className="text-neutral-700">Ads Paused (Night/Sunday)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const LifetimeBudgetMockupSlide = ({ title, steps }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+        <div className="max-w-4xl w-full py-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="space-y-6">
+            {steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border-2 border-blue-200">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xl flex-shrink-0">
+                    {step.step}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-neutral-900">{step.label}</h3>
+                    <p className="text-neutral-700 leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-8 bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6">
+            <div className="flex items-start gap-3">
+              <Icons.Zap />
+              <div>
+                <h4 className="font-bold text-yellow-900 mb-1">Pro Tip:</h4>
+                <p className="text-yellow-800 text-sm">Most people never find this setting because they use Daily Budget. Switch to Lifetime Budget first, THEN you'll see "Ad Scheduling" appear.</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const CardsSlide = ({ title, items }) => (
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 slide-scroll overflow-y-auto">
+        <div className="max-w-5xl w-full py-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-black mb-8 text-neutral-900 title-font text-center">{title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-2xl p-6 border-4" style={{ borderColor: item.color, backgroundColor: item.color + '10' }}>
+                <h3 className="text-xl font-bold mb-3 text-neutral-900">{item.title}</h3>
+                <p className="text-neutral-700 leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const QuizSlide = ({ question, options, onAnswer }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+
+      const handleSelect = (index) => {
+        setSelected(index);
+        setShowFeedback(true);
+        setTimeout(() => {
+          if (options[index].isCorrect) {
+            onAnswer(true);
+          }
+        }, 3000);
+      };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
+          <div className="max-w-3xl w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-black mb-8 text-neutral-900 title-font text-center">{question}</motion.h2>
+            <div className="space-y-4">
+              {options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => !showFeedback && handleSelect(i)} disabled={showFeedback} className={`w-full p-6 rounded-xl text-left transition-all ${selected === i ? (option.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white') : 'bg-white hover:bg-neutral-50 border-2 border-neutral-200'} ${showFeedback && 'cursor-not-allowed'}`}>
+                  <div className="font-semibold text-lg">{option.text}</div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && selected !== null && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-8 p-6 bg-neutral-900 text-white rounded-2xl">
+                  <div className="flex items-start gap-4">
+                    <video autoPlay loop muted playsInline className="w-32 h-32 rounded-xl object-cover">
+                      <source src={options[selected].isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif()} type="video/mp4" />
+                    </video>
+                    <div>
+                      <h3 className="font-bold text-xl mb-2">{options[selected].isCorrect ? 'Exactly right!' : 'Not quite!'}</h3>
+                      <p className="text-neutral-300 leading-relaxed">{options[selected].feedback}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ title, summary, onNext }) => (
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full text-center text-white">
+          <div className="text-6xl mb-6">⏰</div>
+          <h2 className="text-4xl md:text-5xl font-black mb-6 title-font">{title}</h2>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8 text-left">
+            <h3 className="text-xl font-bold mb-4">Key Takeaways:</h3>
+            <ul className="space-y-3">
+              {summary.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icons.Check />
+                  </div>
+                  <span className="text-white/90">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          {LESSON_CONFIG.nextLesson && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6">
+              <div className="text-sm font-semibold mb-2 text-white/70">Up Next:</div>
+              <div className="text-2xl font-bold mb-2">{LESSON_CONFIG.nextLesson.title}</div>
+              <div className="text-white/80 mb-4">{LESSON_CONFIG.nextLesson.teaser}</div>
+              <button onClick={onNext} className="px-6 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                Continue Learning →
+              </button>
+            </div>
+          )}
+          <button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold hover:bg-white/30 transition-colors">
+            Back to Dashboard
+          </button>
+        </motion.div>
+      </div>
+    );
+
+    // Main App
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+
+      const nextSlide = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1));
+      }, []);
+
+      const prevSlide = useCallback(() => {
+        setDirection(-1);
+        setCurrentSlide(prev => Math.max(prev - 1, 0));
+      }, []);
+
+      useEffect(() => {
+        const handleKeyPress = (e) => {
+          if (e.key === 'ArrowRight') nextSlide();
+          if (e.key === 'ArrowLeft') prevSlide();
+        };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+      }, [nextSlide, prevSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide goals={slide.learningGoals} onStart={nextSlide} />;
+          case 'hook': return <HookSlide headline={slide.headline} subtext={slide.subtext} />;
+          case 'content': return <ContentSlide title={slide.title} body={slide.body} />;
+          case 'visual': return <VisualSlide title={slide.title} visualType={slide.visualType} data={slide.data} />;
+          case 'scheduleGrid': return <ScheduleGridSlide title={slide.title} description={slide.description} />;
+          case 'lifetimeBudgetMockup': return <LifetimeBudgetMockupSlide title={slide.title} steps={slide.steps} />;
+          case 'cards': return <CardsSlide title={slide.title} items={slide.items} />;
+          case 'quiz': return <QuizSlide question={slide.question} options={slide.options} onAnswer={nextSlide} />;
+          case 'completion': return <CompletionSlide title={slide.title} summary={slide.summary} onNext={() => window.location.href = `/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`} />;
+          default: return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction * 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction * -100 }} transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}>
+              {renderSlide(slides[currentSlide])}
+            </motion.div>
+          </AnimatePresence>
+
+          {currentSlide > 0 && currentSlide < slides.length - 1 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-neutral-200 z-50">
+              <button onClick={prevSlide} disabled={currentSlide === 0} className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors">
+                <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </button>
+              <div className="flex gap-1.5">
+                {slides.map((_, i) => (
+                  <div key={i} className={`h-2 rounded-full transition-all ${i === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-neutral-300'}`} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-colors text-white">
+                <Icons.ArrowRight />
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

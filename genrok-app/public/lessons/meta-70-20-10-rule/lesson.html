@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 70/20/10 Creative Rule | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-70-20-10-rule',
+      title: 'The 70/20/10 Creative Rule',
+      description: 'The budget allocation framework that separates amateur advertisers from professionals.',
+      accentColor: '#3b82f6',
+      duration: '7 min',
+      nextLesson: { id: 'meta-ga4-integration', title: 'The GA4 Signal Hack', teaser: 'How to feed Meta better data than your competitors by integrating GA4 the right way.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['The 70/20/10 creative budget framework', 'Why most advertisers waste money on the wrong creative mix', 'How to build a sustainable creative testing pipeline'] },
+      { type: 'hook', headline: 'Most advertisers go all-in on "crazy ideas." That\'s why they fail.', subtext: 'Innovation sounds sexy. But the advertisers making real money? They\'re boring. They put 70% of their budget on PROVEN winners. Only 10% on wild experiments. The math doesn\'t lie - and neither does their ROAS.' },
+      { type: 'content', title: 'The 70/20/10 Framework Explained', body: 'This isn\'t theory - it\'s the creative allocation strategy used by top media buyers managing $1M+ monthly. The breakdown: 70% of your budget goes to proven winners (creatives that already work). 20% goes to iterations of those winners (slight variations). 10% goes to wild card experiments (completely new concepts). This ratio maximizes ROI while ensuring you never run out of fresh creative.' },
+      { type: 'budget-visual', title: 'The Budget Breakdown', data: { segments: [
+        { percentage: 70, label: 'Proven Winners', description: 'Creatives that already convert. Your workhorses.', color: '#10B981', examples: ['Top 3 performing ads', 'Consistent ROAS producers', 'Your "if in doubt, run this" creative'] },
+        { percentage: 20, label: 'Iterations', description: 'Variations of winners. Same concept, tweaked.', color: '#3B82F6', examples: ['New hook, same body', 'Different CTA', 'Updated visuals, same script'] },
+        { percentage: 10, label: 'Wild Cards', description: 'Completely new ideas. High risk, high reward.', color: '#F59E0B', examples: ['New format entirely', 'Untested angle', 'Competitor-inspired concept'] }
+      ]}},
+      { type: 'budget-calculator-mockup', title: 'Your 70/20/10 Budget Allocation', data: {
+        monthlyBudget: 10000,
+        allocations: [
+          { category: 'Proven Winners', percentage: 70, amount: 7000, creatives: 5, icon: 'Trophy', color: '#10B981', roas: '3.2x', status: 'running' },
+          { category: 'Iterations', percentage: 20, amount: 2000, creatives: 8, icon: 'RefreshCw', color: '#3B82F6', roas: '2.1x (testing)', status: 'testing' },
+          { category: 'Wild Cards', percentage: 10, amount: 1000, creatives: 3, icon: 'Sparkles', color: '#F59E0B', roas: '0.8x (expected)', status: 'experimental' }
+        ],
+        recommendation: 'Your ratio looks healthy. Consider adding 2 more iterations of your top performer.'
+      }},
+      { type: 'cards', title: 'Why This Ratio Works', items: [
+        { title: 'Cash Flow Protection', description: '70% on winners means you\'re always profitable. Failed experiments can\'t sink the ship when they\'re only 10% of spend.' },
+        { title: 'Sustainable Testing', description: 'The 20% iteration budget finds your NEXT winner without betting the farm. Low risk, compounding results.' },
+        { title: 'Discovery Upside', description: 'That 10% wild card? It occasionally hits gold. When it does, it moves to the 70% bucket. Pipeline stays full.' }
+      ]},
+      { type: 'example', scenario: 'Supplement Brand - $100K/Month Spend', before: { label: 'Amateur Approach (Broke)', text: '50% on "creative testing" with 15 new concepts. 30% on random variations. 20% on one old winner. Result: Wildly inconsistent. Some weeks -40% ROAS. Some weeks +30%. Average: barely break even.' }, after: { label: '70/20/10 Approach (Profitable)', text: '$70K on top 5 proven creatives (stable ROAS). $20K on variations of those 5 (finding next winner). $10K on 3 wild experiments monthly. Result: Consistent 3.2x ROAS. One wild card hit big in month 2, now in the 70% bucket.' }, insight: 'Same budget. Completely different outcome. The ratio is everything.' },
+      { type: 'process-flow', title: 'The Creative Lifecycle', steps: [
+        { number: '1', title: 'Wild Card Entry (10%)', description: 'New concept enters testing pool. Small budget, high risk. 90% fail - that\'s expected.' },
+        { number: '2', title: 'Promotion to Iteration (20%)', description: 'Promising wild cards get variations. Test hooks, CTAs, visuals. Find the winning formula.' },
+        { number: '3', title: 'Graduation to Winner (70%)', description: 'Proven performers join your core portfolio. They carry the account while you experiment.' },
+        { number: '4', title: 'Retirement', description: 'When winners fatigue, they\'re replaced by the next graduate. The pipeline never stops.' }
+      ]},
+      { type: 'content', title: 'The Fatal Mistake: All Innovation, No Foundation', body: 'Beginner advertisers get bored of their winners. "Let\'s try something new!" They shift budget to experiments. Winners get starved. Account performance tanks. Meanwhile, pros are boring. They run the same winning creative for 6+ months while it prints money. Innovation happens in the 10% sandbox - never with the main budget. Boring = profitable.' },
+      { type: 'iteration-examples', title: 'What "20% Iterations" Actually Looks Like', examples: [
+        { original: 'Winning UGC testimonial video', iteration: 'Same script, different actor', result: '+23% CTR (new demographic)' },
+        { original: 'Static product image with text overlay', iteration: 'Same image, different headline', result: '+15% conversion rate' },
+        { original: 'Problem-agitation video hook', iteration: 'Same body, new hook angle', result: 'Reached 40% new audience' }
+      ], insight: 'Iterations aren\'t boring repeats - they\'re strategic variations that compound your winners\' reach.' },
+      { type: 'quiz', question: 'Your top creative has been running for 4 months with consistent 3x ROAS. What do you do?', options: ['Replace it with something fresh - it must be fatiguing by now', 'Keep it in the 70% bucket and create 2-3 iterations for the 20% pool', 'Split the budget 50/50 between this ad and a new wild card experiment', 'Pause it and focus entirely on finding the next winner'], correctIndex: 1, feedback: { correct: 'Exactly. A winning creative stays in the 70% bucket until data proves it\'s actually fatiguing. Meanwhile, you create iterations (same concept, varied elements) in the 20% pool to find extensions of that success. Never kill a winner based on "feeling" - only data.', incorrect: 'Not quite. A 4-month winner with consistent ROAS stays in the 70% bucket - you don\'t replace what works. Instead, create iterations (new hooks, updated visuals) in the 20% pool to extend its life and find new angles. The 70/20/10 rule protects your winners while building the next generation.' }},
+      { type: 'action-checklist', title: 'Implement 70/20/10 Today', items: [
+        { task: 'Identify your top 3-5 performing creatives (these are your 70%)', done: false },
+        { task: 'List 2-3 iteration ideas for each winner (new hooks, CTAs, visuals)', done: false },
+        { task: 'Brainstorm 3 wild card concepts completely different from current ads', done: false },
+        { task: 'Reallocate budget: 70% winners, 20% iterations, 10% wild cards', done: false },
+        { task: 'Schedule monthly review: promote/retire creatives based on data', done: false }
+      ], bottomNote: 'Most accounts are running 30/30/40 or worse. Fixing your ratio alone can double profitability.' },
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      // Budget allocation icons
+      DollarSign: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      PieChart: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>,
+      BarChart: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>,
+      Target: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Sparkles: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Trophy: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      RefreshCw: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
+      Sliders: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    const BudgetVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="flex justify-center mb-8">
+          <div className="flex h-8 w-full max-w-2xl rounded-full overflow-hidden">
+            {data.data.segments.map((seg, i) => (
+              <motion.div key={i} initial={{ width: 0 }} animate={{ width: `${seg.percentage}%` }} transition={{ delay: 0.2 + i * 0.2, duration: 0.8 }} className="h-full flex items-center justify-center text-white text-sm font-bold" style={{ background: seg.color }}>
+                {seg.percentage}%
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.data.segments.map((seg, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.15 }} className="bg-white border-2 rounded-xl p-4" style={{ borderColor: seg.color }}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-4 h-4 rounded-full" style={{ background: seg.color }}></div>
+                <span className="font-bold text-neutral-900 text-sm">{seg.percentage}% - {seg.label}</span>
+              </div>
+              <p className="text-neutral-600 text-xs mb-3">{seg.description}</p>
+              <div className="space-y-1">
+                {seg.examples.map((ex, j) => (
+                  <div key={j} className="text-xs text-neutral-500 flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-neutral-300"></span>
+                    {ex}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const BudgetCalculatorMockupSlide = ({ data }) => {
+      const [budget, setBudget] = useState(data.data.monthlyBudget);
+
+      const getIconComponent = (iconName, color) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent size={20} color={color} /> : null;
+      };
+
+      const getStatusBadge = (status) => {
+        switch(status) {
+          case 'running': return { bg: '#dcfce7', color: '#16a34a', label: 'Active' };
+          case 'testing': return { bg: '#dbeafe', color: '#2563eb', label: 'Testing' };
+          case 'experimental': return { bg: '#fef3c7', color: '#d97706', label: 'Experimental' };
+          default: return { bg: '#f3f4f6', color: '#6b7280', label: 'Unknown' };
+        }
+      };
+
+      const calculateAmount = (percentage) => Math.round((budget * percentage) / 100);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: '#e7f3ff', color: '#1877f2' }}>Budget Calculator</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Meta-style Budget Calculator UI */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-xl border border-neutral-200 overflow-hidden shadow-lg" style={{ background: '#f0f2f5' }}>
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                  <Icons.PieChart size={16} color="white" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-neutral-900">Budget Allocation Calculator</div>
+                  <div className="text-xs text-neutral-500">70/20/10 Framework</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icons.Sliders size={14} color="#6b7280" />
+                <span className="text-xs text-neutral-500">Interactive</span>
+              </div>
+            </div>
+
+            {/* Budget Input */}
+            <div className="px-4 py-4 bg-white border-b border-neutral-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Icons.DollarSign size={18} color="#10b981" />
+                  <span className="text-sm font-medium text-neutral-700">Monthly Budget</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="range"
+                    min="1000"
+                    max="100000"
+                    step="1000"
+                    value={budget}
+                    onChange={(e) => setBudget(parseInt(e.target.value))}
+                    className="w-32 h-2 bg-neutral-200 rounded-lg appearance-none cursor-pointer"
+                  />
+                  <span className="text-lg font-bold text-neutral-900 w-24 text-right">${budget.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Allocation Rows */}
+            <div className="divide-y divide-neutral-100 bg-white">
+              {data.data.allocations.map((alloc, i) => {
+                const statusStyle = getStatusBadge(alloc.status);
+                const amount = calculateAmount(alloc.percentage);
+                return (
+                  <motion.div
+                    key={alloc.category}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    className="px-4 py-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      {/* Category Info */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${alloc.color}15` }}>
+                          {getIconComponent(alloc.icon, alloc.color)}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-neutral-900 text-sm">{alloc.category}</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: statusStyle.bg, color: statusStyle.color }}>
+                              {statusStyle.label}
+                            </span>
+                          </div>
+                          <div className="text-xs text-neutral-500">{alloc.creatives} creatives</div>
+                        </div>
+                      </div>
+
+                      {/* Percentage & Amount */}
+                      <div className="flex items-center gap-6">
+                        <div className="text-right">
+                          <div className="text-sm font-bold" style={{ color: alloc.color }}>{alloc.percentage}%</div>
+                          <div className="text-xs text-neutral-500">allocation</div>
+                        </div>
+                        <div className="text-right min-w-[80px]">
+                          <div className="text-lg font-bold text-neutral-900">${amount.toLocaleString()}</div>
+                          <div className="text-xs text-neutral-500">/month</div>
+                        </div>
+                        <div className="text-right min-w-[80px]">
+                          <div className="flex items-center gap-1 justify-end">
+                            <Icons.TrendingUp size={12} color={alloc.status === 'running' ? '#10b981' : '#6b7280'} />
+                            <span className={`text-sm font-semibold ${alloc.status === 'running' ? 'text-green-600' : 'text-neutral-500'}`}>{alloc.roas}</span>
+                          </div>
+                          <div className="text-xs text-neutral-500">ROAS</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="mt-3">
+                      <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${alloc.percentage}%` }}
+                          transition={{ delay: 0.4 + i * 0.1, duration: 0.6 }}
+                          className="h-full rounded-full"
+                          style={{ background: alloc.color }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Recommendation */}
+            <div className="px-4 py-3 bg-green-50 border-t border-green-200 flex items-center gap-2">
+              <Icons.Check />
+              <span className="text-xs text-green-800 font-medium">{data.data.recommendation}</span>
+            </div>
+          </motion.div>
+
+          {/* Tip */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-4 text-center">
+            <p className="text-xs text-neutral-500">Drag the slider to see how the framework scales with different budgets</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 border-2 border-red-500 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-400 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 border-2 rounded-xl p-5" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div><span className="font-semibold text-sm" style={{ color: 'var(--accent-light)' }}>{data.after.label}</span></div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 border border-neutral-700 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ProcessFlowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.12 }} className="relative">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.number}</div>
+                <div className="flex-1 bg-white border-2 border-neutral-200 rounded-xl p-4">
+                  <h3 className="font-bold text-neutral-900 mb-1 text-sm">{step.title}</h3>
+                  <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+              {i < data.steps.length - 1 && <div className="ml-5 h-4 w-0.5 bg-gradient-to-b from-neutral-300 to-transparent"></div>}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const IterationExamplesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-4 mb-6">
+          {data.examples.map((ex, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+              <div className="grid md:grid-cols-3 gap-4 items-center">
+                <div className="text-center md:text-left">
+                  <div className="text-xs text-neutral-400 uppercase mb-1">Original</div>
+                  <div className="text-sm font-medium text-neutral-700">{ex.original}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-neutral-400 uppercase mb-1">Iteration</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--accent)' }}>{ex.iteration}</div>
+                </div>
+                <div className="text-center md:text-right">
+                  <div className="text-xs text-neutral-400 uppercase mb-1">Result</div>
+                  <div className="text-sm font-bold text-green-600">{ex.result}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+          <p className="text-blue-800 text-sm">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ActionChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState({});
+      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
+                    {checkedItems[i] && <Icons.Check />}
+                  </div>
+                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 70/20/10 framework: protect profits with 70% on winners, find next winners with 20% iterations, and discover breakthroughs with 10% wild cards. Be boring. Be profitable.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'budget-visual': return <BudgetVisualSlide data={slide} />;
+          case 'budget-calculator-mockup': return <BudgetCalculatorMockupSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'process-flow': return <ProcessFlowSlide data={slide} />;
+          case 'iteration-examples': return <IterationExamplesSlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>

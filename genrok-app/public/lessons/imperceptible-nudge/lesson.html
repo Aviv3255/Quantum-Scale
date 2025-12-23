@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $200 Million Shade of Blue</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            overflow-x: hidden;
+        }
+
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="../shared/greetings.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        const celebrationGifs = [
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration1.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration2.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration3.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration5.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration6.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration7.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/celebration8.mp4'
+        ];
+
+        const empathyGifs = [
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy1.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy2.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy3.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy4.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy5.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy6.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy7.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy8.mp4',
+            'https://vhjguததபxfvlfcfwuzn.supabase.co/storage/v1/object/public/illustrations/empathy9.mp4'
+        ];
+
+        const accentColor = '#B8860B'; // Gold for subtle influence
+
+        function LessonApp() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [quizSubmitted, setQuizSubmitted] = useState(false);
+
+            const slides = [
+                {
+                    type: 'welcome',
+                    title: 'The $200M Shade of Blue',
+                    subtitle: 'Imperceptible Nudges That Print Money',
+                    accentText: 'The most powerful influences are invisible'
+                },
+                {
+                    type: 'hook',
+                    title: 'German music plays softly in the background.',
+                    subtitle: 'You don\'t even notice it.',
+                    content: 'You\'re browsing a wine store.\n\nGerman classical music is playing.\n\nYou pick up a bottle of German Riesling.\n\nYou buy it.\n\n"I just felt like German wine today," you think.\n\nBut the next week, French accordion music plays.\n\nYou buy French Bordeaux.\n\n"Strange coincidence," you think.\n\nIt\'s not a coincidence.\n\nYou were manipulated. And you have no idea.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Wine Store Study',
+                    content: 'Researchers tested background music in a wine store.\n\nGerman music playing:\n→ German wine outsold French wine 3:1\n\nFrench music playing:\n→ French wine outsold German wine 3:1\n\nAfter purchase, they asked shoppers:\n\n"Did the music influence your choice?"\n\n90% said NO.\n\nThey were absolutely certain the music had zero effect.\n\nThey were absolutely wrong.\n\nThe most powerful nudges are the ones you don\'t notice.'
+                },
+                {
+                    type: 'visual',
+                    title: 'Why Invisible Works',
+                    content: 'When you NOTICE an influence attempt, you resist it.\n\n"This salesman is pushy" → I won\'t buy\n"This ad is manipulative" → I scroll past\n\nBut when the nudge is IMPERCEPTIBLE:\n\n→ No resistance\n→ No skepticism\n→ No counter-arguing\n\nYour subconscious absorbs it.\n\nYou think the decision was yours.\n\nYou defend the choice.\n\n"I genuinely wanted German wine."\n\nInvisible influence is unstoppable.'
+                },
+                {
+                    type: 'content',
+                    title: 'Google\'s $200 Million Blue',
+                    content: 'Google tested 41 shades of blue for their ad links.\n\nThe differences were TINY.\n\nMost people couldn\'t consciously tell them apart.\n\nBut one shade performed better.\n\nHow much better?\n\n$200 MILLION per year in additional ad revenue.\n\nFrom a color change so subtle it was practically invisible.\n\nThe subconscious noticed.\n\nThe conscious mind didn\'t.\n\nThat\'s the sweet spot.'
+                },
+                {
+                    type: 'cards',
+                    title: 'Imperceptible Nudge Tactics',
+                    cards: [
+                        {
+                            title: 'Background Music/Sound',
+                            description: 'Wine store study - music primes cultural associations subconsciously'
+                        },
+                        {
+                            title: 'Color Psychology',
+                            description: 'Google\'s blue - test micro-variations. The subconscious sees what you don\'t.'
+                        },
+                        {
+                            title: 'Font Weight/Spacing',
+                            description: 'Bold CTAs feel more urgent. Generous spacing feels more premium. Both imperceptible.'
+                        },
+                        {
+                            title: 'Micro-Animations',
+                            description: 'Subtle hover effects, breathing buttons - your eye catches movement subconsciously'
+                        }
+                    ]
+                },
+                {
+                    type: 'example',
+                    title: 'The Obvious Nudge',
+                    negative: true,
+                    content: 'Giant red arrow pointing at "BUY NOW"\n\nFlashing text: "LIMITED TIME!"\n\nCountdown timer: "Only 3 left!"\n\nYour visitor\'s brain:\n\n"They\'re trying to manipulate me."\n"This feels pushy."\n"I don\'t trust this."\n\nResistance activated.\n\nSkepticism engaged.\n\nSale lost.\n\nWhen the nudge is OBVIOUS, it backfires.'
+                },
+                {
+                    type: 'example',
+                    title: 'The Invisible Nudge',
+                    content: 'Product page with premium feel:\n\n→ Generous white space (feels luxury)\n→ Slightly heavier font on price (draws eye subtly)\n→ Soft green accent on "Add to Cart" (go/safe signal)\n→ Subtle breathing animation on button (catches attention subconsciously)\n\nYour visitor\'s brain:\n\n"This feels... right."\n"I like this product."\n"I should buy it."\n\nThey think it was their decision.\n\nIt was yours.'
+                },
+                {
+                    type: 'quiz',
+                    question: 'You\'re split-testing two product pages. Which micro-change is most likely to be an effective "imperceptible nudge"?',
+                    options: [
+                        'Adding a large "SALE!" banner in red across the top',
+                        'Changing the "Add to Cart" button from #00A000 to #00B000 (slightly brighter green)',
+                        'Adding a popup that appears after 5 seconds',
+                        'Increasing product image size by 50%'
+                    ],
+                    correctAnswer: 1,
+                    explanation: 'Option B - the subtle green shift! It\'s imperceptible enough that visitors won\'t consciously notice, but the subconscious will register "slightly more vibrant = more appealing." The other options are too obvious and will trigger conscious processing (and potential resistance). Remember: Google made $200M from testing 41 shades. Test EVERYTHING, even the imperceptible.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Audit Protocol',
+                    content: 'Most stores ignore imperceptible nudges.\n\nBut YOU can weaponize them:\n\n1. Background elements in video ads\n   → Test music genres, ambient sounds\n\n2. Color micro-variations\n   → Test 5-10 shades of your CTA color\n\n3. Typography weight\n   → Test font weights: 500 vs 600 vs 700\n\n4. Spacing & density\n   → Tight = urgency. Generous = premium.\n\n5. Micro-animations\n   → Subtle pulse, soft glow, gentle hover\n\nNone of these are "big changes."\n\nAll of them can add 5-20% to conversions.'
+                },
+                {
+                    type: 'content',
+                    title: 'Why Most Marketers Miss This',
+                    content: 'You want BIG wins.\n\nYou want the headline rewrite that 10X conversions.\n\nYou want the funnel hack that prints money.\n\nSo you ignore:\n\n→ Button corner radius (12px vs 16px)\n→ Shadow depth (subtle vs pronounced)\n→ Animation duration (200ms vs 300ms)\n\n"Those are too small to matter."\n\nBut Google tested 41 blues.\n\nAnd made $200 million.\n\nImperceptible doesn\'t mean insignificant.\n\nIt means UNSTOPPABLE.'
+                },
+                {
+                    type: 'content',
+                    title: 'The Compound Effect',
+                    content: 'One imperceptible nudge: +2% conversions\n\nTen imperceptible nudges: +20% conversions\n\n→ Background music in video ads: +2%\n→ Optimized CTA button color: +3%\n→ Perfect font weight: +2%\n→ Generous spacing: +4%\n→ Subtle animations: +3%\n→ Shadow depth: +1%\n→ Border radius: +1%\n→ Line height: +2%\n→ Letter spacing: +1%\n→ Icon style: +1%\n\nNone of these feel significant.\n\nTogether? They 2X your conversions.\n\nAnd your customers never knew you influenced them.'
+                },
+                {
+                    type: 'completion',
+                    title: 'You Now Know',
+                    lessons: [
+                        'Why the wine store music study proves invisible influence works',
+                        'How Google made $200M from one imperceptible color change',
+                        'The 5 imperceptible nudge categories (sound, color, typography, spacing, animation)',
+                        'Why obvious nudges trigger resistance and invisible nudges don\'t',
+                        'How to audit your store for 10+ micro-optimizations that compound'
+                    ],
+                    nextLesson: 'You\'ve completed the Influence Psychology series. You\'re dangerous now.'
+                }
+            ];
+
+            const nextSlide = () => {
+                if (currentSlide < slides.length - 1) {
+                    setDirection(1);
+                    setCurrentSlide(currentSlide + 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const prevSlide = () => {
+                if (currentSlide > 0) {
+                    setDirection(-1);
+                    setCurrentSlide(currentSlide - 1);
+                    setSelectedAnswer(null);
+                    setQuizSubmitted(false);
+                }
+            };
+
+            const slideVariants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0
+                }),
+                center: {
+                    x: 0,
+                    opacity: 1
+                },
+                exit: (direction) => ({
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0
+                })
+            };
+
+            const renderSlide = () => {
+                const slide = slides[currentSlide];
+
+                switch(slide.type) {
+                    case 'welcome':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <div className="text-gray-400 text-sm uppercase tracking-wider mb-6">
+                                            {typeof getTimeBasedWelcome !== 'undefined' ? getTimeBasedWelcome() : 'Welcome'}
+                                        </div>
+                                        <h1 className="fraunces text-6xl md:text-8xl text-white mb-6 leading-none">
+                                            {slide.title}
+                                        </h1>
+                                        <p className="text-3xl md:text-4xl mb-8" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                                            {slide.accentText}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'hook':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8 leading-tight">
+                                            {slide.title}
+                                        </h2>
+                                        <p className="text-2xl mb-6" style={{color: accentColor}}>
+                                            {slide.subtitle}
+                                        </p>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'content':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'visual':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-4xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12 text-center"
+                                        style={{background: 'linear-gradient(135deg, rgba(184,134,11,0.1) 0%, rgba(184,134,11,0.05) 100%)'}}
+                                    >
+                                        <h2 className="fraunces text-4xl md:text-6xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'cards':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-5xl w-full">
+                                    <h2 className="fraunces text-4xl md:text-6xl text-white mb-12 text-center">
+                                        {slide.title}
+                                    </h2>
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {slide.cards.map((card, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+                                            >
+                                                <h3 className="text-2xl font-bold mb-4" style={{color: accentColor}}>
+                                                    {card.title}
+                                                </h3>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {card.description}
+                                                </p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'example':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                        className="rounded-3xl p-12"
+                                        style={{
+                                            background: slide.negative
+                                                ? 'linear-gradient(135deg, rgba(255,59,48,0.1) 0%, rgba(255,59,48,0.05) 100%)'
+                                                : 'linear-gradient(135deg, rgba(184,134,11,0.1) 0%, rgba(184,134,11,0.05) 100%)',
+                                            border: slide.negative ? '2px solid rgba(255,59,48,0.2)' : '2px solid rgba(184,134,11,0.2)'
+                                        }}
+                                    >
+                                        <div className="text-sm uppercase tracking-wider mb-4"
+                                             style={{color: slide.negative ? '#FF3B30' : accentColor}}>
+                                            {slide.negative ? '❌ TRIGGERS RESISTANCE' : '✓ INVISIBLE INFLUENCE'}
+                                        </div>
+                                        <h2 className="fraunces text-4xl md:text-5xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-xl text-gray-300 leading-relaxed whitespace-pre-line">
+                                            {slide.content}
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'quiz':
+                        const isCorrect = selectedAnswer === slide.correctAnswer;
+                        const showFeedback = quizSubmitted;
+
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                    >
+                                        <div className="text-center mb-12">
+                                            <div className="text-sm uppercase tracking-wider mb-4" style={{color: accentColor}}>
+                                                Knowledge Check
+                                            </div>
+                                            <h2 className="fraunces text-3xl md:text-4xl text-white mb-8 leading-tight">
+                                                {slide.question}
+                                            </h2>
+                                        </div>
+
+                                        <div className="space-y-4 mb-8">
+                                            {slide.options.map((option, index) => (
+                                                <motion.button
+                                                    key={index}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    onClick={() => !quizSubmitted && setSelectedAnswer(index)}
+                                                    className="w-full p-6 rounded-xl text-left text-lg transition-all"
+                                                    style={{
+                                                        background: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? 'rgba(52,199,89,0.2)' : 'rgba(255,59,48,0.2)')
+                                                                : 'rgba(184,134,11,0.2)')
+                                                            : 'rgba(255,255,255,0.05)',
+                                                        border: selectedAnswer === index
+                                                            ? (quizSubmitted
+                                                                ? (isCorrect ? '2px solid #34C759' : '2px solid #FF3B30')
+                                                                : `2px solid ${accentColor}`)
+                                                            : '2px solid rgba(255,255,255,0.1)',
+                                                        color: 'white'
+                                                    }}
+                                                >
+                                                    <span className="font-semibold mr-3" style={{color: accentColor}}>
+                                                        {String.fromCharCode(65 + index)}.
+                                                    </span>
+                                                    {option}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+
+                                        {!quizSubmitted && selectedAnswer !== null && (
+                                            <motion.button
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setQuizSubmitted(true)}
+                                                className="w-full py-4 rounded-xl text-white font-semibold text-lg"
+                                                style={{background: accentColor}}
+                                            >
+                                                Submit Answer
+                                            </motion.button>
+                                        )}
+
+                                        {showFeedback && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="mt-8 p-8 rounded-2xl"
+                                                style={{
+                                                    background: isCorrect
+                                                        ? 'rgba(52,199,89,0.1)'
+                                                        : 'rgba(184,134,11,0.1)',
+                                                    border: isCorrect
+                                                        ? '2px solid rgba(52,199,89,0.3)'
+                                                        : '2px solid rgba(184,134,11,0.3)'
+                                                }}
+                                            >
+                                                <div className="text-center mb-6">
+                                                    {isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                                        />
+                                                    )}
+                                                    {!isCorrect && (
+                                                        <video
+                                                            autoPlay
+                                                            muted
+                                                            playsInline
+                                                            className="w-32 h-32 mx-auto mb-4"
+                                                            src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
+                                                        />
+                                                    )}
+                                                    <div className="text-2xl font-bold mb-2"
+                                                         style={{color: isCorrect ? '#34C759' : accentColor}}>
+                                                        {isCorrect ? 'Masterful!' : 'Think smaller!'}
+                                                    </div>
+                                                </div>
+                                                <p className="text-gray-300 text-lg leading-relaxed">
+                                                    {slide.explanation}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'completion':
+                        return (
+                            <div className="min-h-screen flex items-center justify-center p-8">
+                                <div className="max-w-3xl w-full text-center">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <video
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            loop
+                                            className="w-40 h-40 mx-auto mb-8"
+                                            src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                                        />
+                                        <h2 className="fraunces text-5xl md:text-7xl text-white mb-8">
+                                            {slide.title}
+                                        </h2>
+                                        <div className="text-left max-w-2xl mx-auto mb-12">
+                                            {slide.lessons.map((lesson, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="flex items-start mb-4"
+                                                >
+                                                    <span className="mr-4 text-2xl" style={{color: accentColor}}>✓</span>
+                                                    <span className="text-gray-300 text-lg">{lesson}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                        <div className="text-xl mb-2" style={{color: accentColor}}>
+                                            {slide.nextLesson}
+                                        </div>
+                                        <p className="text-gray-400">
+                                            The best influence is invisible.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="relative">
+                    <AnimatePresence initial={false} custom={direction} mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{
+                                x: { type: "spring", stiffness: 300, damping: 30 },
+                                opacity: { duration: 0.2 }
+                            }}
+                        >
+                            {renderSlide()}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation */}
+                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-8 z-50">
+                        <button
+                            onClick={prevSlide}
+                            disabled={currentSlide === 0}
+                            className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/20 transition-all"
+                        >
+                            ← Previous
+                        </button>
+
+                        <div className="flex gap-2">
+                            {slides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-2 h-2 rounded-full transition-all"
+                                    style={{
+                                        background: index === currentSlide ? accentColor : 'rgba(255,255,255,0.3)',
+                                        width: index === currentSlide ? '24px' : '8px'
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={nextSlide}
+                            disabled={currentSlide === slides.length - 1}
+                            className="px-6 py-3 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all"
+                            style={{background: currentSlide === slides.length - 1 ? 'rgba(255,255,255,0.1)' : accentColor}}
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LessonApp />);
+    </script>
+</body>
+</html>

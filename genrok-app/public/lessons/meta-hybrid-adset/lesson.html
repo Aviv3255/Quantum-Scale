@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Hybrid Adset: Teaching AI Your Perfect Customer | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #93c5fd; --accent-rgb: 59, 130, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'meta-hybrid-adset',
+      title: 'The Hybrid Adset: Teaching AI Your Perfect Customer',
+      description: 'Don\'t use detailed interest targeting. Instead, provide GEM with a rich "curriculum" of warm audiences as suggestions - then let it find statistically identical cold audiences.',
+      accentColor: '#3b82f6',
+      duration: '5 min',
+      nextLesson: null
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why you should NEVER use detailed interest targeting in 2025', 'How to add warm audiences as suggestions (not constraints)', 'Why leaving demographics completely open is the most powerful approach'] },
+      { type: 'hook', headline: 'You have website visitors. Email subscribers. Video viewers. People who engaged with your content. These people are gold. But you\'re using them wrong. You\'re constraining the AI instead of teaching it.', subtext: 'The Hybrid Adset is how you craft the AI\'s "curriculum" - providing GEM with a high-fidelity dataset of what your perfect customer looks like, then letting it autonomously find new, cold audiences that are statistically identical. This is the most powerful way to prospect and scale in 2025.' },
+      { type: 'content', title: 'The Old Way vs. The New Way', body: 'The Old Way (Detailed Targeting):\nManually defining audiences: "Women, 25-45, interested in yoga and wellness."\nForcing the AI into narrow boxes.\nMissing massive opportunities outside your assumptions.\n\nThe New Way (Hybrid Adset):\nProviding warm audiences as SUGGESTIONS, not constraints.\nTeaching GEM what success looks like through real behavioral data.\nLetting the AI find statistically similar cold audiences you never would have thought of.\n\nDetailed interest targeting is dead. It was built for a world where humans needed to tell the algorithm exactly who to target. GEM doesn\'t need that anymore. It needs examples, not instructions.' },
+      { type: 'content', title: 'Crafting the AI\'s Curriculum: The Hybrid Adset', body: 'We don\'t use detailed interest targeting. Instead, we provide the AI with a rich "curriculum" based on our most valuable data assets.\n\nThe Setup: Go to the Advantage+ Audience section in your ad set.\n\nStep 1: Add all your warm Custom Audiences as SUGGESTIONS.\n\nThese are not constraints. They are training data for GEM. You\'re giving GEM a high-fidelity dataset of what your perfect customer looks like.\n\nThe AI starts by learning the thousands of nuanced signals from this group, then autonomously finds new, cold audiences that are statistically identical.' },
+      { type: 'mockup', title: 'The Hybrid Adset Setup', description: 'Add warm audiences as suggestions in Advantage+ Audience, then leave all demographics completely open.', mockupType: 'advantage-plus-setup' },
+      { type: 'list', title: 'What Warm Audiences to Include', items: [
+        { icon: 'Globe', label: 'Website Visitors (180 days)', description: 'People who have shown interest by visiting your site' },
+        { icon: 'Mail', label: 'Customer / Email Lists', description: 'Your highest-value audience - existing customers and subscribers' },
+        { icon: 'Users', label: 'Instagram & Facebook Page Engagers (365 days)', description: 'People who have engaged with your organic content' },
+        { icon: 'Video', label: 'Video Viewers (365 days)', description: 'People who have watched your video content' }
+      ]},
+      { type: 'content', title: 'Step 2: Leave Demographics Completely Open', body: 'This is the hardest part for most advertisers. Leave age, gender, and detailed targeting COMPLETELY open.\n\nNo age restrictions. No gender targeting. No interest targeting.\n\nWhy? Because your assumptions are limiting. You think your customer is "women 25-45," but GEM might discover that men 35-55 convert just as well - if you let it explore.\n\nGEM is 2x more effective at knowledge transfer than standard techniques. It can identify patterns across demographics that humans never would. Let it work.\n\nYour warm audiences teach GEM WHAT success looks like (behaviors, intent signals, engagement patterns). GEM then finds WHO else matches those patterns, regardless of traditional demographics.' },
+      { type: 'mockup', title: 'Leave Demographics Open', description: 'No age, gender, or interest constraints. Let GEM explore and discover patterns you never would have found.', mockupType: 'open-demographics' },
+      { type: 'content', title: 'Why This Is The Most Powerful Approach', body: 'You are giving GEM a high-fidelity dataset of what your perfect customer looks like. Website visitors, email subscribers, engagers, and video viewers represent real behavioral data - not guesses.\n\nThe AI starts by learning the thousands of nuanced signals from this group, then autonomously finds new, cold audiences that are statistically identical. It discovers patterns you never would have considered.\n\nThis is teaching, not commanding. You\'re not telling GEM "target women 25-45." You\'re showing GEM "here are 10,000 people who love our brand - find more like them."\n\nGEM\'s 23x increase in training FLOPS and 4x efficiency gains mean it can process these signals at a scale and speed impossible before. It sees connections across billions of users that manual targeting never could.\n\nThe result: You prospect beyond your assumptions. You scale without hitting audience saturation. You let the most advanced recommendation model in the industry do what it does best - find your perfect customers.' },
+      { type: 'quote', data: {
+        quote: 'Your new job is not to tell the AI WHO to find. It\'s to teach the AI WHAT a perfect customer looks like.',
+        context: 'The fundamental shift from Commander to Collaborator'
+      }},
+      { type: 'cards', title: 'Old Targeting vs. Hybrid Adset', items: [
+        { label: 'Old Targeting', title: 'Detailed Interests', description: 'Manually define: "Women 25-45, interested in yoga." Limits AI. Misses opportunities.' },
+        { label: 'Hybrid Adset', title: 'Warm Audience Suggestions', description: 'Add website visitors, email lists, engagers. Leave demographics open. Let GEM find patterns.' }
+      ]},
+      { type: 'content', title: 'The Signal to GEM', body: 'When you use the Hybrid Adset approach, you\'re sending a clear signal to Meta\'s central brain:\n\n"These are my best customers. Study their behavior. Learn their patterns. Find more people EXACTLY like them - wherever they are."\n\nGEM processes this curriculum through its pyramid-parallel structure, analyzing sequence features (all their behaviors over time) and non-sequence features (their demographics and context).\n\nIt identifies micro-patterns invisible to humans. Maybe your best customers all watched 3+ videos before converting. Maybe they engage more on weekends. Maybe they share common interests you never targeted.\n\nGEM learns all of this and applies it to cold prospecting at scale. You get the precision of warm audience targeting applied to completely new audiences.\n\nThis is the most powerful way to prospect and scale in 2025. You\'re not fighting the AI. You\'re collaborating with the most advanced recommendation engine ever built.' },
+      { type: 'quiz', question: 'In the Hybrid Adset approach, warm Custom Audiences should be added as:', options: ['Required targeting constraints that limit who can see your ads', 'Suggestions that teach GEM what your perfect customer looks like', 'Exclusions to prevent showing ads to existing customers', 'Budget priorities that get more spend than cold audiences'], correctIndex: 1, feedback: { correct: 'Exactly! Warm audiences are SUGGESTIONS, not constraints. You\'re providing GEM with a high-fidelity "curriculum" - teaching it what success looks like through real behavioral data (website visitors, email lists, engagers, video viewers). GEM then learns the thousands of nuanced signals from these audiences and autonomously finds new, cold audiences that are statistically identical. This is teaching, not commanding. Combined with leaving demographics completely open, this lets GEM discover your perfect customers wherever they are - beyond your manual assumptions.', incorrect: 'Not quite. Warm audiences are SUGGESTIONS - training data for GEM, not constraints. You\'re teaching the AI what a perfect customer looks like by showing it real behavioral data: website visitors, email subscribers, engagers, video viewers. GEM learns the nuanced patterns from these audiences, then finds statistically identical cold audiences. You\'re not limiting who sees ads - you\'re showing GEM examples of success and saying "find more like these." Combined with leaving demographics open, this is the most powerful prospecting method in 2025.' }},
+      { type: 'completion', sources: [{ name: 'Meta - The Meta Iceberg: Unlocking AI Mastery', url: 'https://www.facebook.com/business/' }] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Video: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>,
+      UserX: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+      </div>
+    );
+
+    const ListSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="space-y-4">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-blue-200 rounded-xl p-5 flex items-start gap-4">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                {Icons[item.icon] && React.createElement(Icons[item.icon])}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-black mb-1">{item.label}</h3>
+                <p className="text-sm text-neutral-600">{item.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const MockupSlide = ({ data }) => {
+      if (data.mockupType === 'advantage-plus-setup') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="bg-white border-2 border-neutral-200 rounded-xl p-6 max-w-2xl mx-auto w-full">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-200">
+                <h3 className="text-lg font-bold text-black">Advantage+ Audience</h3>
+                <div className="w-12 h-6 bg-blue-500 rounded-full flex items-center justify-end px-1">
+                  <div className="w-4 h-4 bg-white rounded-full" />
+                </div>
+              </div>
+              <p className="text-sm text-neutral-600 mb-4">Add Custom Audiences as suggestions:</p>
+              <div className="space-y-2 mb-4">
+                {['Website Visitors (180D)', 'Email List', 'IG/FB Engagers (365D)', 'Video Viewers (365D)'].map((audience, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex items-center justify-between">
+                    <span className="text-sm text-neutral-700">{audience}</span>
+                    <span className="text-xs text-blue-600 font-semibold">SUGGESTION</span>
+                  </motion.div>
+                ))}
+              </div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-green-50 border-2 border-green-300 rounded-lg p-3">
+                <p className="text-xs text-green-700 font-semibold">Demographics: OPEN (No restrictions)</p>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+
+      if (data.mockupType === 'open-demographics') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
+            <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {[
+                { label: 'Age', value: 'All Ages', icon: <Icons.UserX /> },
+                { label: 'Gender', value: 'All Genders', icon: <Icons.Users /> },
+                { label: 'Interests', value: 'No Targeting', icon: <Icons.X /> }
+              ].map((field, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-xl p-6 text-center">
+                  <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white mx-auto mb-3">
+                    {field.icon}
+                  </div>
+                  <p className="text-sm font-semibold text-neutral-700 mb-1">{field.label}</p>
+                  <p className="text-xs text-green-700 font-bold">{field.value}</p>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-center max-w-2xl mx-auto">
+              <p className="text-sm text-blue-700">Let GEM discover patterns across ALL demographics based on your warm audience signals.</p>
+            </motion.div>
+          </div>
+        );
+      }
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 border-neutral-200 rounded-xl p-6">
+              <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: i === 0 ? '#fee2e2' : '#dcfce7', color: i === 0 ? '#dc2626' : '#16a34a' }}>{item.label}</div>
+              <h3 className="text-xl font-bold text-black mb-2">{item.title}</h3>
+              <p className="text-sm text-neutral-600">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-8 md:p-12">
+          <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
+          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const handleSelect = (index) => {
+        if (answered) return;
+        setSelected(index);
+        setAnswered(true);
+        const isCorrect = index === data.correctIndex;
+        const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+        onShowGif(gif, '50%', 'center');
+        setTimeout(() => onHideGif(), 3000);
+        onAnswer(isCorrect);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }} onClick={() => handleSelect(i)} disabled={answered} className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answered ? (i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50') : 'border-neutral-200 bg-white hover:border-blue-300 hover:bg-blue-50'}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${answered ? (i === data.correctIndex ? 'bg-green-500' : i === selected ? 'bg-red-500' : 'bg-neutral-300') : 'bg-neutral-200'}`}>
+                    {answered && i === data.correctIndex && <Icons.Check className="text-white" />}
+                    {answered && i === selected && i !== data.correctIndex && <Icons.X className="text-white" />}
+                  </div>
+                  <span className="text-sm md:text-base text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`rounded-xl p-4 ${selected === data.correctIndex ? 'bg-green-50 border-2 border-green-200' : 'bg-blue-50 border-2 border-blue-200'}`}>
+                <p className="text-sm text-neutral-700 leading-relaxed">{selected === data.correctIndex ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <Icons.Check className="text-white" />
+          </div>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-600 text-base md:text-lg mb-6 max-w-md">You now understand how to use the Hybrid Adset to teach GEM your perfect customer through warm audience suggestions and open demographics.</motion.p>
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-50 rounded-xl p-4 max-w-md w-full mb-6">
+            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Sources</p>
+            {data.sources.map((source, i) => (
+              <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline block mb-1" style={{ color: 'var(--accent)' }}>{source.name}</a>
+            ))}
+          </motion.div>
+        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={() => window.location.href = '/dashboard'} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Back to Dashboard</motion.button>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [userName] = useState(getUserName());
+      const [gif, setGif] = useState({ src: null, opacity: 0, side: 'center' });
+
+      const showGif = useCallback((src, opacity, side) => { setGif({ src, opacity, side }); }, []);
+      const hideGif = useCallback(() => { setGif(prev => ({ ...prev, opacity: 0 })); }, []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+        }
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+        }
+      }, [currentSlide]);
+
+      const startLesson = useCallback(() => {
+        setDirection(1);
+        setCurrentSlide(1);
+      }, []);
+
+      const handleAnswer = useCallback((correct) => {
+        setTimeout(nextSlide, 3000);
+      }, [nextSlide]);
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={startLesson} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'list': return <ListSlide data={slide} />;
+          case 'mockup': return <MockupSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div key={currentSlide} custom={direction} initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => { if (Math.abs(i - currentSlide) === 1 || i === currentSlide) { setDirection(i > currentSlide ? 1 : -1); setCurrentSlide(i); } }} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gif.src && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gif.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gif.opacity }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gif.src} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

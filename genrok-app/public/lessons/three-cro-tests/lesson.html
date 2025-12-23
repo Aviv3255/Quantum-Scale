@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 3 CRO Tests That Generated $2.8M</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FFFFFF;
+            color: #111827;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6B7280;
+            margin-bottom: 48px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 80px 0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+
+        p {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #D1FAE5 0%, #A7F3D0 100%);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #10B981;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-subtext {
+            font-size: 12px;
+            color: #9CA3AF;
+        }
+
+        .test-card {
+            background: white;
+            border: 3px solid #E5E7EB;
+            border-radius: 24px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+        }
+
+        .test-number {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 48px;
+            margin-bottom: 20px;
+        }
+
+        .test-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #000000;
+        }
+
+        .test-result {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #D1FAE5;
+            color: #059669;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            border: 2px solid #E5E7EB;
+        }
+
+        .comparison-card.bad {
+            border-color: #FCA5A5;
+            background: #FEF2F2;
+        }
+
+        .comparison-card.good {
+            border-color: #86EFAC;
+            background: #F0FDF4;
+        }
+
+        .comparison-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .comparison-card.bad .comparison-icon {
+            background: #FEE2E2;
+        }
+
+        .comparison-card.good .comparison-icon {
+            background: #D1FAE5;
+        }
+
+        .comparison-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .comparison-card.bad .comparison-title {
+            color: #DC2626;
+        }
+
+        .comparison-card.good .comparison-title {
+            color: #059669;
+        }
+
+        .comparison-list {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .comparison-list li {
+            font-size: 15px;
+            color: #374151;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .comparison-insight {
+            font-size: 14px;
+            font-style: italic;
+            color: #6B7280;
+        }
+
+        .holy-shit {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .holy-shit::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .holy-shit-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .holy-shit h2 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 24px;
+        }
+
+        .holy-shit p {
+            color: rgba(255,255,255,0.9);
+            font-size: 20px;
+            line-height: 1.8;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            border-left: 4px solid #10B981;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+
+        .callout-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #065F46;
+            margin-bottom: 12px;
+        }
+
+        .callout-text {
+            font-size: 17px;
+            color: #064E3B;
+            line-height: 1.7;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 40px 0;
+        }
+
+        .badge-item {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .badge-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            border-color: #10B981;
+        }
+
+        .badge-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #10B981;
+            margin-bottom: 8px;
+        }
+
+        .badge-desc {
+            font-size: 14px;
+            color: #6B7280;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            .stats-grid,
+            .comparison-grid,
+            .badge-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.25, 0.4, 0.25, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="fade-up">
+            <span class="badge">Conversion Optimization</span>
+            <h1>The 3 CRO Tests That Generated $2.8M</h1>
+            <p class="subtitle">Three simple changes that compound into massive revenue. The Oodie implemented these exact tests and the results were staggering.</p>
+        </div>
+
+        <div class="stats-grid fade-up">
+            <div class="stat-card">
+                <div class="stat-value">$1.73M</div>
+                <div class="stat-label">Floating Add-to-Cart</div>
+                <div class="stat-subtext">CTA always visible</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$1.1M</div>
+                <div class="stat-label">Novelty Badges</div>
+                <div class="stat-subtext">NEW & BESTSELLER tags</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Simple Tests</div>
+                <div class="stat-subtext">Less than 1 day to implement</div>
+            </div>
+        </div>
+
+        <div class="section fade-up">
+            <h2>The Problem: Friction Hides in Plain Sight</h2>
+            <p>Your product page looks fine. Your checkout works. But <span class="highlight">invisible friction is bleeding conversions</span>.</p>
+            <p>Every scroll that hides the buy button. Every review section buried at the bottom. Every product that looks identical to competitors.</p>
+            <p>These micro-frictions compound. And the worst part? You never see them because they seem "normal."</p>
+        </div>
+
+        <div class="test-card fade-up">
+            <div class="test-number">1</div>
+            <div class="test-title">The Floating Add-to-Cart</div>
+            <div class="test-result">+$1.73M Revenue</div>
+            <p>When customers scroll down your product page to read descriptions, check reviews, or view more images, something terrible happens.</p>
+            <p><strong>The buy button disappears.</strong></p>
+            <p>They are interested. They are learning. They might be ready to buy. But the action is now hidden. They have to scroll back up. Find the button. Remember they wanted to buy.</p>
+            <p>That 2-second delay? That is where conversions die.</p>
+            <p>The fix is brutally simple: <span class="highlight">Make the "Add to Cart" button float. Always visible. Always one tap away.</span></p>
+        </div>
+
+        <div class="comparison-grid fade-up">
+            <div class="comparison-card bad">
+                <div class="comparison-icon">✗</div>
+                <div class="comparison-title">Static Button</div>
+                <ul class="comparison-list">
+                    <li>Customer scrolls to read reviews</li>
+                    <li>Button disappears from view</li>
+                    <li>Decision moment passes</li>
+                    <li>Must scroll back up to buy</li>
+                </ul>
+                <p class="comparison-insight">Every scroll away is a chance to lose them</p>
+            </div>
+            <div class="comparison-card good">
+                <div class="comparison-icon">✓</div>
+                <div class="comparison-title">Floating Button</div>
+                <ul class="comparison-list">
+                    <li>Customer scrolls freely</li>
+                    <li>Button follows along bottom</li>
+                    <li>Decision moment = action moment</li>
+                    <li>Zero friction between want and buy</li>
+                </ul>
+                <p class="comparison-insight">The Oodie made $1.73M extra from this single change</p>
+            </div>
+        </div>
+
+        <div class="test-card fade-up">
+            <div class="test-number">2</div>
+            <div class="test-title">Strategic Social Proof Placement</div>
+            <div class="test-result">Instant Trust Signal</div>
+            <p>Most stores put reviews at the bottom of the page. By the time customers scroll there, they have either already decided or left.</p>
+            <p>The psychology is backwards. <span class="highlight">Social proof should appear BEFORE the decision point, not after.</span></p>
+            <p>Move your star rating and review count directly under your product title. This is the first thing customers see. Before price. Before features. Before anything else.</p>
+            <p><strong>"4.8 stars from 2,847 reviews"</strong> creates instant credibility. It frames everything that follows.</p>
+        </div>
+
+        <div class="callout fade-up">
+            <div class="callout-title">💡 The Psychology</div>
+            <div class="callout-text">Social proof works best when it shapes first impressions. When reviews appear immediately under the title, customers process all other information through that lens of credibility. At the bottom? Too late to influence their decision.</div>
+        </div>
+
+        <div class="test-card fade-up">
+            <div class="test-number">3</div>
+            <div class="test-title">Novelty & Urgency Badges</div>
+            <div class="test-result">+$1.1M Revenue</div>
+            <p>Your brain is wired to notice what is different. In a sea of identical product images, badges like <strong>"NEW"</strong> or <strong>"BESTSELLER"</strong> create instant pattern interrupts.</p>
+            <p>They signal: <span class="highlight">"This one is special. Pay attention here."</span></p>
+            <p>The Oodie tested simple badges on product images. Not flashy. Not overwhelming. Just small, tasteful indicators that certain products were new arrivals or top performers.</p>
+        </div>
+
+        <div class="section fade-up">
+            <h2>Badge Psychology at Work</h2>
+        </div>
+
+        <div class="badge-grid fade-up">
+            <div class="badge-item">
+                <div class="badge-name">NEW</div>
+                <div class="badge-desc">Triggers curiosity and FOMO. "What did I miss? What is fresh?"</div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-name">BESTSELLER</div>
+                <div class="badge-desc">Social proof in two words. "If everyone wants it, maybe I should too."</div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-name">LIMITED</div>
+                <div class="badge-desc">Scarcity trigger. Creates urgency without being pushy or fake.</div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-name">BACK IN STOCK</div>
+                <div class="badge-desc">Implies previous demand. "It sold out? Must be good."</div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-name">STAFF PICK</div>
+                <div class="badge-desc">Insider recommendation. Creates trust through curation.</div>
+            </div>
+            <div class="badge-item">
+                <div class="badge-name">TRENDING</div>
+                <div class="badge-desc">Real-time social proof. "Others are buying this right now."</div>
+            </div>
+        </div>
+
+        <div class="holy-shit fade-up">
+            <div class="holy-shit-content">
+                <h2>Why These Three Work Together</h2>
+                <p>Each test removes a different type of friction.</p>
+                <p><strong>Floating CTA</strong> removes action friction (I want to buy, but the button is gone).</p>
+                <p><strong>Social proof placement</strong> removes trust friction (Is this actually good?).</p>
+                <p><strong>Badges</strong> remove attention friction (Which product should I look at?).</p>
+                <p>Combined, they create a frictionless path from landing to purchase.</p>
+            </div>
+        </div>
+
+        <div class="callout fade-up" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border-left-color: #10B981;">
+            <div class="callout-title" style="color: #065F46;">💡 The Lesson</div>
+            <div class="callout-text" style="color: #064E3B;">Big revenue gains do not require big changes. Three simple tests—implemented in less than a day—generated $2.8M for The Oodie. Start with floating CTAs. The compound effect is real.</div>
+        </div>
+    </div>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

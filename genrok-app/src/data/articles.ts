@@ -10,6 +10,7 @@ interface RawArticle {
   content: string;
   specialFeatures?: { value: string; label: string }[];
   buttons?: { text: string; url: string }[];
+  directUrl?: string; // For lessons that open directly without article page
 }
 
 // Processed article interface (with generated fields)
@@ -27,6 +28,7 @@ export interface Article {
   intro?: string;
   specialFeatures?: { value: string; label: string }[];
   buttons?: { text: string; url: string }[];
+  directUrl?: string; // For lessons that open directly without article page
 }
 
 const articles: RawArticle[] = [
@@ -68,7 +70,8 @@ We ran two independent tests to create a realistic comparison.
 With pricing nearly identical, the deciding factors were speed, scale readiness, and service efficiency. The winning agent delivered faster shipping, more stable performance, and significantly better support, making it the strongest choice for long-term scaling.`,
       buttons: [
         { text: 'Connect the winning agent to your store', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
+      ],
+      directUrl: '/learn/lessons/best-private-agent'
     },
     {
       id: 2,
@@ -136,7 +139,8 @@ AliExpress might look simple, but it destroys customer experience and eliminates
 A private agent fixes every weakness and gives your brand the foundation required for real scale.`,
       buttons: [
         { text: 'Connect Private agent', url: 'https://erp.matedropshipping.com/login?invite_id=915' }
-      ]
+      ],
+      directUrl: '/learn/lessons/stop-aliexpress'
     },
     {
       id: 3,
@@ -180,7 +184,8 @@ Removing them creates a measurable drop of 12.7%.`,
       buttons: [
         { text: 'Add product reviews', url: 'https://loox.io/app/LASERCRO' },
         { text: 'Social Proof course', url: 'https://quantum-scale.co/pages/the-social-proof?_pos=1&_psq=social&_ss=e&_v=1.0' }
-      ]
+      ],
+      directUrl: '/learn/lessons/product-reviews-test'
     },
     {
       id: 4,
@@ -232,7 +237,8 @@ The same process can be applied to the top 10%, top 5% and additional segments.
       buttons: [
         { text: 'Connect app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
         { text: 'LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
+      ],
+      directUrl: '/learn/lessons/ltv-cheat-code'
     },
     {
       id: 5,
@@ -329,7 +335,8 @@ From here, your business becomes a machine that cannot be stopped.`,
         { text: 'The Automatic System That Earn 1,000 Dollars per Customer', url: 'https://quantum-scale.co/pages/test1' },
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
         { text: 'Abandoned Checkout Finisher', url: 'https://quantum-scale.co/pages/test3' }
-      ]
+      ],
+      directUrl: '/learn/lessons/million-dollar-roadmap'
     },
     {
       id: 6,
@@ -417,7 +424,8 @@ And in three stores, AOV increased by 7% to 22%, likely due to the personal conn
 Since discovering this method, we have implemented it in every brand we manage, and the results have been consistent and clear.`,
       buttons: [
         { text: 'Add the announcement bar to my store', url: 'https://parityrocket.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/geo-announcement-bar'
     },
     {
       id: 7,
@@ -455,7 +463,8 @@ It is a layer of consumer behavior that deepens buying intention, increases posi
 It is one of the simplest features to install, yet one of the most impactful for Rev/Visit, AOV, and overall conversions.`,
       buttons: [
         { text: 'Add wishlist to your site', url: 'https://vitals.app/shopify/12548540' }
-      ]
+      ],
+      directUrl: '/learn/lessons/wishlist-effect'
     },
     {
       id: 8,
@@ -503,7 +512,8 @@ https://quantum-scale.co/pages/categories`,
       buttons: [
         { text: 'The SMS Platform we use', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
         { text: 'The Email marketing platform we use', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
-      ]
+      ],
+      directUrl: '/learn/lessons/email-vs-sms'
     },
     {
       id: 9,
@@ -541,7 +551,8 @@ But, **use both**. Never leave money on the floor.
 However, it is important to choose the correct tactic for SMS automation, one that does not expose you to legal risk.`,
       buttons: [
         { text: 'Copy our method that recovers 82% of abandoned checkouts', url: 'https://quantum-scale.co/pages/test3' }
-      ]
+      ],
+      directUrl: '/learn/lessons/abandoned-cart-recovery'
     },
     {
       id: 10,
@@ -648,7 +659,8 @@ The same tactic works identically for the Top 10% and the Top 5%.
 ![Screenshot 3](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224223_1.png?v=1763051215)`,
       buttons: [
         { text: 'Connect the app to your store', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/pareto-law-ecommerce'
     },
     {
       id: 11,
@@ -702,7 +714,8 @@ We personally like adding this section on the Contact Us form to still provide a
 ![Contact Form Example](https://cdn.shopify.com/s/files/1/0682/3202/0061/files/56.jpg?v=1763062329)`,
       buttons: [
         { text: 'Add This Contact form to your store', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }
-      ]
+      ],
+      directUrl: '/learn/lessons/whatsapp-support'
     },
     {
       id: 12,
@@ -793,7 +806,8 @@ We personally use an outstanding tool (#1 in the world) for external attribution
 We arranged a discount link for our community if you choose to install through it.`,
       buttons: [
         { text: 'Connect the Pixel to your store', url: 'https://www.triplewhale.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/meta-attribution-test'
     },
     {
       id: 13,
@@ -885,7 +899,8 @@ The result is simple. From now on you acquire only customers who are worth a lot
 You attract customers who within half a year are worth $1,000 each, and within two years $3,000.`,
       buttons: [
         { text: 'Add Post Purchase Surveys to your store', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/post-purchase-surveys'
     },
     {
       id: 14,
@@ -979,7 +994,8 @@ Do not mix fonts.
 And your conversions will rise naturally.
 
 If you want, I can prepare a font recommendation list tailored to specific niches like jewelry, men's fashion, cosmetics, sports, and more.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/fonts-psychology'
     },
     {
       id: 15,
@@ -1066,7 +1082,8 @@ A Brand Search campaign is mandatory for every store:
 • It is extremely cheap to maintain
 
 This is one of the few campaigns that consistently delivers guaranteed results in every store.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/brand-search-campaign'
     },
     {
       id: 16,
@@ -1111,7 +1128,8 @@ They reduce effort, improve the buying experience, and increase conversions in a
 Any store with variants should be using them.`,
       buttons: [
         { text: 'Add Swatches to your store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/swatch-variants'
     },
     {
       id: 17,
@@ -1178,7 +1196,8 @@ This structure produces more money, more items per order, and more purchases.`,
       buttons: [
         { text: 'Add Wishlist', url: 'https://vitals.app/shopify/12548540' },
         { text: 'Add cart upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }
-      ]
+      ],
+      directUrl: '/learn/lessons/buy-now-button'
     },
     {
       id: 18,
@@ -1240,7 +1259,8 @@ A rounded Add to Cart button converts slightly better than a square one.
 It will not transform the entire business, but it improves the buying experience and adds incremental conversion gains.
 
 In ecommerce, every percent matters, and this is an easy win.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/rounded-button'
     },
     {
       id: 19,
@@ -1274,7 +1294,8 @@ to find which theme creates a smoother buying experience and increases conversio
 Impulse is still an excellent theme, but in a direct comparison Shrine simply outperformed it across the board.`,
       buttons: [
         { text: 'Add Shrine to your store (Use code LASERCRO for 15% OFF)', url: 'https://shrinesolutions.com/?ref=0d9fe741' }
-      ]
+      ],
+      directUrl: '/learn/lessons/best-shopify-theme'
     },
     {
       id: 20,
@@ -1318,7 +1339,8 @@ It automatically prevents Honey and other extensions from revealing your coupons
 This is the first mandatory step we implement for every brand we build.`,
       buttons: [
         { text: 'Install coupon blocker', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }
-      ]
+      ],
+      directUrl: '/learn/lessons/coupon-leaking'
     },
     {
       id: 21,
@@ -1417,7 +1439,8 @@ Andromeda has changed the rules.
 Those who continue splitting audiences and trying to outsmart the algorithm will lose.
 
 Those who understand that the system is now an AI-driven matching engine, and focus on creative and offer, will generate stronger results on the same budget.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/meta-andromeda'
     },
     {
       id: 22,
@@ -1487,7 +1510,8 @@ It won because it sold a **cheap entry into a long-term profit engine**.
 The same principle can turn any ecommerce store into an LTV machine.
 
 If you want, I can show you exactly how to apply the Gillette model to your brand step by step.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/gillette-model'
     },
     {
       id: 23,
@@ -1602,7 +1626,8 @@ A journey where they:
 ✔ and build around your brand
 
 The longer the journey, the higher the LTV, the more resistant your CAC becomes, and the easier it is to reach millions without relying on luck or hacks.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/best-niches-2026'
     },
     {
       id: 24,
@@ -1678,7 +1703,8 @@ Winning products on Meta always combine two elements:
 If you want, I can prepare a list of product examples with strong USP in every niche.`,
       buttons: [
         { text: 'Product Mapping Manipulation course', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/two-meta-rules'
     },
     {
       id: 25,
@@ -1723,7 +1749,8 @@ Yes. If used consistently with no improvement, there is a full product guarantee
 • It consistently lowers CAC by filtering hesitation at the subconscious level
 
 If you want, I can now prepare versions for skincare, clothing, home decor, jewelry, fitness, or any other niche.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/pinned-comment-cac'
     },
     {
       id: 26,
@@ -1774,7 +1801,8 @@ A simple logo triggers this perception and reduces resistance.
 Adding a small MasterCard (or similar payment) logo on your product page or checkout page can **increase conversion rates**, because it reduces perceived financial friction and increases willingness to purchase.
 
 Across many stores we see a consistent lift in the "willingness to pay" metric when the icon is present.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/mastercard-psychology'
     },
     {
       id: 27,
@@ -1851,7 +1879,8 @@ This is how you sell anything to anyone at scale.`,
       buttons: [
         { text: 'The Social Proof', url: 'https://quantum-scale.co/pages/the-social-proof' },
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' }
-      ]
+      ],
+      directUrl: '/learn/lessons/formula-to-sell'
     },
     {
       id: 28,
@@ -1935,7 +1964,8 @@ These two resources will take you to the next stage:`,
       buttons: [
         { text: 'Offer Workshop: Irresistible eCom Offer', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
         { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/choose-products'
     },
     {
       id: 29,
@@ -2037,7 +2067,8 @@ It is immune to algorithms, platform changes, and ad costs because it is built o
 **Customers buy the future version of themselves, not the product that gets them there.**
 
 Halbert built his entire empire on this truth.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/gary-halbert-secret'
     },
     {
       id: 30,
@@ -2132,7 +2163,8 @@ At Quantum Scale we teach exactly this, how to take a product that seems ordinar
         { text: 'The Subconscious Trap', url: 'https://quantum-scale.co/pages/test2' },
         { text: 'Offer Workshop', url: 'https://quantum-scale.co/pages/offer-workshop-irresistible-ecom-offer' },
         { text: 'Product Mapping Manipulation', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }
-      ]
+      ],
+      directUrl: '/learn/lessons/pet-rock-story'
     },
     {
       id: 31,
@@ -2293,7 +2325,8 @@ And yes, the products on this site cost $30–$55.
       buttons: [
         { text: 'Connect the app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
         { text: 'Full LTV Course', url: 'https://quantum-scale.co/pages/test1' }
-      ]
+      ],
+      directUrl: '/learn/lessons/starbucks-ltv'
     },
     {
       id: 32,
@@ -2363,7 +2396,8 @@ Each headline is engineered to stop the scroll, open a curiosity loop, and activ
 If you're ready to stop guessing and start using formulas that are scientifically and psychologically proven, this is for you.`,
       buttons: [
         { text: '85 Meta Ad Headlines & Hooks Templates', url: 'https://quantum-scale.co/pages/85-meta-ad-headlines-hooks' }
-      ]
+      ],
+      directUrl: '/learn/lessons/killer-headlines'
     },
     {
       id: 33,
@@ -2456,7 +2490,8 @@ Combine both, and you can sell almost anything to almost anyone at almost any re
 This is the psychology used by the best marketers in the world.`,
       buttons: [
         { text: 'Apply Social Proof Protocol to your strategy', url: 'https://quantum-scale.co/pages/the-social-proof' }
-      ]
+      ],
+      directUrl: '/learn/lessons/two-dirty-tricks'
     },
     {
       id: 34,
@@ -2541,7 +2576,8 @@ It becomes a business with a power coefficient ten times higher than any competi
 And this, dear entrepreneurs, is the golden nugget of the marketing world.`,
       buttons: [
         { text: 'Connect the free data app', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
-      ]
+      ],
+      directUrl: '/learn/lessons/golden-lookalike'
     },
     {
       id: 35,
@@ -2627,7 +2663,8 @@ Below, we will provide access to a free external pixel that delivers exact attri
 Only then can ABO testing and CBO scaling operate at full power.`,
       buttons: [
         { text: 'Connect Accurate Pixel', url: 'https://www.triplewhale.com/pixel' }
-      ]
+      ],
+      directUrl: '/learn/lessons/cbo-vs-abo'
     },
     {
       id: 36,
@@ -2734,7 +2771,8 @@ Not marketing tactics.
 Human understanding.`,
       buttons: [
         { text: 'Add this Announcement bar to your store', url: 'https://parityrocket.com/' }
-      ]
+      ],
+      directUrl: '/learn/lessons/geo-personalization'
     },
     {
       id: 37,
@@ -2783,7 +2821,8 @@ Every line of copy must answer one question, clearly and instantly:
 If it does not, remove it.
 
 Because the fastest way to make someone fall in love with your brand is to make them fall in love with the version of themselves they become with your product.`,
-      buttons: []
+      buttons: [],
+      directUrl: '/learn/lessons/no-one-cares'
     },
     {
       id: 38,
@@ -2915,6 +2954,3954 @@ Brands that don't will continue fighting over prices and searching for "magic ta
       buttons: [
         { text: '500 Ad Templates in Canva', url: 'https://quantum-scale.co/pages/1-000-proven-to-work-meta-static-ad-templates' },
         { text: 'How to Build Simple & Ugly Meta Ad Creatives That Work', url: 'https://quantum-scale.co/pages/how-to-build-simple-ugly-meta-ad-creatives-that-work' }
+      ],
+      directUrl: '/learn/lessons/creative-volume-2026'
+    },
+    // ==========================================
+    // COPYWRITING MASTERCLASS LESSONS
+    // ==========================================
+    {
+      id: 101,
+      thumbnail: '/images/lessons/familiar-surprise-secret.png',
+      title: 'The Familiar Surprise Secret',
+      intro: 'Why we love the unexpected in familiar packages - the MAYA principle that drives all successful marketing.',
+      directUrl: '/learn/lessons/familiar-surprise-secret',
+      specialFeatures: [
+        { value: 'MAYA', label: 'Most Advanced Yet Acceptable' },
+        { value: '2x', label: 'Engagement boost' }
+      ],
+      content: `## The Familiar Surprise Secret
+
+This interactive lesson teaches you the psychological principle behind why humans are drawn to things that feel both familiar AND surprising at the same time.
+
+### What You'll Learn:
+- The MAYA Principle (Most Advanced Yet Acceptable)
+- How to balance novelty with familiarity
+- Why too much of either kills engagement
+- Real-world examples from Apple, Netflix, and more
+
+### Key Concept:
+People want NEW things... but wrapped in FAMILIAR packages. This is the secret to viral content, bestselling products, and irresistible offers.
+
+**Open the interactive lesson to explore this concept in depth.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/familiar-surprise-secret/lesson.html' }
+      ]
+    },
+    {
+      id: 102,
+      thumbnail: '/images/lessons/red-button-effect.png',
+      title: 'The Red Button Effect',
+      intro: 'The psychology of "don\'t press this" - how restriction creates irresistible desire.',
+      directUrl: '/learn/lessons/red-button-effect',
+      specialFeatures: [
+        { value: 'Reactance', label: 'Psychological trigger' },
+        { value: '3x', label: 'Click-through boost' }
+      ],
+      content: `## The Red Button Effect
+
+This lesson reveals the psychological reactance principle - why telling someone NOT to do something makes them want to do it MORE.
+
+### What You'll Learn:
+- Psychological Reactance explained
+- Why "Don't click this" gets more clicks
+- How to ethically use restriction in copy
+- The forbidden fruit principle in marketing
+
+### Key Concept:
+When freedom is threatened, we want it MORE. Smart copywriters use this to create irresistible curiosity.
+
+**Open the interactive lesson to experience this effect firsthand.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/red-button-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 103,
+      thumbnail: '/images/lessons/fred-method.png',
+      title: 'The F.R.E.D. Method',
+      intro: 'Master the four dimensions of your audience\'s mind: Fears, Results, Expectations, Desires.',
+      directUrl: '/learn/lessons/fred-method',
+      specialFeatures: [
+        { value: 'F.R.E.D.', label: '4-part framework' },
+        { value: '100%', label: 'Audience insight' }
+      ],
+      content: `## The F.R.E.D. Method
+
+This framework gives you complete insight into your audience's psychology by mapping four critical dimensions.
+
+### What You'll Learn:
+- **F**ears: What keeps them up at night
+- **R**esults: What outcomes they desperately want
+- **E**xpectations: What they believe about solutions
+- **D**esires: The deeper emotional wants
+
+### Key Concept:
+Know these four dimensions and you'll know exactly what buttons to push in your copy.
+
+**Open the interactive lesson to map your audience's mind.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fred-method/lesson.html' }
+      ]
+    },
+    {
+      id: 104,
+      thumbnail: '/images/lessons/emotion-decides.png',
+      title: 'Emotion Decides, Logic Justifies',
+      intro: 'The hidden driver of every purchase decision and how to leverage it.',
+      directUrl: '/learn/lessons/emotion-decides',
+      specialFeatures: [
+        { value: '95%', label: 'Decisions are emotional' },
+        { value: '2 Systems', label: 'Brain processing' }
+      ],
+      content: `## Emotion Decides, Logic Justifies
+
+This lesson reveals the truth about human decision-making: emotions drive the choice, logic provides the alibi.
+
+### What You'll Learn:
+- System 1 vs System 2 thinking
+- Why features don't sell (but benefits do)
+- The emotional transformation framework
+- How to sell to emotions while satisfying logic
+
+### Key Concept:
+Every purchase is emotional first. Your copy must trigger the feeling, then provide the logical justification.
+
+**Open the interactive lesson to master emotional selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotion-decides/lesson.html' }
+      ]
+    },
+    {
+      id: 105,
+      thumbnail: '/images/lessons/gatekeeper-method.png',
+      title: 'The Gatekeeper Method',
+      intro: 'Four moves to bypass the brain\'s "ignore this" filter and capture attention.',
+      directUrl: '/learn/lessons/gatekeeper-method',
+      specialFeatures: [
+        { value: '4 Moves', label: 'Pattern interrupt system' },
+        { value: '10x', label: 'Attention capture' }
+      ],
+      content: `## The Gatekeeper Method
+
+This lesson teaches you the four-move sequence to bypass the brain's natural filtering system and capture attention.
+
+### What You'll Learn:
+- Move 1: Pattern Interrupt
+- Move 2: Relevance Hook
+- Move 3: Curiosity Gap
+- Move 4: Promise Preview
+
+### Key Concept:
+The brain filters out 99% of incoming information. These four moves help you be part of the 1% that gets through.
+
+**Open the interactive lesson to master the gatekeeper bypass.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gatekeeper-method/lesson.html' }
+      ]
+    },
+    {
+      id: 106,
+      thumbnail: '/images/lessons/three-second-rule.png',
+      title: 'The 3-Second Rule',
+      intro: 'Capture attention before they scroll - the critical window that determines everything.',
+      directUrl: '/learn/lessons/three-second-rule',
+      specialFeatures: [
+        { value: '3 Sec', label: 'Decision window' },
+        { value: 'First', label: 'Impression matters' }
+      ],
+      content: `## The 3-Second Rule
+
+This lesson reveals what happens in the critical three-second window when someone encounters your content.
+
+### What You'll Learn:
+- The neuroscience of first impressions
+- What the brain processes in 3 seconds
+- How to front-load value
+- The scroll-stopping formula
+
+### Key Concept:
+You have 3 seconds to prove you're worth their attention. Everything else is irrelevant if you fail this test.
+
+**Open the interactive lesson to master the 3-second window.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-second-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 107,
+      thumbnail: '/images/lessons/science-of-selling.png',
+      title: 'The Science of Selling',
+      intro: 'Prospect-centric marketing that converts - from Nissan vs Toyota to the Forever Rule.',
+      directUrl: '/learn/lessons/science-of-selling',
+      specialFeatures: [
+        { value: '5 Stages', label: 'Awareness levels' },
+        { value: 'Rule of 1', label: 'Focus principle' }
+      ],
+      content: `## The Science of Selling
+
+This comprehensive lesson covers the scientific principles behind high-converting copy.
+
+### What You'll Learn:
+- The Nissan vs Toyota case study
+- Company-centric vs Prospect-centric marketing
+- The Forever Rule
+- 5 Stages of Awareness
+- Cognitive biases in marketing
+- The emotional transformation spectrum
+- The Rule of One
+
+### Key Concept:
+Great copy isn't about you or your product - it's about the transformation your prospect experiences.
+
+**Open the interactive lesson for the complete science of selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/science-of-selling/lesson.html' }
+      ]
+    },
+    {
+      id: 108,
+      thumbnail: '/images/lessons/persuasion-blueprint.png',
+      title: 'The Persuasion Blueprint',
+      intro: 'Your complete conversion architecture - from the Tossed Salad approach to the 3-Phase Campaign.',
+      directUrl: '/learn/lessons/persuasion-blueprint',
+      specialFeatures: [
+        { value: '3 Phases', label: 'Campaign structure' },
+        { value: 'Complete', label: 'Blueprint system' }
+      ],
+      content: `## The Persuasion Blueprint
+
+This lesson provides the complete architectural blueprint for persuasive marketing campaigns.
+
+### What You'll Learn:
+- The Tossed Salad Approach
+- The Rule of One (avatar, problem, solution)
+- The Avatar Journey
+- The Valley of Despair
+- 5 Levels of Awareness
+- The 3-Phase Campaign Structure
+- The Craft of refinement
+
+### Key Concept:
+Persuasion isn't random - it follows a precise architectural blueprint that guides prospects from stranger to buyer.
+
+**Open the interactive lesson for your complete persuasion blueprint.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/persuasion-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 109,
+      thumbnail: '/images/lessons/persuasion-stack.png',
+      title: 'The Persuasion Stack',
+      intro: 'Four layers of irresistible influence - from psychology to relentless refinement.',
+      directUrl: '/learn/lessons/persuasion-stack',
+      specialFeatures: [
+        { value: '4 Layers', label: 'Persuasion system' },
+        { value: '10x', label: 'Effort principle' }
+      ],
+      content: `## The Persuasion Stack
+
+This lesson reveals the four-layer system that creates irresistible persuasion.
+
+### What You'll Learn:
+- Layer 1: Human Psychology (the foundation)
+- Layer 2: Message Architecture (pain levels)
+- Layer 3: Copywriter's Toolkit (PAS, AIDA frameworks)
+- Layer 4: Relentless Refinement
+- The 10x Effort Principle
+
+### Key Concept:
+Great copywriters don't just write - they build persuasion stacks that compound their influence.
+
+**Open the interactive lesson to build your persuasion stack.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/persuasion-stack/lesson.html' }
+      ]
+    },
+    {
+      id: 110,
+      thumbnail: '/images/lessons/architecture-of-influence.png',
+      title: 'Architecture of Influence',
+      intro: 'The structural blueprint that transforms words into irresistible persuasion engines.',
+      directUrl: '/learn/lessons/architecture-of-influence',
+      specialFeatures: [
+        { value: 'Pyramid', label: 'Persuasion structure' },
+        { value: '3 Principles', label: 'Guiding stars' }
+      ],
+      content: `## Architecture of Influence
+
+This masterclass reveals the complete architectural framework for building persuasive copy.
+
+### What You'll Learn:
+- The Pyramid of Persuasion (WHY → WHO/HOW → WHAT)
+- The MAYA Principle in action
+- The Red Button Effect (psychological reactance)
+- F.R.E.D. Framework deep dive
+- Engineering the Emotional Journey
+- The Gatekeeper Method
+- Three Guiding Principles of Influence
+
+### Key Concept:
+"Great copy isn't written... it's engineered." - Master the architecture and the influence follows.
+
+**Open the interactive lesson to architect your influence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/architecture-of-influence/lesson.html' }
+      ]
+    },
+    {
+      id: 111,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The WIIFM Principle',
+      intro: 'What\'s In It For Me? The only question your reader is asking - and how to answer it.',
+      directUrl: '/learn/lessons/wiifm-principle',
+      specialFeatures: [
+        { value: '4 Lines', label: 'Critical window' },
+        { value: '100%', label: 'Reader-focused' }
+      ],
+      content: `## The WIIFM Principle
+
+This lesson reveals the fundamental truth of all persuasion: your reader only cares about one thing - what's in it for them.
+
+### What You'll Learn:
+- The WIIFM mindset shift
+- The 4-Line Rule: Win or lose in the first 4 lines
+- How to transform "we" statements into "you" statements
+- The Reader-First Framework
+
+### Key Concept:
+Every line of your copy should answer WIIFM from the reader's perspective. Miss this and nothing else matters.
+
+**Open the interactive lesson to master reader-focused copy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/wiifm-principle/lesson.html' }
+      ]
+    },
+    {
+      id: 112,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The Three Canons of Craft',
+      intro: 'Every sentence must pass three tests. Three yeses means strong copy. Three nos means rubbish.',
+      directUrl: '/learn/lessons/three-canons-of-craft',
+      specialFeatures: [
+        { value: '3 Tests', label: 'Per sentence' },
+        { value: 'Harry Dry', label: 'Method origin' }
+      ],
+      content: `## The Three Canons of Craft
+
+This lesson teaches you Harry Dry's three-part test that separates memorable copy from forgettable fluff.
+
+### What You'll Learn:
+- Canon 1: Can I Visualize It? (Concrete vs Abstract)
+- Canon 2: Can I Falsify It? (Provable vs Subjective)
+- Canon 3: Can Nobody Else Say It? (Unique vs Generic)
+- How to audit and fix your existing copy
+
+### Key Concept:
+If your competitor could swap their name into your copy, you've failed. Great copy is concrete, provable, and uniquely yours.
+
+**Open the interactive lesson to test your sentences.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-canons-of-craft/lesson.html' }
+      ]
+    },
+    {
+      id: 113,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The CPPPB Proof Loop',
+      intro: 'A five-element framework for bulletproof persuasion. Each element feeds the next.',
+      directUrl: '/learn/lessons/cpppb-proof-loop',
+      specialFeatures: [
+        { value: 'CPPPB', label: '5-step sequence' },
+        { value: 'Order', label: 'Matters critically' }
+      ],
+      content: `## The CPPPB Proof Loop
+
+This masterclass reveals the exact sequence for building compound persuasion.
+
+### What You'll Learn:
+- C: Credibility - Why trust must come first
+- P: Problem - Describe pain better than they can
+- P: Promise - The outcome, not the product
+- P: Proof - Stack until disbelief is impossible
+- B: Benefits - Translate into personal meaning
+
+### Key Concept:
+Sequence matters. Skip a step and the chain breaks. Follow the order and persuasion compounds.
+
+**Open the interactive lesson to master the sequence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cpppb-proof-loop/lesson.html' }
+      ]
+    },
+    {
+      id: 114,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'The Damaging Admission',
+      intro: 'The counterintuitive technique where revealing a weakness makes all your strengths believable.',
+      directUrl: '/learn/lessons/damaging-admission',
+      specialFeatures: [
+        { value: 'Trust', label: 'Instant credibility' },
+        { value: '2-Sided', label: 'Arguments win' }
+      ],
+      content: `## The Damaging Admission
+
+This lesson reveals why admitting a weakness is one of the most powerful persuasion tools.
+
+### What You'll Learn:
+- Why two-sided arguments beat one-sided ones
+- The psychology of credibility transfer
+- Four types of strategic admissions
+- What NOT to admit (fatal vs speed bump)
+
+### Key Concept:
+When you admit something negative, everything positive becomes believable. The admission breaks through skepticism walls.
+
+**Open the interactive lesson to master strategic honesty.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/damaging-admission/lesson.html' }
+      ]
+    },
+    {
+      id: 115,
+      thumbnail: '/images/lessons/placeholder.png',
+      title: 'Emotional Precision',
+      intro: 'Generic emotions miss. Precise emotions hit the bullseye and drive action.',
+      directUrl: '/learn/lessons/emotional-precision',
+      specialFeatures: [
+        { value: 'Precision', label: 'Emotion targeting' },
+        { value: '10x', label: 'Impact multiplier' }
+      ],
+      content: `## Emotional Precision
+
+This lesson teaches you to move beyond generic emotions to the precise feelings that drive action.
+
+### What You'll Learn:
+- Why "happy" and "sad" are useless in copy
+- The Emotion Precision Ladder
+- How to find the exact emotional state
+- Before/After transformation examples
+
+### Key Concept:
+The difference between "worried" and "lying awake at 3am wondering if you'll make payroll" is the difference between copy that's ignored and copy that converts.
+
+**Open the interactive lesson to sharpen your emotional targeting.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotional-precision/lesson.html' }
+      ]
+    },
+    {
+      id: 116,
+      thumbnail: '/images/lessons/blind-spot-effect.png',
+      title: 'The Blind Spot Effect',
+      intro: 'What your prospects can\'t see about themselves - and how to use it.',
+      directUrl: '/learn/lessons/blind-spot-effect',
+      specialFeatures: [
+        { value: 'Blind Spots', label: 'Hidden beliefs' },
+        { value: 'Mirror', label: 'Show them reality' }
+      ],
+      content: `## The Blind Spot Effect
+
+Every prospect has beliefs about themselves that aren't quite true. This lesson shows you how to gently reveal these blind spots and position your solution as the answer.
+
+### What You'll Learn:
+- The psychology of self-deception
+- How to surface hidden assumptions
+- Techniques for gentle revelation
+- Turning blind spots into buying triggers
+
+**Open the interactive lesson to master the blind spot technique.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/blind-spot-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 117,
+      thumbnail: '/images/lessons/customer-voice-mining.png',
+      title: 'Voice of Customer Mining',
+      intro: 'Extract the exact words your customers use - then sell with their own language.',
+      directUrl: '/learn/lessons/customer-voice-mining',
+      specialFeatures: [
+        { value: 'VOC', label: 'Voice of Customer' },
+        { value: 'Mining', label: 'Extract gold' }
+      ],
+      content: `## Voice of Customer Mining
+
+The best copy is written in your customer's own words. This lesson teaches you how to systematically mine reviews, surveys, and conversations for the language that converts.
+
+### What You'll Learn:
+- Where to find customer language
+- How to extract persuasive phrases
+- Building a VOC swipe file
+- Turning customer words into sales copy
+
+**Open the interactive lesson to mine customer gold.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/customer-voice-mining/lesson.html' }
+      ]
+    },
+    {
+      id: 118,
+      thumbnail: '/images/lessons/double-bind-of-fear.png',
+      title: 'The Double Bind of Fear',
+      intro: 'Leverage both action fears and inaction fears for maximum motivation.',
+      directUrl: '/learn/lessons/double-bind-of-fear',
+      specialFeatures: [
+        { value: 'Double Bind', label: 'Two fears' },
+        { value: 'Motivation', label: 'Push & pull' }
+      ],
+      content: `## The Double Bind of Fear
+
+Your prospect fears acting AND fears not acting. This lesson shows you how to ethically leverage both fears to create irresistible motivation.
+
+### What You'll Learn:
+- Fear of action vs fear of inaction
+- How to identify both fears
+- Ethical fear-based persuasion
+- Balancing push and pull
+
+**Open the interactive lesson to master the double bind.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/double-bind-of-fear/lesson.html' }
+      ]
+    },
+    {
+      id: 119,
+      thumbnail: '/images/lessons/emotion-spectrum.png',
+      title: 'The Emotion Spectrum',
+      intro: 'Map the full range of persuasive emotions from fear to hope.',
+      directUrl: '/learn/lessons/emotion-spectrum',
+      specialFeatures: [
+        { value: 'Spectrum', label: 'Full range' },
+        { value: 'Emotions', label: 'All 8 cores' }
+      ],
+      content: `## The Emotion Spectrum
+
+Different emotions drive different actions. This lesson maps the complete spectrum of persuasive emotions and when to use each one.
+
+### What You'll Learn:
+- The 8 core persuasive emotions
+- When to use each emotion
+- Emotional sequencing
+- Matching emotion to offer
+
+**Open the interactive lesson to explore the emotion spectrum.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/emotion-spectrum/lesson.html' }
+      ]
+    },
+    {
+      id: 120,
+      thumbnail: '/images/lessons/forty-forty-twenty-rule.png',
+      title: 'The 40/40/20 Rule',
+      intro: 'The marketing success formula that never fails: 40% list, 40% offer, 20% creative.',
+      directUrl: '/learn/lessons/forty-forty-twenty-rule',
+      specialFeatures: [
+        { value: '40/40/20', label: 'Success formula' },
+        { value: 'Priority', label: 'Where to focus' }
+      ],
+      content: `## The 40/40/20 Rule
+
+Marketing success is 40% who you reach, 40% what you offer, and 20% how you say it. This lesson shows you how to prioritize for maximum results.
+
+### What You'll Learn:
+- Why list quality matters most
+- Offer construction principles
+- Where creative actually matters
+- Allocating your marketing efforts
+
+**Open the interactive lesson to apply the 40/40/20 rule.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forty-forty-twenty-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 121,
+      thumbnail: '/images/lessons/four-primal-needs.png',
+      title: 'The Four Primal Needs',
+      intro: 'The deep drivers behind every purchase: safety, belonging, esteem, self-actualization.',
+      directUrl: '/learn/lessons/four-primal-needs',
+      specialFeatures: [
+        { value: '4 Needs', label: 'Primal drivers' },
+        { value: 'Psychology', label: 'Deep motivation' }
+      ],
+      content: `## The Four Primal Needs
+
+Every purchase satisfies one of four primal needs. This lesson teaches you to identify and speak to these deep motivations.
+
+### What You'll Learn:
+- The four primal needs hierarchy
+- How to identify dominant needs
+- Crafting need-specific appeals
+- Layering multiple needs
+
+**Open the interactive lesson to tap into primal needs.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/four-primal-needs/lesson.html' }
+      ]
+    },
+    {
+      id: 122,
+      thumbnail: '/images/lessons/ocpb-formula.png',
+      title: 'The OCPB Formula',
+      intro: 'Offer, Copy, Proof, Bonus - the complete conversion stack.',
+      directUrl: '/learn/lessons/ocpb-formula',
+      specialFeatures: [
+        { value: 'OCPB', label: '4-part formula' },
+        { value: 'Stack', label: 'Conversion layers' }
+      ],
+      content: `## The OCPB Formula
+
+A complete sales message needs four elements: Offer, Copy, Proof, and Bonus. This lesson shows you how to stack them for maximum conversion.
+
+### What You'll Learn:
+- Building irresistible offers
+- Copy that converts
+- Proof that overcomes skepticism
+- Bonuses that tip the scale
+
+**Open the interactive lesson to master the OCPB formula.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/ocpb-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 123,
+      thumbnail: '/images/lessons/sales-message-anatomy.png',
+      title: 'Sales Message Anatomy',
+      intro: 'Dissect what makes sales copy convert - every element explained.',
+      directUrl: '/learn/lessons/sales-message-anatomy',
+      specialFeatures: [
+        { value: 'Anatomy', label: 'Every element' },
+        { value: 'Structure', label: 'Complete map' }
+      ],
+      content: `## Sales Message Anatomy
+
+Great sales copy has specific structural elements. This lesson dissects each one so you can build high-converting messages from scratch.
+
+### What You'll Learn:
+- The anatomy of a sales page
+- Essential vs optional elements
+- Element sequencing
+- Common structural mistakes
+
+**Open the interactive lesson to study sales message anatomy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/sales-message-anatomy/lesson.html' }
+      ]
+    },
+    {
+      id: 124,
+      thumbnail: '/images/lessons/self-persuasion-architecture.png',
+      title: 'Self-Persuasion Architecture',
+      intro: 'Let prospects convince themselves to buy - the most powerful form of persuasion.',
+      directUrl: '/learn/lessons/self-persuasion-architecture',
+      specialFeatures: [
+        { value: 'Self', label: 'They convince' },
+        { value: 'Architecture', label: 'Build the path' }
+      ],
+      content: `## Self-Persuasion Architecture
+
+The most powerful persuasion is when prospects convince themselves. This lesson shows you how to build copy that guides them to their own conclusions.
+
+### What You'll Learn:
+- Why self-persuasion works best
+- Leading with questions
+- Creating "aha" moments
+- Guiding without pushing
+
+**Open the interactive lesson to architect self-persuasion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/self-persuasion-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 125,
+      thumbnail: '/images/lessons/structural-tension.png',
+      title: 'Structural Tension',
+      intro: 'Create irresistible forward momentum that pulls readers through your copy.',
+      directUrl: '/learn/lessons/structural-tension',
+      specialFeatures: [
+        { value: 'Tension', label: 'Forward pull' },
+        { value: 'Structure', label: 'Built-in momentum' }
+      ],
+      content: `## Structural Tension
+
+Great copy has built-in tension that pulls readers forward. This lesson teaches you to create structural tension that makes stopping impossible.
+
+### What You'll Learn:
+- What creates reading momentum
+- Open loops and curiosity gaps
+- Tension-release rhythms
+- Maintaining tension to the CTA
+
+**Open the interactive lesson to master structural tension.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/structural-tension/lesson.html' }
+      ]
+    },
+    {
+      id: 126,
+      thumbnail: '/images/lessons/three-growth-levers.png',
+      title: 'The Three Growth Levers',
+      intro: 'More customers, higher frequency, bigger transactions - pull all three.',
+      directUrl: '/learn/lessons/three-growth-levers',
+      specialFeatures: [
+        { value: '3 Levers', label: 'Growth formula' },
+        { value: 'Multiply', label: 'Compound gains' }
+      ],
+      content: `## The Three Growth Levers
+
+Business growth comes from three levers: more customers, more frequent purchases, and larger transactions. This lesson shows you how to pull all three.
+
+### What You'll Learn:
+- The three growth levers explained
+- Strategies for each lever
+- Compound growth effects
+- Prioritizing your efforts
+
+**Open the interactive lesson to master the growth levers.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-growth-levers/lesson.html' }
+      ]
+    },
+    {
+      id: 127,
+      thumbnail: '/images/lessons/three-levels-of-change.png',
+      title: 'The Three Levels of Change',
+      intro: 'Transform behavior, beliefs, and identity for lasting customer conversion.',
+      directUrl: '/learn/lessons/three-levels-of-change',
+      specialFeatures: [
+        { value: '3 Levels', label: 'Deep change' },
+        { value: 'Transform', label: 'Behavior to identity' }
+      ],
+      content: `## The Three Levels of Change
+
+Shallow change is behavior. Deep change is identity. This lesson shows you how to create messaging that transforms at all three levels.
+
+### What You'll Learn:
+- Behavior, beliefs, and identity
+- Why identity change sticks
+- Writing for each level
+- The transformation hierarchy
+
+**Open the interactive lesson to create deep change.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-levels-of-change/lesson.html' }
+      ]
+    },
+    {
+      id: 128,
+      thumbnail: '/images/lessons/trust-architecture.png',
+      title: 'The Trust Architecture',
+      intro: 'Build unshakeable credibility systematically, layer by layer.',
+      directUrl: '/learn/lessons/trust-architecture',
+      specialFeatures: [
+        { value: 'Trust', label: 'Credibility system' },
+        { value: 'Architecture', label: 'Layer by layer' }
+      ],
+      content: `## The Trust Architecture
+
+Trust isn't built with a single element - it's an architecture. This lesson shows you how to systematically construct unshakeable credibility.
+
+### What You'll Learn:
+- The trust architecture framework
+- Credibility building blocks
+- Trust sequence optimization
+- Common trust-killers to avoid
+
+**Open the interactive lesson to build your trust architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/trust-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 129,
+      thumbnail: '/images/lessons/unique-mechanism.png',
+      title: 'The Unique Mechanism',
+      intro: 'The proprietary reason your solution works - differentiation through explanation.',
+      directUrl: '/learn/lessons/unique-mechanism',
+      specialFeatures: [
+        { value: 'Mechanism', label: 'Why it works' },
+        { value: 'Unique', label: 'Only you' }
+      ],
+      content: `## The Unique Mechanism
+
+Your unique mechanism is the proprietary reason your solution works. This lesson shows you how to identify and communicate yours.
+
+### What You'll Learn:
+- What makes a unique mechanism
+- Finding your mechanism
+- Naming your mechanism
+- Communicating mechanism benefits
+
+**Open the interactive lesson to discover your unique mechanism.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/unique-mechanism/lesson.html' }
+      ]
+    },
+    {
+      id: 130,
+      thumbnail: '/images/lessons/master-key-framework.png',
+      title: 'The Master Key Framework',
+      intro: 'First-principles copywriting: your reader\'s mind is the lock, your copy is the key.',
+      directUrl: '/learn/lessons/master-key-framework',
+      specialFeatures: [
+        { value: 'Framework', label: 'First principles' },
+        { value: 'NESB', label: 'Mind blueprint' }
+      ],
+      content: `## The Master Key Framework
+
+A synthesis of insights from the world's leading copywriters. Learn the first-principles approach to copy that converts.
+
+### What You'll Learn:
+- The Action Equation: when people decide to act
+- The NESB Blueprint: New, Easy, Safe, Big
+- The Persuasion Palette: 6 emotional triggers
+- Text vs Subtext: what you write vs what they feel
+
+### Key Concept:
+It's impossible to craft the perfect key without first understanding the lock you're crafting it for.
+
+**Open the interactive lesson to master the framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/master-key-framework/lesson.html' }
+      ]
+    },
+    {
+      id: 131,
+      thumbnail: '/images/lessons/rule-of-one.png',
+      title: 'The Rule of One',
+      intro: 'One reader. One big idea. One offer. One action. The foundation of all persuasive copy.',
+      directUrl: '/learn/lessons/rule-of-one',
+      specialFeatures: [
+        { value: 'Focus', label: 'Laser clarity' },
+        { value: '4 Ones', label: 'Core framework' }
+      ],
+      content: `## The Rule of One
+
+The single most important principle in copywriting. When you try to speak to everyone, you speak to no one.
+
+### The Four Foundations:
+- **ONE Reader**: Write to a single, specific person
+- **ONE Big Idea**: A dominant concept that carries your message
+- **ONE Offer**: Present a single clear solution
+- **ONE Action**: Drive toward one specific next step
+
+### Key Insight:
+A confused mind always says no. The paradox of persuasion: narrow your focus to expand your impact.
+
+**Open the interactive lesson to master the Rule of One.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/rule-of-one/lesson.html' }
+      ]
+    },
+    {
+      id: 132,
+      thumbnail: '/images/lessons/architecture-of-belief.png',
+      title: 'The Architecture of Belief',
+      intro: 'All great copywriting is "change work". Engineer shifts in attention, thinking, and belief.',
+      directUrl: '/learn/lessons/architecture-of-belief',
+      specialFeatures: [
+        { value: '3 Levels', label: 'Mastery model' },
+        { value: 'Transform', label: 'Identity shift' }
+      ],
+      content: `## The Architecture of Belief
+
+A synthesis of elite-level persuasion for the modern copywriter. Move beyond words into engineering belief.
+
+### The Three Levels:
+- **Level 1 - The Hook**: Change in Attention (Curiosity & Benefit)
+- **Level 2 - The Strategy**: Change in Thinking (Differentiation & Reframing)
+- **Level 3 - The Psychology**: Change in Belief (Self-Persuasion & Choice)
+
+### Key Insight:
+You can't convince someone of something. All you can do is get them to convince themselves. You are an architect of belief.
+
+**Open the interactive lesson to master the architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/architecture-of-belief/lesson.html' }
+      ]
+    },
+    {
+      id: 133,
+      thumbnail: '/images/lessons/copywriters-codex.png',
+      title: 'The Copywriter\'s Codex',
+      intro: 'A synthesized playbook from the masters. Five parts. One path to mastery.',
+      directUrl: '/learn/lessons/copywriters-codex',
+      specialFeatures: [
+        { value: '5 Parts', label: 'Complete system' },
+        { value: 'Masters', label: 'Elite techniques' }
+      ],
+      content: `## The Copywriter's Codex
+
+Distilling the core frameworks and psychological secrets of the world's most effective copywriters into a single, actionable guide.
+
+### The Five Parts:
+1. **The Commandment**: It's not about you. WIIFM + Structural Tension
+2. **The Canons**: Visual, Falsifiable, Unique - three tests for every sentence
+3. **The Blueprint**: Build your argument from customer objections
+4. **The Techniques**: Damaging Admission, Hidden Benefit, Stealth Close
+5. **The Career**: Practice is your portfolio - 30-day builder
+
+### Key Quote:
+"Write copy that can't be copied." - Harry Dry
+
+**Open the interactive lesson to master the complete Codex.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/copywriters-codex/lesson.html' }
+      ]
+    },
+    {
+      id: 134,
+      thumbnail: '/images/lessons/autopilot-sale.png',
+      title: 'The Autopilot Sale',
+      intro: 'How mental shortcuts make customers buy without thinking. The psychology behind instant decisions.',
+      directUrl: '/learn/lessons/autopilot-sale',
+      specialFeatures: [
+        { value: '95%', label: 'Autopilot decisions' },
+        { value: '5x', label: 'Price perception' }
+      ],
+      content: `## The Autopilot Sale
+
+Your customer's brain makes 95% of decisions on autopilot. Mental shortcuts - expensive equals good, "because" triggers compliance, turquoise jewelry doubled in price and sold out.
+
+### Key Concepts:
+1. **The Expensive = Good Shortcut**: Higher price signals higher quality automatically
+2. **The "Because" Trigger**: Ellen Langer's Xerox study - giving ANY reason increases compliance by 93%
+3. **Click-Whirr Responses**: The brain's automatic programs that bypass conscious thought
+
+### The Science:
+Robert Cialdini spent decades studying these shortcuts. They're not bugs - they're features. Your ancestors needed fast decisions to survive. Your customers still use the same mental wiring.
+
+**Open the interactive lesson to master autopilot selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/autopilot-sale/lesson.html' }
+      ]
+    },
+    {
+      id: 135,
+      thumbnail: '/images/lessons/borrowed-trust.png',
+      title: 'Borrowed Trust',
+      intro: 'Why we trust experts and like people similar to us. The Authority and Liking principles.',
+      directUrl: '/learn/lessons/borrowed-trust',
+      specialFeatures: [
+        { value: '400%', label: 'Authority boost' },
+        { value: '77%', label: 'Similarity effect' }
+      ],
+      content: `## Borrowed Trust
+
+People trust authorities automatically and buy from people they like. A lab coat increases compliance by 400%. Similarity creates instant connection.
+
+### Key Concepts:
+1. **Authority Principle**: Titles, credentials, uniforms, expert endorsements bypass skepticism
+2. **Liking Principle**: Physical attractiveness, similarity, compliments, contact, cooperation
+3. **The Joe Girard Effect**: World's greatest salesman sent 13,000 cards saying "I like you"
+
+### The Science:
+Stanley Milgram's obedience studies proved we defer to authority even against our better judgment. Use this responsibly - borrow trust from legitimate experts.
+
+**Open the interactive lesson to master borrowed trust.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/borrowed-trust/lesson.html' }
+      ]
+    },
+    {
+      id: 136,
+      thumbnail: '/images/lessons/herd-instinct.png',
+      title: 'The Herd Instinct',
+      intro: 'How social proof and similar others create irresistible buying pressure.',
+      directUrl: '/learn/lessons/herd-instinct',
+      specialFeatures: [
+        { value: '70%', label: 'Check reviews' },
+        { value: '4x', label: 'Similar buyer effect' }
+      ],
+      content: `## The Herd Instinct
+
+We look to others to determine correct behavior. When uncertain, we follow the crowd - especially crowds that look like us.
+
+### Key Concepts:
+1. **Social Proof**: "10,000 customers can't be wrong" - uncertainty + similarity = maximum influence
+2. **Similar Others Effect**: A review from someone like me is 4x more persuasive than a celebrity
+3. **The Bartender's Tip Jar**: Pre-seeding creates social proof that triggers more action
+
+### The Science:
+Solomon Asch's conformity studies proved we'll deny our own eyes to match group consensus. Your customers are wired to follow the herd.
+
+**Open the interactive lesson to master the herd instinct.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/herd-instinct/lesson.html' }
+      ]
+    },
+    {
+      id: 137,
+      thumbnail: '/images/lessons/gift-that-sells.png',
+      title: 'The Gift That Sells',
+      intro: 'How unexpected value creates powerful reciprocity loops that drive sales.',
+      directUrl: '/learn/lessons/gift-that-sells',
+      specialFeatures: [
+        { value: '500%', label: 'Donation increase' },
+        { value: '40%', label: 'LTV boost' }
+      ],
+      content: `## The Gift That Sells
+
+When someone gives us something, we feel an overpowering obligation to reciprocate. The Hare Krishna flower. The Amway BUG. The WWI bread that saved a life.
+
+### Key Concepts:
+1. **Reciprocation Rule**: Give first, give unexpectedly, give disproportionately
+2. **Three Gift Types**: Information gifts, tool gifts, experience gifts
+3. **Surprise & Delight**: Post-purchase unexpected value creates evangelists
+
+### The Science:
+Societies that didn't reciprocate died out. We are the descendants of reciprocators. This instinct runs deeper than conscious thought.
+
+**Open the interactive lesson to master the gift that sells.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gift-that-sells/lesson.html' }
+      ]
+    },
+    {
+      id: 138,
+      thumbnail: '/images/lessons/micro-yes-mastery.png',
+      title: 'Micro-Yes Mastery',
+      intro: 'How tiny commitments and strategic scarcity create inevitable conversions.',
+      directUrl: '/learn/lessons/micro-yes-mastery',
+      specialFeatures: [
+        { value: '4x', label: 'Conversion lift' },
+        { value: '340%', label: 'Retention boost' }
+      ],
+      content: `## Micro-Yes Mastery
+
+Chinese interrogators discovered you can change someone's entire belief system with a single small yes. The POW camps proved it. Your checkout page can use it ethically.
+
+### Key Concepts:
+1. **Commitment Principle**: Once someone takes a stand, they behave consistently with it
+2. **Foot-in-Door Technique**: Small commitments lead to large purchases (4x conversion)
+3. **Ethical Scarcity**: Real stock counts, limited editions, genuine deadlines
+
+### The Science:
+Written commitments are stronger than verbal. Public stronger than private. Effortful stronger than easy. Stack commitment with genuine scarcity for maximum power.
+
+**Open the interactive lesson to master micro-yes selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/micro-yes-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 139,
+      thumbnail: '/images/lessons/authority-over-hope.png',
+      title: 'Authority Over Hope',
+      intro: 'Stop hoping they buy. Guide them with certainty.',
+      directUrl: '/learn/lessons/authority-over-hope',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## Authority Over Hope
+
+Stop hoping customers will buy. Lead them with unshakeable conviction. The difference between amateur sellers and masters is the transfer of certainty.
+
+**Open the interactive lesson to master authority selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/authority-over-hope/lesson.html' }
+      ]
+    },
+    {
+      id: 140,
+      thumbnail: '/images/lessons/certainty-transfer.png',
+      title: 'Certainty Transfer',
+      intro: 'Why customers don\'t need more information—they need to borrow your conviction.',
+      directUrl: '/learn/lessons/certainty-transfer',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## Certainty Transfer
+
+Customers don't need more information. They need to borrow your conviction. Master the art of transferring certainty from your mind to theirs.
+
+**Open the interactive lesson to master certainty transfer.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/certainty-transfer/lesson.html' }
+      ]
+    },
+    {
+      id: 141,
+      thumbnail: '/images/lessons/conviction-architecture.png',
+      title: 'Conviction Architecture',
+      intro: 'The 3-layer pyramid that separates amateur marketers from masters of influence.',
+      directUrl: '/learn/lessons/conviction-architecture',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: '3 Layers', label: 'Framework' }
+      ],
+      content: `## Conviction Architecture
+
+The 3-layer pyramid that separates amateur marketers from masters of influence. Build messaging that converts consistently.
+
+**Open the interactive lesson to master conviction architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/conviction-architecture/lesson.html' }
+      ]
+    },
+    {
+      id: 142,
+      thumbnail: '/images/lessons/digital-pause-power.png',
+      title: 'The Digital Pause',
+      intro: 'Why confident silence at checkout converts better than desperate discounts.',
+      directUrl: '/learn/lessons/digital-pause-power',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Conversion', label: 'Category' }
+      ],
+      content: `## The Digital Pause
+
+Why confident silence at checkout converts better than desperate discounts. Master closing with conviction instead of desperation.
+
+**Open the interactive lesson to master the digital pause.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/digital-pause-power/lesson.html' }
+      ]
+    },
+    {
+      id: 143,
+      thumbnail: '/images/lessons/fomo-engineering.png',
+      title: 'FOMO Engineering',
+      intro: 'Turn passive interest into urgent action with ethical urgency tactics.',
+      directUrl: '/learn/lessons/fomo-engineering',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Urgency', label: 'Focus' }
+      ],
+      content: `## FOMO Engineering
+
+Turn passive interest into urgent action. Learn the psychology of urgency and how to ethically engineer fear of missing out.
+
+**Open the interactive lesson to master FOMO engineering.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fomo-engineering/lesson.html' }
+      ]
+    },
+    {
+      id: 144,
+      thumbnail: '/images/lessons/framing-effect-mastery.png',
+      title: 'The Framing Effect',
+      intro: 'Same facts. Wildly different decisions. Master the art of framing.',
+      directUrl: '/learn/lessons/framing-effect-mastery',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Category' }
+      ],
+      content: `## The Framing Effect
+
+Same facts. Wildly different decisions. How you frame information determines how customers respond to it.
+
+**Open the interactive lesson to master the framing effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/framing-effect-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 145,
+      thumbnail: '/images/lessons/identity-marketing.png',
+      title: 'Identity Marketing',
+      intro: 'Sell to who they WANT to be, not who they are.',
+      directUrl: '/learn/lessons/identity-marketing',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: 'Identity', label: 'Focus' }
+      ],
+      content: `## Identity Marketing
+
+Sell to who they WANT to be, not who they are. People buy products that reinforce their desired identity.
+
+**Open the interactive lesson to master identity marketing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/identity-marketing/lesson.html' }
+      ]
+    },
+    {
+      id: 146,
+      thumbnail: '/images/lessons/marketers-delusion.png',
+      title: 'The Marketer\'s Delusion',
+      intro: 'The fatal error killing your conversions. Why obsessing over your product blinds you.',
+      directUrl: '/learn/lessons/marketers-delusion',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Mindset', label: 'Focus' }
+      ],
+      content: `## The Marketer's Delusion
+
+The fatal error killing your conversions. Why obsessing over your product blinds you to what actually sells.
+
+**Open the interactive lesson to escape the marketer's delusion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/marketers-delusion/lesson.html' }
+      ]
+    },
+    {
+      id: 147,
+      thumbnail: '/images/lessons/pain-escalation-ladder.png',
+      title: 'The Pain Escalation Ladder',
+      intro: 'How to ethically escalate customer pain from "meh" to "I NEED this NOW".',
+      directUrl: '/learn/lessons/pain-escalation-ladder',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: '3 Stages', label: 'Framework' }
+      ],
+      content: `## The Pain Escalation Ladder
+
+How to ethically escalate customer pain from "meh" to "I NEED this NOW" in three psychological stages.
+
+**Open the interactive lesson to master pain escalation.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pain-escalation-ladder/lesson.html' }
+      ]
+    },
+    {
+      id: 148,
+      thumbnail: '/images/lessons/telescope-flip.png',
+      title: 'The Telescope Flip',
+      intro: 'Why 97% of marketers are holding the telescope backwards.',
+      directUrl: '/learn/lessons/telescope-flip',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Perspective', label: 'Focus' }
+      ],
+      content: `## The Telescope Flip
+
+Why 97% of marketers are holding the telescope backwards. Flip your perspective and see what customers actually see.
+
+**Open the interactive lesson to master the telescope flip.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/telescope-flip/lesson.html' }
+      ]
+    },
+    {
+      id: 149,
+      thumbnail: '/images/lessons/trust-blueprint.png',
+      title: 'The Trust Blueprint',
+      intro: 'Build instant credibility that converts strangers into buyers.',
+      directUrl: '/learn/lessons/trust-blueprint',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Trust', label: 'Focus' }
+      ],
+      content: `## The Trust Blueprint
+
+Build instant credibility that converts strangers into buyers. The systematic approach to establishing trust.
+
+**Open the interactive lesson to master the trust blueprint.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/trust-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 150,
+      thumbnail: '/images/lessons/value-perception-lever.png',
+      title: 'The Value Perception Lever',
+      intro: 'Engineer perceived worth that makes price irrelevant.',
+      directUrl: '/learn/lessons/value-perception-lever',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Value', label: 'Focus' }
+      ],
+      content: `## The Value Perception Lever
+
+Engineer perceived worth that makes price irrelevant. How to increase value perception without changing the product.
+
+**Open the interactive lesson to master value perception.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/value-perception-lever/lesson.html' }
+      ]
+    },
+    {
+      id: 151,
+      thumbnail: '/images/lessons/three-brains-wallet.png',
+      title: 'The 3 Brains Controlling Your Customer\'s Wallet',
+      intro: 'Your customer has THREE brains making buying decisions. Learn which one actually controls the wallet.',
+      directUrl: '/learn/lessons/three-brains-wallet',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The 3 Brains Controlling Your Customer's Wallet
+
+95% of purchasing decisions are made subconsciously. The Neocortex (Thinker), Limbic System (Feeler), and Reptilian Brain (Decider) all compete for control. Learn the 6 Primal Levers that bypass logic and trigger instant action.
+
+**Open the interactive lesson to master neuro-marketing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-brains-wallet/lesson.html' }
+      ]
+    },
+    {
+      id: 152,
+      thumbnail: '/images/lessons/pre-suasion-hack.png',
+      title: 'The Pre-Suasion Hack',
+      intro: 'How to prime your customer\'s mind BEFORE they even see your offer.',
+      directUrl: '/learn/lessons/pre-suasion-hack',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Pre-Suasion Hack
+
+A wine store played French music. French wine sales jumped 5x. That's Pre-Suasion: winning the sale before the pitch even starts. Learn how to frame your customer's mindset BEFORE they encounter your offer.
+
+**Open the interactive lesson to master pre-suasion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pre-suasion-hack/lesson.html' }
+      ]
+    },
+    {
+      id: 153,
+      thumbnail: '/images/lessons/pattern-interrupts.png',
+      title: 'Pattern Interrupts',
+      intro: 'Why your customer\'s brain ignores 90% of what you show them - and how to hijack their attention.',
+      directUrl: '/learn/lessons/pattern-interrupts',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Attention', label: 'Focus' }
+      ],
+      content: `## Pattern Interrupts
+
+Your customer scrolled past 347 ads today. They didn't see a single one. The brain is designed to ignore predictable patterns. Learn the Pattern Interrupt technique that forces conscious attention.
+
+**Open the interactive lesson to master attention hijacking.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/pattern-interrupts/lesson.html' }
+      ]
+    },
+    {
+      id: 154,
+      thumbnail: '/images/lessons/dopamine-blueprint.png',
+      title: 'The Dopamine Blueprint',
+      intro: 'Why anticipation is more addictive than the reward itself.',
+      directUrl: '/learn/lessons/dopamine-blueprint',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Dopamine', label: 'Focus' }
+      ],
+      content: `## The Dopamine Blueprint
+
+Scientists gave monkeys juice when a light turned on. After the pattern was learned, dopamine stopped spiking at the juice - it spiked at the LIGHT. Learn the Habit Loop (Trigger → Routine → Reward) and how Variable Rewards create addiction.
+
+**Open the interactive lesson to master dopamine loops.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/dopamine-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 155,
+      thumbnail: '/images/lessons/anti-sell-mastery.png',
+      title: 'The Anti-Sell',
+      intro: 'Why pushing harder kills sales - and how pulling back makes customers chase YOU.',
+      directUrl: '/learn/lessons/anti-sell-mastery',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Reactance', label: 'Focus' }
+      ],
+      content: `## The Anti-Sell
+
+"This product probably isn't for you." That one sentence increased conversions by 31%. Learn Psychological Reactance and why the less you chase, the more they come to you.
+
+**Open the interactive lesson to master the anti-sell.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/anti-sell-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 156,
+      thumbnail: '/images/lessons/decoy-effect.png',
+      title: 'The Decoy Effect',
+      intro: 'Why movie theaters price popcorn the way they do - and how a "useless" option boosts premium sales by 43%.',
+      directUrl: '/learn/lessons/decoy-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Decoy Effect
+
+Small popcorn: $3. Large: $7. Nobody buys large. Add a Medium at $6.50 and suddenly large sales jump 43%. The "useless" middle option isn't useless - it's a psychological weapon that makes expensive feel like a bargain.
+
+**Open the interactive lesson to master decoy pricing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/decoy-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 157,
+      thumbnail: '/images/lessons/precise-price-trick.png',
+      title: 'The Precise Price Trick',
+      intro: 'Why $4,988 feels fairer than $5,000 - and how precise numbers signal calculation, not greed.',
+      directUrl: '/learn/lessons/precise-price-trick',
+      specialFeatures: [
+        { value: '4 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Precise Price Trick
+
+Round numbers feel arbitrary. Precise numbers feel calculated. A study found that homes priced at $494,500 sold closer to asking price than those at $500,000. The brain assumes precision means research.
+
+**Open the interactive lesson to master precise pricing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/precise-price-trick/lesson.html' }
+      ]
+    },
+    {
+      id: 158,
+      thumbnail: '/images/lessons/paradox-of-choice.png',
+      title: 'The Paradox of Choice',
+      intro: 'Why Chipotle crushes Cheesecake Factory - and how 24 jam flavors killed sales by 90%.',
+      directUrl: '/learn/lessons/paradox-of-choice',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Choice', label: 'Focus' }
+      ],
+      content: `## The Paradox of Choice
+
+A grocery store tested 24 jam flavors vs 6. The big display got more attention, but 90% fewer sales. Too many options create decision paralysis. Chipotle's simple menu beats Cheesecake Factory's 250+ items.
+
+**Open the interactive lesson to master choice architecture.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/paradox-of-choice/lesson.html' }
+      ]
+    },
+    {
+      id: 159,
+      thumbnail: '/images/lessons/forty-million-mistake.png',
+      title: 'The $40 Million Mistake',
+      intro: 'How Coca-Cola won 200,000 taste tests... and lost everything. Data without emotion = disaster.',
+      directUrl: '/learn/lessons/forty-million-mistake',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Emotion', label: 'Focus' }
+      ],
+      content: `## The $40 Million Mistake
+
+In 1985, Coca-Cola spent $40 million on research. New Coke won every taste test. 79 days later, they brought back the original after 8,000 angry calls per day. They measured taste but forgot identity.
+
+**Open the interactive lesson to learn from Coke's disaster.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forty-million-mistake/lesson.html' }
+      ]
+    },
+    {
+      id: 160,
+      thumbnail: '/images/lessons/fly-in-the-urinal.png',
+      title: 'The Fly in the Urinal',
+      intro: 'How a tiny etched fly reduced bathroom spillage by 80% - and what it teaches about nudging behavior.',
+      directUrl: '/learn/lessons/fly-in-the-urinal',
+      specialFeatures: [
+        { value: '4 min', label: 'Duration' },
+        { value: 'Nudge', label: 'Focus' }
+      ],
+      content: `## The Fly in the Urinal
+
+Amsterdam Airport had a cleaning problem. Signs didn't work. So they etched a small fly into each urinal. Spillage dropped 80%. The brain responds to targets, not instructions. Nudge > Push.
+
+**Open the interactive lesson to master nudge psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/fly-in-the-urinal/lesson.html' }
+      ]
+    },
+    // Conversion Blueprint lessons
+    {
+      id: 107,
+      thumbnail: '/images/lessons/thirty-two-violinist.png',
+      title: 'The $32 Violinist',
+      intro: 'Why the world\'s greatest violinist made just $32 playing in a subway - and what it means for your ads.',
+      directUrl: '/learn/lessons/thirty-two-violinist',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Context', label: 'Focus' }
+      ],
+      content: `## The $32 Violinist
+
+Joshua Bell, one of the world's greatest violinists, played a $3.5M Stradivarius in a Washington D.C. metro station. 1,097 people walked by. Only 7 stopped. He made just $32. Two days prior, he sold out a Boston concert at $100/ticket. Same music. Same skill. Different context. Your product on a meme page = perceived as cheap. Same product on a premium influencer = perceived as valuable. Context IS the product.
+
+**Open the interactive lesson to master context psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/thirty-two-violinist/lesson.html' }
+      ]
+    },
+    {
+      id: 108,
+      thumbnail: '/images/lessons/invisible-influence.png',
+      title: 'The Invisible Influence',
+      intro: 'How a simple background image changes what products your customers buy - without them knowing.',
+      directUrl: '/learn/lessons/invisible-influence',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Invisible Influence
+
+Researchers showed two groups the same furniture. Only difference: the background image. Clouds = customers bought comfort. Coins = customers bought cheap. When asked, both groups denied the background influenced them. But it did. Your hero image is silently deciding what products customers click. Test it.
+
+**Open the interactive lesson to master visual priming.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/invisible-influence/lesson.html' }
+      ]
+    },
+    {
+      id: 109,
+      thumbnail: '/images/lessons/price-format-code.png',
+      title: 'The Price Format Code',
+      intro: 'Why "$39" outsells "$34" - and when to use each price format in your store.',
+      directUrl: '/learn/lessons/price-format-code',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Price Format Code
+
+A Cornell study found "12" outsells "$12.00". MIT found "$39" outsells "$34". For premium goods, "$250" beats "$249.99". The format is the signal. Wrong format = wrong positioning = dead conversions. Supplements: no dollar sign. Fashion: charm pricing. Luxury: rounded numbers.
+
+**Open the interactive lesson to master price psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/price-format-code/lesson.html' }
+      ]
+    },
+    {
+      id: 110,
+      thumbnail: '/images/lessons/cost-of-standing-still.png',
+      title: 'The Cost of Standing Still',
+      intro: 'Stop selling your price. Start selling what customers LOSE without you.',
+      directUrl: '/learn/lessons/cost-of-standing-still',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Framing', label: 'Focus' }
+      ],
+      content: `## The Cost of Standing Still
+
+"Our service is $10,000" feels expensive. "Staying where you are costs you $100,000/month in lost revenue" makes $10,000 feel like a bargain. Stop selling features. Sell the cost of inaction. Your $99 tool isn't the expense - their $3,000/month in abandoned carts is.
+
+**Open the interactive lesson to master cost reframing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cost-of-standing-still/lesson.html' }
+      ]
+    },
+    {
+      id: 111,
+      thumbnail: '/images/lessons/unity-principle.png',
+      title: 'The Unity Principle',
+      intro: 'One word change in your review request email = 3x more reviews.',
+      directUrl: '/learn/lessons/unity-principle',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Language', label: 'Focus' }
+      ],
+      content: `## The Unity Principle
+
+"Please leave a review" makes them a critic. "Could we ask for your advice?" makes them a partner. The word "advice" triggers tribal belonging. Warren Buffett uses this. Small brands should too. Update your Klaviyo flow. Replace "feedback" with "advice." Watch review rates triple.
+
+**Open the interactive lesson to master unity language.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/unity-principle/lesson.html' }
+      ]
+    },
+    {
+      id: 112,
+      thumbnail: '/images/lessons/visual-priming.png',
+      title: 'The Invisible Influencer',
+      intro: 'How a simple background image decides what customers buy - without them knowing.',
+      directUrl: '/learn/lessons/visual-priming',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Priming', label: 'Focus' }
+      ],
+      content: `## The Invisible Influencer
+
+A furniture store showed clouds to one group, coins to another. The clouds group bought comfort. The coins group bought value. Both groups denied being influenced. That's the power of visual priming - the images behind your product shape what customers care about before they even see the price.
+
+**Open the interactive lesson to master visual priming.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/visual-priming/lesson.html' }
+      ]
+    },
+    {
+      id: 113,
+      thumbnail: '/images/lessons/objection-inversion.png',
+      title: 'The Objection Judo Trick',
+      intro: 'Turn the #1 reason they WON\'T buy into the #1 reason they SHOULD.',
+      directUrl: '/learn/lessons/objection-inversion',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Reframing', label: 'Focus' }
+      ],
+      content: `## The Objection Judo Trick
+
+"I can't afford it" → "Isn't that exactly why you need this?" Don't fight objections. Use their force against them. Like judo, redirect the energy. The objection killing your sales is actually your best selling point - if you know how to flip it.
+
+**Open the interactive lesson to master objection inversion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/objection-inversion/lesson.html' }
+      ]
+    },
+    {
+      id: 114,
+      thumbnail: '/images/lessons/primal-stimuli.png',
+      title: 'The 6 Primal Buy Buttons',
+      intro: 'The only 6 triggers that reliably get the reptile brain to say YES.',
+      directUrl: '/learn/lessons/primal-stimuli',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Neuroscience', label: 'Focus' }
+      ],
+      content: `## The 6 Primal Buy Buttons
+
+Your customer has two brains: the logical one that "decides" and the primal one that actually decides. The primal brain only responds to 6 stimuli: Self-Centered, Contrast, Tangible, Beginning & End, Visual, and Emotional. Press these buttons = sale. Ignore them = logic wins (and logic doesn't buy).
+
+**Open the interactive lesson to master primal selling.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/primal-stimuli/lesson.html' }
+      ]
+    },
+    // CRO Flywheel + Direct Response Brand lessons
+    {
+      id: 115,
+      thumbnail: '/images/lessons/leaky-bucket-audit.png',
+      title: 'The $50,000 Hole in Your Funnel',
+      intro: 'The PPV metric reveals exactly where you\'re bleeding money.',
+      directUrl: '/learn/lessons/leaky-bucket-audit',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The Leaky Bucket Audit
+
+Most stores obsess over traffic. Smart stores obsess over leaks. The Profit Per Visitor (PPV) metric reveals exactly where money disappears in your funnel - and which fixes deliver the highest ROI.
+
+**Open the interactive lesson to find your $50K leak.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/leaky-bucket-audit/lesson.html' }
+      ]
+    },
+    {
+      id: 116,
+      thumbnail: '/images/lessons/price-chunking-yesloop.png',
+      title: 'The Yes-Loop: How to 3X Your AOV',
+      intro: 'Break big prices into irresistible small yeses.',
+      directUrl: '/learn/lessons/price-chunking-yesloop',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Price Chunking Yes-Loop
+
+Big numbers scare brains. Small numbers feel easy. Price chunking turns "$1,200/year" into "$3.28/day" - and suddenly it's cheaper than coffee. Stack these micro-yeses and watch AOV explode.
+
+**Open the interactive lesson to master price psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/price-chunking-yesloop/lesson.html' }
+      ]
+    },
+    {
+      id: 117,
+      thumbnail: '/images/lessons/objection-destroyer.png',
+      title: 'The "At First I Thought" Framework',
+      intro: 'Turn objections into conversions with one sentence pattern.',
+      directUrl: '/learn/lessons/objection-destroyer',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Copy', label: 'Focus' }
+      ],
+      content: `## The Objection Destroyer Framework
+
+Every prospect has objections. Most marketers ignore them. Masters address them BEFORE they're spoken. "At first I thought X... but then I discovered Y" neutralizes resistance instantly.
+
+**Open the interactive lesson to destroy objections.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/objection-destroyer/lesson.html' }
+      ]
+    },
+    {
+      id: 118,
+      thumbnail: '/images/lessons/product-page-anatomy.png',
+      title: 'The 5-Element Product Page',
+      intro: 'The exact anatomy of pages that convert at 8%+.',
+      directUrl: '/learn/lessons/product-page-anatomy',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The 5-Element Product Page Anatomy
+
+8%+ conversion pages aren't accidents. They follow a precise 5-element formula: Hero Image, Benefit Stack, Social Proof, Urgency, and Risk Reversal. Miss one element = money left on table.
+
+**Open the interactive lesson to build perfect product pages.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/product-page-anatomy/lesson.html' }
+      ]
+    },
+    {
+      id: 119,
+      thumbnail: '/images/lessons/post-purchase-goldmine.png',
+      title: 'The Hidden Revenue You\'re Ignoring',
+      intro: 'Turn $40 customers into $120 customers instantly.',
+      directUrl: '/learn/lessons/post-purchase-goldmine',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'LTV', label: 'Focus' }
+      ],
+      content: `## The Post-Purchase Goldmine
+
+The sale isn't the end - it's the beginning. Post-purchase upsells convert at 10-15% because trust is highest right after buying. Most stores leave this goldmine completely untouched.
+
+**Open the interactive lesson to unlock hidden revenue.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/post-purchase-goldmine/lesson.html' }
+      ]
+    },
+    {
+      id: 120,
+      thumbnail: '/images/lessons/bottom-up-brand.png',
+      title: 'Why Movements Beat Marketing',
+      intro: 'Build a brand like a movement, not a corporation.',
+      directUrl: '/learn/lessons/bottom-up-brand',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand', label: 'Focus' }
+      ],
+      content: `## Bottom-Up Brand Building
+
+Top-down brands spend millions on awareness. Bottom-up brands build movements. Harley didn't create bikers - bikers created Harley. Find your tribe, serve them obsessively, and let THEM build your brand.
+
+**Open the interactive lesson to build a movement.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/bottom-up-brand/lesson.html' }
+      ]
+    },
+    {
+      id: 121,
+      thumbnail: '/images/lessons/halo-serial-position.png',
+      title: 'The First & Last Impression Hack',
+      intro: '0.05 seconds decides if they trust you.',
+      directUrl: '/learn/lessons/halo-serial-position',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Halo Effect + Serial Position
+
+First impressions create halos - good or bad. The Halo Effect means one positive trait colors everything. Serial Position means firsts and lasts are remembered. Nail your opening and closing.
+
+**Open the interactive lesson to master first impressions.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/halo-serial-position/lesson.html' }
+      ]
+    },
+    {
+      id: 122,
+      thumbnail: '/images/lessons/ikea-effect.png',
+      title: 'The IKEA Effect',
+      intro: 'Why DIY = 63% higher perceived value.',
+      directUrl: '/learn/lessons/ikea-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The IKEA Effect
+
+People value what they help create. IKEA furniture feels more valuable because YOU built it. Add customization, configuration, or co-creation and watch perceived value (and willingness to pay) soar.
+
+**Open the interactive lesson to leverage the IKEA Effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/ikea-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 123,
+      thumbnail: '/images/lessons/von-restorff-effect.png',
+      title: 'The Von Restorff Effect',
+      intro: 'Make your CTA impossible to miss.',
+      directUrl: '/learn/lessons/von-restorff-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Von Restorff Effect
+
+In a sea of sameness, different wins. The Von Restorff Effect proves that items that stand out are remembered. Your CTA should be the only thing that POPS on the page.
+
+**Open the interactive lesson to make CTAs unmissable.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/von-restorff-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 124,
+      thumbnail: '/images/lessons/jakobs-law.png',
+      title: 'Jakob\'s Law',
+      intro: 'Why "unique" checkout flows kill conversions.',
+      directUrl: '/learn/lessons/jakobs-law',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'UX', label: 'Focus' }
+      ],
+      content: `## Jakob's Law
+
+Users spend most of their time on OTHER sites. They expect your site to work like the sites they already know. Creative checkout = confused customers = abandoned carts. Familiar patterns convert.
+
+**Open the interactive lesson to master familiar UX.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/jakobs-law/lesson.html' }
+      ]
+    },
+    // Unseen Seller + Psychological Commerce lessons
+    {
+      id: 125,
+      thumbnail: '/images/lessons/gaze-direction.png',
+      title: 'The Gaze Hack',
+      intro: 'Where they look is where they click.',
+      directUrl: '/learn/lessons/gaze-direction',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Neuromarketing', label: 'Focus' }
+      ],
+      content: `## The Gaze Hack
+
+Humans instinctively follow gaze direction. The famous baby ad study proved it: when the baby looks at the headline, so do viewers. Use faces and eyes to direct attention exactly where you want it.
+
+**Open the interactive lesson to master gaze direction.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gaze-direction/lesson.html' }
+      ]
+    },
+    {
+      id: 126,
+      thumbnail: '/images/lessons/five-second-test.png',
+      title: 'The 5-Second Test',
+      intro: 'Why clarity crushes cleverness every time.',
+      directUrl: '/learn/lessons/five-second-test',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'UX', label: 'Focus' }
+      ],
+      content: `## The 5-Second Test
+
+If visitors can't understand your value prop in 5 seconds, they leave. Processing fluency research proves: easy-to-read = trustworthy. Clever headlines that confuse lose to simple headlines that convert.
+
+**Open the interactive lesson to master clarity.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/five-second-test/lesson.html' }
+      ]
+    },
+    {
+      id: 127,
+      thumbnail: '/images/lessons/speed-equals-trust.png',
+      title: 'The $1.7 Billion Speed Bump',
+      intro: '0.1 second delay = 1% revenue loss.',
+      directUrl: '/learn/lessons/speed-equals-trust',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Performance', label: 'Focus' }
+      ],
+      content: `## Speed Equals Trust
+
+Amazon discovered that every 100ms of latency costs 1% in sales. That's $1.7 billion annually. Speed isn't a technical metric - it's a trust signal. Slow = sketchy. Fast = professional.
+
+**Open the interactive lesson to understand speed psychology.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/speed-equals-trust/lesson.html' }
+      ]
+    },
+    {
+      id: 128,
+      thumbnail: '/images/lessons/imperceptible-nudge.png',
+      title: 'The $200 Million Color',
+      intro: 'Invisible nudges that drive millions in revenue.',
+      directUrl: '/learn/lessons/imperceptible-nudge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Neuromarketing', label: 'Focus' }
+      ],
+      content: `## The Imperceptible Nudge
+
+Google tested 41 shades of blue for their links - and found the winner generated $200M more annually. The wine store music study proved: French music = French wine sales surge. Nudges work because they're invisible.
+
+**Open the interactive lesson to master invisible influence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/imperceptible-nudge/lesson.html' }
+      ]
+    },
+    {
+      id: 129,
+      thumbnail: '/images/lessons/cognitive-load-trap.png',
+      title: 'The Easy Brain Wins',
+      intro: 'Reduce friction, increase trust automatically.',
+      directUrl: '/learn/lessons/cognitive-load-trap',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Cognitive Load Trap
+
+Every decision drains mental energy. Overwhelmed brains choose the easiest option: leaving. Reduce cognitive load ruthlessly. Fewer choices. Clearer copy. Simpler paths. Easy = trusted = purchased.
+
+**Open the interactive lesson to reduce cognitive load.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/cognitive-load-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 130,
+      thumbnail: '/images/lessons/placebo-product.png',
+      title: 'Your Product Is a Placebo',
+      intro: 'Perception literally alters physical reality.',
+      directUrl: '/learn/lessons/placebo-product',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Placebo Product
+
+Wine tastes better when you're told it costs more. Energy drinks work better with premium branding. The placebo effect isn't just medical - it's commercial. How you frame the product literally changes the experience.
+
+**Open the interactive lesson to harness the placebo effect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/placebo-product/lesson.html' }
+      ]
+    },
+    {
+      id: 131,
+      thumbnail: '/images/lessons/information-asymmetry.png',
+      title: 'The Prada Mystery Play',
+      intro: 'Hide information to elevate perceived status.',
+      directUrl: '/learn/lessons/information-asymmetry',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Luxury', label: 'Focus' }
+      ],
+      content: `## Information Asymmetry
+
+Prada doesn't explain itself. Luxury brands create mystery through selective silence. What you DON'T say creates exclusivity. Information asymmetry signals: "If you need to ask, you're not the target."
+
+**Open the interactive lesson to master strategic mystery.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/information-asymmetry/lesson.html' }
+      ]
+    },
+    {
+      id: 132,
+      thumbnail: '/images/lessons/visual-shorthand.png',
+      title: 'Toothpaste Stripes Psychology',
+      intro: 'Visual cues shortcut directly to quality perception.',
+      directUrl: '/learn/lessons/visual-shorthand',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Design', label: 'Focus' }
+      ],
+      content: `## Visual Shorthand
+
+Why do premium toothpastes have colored stripes? Because stripes signal "multiple active ingredients" without reading anything. Visual shorthand bypasses logic and goes straight to perception. What does YOUR product visually communicate?
+
+**Open the interactive lesson to master visual signals.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/visual-shorthand/lesson.html' }
+      ]
+    },
+    {
+      id: 133,
+      thumbnail: '/images/lessons/radical-honesty-play.png',
+      title: 'The Inside Joke Effect',
+      intro: 'Admit you\'re marketing and watch trust skyrocket.',
+      directUrl: '/learn/lessons/radical-honesty-play',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand', label: 'Focus' }
+      ],
+      content: `## The Radical Honesty Play
+
+Liquid Death calls itself "murder your thirst." dbrand openly admits they're manipulating you. This radical honesty creates an inside joke with customers. You're both in on it - and that builds insane loyalty.
+
+**Open the interactive lesson to master radical honesty.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/radical-honesty-play/lesson.html' }
+      ]
+    },
+    {
+      id: 134,
+      thumbnail: '/images/lessons/hermes-doctrine.png',
+      title: 'The Hermès Infinite Game',
+      intro: 'Protect the Birkin, play forever.',
+      directUrl: '/learn/lessons/hermes-doctrine',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Strategy', label: 'Focus' }
+      ],
+      content: `## The Hermès Doctrine
+
+Gucci over-expanded and collapsed. Hermès protects the Birkin like a sacred object. The difference? Finite vs Infinite game thinking. Short-term revenue grabs destroy long-term brand equity. Hermès plays the infinite game.
+
+**Open the interactive lesson to think in infinite games.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/hermes-doctrine/lesson.html' }
+      ]
+    },
+    {
+      id: 161,
+      thumbnail: '/images/lessons/hero-mechanism.png',
+      title: 'The $4,225 Question',
+      intro: 'Why Oura Ring costs $399 vs $12 knockoff.',
+      directUrl: '/learn/lessons/hero-mechanism',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand Psychology', label: 'Focus' }
+      ],
+      content: `## The Hero Mechanism
+
+Why does Oura Ring sell for $399 while Alibaba has the same features for $12? The answer is the Hero Mechanism - a unique, believable reason WHY your product works.
+
+**Open the interactive lesson to discover the $4,225 difference.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/hero-mechanism/lesson.html' }
+      ]
+    },
+    {
+      id: 162,
+      thumbnail: '/images/lessons/scammer-playbook-good.png',
+      title: "The Scammer's Playbook (Used for Good)",
+      intro: '7 ethical persuasion levers.',
+      directUrl: '/learn/lessons/scammer-playbook-good',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Persuasion', label: 'Focus' }
+      ],
+      content: `## The Scammer's Playbook
+
+Con artists use 7 psychological levers to manipulate. But these same levers can be used ETHICALLY to help people make decisions they'll thank you for.
+
+**Open the interactive lesson to master ethical persuasion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/scammer-playbook-good/lesson.html' }
+      ]
+    },
+    {
+      id: 163,
+      thumbnail: '/images/lessons/us-vs-them.png',
+      title: 'The David vs Goliath Play',
+      intro: 'Create tribal identity through enemies.',
+      directUrl: '/learn/lessons/us-vs-them',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Positioning', label: 'Focus' }
+      ],
+      content: `## The David vs Goliath Play
+
+Apple vs IBM. Harley vs Japanese bikes. Great brands position against an ENEMY to create tribal identity.
+
+**Open the interactive lesson to find your Goliath.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/us-vs-them/lesson.html' }
+      ]
+    },
+    {
+      id: 164,
+      thumbnail: '/images/lessons/brand-universe.png',
+      title: 'Build a World, Not Just a Store',
+      intro: 'Create universes, not products.',
+      directUrl: '/learn/lessons/brand-universe',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Brand Building', label: 'Focus' }
+      ],
+      content: `## Build a World, Not Just a Store
+
+Patagonia is an environmental movement. Apple is creative rebellion. Nike is athletic excellence. Great brands create UNIVERSES, not just products.
+
+**Open the interactive lesson to build your brand universe.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/brand-universe/lesson.html' }
+      ]
+    },
+    {
+      id: 165,
+      thumbnail: '/images/lessons/product-to-identity.png',
+      title: 'From Product to Identity Purchase',
+      intro: 'Transform commodities to identity.',
+      directUrl: '/learn/lessons/product-to-identity',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## From Product to Identity Purchase
+
+Rolex is not a watch - it is I have made it. Tesla is not a car - it is I am the future. Transform what you sell from a COMMODITY to an IDENTITY purchase.
+
+**Open the interactive lesson to reframe your product.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/product-to-identity/lesson.html' }
+      ]
+    },
+    {
+      id: 166,
+      thumbnail: '/images/lessons/commodity-escape.png',
+      title: 'The Commodity Trap',
+      intro: 'How Starbucks charges $6 for $0.50 coffee.',
+      directUrl: '/learn/lessons/commodity-escape',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Commodity Trap
+
+Starbucks sells coffee that costs them $0.50 for $6. They escaped the commodity trap where price is the only differentiator. You can too.
+
+**Open the interactive lesson to escape the commodity trap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/commodity-escape/lesson.html' }
+      ]
+    },
+    {
+      id: 167,
+      thumbnail: '/images/lessons/myth-and-urgency.png',
+      title: 'Weaving Myth and Manufacturing Urgency',
+      intro: 'Create irresistible desire through scarcity plus story.',
+      directUrl: '/learn/lessons/myth-and-urgency',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Luxury Marketing', label: 'Focus' }
+      ],
+      content: `## Weaving Myth and Manufacturing Urgency
+
+Hermes creates mythology around Birkin bags. Rolex weaves origin stories. Limited editions become sacred objects. Scarcity plus Story equals irresistible desire.
+
+**Open the interactive lesson to weave your myth.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/myth-and-urgency/lesson.html' }
+      ]
+    },
+    {
+      id: 168,
+      thumbnail: '/images/lessons/value-ladder.png',
+      title: 'The Value Ladder and Hidden Menu',
+      intro: 'Secret tiers that create aspiration.',
+      directUrl: '/learn/lessons/value-ladder',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Revenue', label: 'Focus' }
+      ],
+      content: `## The Value Ladder and Hidden Menu
+
+High-end restaurants have secret menus for VIPs. Your store should too. Build a value ladder from entry to elite where each tier unlocks the next.
+
+**Open the interactive lesson to build your value ladder.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/value-ladder/lesson.html' }
+      ]
+    },
+    {
+      id: 169,
+      thumbnail: '/images/lessons/box-worth-300.png',
+      title: 'The $300 Empty Box',
+      intro: 'Tiffany packaging IS the product.',
+      directUrl: '/learn/lessons/box-worth-300',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Packaging', label: 'Focus' }
+      ],
+      content: `## The $300 Empty Box
+
+Tiffany iconic blue box is worth money EMPTY. People pay for the box. Apple unboxing is a ritual. Your packaging IS the product experience.
+
+**Open the interactive lesson to transform your packaging.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/box-worth-300/lesson.html' }
+      ]
+    },
+    {
+      id: 170,
+      thumbnail: '/images/lessons/story-taste-experiment.png',
+      title: 'Your Story Changes How Products TASTE',
+      intro: 'Story literally alters perception.',
+      directUrl: '/learn/lessons/story-taste-experiment',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## Your Story Changes How Products TASTE
+
+Stanford wine experiment: Same wine, different stories equals different taste ratings. The story you tell LITERALLY changes how the product is experienced.
+
+**Open the interactive lesson to craft your story.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/story-taste-experiment/lesson.html' }
+      ]
+    },
+    {
+      id: 171,
+      thumbnail: '/images/lessons/scarcity-calendar.png',
+      title: 'Le Creuset Scarcity Engine',
+      intro: 'One color per year creates collectors.',
+      directUrl: '/learn/lessons/scarcity-calendar',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Scarcity', label: 'Focus' }
+      ],
+      content: `## Le Creuset Scarcity Engine
+
+Le Creuset releases ONE new color per year. Creates collector mentality, artificial scarcity, calendar-driven demand. Missed colors sell at premium.
+
+**Open the interactive lesson to build your scarcity engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/scarcity-calendar/lesson.html' }
+      ]
+    },
+    {
+      id: 172,
+      thumbnail: '/images/lessons/anchor-moments.png',
+      title: 'Ralph Lauren Anchor Moments',
+      intro: '$20K bag makes $200 polo feel cheap.',
+      directUrl: '/learn/lessons/anchor-moments',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Pricing Psychology', label: 'Focus' }
+      ],
+      content: `## Ralph Lauren Anchor Moments
+
+Ralph Lauren displays a $20,000 handbag. Nobody buys it. But suddenly the $200 polo feels like a STEAL. The anchor is not meant to sell.
+
+**Open the interactive lesson to create anchor moments.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/anchor-moments/lesson.html' }
+      ]
+    },
+    {
+      id: 173,
+      thumbnail: '/images/lessons/irrational-loyalty.png',
+      title: 'The Pizza Test and Sock Test',
+      intro: 'Once identity forms, logic dies.',
+      directUrl: '/learn/lessons/irrational-loyalty',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Loyalty', label: 'Focus' }
+      ],
+      content: `## The Pizza Test and Sock Test
+
+People defend their favorite pizza shop even if it is objectively worse. Same with socks - I am a Bombas person. Once identity forms, they will defend you against logic.
+
+**Open the interactive lesson to create irrational loyalty.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/irrational-loyalty/lesson.html' }
+      ]
+    }
+,
+    {
+      id: 174,
+      thumbnail: '/images/lessons/reciprocity-engine.png',
+      title: 'The 42% Sales Trick (That\'s Not a Trick)',
+      intro: 'Why giving away free samples increased sales 42%.',
+      directUrl: '/learn/lessons/reciprocity-engine',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Psychology', label: 'Focus' }
+      ],
+      content: `## The Reciprocity Engine
+
+A candy shop gave free samples. Sales went up 42%. But customers bought DIFFERENT candies—not the one they tasted. It wasn't about liking the sample. It was about discharging social debt.
+
+**Open the interactive lesson to weaponize reciprocity.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/reciprocity-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 175,
+      thumbnail: '/images/lessons/gucci-short-termism.png',
+      title: 'Why Gucci Is Dying (And What It Teaches You)',
+      intro: 'Fashion chases trends. Luxury chases timelessness.',
+      directUrl: '/learn/lessons/gucci-short-termism',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Brand Strategy', label: 'Focus' }
+      ],
+      content: `## Why Gucci Is Dying
+
+Gucci's sales tripled with trendy products. Then they overexposed everything. Products went from exclusive to ubiquitous. Stock tumbled. Meanwhile, Hermès thrives with ruthless scarcity.
+
+**Open the interactive lesson to learn from Gucci's mistake.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/gucci-short-termism/lesson.html' }
+      ]
+    },
+    {
+      id: 176,
+      thumbnail: '/images/lessons/ethical-persuasion-compass.png',
+      title: 'The Magic Show Test: Influence vs Manipulation',
+      intro: 'The ethical line between persuasion and manipulation.',
+      directUrl: '/learn/lessons/ethical-persuasion-compass',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Ethics', label: 'Focus' }
+      ],
+      content: `## The Magic Show Test
+
+Frame branding as a magic show. Is the audience in on the joke, willingly suspending disbelief? That's entertainment. Are you convincing them the magic is real? That's manipulation.
+
+**Open the interactive lesson to find the ethical line.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/ethical-persuasion-compass/lesson.html' }
+      ]
+    },
+    {
+      id: 177,
+      thumbnail: '/images/lessons/two-worlds-mastery.png',
+      title: 'The Two Worlds Every DTC Founder Must Master',
+      intro: 'Performance marketing vs brand building—you need both.',
+      directUrl: '/learn/lessons/two-worlds-mastery',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Strategy', label: 'Focus' }
+      ],
+      content: `## The Two Worlds
+
+Direct response wins battles. Brand building wins wars. Master one without the other and you'll either burn out or fade away. The legends do both.
+
+**Open the interactive lesson to master both worlds.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/two-worlds-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 178,
+      thumbnail: '/images/lessons/race-to-bottom-escape.png',
+      title: 'Why Your ROAS Is Killing Your Business',
+      intro: 'You\'re winning every battle and losing the war.',
+      directUrl: '/learn/lessons/race-to-bottom-escape',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Performance', label: 'Focus' }
+      ],
+      content: `## The Three Death Spirals
+
+Rising costs. Commoditization. Zero loyalty. When you play only the direct response game, you enter three simultaneous races to the bottom.
+
+**Open the interactive lesson to escape the death spiral.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/race-to-bottom-escape/lesson.html' }
+      ]
+    },
+    {
+      id: 179,
+      thumbnail: '/images/lessons/founder-operating-system.png',
+      title: 'The 4 Traits of Legendary Brand Founders',
+      intro: 'What separates iconic founders from the rest.',
+      directUrl: '/learn/lessons/founder-operating-system',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Leadership', label: 'Focus' }
+      ],
+      content: `## The Founder Operating System
+
+Legendary founders share 4 traits: consumer-grade intuition, creative direction, calculated risk-taking, and vision without delusion. Which do you have?
+
+**Open the interactive lesson to develop founder DNA.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/founder-operating-system/lesson.html' }
+      ]
+    },
+    {
+      id: 180,
+      thumbnail: '/images/lessons/13800-percent-effect.png',
+      title: 'Why 10% Better = 13,800% Better',
+      intro: 'Small improvements compound into massive advantages.',
+      directUrl: '/learn/lessons/13800-percent-effect',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Growth', label: 'Focus' }
+      ],
+      content: `## The 13,800% Effect
+
+Be 10% better at 50 things. 1.1^50 = 117x better overall. That's not incremental improvement—that's category domination through compounding marginal gains.
+
+**Open the interactive lesson to unlock compound advantages.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/13800-percent-effect/lesson.html' }
+      ]
+    },
+    {
+      id: 181,
+      thumbnail: '/images/lessons/dior-pricing-secret.png',
+      title: 'The $57 Bag That Sells for $3,500',
+      intro: 'What Dior and Rolex know about pricing that you don\'t.',
+      directUrl: '/learn/lessons/dior-pricing-secret',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Pricing', label: 'Focus' }
+      ],
+      content: `## The Dior Pricing Secret
+
+A canvas tote costs $57 to make. Dior sells it for $3,500. That's not a markup—that's a masterclass in selling status, not products.
+
+**Open the interactive lesson to learn premium pricing.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/dior-pricing-secret/lesson.html' }
+      ]
+    },
+    {
+      id: 182,
+      thumbnail: '/images/lessons/consumption-conversion.png',
+      title: 'Why Your Product Page Isn\'t Converting',
+      intro: 'The gap between consumption and conversion.',
+      directUrl: '/learn/lessons/consumption-conversion',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Conversion', label: 'Focus' }
+      ],
+      content: `## The Consumption Gap
+
+People consume your content but don't convert. Why? Because consumption is passive. Conversion requires active transformation. Bridge the gap.
+
+**Open the interactive lesson to close the conversion gap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/consumption-conversion/lesson.html' }
+      ]
+    },
+    {
+      id: 183,
+      thumbnail: '/images/lessons/luxury-mindset-shift.png',
+      title: 'The 4 Mindset Shifts That Create Premium Brands',
+      intro: 'Transform your thinking from commodity to luxury.',
+      directUrl: '/learn/lessons/luxury-mindset-shift',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Brand Building', label: 'Focus' }
+      ],
+      content: `## The Luxury Mindset
+
+Premium brands think differently. From product-first to customer-first. From features to feelings. From transactions to relationships. From selling to serving.
+
+**Open the interactive lesson to adopt the luxury mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/luxury-mindset-shift/lesson.html' }
+      ]
+    },
+    {
+      id: 184,
+      thumbnail: '/images/lessons/three-cro-tests.png',
+      title: 'The Three High-Impact CRO Tests',
+      intro: 'The Oodie made $2.83M with these 3 simple changes.',
+      directUrl: '/learn/lessons/three-cro-tests',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'CRO', label: 'Focus' }
+      ],
+      content: `## The Three High-Impact CRO Tests
+
+The Oodie generated $1.73M extra revenue from a floating add-to-cart button. Another $1.1M from simple product badges. These aren't complex optimizations—they're psychology principles hiding in plain sight.
+
+**Open the interactive lesson to discover the 3 highest-impact CRO tests.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/three-cro-tests/lesson.html' }
+      ]
+    },
+    {
+      id: 185,
+      thumbnail: '/images/lessons/digital-velvet-rope.png',
+      title: 'The Digital Velvet Rope Effect',
+      intro: 'Password-protected pages create explosive desire.',
+      directUrl: '/learn/lessons/digital-velvet-rope',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Exclusivity', label: 'Focus' }
+      ],
+      content: `## The Digital Velvet Rope Effect
+
+Luxury stores use velvet ropes to create desire. Online, password-protected "VIP access" pages do the same thing. Access restriction triggers the psychology of exclusivity.
+
+**Open the interactive lesson to build your digital velvet rope.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/digital-velvet-rope/lesson.html' }
+      ]
+    },
+    {
+      id: 186,
+      thumbnail: '/images/lessons/hidden-menu-psychology.png',
+      title: 'The Hidden Menu Psychology',
+      intro: 'Rolex has watches you can\'t see anywhere—for $1M+ spenders only.',
+      directUrl: '/learn/lessons/hidden-menu-psychology',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Loyalty', label: 'Focus' }
+      ],
+      content: `## The Hidden Menu Psychology
+
+Rolex has "off-catalog" items you can't see online or in-store. Access only for VIPs who've spent $1M+. This creates incredible incentive to remain loyal and feel special.
+
+**Open the interactive lesson to create your hidden menu.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/hidden-menu-psychology/lesson.html' }
+      ]
+    },
+    {
+      id: 187,
+      thumbnail: '/images/lessons/celebrity-gifting-flywheel.png',
+      title: 'The Celebrity Gifting Flywheel',
+      intro: 'Drake has 140+ Rolexes. He didn\'t buy most of them.',
+      directUrl: '/learn/lessons/celebrity-gifting-flywheel',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Marketing', label: 'Focus' }
+      ],
+      content: `## The Celebrity Gifting Flywheel
+
+Rolex gifts watches to celebrities. Drake has 140+ in his collection. It's NOT seen as advertising—so it's more powerful. These "invisible billboards" generate millions in influence.
+
+**Open the interactive lesson to build your celebrity flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/celebrity-gifting-flywheel/lesson.html' }
+      ]
+    },
+    {
+      id: 188,
+      thumbnail: '/images/lessons/forbidden-coffee-hook.png',
+      title: 'The Forbidden Coffee Hook',
+      intro: 'It\'s not "Brazilian Blend"—it\'s forbidden coffee for Amazonian warriors.',
+      directUrl: '/learn/lessons/forbidden-coffee-hook',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Storytelling', label: 'Focus' }
+      ],
+      content: `## The Forbidden Coffee Hook
+
+Your product isn't "Brazilian Blend Coffee"—it's "Forbidden coffee once reserved for Amazonian warriors." The psychology of mystery and exclusivity wrapped in a story.
+
+**Open the interactive lesson to find your forbidden hook.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/forbidden-coffee-hook/lesson.html' }
+      ]
+    },
+    {
+      id: 189,
+      thumbnail: '/images/lessons/meta-three-second-hook.png',
+      title: 'The 3-Second Rule: Why Meta Judges Your Ad in the Blink of an Eye',
+      intro: 'Meta\'s Andromeda AI decides if your creative is "new" or "same" based on the first 3 seconds alone.',
+      directUrl: '/learn/lessons/meta-three-second-hook',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 3-Second Rule
+
+Meta's Andromeda system analyzes your creative's first 3 seconds to determine similarity. Same hook = same ad in Meta's eyes. Learn how to create truly different creatives that escape the similarity trap.
+
+**Open the interactive lesson to master the 3-second hook strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-three-second-hook/lesson.html' }
+      ]
+    },
+    {
+      id: 190,
+      thumbnail: '/images/lessons/meta-70-20-10-rule.png',
+      title: 'The 70-20-10 Creative Rule: How Top Advertisers Allocate Their Ad Budget',
+      intro: '70% proven winners, 20% iterations, 10% wild experiments. The creative allocation framework that scales.',
+      directUrl: '/learn/lessons/meta-70-20-10-rule',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 70-20-10 Creative Rule
+
+Don't put all eggs in one basket. Allocate 70% to proven winners, 20% to iterations of winners, and 10% to completely wild experiments. This framework balances risk and breakthrough potential.
+
+**Open the interactive lesson to build your creative portfolio strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-70-20-10-rule/lesson.html' }
+      ]
+    },
+    {
+      id: 191,
+      thumbnail: '/images/lessons/meta-ga4-integration.png',
+      title: 'GA4 + Meta: Feeding the Algorithm What It Actually Needs',
+      intro: 'Enhanced conversions through GA4 give Meta the high-quality signals it craves for better targeting.',
+      directUrl: '/learn/lessons/meta-ga4-integration',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## GA4 + Meta Integration
+
+The quality of your conversion data directly impacts Meta's optimization. GA4 enhanced conversions provide first-party data that survives iOS changes and gives Meta cleaner signals for better targeting.
+
+**Open the interactive lesson to set up your GA4-Meta data pipeline.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-ga4-integration/lesson.html' }
+      ]
+    },
+    {
+      id: 192,
+      thumbnail: '/images/lessons/meta-1-1-x-structure.png',
+      title: 'The 1-1-X Structure: The Simplest Meta Campaign Setup That Works',
+      intro: '1 Campaign, 1 Ad Set, X Creatives. Stop overcomplicating. Start scaling.',
+      directUrl: '/learn/lessons/meta-1-1-x-structure',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The 1-1-X Structure
+
+Forget complex campaign structures. In 2026, the winning formula is simple: 1 campaign, 1 ad set, and as many creatives as you can feed it. Let Meta's AI do the heavy lifting.
+
+**Open the interactive lesson to restructure your campaigns for maximum performance.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-1-1-x-structure/lesson.html' }
+      ]
+    },
+    {
+      id: 193,
+      thumbnail: '/images/lessons/meta-auction-formula.png',
+      title: 'The Meta Auction Formula: Total Value = Bid × EAR × Quality',
+      intro: 'Understanding how Meta decides which ad wins every single auction. Spoiler: it\'s not just about budget.',
+      directUrl: '/learn/lessons/meta-auction-formula',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The Meta Auction Formula
+
+Every ad auction is won by the highest Total Value score: Bid × Estimated Action Rate × Ad Quality. Understanding this formula reveals why creative quality beats budget every time.
+
+**Open the interactive lesson to optimize your auction score.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-auction-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 194,
+      thumbnail: '/images/lessons/meta-controls-vs-suggestions.png',
+      title: 'Controls vs Suggestions: What Meta Actually Listens To',
+      intro: 'Hard boundaries vs soft signals. Know the difference or waste your budget on ignored settings.',
+      directUrl: '/learn/lessons/meta-controls-vs-suggestions',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## Controls vs Suggestions
+
+Meta has two types of settings: Controls (hard boundaries it must obey) and Suggestions (soft signals it can ignore). Most advertisers waste time on suggestions while neglecting controls.
+
+**Open the interactive lesson to set your campaigns up correctly.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-controls-vs-suggestions/lesson.html' }
+      ]
+    },
+    {
+      id: 195,
+      thumbnail: '/images/lessons/meta-creative-ecosystem.png',
+      title: 'The Creative Ecosystem: Building 20-50 Meaningfully Different Ads',
+      intro: 'Quantity matters, but only if each creative is truly different. Build a creative factory, not a creative graveyard.',
+      directUrl: '/learn/lessons/meta-creative-ecosystem',
+      specialFeatures: [
+        { value: '10 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## The Creative Ecosystem
+
+Meta's algorithm needs creative diversity to find winners. Learn how to build an ecosystem of 20-50 meaningfully different ads across hooks, formats, and angles—without burning out your creative team.
+
+**Open the interactive lesson to build your creative factory.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-creative-ecosystem/lesson.html' }
+      ]
+    },
+    {
+      id: 196,
+      thumbnail: '/images/lessons/meta-capi-pixel-setup.png',
+      title: 'CAPI + Pixel: The Dual Tracking Setup That\'s Now Mandatory',
+      intro: 'Browser-side Pixel + Server-side CAPI. One without the other is leaving money on the table.',
+      directUrl: '/learn/lessons/meta-capi-pixel-setup',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Meta Ads', label: 'Focus' }
+      ],
+      content: `## CAPI + Pixel Setup
+
+In 2026, running just the Pixel is like driving with one headlight. CAPI (Conversions API) sends server-side events that bypass browser limitations. Together, they create complete conversion visibility.
+
+**Open the interactive lesson to set up bulletproof tracking.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/meta-capi-pixel-setup/lesson.html' }
+      ]
+    },
+    // Google Ads 2026 Interactive Lessons
+    {
+      id: 197,
+      thumbnail: '/images/lessons/google-highest-cpa-wins.png',
+      title: 'Why The Highest CPA Wins: The Counterintuitive Truth',
+      intro: 'The businesses that dominate Google Ads aren\'t the ones with the lowest CPA. They\'re the ones who can afford to pay the MOST.',
+      directUrl: '/learn/lessons/google-highest-cpa-wins',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Counterintuitive Truth
+
+Most Google Ad campaigns fail. That's not a bug—that's the norm. The secret is that one massive winner pays for all the experiments and losses, many times over.
+
+**Your goal isn't the lowest cost-per-sale. It's the HIGHEST.**
+
+When you can outbid everyone else and still be profitable, you control the market. Budget becomes a weapon, not a limitation.
+
+**Open the interactive lesson to master unit economics.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-highest-cpa-wins/lesson.html' }
+      ]
+    },
+    {
+      id: 198,
+      thumbnail: '/images/lessons/google-product-feed-mastery.png',
+      title: 'Your Product Feed IS Your Ad: The Hidden Weapon',
+      intro: 'Most advertisers set up their feed once and forget it. A continuously optimized feed is your first and easiest competitive advantage.',
+      directUrl: '/learn/lessons/google-product-feed-mastery',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Hidden Weapon
+
+With Shopping and Performance Max campaigns, Google's AI makes decisions based on the data you provide. Your product feed is the PRIMARY source of that data.
+
+It's not just an inventory list—it's the raw material for every ad served.
+
+**Learn the recipe: Title formula, benefit-driven descriptions, and custom labels that give you an unfair advantage.**
+
+**Open the interactive lesson to optimize your feed.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-product-feed-mastery/lesson.html' }
+      ]
+    },
+    {
+      id: 199,
+      thumbnail: '/images/lessons/google-pmax-blueprint.png',
+      title: 'The Performance Max Asset Group Blueprint',
+      intro: 'Running one generic PMax campaign with one asset group forces the AI to guess. Here\'s how to structure it properly.',
+      directUrl: '/learn/lessons/google-pmax-blueprint',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The PMax Blueprint
+
+**The Mistake:** Running a single PMax campaign with one asset group for all your products and audiences. This forces the AI to guess.
+
+**The Solution:** Create distinct Asset Groups based on your target market segments or product categories. This allows you to tailor creative and messaging.
+
+**Open the interactive lesson to build your perfect PMax structure.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-pmax-blueprint/lesson.html' }
+      ]
+    },
+    {
+      id: 200,
+      thumbnail: '/images/lessons/google-data-quality-edge.png',
+      title: 'Better Data In, Better AI Out: The Quality Edge',
+      intro: 'Your competitive advantage in an AI-driven world is the QUALITY of the data you feed the machine.',
+      directUrl: '/learn/lessons/google-data-quality-edge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Quality Edge
+
+In 2026, data quality is your competitive moat. Three pillars:
+
+1. **Flawless Conversion Tracking:** Browser + server-side
+2. **Segmented Customer Lists:** High-Value, Repeat Buyers, VIPs
+3. **Value-Based Bidding:** Pass actual revenue, not just conversions
+
+**Budget reallocation alone took one account from 2.8x to 5.1x ROAS.**
+
+**Open the interactive lesson to build your data advantage.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-data-quality-edge/lesson.html' }
+      ]
+    },
+    {
+      id: 201,
+      thumbnail: '/images/lessons/google-competitor-conquest.png',
+      title: 'Competitor Conquest: Steal Market Share Legally',
+      intro: 'Use the Google Ads Transparency Center and competitor targeting to capture customers who are already in-market.',
+      directUrl: '/learn/lessons/google-competitor-conquest',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Steal Market Share Legally
+
+The **Google Ads Transparency Center** is a free tool that lets you see the ads any business is currently running on Google.
+
+**The Advanced Play:** Directly target your competitors' customers with Custom Segments. Place your superior offer in front of an audience that is already in-market.
+
+**Open the interactive lesson to set up competitor conquest campaigns.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-competitor-conquest/lesson.html' }
+      ]
+    },
+    // Google Shopping Blueprint lessons
+    {
+      id: 202,
+      thumbnail: '/images/lessons/google-shopping-intent.png',
+      title: 'Active Intent: Why Google Shopping Wins',
+      intro: 'Google Shopping captures users who are actively searching to buy - the highest intent traffic source available.',
+      directUrl: '/learn/lessons/google-shopping-intent',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Why Google Shopping Wins
+
+Google Shopping captures **Active Intent** - users who are already searching with their wallets ready.
+
+**The Funnel Math:**
+- Meta: 2.5% of audience is in-market NOW
+- Google Shopping: 100% are actively searching to buy
+
+**This changes everything about CAC, conversion rates, and scaling strategy.**
+
+**Open the interactive lesson to understand intent-based advertising.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-shopping-intent/lesson.html' }
+      ]
+    },
+    {
+      id: 203,
+      thumbnail: '/images/lessons/google-store-trust-checklist.png',
+      title: 'Earn Google\'s Trust First',
+      intro: 'Before you spend a dollar on Google Ads, your store must pass Google\'s trust checklist - or risk suspension.',
+      directUrl: '/learn/lessons/google-store-trust-checklist',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Store Trust Checklist
+
+Google suspends accounts that don't meet their standards. Before spending on ads, verify:
+
+1. **Legal Pages:** Shipping, Returns, Privacy, Terms (all accessible)
+2. **Contact Info:** Real email, phone, physical address
+3. **Secure Checkout:** SSL everywhere
+4. **Professional Design:** No broken images or placeholder text
+5. **Product Accuracy:** Matches what customers receive
+
+**Open the interactive lesson to audit your store.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-store-trust-checklist/lesson.html' }
+      ]
+    },
+    {
+      id: 204,
+      thumbnail: '/images/lessons/google-hero-product-funnel.png',
+      title: 'Find Your Hero Products',
+      intro: 'Use Google Shopping as a data-buying machine to find winners - you\'re buying clicks, not profit.',
+      directUrl: '/learn/lessons/google-hero-product-funnel',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Hero Product Funnel
+
+**Phase 1: Cast Wide Net** (100+ products, low bids)
+**Phase 2: Identify Winners** (Products with 50+ clicks and sales)
+**Phase 3: Double Down** (Increase budget on heroes only)
+
+**Key insight:** You're BUYING DATA, not profit. Treat early spend as market research.
+
+**Open the interactive lesson to build your hero product funnel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-hero-product-funnel/lesson.html' }
+      ]
+    },
+    {
+      id: 205,
+      thumbnail: '/images/lessons/google-click-fraud-shield.png',
+      title: 'Shield Your Budget from Click Fraud',
+      intro: 'Bots, competitors, and fraud networks are clicking your ads. Protect your data and budget.',
+      directUrl: '/learn/lessons/google-click-fraud-shield',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Click Fraud Problem
+
+**Who's clicking your ads without buying?**
+- Competitor employees
+- Bot networks
+- Click farms
+- Accidental clicks
+
+**The real damage:** Polluted data = Bad AI decisions = Wasted budget
+
+**Your Shield:**
+1. Monitor for suspicious patterns
+2. Use click fraud protection tools
+3. Set up IP exclusions
+4. Review geographic anomalies
+
+**Open the interactive lesson to protect your campaigns.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-click-fraud-shield/lesson.html' }
+      ]
+    },
+    {
+      id: 206,
+      thumbnail: '/images/lessons/google-ai-max-decision.png',
+      title: 'AI Max: Power vs Control',
+      intro: 'Google\'s AI automation offers power but demands sacrifice. Know when to use it and when to stay manual.',
+      directUrl: '/learn/lessons/google-ai-max-decision',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The AI Max Decision Framework
+
+**Use AI Max (PMax, AI Campaigns) when:**
+- You have strong conversion data (50+ conversions/month)
+- You trust your feed quality
+- You want scale over granular control
+
+**Stay Manual when:**
+- Testing new products
+- Limited budget (<$100/day)
+- Need keyword-level insights
+- Building initial data foundation
+
+**Open the interactive lesson for the complete decision framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ai-max-decision/lesson.html' }
+      ]
+    },
+    // Google Growth Engine lessons
+    {
+      id: 207,
+      thumbnail: '/images/lessons/google-negative-keyword-colander.png',
+      title: 'The Negative Keyword Colander',
+      intro: 'Filter out waste clicks - your job is not reach, it\'s return. Only profitable clicks get through.',
+      directUrl: '/learn/lessons/google-negative-keyword-colander',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Negative Keyword Colander
+
+**The Mindset Shift:** Your job isn't to get ads in front of as many people as possible. It's to get the best return possible by being hyper-focused.
+
+**Two-Step Process:**
+1. Build a 'Common Sense' list before launch
+2. Review Search Terms Report weekly (Level 1: Obvious, Level 2: Strategic)
+
+**Quote:** "It's much better to miss out on a few potential searches than to have searches cost you money that never become customers."
+
+**Open the interactive lesson to build your negative keyword strategy.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-negative-keyword-colander/lesson.html' }
+      ]
+    },
+    {
+      id: 208,
+      thumbnail: '/images/lessons/google-optimization-cadence.png',
+      title: 'The Optimization Rhythm',
+      intro: 'Stop random tinkering. Successful optimization is a disciplined routine - let the algorithm breathe.',
+      directUrl: '/learn/lessons/google-optimization-cadence',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Optimization Rhythm
+
+**From Guesswork to Process:** Don't make daily changes; let the algorithm breathe.
+
+**Weekly "Light Checks":**
+- Review Search Terms Report
+- Review Asset Performance
+- Check Budget Pacing
+
+**Monthly "Deep Dives":**
+- Adjust Bidding Strategy
+- Full Creative Refresh
+- Update Audience Signals
+
+**Open the interactive lesson to build your optimization cadence.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-optimization-cadence/lesson.html' }
+      ]
+    },
+    {
+      id: 209,
+      thumbnail: '/images/lessons/google-ad-assets-arsenal.png',
+      title: 'Free Real Estate: Ad Assets',
+      intro: 'Ad Assets (formerly Extensions) are FREE additions that make your ads bigger and more clickable. Most advertisers ignore them.',
+      directUrl: '/learn/lessons/google-ad-assets-arsenal',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Free Real Estate: Ad Assets
+
+**The Opportunity:** Ad Assets are free additions that make your ads bigger, more informative, and more clickable.
+
+**Key Assets to Use:**
+- Sitelinks (About Us, Services, Contact)
+- Promotion Extensions
+- Structured Snippets
+- Image Extensions
+
+**Benefits:** Increased visibility, higher CTR, better user experience.
+
+**Open the interactive lesson to maximize your ad real estate.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ad-assets-arsenal/lesson.html' }
+      ]
+    },
+    {
+      id: 210,
+      thumbnail: '/images/lessons/google-landing-page-bridge.png',
+      title: 'The Click is Only Half the Battle',
+      intro: 'What happens AFTER the click determines your success. Most advertisers optimize ads but ignore landing pages.',
+      directUrl: '/learn/lessons/google-landing-page-bridge',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## The Click is Only Half the Battle
+
+**The Challenge:** It's easier to tweak headlines than optimize your website. This is where most advertisers fall short.
+
+**High-Impact Optimizations:**
+1. Add social proof (testimonials, reviews, ratings)
+2. Simplify design for frictionless checkout
+3. Highlight benefits, not just features
+4. Add high-quality video demos
+
+**The Payoff:** Small conversion rate improvements = massive profitability unlocks.
+
+**Open the interactive lesson to optimize your landing pages.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-landing-page-bridge/lesson.html' }
+      ]
+    },
+    {
+      id: 211,
+      thumbnail: '/images/lessons/google-ai-overviews-opportunity.png',
+      title: 'Ads in AI Overviews: The 2026 Opportunity',
+      intro: 'Google\'s AI Overviews are changing search. Your ads can now appear INSIDE AI-generated answers.',
+      directUrl: '/learn/lessons/google-ai-overviews-opportunity',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Ads in AI Overviews
+
+**What's Changing:** Google is rolling out AI-generated answers at the top of search results. Your ads can appear directly within these overviews.
+
+**The Opportunity:** Capture high-intent users even in informational queries. Google's AI detects commercial intent and shows relevant products.
+
+**How to Be Eligible:**
+- For Search: Use Broad Match keywords
+- For All Campaigns: Use Smart Bidding
+
+**The era of manual control is giving way to AI-powered targeting. Embrace it to win.**
+
+**Open the interactive lesson to capitalize on AI Overviews.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-ai-overviews-opportunity/lesson.html' }
+      ]
+    },
+    // Google Ads Advanced lessons
+    {
+      id: 212,
+      thumbnail: '/images/lessons/google-brand-moat.png',
+      title: 'Brand is the Ultimate Moat',
+      intro: 'The barrier competitors can\'t copy with a bigger budget. Brand lets Nike sell a t-shirt for 10x.',
+      directUrl: '/learn/lessons/google-brand-moat',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Brand is the Ultimate Moat
+
+**The Nike Effect:** Brand is what allows Nike to sell a t-shirt for 10x what an identical, unbranded shirt sells for.
+
+A strong brand lets you:
+- Play Google Ads on easy mode
+- Command higher prices
+- Earn customer loyalty that transcends clicks
+
+**Your brand is a moat that competitors can't copy with a bigger budget.**
+
+**Open the interactive lesson to build your unfair advantage.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-brand-moat/lesson.html' }
+      ]
+    },
+    {
+      id: 213,
+      thumbnail: '/images/lessons/google-budget-reallocation.png',
+      title: 'Feed Your Winners: 2.8x to 5.1x ROAS',
+      intro: 'The easiest win in Google Ads. Stop spreading budget evenly - concentrate it where it works best.',
+      directUrl: '/learn/lessons/google-budget-reallocation',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Feed Your Winners
+
+**The Easiest Win:** Don't spread your budget evenly; concentrate it where it works best.
+
+**BEFORE:** 4 campaigns @ $1000 each → Total ROAS: 2.8x
+**AFTER:** Reallocate to winner ($2500) → Total ROAS: 5.1x
+
+**Key insight:** Continuously audit your campaigns and feed your winners.
+
+**Open the interactive lesson to optimize your budget allocation.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-budget-reallocation/lesson.html' }
+      ]
+    },
+    {
+      id: 214,
+      thumbnail: '/images/lessons/google-focus-firepower.png',
+      title: 'Focus Your Firepower on Bestsellers',
+      intro: 'Spreading budget across dozens of products starves the algorithm. Consolidate on winners.',
+      directUrl: '/learn/lessons/google-focus-firepower',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Focus Your Firepower
+
+**The Common Mistake:** Spreading a small budget across dozens of products starves the algorithm.
+
+**The Pro's Edge:** Consolidate budget onto your best-selling products for cold audiences.
+
+**Why it Works:** Google learns faster, optimizing for time, demographics, and placements.
+
+**The Result:** Profitability on winners → cash flow to reinvest and expand.
+
+**Open the interactive lesson to focus your ad spend.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-focus-firepower/lesson.html' }
+      ]
+    },
+    {
+      id: 215,
+      thumbnail: '/images/lessons/google-influencer-creative.png',
+      title: 'Outsource Your Creative Genius',
+      intro: 'The scaling hack: hire influencers to create your ad content. Expertise + credibility + efficiency.',
+      directUrl: '/learn/lessons/google-influencer-creative',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Google Ads', label: 'Focus' }
+      ],
+      content: `## Outsource Your Creative Genius
+
+**The Scaling Problem:** YouTube and Display campaigns need steady video creative. Most entrepreneurs lack skills/equipment.
+
+**The Hack:** Hire influencers and content creators.
+
+**Triple Benefit:**
+1. **Expertise:** Professionals at engaging content
+2. **Credibility:** Their endorsement stops the scroll
+3. **Efficiency:** Faster and more cost-effective
+
+**Result:** Influencer-based creative = significantly higher ROAS.
+
+**Open the interactive lesson to scale your creative.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/google-influencer-creative/lesson.html' }
+      ]
+    },
+    // Business Fundamentals lessons
+    {
+      id: 216,
+      thumbnail: '/images/lessons/biz-infinite-money-engine.png',
+      title: 'The Infinite Money Engine',
+      intro: 'The single equation that transforms eCommerce into a video game with unlimited money. LTV > CAC = infinite scale.',
+      directUrl: '/learn/lessons/biz-infinite-money-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Engine
+
+**The Core Truth:** The entire e-commerce universe is governed by one equation: LTV > CAC.
+
+**CAC** = Customer Acquisition Cost (cost to acquire one new customer)
+**LTV** = Lifetime Value (total predictable revenue a customer generates over their lifetime)
+
+When LTV is significantly higher than CAC (e.g., $1,000 LTV vs $100 CAC), you have a machine. Put $100 in, get $1,000 out over time. This is the computer game with infinite money.
+
+**Open the interactive lesson to understand the code.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 217,
+      thumbnail: '/images/lessons/biz-rat-brain-hijack.png',
+      title: 'The Rat Brain Hijack',
+      intro: 'Marketing genius isn\'t about logic. It\'s about triggering immediate, subconscious reactions.',
+      directUrl: '/learn/lessons/biz-rat-brain-hijack',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Rat Brain Hijack
+
+**Core Idea:** To lower your CAC, you must appeal to the part of the brain that reacts before it thinks.
+
+**The Two Brains:**
+- **The Rat Brain:** Subconscious, reactive, emotional
+- **The Logical Brain:** Conscious, decision-making, analytical
+
+**Key Technique: Rat Brain Analysis (RBA)** - Consciously analyze your own subconscious reactions. Why did that video capture your attention? If you understand your own Rat Brain, you can trigger everyone else's.
+
+**Open the interactive lesson to master RBA.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rat-brain-hijack/lesson.html' }
+      ]
+    },
+    {
+      id: 218,
+      thumbnail: '/images/lessons/biz-velocity-advantage.png',
+      title: 'The Velocity Advantage',
+      intro: 'The biggest unfair advantage in business isn\'t money, talent, or connections. It\'s how fast you operate.',
+      directUrl: '/learn/lessons/biz-velocity-advantage',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Velocity Advantage
+
+**Quote:** "The biggest unfair advantage in business isn't money, talent, or connections. It's how fast you operate." – Davie Fogarty
+
+**The Fallacy of Safety:** Most businesses move slowly because it feels safer. This is an illusion. Moving slow is the most dangerous place because you generate no new data.
+
+**Frameworks for Speed:**
+1. **The 80% Rule:** Once you're 80% confident, stop researching and move
+2. **Two-Way Doors (Bezos):** Most decisions are reversible
+3. **Elon's 5-Step:** Challenge → Cut → Tighten → Push → Systemize
+
+**Open the interactive lesson to master velocity.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-velocity-advantage/lesson.html' }
+      ]
+    },
+    {
+      id: 219,
+      thumbnail: '/images/lessons/biz-remarkable-product.png',
+      title: 'Build Something Remarkable',
+      intro: '"Stop making average crap for average people." – Seth Godin. The foundation of high-LTV businesses.',
+      directUrl: '/learn/lessons/biz-remarkable-product',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Build Something Remarkable
+
+**The Foundation:** You cannot create a high-LTV business by selling mediocre products. The marketing begins BEFORE the product is finished.
+
+**The Litmus Test (3 Questions):**
+1. Does your product have a story worth telling?
+2. Does it solve a problem so well they would miss it if it were gone?
+3. Is there a built-in reason for one customer to tell another?
+
+**Key Concept:** Focus on the "Smallest Viable Audience" - people who will care so much they'll tell others.
+
+**Open the interactive lesson to build remarkable products.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-remarkable-product/lesson.html' }
+      ]
+    },
+    {
+      id: 220,
+      thumbnail: '/images/lessons/biz-asset-not-job.png',
+      title: 'Build an Asset, Not a Job',
+      intro: '"A business that requires you isn\'t a business. It\'s a high-stress job you cannot quit." – Alex Hormozi',
+      directUrl: '/learn/lessons/biz-asset-not-job',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Build an Asset, Not a Job
+
+**The $3 Million Difference:**
+Both Fred and William have $2M profit businesses. Each adds $500K annually.
+- **Fred (Earner):** +$500K → After 50% tax = +$250K net worth
+- **William (Builder):** +$500K × 6x multiple = +$3,000,000 net worth
+
+**The Ultimate Test:** Can you take 3 months off and have the business grow?
+- If it shrinks, you're still a key component
+- If it grows, you have built a true, self-sustaining asset
+
+**Open the interactive lesson to escape the matrix.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-asset-not-job/lesson.html' }
+      ]
+    },
+    // Business Leverage Playbook lessons
+    {
+      id: 221,
+      thumbnail: '/images/lessons/biz-leverage-equation.png',
+      title: 'The Leverage Equation',
+      intro: 'Outputs = Volume × Leverage. Stop working harder. Start working smarter with the equation that changes everything.',
+      directUrl: '/learn/lessons/biz-leverage-equation',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-leverage-equation/lesson.html' }
+      ]
+    },
+    {
+      id: 222,
+      thumbnail: '/images/lessons/biz-counter-position.png',
+      title: 'The Counter-Position Strategy',
+      intro: "Create a battlefield where the giants' money is worthless.",
+      directUrl: '/learn/lessons/biz-counter-position',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-counter-position/lesson.html' }
+      ]
+    },
+    {
+      id: 223,
+      thumbnail: '/images/lessons/biz-awareness-sweet-spot.png',
+      title: 'The Market Awareness Sweet Spot',
+      intro: "Enter markets where customers feel the pain but don't know the solution exists.",
+      directUrl: '/learn/lessons/biz-awareness-sweet-spot',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-awareness-sweet-spot/lesson.html' }
+      ]
+    },
+    {
+      id: 224,
+      thumbnail: '/images/lessons/biz-barbell-strategy.png',
+      title: 'The Barbell Strategy',
+      intro: '5% big swings + 95% small wins. Avoid the dangerous middle.',
+      directUrl: '/learn/lessons/biz-barbell-strategy',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-barbell-strategy/lesson.html' }
+      ]
+    },
+    {
+      id: 225,
+      thumbnail: '/images/lessons/biz-one-pager-blueprint.png',
+      title: 'The One-Pager Blueprint',
+      intro: 'A business plan is useless. A one-pager is a weapon.',
+      directUrl: '/learn/lessons/biz-one-pager-blueprint',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-one-pager-blueprint/lesson.html' }
+      ]
+    },
+    // E-commerce Cheat Code Business Lessons
+    {
+      id: 226,
+      thumbnail: '/images/lessons/biz-infinite-money-loop.png',
+      title: 'The Infinite Money Loop: How $1 Becomes $100',
+      intro: 'The 6-step flywheel that turns paid advertising into a predictable, scalable, infinite money machine.',
+      directUrl: '/learn/lessons/biz-infinite-money-loop',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Loop
+
+When your LTV is high enough, you can afford to acquire customers at a cost your competitors can't. You can spend them out of the market.
+
+"LTV to CAC is the only thing that matters. It's the foundational economic unit of any business." — Alex Hormozi
+
+**Open the interactive lesson to master the infinite money loop.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-loop/lesson.html' }
+      ]
+    },
+    {
+      id: 227,
+      thumbnail: '/images/lessons/biz-marketing-company.png',
+      title: 'You\'re Not a Brand. You\'re a Marketing Company.',
+      intro: 'The brutal truth about brand vs marketing that separates winners from wannabes.',
+      directUrl: '/learn/lessons/biz-marketing-company',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## You're Not a Brand. You're a Marketing Company.
+
+Brand is a lagging indicator earned over decades. Marketing is the engine that drives revenue.
+
+"If I cut my ads by 50%, my revenue follows by 50%. We are very much a marketing company." — Sean Frank, CEO of Ridge
+
+**Open the interactive lesson to shift your mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-marketing-company/lesson.html' }
+      ]
+    },
+    {
+      id: 228,
+      thumbnail: '/images/lessons/biz-product-expansion.png',
+      title: 'The Ridge Playbook: How to Engineer High LTV',
+      intro: 'How Ridge solved their LTV problem by expanding beyond wallets. Today over 50% of revenue comes from non-wallet products.',
+      directUrl: '/learn/lessons/biz-product-expansion',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Ridge Playbook
+
+"Our core wallet business is strong... but most people only need one. Our returning customer revenue was our biggest weakness." — Sean Frank
+
+Ridge didn't try to sell more wallets. They launched new categories: Rings, Phone Cases, Keycases, Luggage.
+
+**Open the interactive lesson to learn strategic product expansion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-product-expansion/lesson.html' }
+      ]
+    },
+    {
+      id: 229,
+      thumbnail: '/images/lessons/biz-zero-cac-engine.png',
+      title: 'The $0 CAC Engine: Get Customers for Free',
+      intro: 'How to reach $10 million in sales without spending a dollar on ads. Master organic content first.',
+      directUrl: '/learn/lessons/biz-zero-cac-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The $0 CAC Engine
+
+"If you're starting off as a brand, don't spend money on advertising. Get really good at short form content. That should be able to take you to... at least $10 million in sales." — Sean Frank
+
+Organic is your R&D lab. Test hooks, angles, and messaging for free. Then scale what works with paid.
+
+**Open the interactive lesson to build your $0 CAC engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-zero-cac-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 230,
+      thumbnail: '/images/lessons/biz-creative-targeting.png',
+      title: 'Creative is the New Targeting: The System for Winning',
+      intro: 'Meta\'s AI is so advanced that your biggest lever is no longer audience targeting. It\'s creative volume and diversity.',
+      directUrl: '/learn/lessons/biz-creative-targeting',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Creative is the New Targeting
+
+The System for Winning:
+1. **VOLUME** - Launch hundreds of ads per week to feed the beast
+2. **DIVERSITY** - Radically different formats, angles, hooks, pain points
+3. **MEASUREMENT** - Track concepts, hooks, and edits at granular level
+
+**Open the interactive lesson to master the new creative paradigm.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-creative-targeting/lesson.html' }
+      ]
+    },
+    // The Infinite Money Equation lessons
+    {
+      id: 231,
+      thumbnail: '/images/lessons/biz-3x-threshold.png',
+      title: 'The 3x Threshold',
+      intro: 'The single equation that separates struggling stores from money-printing machines.',
+      directUrl: '/learn/lessons/biz-3x-threshold',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The 3x Threshold
+
+When your LTV is more than 3x your CAC, something magical happens. You have enough margin to reinvest aggressively and outspend every competitor.
+
+**Open the interactive lesson to understand the math that changes everything.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-3x-threshold/lesson.html' }
+      ]
+    },
+    {
+      id: 232,
+      thumbnail: '/images/lessons/biz-asymmetric-monopoly.png',
+      title: 'The Asymmetric Monopoly',
+      intro: 'How a 1400:1 ratio creates a legal monopoly nobody can compete with.',
+      directUrl: '/learn/lessons/biz-asymmetric-monopoly',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Asymmetric Monopoly
+
+Starbucks has a 1400:1 LTV:CAC ratio. They can outspend any competitor and still be profitable. This is how you create a legal monopoly.
+
+**Open the interactive lesson to learn the three superpowers of asymmetric economics.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-asymmetric-monopoly/lesson.html' }
+      ]
+    },
+    {
+      id: 233,
+      thumbnail: '/images/lessons/biz-authenticity-anchor.png',
+      title: 'The Authenticity Anchor',
+      intro: 'How Nike stayed cool for 40 years while competitors chased trends and died.',
+      directUrl: '/learn/lessons/biz-authenticity-anchor',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Authenticity Anchor
+
+Nike never updated the Air Force 1. Same silhouette since 1982. They didn't chase cool. They let cool find them.
+
+**Open the interactive lesson to learn Greg Hoffman's "Emotion Before Product" framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-authenticity-anchor/lesson.html' }
+      ]
+    },
+    {
+      id: 234,
+      thumbnail: '/images/lessons/biz-brand-ltv-engine.png',
+      title: 'The Brand LTV Engine',
+      intro: 'How Ralph Lauren, LEGO, and Le Creuset engineer endless reasons to return.',
+      directUrl: '/learn/lessons/biz-brand-ltv-engine',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Brand LTV Engine
+
+High LTV doesn't come from tactics. It comes from brand strategy. Learn how the world's best brands engineer customer loyalty.
+
+**Open the interactive lesson to build your brand LTV engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-brand-ltv-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 235,
+      thumbnail: '/images/lessons/biz-brand-temple.png',
+      title: 'The Brand Temple Strategy',
+      intro: 'How Ralph Lauren, LEGO, and Le Creuset built billion-dollar empires through loyalty.',
+      directUrl: '/learn/lessons/biz-brand-temple',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Brand Temple Strategy
+
+These brands built temples, not stores. People don't just buy their products—they join their religions.
+
+**Open the interactive lesson to understand the brand temple framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-brand-temple/lesson.html' }
+      ]
+    },
+    {
+      id: 236,
+      thumbnail: '/images/lessons/biz-cash-conversion.png',
+      title: 'The Negative Cash Conversion Cycle',
+      intro: 'How Davie Fogarty bootstrapped The Oodie to nearly $1B using customer money.',
+      directUrl: '/learn/lessons/biz-cash-conversion',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Negative Cash Conversion Cycle
+
+Amazon, Dell, and The Oodie all use this strategy: get paid before you pay suppliers. It's free capital for growth.
+
+**Open the interactive lesson to engineer your own negative cash conversion cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-cash-conversion/lesson.html' }
+      ]
+    },
+    {
+      id: 237,
+      thumbnail: '/images/lessons/biz-closer-framework.png',
+      title: 'The CLOSER Framework',
+      intro: 'Alex Hormozi\'s battle-tested 6-step sales system that converts without being pushy.',
+      directUrl: '/learn/lessons/biz-closer-framework',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The CLOSER Framework
+
+Clarify, Label, Overview, Solve, Explain, Reinforce. Six steps that turn prospects into buyers without pressure.
+
+**Open the interactive lesson to master the CLOSER sales system.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-closer-framework/lesson.html' }
+      ]
+    },
+    {
+      id: 238,
+      thumbnail: '/images/lessons/biz-courage-variable.png',
+      title: 'The Courage Variable',
+      intro: 'The hidden code behind every empire: 7,000 failures, £2 profit, and betting it all.',
+      directUrl: '/learn/lessons/biz-courage-variable',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Courage Variable
+
+Ben Francis made 7,000 mistakes before Gymshark worked. His first profit was £2. Every decision was made with courage.
+
+**Open the interactive lesson to understand the role of courage in business success.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-courage-variable/lesson.html' }
+      ]
+    },
+    {
+      id: 239,
+      thumbnail: '/images/lessons/biz-empathy-engine.png',
+      title: 'The Empathy Engine',
+      intro: 'The invisible difference between good service and service that creates lifelong customers.',
+      directUrl: '/learn/lessons/biz-empathy-engine',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Empathy Engine
+
+Empathy isn't soft—it's strategic. Brands that engineer empathy into every touchpoint create unbreakable customer bonds.
+
+**Open the interactive lesson to build your empathy engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-empathy-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 240,
+      thumbnail: '/images/lessons/biz-four-pillars.png',
+      title: 'The Four Pillars Protocol',
+      intro: 'The complete framework to escape the wheel and build a business that prints money.',
+      directUrl: '/learn/lessons/biz-four-pillars',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Four Pillars Protocol
+
+Four pillars separate struggling stores from money machines: Offer, Audience, LTV, and Systems.
+
+**Open the interactive lesson to install the four pillars in your business.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-four-pillars/lesson.html' }
+      ]
+    },
+    {
+      id: 241,
+      thumbnail: '/images/lessons/biz-hamster-wheel.png',
+      title: 'The Hamster Wheel Trap',
+      intro: 'The Matrix-level prison keeping 99% of eCommerce stores broke—and how to escape.',
+      directUrl: '/learn/lessons/biz-hamster-wheel',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Hamster Wheel Trap
+
+Most stores are running fast and going nowhere. They chase new customers while ignoring the goldmine in their existing base.
+
+**Open the interactive lesson to escape the hamster wheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-hamster-wheel/lesson.html' }
+      ]
+    },
+    {
+      id: 242,
+      thumbnail: '/images/lessons/biz-infinite-flywheel.png',
+      title: 'The Infinite Money Flywheel',
+      intro: 'How $100 ad spend becomes a predictable, scalable money machine.',
+      directUrl: '/learn/lessons/biz-infinite-flywheel',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Flywheel
+
+Acquire customer → Extract LTV → Reinvest profit → Acquire more customers. The flywheel that compounds forever.
+
+**Open the interactive lesson to build your infinite flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-flywheel/lesson.html' }
+      ]
+    },
+    {
+      id: 243,
+      thumbnail: '/images/lessons/biz-leaders-burden.png',
+      title: 'The Leader\'s Burden',
+      intro: 'If the system fails, the leader failed. The ultimate accountability framework.',
+      directUrl: '/learn/lessons/biz-leaders-burden',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Leader's Burden
+
+"If you can't describe what you're doing as a process, you don't know what you're doing." — W. Edwards Deming
+
+**Open the interactive lesson to embrace the leader's burden.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-leaders-burden/lesson.html' }
+      ]
+    },
+    {
+      id: 244,
+      thumbnail: '/images/lessons/biz-lifetime-gross-profit.png',
+      title: 'Lifetime Gross Profit',
+      intro: 'The number everyone calculates wrong—and why it kills businesses.',
+      directUrl: '/learn/lessons/biz-lifetime-gross-profit',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Lifetime Gross Profit
+
+LTV is NOT revenue. It's profit. Get this wrong and you'll scale yourself to bankruptcy.
+
+**Open the interactive lesson to calculate your true LTV.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-lifetime-gross-profit/lesson.html' }
+      ]
+    },
+    {
+      id: 245,
+      thumbnail: '/images/lessons/biz-logic-trap.png',
+      title: 'The Logic Trap',
+      intro: 'Why the smartest marketing decision can destroy your sales overnight.',
+      directUrl: '/learn/lessons/biz-logic-trap',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Logic Trap
+
+Decisions that make perfect logical sense can fail spectacularly. Customers don't buy with logic—they buy with emotion.
+
+**Open the interactive lesson to avoid the logic trap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-logic-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 246,
+      thumbnail: '/images/lessons/biz-ltv-cac-dashboard.png',
+      title: 'The Operator\'s Dashboard',
+      intro: 'The LTV:CAC ratios that separate struggling businesses from unstoppable ones.',
+      directUrl: '/learn/lessons/biz-ltv-cac-dashboard',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Operator's Dashboard
+
+3:1 = Surviving. 5:1 = Growing. 10:1+ = Dominating. Know your ratio and optimize ruthlessly.
+
+**Open the interactive lesson to understand your operator's dashboard.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ltv-cac-dashboard/lesson.html' }
+      ]
+    },
+    {
+      id: 247,
+      thumbnail: '/images/lessons/biz-ltv-levers.png',
+      title: 'The LTV Control Panel',
+      intro: '7 levers to increase customer lifetime value and maximize profitability.',
+      directUrl: '/learn/lessons/biz-ltv-levers',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The LTV Control Panel
+
+Seven levers control your LTV: AOV, Purchase Frequency, Retention, Margins, Upsells, Cross-sells, and Customer Lifetime.
+
+**Open the interactive lesson to master the LTV control panel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ltv-levers/lesson.html' }
+      ]
+    },
+    {
+      id: 248,
+      thumbnail: '/images/lessons/biz-model-vs-method.png',
+      title: 'Model vs Method',
+      intro: 'Why the best model beats the best tactics every single time.',
+      directUrl: '/learn/lessons/biz-model-vs-method',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Model vs Method
+
+A mediocre tactic in a great model beats a great tactic in a mediocre model. Focus on the business model first.
+
+**Open the interactive lesson to choose model over method.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-model-vs-method/lesson.html' }
+      ]
+    },
+    {
+      id: 249,
+      thumbnail: '/images/lessons/biz-objection-dance.png',
+      title: 'The Objection Dance',
+      intro: 'Handling objections is a dance, not a fight. 4 techniques that disarm resistance.',
+      directUrl: '/learn/lessons/biz-objection-dance',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Objection Dance
+
+Don't fight objections. Dance with them. Acknowledge, explore, and redirect without resistance.
+
+**Open the interactive lesson to master the objection dance.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-objection-dance/lesson.html' }
+      ]
+    },
+    {
+      id: 250,
+      thumbnail: '/images/lessons/biz-operator-mindset.png',
+      title: 'The Operator\'s Mindset',
+      intro: 'How Ben Francis built Gymshark to $1.5B by putting the model above his ego.',
+      directUrl: '/learn/lessons/biz-operator-mindset',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Operator's Mindset
+
+Ben Francis stepped down as Gymshark CEO when he realized the business needed different leadership. That's operator thinking.
+
+**Open the interactive lesson to develop the operator's mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-operator-mindset/lesson.html' }
+      ]
+    },
+    {
+      id: 251,
+      thumbnail: '/images/lessons/biz-purchase-cycle-engine.png',
+      title: 'The Purchase Cycle Engineer',
+      intro: 'How Le Creuset turned a once-a-decade purchase into an annual buying event.',
+      directUrl: '/learn/lessons/biz-purchase-cycle-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Purchase Cycle Engineer
+
+Some products are naturally infrequent purchases. Le Creuset engineered their way around this with colors and collections.
+
+**Open the interactive lesson to engineer your purchase cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-purchase-cycle-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 252,
+      thumbnail: '/images/lessons/biz-replication-protocol.png',
+      title: 'The Replication Protocol',
+      intro: 'Alex Hormozi\'s secret: Simple scales, fancy fails. Why systems beat talent.',
+      directUrl: '/learn/lessons/biz-replication-protocol',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Replication Protocol
+
+"The simpler I can make something, the more I can replicate it." — Alex Hormozi
+
+**Open the interactive lesson to build replicable systems.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-replication-protocol/lesson.html' }
+      ]
+    },
+    {
+      id: 253,
+      thumbnail: '/images/lessons/biz-rfm-secret.png',
+      title: 'The RFM Secret',
+      intro: 'How to identify your best customers and make more money from fewer people.',
+      directUrl: '/learn/lessons/biz-rfm-secret',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The RFM Secret
+
+Recency, Frequency, Monetary Value. Three dimensions that reveal exactly who your best customers are.
+
+**Open the interactive lesson to unlock the RFM secret.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rfm-secret/lesson.html' }
+      ]
+    },
+    {
+      id: 254,
+      thumbnail: '/images/lessons/biz-rule-of-100.png',
+      title: 'The Rule of 100',
+      intro: 'The volume strategy that separates dreamers from millionaires.',
+      directUrl: '/learn/lessons/biz-rule-of-100',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Rule of 100
+
+"You're not doing anything wrong. You're just doing too little." — Alex Hormozi
+
+100 outreaches OR $100 ad spend OR 100 minutes content. Daily. Non-negotiable.
+
+**Open the interactive lesson to implement the Rule of 100.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rule-of-100/lesson.html' }
+      ]
+    },
+    {
+      id: 255,
+      thumbnail: '/images/lessons/biz-valley-protocol.png',
+      title: 'The Valley of Despair Protocol',
+      intro: 'Why 97% of entrepreneurs quit at the exact moment they should push harder.',
+      directUrl: '/learn/lessons/biz-valley-protocol',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Valley of Despair Protocol
+
+Five stages: Uninformed Optimism → Informed Pessimism → Valley of Despair → Informed Optimism → Achievement.
+
+97% quit at stage 3. The valley is where skills are forged.
+
+**Open the interactive lesson to survive the valley of despair.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-valley-protocol/lesson.html' }
       ]
     }
   ];
@@ -2941,7 +6928,7 @@ function determineCategory(article: RawArticle): Article['category'] {
   if (title.includes('conversion') || title.includes('cvr') || title.includes('rev') || title.includes('aov') || title.includes('button') || title.includes('wishlist') || title.includes('review') || title.includes('swatch') || title.includes('theme') || title.includes('cart')) {
     return 'conversion';
   }
-  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline')) {
+  if (title.includes('psychology') || title.includes('font') || title.includes('halbert') || title.includes('rock') || title.includes('formula') || title.includes('trick') || title.includes('personalization') || title.includes('copywriting') || title.includes('headline') || title.includes('persuasion') || title.includes('influence') || title.includes('f.r.e.d') || title.includes('gatekeeper') || title.includes('emotion') || title.includes('familiar') || title.includes('red button') || title.includes('3-second') || title.includes('selling') || title.includes('autopilot') || title.includes('trust') || title.includes('herd') || title.includes('instinct') || title.includes('gift') || title.includes('micro-yes') || title.includes('reciprocity') || title.includes('scarcity') || title.includes('commitment') || title.includes('authority') || title.includes('certainty') || title.includes('conviction') || title.includes('pause') || title.includes('fomo') || title.includes('framing') || title.includes('identity') || title.includes('delusion') || title.includes('pain') || title.includes('telescope') || title.includes('value perception') || title.includes('brains') || title.includes('pre-suasion') || title.includes('pattern interrupt') || title.includes('dopamine') || title.includes('anti-sell') || title.includes('decoy') || title.includes('paradox') || title.includes('choice') || title.includes('mistake') || title.includes('nudge') || title.includes('urinal') || title.includes('fly in')) {
     return 'psychology';
   }
   if (title.includes('agent') || title.includes('aliexpress') || title.includes('whatsapp') || title.includes('shipping') || title.includes('coupon')) {
