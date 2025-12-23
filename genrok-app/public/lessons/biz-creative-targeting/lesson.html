@@ -4,24 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Creative is the New Targeting | Quantum Scale</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  <script src="../shared/greetings.js"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    :root {
+      --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: transparent; overflow: hidden; -webkit-font-smoothing: antialiased; }
-    .title-font { font-family: 'Fraunces', Georgia, serif; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
     ::selection { background: var(--accent); color: white; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .slide-title { font-family: 'Fraunces', Georgia, serif; font-weight: 800; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
@@ -69,7 +71,7 @@
     };
 
     const slides = [
-      { type: 'welcome', goals: ['Why creative volume beats audience targeting', 'The 3 pillars: Volume, Diversity, Measurement', 'How to feed the Meta AI beast'] },
+      { type: 'welcome', learningGoals: ['Why creative volume beats audience targeting', 'The 3 pillars: Volume, Diversity, Measurement', 'How to feed the Meta AI beast'] },
       { type: 'hook', headline: 'Targeting is dead.', subtext: 'Meta\'s AI knows who to show your ads to better than you ever could. Your biggest lever isn\'t WHO you target. It\'s WHAT they see.' },
       { type: 'stats', title: 'The New Reality of Meta Ads', subtitle: 'Andromeda AI changed everything in 2024', stats: [
         { value: '100s', label: 'Ads launched per week by winners', color: '#3b82f6' },
@@ -104,21 +106,29 @@
     ];
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Hey', subtitle: 'Ready to learn?' };
-      const formattedGreeting = typeof formatGreeting === 'function' ? formatGreeting(welcomeData.greeting, userName) : `${welcomeData.greeting}, ${userName}!`;
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
       return (
-        <div className="h-full flex flex-col items-center justify-center px-6 py-8 md:py-12 text-center overflow-y-auto hide-scrollbar">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-xl w-full">
-            <h1 className="title-font text-4xl md:text-5xl lg:text-6xl font-black text-neutral-900 mb-3">{LESSON_CONFIG.title}</h1>
-            <p className="text-lg md:text-xl text-neutral-500 mb-2">{formattedGreeting}</p>
-            <p className="text-base text-neutral-400 mb-6">{welcomeData.subtitle}</p>
-            <div className="flex items-center justify-center gap-2 text-sm text-neutral-400 mb-8"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-800 rounded-2xl p-6 text-left mb-8">
-              <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: 'var(--accent)' }}>In This Lesson</p>
-              <div className="space-y-3">{data.goals.map((goal, i) => (<motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-3"><span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-neutral-900" style={{ backgroundColor: 'var(--accent)' }}>{i + 1}</span><span className="text-neutral-200 text-sm md:text-base">{goal}</span></motion.div>))}</div>
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
             </motion.div>
-            <motion.button onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onHoverStart={() => onShowGif(getRandomGif(celebrationGifs), '55%', 'right')} onHoverEnd={onHideGif} className="px-8 py-4 rounded-xl font-semibold text-neutral-900 shadow-lg" style={{ backgroundColor: 'var(--accent)' }}>Let's Go</motion.button>
-          </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
         </div>
       );
     };
