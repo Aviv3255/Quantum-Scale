@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The $0 CAC Engine: Get Customers for Free | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useRef } = React;
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: 'The $0 CAC Engine',
+        subtitle: 'Get Customers for Free',
+        category: 'Business Strategy',
+        duration: '5 min',
+        learningGoals: [
+          'Why organic content beats paid ads in the beginning',
+          'How to use organic as your R&D lab',
+          'The $0 to $10M roadmap'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Stop Burning Money on Ads',
+        subtext: 'Every dollar spent on ads before mastering organic is a wasted dollar. Here\'s why.'
+      },
+      {
+        type: 'quote',
+        quote: 'If you\'re starting off as a brand, don\'t spend money on advertising. Get really good at short form content. That should be able to take you to... at least $10 million in sales.',
+        author: 'Sean Frank',
+        role: 'CEO, Ridge Wallet',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png'
+      },
+      {
+        type: 'content',
+        title: 'The Brutal Truth',
+        body: `**Most founders waste $10K-$50K on ads that don't work.**
+
+Why? Because they skip the proving ground.
+
+Organic content is your litmus test. If people scroll past it for free, they'll scroll past your ad even faster.
+
+**The logic is simple:** Master attention for free first. Then buy more of it.`
+      },
+      {
+        type: 'mockup',
+        title: 'Two Paths. Same Destination.',
+        mockup: (
+          <svg viewBox="0 0 800 500" className="w-full h-auto">
+            {/* Organic Content Engine */}
+            <g>
+              <rect x="50" y="80" width="320" height="180" rx="16" fill="#10B981" opacity="0.1" stroke="#10B981" strokeWidth="2"/>
+              <text x="210" y="120" textAnchor="middle" fontSize="24" fontWeight="700" fill="#10B981">Organic Content Engine</text>
+              <text x="210" y="155" textAnchor="middle" fontSize="16" fill="#1F2937">FREE Attention</text>
+              <text x="210" y="185" textAnchor="middle" fontSize="14" fill="#6B7280">• TikTok • Reels • Shorts</text>
+              <text x="210" y="210" textAnchor="middle" fontSize="14" fill="#6B7280">Test hooks, angles, messaging</text>
+              <text x="210" y="235" textAnchor="middle" fontSize="14" fontWeight="600" fill="#10B981">$0 to $10M</text>
+            </g>
+
+            {/* Paid Ads Machine */}
+            <g>
+              <rect x="430" y="80" width="320" height="180" rx="16" fill="#F59E0B" opacity="0.1" stroke="#F59E0B" strokeWidth="2"/>
+              <text x="590" y="120" textAnchor="middle" fontSize="24" fontWeight="700" fill="#F59E0B">Paid Ads Machine</text>
+              <text x="590" y="155" textAnchor="middle" fontSize="16" fill="#1F2937">PAID Attention</text>
+              <text x="590" y="185" textAnchor="middle" fontSize="14" fill="#6B7280">Meta • Google • TikTok Ads</text>
+              <text x="590" y="210" textAnchor="middle" fontSize="14" fill="#6B7280">Scale what already works</text>
+              <text x="590" y="235" textAnchor="middle" fontSize="14" fontWeight="600" fill="#F59E0B">$10M to $100M+</text>
+            </g>
+
+            {/* Arrow */}
+            <path d="M 370 170 L 430 170" stroke="#1F2937" strokeWidth="3" markerEnd="url(#arrowhead)"/>
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                <polygon points="0 0, 10 3, 0 6" fill="#1F2937" />
+              </marker>
+            </defs>
+            <text x="400" y="160" textAnchor="middle" fontSize="14" fontWeight="600" fill="#1F2937">Then</text>
+
+            {/* Bottom insight */}
+            <rect x="200" y="320" width="400" height="120" rx="12" fill="#D4A017" opacity="0.1" stroke="#D4A017" strokeWidth="2"/>
+            <text x="400" y="360" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1F2937">The Proving Ground</text>
+            <text x="400" y="390" textAnchor="middle" fontSize="14" fill="#4B5563">Organic proves what works.</text>
+            <text x="400" y="415" textAnchor="middle" fontSize="14" fill="#4B5563">Paid scales what's proven.</text>
+          </svg>
+        )
+      },
+      {
+        type: 'content',
+        title: 'Organic is Your R&D Lab',
+        body: `Think of organic content as **free market research**.
+
+Every video you post is a test:
+- Does this hook stop the scroll?
+- Does this angle resonate?
+- Does this messaging convert?
+
+**The beauty:** You get instant feedback without spending a cent.
+
+Once you find hooks that work organically, you've got your paid ad winners.`
+      },
+      {
+        type: 'stats-grid',
+        title: 'The $0 CAC Playbook',
+        items: [
+          {
+            value: '100+',
+            label: 'Videos Per Month',
+            description: 'Volume is the game. Test relentlessly.'
+          },
+          {
+            value: '3-7s',
+            label: 'Hook Window',
+            description: 'You have 3 seconds to stop the scroll.'
+          },
+          {
+            value: '10+',
+            label: 'Angles to Test',
+            description: 'Same product, different pain points.'
+          },
+          {
+            value: '$10M',
+            label: 'Organic Ceiling',
+            description: 'Where organic taps out, paid begins.'
+          }
+        ]
+      },
+      {
+        type: 'content',
+        title: 'The Roadmap: $0 to $10M',
+        body: `**Phase 1: The Content Grind (Months 1-6)**
+Post 3-5 videos per day. Test hooks, angles, formats. Find what makes people stop.
+
+**Phase 2: Double Down (Months 6-12)**
+Scale the winners. More of what works. Kill what doesn't.
+
+**Phase 3: Organic Ceiling (Year 1-2)**
+You hit $10M. Organic can't scale forever. Time to layer in paid.
+
+**The transition:** Your best organic content becomes your first ad creative.`
+      },
+      {
+        type: 'quiz',
+        question: 'When should you start spending on paid ads?',
+        options: [
+          'Day 1 - Need sales immediately',
+          'After you have proven organic content that consistently performs',
+          'When you hit $1M in revenue',
+          'Never - organic is enough'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly right! Paid ads are for scaling what already works organically. Prove it first, then pour gas on the fire.',
+          incorrect: 'Not quite. Paid ads should scale proven winners, not discover them. Use organic to prove, paid to scale.'
+        }
+      },
+      {
+        type: 'content',
+        title: 'Why This Works',
+        body: `**Organic forces you to be GOOD.**
+
+No budget to hide behind. No "let's just boost it and see."
+
+You either capture attention or you don't.
+
+**This discipline builds muscle.** When you finally run ads, you're not guessing. You're scaling machines you've already built.
+
+Paid ads amplify signal. Organic creates signal.`
+      },
+      {
+        type: 'mockup',
+        title: 'The Feedback Loop',
+        mockup: (
+          <svg viewBox="0 0 600 400" className="w-full h-auto">
+            {/* Circular flow */}
+            <circle cx="300" cy="200" r="140" fill="none" stroke="#D4A017" strokeWidth="3" strokeDasharray="8 4"/>
+
+            {/* Step 1: Post */}
+            <circle cx="300" cy="60" r="50" fill="#10B981" opacity="0.2" stroke="#10B981" strokeWidth="2"/>
+            <text x="300" y="60" textAnchor="middle" fontSize="16" fontWeight="700" fill="#10B981">POST</text>
+            <text x="300" y="80" textAnchor="middle" fontSize="12" fill="#1F2937">100+ videos</text>
+
+            {/* Step 2: Analyze */}
+            <circle cx="440" cy="200" r="50" fill="#3B82F6" opacity="0.2" stroke="#3B82F6" strokeWidth="2"/>
+            <text x="440" y="195" textAnchor="middle" fontSize="16" fontWeight="700" fill="#3B82F6">ANALYZE</text>
+            <text x="440" y="210" textAnchor="middle" fontSize="12" fill="#1F2937">What worked?</text>
+
+            {/* Step 3: Scale */}
+            <circle cx="300" cy="340" r="50" fill="#F59E0B" opacity="0.2" stroke="#F59E0B" strokeWidth="2"/>
+            <text x="300" y="335" textAnchor="middle" fontSize="16" fontWeight="700" fill="#F59E0B">SCALE</text>
+            <text x="300" y="350" textAnchor="middle" fontSize="12" fill="#1F2937">More winners</text>
+
+            {/* Step 4: Kill */}
+            <circle cx="160" cy="200" r="50" fill="#EF4444" opacity="0.2" stroke="#EF4444" strokeWidth="2"/>
+            <text x="160" y="200" textAnchor="middle" fontSize="16" fontWeight="700" fill="#EF4444">KILL</text>
+            <text x="160" y="215" textAnchor="middle" fontSize="12" fill="#1F2937">What flopped</text>
+
+            {/* Center insight */}
+            <text x="300" y="195" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1F2937">Organic</text>
+            <text x="300" y="215" textAnchor="middle" fontSize="14" fontWeight="700" fill="#1F2937">Feedback Loop</text>
+          </svg>
+        )
+      },
+      {
+        type: 'quiz',
+        question: 'What is the biggest advantage of organic content?',
+        options: [
+          'It builds followers faster',
+          'It\'s a free R&D lab for testing hooks and messaging',
+          'It requires less effort than paid ads',
+          'It works better than paid ads at scale'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Nailed it! Organic is your free testing ground. Find what resonates, then scale with paid.',
+          incorrect: 'Close, but think deeper. Organic\'s real power is free validation. Test everything, pay for nothing.'
+        }
+      },
+      {
+        type: 'content',
+        title: 'The Final Truth',
+        body: `**Every brand that scaled to 9 figures started here.**
+
+Ridge Wallet. Gymshark. MVMT. They all mastered organic first.
+
+Not because they couldn't afford ads.
+
+Because they understood the game:
+
+**Free attention builds the playbook.**
+**Paid attention scales the playbook.**
+
+Master one. Then leverage the other.`
+      },
+      {
+        type: 'completion',
+        title: 'You Now Know the $0 CAC Engine',
+        summary: 'Organic content is your proving ground. Test everything for free. Find the winners. Then scale them with paid ads. This is the path from $0 to $10M.',
+        nextSteps: [
+          'Start posting 3-5 short-form videos per day',
+          'Track which hooks get the most engagement',
+          'Build a swipe file of your top performers'
+        ],
+        sources: [
+          { title: 'Sean Frank on Organic Content Strategy', url: '#' }
+        ]
+      }
+    ];
+
+    function LessonSlide({ slide, isActive, onNext, onPrev, isFirst, isLast, slideNumber, totalSlides }) {
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const videoRef = useRef(null);
+
+      useEffect(() => {
+        if (videoRef.current) {
+          videoRef.current.play().catch(e => console.log('Video autoplay prevented:', e));
+        }
+      }, [showFeedback]);
+
+      const handleAnswerSelect = (index) => {
+        setSelectedAnswer(index);
+        setShowFeedback(true);
+      };
+
+      const handleContinue = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        onNext();
+      };
+
+      if (slide.type === 'welcome') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+              <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} className="inline-block px-4 py-2 rounded-full mb-6" style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid var(--accent)' }}>
+                <span style={{ color: 'var(--accent)', fontSize: '14px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{slide.category}</span>
+              </motion.div>
+              <h1 className="title-font mb-4" style={{ fontSize: '64px', color: '#000' }}>{slide.title}</h1>
+              <p style={{ fontSize: '28px', color: '#1D1D1F', marginBottom: '48px', fontWeight: 500 }}>{slide.subtitle}</p>
+              <div style={{ display: 'flex', gap: '32px', marginBottom: '48px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(212, 160, 23, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '16px' }}>⏱️</span>
+                  </div>
+                  <span style={{ fontSize: '16px', color: '#86868B' }}>{slide.duration}</span>
+                </div>
+              </div>
+              <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '20px', color: '#1D1D1F' }}>You'll Learn:</h3>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {slide.learningGoals.map((goal, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} style={{ display: 'flex', alignItems: 'start', gap: '12px', fontSize: '16px', color: '#1D1D1F', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--accent)', fontSize: '20px', flexShrink: 0 }}>✓</span>
+                      <span>{goal}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              <motion.button onClick={onNext} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '48px', background: '#000', color: 'white', padding: '20px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 600, border: 'none', cursor: 'pointer', width: '100%' }}>
+                Start Learning
+              </motion.button>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'hook') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full text-center">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-8" style={{ fontSize: '72px', color: 'white', lineHeight: 1.1 }}>
+                {slide.headline}
+              </motion.h2>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ fontSize: '24px', color: '#86868B', lineHeight: 1.6, maxWidth: '800px', margin: '0 auto' }}>
+                {slide.subtext}
+              </motion.p>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'quote') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full relative z-10">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} style={{ fontSize: '120px', color: 'var(--accent)', opacity: 0.3, lineHeight: 1, marginBottom: '-40px' }}>
+                "
+              </motion.div>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ fontSize: '36px', fontWeight: 600, color: '#1D1D1F', lineHeight: 1.4, marginBottom: '32px', fontStyle: 'italic' }}>
+                {slide.quote}
+              </motion.p>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
+                <p style={{ fontSize: '20px', fontWeight: 700, color: '#000', marginBottom: '4px' }}>{slide.author}</p>
+                <p style={{ fontSize: '16px', color: '#86868B' }}>{slide.role}</p>
+              </motion.div>
+            </motion.div>
+            {slide.image && (
+              <motion.div className="absolute right-4 bottom-0" style={{ zIndex: 15 }} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+                <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
+              </motion.div>
+            )}
+          </div>
+        );
+      }
+
+      if (slide.type === 'content') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-8" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ fontSize: '20px', color: '#1D1D1F', lineHeight: 1.8 }} dangerouslySetInnerHTML={{ __html: slide.body.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #000; font-weight: 700;">$1</strong>').replace(/\n\n/g, '<br/><br/>') }} />
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'mockup') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-12 text-center" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} style={{ background: 'white', borderRadius: '20px', padding: '48px', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
+                {slide.mockup}
+              </motion.div>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'stats-grid') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-6xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-12 text-center" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
+                {slide.items.map((item, index) => (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + index * 0.1 }} whileHover={{ y: -4 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div style={{ fontSize: '48px', fontWeight: 900, color: 'var(--accent)', marginBottom: '12px', fontFamily: 'Fraunces, serif' }}>{item.value}</div>
+                    <div style={{ fontSize: '16px', fontWeight: 700, color: '#000', marginBottom: '8px' }}>{item.label}</div>
+                    <div style={{ fontSize: '14px', color: '#86868B', lineHeight: 1.5 }}>{item.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'quiz') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl w-full">
+              {!showFeedback ? (
+                <>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="inline-block px-4 py-2 rounded-full mb-6" style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid var(--accent)' }}>
+                    <span style={{ color: 'var(--accent)', fontSize: '14px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Quick Check</span>
+                  </motion.div>
+                  <h2 className="title-font mb-12" style={{ fontSize: '36px', color: '#000', lineHeight: 1.3 }}>{slide.question}</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {slide.options.map((option, index) => (
+                      <motion.button key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }} onClick={() => handleAnswerSelect(index)} whileHover={{ x: 8, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }} whileTap={{ scale: 0.98 }} style={{ background: 'white', border: '2px solid #E5E5E7', borderRadius: '12px', padding: '24px', fontSize: '18px', color: '#1D1D1F', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}>
+                        <span style={{ fontWeight: 600, color: '#86868B', marginRight: '12px' }}>{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </motion.button>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+                  <div style={{ background: selectedAnswer === slide.correctIndex ? 'rgba(52, 199, 89, 0.1)' : 'rgba(255, 149, 0, 0.1)', borderRadius: '20px', padding: '48px', border: `2px solid ${selectedAnswer === slide.correctIndex ? '#34C759' : '#FF9500'}` }}>
+                    {selectedAnswer === slide.correctIndex && (
+                      <video ref={videoRef} autoPlay muted playsInline className="w-32 h-32 mx-auto mb-6 object-cover rounded-full" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                        <source src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} type="video/mp4" />
+                      </video>
+                    )}
+                    {selectedAnswer !== slide.correctIndex && (
+                      <video ref={videoRef} autoPlay muted playsInline className="w-32 h-32 mx-auto mb-6 object-cover rounded-full" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                        <source src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} type="video/mp4" />
+                      </video>
+                    )}
+                    <h3 style={{ fontSize: '32px', fontWeight: 700, color: selectedAnswer === slide.correctIndex ? '#34C759' : '#FF9500', marginBottom: '16px', textAlign: 'center' }}>
+                      {selectedAnswer === slide.correctIndex ? 'Exactly Right!' : 'Not Quite!'}
+                    </h3>
+                    <p style={{ fontSize: '20px', color: '#1D1D1F', lineHeight: 1.6, textAlign: 'center' }}>
+                      {selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}
+                    </p>
+                    <motion.button onClick={handleContinue} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '32px', background: '#000', color: 'white', padding: '16px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 600, border: 'none', cursor: 'pointer', width: '100%' }}>
+                      Continue
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'completion') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} style={{ fontSize: '80px', marginBottom: '24px' }}>🎯</motion.div>
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.3 }} className="title-font mb-6" style={{ fontSize: '48px', color: 'white' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ fontSize: '20px', color: '#86868B', lineHeight: 1.6, marginBottom: '48px' }}>
+                {slide.summary}
+              </motion.p>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '32px', marginBottom: '32px', textAlign: 'left' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'white', marginBottom: '20px' }}>Next Steps:</h3>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {slide.nextSteps.map((step, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'start', gap: '12px', fontSize: '16px', color: '#E5E5E7', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--accent)', fontSize: '20px', flexShrink: 0 }}>→</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+              {slide.sources && slide.sources.length > 0 && (
+                <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
+                  <p style={{ fontSize: '12px', color: '#86868B', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sources:</p>
+                  {slide.sources.map((source, i) => (
+                    <a key={i} href={source.url} style={{ display: 'block', fontSize: '14px', color: 'var(--accent)', marginBottom: '8px', textDecoration: 'none' }}>
+                      {source.title}
+                    </a>
+                  ))}
+                </motion.div>
+              )}
+              <motion.button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE' }, '*')} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '32px', background: 'var(--accent)', color: '#000', padding: '20px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 700, border: 'none', cursor: 'pointer', width: '100%' }}>
+                Back to Learning Center
+              </motion.button>
+            </motion.div>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setCurrentSlide(currentSlide + 1);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setCurrentSlide(currentSlide - 1);
+        }
+      };
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight') nextSlide();
+          if (e.key === 'ArrowLeft') prevSlide();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [currentSlide]);
+
+      return (
+        <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+          <AnimatePresence mode="wait">
+            <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
+              <LessonSlide slide={slides[currentSlide]} isActive={true} onNext={nextSlide} onPrev={prevSlide} isFirst={currentSlide === 0} isLast={currentSlide === slides.length - 1} slideNumber={currentSlide + 1} totalSlides={slides.length} />
+            </motion.div>
+          </AnimatePresence>
+
+          {slides[currentSlide].type !== 'welcome' && slides[currentSlide].type !== 'completion' && (
+            <div style={{ position: 'fixed', bottom: '32px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, display: 'flex', gap: '8px', alignItems: 'center', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', padding: '12px 24px', borderRadius: '100px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+              <button onClick={prevSlide} disabled={currentSlide === 0} style={{ background: 'transparent', border: 'none', color: currentSlide === 0 ? '#666' : 'white', cursor: currentSlide === 0 ? 'not-allowed' : 'pointer', padding: '8px', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                ←
+              </button>
+              <div style={{ display: 'flex', gap: '6px', padding: '0 12px' }}>
+                {slides.map((_, index) => (
+                  <div key={index} style={{ width: '8px', height: '8px', borderRadius: '50%', background: index === currentSlide ? 'var(--accent)' : 'rgba(255,255,255,0.3)', transition: 'all 0.3s' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} style={{ background: 'transparent', border: 'none', color: currentSlide === slides.length - 1 ? '#666' : 'white', cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer', padding: '8px', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                →
+              </button>
+              <div style={{ marginLeft: '12px', color: 'white', fontSize: '14px', fontWeight: 600 }}>
+                {currentSlide + 1} / {slides.length}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Not a Brand. You're a Marketing Company. | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: 'You\'re Not a Brand.',
+        subtitle: 'You\'re a Marketing Company.',
+        lessonNumber: 'Business Fundamentals',
+        learningGoals: [
+          'Understand the brutal difference between brand and marketing',
+          'Learn why most DTC businesses fail at brand-building',
+          'Discover the litmus test that reveals your true business model'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Stop calling yourself a brand.',
+        subtext: 'You haven\'t earned that yet. Here\'s what you actually are.'
+      },
+      {
+        type: 'content',
+        title: 'The Uncomfortable Truth',
+        body: `Every founder wants to be Nike. Apple. Patagonia.
+
+They talk about "brand equity." "Brand storytelling." "Building a brand."
+
+But here's the reality:
+
+You're not a brand. You're a marketing company that happens to sell products.
+
+And that's not an insult. It's your superpower.`
+      },
+      {
+        type: 'quote',
+        text: '"Brand is a lagging indicator earned over decades... Until you\'ve been in the market that long, you are a marketing company."',
+        author: 'Sean Frank',
+        role: 'CEO, Ridge',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png'
+      },
+      {
+        type: 'content',
+        title: 'What Is a Brand, Really?',
+        body: `BRAND = A lagging indicator earned over decades.
+
+Nike didn't wake up a brand. They spent 50 years creating familiarity through massive, sustained exposure.
+
+Apple wasn't born iconic. They built it through decades of consistent excellence and omnipresent marketing.
+
+Brand is the OUTPUT. Not the input.
+
+It's what happens AFTER you dominate through marketing for years.`
+      },
+      {
+        type: 'content',
+        title: 'What Is Marketing?',
+        body: `MARKETING = The engine that drives revenue and creates exposure.
+
+Marketing is your input. Your controllable variable. Your actual superpower.
+
+Marketing is what you DO every day:
+- Run ads
+- Create content
+- Test offers
+- Optimize funnels
+- Drive traffic
+
+This is what generates revenue. Not your "brand."
+
+Your brand is a side effect of great marketing sustained over time.`
+      },
+      {
+        type: 'content',
+        title: 'The Litmus Test',
+        body: `Sean Frank, CEO of Ridge (a $200M+ company), put it perfectly:
+
+"If I cut my ads by 50%, my revenue follows by 50%. We are very much a marketing company. We can't forget that is our secret sauce."
+
+The test is simple:
+
+Cut your ads by 50%. What happens to revenue?
+
+If it drops 50%, you're a marketing company.
+If it stays flat, you're a brand.
+
+Be honest. Which one are you?`
+      },
+      {
+        type: 'stats-grid',
+        title: 'Brand vs Marketing Company',
+        items: [
+          {
+            value: 'BRAND',
+            label: 'Nike, Apple, Patagonia',
+            description: 'Revenue stays stable even when ads stop. Built over 30+ years of sustained excellence.'
+          },
+          {
+            value: 'MARKETING',
+            label: 'Your DTC Business',
+            description: 'Revenue directly tied to ad spend. Ads off = revenue off. This is reality for 99% of businesses.'
+          },
+          {
+            value: '50%',
+            label: 'The Litmus Test',
+            description: 'Cut ads 50%. If revenue drops 50%, you\'re a marketing company. Own it. Master it.'
+          },
+          {
+            value: '10-20 years',
+            label: 'Time to Brand Status',
+            description: 'How long it takes to become a true brand. Until then, marketing is your secret sauce.'
+          }
+        ]
+      },
+      {
+        type: 'content',
+        title: 'Why This Matters',
+        body: `Most founders waste energy pretending to be brands.
+
+They focus on "brand storytelling" when their funnel leaks 80% of traffic.
+
+They worry about "brand consistency" when their CAC is unprofitable.
+
+They chase "brand partnerships" when their LTV is trash.
+
+Meanwhile, actual marketing gets ignored.
+
+The irony? Great marketing IS what builds brand over time.`
+      },
+      {
+        type: 'content',
+        title: 'Own Your Reality',
+        body: `You're a marketing company. Accept it. Master it.
+
+Your job isn't to be Nike tomorrow. Your job is to:
+
+1. Drive profitable customer acquisition (marketing)
+2. Maximize customer lifetime value (marketing)
+3. Build sustainable growth systems (marketing)
+
+Do this for 10 years straight, and THEN you'll have a brand.
+
+Not before. Brand is the reward, not the strategy.`
+      },
+      {
+        type: 'quiz',
+        question: 'What\'s the difference between a brand and a marketing company?',
+        options: [
+          'A brand has better logo design',
+          'A brand has revenue stability even when ads stop',
+          'A brand has more followers on Instagram',
+          'A brand has higher quality products'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly! A true brand has decoupled revenue from ad spend. Most DTC companies are marketing machines, and that\'s perfectly fine. Master marketing first.',
+          incorrect: 'Not quite. A brand isn\'t about logos, followers, or even product quality. It\'s about revenue stability when ads stop. If cutting ads 50% drops revenue 50%, you\'re a marketing company.'
+        },
+        celebrationGif: 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif',
+        empathyGif: 'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif'
+      },
+      {
+        type: 'content',
+        title: 'Your Marketing Superpower',
+        body: `Here's the beautiful part:
+
+Being a marketing company is actually BETTER in the short term.
+
+You have control. You can test, iterate, scale.
+
+Brands are slow. They rely on years of accumulated familiarity.
+
+You? You can drive revenue tomorrow by improving your marketing.
+
+Better ads. Better funnels. Better offers. Better LTV.
+
+This is power. This is leverage. This is your secret sauce.`
+      },
+      {
+        type: 'content',
+        title: 'The Path Forward',
+        body: `Stop pretending to be a brand. Start dominating as a marketing company.
+
+Master your marketing:
+- Profitable CAC
+- High LTV
+- Retention systems
+- Content that converts
+
+Do this for years. Revenue compounds. Familiarity builds.
+
+THEN you'll have a brand.
+
+But today? Today you're a marketing company.
+
+And that's exactly what you should be.`
+      },
+      {
+        type: 'completion',
+        title: 'You Just Learned the Truth',
+        summary: 'You\'re not a brand yet. You\'re a marketing company. Own it. Master it. Build revenue through great marketing sustained over time. Brand is the reward, not the strategy.',
+        nextSteps: [
+          'Run the litmus test: What happens if you cut ads 50%?',
+          'Shift focus from "brand building" to marketing mastery',
+          'Master CAC, LTV, and retention systems first'
+        ],
+        sources: [
+          { title: 'Sean Frank Interview on DTC Business Models', url: 'https://ridge.com' },
+          { title: 'Marketing vs Brand Strategy', url: 'https://www.acquisition.com' }
+        ]
+      }
+    ];
+
+    function LessonViewer() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [quizAnswered, setQuizAnswered] = useState(false);
+
+      const slide = slides[currentSlide];
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(currentSlide + 1);
+          resetQuizState();
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(currentSlide - 1);
+          resetQuizState();
+        }
+      };
+
+      const resetQuizState = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        setQuizAnswered(false);
+      };
+
+      const handleAnswerSelect = (index) => {
+        if (quizAnswered) return;
+        setSelectedAnswer(index);
+        setShowFeedback(true);
+        setQuizAnswered(true);
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({ x: direction > 0 ? 1000 : -1000, opacity: 0 }),
+        center: { zIndex: 1, x: 0, opacity: 1 },
+        exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 1000 : -1000, opacity: 0 })
+      };
+
+      const renderSlide = () => {
+        switch(slide.type) {
+          case 'welcome':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                  <div className="inline-block px-4 py-2 mb-6 text-sm font-semibold tracking-wider uppercase bg-black/5 rounded-full" style={{ color: 'var(--accent-dark)' }}>
+                    {slide.lessonNumber}
+                  </div>
+                  <h1 className="mb-4 text-5xl md:text-7xl title-font" style={{ color: '#000' }}>{slide.title}</h1>
+                  <p className="mb-12 text-2xl md:text-3xl" style={{ color: '#666' }}>{slide.subtitle}</p>
+                  <div className="max-w-2xl mx-auto space-y-4 text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase" style={{ color: 'var(--accent-dark)' }}>You'll Learn:</p>
+                    {slide.learningGoals.map((goal, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1" style={{ background: 'var(--accent)' }}>{i + 1}</div>
+                        <p className="text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{goal}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'hook':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
+                  <h2 className="mb-6 text-5xl md:text-7xl title-font leading-tight">{slide.headline}</h2>
+                  <p className="text-2xl md:text-3xl opacity-80">{slide.subtext}</p>
+                </motion.div>
+              </div>
+            );
+
+          case 'quote':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white relative overflow-hidden">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.05 }} className="absolute text-[400px] font-bold" style={{ top: '-100px', left: '-50px', color: 'var(--accent)' }}>"</motion.div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 max-w-4xl">
+                  <p className="mb-8 text-3xl md:text-5xl title-font leading-tight">{slide.text}</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="text-right">
+                      <p className="text-xl font-bold" style={{ color: 'var(--accent)' }}>— {slide.author}</p>
+                      <p className="opacity-70">{slide.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+                {slide.image && (
+                  <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="absolute right-4 bottom-0" style={{ zIndex: 15 }}>
+                    <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
+                  </motion.div>
+                )}
+              </div>
+            );
+
+          case 'content':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
+                  <h2 className="mb-8 text-4xl md:text-6xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="text-xl md:text-2xl leading-relaxed whitespace-pre-line" style={{ color: '#1a1a1a' }}>{slide.body}</div>
+                </motion.div>
+              </div>
+            );
+
+          case 'stats-grid':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-50">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full">
+                  <h2 className="mb-12 text-4xl md:text-5xl title-font text-center" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {slide.items.map((item, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-white p-8 rounded-2xl shadow-lg">
+                        <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{item.value}</div>
+                        <div className="text-xl font-semibold mb-3" style={{ color: '#000' }}>{item.label}</div>
+                        <div className="text-base leading-relaxed" style={{ color: '#666' }}>{item.description}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'quiz':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full">
+                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
+                    Quick Check
+                  </div>
+                  <h2 className="mb-8 text-3xl md:text-4xl title-font" style={{ color: '#000' }}>{slide.question}</h2>
+                  <div className="space-y-4 mb-8">
+                    {slide.options.map((option, index) => (
+                      <button key={index} onClick={() => handleAnswerSelect(index)} disabled={quizAnswered} className={`w-full p-6 text-left text-lg rounded-xl border-2 transition-all ${selectedAnswer === index ? (index === slide.correctIndex ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : 'border-gray-200 hover:border-gray-400'} ${quizAnswered ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                        <span className="font-semibold mr-3" style={{ color: 'var(--accent)' }}>{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  <AnimatePresence>
+                    {showFeedback && (
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-6 rounded-xl ${selectedAnswer === slide.correctIndex ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
+                        {selectedAnswer === slide.correctIndex && slide.celebrationGif && (
+                          <img src={slide.celebrationGif} alt="Celebration" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        {selectedAnswer !== slide.correctIndex && slide.empathyGif && (
+                          <img src={slide.empathyGif} alt="Try again" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        <p className="text-lg leading-relaxed">{selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            );
+
+          case 'completion':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl text-center">
+                  <div className="mb-6 text-6xl">💡</div>
+                  <h2 className="mb-6 text-4xl md:text-6xl title-font">{slide.title}</h2>
+                  <p className="mb-12 text-xl md:text-2xl opacity-80">{slide.summary}</p>
+                  <div className="text-left mb-12">
+                    <p className="mb-4 text-lg font-semibold" style={{ color: 'var(--accent)' }}>Next Steps:</p>
+                    <ul className="space-y-3">
+                      {slide.nextSteps.map((step, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-black text-sm font-bold" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                          <span className="text-lg">{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase opacity-70">Sources:</p>
+                    <div className="space-y-2">
+                      {slide.sources.map((source, i) => (
+                        <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="block opacity-70 hover:opacity-100 transition-opacity">
+                          {source.title} →
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }} className="absolute w-full h-full">
+              {renderSlide()}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Progress bar */}
+          <div className="fixed bottom-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 bg-white border-2 border-black text-black rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all">
+              ← Previous
+            </button>
+            <div className="px-4 py-2 bg-white rounded-full border-2 border-black font-semibold">
+              {currentSlide + 1} / {slides.length}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 text-white rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all" style={{ background: 'var(--accent)' }}>
+              Next →
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonViewer />);
+  </script>
+</body>
+</html>

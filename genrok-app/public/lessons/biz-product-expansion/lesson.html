@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Ridge Playbook: How to Engineer High LTV | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: 'The Ridge Playbook',
+        subtitle: 'How to Engineer High LTV',
+        lessonNumber: 'Business Fundamentals',
+        learningGoals: [
+          'Learn how Ridge went from wallets to $200M+ with product expansion',
+          'Understand why selling "more of the same" kills LTV',
+          'Discover the customer data strategy that unlocks new categories'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Ridge sells wallets.',
+        subtext: 'But over half their revenue comes from... not wallets. Here\'s how.'
+      },
+      {
+        type: 'quote',
+        text: '"Our core wallet business is strong... but most people only need one. Our returning customer revenue was our biggest weakness. We had 97% NPS, but when we\'d email a customer to buy another wallet, they\'d say, \'Of course not.\'"',
+        author: 'Sean Frank',
+        role: 'CEO, Ridge',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png'
+      },
+      {
+        type: 'content',
+        title: 'The Problem',
+        body: `Ridge had everything right:
+
+97% NPS. Customers LOVED the product.
+Strong brand loyalty. People raved about their wallets.
+Excellent retention data. Low return rates.
+
+But they hit a ceiling.
+
+Most people only need one wallet. Maybe two.
+
+When Ridge emailed happy customers asking them to buy again... crickets.
+
+"Of course not. I already have your wallet."
+
+High NPS, low repeat revenue. This is the trap.`
+      },
+      {
+        type: 'content',
+        title: 'The Mistake Most Brands Make',
+        body: `When faced with low repeat revenue, most brands do this:
+
+"Let's launch Wallet 2.0!"
+"Limited edition colorways!"
+"Premium wallet with more features!"
+
+Same product. Slightly different. Same problem.
+
+Your customer still doesn't need another wallet.
+
+You're trying to sell ice to someone who already owns a freezer.
+
+This doesn't fix LTV. It delays the inevitable.`
+      },
+      {
+        type: 'content',
+        title: 'The Ridge Solution',
+        body: `Ridge didn't try to sell more wallets.
+
+They asked a better question:
+
+"What ELSE do our customers need that aligns with our brand?"
+
+The answer? A lot.
+
+Rings. Phone cases. Keycases. Luggage. Backpacks. Accessories.
+
+Same customer. Same trust. Different needs.
+
+Now they had reasons to email happy customers that actually made sense.`
+      },
+      {
+        type: 'stats-grid',
+        title: 'Ridge\'s Product Expansion Results',
+        items: [
+          {
+            value: '50%+',
+            label: 'Revenue from Non-Wallets',
+            description: 'Over half of Ridge\'s business now comes from products that didn\'t exist 5 years ago.'
+          },
+          {
+            value: '97%',
+            label: 'NPS Score',
+            description: 'Customer love remained sky-high throughout expansion. Trust transferred to new categories.'
+          },
+          {
+            value: '3-5x',
+            label: 'LTV Increase',
+            description: 'Same customer, multiple purchases over time. LTV skyrocketed without acquiring a single new customer.'
+          },
+          {
+            value: '$200M+',
+            label: 'Annual Revenue',
+            description: 'Built on the foundation of strategic product expansion, not just selling more wallets.'
+          }
+        ]
+      },
+      {
+        type: 'content',
+        title: 'How to Do This for Your Brand',
+        body: `Step 1: Identify your "wallet problem"
+Is your core product a one-time purchase? Low natural repeat rate?
+
+Step 2: Mine your customer data
+What else do they buy? What problems do they have? What do they ask for?
+
+Step 3: Test adjacent categories
+Don't launch 10 products. Test 1-2 that align with your brand and solve real problems.
+
+Step 4: Watch LTV compound
+Same happy customer, now buying 3-5 different products over 2 years instead of 1.`
+      },
+      {
+        type: 'content',
+        title: 'The Data Strategy',
+        body: `This only works if you KNOW your customers.
+
+Not surface-level demographics. Deep behavioral data.
+
+What do they browse? What do they buy elsewhere? What problems do they mention?
+
+Ridge didn't guess. They looked at their customer data and found patterns.
+
+Their wallet buyers also bought phone cases. Keychains. Travel gear.
+
+The data pointed the way. They just had to listen.`
+      },
+      {
+        type: 'tool',
+        title: 'Find Your High-NPS, Low-Repeat Customers',
+        toolName: 'DataDrew',
+        description: 'Export customer segments with high satisfaction but low repeat purchases. See exactly who loves you but isn\'t buying again—and what categories to expand into.',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202025-12-19%20144624.png',
+        link: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+        context: 'Manual customer analysis takes weeks and misses patterns. DataDrew shows you high-NPS segments with low LTV, automates cohort exports, and reveals expansion opportunities your spreadsheet would never catch.'
+      },
+      {
+        type: 'quiz',
+        question: 'Why did Ridge expand into rings, phone cases, and luggage instead of just making more wallets?',
+        options: [
+          'To compete with other wallet brands',
+          'Because wallet margins were too low',
+          'Most customers only need one wallet—new categories created repeat purchase opportunities',
+          'To increase their average order value'
+        ],
+        correctIndex: 2,
+        feedback: {
+          correct: 'Exactly! Ridge had 97% NPS but low repeat revenue. You can\'t sell someone a second wallet. But you CAN sell them a phone case, a ring, and luggage. Same customer, multiple purchases, exploding LTV.',
+          incorrect: 'Not quite. Ridge didn\'t expand to compete or boost AOV. They expanded because happy customers don\'t need another wallet. New categories = new reasons to buy again = higher LTV.'
+        },
+        celebrationGif: 'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif',
+        empathyGif: 'https://media.giphy.com/media/3o7TKv4Pb3gN6Vz5zq/giphy.gif'
+      },
+      {
+        type: 'content',
+        title: 'The Trust Transfer',
+        body: `Here's the magic part:
+
+When a customer trusts you in one category, they'll trust you in others.
+
+Ridge proved they could make exceptional wallets. Minimalist. Premium. High-quality.
+
+When they launched phone cases with the same design language... customers bought.
+
+When they launched rings... customers bought.
+
+When they launched luggage... customers bought.
+
+Trust transferred. LTV compounded. Revenue exploded.`
+      },
+      {
+        type: 'content',
+        title: 'The Warning',
+        body: `This only works if your core product is EXCEPTIONAL.
+
+If customers don't love your first product, expansion kills you.
+
+You can't fake trust. You can't force loyalty.
+
+Ridge earned 97% NPS before they expanded.
+
+Earn trust first. Expand second.
+
+Reverse this order and you'll just have more products nobody wants.`
+      },
+      {
+        type: 'content',
+        title: 'The Payoff',
+        body: `Product expansion done right = infinite LTV.
+
+You're no longer limited by how many times someone needs your core product.
+
+You're limited only by how many problems you can solve for the same customer.
+
+Ridge went from "wallet company" to "everyday carry lifestyle brand."
+
+Same customer. Infinite purchase opportunities.
+
+This is how you engineer high LTV.`
+      },
+      {
+        type: 'completion',
+        title: 'You Just Learned the Ridge Playbook',
+        summary: 'High NPS with low repeat revenue is a trap. Product expansion creates new reasons for happy customers to buy again. Mine your data, test adjacent categories, watch LTV compound. Trust transfers when you earn it.',
+        nextSteps: [
+          'Calculate your repeat purchase rate for core products',
+          'Use DataDrew to find high-NPS, low-repeat customer segments',
+          'Identify 2-3 adjacent product categories your customers already buy elsewhere'
+        ],
+        sources: [
+          { title: 'Sean Frank Interview on Ridge Growth Strategy', url: 'https://ridge.com' },
+          { title: 'DataDrew Customer Analytics', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+        ]
+      }
+    ];
+
+    function LessonViewer() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [quizAnswered, setQuizAnswered] = useState(false);
+
+      const slide = slides[currentSlide];
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(currentSlide + 1);
+          resetQuizState();
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(currentSlide - 1);
+          resetQuizState();
+        }
+      };
+
+      const resetQuizState = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        setQuizAnswered(false);
+      };
+
+      const handleAnswerSelect = (index) => {
+        if (quizAnswered) return;
+        setSelectedAnswer(index);
+        setShowFeedback(true);
+        setQuizAnswered(true);
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({ x: direction > 0 ? 1000 : -1000, opacity: 0 }),
+        center: { zIndex: 1, x: 0, opacity: 1 },
+        exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 1000 : -1000, opacity: 0 })
+      };
+
+      const renderSlide = () => {
+        switch(slide.type) {
+          case 'welcome':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                  <div className="inline-block px-4 py-2 mb-6 text-sm font-semibold tracking-wider uppercase bg-black/5 rounded-full" style={{ color: 'var(--accent-dark)' }}>
+                    {slide.lessonNumber}
+                  </div>
+                  <h1 className="mb-4 text-5xl md:text-7xl title-font" style={{ color: '#000' }}>{slide.title}</h1>
+                  <p className="mb-12 text-2xl md:text-3xl" style={{ color: '#666' }}>{slide.subtitle}</p>
+                  <div className="max-w-2xl mx-auto space-y-4 text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase" style={{ color: 'var(--accent-dark)' }}>You'll Learn:</p>
+                    {slide.learningGoals.map((goal, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1" style={{ background: 'var(--accent)' }}>{i + 1}</div>
+                        <p className="text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{goal}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'hook':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
+                  <h2 className="mb-6 text-5xl md:text-7xl title-font leading-tight">{slide.headline}</h2>
+                  <p className="text-2xl md:text-3xl opacity-80">{slide.subtext}</p>
+                </motion.div>
+              </div>
+            );
+
+          case 'quote':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white relative overflow-hidden">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.05 }} className="absolute text-[400px] font-bold" style={{ top: '-100px', left: '-50px', color: 'var(--accent)' }}>"</motion.div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 max-w-4xl">
+                  <p className="mb-8 text-3xl md:text-5xl title-font leading-tight">{slide.text}</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="text-right">
+                      <p className="text-xl font-bold" style={{ color: 'var(--accent)' }}>— {slide.author}</p>
+                      <p className="opacity-70">{slide.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+                {slide.image && (
+                  <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="absolute right-4 bottom-0" style={{ zIndex: 15 }}>
+                    <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
+                  </motion.div>
+                )}
+              </div>
+            );
+
+          case 'content':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
+                  <h2 className="mb-8 text-4xl md:text-6xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="text-xl md:text-2xl leading-relaxed whitespace-pre-line" style={{ color: '#1a1a1a' }}>{slide.body}</div>
+                </motion.div>
+              </div>
+            );
+
+          case 'stats-grid':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-50">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full">
+                  <h2 className="mb-12 text-4xl md:text-5xl title-font text-center" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {slide.items.map((item, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-white p-8 rounded-2xl shadow-lg">
+                        <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{item.value}</div>
+                        <div className="text-xl font-semibold mb-3" style={{ color: '#000' }}>{item.label}</div>
+                        <div className="text-base leading-relaxed" style={{ color: '#666' }}>{item.description}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'tool':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-gray-50 to-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
+                    Tool Spotlight
+                  </div>
+                  <h2 className="mb-4 text-4xl md:text-5xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
+                  <p className="mb-8 text-xl opacity-70">{slide.context}</p>
+                  <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                    <img src={slide.image} alt={slide.toolName} className="w-full h-64 object-cover" />
+                    <div className="p-8">
+                      <h3 className="mb-4 text-3xl title-font" style={{ color: '#000' }}>{slide.toolName}</h3>
+                      <p className="mb-6 text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{slide.description}</p>
+                      <a href={slide.link} target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
+                        Explore {slide.toolName} →
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'quiz':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full">
+                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
+                    Quick Check
+                  </div>
+                  <h2 className="mb-8 text-3xl md:text-4xl title-font" style={{ color: '#000' }}>{slide.question}</h2>
+                  <div className="space-y-4 mb-8">
+                    {slide.options.map((option, index) => (
+                      <button key={index} onClick={() => handleAnswerSelect(index)} disabled={quizAnswered} className={`w-full p-6 text-left text-lg rounded-xl border-2 transition-all ${selectedAnswer === index ? (index === slide.correctIndex ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : 'border-gray-200 hover:border-gray-400'} ${quizAnswered ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                        <span className="font-semibold mr-3" style={{ color: 'var(--accent)' }}>{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  <AnimatePresence>
+                    {showFeedback && (
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-6 rounded-xl ${selectedAnswer === slide.correctIndex ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
+                        {selectedAnswer === slide.correctIndex && slide.celebrationGif && (
+                          <img src={slide.celebrationGif} alt="Celebration" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        {selectedAnswer !== slide.correctIndex && slide.empathyGif && (
+                          <img src={slide.empathyGif} alt="Try again" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        <p className="text-lg leading-relaxed">{selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            );
+
+          case 'completion':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl text-center">
+                  <div className="mb-6 text-6xl">🚀</div>
+                  <h2 className="mb-6 text-4xl md:text-6xl title-font">{slide.title}</h2>
+                  <p className="mb-12 text-xl md:text-2xl opacity-80">{slide.summary}</p>
+                  <div className="text-left mb-12">
+                    <p className="mb-4 text-lg font-semibold" style={{ color: 'var(--accent)' }}>Next Steps:</p>
+                    <ul className="space-y-3">
+                      {slide.nextSteps.map((step, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-black text-sm font-bold" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                          <span className="text-lg">{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase opacity-70">Sources:</p>
+                    <div className="space-y-2">
+                      {slide.sources.map((source, i) => (
+                        <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="block opacity-70 hover:opacity-100 transition-opacity">
+                          {source.title} →
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }} className="absolute w-full h-full">
+              {renderSlide()}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Progress bar */}
+          <div className="fixed bottom-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 bg-white border-2 border-black text-black rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all">
+              ← Previous
+            </button>
+            <div className="px-4 py-2 bg-white rounded-full border-2 border-black font-semibold">
+              {currentSlide + 1} / {slides.length}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 text-white rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all" style={{ background: 'var(--accent)' }}>
+              Next →
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonViewer />);
+  </script>
+</body>
+</html>

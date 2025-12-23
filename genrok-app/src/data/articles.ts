@@ -6316,6 +6316,113 @@ Both Fred and William have $2M profit businesses. Each adds $500K annually.
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-one-pager-blueprint/lesson.html' }
       ]
+    },
+    // E-commerce Cheat Code Business Lessons
+    {
+      id: 226,
+      thumbnail: '/images/lessons/biz-infinite-money-loop.png',
+      title: 'The Infinite Money Loop: How $1 Becomes $100',
+      intro: 'The 6-step flywheel that turns paid advertising into a predictable, scalable, infinite money machine.',
+      directUrl: '/learn/lessons/biz-infinite-money-loop',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Loop
+
+When your LTV is high enough, you can afford to acquire customers at a cost your competitors can't. You can spend them out of the market.
+
+"LTV to CAC is the only thing that matters. It's the foundational economic unit of any business." — Alex Hormozi
+
+**Open the interactive lesson to master the infinite money loop.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-loop/lesson.html' }
+      ]
+    },
+    {
+      id: 227,
+      thumbnail: '/images/lessons/biz-marketing-company.png',
+      title: 'You\'re Not a Brand. You\'re a Marketing Company.',
+      intro: 'The brutal truth about brand vs marketing that separates winners from wannabes.',
+      directUrl: '/learn/lessons/biz-marketing-company',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## You're Not a Brand. You're a Marketing Company.
+
+Brand is a lagging indicator earned over decades. Marketing is the engine that drives revenue.
+
+"If I cut my ads by 50%, my revenue follows by 50%. We are very much a marketing company." — Sean Frank, CEO of Ridge
+
+**Open the interactive lesson to shift your mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-marketing-company/lesson.html' }
+      ]
+    },
+    {
+      id: 228,
+      thumbnail: '/images/lessons/biz-product-expansion.png',
+      title: 'The Ridge Playbook: How to Engineer High LTV',
+      intro: 'How Ridge solved their LTV problem by expanding beyond wallets. Today over 50% of revenue comes from non-wallet products.',
+      directUrl: '/learn/lessons/biz-product-expansion',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Ridge Playbook
+
+"Our core wallet business is strong... but most people only need one. Our returning customer revenue was our biggest weakness." — Sean Frank
+
+Ridge didn't try to sell more wallets. They launched new categories: Rings, Phone Cases, Keycases, Luggage.
+
+**Open the interactive lesson to learn strategic product expansion.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-product-expansion/lesson.html' }
+      ]
+    },
+    {
+      id: 229,
+      thumbnail: '/images/lessons/biz-zero-cac-engine.png',
+      title: 'The $0 CAC Engine: Get Customers for Free',
+      intro: 'How to reach $10 million in sales without spending a dollar on ads. Master organic content first.',
+      directUrl: '/learn/lessons/biz-zero-cac-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The $0 CAC Engine
+
+"If you're starting off as a brand, don't spend money on advertising. Get really good at short form content. That should be able to take you to... at least $10 million in sales." — Sean Frank
+
+Organic is your R&D lab. Test hooks, angles, and messaging for free. Then scale what works with paid.
+
+**Open the interactive lesson to build your $0 CAC engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-zero-cac-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 230,
+      thumbnail: '/images/lessons/biz-creative-targeting.png',
+      title: 'Creative is the New Targeting: The System for Winning',
+      intro: 'Meta\'s AI is so advanced that your biggest lever is no longer audience targeting. It\'s creative volume and diversity.',
+      directUrl: '/learn/lessons/biz-creative-targeting',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Creative is the New Targeting
+
+The System for Winning:
+1. **VOLUME** - Launch hundreds of ads per week to feed the beast
+2. **DIVERSITY** - Radically different formats, angles, hooks, pain points
+3. **MEASUREMENT** - Track concepts, hooks, and edits at granular level
+
+**Open the interactive lesson to master the new creative paradigm.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-creative-targeting/lesson.html' }
+      ]
     }
   ];
 

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative is the New Targeting: The System for Winning | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useRef } = React;
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: 'Creative is the New Targeting',
+        subtitle: 'The System for Winning at Scale',
+        category: 'Business Strategy',
+        duration: '6 min',
+        learningGoals: [
+          'Why creative volume beats audience targeting',
+          'The 3 pillars: Volume, Diversity, Measurement',
+          'How to feed the Meta AI beast'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Targeting is Dead',
+        subtext: 'Meta\'s AI is so good that your biggest lever isn\'t who you target. It\'s what they see.'
+      },
+      {
+        type: 'content',
+        title: 'The Andromeda Era',
+        body: `Meta's ad engine ("Andromeda") is smarter than you.
+
+It knows who to show your ads to better than you ever could.
+
+**The old playbook:** Hyper-targeted audiences, lookalikes, interest stacking.
+
+**The new reality:** Broad targeting + Creative volume.
+
+Why? Because the AI needs OPTIONS. Give it 100 ads and it will find the winners. Give it 5 and you're gambling.`
+      },
+      {
+        type: 'mockup',
+        title: 'The Creative Triangle',
+        mockup: (
+          <svg viewBox="0 0 700 600" className="w-full h-auto">
+            {/* Triangle */}
+            <path d="M 350 100 L 600 500 L 100 500 Z" fill="none" stroke="#D4A017" strokeWidth="4"/>
+
+            {/* Top: Volume */}
+            <circle cx="350" cy="100" r="80" fill="#3B82F6" opacity="0.2" stroke="#3B82F6" strokeWidth="3"/>
+            <text x="350" y="95" textAnchor="middle" fontSize="24" fontWeight="700" fill="#3B82F6">VOLUME</text>
+            <text x="350" y="120" textAnchor="middle" fontSize="14" fill="#1F2937">100s of ads/week</text>
+
+            {/* Bottom Left: Diversity */}
+            <circle cx="100" cy="500" r="80" fill="#10B981" opacity="0.2" stroke="#10B981" strokeWidth="3"/>
+            <text x="100" y="490" textAnchor="middle" fontSize="24" fontWeight="700" fill="#10B981">DIVERSITY</text>
+            <text x="100" y="510" textAnchor="middle" fontSize="12" fill="#1F2937">Radically</text>
+            <text x="100" y="528" textAnchor="middle" fontSize="12" fill="#1F2937">different creative</text>
+
+            {/* Bottom Right: Measurement */}
+            <circle cx="600" cy="500" r="80" fill="#F59E0B" opacity="0.2" stroke="#F59E0B" strokeWidth="3"/>
+            <text x="600" y="490" textAnchor="middle" fontSize="24" fontWeight="700" fill="#F59E0B">MEASUREMENT</text>
+            <text x="600" y="510" textAnchor="middle" fontSize="12" fill="#1F2937">Track concepts,</text>
+            <text x="600" y="528" textAnchor="middle" fontSize="12" fill="#1F2937">hooks, edits</text>
+
+            {/* Center */}
+            <circle cx="350" cy="330" r="60" fill="#D4A017" opacity="0.15"/>
+            <text x="350" y="325" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1F2937">Winning</text>
+            <text x="350" y="350" textAnchor="middle" fontSize="18" fontWeight="700" fill="#1F2937">System</text>
+          </svg>
+        )
+      },
+      {
+        type: 'content',
+        title: 'Pillar 1: VOLUME',
+        body: `**"We literally launch hundreds of ads a week because that's what it takes to feed the beast."**
+
+A single winning ad might tap out at $100K/day in spend.
+
+To spend MORE, you need MORE winners.
+
+**The math is simple:**
+- 1 winning ad = $100K/day max
+- 10 winning ads = $1M/day max
+- 100 winning ads = $10M/day max
+
+Volume isn't optional. It's the game.`
+      },
+      {
+        type: 'content',
+        title: 'Pillar 2: DIVERSITY',
+        body: `The AI needs **radically different creative**.
+
+A new background color ISN'T enough.
+
+**You need:**
+- Different formats (UGC vs high production)
+- Different angles (pain point A vs pain point B)
+- Different hooks (question vs statement)
+- Different talent ("pretty people" vs "real people")
+
+**The quote:** "You have to have one that's on fire and you have to have one that's pretty people holding it."
+
+Diversity = More signals for the AI to test.`
+      },
+      {
+        type: 'stats-grid',
+        title: 'The Creative Diversity Playbook',
+        items: [
+          {
+            value: '10+',
+            label: 'Unique Angles',
+            description: 'Same product, different pain points'
+          },
+          {
+            value: '5+',
+            label: 'Hook Variants',
+            description: 'Test everything: questions, stats, stories'
+          },
+          {
+            value: '3+',
+            label: 'Formats',
+            description: 'UGC, studio, lifestyle, testimonial'
+          },
+          {
+            value: '100s',
+            label: 'Total Ads',
+            description: 'Feed the beast weekly'
+          }
+        ]
+      },
+      {
+        type: 'content',
+        title: 'Pillar 3: MEASUREMENT',
+        body: `**You can't improve what you don't measure.**
+
+Use Multi-Touch Attribution (MTA) tools to track:
+- Which concepts perform best
+- Which hooks drive clicks
+- Which edits convert
+
+**Naming conventions are CRITICAL:**
+
+\`Product_Angle_Hook_Edit_v1\`
+
+Example: \`Bottle_Hydration_Question_FastCut_v1\`
+
+This lets you see: "Question hooks are working 30% better across all platforms."
+
+Data drives decisions. Gut instinct gets expensive.`
+      },
+      {
+        type: 'quiz',
+        question: 'What is the biggest lever in Meta ads at scale?',
+        options: [
+          'Hyper-targeted audience segmentation',
+          'Creative volume and diversity',
+          'Increasing daily ad spend',
+          'Retargeting campaigns'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly! Creative volume and diversity is the biggest lever. The AI needs OPTIONS to find winners.',
+          incorrect: 'Not quite. Andromeda is so advanced that creative volume matters more than targeting. Give the AI more options.'
+        }
+      },
+      {
+        type: 'mockup',
+        title: 'The Creative Flywheel',
+        mockup: (
+          <svg viewBox="0 0 700 400" className="w-full h-auto">
+            {/* Circular flow */}
+            <circle cx="350" cy="200" r="140" fill="none" stroke="#D4A017" strokeWidth="4" strokeDasharray="12 6"/>
+
+            {/* Step 1: Launch */}
+            <circle cx="350" cy="60" r="55" fill="#3B82F6" opacity="0.2" stroke="#3B82F6" strokeWidth="3"/>
+            <text x="350" y="60" textAnchor="middle" fontSize="18" fontWeight="700" fill="#3B82F6">LAUNCH</text>
+            <text x="350" y="80" textAnchor="middle" fontSize="12" fill="#1F2937">100s of ads</text>
+
+            {/* Step 2: Measure */}
+            <circle cx="490" cy="200" r="55" fill="#10B981" opacity="0.2" stroke="#10B981" strokeWidth="3"/>
+            <text x="490" y="195" textAnchor="middle" fontSize="18" fontWeight="700" fill="#10B981">MEASURE</text>
+            <text x="490" y="210" textAnchor="middle" fontSize="12" fill="#1F2937">Track MTA</text>
+
+            {/* Step 3: Learn */}
+            <circle cx="350" cy="340" r="55" fill="#F59E0B" opacity="0.2" stroke="#F59E0B" strokeWidth="3"/>
+            <text x="350" y="335" textAnchor="middle" fontSize="18" fontWeight="700" fill="#F59E0B">LEARN</text>
+            <text x="350" y="350" textAnchor="middle" fontSize="12" fill="#1F2937">Find patterns</text>
+
+            {/* Step 4: Iterate */}
+            <circle cx="210" cy="200" r="55" fill="#EF4444" opacity="0.2" stroke="#EF4444" strokeWidth="3"/>
+            <text x="210" y="195" textAnchor="middle" fontSize="18" fontWeight="700" fill="#EF4444">ITERATE</text>
+            <text x="210" y="210" textAnchor="middle" fontSize="12" fill="#1F2937">More winners</text>
+
+            {/* Center */}
+            <text x="350" y="195" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1F2937">Never</text>
+            <text x="350" y="215" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1F2937">Stop</text>
+          </svg>
+        )
+      },
+      {
+        type: 'content',
+        title: 'The Reality at Scale',
+        body: `**Brands spending $1M+/day all do this.**
+
+They don't have "one good ad." They have systems that produce hundreds.
+
+**The bottleneck shifts from:**
+- "Can we find customers?" (Meta handles that)
+- TO: "Can we produce enough creative?" (Your job)
+
+**The winners:** In-house creative teams cranking out volume.
+
+**The losers:** Brands waiting on their agency to deliver 5 ads/month.
+
+Speed and volume win.`
+      },
+      {
+        type: 'quiz',
+        question: 'Why is creative diversity more important than just volume?',
+        options: [
+          'It looks better to customers',
+          'It gives the AI radically different signals to test',
+          'It prevents ad fatigue faster',
+          'It costs less to produce'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Perfect! Diversity gives the AI different signals. A new background isn\'t enough. You need different formats, angles, hooks.',
+          incorrect: 'Think about the AI. It needs DIFFERENT creative to find new audiences. Volume without diversity is wasted effort.'
+        }
+      },
+      {
+        type: 'content',
+        title: 'The Naming Convention System',
+        body: `**Every ad needs a naming convention.**
+
+Format: \`[Product]_[Angle]_[Hook]_[Format]_[Version]\`
+
+**Examples:**
+- \`Skincare_AntiAging_Question_UGC_v1\`
+- \`Skincare_AntiAging_Stat_Studio_v1\`
+- \`Skincare_Acne_Story_Testimonial_v1\`
+
+**Why this matters:**
+
+You can now see:
+- "Question hooks outperform stats by 30%"
+- "UGC format works better than studio"
+- "Anti-aging angle beats acne angle"
+
+**Data → Insights → Better creative.**
+
+This is how pros operate.`
+      },
+      {
+        type: 'content',
+        title: 'The Final Truth',
+        body: `**Creative is the new targeting.**
+
+The AI finds your customers. Your job is to give it enough options to win.
+
+**The system:**
+1. Launch 100+ ads/week (Volume)
+2. Test radically different creative (Diversity)
+3. Track what works with MTA (Measurement)
+4. Iterate and scale winners
+
+This isn't theory. This is how every 8-figure+ brand operates.
+
+**Feed the beast or get left behind.**`
+      },
+      {
+        type: 'completion',
+        title: 'You Now Understand the System',
+        summary: 'Creative volume and diversity is the biggest lever in Meta ads. Launch hundreds of ads, track what works, and iterate relentlessly. The AI handles targeting. You handle creative.',
+        nextSteps: [
+          'Set up naming conventions for all your ads',
+          'Build a creative production system (in-house or agency)',
+          'Implement MTA tracking to measure what works'
+        ],
+        sources: [
+          { title: 'Meta Creative Strategy at Scale', url: '#' }
+        ]
+      }
+    ];
+
+    function LessonSlide({ slide, isActive, onNext, onPrev, isFirst, isLast, slideNumber, totalSlides }) {
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const videoRef = useRef(null);
+
+      useEffect(() => {
+        if (videoRef.current) {
+          videoRef.current.play().catch(e => console.log('Video autoplay prevented:', e));
+        }
+      }, [showFeedback]);
+
+      const handleAnswerSelect = (index) => {
+        setSelectedAnswer(index);
+        setShowFeedback(true);
+      };
+
+      const handleContinue = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        onNext();
+      };
+
+      if (slide.type === 'welcome') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+              <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} className="inline-block px-4 py-2 rounded-full mb-6" style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid var(--accent)' }}>
+                <span style={{ color: 'var(--accent)', fontSize: '14px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{slide.category}</span>
+              </motion.div>
+              <h1 className="title-font mb-4" style={{ fontSize: '64px', color: '#000' }}>{slide.title}</h1>
+              <p style={{ fontSize: '28px', color: '#1D1D1F', marginBottom: '48px', fontWeight: 500 }}>{slide.subtitle}</p>
+              <div style={{ display: 'flex', gap: '32px', marginBottom: '48px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(212, 160, 23, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '16px' }}>⏱️</span>
+                  </div>
+                  <span style={{ fontSize: '16px', color: '#86868B' }}>{slide.duration}</span>
+                </div>
+              </div>
+              <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '20px', color: '#1D1D1F' }}>You'll Learn:</h3>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {slide.learningGoals.map((goal, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} style={{ display: 'flex', alignItems: 'start', gap: '12px', fontSize: '16px', color: '#1D1D1F', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--accent)', fontSize: '20px', flexShrink: 0 }}>✓</span>
+                      <span>{goal}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              <motion.button onClick={onNext} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '48px', background: '#000', color: 'white', padding: '20px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 600, border: 'none', cursor: 'pointer', width: '100%' }}>
+                Start Learning
+              </motion.button>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'hook') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full text-center">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-8" style={{ fontSize: '72px', color: 'white', lineHeight: 1.1 }}>
+                {slide.headline}
+              </motion.h2>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ fontSize: '24px', color: '#86868B', lineHeight: 1.6, maxWidth: '800px', margin: '0 auto' }}>
+                {slide.subtext}
+              </motion.p>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'quote') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full relative z-10">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} style={{ fontSize: '120px', color: 'var(--accent)', opacity: 0.3, lineHeight: 1, marginBottom: '-40px' }}>
+                "
+              </motion.div>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ fontSize: '36px', fontWeight: 600, color: '#1D1D1F', lineHeight: 1.4, marginBottom: '32px', fontStyle: 'italic' }}>
+                {slide.quote}
+              </motion.p>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
+                <p style={{ fontSize: '20px', fontWeight: 700, color: '#000', marginBottom: '4px' }}>{slide.author}</p>
+                <p style={{ fontSize: '16px', color: '#86868B' }}>{slide.role}</p>
+              </motion.div>
+            </motion.div>
+            {slide.image && (
+              <motion.div className="absolute right-4 bottom-0" style={{ zIndex: 15 }} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+                <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
+              </motion.div>
+            )}
+          </div>
+        );
+      }
+
+      if (slide.type === 'content') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-8" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ fontSize: '20px', color: '#1D1D1F', lineHeight: 1.8 }} dangerouslySetInnerHTML={{ __html: slide.body.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #000; font-weight: 700;">$1</strong>').replace(/`(.*?)`/g, '<code style="background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px; font-family: monospace; font-size: 16px;">$1</code>').replace(/\n\n/g, '<br/><br/>') }} />
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'mockup') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-5xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-12 text-center" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3 }} style={{ background: 'white', borderRadius: '20px', padding: '48px', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
+                {slide.mockup}
+              </motion.div>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'stats-grid') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-6xl w-full">
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.2 }} className="title-font mb-12 text-center" style={{ fontSize: '48px', color: '#000' }}>
+                {slide.title}
+              </motion.h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
+                {slide.items.map((item, index) => (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + index * 0.1 }} whileHover={{ y: -4 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div style={{ fontSize: '48px', fontWeight: 900, color: 'var(--accent)', marginBottom: '12px', fontFamily: 'Fraunces, serif' }}>{item.value}</div>
+                    <div style={{ fontSize: '16px', fontWeight: 700, color: '#000', marginBottom: '8px' }}>{item.label}</div>
+                    <div style={{ fontSize: '14px', color: '#86868B', lineHeight: 1.5 }}>{item.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'quiz') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl w-full">
+              {!showFeedback ? (
+                <>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="inline-block px-4 py-2 rounded-full mb-6" style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid var(--accent)' }}>
+                    <span style={{ color: 'var(--accent)', fontSize: '14px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Quick Check</span>
+                  </motion.div>
+                  <h2 className="title-font mb-12" style={{ fontSize: '36px', color: '#000', lineHeight: 1.3 }}>{slide.question}</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {slide.options.map((option, index) => (
+                      <motion.button key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }} onClick={() => handleAnswerSelect(index)} whileHover={{ x: 8, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }} whileTap={{ scale: 0.98 }} style={{ background: 'white', border: '2px solid #E5E5E7', borderRadius: '12px', padding: '24px', fontSize: '18px', color: '#1D1D1F', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}>
+                        <span style={{ fontWeight: 600, color: '#86868B', marginRight: '12px' }}>{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </motion.button>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+                  <div style={{ background: selectedAnswer === slide.correctIndex ? 'rgba(52, 199, 89, 0.1)' : 'rgba(255, 149, 0, 0.1)', borderRadius: '20px', padding: '48px', border: `2px solid ${selectedAnswer === slide.correctIndex ? '#34C759' : '#FF9500'}` }}>
+                    {selectedAnswer === slide.correctIndex && (
+                      <video ref={videoRef} autoPlay muted playsInline className="w-32 h-32 mx-auto mb-6 object-cover rounded-full" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                        <source src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} type="video/mp4" />
+                      </video>
+                    )}
+                    {selectedAnswer !== slide.correctIndex && (
+                      <video ref={videoRef} autoPlay muted playsInline className="w-32 h-32 mx-auto mb-6 object-cover rounded-full" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                        <source src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} type="video/mp4" />
+                      </video>
+                    )}
+                    <h3 style={{ fontSize: '32px', fontWeight: 700, color: selectedAnswer === slide.correctIndex ? '#34C759' : '#FF9500', marginBottom: '16px', textAlign: 'center' }}>
+                      {selectedAnswer === slide.correctIndex ? 'Exactly Right!' : 'Not Quite!'}
+                    </h3>
+                    <p style={{ fontSize: '20px', color: '#1D1D1F', lineHeight: 1.6, textAlign: 'center' }}>
+                      {selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}
+                    </p>
+                    <motion.button onClick={handleContinue} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '32px', background: '#000', color: 'white', padding: '16px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 600, border: 'none', cursor: 'pointer', width: '100%' }}>
+                      Continue
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        );
+      }
+
+      if (slide.type === 'completion') {
+        return (
+          <div className="h-screen w-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} style={{ fontSize: '80px', marginBottom: '24px' }}>🎯</motion.div>
+              <motion.h2 initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.3 }} className="title-font mb-6" style={{ fontSize: '48px', color: 'white' }}>
+                {slide.title}
+              </motion.h2>
+              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ fontSize: '20px', color: '#86868B', lineHeight: 1.6, marginBottom: '48px' }}>
+                {slide.summary}
+              </motion.p>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '32px', marginBottom: '32px', textAlign: 'left' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'white', marginBottom: '20px' }}>Next Steps:</h3>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {slide.nextSteps.map((step, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'start', gap: '12px', fontSize: '16px', color: '#E5E5E7', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--accent)', fontSize: '20px', flexShrink: 0 }}>→</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+              {slide.sources && slide.sources.length > 0 && (
+                <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
+                  <p style={{ fontSize: '12px', color: '#86868B', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sources:</p>
+                  {slide.sources.map((source, i) => (
+                    <a key={i} href={source.url} style={{ display: 'block', fontSize: '14px', color: 'var(--accent)', marginBottom: '8px', textDecoration: 'none' }}>
+                      {source.title}
+                    </a>
+                  ))}
+                </motion.div>
+              )}
+              <motion.button onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE' }, '*')} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ marginTop: '32px', background: 'var(--accent)', color: '#000', padding: '20px 48px', borderRadius: '12px', fontSize: '18px', fontWeight: 700, border: 'none', cursor: 'pointer', width: '100%' }}>
+                Back to Learning Center
+              </motion.button>
+            </motion.div>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setCurrentSlide(currentSlide + 1);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setCurrentSlide(currentSlide - 1);
+        }
+      };
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight') nextSlide();
+          if (e.key === 'ArrowLeft') prevSlide();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [currentSlide]);
+
+      return (
+        <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+          <AnimatePresence mode="wait">
+            <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
+              <LessonSlide slide={slides[currentSlide]} isActive={true} onNext={nextSlide} onPrev={prevSlide} isFirst={currentSlide === 0} isLast={currentSlide === slides.length - 1} slideNumber={currentSlide + 1} totalSlides={slides.length} />
+            </motion.div>
+          </AnimatePresence>
+
+          {slides[currentSlide].type !== 'welcome' && slides[currentSlide].type !== 'completion' && (
+            <div style={{ position: 'fixed', bottom: '32px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, display: 'flex', gap: '8px', alignItems: 'center', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', padding: '12px 24px', borderRadius: '100px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+              <button onClick={prevSlide} disabled={currentSlide === 0} style={{ background: 'transparent', border: 'none', color: currentSlide === 0 ? '#666' : 'white', cursor: currentSlide === 0 ? 'not-allowed' : 'pointer', padding: '8px', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                ←
+              </button>
+              <div style={{ display: 'flex', gap: '6px', padding: '0 12px' }}>
+                {slides.map((_, index) => (
+                  <div key={index} style={{ width: '8px', height: '8px', borderRadius: '50%', background: index === currentSlide ? 'var(--accent)' : 'rgba(255,255,255,0.3)', transition: 'all 0.3s' }} />
+                ))}
+              </div>
+              <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} style={{ background: 'transparent', border: 'none', color: currentSlide === slides.length - 1 ? '#666' : 'white', cursor: currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer', padding: '8px', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                →
+              </button>
+              <div style={{ marginLeft: '12px', color: 'white', fontSize: '14px', fontWeight: 600 }}>
+                {currentSlide + 1} / {slides.length}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

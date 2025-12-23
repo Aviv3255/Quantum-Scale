@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Infinite Money Loop: How $1 Becomes $100 | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+
+    const slides = [
+      {
+        type: 'welcome',
+        title: 'The Infinite Money Loop',
+        subtitle: 'How $1 Becomes $100',
+        lessonNumber: 'Business Fundamentals',
+        learningGoals: [
+          'Understand the 6-step flywheel that creates infinite profitability',
+          'Learn why high LTV lets you outbid all competitors',
+          'Discover how to turn paid ads into a predictable money machine'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Most brands burn money on ads.',
+        subtext: 'Winners have a machine that prints money. Here\'s the difference.'
+      },
+      {
+        type: 'quote',
+        text: '"LTV to CAC is the only thing that matters. It\'s the foundational economic unit of any business."',
+        author: 'Alex Hormozi',
+        role: 'CEO, Acquisition.com',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc91vaj73li2pag9pt7-removebg-preview.png'
+      },
+      {
+        type: 'content',
+        title: 'The Only Metric That Matters',
+        body: `LTV to CAC. Lifetime Value to Customer Acquisition Cost.
+
+Not revenue. Not profit margin. Not conversion rate.
+
+If your LTV is $300 and your CAC is $100, you have a 3:1 ratio. You put in $1, you get $3 back.
+
+If your competitor's LTV is $150 and their CAC is $120, they have a 1.25:1 ratio. They put in $1, they get $1.25 back.
+
+Who wins the market? You do. Every single time.`
+      },
+      {
+        type: 'content',
+        title: 'The Attention Auction',
+        body: `Every ad platform is an auction. Facebook. Google. TikTok.
+
+The advertiser who can pay the most per customer wins the most traffic.
+
+If you can afford to pay $200 per customer and your competitor can only afford $80, you win.
+
+You get the prime real estate. The best placements. The most volume.
+
+They get scraps. Or they go broke trying to compete.`
+      },
+      {
+        type: 'mockup',
+        title: 'The Infinite Money Loop',
+        content: (
+          <svg viewBox="0 0 800 800" className="w-full h-full">
+            {/* Center circle */}
+            <circle cx="400" cy="400" r="80" fill="#D4A017" opacity="0.1" />
+            <text x="400" y="405" textAnchor="middle" className="text-2xl font-bold" fill="#000">LOOP</text>
+
+            {/* Circular arrows path */}
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                <polygon points="0 0, 10 3, 0 6" fill="#D4A017" />
+              </marker>
+            </defs>
+
+            {/* Step 1 - Top */}
+            <circle cx="400" cy="200" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="400" y="195" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 1</text>
+            <text x="400" y="210" textAnchor="middle" className="text-xs" fill="#000">High LTV</text>
+
+            {/* Step 2 - Top Right */}
+            <circle cx="570" cy="280" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="570" y="275" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 2</text>
+            <text x="570" y="290" textAnchor="middle" className="text-xs" fill="#000">High Margins</text>
+
+            {/* Step 3 - Right */}
+            <circle cx="630" cy="450" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="630" y="445" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 3</text>
+            <text x="630" y="460" textAnchor="middle" className="text-xs" fill="#000">Higher CAC</text>
+
+            {/* Step 4 - Bottom Right */}
+            <circle cx="520" cy="590" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="520" y="585" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 4</text>
+            <text x="520" y="600" textAnchor="middle" className="text-xs" fill="#000">Outbid All</text>
+
+            {/* Step 5 - Bottom Left */}
+            <circle cx="280" cy="590" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="280" y="585" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 5</text>
+            <text x="280" y="600" textAnchor="middle" className="text-xs" fill="#000">Win Traffic</text>
+
+            {/* Step 6 - Left */}
+            <circle cx="170" cy="450" r="60" fill="white" stroke="#D4A017" strokeWidth="3" />
+            <text x="170" y="445" textAnchor="middle" className="text-sm font-bold" fill="#D4A017">STEP 6</text>
+            <text x="170" y="460" textAnchor="middle" className="text-xs" fill="#000">More LTV</text>
+
+            {/* Arrows connecting the loop */}
+            <path d="M 450 220 Q 510 240 540 270" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 610 330 Q 630 380 630 420" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 600 500 Q 570 540 540 570" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 470 610 Q 400 620 320 600" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 240 560 Q 190 520 180 470" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 190 400 Q 200 300 250 250" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <path d="M 300 220 Q 340 200 370 200" fill="none" stroke="#D4A017" strokeWidth="3" markerEnd="url(#arrowhead)" />
+          </svg>
+        )
+      },
+      {
+        type: 'content',
+        title: 'Step 1: Engineer High LTV',
+        body: `High LTV doesn't happen by accident. You engineer it.
+
+Premium products. Product expansion. Smart niching. Subscriptions. Upsells. Retention programs.
+
+Ridge did this. Started with wallets. Added rings, phone cases, luggage.
+
+Result? Over half their business is now non-wallet products. Same happy customer, multiple purchases.
+
+LTV skyrockets. The loop begins.`
+      },
+      {
+        type: 'content',
+        title: 'Step 2-3: Margins → Higher CAC',
+        body: `High LTV generates high margins. More profit per customer.
+
+High margins mean you can afford to pay more to acquire customers.
+
+If you make $200 profit per customer, you can spend $150 to acquire them.
+
+Your competitor makes $50 profit per customer. They can only spend $30 to acquire.
+
+You just unlocked 5x the budget they have. Game over.`
+      },
+      {
+        type: 'content',
+        title: 'Step 4-5: Outbid & Win',
+        body: `Now you outbid them everywhere.
+
+Facebook. Google. TikTok. YouTube. Every platform.
+
+You win the attention auction. You get the volume. You acquire customers profitably while they struggle.
+
+They either go broke or give up. You scale.`
+      },
+      {
+        type: 'content',
+        title: 'Step 6: The Loop Amplifies',
+        body: `Here's where it gets insane.
+
+Every new customer you acquire feeds back into higher LTV data.
+
+You learn what products they buy next. What offers convert. What makes them stay.
+
+You optimize. LTV goes up again. Margins increase. CAC ceiling rises.
+
+The loop accelerates. This is the infinite money machine.`
+      },
+      {
+        type: 'tool',
+        title: 'Track Your LTV Like a Pro',
+        toolName: 'DataDrew',
+        description: 'Identify your highest LTV customer segments. Export detailed cohort analysis. See exactly who to acquire more of.',
+        image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/46.webp',
+        link: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+        context: 'Manual LTV tracking in spreadsheets takes hours and misses patterns. DataDrew shows you real-time LTV by segment, automates cohort analysis, and exports actionable data in minutes.'
+      },
+      {
+        type: 'quiz',
+        question: 'What happens when you have higher LTV than your competitors?',
+        options: [
+          'You get better conversion rates',
+          'You can outbid them on all paid platforms',
+          'Your products become more premium',
+          'Your margins automatically improve'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly! Higher LTV → Higher margins → Higher CAC budget → Outbid competitors → Win the attention auction. This is the loop.',
+          incorrect: 'Close, but think bigger. Higher LTV means you can afford to PAY MORE per customer than anyone else. You outbid them everywhere and win the market.'
+        },
+        celebrationGif: 'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
+        empathyGif: 'https://media.giphy.com/media/l2JehQ2GitHGdVG9y/giphy.gif'
+      },
+      {
+        type: 'content',
+        title: 'The Payoff',
+        body: `When you master this loop, paid advertising becomes predictable.
+
+Not a gamble. Not a risk. A machine.
+
+Put $1 in. Get $3, $5, $10 out. Scale infinitely.
+
+Your competitors wonder how you can afford those ad costs.
+
+You're not spending. You're investing. And the loop keeps spinning.`
+      },
+      {
+        type: 'completion',
+        title: 'You Just Learned the Infinite Money Loop',
+        summary: 'High LTV creates the flywheel that lets you outspend, outbid, and dominate your market. Engineer your LTV. Win the attention auction. Scale infinitely.',
+        nextSteps: [
+          'Calculate your current LTV to CAC ratio',
+          'Identify opportunities to increase LTV (product expansion, upsells, retention)',
+          'Track LTV by customer segment with DataDrew'
+        ],
+        sources: [
+          { title: 'Alex Hormozi on LTV Economics', url: 'https://acquisition.com' },
+          { title: 'DataDrew LTV Analytics', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+        ]
+      }
+    ];
+
+    function LessonViewer() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [quizAnswered, setQuizAnswered] = useState(false);
+
+      const slide = slides[currentSlide];
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      const nextSlide = () => {
+        if (currentSlide < slides.length - 1) {
+          setDirection(1);
+          setCurrentSlide(currentSlide + 1);
+          resetQuizState();
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(currentSlide - 1);
+          resetQuizState();
+        }
+      };
+
+      const resetQuizState = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        setQuizAnswered(false);
+      };
+
+      const handleAnswerSelect = (index) => {
+        if (quizAnswered) return;
+        setSelectedAnswer(index);
+        setShowFeedback(true);
+        setQuizAnswered(true);
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({ x: direction > 0 ? 1000 : -1000, opacity: 0 }),
+        center: { zIndex: 1, x: 0, opacity: 1 },
+        exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 1000 : -1000, opacity: 0 })
+      };
+
+      const renderSlide = () => {
+        switch(slide.type) {
+          case 'welcome':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                  <div className="inline-block px-4 py-2 mb-6 text-sm font-semibold tracking-wider uppercase bg-black/5 rounded-full" style={{ color: 'var(--accent-dark)' }}>
+                    {slide.lessonNumber}
+                  </div>
+                  <h1 className="mb-4 text-5xl md:text-7xl title-font" style={{ color: '#000' }}>{slide.title}</h1>
+                  <p className="mb-12 text-2xl md:text-3xl" style={{ color: '#666' }}>{slide.subtitle}</p>
+                  <div className="max-w-2xl mx-auto space-y-4 text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase" style={{ color: 'var(--accent-dark)' }}>You'll Learn:</p>
+                    {slide.learningGoals.map((goal, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1" style={{ background: 'var(--accent)' }}>{i + 1}</div>
+                        <p className="text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{goal}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'hook':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
+                  <h2 className="mb-6 text-5xl md:text-7xl title-font leading-tight">{slide.headline}</h2>
+                  <p className="text-2xl md:text-3xl opacity-80">{slide.subtext}</p>
+                </motion.div>
+              </div>
+            );
+
+          case 'quote':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white relative overflow-hidden">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.05 }} className="absolute text-[400px] font-bold" style={{ top: '-100px', left: '-50px', color: 'var(--accent)' }}>"</motion.div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10 max-w-4xl">
+                  <p className="mb-8 text-3xl md:text-5xl title-font leading-tight">{slide.text}</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="text-right">
+                      <p className="text-xl font-bold" style={{ color: 'var(--accent)' }}>— {slide.author}</p>
+                      <p className="opacity-70">{slide.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+                {slide.image && (
+                  <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="absolute right-4 bottom-0" style={{ zIndex: 15 }}>
+                    <img src={slide.image} alt={slide.author} className="h-48 w-auto object-contain" style={{ opacity: 1 }} />
+                  </motion.div>
+                )}
+              </div>
+            );
+
+          case 'content':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
+                  <h2 className="mb-8 text-4xl md:text-6xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="text-xl md:text-2xl leading-relaxed whitespace-pre-line" style={{ color: '#1a1a1a' }}>{slide.body}</div>
+                </motion.div>
+              </div>
+            );
+
+          case 'mockup':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-50">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-4xl">
+                  <h2 className="mb-8 text-4xl md:text-5xl title-font text-center" style={{ color: '#000' }}>{slide.title}</h2>
+                  <div className="bg-white rounded-2xl shadow-xl p-8">
+                    {slide.content}
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'tool':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-gray-50 to-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-4xl w-full">
+                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
+                    Tool Spotlight
+                  </div>
+                  <h2 className="mb-4 text-4xl md:text-5xl title-font" style={{ color: '#000' }}>{slide.title}</h2>
+                  <p className="mb-8 text-xl opacity-70">{slide.context}</p>
+                  <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                    <img src={slide.image} alt={slide.toolName} className="w-full h-64 object-cover" />
+                    <div className="p-8">
+                      <h3 className="mb-4 text-3xl title-font" style={{ color: '#000' }}>{slide.toolName}</h3>
+                      <p className="mb-6 text-lg leading-relaxed" style={{ color: '#1a1a1a' }}>{slide.description}</p>
+                      <a href={slide.link} target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
+                        Explore {slide.toolName} →
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          case 'quiz':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl w-full">
+                  <div className="mb-6 inline-block px-4 py-2 text-sm font-semibold tracking-wider uppercase rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>
+                    Quick Check
+                  </div>
+                  <h2 className="mb-8 text-3xl md:text-4xl title-font" style={{ color: '#000' }}>{slide.question}</h2>
+                  <div className="space-y-4 mb-8">
+                    {slide.options.map((option, index) => (
+                      <button key={index} onClick={() => handleAnswerSelect(index)} disabled={quizAnswered} className={`w-full p-6 text-left text-lg rounded-xl border-2 transition-all ${selectedAnswer === index ? (index === slide.correctIndex ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : 'border-gray-200 hover:border-gray-400'} ${quizAnswered ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                        <span className="font-semibold mr-3" style={{ color: 'var(--accent)' }}>{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  <AnimatePresence>
+                    {showFeedback && (
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`p-6 rounded-xl ${selectedAnswer === slide.correctIndex ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
+                        {selectedAnswer === slide.correctIndex && slide.celebrationGif && (
+                          <img src={slide.celebrationGif} alt="Celebration" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        {selectedAnswer !== slide.correctIndex && slide.empathyGif && (
+                          <img src={slide.empathyGif} alt="Try again" className="w-32 h-32 mx-auto mb-4 rounded-lg" />
+                        )}
+                        <p className="text-lg leading-relaxed">{selectedAnswer === slide.correctIndex ? slide.feedback.correct : slide.feedback.incorrect}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            );
+
+          case 'completion':
+            return (
+              <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-br from-black to-gray-900 text-white">
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="max-w-3xl text-center">
+                  <div className="mb-6 text-6xl">🎯</div>
+                  <h2 className="mb-6 text-4xl md:text-6xl title-font">{slide.title}</h2>
+                  <p className="mb-12 text-xl md:text-2xl opacity-80">{slide.summary}</p>
+                  <div className="text-left mb-12">
+                    <p className="mb-4 text-lg font-semibold" style={{ color: 'var(--accent)' }}>Next Steps:</p>
+                    <ul className="space-y-3">
+                      {slide.nextSteps.map((step, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-black text-sm font-bold" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                          <span className="text-lg">{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="text-left">
+                    <p className="mb-4 text-sm font-semibold tracking-wider uppercase opacity-70">Sources:</p>
+                    <div className="space-y-2">
+                      {slide.sources.map((source, i) => (
+                        <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="block opacity-70 hover:opacity-100 transition-opacity">
+                          {source.title} →
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <div className="relative w-full h-screen overflow-hidden bg-white">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }} className="absolute w-full h-full">
+              {renderSlide()}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Progress bar */}
+          <div className="fixed bottom-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-50">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="px-6 py-3 bg-white border-2 border-black text-black rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all">
+              ← Previous
+            </button>
+            <div className="px-4 py-2 bg-white rounded-full border-2 border-black font-semibold">
+              {currentSlide + 1} / {slides.length}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="px-6 py-3 text-white rounded-xl font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all" style={{ background: 'var(--accent)' }}>
+              Next →
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonViewer />);
+  </script>
+</body>
+</html>
