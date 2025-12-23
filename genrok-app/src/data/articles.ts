@@ -6112,6 +6112,134 @@ A strong brand lets you:
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/google-influencer-creative/lesson.html' }
       ]
+    },
+    // Business Fundamentals lessons
+    {
+      id: 216,
+      thumbnail: '/images/lessons/biz-infinite-money-engine.png',
+      title: 'The Infinite Money Engine',
+      intro: 'The single equation that transforms eCommerce into a video game with unlimited money. LTV > CAC = infinite scale.',
+      directUrl: '/learn/lessons/biz-infinite-money-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Engine
+
+**The Core Truth:** The entire e-commerce universe is governed by one equation: LTV > CAC.
+
+**CAC** = Customer Acquisition Cost (cost to acquire one new customer)
+**LTV** = Lifetime Value (total predictable revenue a customer generates over their lifetime)
+
+When LTV is significantly higher than CAC (e.g., $1,000 LTV vs $100 CAC), you have a machine. Put $100 in, get $1,000 out over time. This is the computer game with infinite money.
+
+**Open the interactive lesson to understand the code.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 217,
+      thumbnail: '/images/lessons/biz-rat-brain-hijack.png',
+      title: 'The Rat Brain Hijack',
+      intro: 'Marketing genius isn\'t about logic. It\'s about triggering immediate, subconscious reactions.',
+      directUrl: '/learn/lessons/biz-rat-brain-hijack',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Rat Brain Hijack
+
+**Core Idea:** To lower your CAC, you must appeal to the part of the brain that reacts before it thinks.
+
+**The Two Brains:**
+- **The Rat Brain:** Subconscious, reactive, emotional
+- **The Logical Brain:** Conscious, decision-making, analytical
+
+**Key Technique: Rat Brain Analysis (RBA)** - Consciously analyze your own subconscious reactions. Why did that video capture your attention? If you understand your own Rat Brain, you can trigger everyone else's.
+
+**Open the interactive lesson to master RBA.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rat-brain-hijack/lesson.html' }
+      ]
+    },
+    {
+      id: 218,
+      thumbnail: '/images/lessons/biz-velocity-advantage.png',
+      title: 'The Velocity Advantage',
+      intro: 'The biggest unfair advantage in business isn\'t money, talent, or connections. It\'s how fast you operate.',
+      directUrl: '/learn/lessons/biz-velocity-advantage',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Velocity Advantage
+
+**Quote:** "The biggest unfair advantage in business isn't money, talent, or connections. It's how fast you operate." – Davie Fogarty
+
+**The Fallacy of Safety:** Most businesses move slowly because it feels safer. This is an illusion. Moving slow is the most dangerous place because you generate no new data.
+
+**Frameworks for Speed:**
+1. **The 80% Rule:** Once you're 80% confident, stop researching and move
+2. **Two-Way Doors (Bezos):** Most decisions are reversible
+3. **Elon's 5-Step:** Challenge → Cut → Tighten → Push → Systemize
+
+**Open the interactive lesson to master velocity.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-velocity-advantage/lesson.html' }
+      ]
+    },
+    {
+      id: 219,
+      thumbnail: '/images/lessons/biz-remarkable-product.png',
+      title: 'Build Something Remarkable',
+      intro: '"Stop making average crap for average people." – Seth Godin. The foundation of high-LTV businesses.',
+      directUrl: '/learn/lessons/biz-remarkable-product',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Build Something Remarkable
+
+**The Foundation:** You cannot create a high-LTV business by selling mediocre products. The marketing begins BEFORE the product is finished.
+
+**The Litmus Test (3 Questions):**
+1. Does your product have a story worth telling?
+2. Does it solve a problem so well they would miss it if it were gone?
+3. Is there a built-in reason for one customer to tell another?
+
+**Key Concept:** Focus on the "Smallest Viable Audience" - people who will care so much they'll tell others.
+
+**Open the interactive lesson to build remarkable products.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-remarkable-product/lesson.html' }
+      ]
+    },
+    {
+      id: 220,
+      thumbnail: '/images/lessons/biz-asset-not-job.png',
+      title: 'Build an Asset, Not a Job',
+      intro: '"A business that requires you isn\'t a business. It\'s a high-stress job you cannot quit." – Alex Hormozi',
+      directUrl: '/learn/lessons/biz-asset-not-job',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Build an Asset, Not a Job
+
+**The $3 Million Difference:**
+Both Fred and William have $2M profit businesses. Each adds $500K annually.
+- **Fred (Earner):** +$500K → After 50% tax = +$250K net worth
+- **William (Builder):** +$500K × 6x multiple = +$3,000,000 net worth
+
+**The Ultimate Test:** Can you take 3 months off and have the business grow?
+- If it shrinks, you're still a key component
+- If it grows, you have built a true, self-sustaining asset
+
+**Open the interactive lesson to escape the matrix.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-asset-not-job/lesson.html' }
+      ]
     }
   ];
 
