@@ -44,6 +44,12 @@
     const { useState, useEffect } = React;
     const { motion, AnimatePresence } = Motion;
 
+    // Entrepreneur images
+    const entrepreneurImages = {
+      'Davie Fogarty': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png',
+      'Alex Hormozi': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png'
+    };
+
     const celebrationGifs = [
       'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTg5anRqMnZ5dGZhZjRvN3F5OXJ4OGNzYzRoMm1oM3gyZnN5ZDRsZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/g9582DNuQppxC/giphy.gif',
       'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif',
@@ -276,11 +282,27 @@
         </div>,
 
         // Slide 3: The Equation
-        <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="min-h-screen flex items-center justify-center p-6 relative">
+          {/* Entrepreneur image - positioned on right side, behind text */}
+          <motion.img
+            src={entrepreneurImages['Alex Hormozi']}
+            alt="Alex Hormozi"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 0.15, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="absolute z-0 pointer-events-none select-none"
+            style={{
+              right: '5%',
+              bottom: '5%',
+              maxHeight: '60vh',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="max-w-3xl w-full"
+            className="max-w-3xl w-full relative z-10"
           >
             <motion.div
               initial={{ scale: 0.95 }}
