@@ -6240,6 +6240,82 @@ Both Fred and William have $2M profit businesses. Each adds $500K annually.
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-asset-not-job/lesson.html' }
       ]
+    },
+    // Business Leverage Playbook lessons
+    {
+      id: 221,
+      thumbnail: '/images/lessons/biz-leverage-equation.png',
+      title: 'The Leverage Equation',
+      intro: 'Outputs = Volume × Leverage. Stop working harder. Start working smarter with the equation that changes everything.',
+      directUrl: '/learn/lessons/biz-leverage-equation',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-leverage-equation/lesson.html' }
+      ]
+    },
+    {
+      id: 222,
+      thumbnail: '/images/lessons/biz-counter-position.png',
+      title: 'The Counter-Position Strategy',
+      intro: "Create a battlefield where the giants' money is worthless.",
+      directUrl: '/learn/lessons/biz-counter-position',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-counter-position/lesson.html' }
+      ]
+    },
+    {
+      id: 223,
+      thumbnail: '/images/lessons/biz-awareness-sweet-spot.png',
+      title: 'The Market Awareness Sweet Spot',
+      intro: "Enter markets where customers feel the pain but don't know the solution exists.",
+      directUrl: '/learn/lessons/biz-awareness-sweet-spot',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-awareness-sweet-spot/lesson.html' }
+      ]
+    },
+    {
+      id: 224,
+      thumbnail: '/images/lessons/biz-barbell-strategy.png',
+      title: 'The Barbell Strategy',
+      intro: '5% big swings + 95% small wins. Avoid the dangerous middle.',
+      directUrl: '/learn/lessons/biz-barbell-strategy',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-barbell-strategy/lesson.html' }
+      ]
+    },
+    {
+      id: 225,
+      thumbnail: '/images/lessons/biz-one-pager-blueprint.png',
+      title: 'The One-Pager Blueprint',
+      intro: 'A business plan is useless. A one-pager is a weapon.',
+      directUrl: '/learn/lessons/biz-one-pager-blueprint',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: '',
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-one-pager-blueprint/lesson.html' }
+      ]
     }
   ];
 

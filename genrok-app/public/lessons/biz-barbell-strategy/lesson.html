@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Barbell Strategy | Quantum Scale</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.11.11/dist/framer-motion.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#10b981',
+            'accent-dark': '#059669',
+            'accent-light': '#34d399',
+          },
+          fontFamily: {
+            'display': ['Fraunces', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #FAFAFA;
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const celebrationGifs = [
+      'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
+      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+      'https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif',
+      'https://media.giphy.com/media/l4FGGafcOHmrlQxG0/giphy.gif',
+      'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif'
+    ];
+
+    const empathyGifs = [
+      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
+      'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
+      'https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif'
+    ];
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showQuizResult, setShowQuizResult] = useState(false);
+      const [userName, setUserName] = useState('Builder');
+
+      useEffect(() => {
+        const script = document.createElement('script');
+        script.src = '/greetings.js';
+        script.async = true;
+        script.onload = () => {
+          if (window.getGreeting) {
+            const greeting = window.getGreeting();
+            if (greeting.userName) {
+              setUserName(greeting.userName);
+            }
+          }
+        };
+        document.body.appendChild(script);
+        return () => document.body.removeChild(script);
+      }, []);
+
+      const totalSlides = 8;
+
+      const nextSlide = () => {
+        if (currentSlide < totalSlides - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+          setSelectedAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+          setSelectedAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const handleAnswerSelect = (answerIndex) => {
+        setSelectedAnswer(answerIndex);
+        setShowQuizResult(true);
+        if (answerIndex === 1) {
+          setTimeout(nextSlide, 2500);
+        }
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({
+          x: direction > 0 ? '100%' : '-100%',
+          opacity: 0
+        }),
+        center: {
+          x: 0,
+          opacity: 1
+        },
+        exit: (direction) => ({
+          x: direction > 0 ? '-100%' : '100%',
+          opacity: 0
+        })
+      };
+
+      const BarbellVisual = () => (
+        <svg viewBox="0 0 800 400" className="w-full max-w-5xl mx-auto">
+          {/* Left weight (Big Swings) */}
+          <g>
+            <rect x="40" y="100" width="140" height="200" rx="8" fill="#DC2626" stroke="#991B1B" strokeWidth="3"/>
+            <rect x="60" y="120" width="100" height="160" rx="4" fill="#B91C1C"/>
+
+            <text x="110" y="185" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
+              BIG
+            </text>
+            <text x="110" y="210" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
+              SWINGS
+            </text>
+            <text x="110" y="240" fontSize="28" fontWeight="700" fill="#FCA5A5" textAnchor="middle">
+              5%
+            </text>
+          </g>
+
+          {/* Bar */}
+          <rect x="180" y="185" width="440" height="30" rx="15" fill="#374151" stroke="#1F2937" strokeWidth="2"/>
+          <rect x="380" y="170" width="40" height="60" rx="6" fill="#1F2937" stroke="#111827" strokeWidth="2"/>
+
+          {/* Right weight (Small Swings) */}
+          <g>
+            <rect x="620" y="100" width="140" height="200" rx="8" fill="#10b981" stroke="#059669" strokeWidth="3"/>
+            <rect x="640" y="120" width="100" height="160" rx="4" fill="#059669"/>
+
+            <text x="690" y="175" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
+              SMALL
+            </text>
+            <text x="690" y="200" fontSize="16" fontWeight="700" fill="white" textAnchor="middle">
+              SWINGS
+            </text>
+            <text x="690" y="230" fontSize="28" fontWeight="700" fill="#A7F3D0" textAnchor="middle">
+              95%
+            </text>
+          </g>
+
+          {/* Labels below */}
+          <text x="110" y="330" fontSize="13" fill="#991B1B" textAnchor="middle" fontWeight="600">
+            High Risk
+          </text>
+          <text x="110" y="350" fontSize="13" fill="#991B1B" textAnchor="middle" fontWeight="600">
+            High Reward
+          </text>
+
+          <text x="690" y="330" fontSize="13" fill="#059669" textAnchor="middle" fontWeight="600">
+            Low Risk
+          </text>
+          <text x="690" y="350" fontSize="13" fill="#059669" textAnchor="middle" fontWeight="600">
+            Compounding
+          </text>
+        </svg>
+      );
+
+      const CompoundCurve = () => (
+        <svg viewBox="0 0 600 400" className="w-full max-w-3xl mx-auto">
+          {/* Grid */}
+          <line x1="60" y1="340" x2="560" y2="340" stroke="#E5E7EB" strokeWidth="2"/>
+          <line x1="60" y1="340" x2="60" y2="40" stroke="#E5E7EB" strokeWidth="2"/>
+
+          {/* Exponential curve */}
+          <path
+            d="M 60 340 Q 200 320, 300 200 T 540 50"
+            stroke="#10b981"
+            strokeWidth="4"
+            fill="none"
+            strokeLinecap="round"
+          />
+
+          {/* Shaded area under curve */}
+          <path
+            d="M 60 340 Q 200 320, 300 200 T 540 50 L 540 340 Z"
+            fill="url(#gradient)"
+            opacity="0.3"
+          />
+
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#10b981" />
+              <stop offset="100%" stopColor="#D1FAE5" />
+            </linearGradient>
+          </defs>
+
+          {/* Data points */}
+          <circle cx="60" cy="340" r="6" fill="#10b981"/>
+          <circle cx="180" cy="310" r="6" fill="#10b981"/>
+          <circle cx="300" cy="240" r="6" fill="#10b981"/>
+          <circle cx="420" cy="130" r="6" fill="#10b981"/>
+          <circle cx="540" cy="50" r="6" fill="#10b981"/>
+
+          {/* Labels */}
+          <text x="60" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 1</text>
+          <text x="180" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 90</text>
+          <text x="300" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 180</text>
+          <text x="420" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 270</text>
+          <text x="540" y="365" fontSize="12" fill="#6B7280" textAnchor="middle" fontWeight="600">Day 365</text>
+
+          {/* Y-axis labels */}
+          <text x="50" y="345" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">1x</text>
+          <text x="50" y="260" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">5x</text>
+          <text x="50" y="180" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">15x</text>
+          <text x="50" y="100" fontSize="12" fill="#6B7280" textAnchor="end" fontWeight="600">30x</text>
+          <text x="50" y="45" fontSize="14" fill="#10b981" textAnchor="end" fontWeight="700">38x</text>
+
+          {/* Title */}
+          <text x="300" y="25" fontSize="16" fill="#1F2937" textAnchor="middle" fontWeight="700">
+            +1% Daily = 38x Better in 365 Days
+          </text>
+        </svg>
+      );
+
+      const slides = [
+        // Slide 1: Welcome
+        <motion.div
+          key="slide-0"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="max-w-3xl text-center">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <h1 className="font-display text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+                The Barbell Strategy
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed">
+                5% big swings. 95% small wins. Avoid the dangerous middle.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">You'll Learn:</h2>
+              <div className="space-y-4 text-left">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">1</span>
+                  </div>
+                  <p className="text-lg text-gray-700">How Häagen-Dazs used a 5% big swing to reposition as luxury</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">2</span>
+                  </div>
+                  <p className="text-lg text-gray-700">Why 1% daily improvement = 38x better in a year</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">3</span>
+                  </div>
+                  <p className="text-lg text-gray-700">The execution framework for balancing innovation with optimization</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.p
+              className="text-gray-500 mt-8 text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              4 minutes • Execution
+            </motion.p>
+          </div>
+        </motion.div>,
+
+        // Slide 2: Hook
+        <motion.div
+          key="slide-1"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl">
+            <motion.div
+              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 md:p-16 shadow-2xl text-white"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.div
+                className="text-6xl mb-8"
+                animate={{ rotate: [0, 10, -10, 10, 0] }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                💰
+              </motion.div>
+              <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                "Compound interest is the eighth wonder of the world."
+              </h2>
+              <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
+                "He who understands it, <span className="text-accent-light font-bold">earns it</span>. He who doesn't, <span className="text-red-400 font-bold">pays it</span>."
+              </p>
+              <p className="text-accent-light mt-6 font-semibold text-lg">
+                — Albert Einstein
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-xl text-gray-700 leading-relaxed">
+                Most entrepreneurs fail because they're stuck in the <span className="font-bold text-red-600">dangerous middle</span>:
+                actions that are neither safe nor transformative.
+              </p>
+              <p className="text-xl text-gray-700 mt-6 leading-relaxed">
+                <span className="font-bold text-accent">The Barbell Strategy</span> splits your actions into two extremes. Nothing in between.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 3: The Barbell Visual
+        <motion.div
+          key="slide-2"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-5xl w-full">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Barbell Framework
+            </motion.h2>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <BarbellVisual />
+            </motion.div>
+
+            <motion.div
+              className="grid md:grid-cols-2 gap-8 mt-12"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-red-900 mb-4">Big Swings (5%)</h3>
+                <p className="text-lg text-red-800 mb-4">
+                  Fundamental, high-risk, high-reward changes
+                </p>
+                <div className="bg-white rounded-lg p-4 text-sm text-red-900">
+                  <p className="font-semibold mb-2">Example: Häagen-Dazs</p>
+                  <p>Bronx ice cream company invented Danish-sounding name + European branding to reposition as luxury. Complete brand transformation.</p>
+                </div>
+              </div>
+
+              <div className="bg-green-50 border-2 border-accent rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-green-900 mb-4">Small Swings (95%)</h3>
+                <p className="text-lg text-green-800 mb-4">
+                  Safe, measurable, compounding 1% improvements
+                </p>
+                <div className="bg-white rounded-lg p-4 text-sm text-green-900">
+                  <p className="font-semibold mb-2">Example: A/B Testing</p>
+                  <p>Relentless testing on ads, landing pages, offers. Each win stacks. 300 tests/year = 90% revenue uplift.</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 4: The Dangerous Middle
+        <motion.div
+          key="slide-3"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Dangerous Middle
+            </motion.h2>
+
+            <motion.div
+              className="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl p-12 shadow-2xl text-white mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <div className="text-center mb-8">
+                <div className="text-6xl mb-4">⚠️</div>
+                <h3 className="text-3xl font-bold mb-4">Avoid This Zone</h3>
+              </div>
+              <p className="text-xl leading-relaxed text-center mb-6">
+                Medium-risk, medium-reward actions that feel productive but compound nothing.
+              </p>
+              <div className="bg-white/20 backdrop-blur rounded-2xl p-6 border border-white/30">
+                <p className="text-lg font-semibold mb-3">Examples of the Dangerous Middle:</p>
+                <ul className="space-y-2 text-base">
+                  <li>• Redesigning your logo (not transformative enough)</li>
+                  <li>• Random feature additions (no systematic testing)</li>
+                  <li>• "Kinda" changing your positioning (confuses the market)</li>
+                  <li>• Sporadic marketing experiments (no compounding data)</li>
+                </ul>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl p-8 shadow-lg"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-xl text-gray-700 leading-relaxed text-center">
+                <span className="font-bold text-accent">The rule:</span> Every action should be either a <span className="font-bold text-red-600">big swing</span> or a <span className="font-bold text-green-600">small swing</span>. Nothing in between.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 5: The Compound Curve
+        <motion.div
+          key="slide-4"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-5xl w-full">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Power of 1% Daily
+            </motion.h2>
+
+            <motion.div
+              className="bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-100 mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <CompoundCurve />
+            </motion.div>
+
+            <motion.div
+              className="grid md:grid-cols-3 gap-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <div className="bg-gradient-to-br from-accent to-accent-dark rounded-xl p-6 text-white shadow-lg">
+                <div className="text-3xl mb-3">📈</div>
+                <div className="text-4xl font-bold mb-2">1.01</div>
+                <p className="text-sm text-accent-light">Compounded Daily</p>
+              </div>
+              <div className="bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl p-6 text-white shadow-lg">
+                <div className="text-3xl mb-3">📅</div>
+                <div className="text-4xl font-bold mb-2">365</div>
+                <p className="text-sm text-gray-300">Days of Testing</p>
+              </div>
+              <div className="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
+                <div className="text-3xl mb-3">🚀</div>
+                <div className="text-4xl font-bold mb-2">38x</div>
+                <p className="text-sm text-yellow-200">Better Than Start</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              <p className="text-lg text-blue-900 text-center">
+                <span className="font-bold">The math is brutal:</span> 1% worse daily = 97% worse in a year. 1% better daily = 3,778% better.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 6: Tool Integration
+        <motion.div
+          key="slide-5"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Compound Testing System
+            </motion.h2>
+
+            <motion.div
+              className="bg-white rounded-3xl p-10 shadow-xl border-2 border-gray-100 mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                Tests Per Year = Revenue Uplift
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between bg-gray-50 rounded-xl p-5">
+                  <div>
+                    <span className="text-lg font-bold text-gray-900">60 tests/year</span>
+                    <p className="text-sm text-gray-600">(~5 per month)</p>
+                  </div>
+                  <div className="text-3xl font-bold text-accent">+18%</div>
+                </div>
+                <div className="flex items-center justify-between bg-green-50 rounded-xl p-5 border-2 border-accent">
+                  <div>
+                    <span className="text-lg font-bold text-gray-900">120 tests/year</span>
+                    <p className="text-sm text-gray-600">(~10 per month)</p>
+                  </div>
+                  <div className="text-3xl font-bold text-accent">+36%</div>
+                </div>
+                <div className="flex items-center justify-between bg-gradient-to-r from-accent to-accent-dark rounded-xl p-5 text-white">
+                  <div>
+                    <span className="text-lg font-bold">300 tests/year</span>
+                    <p className="text-sm text-accent-light">(~25 per month)</p>
+                  </div>
+                  <div className="text-4xl font-bold">+90%</div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-xl"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <h3 className="text-2xl font-bold text-white mb-4">How do you run 300 tests/year?</h3>
+              <p className="text-lg text-gray-300 mb-6">
+                Manual testing is impossible at this scale. You need automation.
+              </p>
+
+              <div className="bg-white rounded-xl p-6 mb-6">
+                <img
+                  src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(12).jpg"
+                  alt="ABConvert Results"
+                  className="w-full rounded-lg mb-4"
+                />
+                <p className="text-sm text-gray-600 text-center italic">
+                  Real result: 520% increase from systematic testing
+                </p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
+                <h4 className="text-xl font-bold text-white mb-3">ABConvert</h4>
+                <p className="text-gray-300 mb-4">
+                  Automated A/B testing for prices, offers, and layouts. Run 25+ tests/month on autopilot.
+                </p>
+                <div className="flex flex-wrap gap-3 items-center">
+                  <a
+                    href="https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-accent hover:bg-accent-dark text-white font-bold py-3 px-6 rounded-lg transition-all inline-block"
+                  >
+                    View on Shopify
+                  </a>
+                  <div className="bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-lg">
+                    Code: LASERCRO (10% off)
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 7: Quiz
+        <motion.div
+          key="slide-6"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-3xl w-full">
+            <motion.h2
+              className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              What percentage of your actions should be "big swings"?
+            </motion.h2>
+
+            <motion.div
+              className="space-y-4"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              {[
+                { text: 'A) 50% (balanced approach)', correct: false },
+                { text: 'B) 5% (rare, transformative)', correct: true },
+                { text: 'C) 95% (constant innovation)', correct: false }
+              ].map((answer, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  className={`w-full p-6 rounded-xl text-left text-lg font-semibold transition-all ${
+                    selectedAnswer === null
+                      ? 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-accent'
+                      : selectedAnswer === index
+                      ? answer.correct
+                        ? 'bg-green-100 border-2 border-green-500'
+                        : 'bg-red-100 border-2 border-red-500'
+                      : 'bg-gray-100 border-2 border-gray-200 opacity-50'
+                  }`}
+                  disabled={selectedAnswer !== null}
+                  whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
+                  whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
+                >
+                  {answer.text}
+                </motion.button>
+              ))}
+            </motion.div>
+
+            <AnimatePresence>
+              {showQuizResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="mt-8"
+                >
+                  {selectedAnswer === 1 ? (
+                    <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8">
+                      <div className="flex items-center gap-4 mb-4">
+                        <img src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} alt="Celebration" className="w-20 h-20 rounded-lg" />
+                        <div>
+                          <h3 className="text-2xl font-bold text-green-900 mb-2">Perfect!</h3>
+                          <p className="text-green-800 text-lg">
+                            5% big swings, 95% small swings. Big swings are rare and transformative. Small swings compound relentlessly.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8">
+                      <div className="flex items-center gap-4 mb-4">
+                        <img src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} alt="Thinking" className="w-20 h-20 rounded-lg" />
+                        <div>
+                          <h3 className="text-2xl font-bold text-blue-900 mb-2">Not quite!</h3>
+                          <p className="text-blue-800 text-lg">
+                            The answer is B (5%). Big swings should be <span className="font-bold">rare</span> - fundamental transformations like Häagen-Dazs rebranding. 95% should be safe, compounding improvements.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>,
+
+        // Slide 8: Completion
+        <motion.div
+          key="slide-7"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-3xl text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="text-8xl mb-8"
+            >
+              🏋️
+            </motion.div>
+
+            <motion.h2
+              className="font-display text-4xl md:text-6xl font-bold text-gray-900 mb-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              You've Got the System, {userName}!
+            </motion.h2>
+
+            <motion.p
+              className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              You now understand how to balance innovation with optimization using the Barbell Strategy.
+            </motion.p>
+
+            <motion.div
+              className="bg-white rounded-2xl p-8 shadow-lg mb-8"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Takeaway:</h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Split your actions into two extremes: <span className="font-bold text-red-600">5% big swings</span> (transformative risks) and <span className="font-bold text-accent">95% small swings</span> (compounding improvements). Avoid the dangerous middle.
+              </p>
+              <div className="bg-accent/10 border-2 border-accent rounded-xl p-4">
+                <p className="text-accent font-bold text-lg">
+                  300 tests/year = 90% revenue uplift. That's the compound power of systematic optimization.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+            >
+              <a
+                href="/dashboard"
+                className="inline-block bg-accent hover:bg-accent-dark text-white font-bold py-4 px-10 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl"
+              >
+                Back to Learning Center
+              </a>
+            </motion.div>
+          </div>
+        </motion.div>
+      ];
+
+      return (
+        <div className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentSlide}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              {slides[currentSlide]}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="bg-white rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
+              <button
+                onClick={prevSlide}
+                disabled={currentSlide === 0}
+                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-gray-700"
+              >
+                ←
+              </button>
+
+              <div className="flex gap-2">
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentSlide
+                        ? 'w-8 bg-accent'
+                        : 'w-2 bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={nextSlide}
+                disabled={currentSlide === totalSlides - 1}
+                className="w-10 h-10 rounded-full bg-accent hover:bg-accent-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-white"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          {/* Progress indicator */}
+          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div
+              className="h-full bg-accent"
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>

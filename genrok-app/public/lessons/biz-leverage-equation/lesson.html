@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Leverage Equation | Quantum Scale</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/scripts/greetings.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAFAFA;
+      color: #1D1D1F;
+      overflow-x: hidden;
+    }
+    .title-font { font-family: 'Fraunces', serif; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#10b981',
+            'accent-dark': '#059669',
+            'accent-light': '#34d399',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const celebrationGifs = [
+      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTg5anRqMnZ5dGZhZjRvN3F5OXJ4OGNzYzRoMm1oM3gyZnN5ZDRsZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/g9582DNuQppxC/giphy.gif',
+      'https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif',
+      'https://media.giphy.com/media/1136UBdSNn6Bu8/giphy.gif'
+    ];
+
+    const empathyGifs = [
+      'https://media.giphy.com/media/3oEjI5VtIhHvK37WYo/giphy.gif',
+      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
+      'https://media.giphy.com/media/ISOckXUybVfQ4/giphy.gif'
+    ];
+
+    const LeverageEquationLesson = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [userName, setUserName] = useState('Builder');
+
+      useEffect(() => {
+        if (window.getGreeting) {
+          const greeting = window.getGreeting();
+          setUserName(greeting.split(' ')[1] || 'Builder');
+        }
+      }, []);
+
+      const totalSlides = 6;
+
+      const nextSlide = () => {
+        if (currentSlide < totalSlides - 1) {
+          setCurrentSlide(currentSlide + 1);
+          setSelectedAnswer(null);
+          setShowFeedback(false);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setCurrentSlide(currentSlide - 1);
+          setSelectedAnswer(null);
+          setShowFeedback(false);
+        }
+      };
+
+      const handleQuizAnswer = (answer) => {
+        setSelectedAnswer(answer);
+        setShowFeedback(true);
+      };
+
+      const LeverFulcrumSVG = () => (
+        <svg viewBox="0 0 400 300" className="w-full max-w-md mx-auto">
+          {/* Ground */}
+          <line x1="0" y1="220" x2="400" y2="220" stroke="#86868B" strokeWidth="2"/>
+
+          {/* Fulcrum */}
+          <path d="M 200 220 L 220 180 L 180 180 Z" fill="#10b981"/>
+
+          {/* Lever */}
+          <motion.rect
+            x="100"
+            y="175"
+            width="240"
+            height="8"
+            fill="#1D1D1F"
+            rx="4"
+            initial={{ rotate: 0 }}
+            animate={{ rotate: -15 }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+            style={{ transformOrigin: "200px 179px" }}
+          />
+
+          {/* Small person (left side) */}
+          <motion.g
+            initial={{ y: 0 }}
+            animate={{ y: -10 }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+          >
+            <circle cx="120" cy="145" r="12" fill="#059669"/>
+            <rect x="114" y="157" width="12" height="20" fill="#059669" rx="2"/>
+          </motion.g>
+
+          {/* Heavy box (right side) */}
+          <motion.rect
+            x="300"
+            y="120"
+            width="40"
+            height="40"
+            fill="#FF3B30"
+            rx="4"
+            initial={{ y: 0 }}
+            animate={{ y: 10 }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+          />
+
+          {/* Labels */}
+          <text x="120" y="200" textAnchor="middle" fill="#10b981" fontSize="14" fontWeight="600">
+            YOU
+          </text>
+          <text x="320" y="180" textAnchor="middle" fill="#FF3B30" fontSize="14" fontWeight="600">
+            RESULTS
+          </text>
+
+          {/* Arrow showing leverage */}
+          <motion.path
+            d="M 160 120 Q 180 100 200 90"
+            stroke="#10b981"
+            strokeWidth="2"
+            fill="none"
+            strokeDasharray="4 4"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          />
+          <text x="180" y="80" fill="#10b981" fontSize="12" fontWeight="600">
+            LEVERAGE
+          </text>
+        </svg>
+      );
+
+      const slides = [
+        // Slide 1: Welcome
+        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl w-full"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="bg-black text-white rounded-3xl p-12 shadow-2xl"
+            >
+              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-8 mx-auto">
+                <span className="text-3xl">⚡</span>
+              </div>
+              <h1 className="title-font text-4xl md:text-5xl font-bold mb-6 text-center">
+                The Leverage Equation
+              </h1>
+              <p className="text-xl text-gray-300 text-center mb-8 leading-relaxed">
+                Stop working harder. Start working smarter with the equation that changes everything.
+              </p>
+              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                <p className="text-sm font-semibold text-accent mb-3">YOU'LL LEARN:</p>
+                <ul className="space-y-2 text-gray-200">
+                  <li className="flex items-start">
+                    <span className="text-accent mr-2">✓</span>
+                    <span>The simple equation that separates winners from grinders</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-accent mr-2">✓</span>
+                    <span>Why effort alone is the slowest path to success</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-accent mr-2">✓</span>
+                    <span>How to multiply your results without more hours</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>,
+
+        // Slide 2: Hook
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl w-full"
+          >
+            <motion.div
+              initial={{ y: 30 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-12"
+            >
+              <h2 className="title-font text-5xl md:text-6xl font-bold mb-8 leading-tight">
+                Most entrepreneurs play by{' '}
+                <span className="text-accent">rules that don't exist</span>
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white rounded-2xl p-10 shadow-lg space-y-6"
+            >
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">❌</span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold mb-2">The Hustle Trap</p>
+                  <p className="text-gray-600">"I'll outwork everyone. First one in, last one out."</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">❌</span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold mb-2">The Effort Myth</p>
+                  <p className="text-gray-600">"If I just try harder, push more, grind longer..."</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">❌</span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold mb-2">The Time Delusion</p>
+                  <p className="text-gray-600">"More hours = More results. That's just how it works."</p>
+                </div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                className="bg-emerald-50 rounded-xl p-6 mt-8 border-2 border-accent"
+              >
+                <p className="text-lg font-semibold text-center">
+                  What if there was a better way?
+                </p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>,
+
+        // Slide 3: The Equation
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl w-full"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-12"
+            >
+              <p className="text-sm font-semibold text-accent mb-4 tracking-wide uppercase">
+                Alex Hormozi's Framework
+              </p>
+              <h2 className="title-font text-4xl md:text-5xl font-bold mb-8">
+                The Equation That Changes Everything
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-black text-white rounded-3xl p-12 shadow-2xl mb-8"
+            >
+              <div className="text-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.6, type: "spring" }}
+                  className="title-font text-5xl md:text-6xl font-bold mb-4"
+                >
+                  Outputs = Volume × Leverage
+                </motion.div>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                  className="text-gray-400 text-lg mt-6"
+                >
+                  The number of times you do something, multiplied by how much you get from each time
+                </motion.p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="grid md:grid-cols-2 gap-6"
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                  <span className="text-2xl">🔄</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3">Volume</h3>
+                <p className="text-gray-600">How many times you do the thing. Reps. Iterations. Scale.</p>
+              </div>
+
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
+                  <span className="text-2xl">⚡</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3">Leverage</h3>
+                <p className="text-gray-600">What you get from each rep. Force multiplier. Efficiency.</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+              className="mt-8 bg-emerald-50 rounded-2xl p-6 border-2 border-accent"
+            >
+              <p className="text-center font-semibold text-lg">
+                It's not time spent or effort. It's <span className="text-accent">OUTPUT</span> that matters.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>,
+
+        // Slide 4: Visual
+        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-3xl w-full"
+          >
+            <motion.div
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              className="text-center mb-12"
+            >
+              <h2 className="title-font text-4xl md:text-5xl font-bold mb-6">
+                The Power of Leverage
+              </h2>
+              <p className="text-xl text-gray-600">
+                Small effort. Massive results. That's the fulcrum effect.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-3xl p-12 shadow-xl mb-8"
+            >
+              <LeverFulcrumSVG />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-black text-white rounded-2xl p-8"
+            >
+              <p className="text-2xl font-bold text-center mb-4">
+                To outwork competition, you must <span className="text-accent">OUT-LEVERAGE</span> them
+              </p>
+              <p className="text-gray-400 text-center text-lg">
+                Same energy. 10x the results. That's leverage.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>,
+
+        // Slide 5: Quiz
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-2xl w-full"
+          >
+            <div className="text-center mb-12">
+              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">🎯</span>
+              </div>
+              <h2 className="title-font text-3xl md:text-4xl font-bold mb-4">
+                Quick Check
+              </h2>
+              <p className="text-xl text-gray-600">
+                What matters more for results?
+              </p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              {[
+                { id: 'A', text: 'Hours worked', correct: false },
+                { id: 'B', text: 'Leverage applied', correct: true },
+                { id: 'C', text: 'Both equally', correct: false }
+              ].map((option) => (
+                <motion.button
+                  key={option.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleQuizAnswer(option.id)}
+                  disabled={showFeedback}
+                  className={`w-full p-6 rounded-2xl text-left font-semibold text-lg transition-all ${
+                    selectedAnswer === option.id
+                      ? option.correct
+                        ? 'bg-accent text-white shadow-lg'
+                        : 'bg-red-500 text-white shadow-lg'
+                      : 'bg-white hover:bg-gray-50 shadow-md'
+                  } ${showFeedback ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                >
+                  <span className="text-accent-dark mr-3">{option.id}.</span>
+                  {option.text}
+                </motion.button>
+              ))}
+            </div>
+
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-2xl p-8 shadow-xl"
+                >
+                  {selectedAnswer === 'B' ? (
+                    <>
+                      <div className="flex items-center justify-center mb-6">
+                        <img
+                          src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]}
+                          alt="Celebration"
+                          className="w-32 h-32 rounded-xl"
+                        />
+                      </div>
+                      <h3 className="text-2xl font-bold text-accent mb-3 text-center">
+                        Exactly right!
+                      </h3>
+                      <p className="text-gray-600 text-center text-lg">
+                        Leverage is the difference maker. Hours worked is a vanity metric. Leverage is what separates builders from grinders.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-center mb-6">
+                        <img
+                          src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]}
+                          alt="Learning moment"
+                          className="w-32 h-32 rounded-xl"
+                        />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
+                        Not quite!
+                      </h3>
+                      <p className="text-gray-600 text-center text-lg">
+                        Leverage is the multiplier. You can work 100 hours with no leverage and get mediocre results, or work 10 hours with high leverage and 10x your competition.
+                      </p>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>,
+
+        // Slide 6: Completion
+        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-emerald-50 to-white">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-2xl w-full"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="bg-black text-white rounded-3xl p-12 shadow-2xl text-center"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+                className="w-20 h-20 bg-accent rounded-3xl flex items-center justify-center mx-auto mb-8"
+              >
+                <span className="text-4xl">✓</span>
+              </motion.div>
+
+              <h2 className="title-font text-4xl md:text-5xl font-bold mb-6">
+                You've Got The Equation
+              </h2>
+
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                Now you know the secret. Volume gets you in the game. Leverage makes you unstoppable.
+              </p>
+
+              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm mb-8">
+                <p className="text-accent font-semibold mb-3">KEY TAKEAWAY:</p>
+                <p className="text-lg text-gray-200">
+                  Stop counting hours. Start counting leverage. That's how you win.
+                </p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="pt-6 border-t border-white/20"
+              >
+                <p className="text-sm text-gray-400 mb-3">NEXT LESSON:</p>
+                <p className="text-xl font-semibold text-accent">
+                  The Market Awareness Sweet Spot
+                </p>
+                <p className="text-gray-400 mt-2">
+                  Enter markets where customers feel the pain but don't know the solution exists
+                </p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
+      ];
+
+      return (
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {slides[currentSlide]}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-white rounded-full px-6 py-4 shadow-2xl z-50">
+            <button
+              onClick={prevSlide}
+              disabled={currentSlide === 0}
+              className="w-10 h-10 rounded-full bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors flex items-center justify-center font-bold"
+            >
+              ←
+            </button>
+
+            <div className="flex gap-2">
+              {Array.from({ length: totalSlides }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`h-2 rounded-full transition-all ${
+                    idx === currentSlide ? 'w-8 bg-accent' : 'w-2 bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={nextSlide}
+              disabled={currentSlide === totalSlides - 1 || (currentSlide === 4 && !showFeedback)}
+              className="w-10 h-10 rounded-full bg-accent text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-accent-dark transition-colors flex items-center justify-center font-bold"
+            >
+              →
+            </button>
+          </div>
+
+          {/* Progress indicator */}
+          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div
+              className="h-full bg-accent"
+              initial={{ width: '0%' }}
+              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LeverageEquationLesson />);
+  </script>
+</body>
+</html>

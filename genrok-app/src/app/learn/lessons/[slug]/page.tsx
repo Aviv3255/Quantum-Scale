@@ -283,6 +283,27 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
     title: 'Build an Asset, Not a Job',
     description: 'The $3 million difference between earning income and building wealth',
   },
+  // Business Leverage Playbook lessons
+  'biz-leverage-equation': {
+    title: 'The Leverage Equation',
+    description: 'Stop working harder. Start working smarter with the equation that changes everything.',
+  },
+  'biz-counter-position': {
+    title: 'The Counter-Position Strategy',
+    description: 'Create a battlefield where the giants\' money is worthless.',
+  },
+  'biz-awareness-sweet-spot': {
+    title: 'The Market Awareness Sweet Spot',
+    description: 'Enter markets where customers feel the pain but don\'t know the solution exists.',
+  },
+  'biz-barbell-strategy': {
+    title: 'The Barbell Strategy',
+    description: '5% big swings. 95% small wins. Avoid the dangerous middle.',
+  },
+  'biz-one-pager-blueprint': {
+    title: 'The One-Pager Blueprint',
+    description: 'Kill shiny object syndrome with the 4 questions that become your North Star.',
+  },
 };
 
 export default function LessonPage() {

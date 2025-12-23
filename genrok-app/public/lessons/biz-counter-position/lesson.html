@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Counter-Position Strategy | Quantum Scale</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.11.11/dist/framer-motion.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#10b981',
+            'accent-dark': '#059669',
+            'accent-light': '#34d399',
+          },
+          fontFamily: {
+            'display': ['Fraunces', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #FAFAFA;
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const celebrationGifs = [
+      'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
+      'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+      'https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif',
+      'https://media.giphy.com/media/l4FGGafcOHmrlQxG0/giphy.gif',
+      'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif'
+    ];
+
+    const empathyGifs = [
+      'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif',
+      'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
+      'https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif'
+    ];
+
+    function LessonApp() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [showQuizResult, setShowQuizResult] = useState(false);
+      const [userName, setUserName] = useState('Builder');
+
+      useEffect(() => {
+        const script = document.createElement('script');
+        script.src = '/greetings.js';
+        script.async = true;
+        script.onload = () => {
+          if (window.getGreeting) {
+            const greeting = window.getGreeting();
+            if (greeting.userName) {
+              setUserName(greeting.userName);
+            }
+          }
+        };
+        document.body.appendChild(script);
+        return () => document.body.removeChild(script);
+      }, []);
+
+      const totalSlides = 7;
+
+      const nextSlide = () => {
+        if (currentSlide < totalSlides - 1) {
+          setDirection(1);
+          setCurrentSlide(prev => prev + 1);
+          setSelectedAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const prevSlide = () => {
+        if (currentSlide > 0) {
+          setDirection(-1);
+          setCurrentSlide(prev => prev - 1);
+          setSelectedAnswer(null);
+          setShowQuizResult(false);
+        }
+      };
+
+      const handleAnswerSelect = (answerIndex) => {
+        setSelectedAnswer(answerIndex);
+        setShowQuizResult(true);
+        if (answerIndex === 2) {
+          setTimeout(nextSlide, 2500);
+        }
+      };
+
+      const slideVariants = {
+        enter: (direction) => ({
+          x: direction > 0 ? '100%' : '-100%',
+          opacity: 0
+        }),
+        center: {
+          x: 0,
+          opacity: 1
+        },
+        exit: (direction) => ({
+          x: direction > 0 ? '-100%' : '100%',
+          opacity: 0
+        })
+      };
+
+      const DoveSquatchComparison = () => (
+        <svg viewBox="0 0 800 400" className="w-full max-w-4xl mx-auto">
+          {/* Dove Side */}
+          <g>
+            <rect x="20" y="20" width="360" height="360" rx="16" fill="#E0F2FE" stroke="#0EA5E9" strokeWidth="2"/>
+            <text x="200" y="60" fontSize="28" fontWeight="700" fill="#0C4A6E" textAnchor="middle" fontFamily="Inter">
+              DOVE
+            </text>
+            <text x="200" y="95" fontSize="14" fill="#0C4A6E" textAnchor="middle" fontFamily="Inter">
+              The Goliath
+            </text>
+
+            {/* Modern icon */}
+            <circle cx="100" cy="150" r="30" fill="#BFDBFE"/>
+            <text x="100" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Modern</text>
+
+            {/* Caring icon */}
+            <circle cx="200" cy="150" r="30" fill="#BFDBFE"/>
+            <path d="M 200 140 Q 190 130, 200 125 Q 210 130, 200 140" fill="#0C4A6E"/>
+            <text x="200" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Caring</text>
+
+            {/* Gentle icon */}
+            <circle cx="300" cy="150" r="30" fill="#BFDBFE"/>
+            <text x="300" y="200" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Gentle</text>
+
+            {/* Urban icon */}
+            <rect x="85" y="240" width="30" height="40" fill="#BFDBFE"/>
+            <rect x="125" y="230" width="30" height="50" fill="#BFDBFE"/>
+            <rect x="165" y="220" width="30" height="60" fill="#BFDBFE"/>
+            <text x="135" y="300" fontSize="12" fill="#0C4A6E" textAnchor="middle" fontWeight="600">Urban</text>
+
+            <text x="200" y="340" fontSize="13" fill="#0C4A6E" textAnchor="middle" fontStyle="italic">
+              "Care makes a man stronger"
+            </text>
+          </g>
+
+          {/* VS Divider */}
+          <line x1="400" y1="60" x2="400" y2="340" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="8,4"/>
+          <circle cx="400" cy="200" r="30" fill="#FAFAFA" stroke="#9CA3AF" strokeWidth="2"/>
+          <text x="400" y="210" fontSize="20" fontWeight="700" fill="#1F2937" textAnchor="middle">VS</text>
+
+          {/* Dr. Squatch Side */}
+          <g>
+            <rect x="420" y="20" width="360" height="360" rx="16" fill="#ECFDF5" stroke="#10b981" strokeWidth="2"/>
+            <text x="600" y="60" fontSize="28" fontWeight="700" fill="#065F46" textAnchor="middle" fontFamily="Inter">
+              DR. SQUATCH
+            </text>
+            <text x="600" y="95" fontSize="14" fill="#065F46" textAnchor="middle" fontFamily="Inter">
+              The Counter-Position
+            </text>
+
+            {/* Natural icon */}
+            <circle cx="500" cy="150" r="30" fill="#A7F3D0"/>
+            <path d="M 500 135 L 505 145 L 500 160 L 495 145 Z" fill="#065F46"/>
+            <text x="500" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Natural</text>
+
+            {/* Tough icon */}
+            <circle cx="600" cy="150" r="30" fill="#A7F3D0"/>
+            <rect x="590" y="140" width="20" height="20" fill="#065F46"/>
+            <text x="600" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Tough</text>
+
+            {/* Rugged icon */}
+            <circle cx="700" cy="150" r="30" fill="#A7F3D0"/>
+            <text x="700" y="200" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Rugged</text>
+
+            {/* Wilderness icon */}
+            <polygon points="530,260 550,230 570,260" fill="#A7F3D0"/>
+            <polygon points="560,270 585,235 610,270" fill="#A7F3D0"/>
+            <polygon points="580,275 605,245 630,275" fill="#A7F3D0"/>
+            <text x="580" y="300" fontSize="12" fill="#065F46" textAnchor="middle" fontWeight="600">Wilderness</text>
+
+            <text x="600" y="340" fontSize="13" fill="#065F46" textAnchor="middle" fontStyle="italic">
+              "We make soap for a tough man"
+            </text>
+          </g>
+        </svg>
+      );
+
+      const slides = [
+        // Slide 1: Welcome
+        <motion.div
+          key="slide-0"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="max-w-3xl text-center">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <h1 className="font-display text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+                The Counter-Position Strategy
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed">
+                Create a battlefield where the giants' money is worthless.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">You'll Learn:</h2>
+              <div className="space-y-4 text-left">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">1</span>
+                  </div>
+                  <p className="text-lg text-gray-700">How Dr. Squatch beat Dove without a bigger budget</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">2</span>
+                  </div>
+                  <p className="text-lg text-gray-700">Why fighting harder keeps you broke</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-sm font-bold">3</span>
+                  </div>
+                  <p className="text-lg text-gray-700">The framework to acquire customers for pennies</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.p
+              className="text-gray-500 mt-8 text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              3 minutes • Strategy
+            </motion.p>
+          </div>
+        </motion.div>,
+
+        // Slide 2: Hook
+        <motion.div
+          key="slide-1"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl">
+            <motion.div
+              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 md:p-16 shadow-2xl text-white"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.div
+                className="text-6xl mb-8"
+                animate={{ rotate: [0, -5, 5, -5, 0] }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                🪨
+              </motion.div>
+              <h2 className="font-display text-4xl md:text-5xl font-bold mb-8 leading-tight">
+                David didn't beat Goliath by fighting harder.
+              </h2>
+              <p className="text-2xl md:text-3xl text-gray-300 leading-relaxed">
+                He fought <span className="text-accent-light font-bold">differently</span>.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-xl text-gray-700 leading-relaxed">
+                <span className="font-bold text-gray-900">The trap:</span> You see a giant dominating your market.
+                You think, "I need more ad spend. Better product. Bigger team."
+              </p>
+              <p className="text-xl text-gray-700 mt-6 leading-relaxed">
+                <span className="font-bold text-accent">The truth:</span> You'll never outspend them.
+                But you can always <span className="font-bold">out-position</span> them.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 3: The Principle
+        <motion.div
+          key="slide-2"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl w-full">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Counter-Position Principle
+            </motion.h2>
+
+            <motion.div
+              className="bg-white rounded-3xl p-10 shadow-xl border-2 border-gray-100 mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">❌</span>
+                  <h3 className="text-2xl font-bold text-red-900">DON'T Try to Outspend</h3>
+                </div>
+                <p className="text-lg text-red-800 leading-relaxed">
+                  Competing on the same battlefield = burning money against infinite budgets
+                </p>
+              </div>
+
+              <div className="bg-green-50 border-2 border-accent rounded-2xl p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">✓</span>
+                  <h3 className="text-2xl font-bold text-green-900">DO Out-Position</h3>
+                </div>
+                <p className="text-lg text-green-800 leading-relaxed">
+                  Create a new battlefield where their advantages become <span className="font-bold">weaknesses</span>
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-gradient-to-r from-accent to-accent-dark rounded-2xl p-8 text-white shadow-xl"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-xl md:text-2xl font-bold text-center leading-relaxed">
+                "You will never have the budget to outspend the giants. But you can always out-position them."
+              </p>
+              <p className="text-center mt-4 text-accent-light font-semibold">
+                — Davie Fogarty ($850M+ in sales)
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 4: The Comparison
+        <motion.div
+          key="slide-3"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-6xl w-full">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              Case Study: Dr. Squatch vs Dove
+            </motion.h2>
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <DoveSquatchComparison />
+            </motion.div>
+
+            <motion.div
+              className="mt-12 bg-white rounded-2xl p-8 shadow-lg"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <p className="text-xl text-gray-700 leading-relaxed text-center">
+                Dr. Squatch didn't try to beat Dove at their own game.
+              </p>
+              <p className="text-2xl font-bold text-accent mt-4 text-center">
+                They changed the game entirely.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 5: The Result
+        <motion.div
+          key="slide-4"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-4xl">
+            <motion.h2
+              className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center"
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              The Result
+            </motion.h2>
+
+            <motion.div
+              className="bg-gradient-to-br from-accent to-accent-dark rounded-3xl p-12 shadow-2xl text-white mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <div className="text-center mb-8">
+                <div className="text-6xl mb-4">🎯</div>
+                <h3 className="text-3xl font-bold mb-4">Highly-Defined Niche</h3>
+              </div>
+              <p className="text-xl leading-relaxed text-center mb-8">
+                Customers who were <span className="font-bold text-black bg-white px-3 py-1 rounded">ACTIVELY REPELLED</span> by Dove's marketing
+              </p>
+              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+                <p className="text-2xl font-bold text-center">
+                  = Incredibly cheap to acquire
+                </p>
+                <p className="text-lg text-center mt-3 text-accent-light">
+                  (Low CAC, high LTV)
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="grid md:grid-cols-3 gap-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div className="text-3xl mb-3">💰</div>
+                <h4 className="font-bold text-gray-900 mb-2">Low CAC</h4>
+                <p className="text-sm text-gray-600">No bidding war with giants</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div className="text-3xl mb-3">❤️</div>
+                <h4 className="font-bold text-gray-900 mb-2">High Loyalty</h4>
+                <p className="text-sm text-gray-600">You're speaking their language</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div className="text-3xl mb-3">🚀</div>
+                <h4 className="font-bold text-gray-900 mb-2">Fast Growth</h4>
+                <p className="text-sm text-gray-600">Word-of-mouth explodes</p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>,
+
+        // Slide 6: Quiz
+        <motion.div
+          key="slide-5"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-3xl w-full">
+            <motion.h2
+              className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              How did Dr. Squatch beat Dove?
+            </motion.h2>
+
+            <motion.div
+              className="space-y-4"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              {[
+                { text: 'A) Bigger ad budget', correct: false },
+                { text: 'B) Better product quality', correct: false },
+                { text: 'C) Different battlefield (Counter-Position)', correct: true }
+              ].map((answer, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  className={`w-full p-6 rounded-xl text-left text-lg font-semibold transition-all ${
+                    selectedAnswer === null
+                      ? 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-accent'
+                      : selectedAnswer === index
+                      ? answer.correct
+                        ? 'bg-green-100 border-2 border-green-500'
+                        : 'bg-red-100 border-2 border-red-500'
+                      : 'bg-gray-100 border-2 border-gray-200 opacity-50'
+                  }`}
+                  disabled={selectedAnswer !== null}
+                  whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
+                  whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
+                >
+                  {answer.text}
+                </motion.button>
+              ))}
+            </motion.div>
+
+            <AnimatePresence>
+              {showQuizResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="mt-8"
+                >
+                  {selectedAnswer === 2 ? (
+                    <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8">
+                      <div className="flex items-center gap-4 mb-4">
+                        <img src={celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]} alt="Celebration" className="w-20 h-20 rounded-lg" />
+                        <div>
+                          <h3 className="text-2xl font-bold text-green-900 mb-2">Exactly right!</h3>
+                          <p className="text-green-800 text-lg">
+                            You understand the power of positioning. Giants can't follow you without abandoning their identity.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8">
+                      <div className="flex items-center gap-4 mb-4">
+                        <img src={empathyGifs[Math.floor(Math.random() * empathyGifs.length)]} alt="Thinking" className="w-20 h-20 rounded-lg" />
+                        <div>
+                          <h3 className="text-2xl font-bold text-blue-900 mb-2">Not quite!</h3>
+                          <p className="text-blue-800 text-lg">
+                            The answer is C. Dr. Squatch won by creating a <span className="font-bold">different battlefield</span> where Dove's advantages became weaknesses.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>,
+
+        // Slide 7: Completion
+        <motion.div
+          key="slide-6"
+          className="min-h-screen flex items-center justify-center p-6 md:p-12"
+        >
+          <div className="max-w-3xl text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="text-8xl mb-8"
+            >
+              🎯
+            </motion.div>
+
+            <motion.h2
+              className="font-display text-4xl md:text-6xl font-bold text-gray-900 mb-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              You've Got It, {userName}!
+            </motion.h2>
+
+            <motion.p
+              className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              You now understand how to create a battlefield where the giants' money is worthless.
+            </motion.p>
+
+            <motion.div
+              className="bg-white rounded-2xl p-8 shadow-lg mb-8"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Takeaway:</h3>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Don't try to outspend the giants. <span className="font-bold text-accent">Out-position them.</span> Create a niche so specific that customers are actively repelled by the competition's marketing.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+            >
+              <a
+                href="/dashboard"
+                className="inline-block bg-accent hover:bg-accent-dark text-white font-bold py-4 px-10 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl"
+              >
+                Back to Learning Center
+              </a>
+            </motion.div>
+          </div>
+        </motion.div>
+      ];
+
+      return (
+        <div className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentSlide}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              {slides[currentSlide]}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="bg-white rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
+              <button
+                onClick={prevSlide}
+                disabled={currentSlide === 0}
+                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-gray-700"
+              >
+                ←
+              </button>
+
+              <div className="flex gap-2">
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentSlide
+                        ? 'w-8 bg-accent'
+                        : 'w-2 bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={nextSlide}
+                disabled={currentSlide === totalSlides - 1}
+                className="w-10 h-10 rounded-full bg-accent hover:bg-accent-dark disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center font-bold text-white"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          {/* Progress indicator */}
+          <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+            <motion.div
+              className="h-full bg-accent"
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
+  </script>
+</body>
+</html>
