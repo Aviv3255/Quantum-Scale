@@ -6423,6 +6423,486 @@ The System for Winning:
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-creative-targeting/lesson.html' }
       ]
+    },
+    // The Infinite Money Equation lessons
+    {
+      id: 231,
+      thumbnail: '/images/lessons/biz-3x-threshold.png',
+      title: 'The 3x Threshold',
+      intro: 'The single equation that separates struggling stores from money-printing machines.',
+      directUrl: '/learn/lessons/biz-3x-threshold',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The 3x Threshold
+
+When your LTV is more than 3x your CAC, something magical happens. You have enough margin to reinvest aggressively and outspend every competitor.
+
+**Open the interactive lesson to understand the math that changes everything.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-3x-threshold/lesson.html' }
+      ]
+    },
+    {
+      id: 232,
+      thumbnail: '/images/lessons/biz-asymmetric-monopoly.png',
+      title: 'The Asymmetric Monopoly',
+      intro: 'How a 1400:1 ratio creates a legal monopoly nobody can compete with.',
+      directUrl: '/learn/lessons/biz-asymmetric-monopoly',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Asymmetric Monopoly
+
+Starbucks has a 1400:1 LTV:CAC ratio. They can outspend any competitor and still be profitable. This is how you create a legal monopoly.
+
+**Open the interactive lesson to learn the three superpowers of asymmetric economics.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-asymmetric-monopoly/lesson.html' }
+      ]
+    },
+    {
+      id: 233,
+      thumbnail: '/images/lessons/biz-authenticity-anchor.png',
+      title: 'The Authenticity Anchor',
+      intro: 'How Nike stayed cool for 40 years while competitors chased trends and died.',
+      directUrl: '/learn/lessons/biz-authenticity-anchor',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Authenticity Anchor
+
+Nike never updated the Air Force 1. Same silhouette since 1982. They didn't chase cool. They let cool find them.
+
+**Open the interactive lesson to learn Greg Hoffman's "Emotion Before Product" framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-authenticity-anchor/lesson.html' }
+      ]
+    },
+    {
+      id: 234,
+      thumbnail: '/images/lessons/biz-brand-ltv-engine.png',
+      title: 'The Brand LTV Engine',
+      intro: 'How Ralph Lauren, LEGO, and Le Creuset engineer endless reasons to return.',
+      directUrl: '/learn/lessons/biz-brand-ltv-engine',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Brand LTV Engine
+
+High LTV doesn't come from tactics. It comes from brand strategy. Learn how the world's best brands engineer customer loyalty.
+
+**Open the interactive lesson to build your brand LTV engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-brand-ltv-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 235,
+      thumbnail: '/images/lessons/biz-brand-temple.png',
+      title: 'The Brand Temple Strategy',
+      intro: 'How Ralph Lauren, LEGO, and Le Creuset built billion-dollar empires through loyalty.',
+      directUrl: '/learn/lessons/biz-brand-temple',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Brand Temple Strategy
+
+These brands built temples, not stores. People don't just buy their products—they join their religions.
+
+**Open the interactive lesson to understand the brand temple framework.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-brand-temple/lesson.html' }
+      ]
+    },
+    {
+      id: 236,
+      thumbnail: '/images/lessons/biz-cash-conversion.png',
+      title: 'The Negative Cash Conversion Cycle',
+      intro: 'How Davie Fogarty bootstrapped The Oodie to nearly $1B using customer money.',
+      directUrl: '/learn/lessons/biz-cash-conversion',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Negative Cash Conversion Cycle
+
+Amazon, Dell, and The Oodie all use this strategy: get paid before you pay suppliers. It's free capital for growth.
+
+**Open the interactive lesson to engineer your own negative cash conversion cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-cash-conversion/lesson.html' }
+      ]
+    },
+    {
+      id: 237,
+      thumbnail: '/images/lessons/biz-closer-framework.png',
+      title: 'The CLOSER Framework',
+      intro: 'Alex Hormozi\'s battle-tested 6-step sales system that converts without being pushy.',
+      directUrl: '/learn/lessons/biz-closer-framework',
+      specialFeatures: [
+        { value: '9 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The CLOSER Framework
+
+Clarify, Label, Overview, Solve, Explain, Reinforce. Six steps that turn prospects into buyers without pressure.
+
+**Open the interactive lesson to master the CLOSER sales system.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-closer-framework/lesson.html' }
+      ]
+    },
+    {
+      id: 238,
+      thumbnail: '/images/lessons/biz-courage-variable.png',
+      title: 'The Courage Variable',
+      intro: 'The hidden code behind every empire: 7,000 failures, £2 profit, and betting it all.',
+      directUrl: '/learn/lessons/biz-courage-variable',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Courage Variable
+
+Ben Francis made 7,000 mistakes before Gymshark worked. His first profit was £2. Every decision was made with courage.
+
+**Open the interactive lesson to understand the role of courage in business success.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-courage-variable/lesson.html' }
+      ]
+    },
+    {
+      id: 239,
+      thumbnail: '/images/lessons/biz-empathy-engine.png',
+      title: 'The Empathy Engine',
+      intro: 'The invisible difference between good service and service that creates lifelong customers.',
+      directUrl: '/learn/lessons/biz-empathy-engine',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Empathy Engine
+
+Empathy isn't soft—it's strategic. Brands that engineer empathy into every touchpoint create unbreakable customer bonds.
+
+**Open the interactive lesson to build your empathy engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-empathy-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 240,
+      thumbnail: '/images/lessons/biz-four-pillars.png',
+      title: 'The Four Pillars Protocol',
+      intro: 'The complete framework to escape the wheel and build a business that prints money.',
+      directUrl: '/learn/lessons/biz-four-pillars',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Four Pillars Protocol
+
+Four pillars separate struggling stores from money machines: Offer, Audience, LTV, and Systems.
+
+**Open the interactive lesson to install the four pillars in your business.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-four-pillars/lesson.html' }
+      ]
+    },
+    {
+      id: 241,
+      thumbnail: '/images/lessons/biz-hamster-wheel.png',
+      title: 'The Hamster Wheel Trap',
+      intro: 'The Matrix-level prison keeping 99% of eCommerce stores broke—and how to escape.',
+      directUrl: '/learn/lessons/biz-hamster-wheel',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Hamster Wheel Trap
+
+Most stores are running fast and going nowhere. They chase new customers while ignoring the goldmine in their existing base.
+
+**Open the interactive lesson to escape the hamster wheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-hamster-wheel/lesson.html' }
+      ]
+    },
+    {
+      id: 242,
+      thumbnail: '/images/lessons/biz-infinite-flywheel.png',
+      title: 'The Infinite Money Flywheel',
+      intro: 'How $100 ad spend becomes a predictable, scalable money machine.',
+      directUrl: '/learn/lessons/biz-infinite-flywheel',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Infinite Money Flywheel
+
+Acquire customer → Extract LTV → Reinvest profit → Acquire more customers. The flywheel that compounds forever.
+
+**Open the interactive lesson to build your infinite flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-flywheel/lesson.html' }
+      ]
+    },
+    {
+      id: 243,
+      thumbnail: '/images/lessons/biz-leaders-burden.png',
+      title: 'The Leader\'s Burden',
+      intro: 'If the system fails, the leader failed. The ultimate accountability framework.',
+      directUrl: '/learn/lessons/biz-leaders-burden',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Leader's Burden
+
+"If you can't describe what you're doing as a process, you don't know what you're doing." — W. Edwards Deming
+
+**Open the interactive lesson to embrace the leader's burden.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-leaders-burden/lesson.html' }
+      ]
+    },
+    {
+      id: 244,
+      thumbnail: '/images/lessons/biz-lifetime-gross-profit.png',
+      title: 'Lifetime Gross Profit',
+      intro: 'The number everyone calculates wrong—and why it kills businesses.',
+      directUrl: '/learn/lessons/biz-lifetime-gross-profit',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Lifetime Gross Profit
+
+LTV is NOT revenue. It's profit. Get this wrong and you'll scale yourself to bankruptcy.
+
+**Open the interactive lesson to calculate your true LTV.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-lifetime-gross-profit/lesson.html' }
+      ]
+    },
+    {
+      id: 245,
+      thumbnail: '/images/lessons/biz-logic-trap.png',
+      title: 'The Logic Trap',
+      intro: 'Why the smartest marketing decision can destroy your sales overnight.',
+      directUrl: '/learn/lessons/biz-logic-trap',
+      specialFeatures: [
+        { value: '5 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Logic Trap
+
+Decisions that make perfect logical sense can fail spectacularly. Customers don't buy with logic—they buy with emotion.
+
+**Open the interactive lesson to avoid the logic trap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-logic-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 246,
+      thumbnail: '/images/lessons/biz-ltv-cac-dashboard.png',
+      title: 'The Operator\'s Dashboard',
+      intro: 'The LTV:CAC ratios that separate struggling businesses from unstoppable ones.',
+      directUrl: '/learn/lessons/biz-ltv-cac-dashboard',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Operator's Dashboard
+
+3:1 = Surviving. 5:1 = Growing. 10:1+ = Dominating. Know your ratio and optimize ruthlessly.
+
+**Open the interactive lesson to understand your operator's dashboard.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ltv-cac-dashboard/lesson.html' }
+      ]
+    },
+    {
+      id: 247,
+      thumbnail: '/images/lessons/biz-ltv-levers.png',
+      title: 'The LTV Control Panel',
+      intro: '7 levers to increase customer lifetime value and maximize profitability.',
+      directUrl: '/learn/lessons/biz-ltv-levers',
+      specialFeatures: [
+        { value: '8 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The LTV Control Panel
+
+Seven levers control your LTV: AOV, Purchase Frequency, Retention, Margins, Upsells, Cross-sells, and Customer Lifetime.
+
+**Open the interactive lesson to master the LTV control panel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ltv-levers/lesson.html' }
+      ]
+    },
+    {
+      id: 248,
+      thumbnail: '/images/lessons/biz-model-vs-method.png',
+      title: 'Model vs Method',
+      intro: 'Why the best model beats the best tactics every single time.',
+      directUrl: '/learn/lessons/biz-model-vs-method',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## Model vs Method
+
+A mediocre tactic in a great model beats a great tactic in a mediocre model. Focus on the business model first.
+
+**Open the interactive lesson to choose model over method.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-model-vs-method/lesson.html' }
+      ]
+    },
+    {
+      id: 249,
+      thumbnail: '/images/lessons/biz-objection-dance.png',
+      title: 'The Objection Dance',
+      intro: 'Handling objections is a dance, not a fight. 4 techniques that disarm resistance.',
+      directUrl: '/learn/lessons/biz-objection-dance',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Objection Dance
+
+Don't fight objections. Dance with them. Acknowledge, explore, and redirect without resistance.
+
+**Open the interactive lesson to master the objection dance.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-objection-dance/lesson.html' }
+      ]
+    },
+    {
+      id: 250,
+      thumbnail: '/images/lessons/biz-operator-mindset.png',
+      title: 'The Operator\'s Mindset',
+      intro: 'How Ben Francis built Gymshark to $1.5B by putting the model above his ego.',
+      directUrl: '/learn/lessons/biz-operator-mindset',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Operator's Mindset
+
+Ben Francis stepped down as Gymshark CEO when he realized the business needed different leadership. That's operator thinking.
+
+**Open the interactive lesson to develop the operator's mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-operator-mindset/lesson.html' }
+      ]
+    },
+    {
+      id: 251,
+      thumbnail: '/images/lessons/biz-purchase-cycle-engine.png',
+      title: 'The Purchase Cycle Engineer',
+      intro: 'How Le Creuset turned a once-a-decade purchase into an annual buying event.',
+      directUrl: '/learn/lessons/biz-purchase-cycle-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Purchase Cycle Engineer
+
+Some products are naturally infrequent purchases. Le Creuset engineered their way around this with colors and collections.
+
+**Open the interactive lesson to engineer your purchase cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-purchase-cycle-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 252,
+      thumbnail: '/images/lessons/biz-replication-protocol.png',
+      title: 'The Replication Protocol',
+      intro: 'Alex Hormozi\'s secret: Simple scales, fancy fails. Why systems beat talent.',
+      directUrl: '/learn/lessons/biz-replication-protocol',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Replication Protocol
+
+"The simpler I can make something, the more I can replicate it." — Alex Hormozi
+
+**Open the interactive lesson to build replicable systems.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-replication-protocol/lesson.html' }
+      ]
+    },
+    {
+      id: 253,
+      thumbnail: '/images/lessons/biz-rfm-secret.png',
+      title: 'The RFM Secret',
+      intro: 'How to identify your best customers and make more money from fewer people.',
+      directUrl: '/learn/lessons/biz-rfm-secret',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The RFM Secret
+
+Recency, Frequency, Monetary Value. Three dimensions that reveal exactly who your best customers are.
+
+**Open the interactive lesson to unlock the RFM secret.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rfm-secret/lesson.html' }
+      ]
+    },
+    {
+      id: 254,
+      thumbnail: '/images/lessons/biz-rule-of-100.png',
+      title: 'The Rule of 100',
+      intro: 'The volume strategy that separates dreamers from millionaires.',
+      directUrl: '/learn/lessons/biz-rule-of-100',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Rule of 100
+
+"You're not doing anything wrong. You're just doing too little." — Alex Hormozi
+
+100 outreaches OR $100 ad spend OR 100 minutes content. Daily. Non-negotiable.
+
+**Open the interactive lesson to implement the Rule of 100.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-rule-of-100/lesson.html' }
+      ]
+    },
+    {
+      id: 255,
+      thumbnail: '/images/lessons/biz-valley-protocol.png',
+      title: 'The Valley of Despair Protocol',
+      intro: 'Why 97% of entrepreneurs quit at the exact moment they should push harder.',
+      directUrl: '/learn/lessons/biz-valley-protocol',
+      specialFeatures: [
+        { value: '7 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Valley of Despair Protocol
+
+Five stages: Uninformed Optimism → Informed Pessimism → Valley of Despair → Informed Optimism → Achievement.
+
+97% quit at stage 3. The valley is where skills are forged.
+
+**Open the interactive lesson to survive the valley of despair.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-valley-protocol/lesson.html' }
+      ]
     }
   ];
 
