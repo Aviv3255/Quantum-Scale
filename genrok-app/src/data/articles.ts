@@ -6903,6 +6903,127 @@ Five stages: Uninformed Optimism → Informed Pessimism → Valley of Despair �
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-valley-protocol/lesson.html' }
       ]
+    },
+    // New Business lessons - The LTV:CAC Playbook
+    {
+      id: 901,
+      thumbnail: '/images/lessons/biz-high-margin-fortress.png',
+      title: 'The High Margin Fortress',
+      intro: 'Build a margin moat that competitors can\'t cross. High margins fund everything else.',
+      directUrl: '/learn/lessons/biz-high-margin-fortress',
+      content: `## The Margin Moat
+
+High margins aren't just about profit—they're about survival and dominance.
+
+**Why Margin Matters:**
+- Funds customer acquisition
+- Absorbs market shocks
+- Enables premium positioning
+- Creates competitive moats
+
+**The Fortress Strategy:**
+Build margins so high that competitors can't afford to compete with you on value.
+
+**Open the interactive lesson to build your margin fortress.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-high-margin-fortress/lesson.html' }
+      ]
+    },
+    {
+      id: 902,
+      thumbnail: '/images/lessons/biz-ridge-wallet-protocol.png',
+      title: 'The Ridge Wallet Protocol',
+      intro: 'How Ridge solved the one-product problem and unlocked infinite LTV through strategic expansion.',
+      directUrl: '/learn/lessons/biz-ridge-wallet-protocol',
+      content: `## The Product Expansion Playbook
+
+Ridge Wallet faced a problem: How do you grow when customers only need one wallet?
+
+**The Solution:**
+Strategic product expansion into adjacent categories that serve the same customer.
+
+**Key Principles:**
+- Same customer, new products
+- Maintain brand identity
+- Expand without diluting
+- Create purchase cycles
+
+**Open the interactive lesson to learn the Ridge Protocol.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ridge-wallet-protocol/lesson.html' }
+      ]
+    },
+    {
+      id: 903,
+      thumbnail: '/images/lessons/biz-20-domination.png',
+      title: 'The 20% Domination Rule',
+      intro: '20% of your customers generate 80% of your revenue. Find them. Clone them. Dominate.',
+      directUrl: '/learn/lessons/biz-20-domination',
+      content: `## The Pareto Principle in Action
+
+Not all customers are created equal. A small minority drives the majority of your business.
+
+**The 80/20 Reality:**
+- 20% of customers = 80% of revenue
+- Top 5% = often 50%+ of profit
+- Most businesses ignore this
+
+**The Domination Strategy:**
+Identify your top 20%, understand what makes them different, and build your entire business around finding more of them.
+
+**Open the interactive lesson to master the 20% Domination Rule.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-20-domination/lesson.html' }
+      ]
+    },
+    {
+      id: 904,
+      thumbnail: '/images/lessons/biz-channel-mix-formula.png',
+      title: 'The Channel Mix Formula',
+      intro: 'Stop spreading budget thin. Master the optimal channel allocation for maximum ROI.',
+      directUrl: '/learn/lessons/biz-channel-mix-formula',
+      content: `## Budget Allocation Mastery
+
+Most businesses waste money by spreading budget across too many channels without a strategy.
+
+**The Formula:**
+Allocate budget based on proven ROI, not gut feeling or FOMO.
+
+**Channel Strategy:**
+- Meta (FB/IG): Primary acquisition
+- TikTok: Discovery and virality
+- Google: High-intent capture
+- Influencer: Brand building
+
+**Open the interactive lesson to master your channel mix.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-channel-mix-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 905,
+      thumbnail: '/images/lessons/biz-next-best-dollar.png',
+      title: 'The Next Best Dollar',
+      intro: 'Think like a capital allocator, not a channel manager. Deploy every dollar for maximum return.',
+      directUrl: '/learn/lessons/biz-next-best-dollar',
+      content: `## Capital Allocation Mindset
+
+Stop managing channels. Start allocating capital.
+
+**The Shift:**
+- Channel managers optimize in silos
+- Capital allocators optimize the portfolio
+- One thinks tactically, the other strategically
+
+**The Question:**
+"Where should I spend my next dollar to generate the highest possible return?"
+
+This single question changes everything.
+
+**Open the interactive lesson to think like a capital allocator.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-next-best-dollar/lesson.html' }
+      ]
     }
   ];
 
