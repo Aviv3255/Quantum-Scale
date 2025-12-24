@@ -7144,6 +7144,226 @@ Getting to $1M/month is a marketing challenge. Getting to $10M/month is a system
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-systems-architect/lesson.html' }
       ]
+    },
+    // Infinite Money Game PDF lessons
+    {
+      id: 249,
+      thumbnail: '/images/lessons/biz-90-percent-trap.png',
+      title: 'The 90% Trap',
+      intro: 'Why 90% of stores guess their way to failure—while 1% use math to print money.',
+      directUrl: '/learn/lessons/biz-90-percent-trap',
+      content: `## The Fatal Mistake
+
+90% of eCommerce stores operate on pure guesswork.
+
+They don't know their real CAC. They don't know their true LTV. They make decisions based on feelings, not data.
+
+**The 1% who win?**
+
+They run their business like a math equation. They know exactly what a customer is worth. They know exactly what they can spend to acquire one.
+
+**The difference?**
+- Guessers burn money hoping ads work
+- Operators invest money knowing the return
+
+**Open the interactive lesson to escape the 90% trap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-90-percent-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 250,
+      thumbnail: '/images/lessons/biz-animal-mindset.png',
+      title: 'The Animal Mindset',
+      intro: 'How Davie Fogarty built a $500M empire through relentless action—not perfect planning.',
+      directUrl: '/learn/lessons/biz-animal-mindset',
+      content: `## The Fogarty Philosophy
+
+Davie Fogarty didn't build The Oodie and a portfolio of 10+ brands by planning perfectly.
+
+He built it by moving like an animal.
+
+**The Animal Mindset:**
+- Action beats analysis
+- Speed beats perfection
+- Volume beats precision
+- Done beats planned
+
+While others plan, animals execute. While others analyze, animals test. While others wait for perfect conditions, animals create them.
+
+**Open the interactive lesson to adopt the Animal Mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-animal-mindset/lesson.html' }
+      ]
+    },
+    {
+      id: 251,
+      thumbnail: '/images/lessons/biz-channel-cac-decoder.png',
+      title: 'Channel CAC Decoder',
+      intro: 'Why your blended CAC is lying to you—and how to find your real acquisition costs.',
+      directUrl: '/learn/lessons/biz-channel-cac-decoder',
+      content: `## The Blended CAC Lie
+
+Your blended CAC says $45.
+
+But that number hides the truth:
+- Meta: $28 CAC
+- Google: $38 CAC
+- TikTok: $67 CAC
+- Influencer: $52 CAC
+
+**The problem?**
+
+You're making budget decisions based on an average that doesn't exist. You're scaling channels that lose money and cutting channels that make it.
+
+**The fix:** Decode your CAC by channel, by cohort, by month.
+
+**Open the interactive lesson to decode your real CAC.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-channel-cac-decoder/lesson.html' }
+      ]
+    },
+    {
+      id: 252,
+      thumbnail: '/images/lessons/biz-6-to-1-problem.png',
+      title: 'The 6:1 Problem',
+      intro: 'Why your "amazing" LTV:CAC ratio might be killing your growth potential.',
+      directUrl: '/learn/lessons/biz-6-to-1-problem',
+      content: `## The Hidden Problem
+
+A 6:1 LTV:CAC ratio sounds amazing.
+
+But here's what it really means: You're UNDERSPENDING on acquisition.
+
+**The math:**
+- 6:1 ratio with $100k/month spend = 100 new customers
+- 3:1 ratio with $200k/month spend = 200 new customers
+
+Same margin. Double the customers. Double the future revenue.
+
+**High ratios aren't a win—they're a warning sign.**
+
+You're leaving growth on the table. Competitors with 3:1 ratios are scaling faster, capturing market share, and building bigger audiences.
+
+**Open the interactive lesson to fix the 6:1 problem.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-6-to-1-problem/lesson.html' }
+      ]
+    },
+    {
+      id: 253,
+      thumbnail: '/images/lessons/biz-survival-cycle.png',
+      title: 'The Survival Cycle',
+      intro: 'The doom loop that kills 97% of stores—and how to escape before it\'s too late.',
+      directUrl: '/learn/lessons/biz-survival-cycle',
+      content: `## The Doom Loop
+
+Most stores are trapped in a survival cycle:
+
+1. **Spend on ads** → Get some customers
+2. **Low LTV** → Customers don't return
+3. **Rising CAC** → Ads get more expensive
+4. **Shrinking margins** → Less money to reinvest
+5. **Desperate discounts** → Further margin erosion
+6. **Back to step 1** → With less money
+
+This loop gets tighter every month until the business dies.
+
+**The escape?** Break the cycle by fixing LTV FIRST, not by spending more on ads.
+
+**Open the interactive lesson to escape the survival cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-survival-cycle/lesson.html' }
+      ]
+    },
+    {
+      id: 254,
+      thumbnail: '/images/lessons/biz-infinite-money-glitch.png',
+      title: 'The Infinite Money Glitch',
+      intro: 'The self-fueling growth flywheel that turns your business into a money-printing machine.',
+      directUrl: '/learn/lessons/biz-infinite-money-glitch',
+      content: `## The Flywheel Effect
+
+When LTV exceeds 3x CAC, something magical happens:
+
+**The Infinite Money Glitch activates.**
+
+Every customer you acquire generates enough profit to acquire 3 more. Those 3 acquire 9 more. Those 9 acquire 27 more.
+
+**The math:**
+- Month 1: 1 customer
+- Month 2: 3 customers
+- Month 3: 9 customers
+- Month 4: 27 customers
+- Month 5: 81 customers
+
+This isn't theory. This is how billion-dollar DTC brands are built.
+
+**Requirements:**
+- LTV must exceed 3x CAC
+- Reinvestment discipline must be absolute
+- Systems must scale with volume
+
+**Open the interactive lesson to activate your flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-glitch/lesson.html' }
+      ]
+    },
+    {
+      id: 255,
+      thumbnail: '/images/lessons/biz-price-anchoring.png',
+      title: 'Price Anchoring Power',
+      intro: 'Why your $47 offer looks irresistible when sitting next to a $297 option.',
+      directUrl: '/learn/lessons/biz-price-anchoring',
+      content: `## The Anchor Effect
+
+Your brain doesn't know what anything is worth.
+
+It only knows what something is worth **compared to something else**.
+
+**The 6X Rule:**
+
+Your anchor should be 5-6x higher than your main offer. This creates the perfect contrast:
+
+- $594 anchor makes $99 feel like a steal
+- $997 VIP makes $197 feel like a no-brainer
+- $2,997 coaching makes $497 course feel cheap
+
+**The result?**
+- 23-47% higher AOV
+- Fewer price objections
+- Higher perceived value
+
+**Open the interactive lesson to master price anchoring.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-price-anchoring/lesson.html' }
+      ]
+    },
+    {
+      id: 256,
+      thumbnail: '/images/lessons/biz-look-back-window.png',
+      title: 'The Look-Back Window',
+      intro: 'Why your 30-day data is lying to you—and the time window that reveals the truth.',
+      directUrl: '/learn/lessons/biz-look-back-window',
+      content: `## The 30-Day Lie
+
+Your analytics dashboard shows a 30-day snapshot.
+
+But your best customers make purchases on day 45, day 90, day 180...
+
+**Same customer, different windows:**
+- 30-day view: $70 LTV → "This channel barely works"
+- 90-day view: $159 LTV → "This is promising"
+- 365-day view: $634 LTV → "This is our BEST channel!"
+
+**The wrong window = wrong decisions.**
+
+You're cutting profitable channels because you can't see the full picture. You're scaling losers because they look good short-term.
+
+**Open the interactive lesson to master look-back windows.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-look-back-window/lesson.html' }
+      ]
     }
   ];
 

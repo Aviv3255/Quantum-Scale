@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Survival Cycle | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #EF4444; --accent-dark: #DC2626; --accent-light: #F87171; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-survival-cycle',
+      title: 'The Survival Cycle',
+      description: 'Breaking the doom loop that kills most stores',
+      accentColor: '#EF4444',
+      duration: '5 min',
+      nextLesson: { id: 'biz-infinite-money-glitch', title: 'The Infinite Money Glitch', teaser: 'The self-fueling growth engine.' }
+    };
+
+    const celebrationGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4'];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const empathyGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['The doom loop killing most stores', 'How survival mode destroys growth', 'Breaking free from the cycle'] },
+      { type: 'hook', headline: 'Most eCommerce stores are trapped in a doom loop. And they do not even know it.', subtext: 'It starts with thin margins. So you cut ad spend. But cutting ads means fewer customers. Fewer customers means less revenue. Less revenue means even thinner margins. So you cut more. And the spiral continues downward until there is nothing left to cut. This is the Survival Cycle. And it kills more stores than bad products ever will.' },
+      { type: 'doom-loop', title: 'The Doom Loop', steps: [
+        { label: 'Thin Margins', description: 'Not enough profit per order', icon: 'TrendingDown', color: '#EF4444' },
+        { label: 'Cut Ad Spend', description: 'Reduce marketing to save money', icon: 'Scissors', color: '#F59E0B' },
+        { label: 'Fewer Customers', description: 'Less traffic = less sales', icon: 'Users', color: '#8B5CF6' },
+        { label: 'Revenue Drops', description: 'Total income decreases', icon: 'DollarSign', color: '#EF4444' },
+        { label: 'Even Thinner Margins', description: 'Fixed costs eat more of revenue', icon: 'AlertCircle', color: '#EF4444' }
+      ]},
+      { type: 'content', title: 'Why Survival Mode Fails', body: 'When you are in survival mode, every decision is defensive. You cut instead of invest. You save instead of spend. You contract instead of expand. But eCommerce does not reward contraction. It rewards velocity. The more you cut, the harder it becomes to grow. Your CAC rises because smaller budgets mean less data for algorithms. Your LTV drops because you cannot afford retention campaigns. The math only gets worse.' },
+      { type: 'stat-countdown', title: 'The Survival Stats', stats: [
+        { value: 73, suffix: '%', label: 'Of Stores', subtext: 'Are in survival mode right now' },
+        { value: 18, suffix: 'mo', label: 'Average Lifespan', subtext: 'Of a survival mode store' },
+        { value: 2, suffix: 'x', label: 'CAC Increase', subtext: 'When cutting ad budgets' }
+      ]},
+      { type: 'comparison-cards', title: 'Survival vs Growth Mindset', left: { label: 'SURVIVAL MODE', iconComponent: 'AlertCircle', value: 'Contraction', subtext: 'The death spiral', items: ['Cut ad spend to save money', 'Reduce team and overhead', 'Skip retention campaigns', 'Panic at every dip'], color: 'red' }, right: { label: 'GROWTH MODE', iconComponent: 'TrendingUp', value: 'Expansion', subtext: 'The success spiral', items: ['Invest more when ROI is positive', 'Double down on what works', 'Build LTV through retention', 'Data-driven decisions'], color: 'green' } },
+      { type: 'content', title: 'The Breakout Strategy', body: 'Breaking the survival cycle requires a mindset shift. Stop thinking about how much you can save. Start thinking about how much you can earn per dollar spent. If your LTV:CAC is above 2:1, you are not in a spending problem. You are in a spending opportunity. Every dollar with positive ROI is a dollar that makes you money. The path out of survival mode is through investment, not contraction.' },
+      { type: 'escape-plan', title: 'How To Escape The Cycle', steps: [
+        { number: 1, title: 'MEASURE TRUE LTV', description: 'Know your real customer value. Not first order profit. Full lifetime value. This is the number that unlocks everything.', color: '#3B82F6' },
+        { number: 2, title: 'FIND PROFITABLE CHANNELS', description: 'Not all channels are created equal. Find the ones where LTV > 3x CAC. Double down there first.', color: '#22C55E' },
+        { number: 3, title: 'REINVEST PROFITS', description: 'Instead of pocketing profits, reinvest into growth. The compounding effect is how small stores become big ones.', color: '#8B5CF6' }
+      ]},
+      { type: 'before-after', title: 'Before vs After Breaking Free', before: ['$5K/month ad spend (cutting)', 'Declining revenue', 'Rising CAC', 'Shrinking customer base', 'Constant stress and panic'], after: ['$15K/month ad spend (growing)', 'Increasing revenue', 'Stable or falling CAC', 'Growing customer base', 'Data-driven confidence'] },
+      { type: 'highlight-box', title: 'The Escape Mindset', body: 'The stores that break free from survival mode share one trait: they stopped thinking in terms of cost and started thinking in terms of investment. They stopped asking "can we afford this?" and started asking "what is the return on this?" When a dollar spent generates three dollars back, you can never spend too much. That is the mindset shift that changes everything.', highlight: 'Stop asking "can we afford this?" Start asking "what is the return on this?"' },
+      { type: 'quiz', question: 'What is the core cause of the Survival Cycle?', options: ['Bad products', 'Cutting ad spend when margins are thin', 'Too many competitors', 'High shipping costs'], correctIndex: 1, feedback: { correct: 'Correct. The Survival Cycle begins when thin margins trigger cuts to ad spend. But cutting ads means fewer customers, less revenue, and even thinner margins. It becomes a self-reinforcing doom loop that only accelerates the decline.', incorrect: 'Not quite. The Survival Cycle is triggered by cutting ad spend when margins get thin. This creates a doom loop: less spend means fewer customers, means less revenue, means thinner margins, means more cuts. The way out is investment, not contraction.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Scissors: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>,
+      Users: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      DollarSign: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      AlertCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      RefreshCcw: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>,
+    };
+
+    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // Doom Loop Visual
+    const DoomLoopSlide = ({ data }) => {
+      const IconMap = { TrendingDown: Icons.TrendingDown, Scissors: Icons.Scissors, Users: Icons.Users, DollarSign: Icons.DollarSign, AlertCircle: Icons.AlertCircle };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444' }}>
+              <Icons.RefreshCcw size={14} color="#EF4444" />
+              <span>The Deadly Spiral</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              {data.steps.map((step, i) => {
+                const IconComponent = IconMap[step.icon];
+                return (
+                  <React.Fragment key={i}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.15 }} className="flex flex-col items-center text-center w-24">
+                      <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-2" style={{ background: `${step.color}20` }}>
+                        {IconComponent && <IconComponent size={24} color={step.color} />}
+                      </div>
+                      <div className="text-xs font-bold text-white mb-1">{step.label}</div>
+                      <div className="text-xs text-neutral-500 leading-tight">{step.description}</div>
+                    </motion.div>
+                    {i < data.steps.length - 1 && (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 + i * 0.15 }} className="text-neutral-600 hidden md:block">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                      </motion.div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-6 text-center">
+              <div className="inline-flex items-center gap-2 text-red-400 text-sm">
+                <Icons.RefreshCcw size={16} color="#EF4444" />
+                <span>Repeat until bankrupt</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Escape Plan Slide
+    const EscapePlanSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}>
+            <Icons.Zap />
+            <span>The Way Out</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="space-y-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-xl p-5" style={{ background: '#0a0a0a', border: `1px solid ${step.color}30` }}>
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-lg text-white" style={{ background: step.color }}>
+                  {step.number}
+                </div>
+                <div>
+                  <h3 className="text-white font-bold mb-1" style={{ color: step.color }}>{step.title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Comparison Cards
+    const ComparisonCardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <Icons.AlertCircle size={28} color="#EF4444" />
+              <div>
+                <span className="text-xs text-red-400 font-semibold uppercase tracking-wider">{data.left.label}</span>
+                <div className="text-xl font-bold text-red-400">{data.left.value}</div>
+              </div>
+            </div>
+            <p className="text-neutral-500 text-sm mb-4">{data.left.subtext}</p>
+            <div className="space-y-2">
+              {data.left.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-center gap-2 text-sm">
+                  <Icons.X />
+                  <span className="text-neutral-300">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <Icons.TrendingUp size={28} color="#22C55E" />
+              <div>
+                <span className="text-xs text-green-400 font-semibold uppercase tracking-wider">{data.right.label}</span>
+                <div className="text-xl font-bold text-green-400">{data.right.value}</div>
+              </div>
+            </div>
+            <p className="text-neutral-400 text-sm mb-4">{data.right.subtext}</p>
+            <div className="space-y-2">
+              {data.right.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-center gap-2 text-sm">
+                  <span className="text-green-500"><Icons.Check /></span>
+                  <span className="text-neutral-300">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Stat Countdown
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-2xl p-6 text-center" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+              <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#EF4444' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000 + i * 500} />
+              </div>
+              <div className="text-white font-medium mb-1">{stat.label}</div>
+              <div className="text-neutral-500 text-sm">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Before/After
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                <Icons.X />
+              </div>
+              <span className="text-red-400 font-semibold uppercase text-sm tracking-wider">Survival Mode</span>
+            </div>
+            <div className="space-y-3">
+              {data.before.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3 text-neutral-400 text-sm">
+                  <span className="text-red-500 mt-0.5">-</span>
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)' }}>
+                <Icons.Check />
+              </div>
+              <span className="text-green-400 font-semibold uppercase text-sm tracking-wider">Growth Mode</span>
+            </div>
+            <div className="space-y-3">
+              {data.after.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3 text-neutral-300 text-sm">
+                  <span className="text-green-500 mt-0.5">+</span>
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Highlight Box
+    const HighlightBoxSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 md:p-10" style={{ background: '#0a0a0a', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 40px rgba(34, 197, 94, 0.1)' }}>
+          <p className="text-neutral-300 text-lg leading-relaxed mb-6">{data.body}</p>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))', borderLeft: '4px solid #22C55E' }}>
+            <p className="text-white font-medium text-lg italic">"{data.highlight}"</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Content
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</h2>
+          <p className="text-neutral-600 text-lg leading-relaxed">{data.body}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Welcome
+    const WelcomeSlide = ({ data }) => {
+      const userName = getUserName();
+      const greeting = window.getGreeting ? window.getGreeting() : 'Welcome';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444' }}>
+              <Icons.Zap />
+              <span>Breaking The Loop</span>
+            </div>
+            <h1 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{greeting}, {userName}!</h1>
+            <p className="text-neutral-500 text-lg mb-8">Here's what you'll discover:</p>
+            <div className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: '#fafafa', border: '1px solid #eee' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: '#EF4444' }}>{i + 1}</div>
+                  <span className="text-neutral-700 font-medium">{goal}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Hook
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 leading-tight">{data.headline}</h2>
+          <p className="text-neutral-600 text-lg leading-relaxed">{data.subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Quiz
+    const QuizSlide = ({ data }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const isCorrect = selected === data.correctIndex;
+      const handleSelect = (i) => { if (!showFeedback) { setSelected(i); setShowFeedback(true); } };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444' }}><span>Quick Check</span></div>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3 mb-8">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all ${showFeedback ? (i === data.correctIndex ? 'ring-2 ring-green-500' : i === selected ? 'ring-2 ring-red-500' : '') : 'hover:bg-neutral-100'}`} style={{ background: showFeedback && i === data.correctIndex ? 'rgba(34, 197, 94, 0.1)' : showFeedback && i === selected && i !== data.correctIndex ? 'rgba(239, 68, 68, 0.1)' : '#fafafa', border: '1px solid #eee' }}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-500 text-white' : 'bg-white text-neutral-600 border border-neutral-200'}`}>
+                    {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected ? <Icons.X /> : String.fromCharCode(65 + i)}
+                  </div>
+                  <span className="text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl p-6" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}` }}>
+                <div className={`font-bold mb-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>{isCorrect ? 'Correct!' : 'Not quite!'}</div>
+                <p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion
+    const CompletionSlide = ({ data }) => {
+      const userName = getUserName();
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)' }}><Icons.Check /></div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-4">Lesson Complete!</h2>
+            <p className="text-neutral-500 text-lg mb-8">Great work, {userName}! You now know how to escape the survival cycle.</p>
+            {LESSON_CONFIG.nextLesson && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-left" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+                <div className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Up Next</div>
+                <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+                <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Router
+    const SlideRouter = ({ slide }) => {
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide data={slide} />;
+        case 'hook': return <HookSlide data={slide} />;
+        case 'doom-loop': return <DoomLoopSlide data={slide} />;
+        case 'content': return <ContentSlide data={slide} />;
+        case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+        case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
+        case 'escape-plan': return <EscapePlanSlide data={slide} />;
+        case 'before-after': return <BeforeAfterSlide data={slide} />;
+        case 'highlight-box': return <HighlightBoxSlide data={slide} />;
+        case 'quiz': return <QuizSlide data={slide} />;
+        case 'completion': return <CompletionSlide data={slide} />;
+        default: return <ContentSlide data={slide} />;
+      }
+    };
+
+    const ProgressDots = ({ current, total }) => (
+      <div className="flex items-center gap-1">
+        {Array.from({ length: total }).map((_, i) => (
+          <div key={i} className={`h-1 rounded-full transition-all ${i === current ? 'w-6' : 'w-1'}`} style={{ background: i === current ? '#EF4444' : i < current ? '#EF444480' : '#E5E7EB' }} />
+        ))}
+      </div>
+    );
+
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const totalSlides = slides.length;
+      const goNext = useCallback(() => { if (currentSlide < totalSlides - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide, totalSlides]);
+      const goPrev = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      useEffect(() => {
+        const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); } };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [goNext, goPrev]);
+
+      return (
+        <div className="min-h-screen bg-white">
+          <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
+            <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <button onClick={goPrev} disabled={currentSlide === 0} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowLeft /></button>
+                <ProgressDots current={currentSlide} total={totalSlides} />
+                <button onClick={goNext} disabled={currentSlide === totalSlides - 1} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowRight /></button>
+              </div>
+              <div className="flex items-center gap-2 text-neutral-400 text-sm"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></div>
+            </div>
+          </header>
+          <main className="pt-14 min-h-screen">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="min-h-[calc(100vh-3.5rem)]">
+                <SlideRouter slide={slides[currentSlide]} />
+              </motion.div>
+            </AnimatePresence>
+          </main>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

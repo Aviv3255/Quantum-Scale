@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 6:1 Problem | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #8B5CF6; --accent-dark: #7C3AED; --accent-light: #A78BFA; --accent-rgb: 139, 92, 246; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-6-to-1-problem',
+      title: 'The 6:1 Problem',
+      description: 'When your ratio is too good, you are leaving money on the table',
+      accentColor: '#8B5CF6',
+      duration: '5 min',
+      nextLesson: { id: 'biz-survival-cycle', title: 'The Survival Cycle', teaser: 'Breaking the doom loop that kills most stores.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why a 6:1 ratio is actually a problem', 'The opportunity cost of underspending', 'How to find your optimal ratio'] },
+      { type: 'hook', headline: 'Your 6:1 LTV:CAC ratio is not a flex. It is a failure.', subtext: 'Most founders celebrate a high ratio. "We have 6:1 LTV:CAC!" they brag. But here is what that actually means: You are dramatically underspending on growth. You are leaving customers on the table. Your competitors are eating market share you could have owned. A ratio that high means you are playing too safe. And in business, playing too safe is the riskiest move of all.' },
+      { type: 'ratio-spectrum', title: 'The LTV:CAC Spectrum', ranges: [
+        { range: '1:1', label: 'Danger Zone', description: 'Breaking even at best', color: '#EF4444', position: 10 },
+        { range: '2:1', label: 'Survival', description: 'Thin margins, fragile', color: '#F59E0B', position: 25 },
+        { range: '3:1', label: 'Healthy', description: 'The golden ratio', color: '#22C55E', position: 45, highlight: true },
+        { range: '4:1', label: 'Strong', description: 'Room to push harder', color: '#3B82F6', position: 60 },
+        { range: '6:1+', label: 'Underspending', description: 'Leaving money on table', color: '#8B5CF6', position: 85 }
+      ]},
+      { type: 'content', title: 'The Hidden Cost of Safety', body: 'When your ratio is 6:1, you have massive headroom to spend more and still be profitable. Every dollar you do not spend is a customer you do not acquire. Every customer you do not acquire is market share you do not own. Your competitors with 3:1 ratios are outspending you 2x. They are building brand awareness. They are locking in customers. They are creating switching costs. By the time you decide to spend, they have already won.' },
+      { type: 'math-comparison', title: 'The 6:1 vs 3:1 Reality', scenarios: [
+        { name: 'Your Store (6:1)', cac: 50, ltv: 300, margin: 250, customers: 100, revenue: 30000, profit: 25000, color: '#8B5CF6' },
+        { name: 'Competitor (3:1)', cac: 100, ltv: 300, margin: 200, customers: 200, revenue: 60000, profit: 40000, color: '#22C55E' }
+      ], insight: 'Same LTV. But 2x the customers. 2x the revenue. And still healthy margins.' },
+      { type: 'stat-countdown', title: 'The Numbers Tell The Story', stats: [
+        { value: 2, suffix: 'x', label: 'Fewer Customers', subtext: 'At 6:1 vs 3:1 ratio' },
+        { value: 50, suffix: '%', label: 'Market Share Lost', subtext: 'To aggressive competitors' },
+        { value: 0, suffix: '', label: 'Second Chances', subtext: 'Once market is captured' }
+      ]},
+      { type: 'content', title: 'Market Share Is Finite', body: 'Here is the brutal truth: market share is not infinite. Every customer has a ceiling of attention and budget. When a competitor captures them first, they build loyalty, collect emails, create habits. Switching costs stack up. The customer you could have acquired for $50 now costs $200 to steal back. Or they are gone forever. High ratios feel safe. But they are slowly killing your growth.' },
+      { type: 'opportunity-cost', title: 'What You Are Really Losing', lostItems: [
+        { item: 'Customer Emails', value: '10,000+', description: 'Future marketing asset', color: '#3B82F6' },
+        { item: 'Market Position', value: '#1 vs #5', description: 'Brand recognition gap', color: '#8B5CF6' },
+        { item: 'Economies of Scale', value: '15-30%', description: 'Volume discounts lost', color: '#22C55E' },
+        { item: 'Word of Mouth', value: 'Exponential', description: 'Referral network effect', color: '#F59E0B' }
+      ]},
+      { type: 'strategy-steps', title: 'Find Your Optimal Ratio', steps: [
+        { number: 1, title: 'KNOW YOUR FLOOR', icon: 'Target', color: '#EF4444', description: 'Never go below 2.5:1. That is your breakeven after overhead. Anything below that loses money long-term.' },
+        { number: 2, title: 'TARGET 3:1', icon: 'Crosshair', color: '#22C55E', description: 'The golden ratio for growth. Profitable enough to reinvest. Aggressive enough to capture market. Sustainable for scale.' },
+        { number: 3, title: 'SPEND THE DELTA', icon: 'TrendingUp', color: '#8B5CF6', description: 'If you are at 6:1, you have room to double ad spend and still hit 3:1. Use that headroom. Grow faster. Capture more.' }
+      ]},
+      { type: 'before-after', title: 'Conservative vs Aggressive Growth', before: [
+        '6:1 ratio - "We\'re crushing it!"',
+        '$5,000/month ad spend',
+        '100 customers/month',
+        'Slow, steady growth',
+        'Competitors outpacing you'
+      ], after: [
+        '3:1 ratio - "We\'re growing!"',
+        '$10,000/month ad spend',
+        '200 customers/month',
+        'Capturing market share',
+        'Building competitive moat'
+      ]},
+      { type: 'highlight-box', title: 'The Counterintuitive Truth', body: 'A lower LTV:CAC ratio is often better than a higher one. It means you are investing in growth. It means you are capturing market share. It means you are building an asset. The founders celebrating their 6:1 ratio are the same ones wondering why their competitor with 3:1 just raised $10M and is everywhere they look. The race goes to the bold. Not the cautious.', highlight: 'A lower ratio often beats a higher one. It means you are investing in growth, not hiding from it.' },
+      { type: 'quiz', question: 'Why is a 6:1 LTV:CAC ratio actually a problem?', options: ['It means your ads are not working', 'It means you are overspending on marketing', 'It means you are underspending and losing market share', 'It means your LTV is too high'], correctIndex: 2, feedback: { correct: 'Exactly right. A 6:1 ratio means you have massive room to spend more and still be profitable. Every dollar you do not spend is a customer your competitor acquires instead. The optimal ratio is around 3:1 - aggressive enough to grow, sustainable enough to scale.', incorrect: 'Not quite. A 6:1 ratio actually means you are underspending on growth. You have room to double your ad spend and still maintain a healthy 3:1 ratio. That caution is costing you customers and market share.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    // Icons
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Crosshair: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertTriangle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+    };
+
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // Ratio Spectrum Slide
+    const RatioSpectrumSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+          {/* Spectrum bar */}
+          <div className="relative h-4 rounded-full mb-8" style={{ background: 'linear-gradient(90deg, #EF4444, #F59E0B, #22C55E, #3B82F6, #8B5CF6)' }}>
+            {data.ranges.map((range, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                className="absolute -top-8"
+                style={{ left: `${range.position}%`, transform: 'translateX(-50%)' }}
+              >
+                <div className={`text-xs font-bold ${range.highlight ? 'text-white' : 'text-neutral-400'}`}>{range.range}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Range cards */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {data.ranges.map((range, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
+                className={`rounded-xl p-4 text-center ${range.highlight ? 'ring-2' : ''}`}
+                style={{ background: '#1a1a1a', border: `1px solid ${range.color}30`, ringColor: range.highlight ? range.color : 'transparent' }}
+              >
+                <div className="text-xl font-bold mb-1" style={{ color: range.color }}>{range.range}</div>
+                <div className="text-xs text-neutral-400 mb-1">{range.label}</div>
+                <div className="text-xs text-neutral-500">{range.description}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Math Comparison Slide
+    const MathComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+            <Icons.AlertTriangle size={14} color="#8B5CF6" />
+            <span>Side by Side</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {data.scenarios.map((scenario, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: i === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: `1px solid ${scenario.color}30` }}>
+              <div className="text-center mb-4">
+                <span className="text-xs uppercase tracking-wider" style={{ color: scenario.color }}>{scenario.name}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="text-neutral-400">CAC:</div>
+                <div className="text-white font-bold text-right">${scenario.cac}</div>
+                <div className="text-neutral-400">LTV:</div>
+                <div className="text-white font-bold text-right">${scenario.ltv}</div>
+                <div className="text-neutral-400">Customers/mo:</div>
+                <div className="text-white font-bold text-right">{scenario.customers}</div>
+                <div className="text-neutral-400">Revenue:</div>
+                <div className="text-white font-bold text-right">${scenario.revenue.toLocaleString()}</div>
+                <div className="pt-2 border-t border-neutral-800 text-neutral-300">Profit:</div>
+                <div className="pt-2 border-t border-neutral-800 text-right font-bold text-xl" style={{ color: scenario.color }}>${scenario.profit.toLocaleString()}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05))', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+          <p className="text-neutral-700 text-sm font-medium">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Opportunity Cost Slide
+    const OpportunityCostSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {data.lostItems.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="rounded-xl p-5" style={{ background: '#0a0a0a', border: `1px solid ${item.color}30` }}>
+              <div className="text-3xl font-bold mb-2" style={{ color: item.color }}>{item.value}</div>
+              <div className="text-white font-medium text-sm mb-1">{item.item}</div>
+              <div className="text-neutral-500 text-xs">{item.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Strategy Steps Slide
+    const StrategyStepsSlide = ({ data }) => {
+      const IconComponent = (name, color) => {
+        const iconMap = { Target: Icons.Target, Crosshair: Icons.Crosshair, TrendingUp: Icons.TrendingUp };
+        const Icon = iconMap[name] || Icons.Target;
+        return <Icon size={24} color={color} />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+              <Icons.Zap />
+              <span>Action Plan</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-xl p-5" style={{ background: '#0a0a0a', border: `1px solid ${step.color}30` }}>
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 relative" style={{ background: `${step.color}15` }}>
+                    {IconComponent(step.icon, step.color)}
+                    <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: step.color }}>
+                      {step.number}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold mb-1" style={{ color: step.color }}>{step.title}</h3>
+                    <p className="text-neutral-400 text-sm leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Stat Countdown Slide
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-2xl p-6 text-center" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+              <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#8B5CF6' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000 + i * 500} />
+              </div>
+              <div className="text-white font-medium mb-1">{stat.label}</div>
+              <div className="text-neutral-500 text-sm">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Before/After Slide
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+                <span className="text-purple-400 font-bold text-sm">6:1</span>
+              </div>
+              <span className="text-purple-400 font-semibold uppercase text-sm tracking-wider">Conservative</span>
+            </div>
+            <div className="space-y-3">
+              {data.before.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3 text-neutral-400 text-sm">
+                  <span className="text-neutral-600 mt-0.5">-</span>
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)' }}>
+                <span className="text-green-400 font-bold text-sm">3:1</span>
+              </div>
+              <span className="text-green-400 font-semibold uppercase text-sm tracking-wider">Aggressive</span>
+            </div>
+            <div className="space-y-3">
+              {data.after.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3 text-neutral-300 text-sm">
+                  <span className="text-green-500 mt-0.5">+</span>
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Highlight Box Slide
+    const HighlightBoxSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 md:p-10" style={{ background: '#0a0a0a', border: '1px solid rgba(139, 92, 246, 0.3)', boxShadow: '0 0 40px rgba(139, 92, 246, 0.1)' }}>
+          <p className="text-neutral-300 text-lg leading-relaxed mb-6">{data.body}</p>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05))', borderLeft: '4px solid #8B5CF6' }}>
+            <p className="text-white font-medium text-lg italic">"{data.highlight}"</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</h2>
+          <p className="text-neutral-600 text-lg leading-relaxed">{data.body}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Welcome Slide
+    const WelcomeSlide = ({ data }) => {
+      const userName = getUserName();
+      const greeting = window.getGreeting ? window.getGreeting() : 'Welcome';
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+              <Icons.Zap />
+              <span>Growth Strategy</span>
+            </div>
+
+            <h1 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">
+              {greeting}, {userName}!
+            </h1>
+
+            <p className="text-neutral-500 text-lg mb-8">Here's what you'll discover:</p>
+
+            <div className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: '#fafafa', border: '1px solid #eee' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: '#8B5CF6' }}>
+                    {i + 1}
+                  </div>
+                  <span className="text-neutral-700 font-medium">{goal}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Hook Slide
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 leading-tight">
+            {data.headline}
+          </h2>
+          <p className="text-neutral-600 text-lg leading-relaxed">{data.subtext}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Quiz Slide
+    const QuizSlide = ({ data }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const [celebrationVideo, setCelebrationVideo] = useState('');
+      const [empathyVideo, setEmpathyVideo] = useState('');
+      const isCorrect = selected === data.correctIndex;
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setShowFeedback(true);
+        if (index === data.correctIndex) setCelebrationVideo(getRandomCelebrationGif());
+        else setEmpathyVideo(getRandomEmpathyGif());
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+              <span>Knowledge Check</span>
+            </div>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-8">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all ${showFeedback ? (i === data.correctIndex ? 'ring-2 ring-green-500' : i === selected ? 'ring-2 ring-red-500' : '') : 'hover:bg-neutral-100'}`} style={{ background: showFeedback && i === data.correctIndex ? 'rgba(34, 197, 94, 0.1)' : showFeedback && i === selected && i !== data.correctIndex ? 'rgba(239, 68, 68, 0.1)' : '#fafafa', border: '1px solid #eee' }}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-500 text-white' : 'bg-white text-neutral-600 border border-neutral-200'}`}>
+                    {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected ? <Icons.X /> : String.fromCharCode(65 + i)}
+                  </div>
+                  <span className="text-neutral-700">{option}</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl p-6" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}` }}>
+                <div className="flex flex-col md:flex-row gap-4 items-start">
+                  {isCorrect && celebrationVideo && <video src={celebrationVideo} autoPlay loop muted playsInline className="w-24 h-24 rounded-xl object-cover flex-shrink-0" />}
+                  {!isCorrect && empathyVideo && <video src={empathyVideo} autoPlay loop muted playsInline className="w-24 h-24 rounded-xl object-cover flex-shrink-0" />}
+                  <div>
+                    <div className={`font-bold mb-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>{isCorrect ? 'Correct!' : 'Not quite!'}</div>
+                    <p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = ({ data }) => {
+      const userName = getUserName();
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}>
+              <Icons.Check />
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-4">Lesson Complete!</h2>
+            <p className="text-neutral-500 text-lg mb-8">Great work, {userName}! You now understand why a high ratio can actually hurt growth.</p>
+            {LESSON_CONFIG.nextLesson && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-left" style={{ background: '#0a0a0a', border: '1px solid #222' }}>
+                <div className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Up Next</div>
+                <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+                <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Slide Router
+    const SlideRouter = ({ slide }) => {
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide data={slide} />;
+        case 'hook': return <HookSlide data={slide} />;
+        case 'ratio-spectrum': return <RatioSpectrumSlide data={slide} />;
+        case 'content': return <ContentSlide data={slide} />;
+        case 'math-comparison': return <MathComparisonSlide data={slide} />;
+        case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+        case 'opportunity-cost': return <OpportunityCostSlide data={slide} />;
+        case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
+        case 'before-after': return <BeforeAfterSlide data={slide} />;
+        case 'highlight-box': return <HighlightBoxSlide data={slide} />;
+        case 'quiz': return <QuizSlide data={slide} />;
+        case 'completion': return <CompletionSlide data={slide} />;
+        default: return <ContentSlide data={slide} />;
+      }
+    };
+
+    // Progress Dots
+    const ProgressDots = ({ current, total }) => (
+      <div className="flex items-center gap-1">
+        {Array.from({ length: total }).map((_, i) => (
+          <div key={i} className={`h-1 rounded-full transition-all ${i === current ? 'w-6' : 'w-1'}`} style={{ background: i === current ? '#8B5CF6' : i < current ? '#8B5CF680' : '#E5E7EB' }} />
+        ))}
+      </div>
+    );
+
+    // Main App
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const totalSlides = slides.length;
+
+      const goNext = useCallback(() => { if (currentSlide < totalSlides - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide, totalSlides]);
+      const goPrev = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); } };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [goNext, goPrev]);
+
+      return (
+        <div className="min-h-screen bg-white">
+          <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
+            <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <button onClick={goPrev} disabled={currentSlide === 0} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowLeft /></button>
+                <ProgressDots current={currentSlide} total={totalSlides} />
+                <button onClick={goNext} disabled={currentSlide === totalSlides - 1} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowRight /></button>
+              </div>
+              <div className="flex items-center gap-2 text-neutral-400 text-sm"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></div>
+            </div>
+          </header>
+
+          <main className="pt-14 min-h-screen">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="min-h-[calc(100vh-3.5rem)]">
+                <SlideRouter slide={slides[currentSlide]} />
+              </motion.div>
+            </AnimatePresence>
+          </main>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
