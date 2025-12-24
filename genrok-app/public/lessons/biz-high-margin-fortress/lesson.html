@@ -73,7 +73,12 @@
     const slides = [
       { type: 'welcome', learningGoals: ['The fatal flaw of low margin businesses', 'Why premium equals profit fortress', 'How to position for thick margins'] },
       { type: 'hook', headline: 'Two stores. Same product. One charges $29. One charges $129.', subtext: 'The $129 store is printing money. The $29 store is bleeding to death. Same product. Same ads. Same traffic. But one business has a fortress around its profits. The other is one bad month away from collapse.' },
-      { type: 'content', title: 'The Low Margin Trap', body: 'Selling cheap feels safe. It feels like the path to volume. But low margins create a fragile business built on a glass foundation. One tariff increase. One shipping delay. One ad platform change. The whole thing shatters. You are running a business with zero room for error. Every external shock threatens survival.' },
+      { type: 'margin-meter', title: 'The Margin Reality Check', lowMargin: { price: 29, cost: 18, profit: 11, margin: 38, label: 'Low Margin Product' }, highMargin: { price: 129, cost: 25, profit: 104, margin: 81, label: 'High Margin Product' } },
+      { type: 'content', title: 'The Low Margin Trap', body: 'Selling cheap feels safe. It feels like the path to volume. But low margins create fragile businesses built on glass foundations. One tariff increase. One shipping delay. One ad platform change. The whole thing shatters. You are running a business with zero room for error. Every external shock threatens survival.' },
+      { type: 'profit-waterfall', title: 'Where Your Money Actually Goes', scenarios: [
+        { label: 'Low Margin ($29)', revenue: 29, cogs: 18, shipping: 5, ads: 8, profit: -2, color: '#EF4444' },
+        { label: 'High Margin ($129)', revenue: 129, cogs: 25, shipping: 8, ads: 25, profit: 71, color: '#22C55E' }
+      ]},
       { type: 'before-after', title: 'Low Margin vs High Margin', before: [
         'High volume required to survive',
         'Thin margins leave no buffer',
@@ -87,14 +92,20 @@
         'Robust against market changes',
         'Margin allows over-delivery'
       ]},
-      { type: 'stat-countdown', title: 'The Margin Math', stats: [
-        { value: 29, prefix: '$', label: 'Low Margin Product', subtext: 'Cost: $18 / Profit: $11 / Margin: 38%' },
-        { value: 129, prefix: '$', label: 'High Margin Product', subtext: 'Cost: $25 / Profit: $104 / Margin: 81%' },
-        { value: 9, suffix: 'x', label: 'Profit Multiple', subtext: 'Same product. 9x more profit per sale' }
-      ]},
+      { type: 'fortress-tower', title: 'Build Your Profit Fortress', lowTower: { height: 38, profit: '$11', label: 'Glass House', threats: ['Ad cost spike', 'Shipping delay', 'Supplier increase', 'Returns'] }, highTower: { height: 81, profit: '$104', label: 'Fortress', shields: ['Premium brand', 'Buffer margin', 'Over-delivery', 'Loyal customers'] } },
       { type: 'comparison-cards', title: 'Fragile Glass vs Solid Fortress', left: { label: 'LOW MARGIN', iconComponent: 'TrendingDown', value: '$11', subtext: 'profit per sale', percentage: '38%', items: ['One bad month = death', 'No room for error', 'Price war victim', 'Cuts corners to survive'], color: 'red' }, right: { label: 'HIGH MARGIN', iconComponent: 'Shield', value: '$104', subtext: 'profit per sale', percentage: '81%', items: ['Survives any storm', 'Buffer for mistakes', 'Premium positioning', 'Over-delivers & wins'], color: 'green' } },
+      { type: 'pricing-pyramid', title: 'The Premium Positioning Ladder', tiers: [
+        { level: 'Budget', price: '$29', margin: '38%', audience: 'Price shoppers', color: '#EF4444', width: '100%' },
+        { level: 'Standard', price: '$79', margin: '62%', audience: 'Value seekers', color: '#F59E0B', width: '75%' },
+        { level: 'Premium', price: '$129', margin: '81%', audience: 'Quality buyers', color: '#22C55E', width: '50%' }
+      ]},
       { type: 'content', title: 'Hormozi\'s Premium Principle', body: 'Alex Hormozi nailed it: Sell to rich people. Or sell a premium product to a niche audience. Why? Because their expectations for $100 are far lower than someone giving you 10 percent of their net worth. When you sell premium, customers judge value differently. A $100 product to a wealthy buyer is negligible. To them, it is pocket change. To a budget buyer, $100 is a major decision requiring deep scrutiny and price comparison.' },
       { type: 'highlight-box', title: 'The Margin Advantage', body: 'The extra margin allows you to over-deliver and still be highly profitable. This is the secret. With thick margins, you can afford incredible packaging. Lightning fast shipping. Responsive support. Surprise bonuses. You create an experience that makes customers feel like they got a steal at any price. Meanwhile, your low-margin competitor is cutting corners just to break even.', highlight: 'The extra margin allows you to over-deliver and still be highly profitable.' },
+      { type: 'implementation-guide', title: 'How To Calculate Your Real Margins', steps: [
+        { step: 1, title: 'Calculate True COGS', description: 'Include product cost, packaging, inserts, labels. Most people forget 15-20% of real costs.', icon: 'Calculator', color: '#8B5CF6' },
+        { step: 2, title: 'Add Fulfillment', description: 'Shipping, handling, returns rate (~5-8%). That "free shipping" comes from your margin.', icon: 'Package', color: '#3B82F6' },
+        { step: 3, title: 'Factor Ad Spend', description: 'Divide monthly ad spend by orders. If you\'re spending $5k for 200 orders = $25/order.', icon: 'Target', color: '#22C55E' }
+      ], proTip: 'Use a margin calculator spreadsheet or tools like Lifetimely to track true profit per order. Most stores discover they\'re actually losing money on "profitable" products when they include all costs.' },
       { type: 'quiz', question: 'What is the core advantage of a high margin business model?', options: ['Ability to sell more units', 'Margin allows over-delivery while staying profitable', 'Lower advertising costs', 'Faster shipping times'], correctIndex: 1, feedback: { correct: 'Exactly right. High margins create a buffer that lets you over-deliver on customer experience while remaining highly profitable. Low margin businesses cut corners to survive. High margin businesses wow customers and still win. That margin is your fortress against market chaos.', incorrect: 'Not quite. The core advantage is that margin allows you to over-deliver while staying profitable. With thick margins, you can afford amazing packaging, fast shipping, great support, and surprise bonuses. You create raving fans while your competitors are bleeding out on thin margins.' }},
       { type: 'completion', sources: [] }
     ];
@@ -116,6 +127,10 @@
       AlertTriangle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
       DollarSign: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
       Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Calculator: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>,
+      Package: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      Building: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="6" x2="9" y2="6"/><line x1="15" y1="6" x2="15" y2="6"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="9" y2="14"/><line x1="15" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>,
+      Layers: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
     };
 
     // Animated Components
@@ -132,6 +147,479 @@
         return () => clearInterval(timer);
       }, [target, duration]);
       return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // NEW: Margin Meter Slide - Speedometer-style gauges for margin comparison
+    const MarginMeterSlide = ({ data }) => {
+      const GaugeMeter = ({ margin, label, price, profit, color, delay }) => {
+        const [animatedMargin, setAnimatedMargin] = useState(0);
+        useEffect(() => {
+          const timer = setTimeout(() => {
+            let start = 0;
+            const increment = margin / 60;
+            const interval = setInterval(() => {
+              start += increment;
+              if (start >= margin) { setAnimatedMargin(margin); clearInterval(interval); }
+              else { setAnimatedMargin(Math.floor(start)); }
+            }, 16);
+          }, delay * 1000);
+          return () => clearTimeout(timer);
+        }, [margin, delay]);
+
+        // Calculate arc path for gauge
+        const radius = 70;
+        const strokeWidth = 12;
+        const circumference = Math.PI * radius; // Half circle
+        const fillLength = (animatedMargin / 100) * circumference;
+
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay }}
+            className="rounded-2xl p-6 text-center"
+            style={{ background: '#0a0a0a', border: `1px solid ${color}40`, boxShadow: `0 0 30px ${color}15` }}
+          >
+            <div className="text-xs font-bold tracking-wider mb-4" style={{ color }}>{label}</div>
+
+            {/* Gauge SVG */}
+            <div className="relative w-44 h-24 mx-auto mb-4">
+              <svg viewBox="0 0 160 90" className="w-full h-full">
+                {/* Background arc */}
+                <path
+                  d="M 10 80 A 70 70 0 0 1 150 80"
+                  fill="none"
+                  stroke="#333"
+                  strokeWidth={strokeWidth}
+                  strokeLinecap="round"
+                />
+                {/* Colored arc */}
+                <motion.path
+                  d="M 10 80 A 70 70 0 0 1 150 80"
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={strokeWidth}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: circumference }}
+                  animate={{ strokeDashoffset: circumference - fillLength }}
+                  transition={{ duration: 1.5, delay: delay + 0.3, ease: 'easeOut' }}
+                  style={{ filter: `drop-shadow(0 0 8px ${color})` }}
+                />
+                {/* Center percentage */}
+                <text x="80" y="75" textAnchor="middle" fill="white" fontSize="28" fontWeight="bold">
+                  {animatedMargin}%
+                </text>
+              </svg>
+            </div>
+
+            {/* Price and Profit */}
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="bg-neutral-900 rounded-lg p-2">
+                <div className="text-neutral-500 text-[10px] uppercase">Price</div>
+                <div className="text-white font-bold">${price}</div>
+              </div>
+              <div className="bg-neutral-900 rounded-lg p-2">
+                <div className="text-neutral-500 text-[10px] uppercase">Profit</div>
+                <div className="font-bold" style={{ color }}>${profit}</div>
+              </div>
+            </div>
+          </motion.div>
+        );
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Target size={14} color="var(--accent)" />
+              <span>Margin Comparison</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <GaugeMeter
+              margin={data.lowMargin.margin}
+              label={data.lowMargin.label}
+              price={data.lowMargin.price}
+              profit={data.lowMargin.profit}
+              color="#EF4444"
+              delay={0.2}
+            />
+            <GaugeMeter
+              margin={data.highMargin.margin}
+              label={data.highMargin.label}
+              price={data.highMargin.price}
+              profit={data.highMargin.profit}
+              color="#22C55E"
+              delay={0.4}
+            />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="text-center mt-6"
+          >
+            <p className="text-neutral-500 text-sm">Same product category. Dramatically different profit margins.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // NEW: Profit Waterfall Slide - Shows where money flows
+    const ProfitWaterfallSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.DollarSign size={14} color="var(--accent)" />
+              <span>Money Flow</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {data.scenarios.map((scenario, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: idx === 0 ? -30 : 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + idx * 0.2 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: '#0a0a0a', border: `1px solid ${scenario.color}40`, boxShadow: `0 0 25px ${scenario.color}12` }}
+              >
+                <div className="text-xs font-bold tracking-wider mb-4" style={{ color: scenario.color }}>{scenario.label}</div>
+
+                {/* Waterfall bars */}
+                <div className="space-y-2">
+                  {[
+                    { label: 'Revenue', value: scenario.revenue, type: 'positive' },
+                    { label: 'COGS', value: -scenario.cogs, type: 'negative' },
+                    { label: 'Shipping', value: -scenario.shipping, type: 'negative' },
+                    { label: 'Ad Spend', value: -scenario.ads, type: 'negative' },
+                  ].map((item, i) => {
+                    const maxValue = scenario.revenue;
+                    const width = Math.abs(item.value) / maxValue * 100;
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 + idx * 0.2 + i * 0.1 }}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="w-16 text-[10px] text-neutral-500 text-right">{item.label}</div>
+                        <div className="flex-1 h-6 bg-neutral-900 rounded overflow-hidden relative">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${width}%` }}
+                            transition={{ duration: 0.8, delay: 0.5 + idx * 0.2 + i * 0.1 }}
+                            className="h-full rounded"
+                            style={{
+                              background: item.type === 'positive' ? '#3B82F6' : '#6B7280',
+                              boxShadow: item.type === 'positive' ? '0 0 10px rgba(59,130,246,0.4)' : 'none'
+                            }}
+                          />
+                          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-white">
+                            {item.type === 'positive' ? '+' : '-'}${Math.abs(item.value)}
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+
+                  {/* Profit line */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9 + idx * 0.2 }}
+                    className="border-t border-neutral-700 pt-2 mt-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 text-[10px] font-bold text-white text-right">PROFIT</div>
+                      <div className="flex-1 h-8 bg-neutral-900 rounded overflow-hidden relative">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.max(0, scenario.profit) / scenario.revenue * 100}%` }}
+                          transition={{ duration: 1, delay: 1 + idx * 0.2 }}
+                          className="h-full rounded"
+                          style={{
+                            background: scenario.profit > 0 ? scenario.color : '#EF4444',
+                            boxShadow: `0 0 15px ${scenario.profit > 0 ? scenario.color : '#EF4444'}50`
+                          }}
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-bold" style={{ color: scenario.profit > 0 ? scenario.color : '#EF4444' }}>
+                          {scenario.profit > 0 ? '+' : ''}${scenario.profit}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="text-center text-neutral-500 text-sm mt-5"
+          >
+            The low margin store actually <span className="text-red-400 font-semibold">loses $2</span> per sale after all costs. The high margin store keeps <span className="text-green-400 font-semibold">$71 profit</span>.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // NEW: Fortress Tower Slide - Visual tower comparison
+    const FortressTowerSlide = ({ data }) => {
+      const Tower = ({ towerData, color, isLow, delay }) => {
+        const items = isLow ? towerData.threats : towerData.shields;
+        const heightPercent = towerData.height;
+
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay }}
+            className="flex flex-col items-center"
+          >
+            {/* Tower label */}
+            <div className="text-xs font-bold tracking-wider mb-3" style={{ color }}>{towerData.label}</div>
+
+            {/* Tower visual */}
+            <div className="relative w-28 h-48 md:w-32 md:h-56 flex items-end justify-center mb-4">
+              {/* Background frame */}
+              <div className="absolute inset-x-0 bottom-0 h-full border-2 border-dashed border-neutral-700 rounded-t-lg opacity-30" />
+
+              {/* Animated tower */}
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: `${heightPercent}%` }}
+                transition={{ duration: 1.5, delay: delay + 0.3, ease: 'easeOut' }}
+                className="relative w-full rounded-t-lg"
+                style={{
+                  background: `linear-gradient(180deg, ${color}40 0%, ${color}20 100%)`,
+                  border: `2px solid ${color}`,
+                  boxShadow: `0 0 30px ${color}30, inset 0 0 20px ${color}10`
+                }}
+              >
+                {/* Tower windows/details */}
+                <div className="absolute inset-0 flex flex-col justify-around items-center py-3">
+                  {[...Array(Math.floor(heightPercent / 25))].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: delay + 0.8 + i * 0.2 }}
+                      className="w-4 h-4 rounded"
+                      style={{ background: `${color}60`, boxShadow: `0 0 8px ${color}` }}
+                    />
+                  ))}
+                </div>
+
+                {/* Profit badge */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: delay + 1.2, type: 'spring' }}
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-white text-sm font-bold whitespace-nowrap"
+                  style={{ background: color, boxShadow: `0 0 15px ${color}` }}
+                >
+                  {towerData.profit}
+                </motion.div>
+              </motion.div>
+            </div>
+
+            {/* Items list */}
+            <div className="w-full max-w-[160px]">
+              {items.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: isLow ? -10 : 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: delay + 0.5 + i * 0.1 }}
+                  className="flex items-center gap-2 py-1"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: color }} />
+                  <span className="text-[11px] text-neutral-400">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Shield size={14} color="var(--accent)" />
+              <span>Visual Metaphor</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="rounded-2xl p-6 md:p-8" style={{ background: '#0a0a0a' }}>
+            <div className="grid grid-cols-2 gap-8">
+              <Tower towerData={data.lowTower} color="#EF4444" isLow={true} delay={0.2} />
+              <Tower towerData={data.highTower} color="#22C55E" isLow={false} delay={0.4} />
+            </div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="text-center text-neutral-500 text-sm mt-5"
+          >
+            Low margins = Glass house. High margins = Profit fortress.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // NEW: Pricing Pyramid Slide - Shows pricing tiers as pyramid
+    const PricingPyramidSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Layers size={14} color="var(--accent)" />
+              <span>Positioning Strategy</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Pyramid container */}
+          <div className="rounded-2xl p-6 md:p-8" style={{ background: '#0a0a0a', boxShadow: '0 0 40px rgba(0,0,0,0.3)' }}>
+            <div className="flex flex-col items-center gap-3">
+              {[...data.tiers].reverse().map((tier, idx) => {
+                const reversedIdx = data.tiers.length - 1 - idx;
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: 0.2 + reversedIdx * 0.2 }}
+                    className="relative rounded-xl p-4 text-center transition-all"
+                    style={{
+                      width: tier.width,
+                      background: `linear-gradient(135deg, ${tier.color}20 0%, ${tier.color}10 100%)`,
+                      border: `2px solid ${tier.color}`,
+                      boxShadow: `0 0 20px ${tier.color}20`
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <div className="text-xs font-bold tracking-wider mb-1" style={{ color: tier.color }}>{tier.level}</div>
+                        <div className="text-[10px] text-neutral-500">{tier.audience}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-white">{tier.price}</div>
+                        <div className="text-[10px] font-semibold" style={{ color: tier.color }}>{tier.margin} margin</div>
+                      </div>
+                    </div>
+
+                    {/* Margin bar */}
+                    <div className="mt-3 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: tier.margin }}
+                        transition={{ duration: 1, delay: 0.5 + reversedIdx * 0.2 }}
+                        className="h-full rounded-full"
+                        style={{ background: tier.color, boxShadow: `0 0 8px ${tier.color}` }}
+                      />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Arrow pointing up */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="flex flex-col items-center mt-6"
+            >
+              <svg width="24" height="40" viewBox="0 0 24 40" fill="none" className="text-purple-400">
+                <path d="M12 38V2M12 2L3 11M12 2L21 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span className="text-xs text-purple-400 font-semibold mt-2">Aim Higher</span>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // NEW: Implementation Guide Slide - Natural tool integration
+    const ImplementationGuideSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Target size={14} color="var(--accent)" />
+              <span>How To Implement</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Implementation steps */}
+          <div className="space-y-4 mb-6">
+            {data.steps.map((step, i) => {
+              const IconComponent = Icons[step.icon] || Icons.Check;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.15 }}
+                  className="rounded-xl p-5 relative overflow-hidden"
+                  style={{ background: '#0a0a0a', border: `1px solid ${step.color}30`, boxShadow: `0 0 20px ${step.color}08` }}
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl -mr-12 -mt-12" style={{ background: `${step.color}10` }} />
+
+                  <div className="flex items-start gap-4 relative z-10">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${step.color}20`, border: `1px solid ${step.color}40` }}>
+                      <IconComponent size={20} color={step.color} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ background: step.color, color: 'white' }}>Step {step.step}</span>
+                        <span className="text-sm font-bold text-white">{step.title}</span>
+                      </div>
+                      <p className="text-neutral-400 text-sm leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Pro tip with natural tool mention */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="rounded-xl p-4 border border-neutral-200 bg-neutral-50"
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+                <Icons.Zap />
+              </div>
+              <div>
+                <p className="text-neutral-700 text-sm leading-relaxed">
+                  <strong className="text-purple-600">Pro tip:</strong> {data.proTip}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -525,6 +1013,11 @@
           case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
+          case 'margin-meter': return <MarginMeterSlide data={slide} />;
+          case 'profit-waterfall': return <ProfitWaterfallSlide data={slide} />;
+          case 'fortress-tower': return <FortressTowerSlide data={slide} />;
+          case 'pricing-pyramid': return <PricingPyramidSlide data={slide} />;
+          case 'implementation-guide': return <ImplementationGuideSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

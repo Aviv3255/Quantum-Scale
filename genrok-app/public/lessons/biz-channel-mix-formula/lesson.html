@@ -73,13 +73,21 @@
     const slides = [
       { type: 'welcome', learningGoals: ['The exact channel mix of 9-figure brands', 'Why Meta gets 50% of the budget', 'How to diversify without diluting'] },
       { type: 'hook', headline: '9-figure brands don\'t guess their ad spend. They follow a formula.', subtext: 'Here is the exact breakdown Ridge uses to dominate. Most brands spread budget randomly. Winners follow a disciplined formula. 50% Meta. 20% Google. 20% Tertiary. 10% Influencer. This is the 50/20/20/10 formula that scales eCommerce brands to 9 figures. Every dollar allocated with precision. No guesswork. Just results.' },
+      { type: 'channel-performance', title: 'Channel ROI Comparison', channels: [
+        { name: 'Meta', budget: 50, roas: '3.2x', color: '#3B82F6', icon: 'Smartphone' },
+        { name: 'YouTube', budget: 15, roas: '2.8x', color: '#EF4444', icon: 'Video' },
+        { name: 'Google Search', budget: 5, roas: '4.1x', color: '#F59E0B', icon: 'Search' },
+        { name: 'TikTok', budget: 10, roas: '2.1x', color: '#000000', icon: 'Music' },
+        { name: 'Influencer', budget: 10, roas: '2.5x', color: '#8B5CF6', icon: 'Star' }
+      ]},
       { type: 'content', title: 'The Channel Mix That Scales', body: 'Once organic content generates cash flow, weaponize paid media to scale. But most brands spread budget randomly. Winners follow a disciplined formula. They allocate 50% to Meta. 20% to Google and YouTube. 20% to tertiary channels. 10% to influencer partnerships. This is the marketing mix for a 9-figure brand like Ridge. Every dollar deployed strategically. No waste. Maximum scale.' },
       { type: 'budget-bars', title: 'The 50/20/20/10 Budget Breakdown', bars: [
-        { label: 'Meta (FB/IG)', value: 50, color: '#3B82F6', iconComponent: 'Smartphone' },
-        { label: 'Google/YouTube', value: 20, color: '#F59E0B', iconComponent: 'Video' },
-        { label: 'Tertiary Channels', value: 20, color: '#14B8A6', iconComponent: 'Megaphone' },
-        { label: 'Influencer', value: 10, color: '#8B5CF6', iconComponent: 'Star' }
+        { label: 'Meta (FB/IG)', value: 50, color: '#3B82F6', iconComponent: 'Smartphone', roas: '3.2x' },
+        { label: 'Google/YouTube', value: 20, color: '#F59E0B', iconComponent: 'Video', roas: '2.8x' },
+        { label: 'Tertiary Channels', value: 20, color: '#14B8A6', iconComponent: 'Megaphone', roas: '2.1x' },
+        { label: 'Influencer', value: 10, color: '#8B5CF6', iconComponent: 'Star', roas: '2.5x' }
       ]},
+      { type: 'testing-framework', title: 'The 80/20 Testing Rule', proven: { label: 'Proven Winners', percent: 80, description: 'Put 80% on channels with proven ROI', color: '#22C55E', items: ['Meta Ads (your workhorse)', 'YouTube (scale machine)', 'Retargeting (easy wins)'] }, testing: { label: 'Testing Budget', percent: 20, description: 'Reserve 20% to test new channels', color: '#F59E0B', items: ['TikTok (emerging)', 'Reddit (niche audiences)', 'New influencer partners'] }},
       { type: 'stat-countdown', title: 'The Formula Breakdown', stats: [
         { value: 50, suffix: '%', label: 'Meta (The King)', subtext: 'Facebook & Instagram dominate' },
         { value: 20, suffix: '%', label: 'Google/YouTube', subtext: 'YouTube 15% / Search 5%' },
@@ -93,6 +101,11 @@
       ]},
       { type: 'content', title: 'Why Meta Gets Half', body: 'Meta is the king of advertising for a reason. Best algorithm. Best scale. Best targeting. Facebook and Instagram have the most sophisticated ad platform in the world. They know your customer better than anyone. They can target them with surgical precision. And they can scale infinitely. That is why Meta gets 50% of the budget. Because it delivers 50% of the results. No other platform comes close.' },
       { type: 'highlight-box', title: 'The Google Trap', body: 'Most brands overspend on branded search. They pour money into Google Search ads for people already searching their brand name. That is wasted spend. Those customers were coming anyway. Keep Google lean at 5% for Search. Let YouTube do the heavy lifting at 15%. YouTube builds awareness. Search captures existing demand. Do not confuse the two.', highlight: 'Most brands overspend on branded search. Keep Google lean (5%) and let YouTube do the heavy lifting (15%).' },
+      { type: 'implementation-guide', title: 'How To Build Your Channel Mix', steps: [
+        { step: 1, title: 'Audit Current Spend', description: 'Calculate your current allocation across all channels. Most brands find they\'re over-indexed on one platform.', icon: 'PieChart', color: '#3B82F6' },
+        { step: 2, title: 'Apply 50/20/20/10', description: 'Rebalance to the formula. Shift budget to Meta first, then allocate Google, Tertiary, and Influencer.', icon: 'Target', color: '#22C55E' },
+        { step: 3, title: 'Track & Adjust', description: 'Monitor ROAS by channel weekly. Double down on winners. Cut losers fast. Iterate until profitable.', icon: 'TrendingUp', color: '#F59E0B' }
+      ], proTip: 'Use Triple Whale or Hyros for accurate multi-touch attribution. Native platform reporting inflates ROAS. You need truth to make real decisions.' },
       { type: 'quiz', question: 'According to the 9-figure brand formula, what percentage goes to Meta?', options: ['30%', '50%', '70%', '20%'], correctIndex: 1, feedback: { correct: 'Exactly right. Meta gets 50% of the paid media budget. Why? Because Meta is the king of advertising. Best algorithm. Best scale. Best targeting. Facebook and Instagram deliver half the results, so they get half the budget. This is the disciplined formula that scales eCommerce brands to 9 figures.', incorrect: 'Not quite. Meta gets 50% of the budget. Why? Because Meta is the king. Best algorithm. Best scale. Best targeting. Facebook and Instagram deliver half the results, so they get half the budget. 50% Meta. 20% Google. 20% Tertiary. 10% Influencer. That is the formula.' }},
       { type: 'completion', sources: [] }
     ];
@@ -112,6 +125,15 @@
       Video: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>,
       Megaphone: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>,
       Star: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      // Additional icons for new slides
+      Search: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+      Music: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>,
+      PieChart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>,
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      BarChart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Shield: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Beaker: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg>,
     };
 
     // Animated Components
@@ -128,6 +150,253 @@
         return () => clearInterval(timer);
       }, [target, duration]);
       return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // NEW: Channel Performance Slide - Vertical bar chart with ROAS
+    const ChannelPerformanceSlide = ({ data }) => {
+      const maxBudget = Math.max(...data.channels.map(c => c.budget));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.BarChart size={14} color="var(--accent)" />
+              <span>ROI Breakdown</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="rounded-2xl p-6" style={{ background: '#0a0a0a' }}>
+            <div className="flex items-end justify-between gap-4 h-48 mb-4">
+              {data.channels.map((channel, i) => {
+                const IconComponent = Icons[channel.icon] || Icons.BarChart;
+                const heightPercent = (channel.budget / maxBudget) * 100;
+
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={{ height: `${heightPercent}%` }}
+                    transition={{ delay: 0.2 + i * 0.1, duration: 0.8, ease: 'easeOut' }}
+                    className="flex-1 rounded-t-xl relative flex flex-col items-center justify-end pb-3"
+                    style={{ background: `linear-gradient(180deg, ${channel.color}, ${channel.color}88)`, boxShadow: `0 0 20px ${channel.color}40`, minHeight: '20%' }}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                      className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs font-bold text-white whitespace-nowrap"
+                      style={{ background: channel.color }}
+                    >
+                      {channel.roas} ROAS
+                    </motion.div>
+                    <span className="text-white font-bold text-lg">{channel.budget}%</span>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center justify-between gap-4 pt-4 border-t border-neutral-800">
+              {data.channels.map((channel, i) => {
+                const IconComponent = Icons[channel.icon] || Icons.BarChart;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                    className="flex-1 text-center"
+                  >
+                    <div className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: `${channel.color}20`, border: `1px solid ${channel.color}` }}>
+                      <IconComponent size={16} color={channel.color} />
+                    </div>
+                    <span className="text-neutral-400 text-[10px] block">{channel.name}</span>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="text-center text-neutral-500 text-sm mt-5"
+          >
+            Budget allocation + <span style={{ color: 'var(--accent)' }}>proven ROAS</span> by channel
+          </motion.p>
+        </div>
+      );
+    };
+
+    // NEW: Testing Framework Slide - 80/20 Rule Visualization
+    const TestingFrameworkSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Beaker size={14} color="var(--accent)" />
+              <span>Testing Strategy</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Proven Winners - 80% */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-5 relative overflow-hidden"
+              style={{ background: '#0a0a0a', border: `1px solid ${data.proven.color}`, boxShadow: `0 0 25px ${data.proven.color}20` }}
+            >
+              <div className="absolute top-0 left-0 w-32 h-32 rounded-full blur-3xl -ml-16 -mt-16" style={{ background: `${data.proven.color}15` }} />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${data.proven.color}20`, border: `1px solid ${data.proven.color}` }}>
+                      <Icons.Shield size={20} color={data.proven.color} />
+                    </div>
+                    <span className="text-white font-semibold text-sm">{data.proven.label}</span>
+                  </div>
+                  <span className="text-3xl font-bold" style={{ color: data.proven.color }}>{data.proven.percent}%</span>
+                </div>
+
+                <p className="text-neutral-400 text-sm mb-4">{data.proven.description}</p>
+
+                <div className="space-y-2">
+                  {data.proven.items.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: data.proven.color }} />
+                      <span className="text-neutral-300 text-xs">{item}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Testing Budget - 20% */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-5 relative overflow-hidden"
+              style={{ background: '#0a0a0a', border: `1px solid ${data.testing.color}`, boxShadow: `0 0 25px ${data.testing.color}20` }}
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl -mr-16 -mt-16" style={{ background: `${data.testing.color}15` }} />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${data.testing.color}20`, border: `1px solid ${data.testing.color}` }}>
+                      <Icons.Beaker size={20} color={data.testing.color} />
+                    </div>
+                    <span className="text-white font-semibold text-sm">{data.testing.label}</span>
+                  </div>
+                  <span className="text-3xl font-bold" style={{ color: data.testing.color }}>{data.testing.percent}%</span>
+                </div>
+
+                <p className="text-neutral-400 text-sm mb-4">{data.testing.description}</p>
+
+                <div className="space-y-2">
+                  {data.testing.items.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: data.testing.color }} />
+                      <span className="text-neutral-300 text-xs">{item}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-center text-neutral-500 text-sm mt-5"
+          >
+            Never risk more than <span style={{ color: data.testing.color }}>20% on unproven channels</span>
+          </motion.p>
+        </div>
+      );
+    };
+
+    // NEW: Implementation Guide Slide - Natural tool integration
+    const ImplementationGuideSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Target size={14} color="var(--accent)" />
+              <span>How To Implement</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="space-y-4 mb-6">
+            {data.steps.map((step, i) => {
+              const IconComponent = Icons[step.icon] || Icons.Check;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.15 }}
+                  className="rounded-xl p-5 relative overflow-hidden"
+                  style={{ background: '#0a0a0a', border: `1px solid ${step.color}30`, boxShadow: `0 0 20px ${step.color}08` }}
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl -mr-12 -mt-12" style={{ background: `${step.color}10` }} />
+
+                  <div className="flex items-start gap-4 relative z-10">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${step.color}20`, border: `1px solid ${step.color}40` }}>
+                      <IconComponent size={20} color={step.color} />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ background: step.color, color: 'white' }}>Step {step.step}</span>
+                        <span className="text-sm font-bold text-white">{step.title}</span>
+                      </div>
+                      <p className="text-neutral-400 text-sm leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="rounded-xl p-4 border border-neutral-200 bg-neutral-50"
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <Icons.Zap />
+              </div>
+              <div>
+                <p className="text-neutral-700 text-sm leading-relaxed">
+                  <strong style={{ color: 'var(--accent)' }}>Pro tip:</strong> {data.proTip}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -230,7 +499,12 @@
                         )}
                         <span className="text-white font-semibold">{bar.label}</span>
                       </div>
-                      <span className="text-2xl font-bold" style={{ color: bar.color }}>{bar.value}%</span>
+                      <div className="flex items-center gap-3">
+                        {bar.roas && (
+                          <span className="text-xs font-bold px-2 py-1 rounded" style={{ background: `${bar.color}20`, color: bar.color }}>{bar.roas} ROAS</span>
+                        )}
+                        <span className="text-2xl font-bold" style={{ color: bar.color }}>{bar.value}%</span>
+                      </div>
                     </div>
                     <div className="h-3 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
                       <motion.div initial={{ width: 0 }} animate={{ width: `${bar.value}%` }} transition={{ delay: 0.3 + i * 0.1, duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${bar.color}, ${bar.color}cc)`, boxShadow: `0 0 12px ${getGlowColor(bar.color)}` }} />
@@ -376,6 +650,9 @@
           case 'budget-bars': return <BudgetBarsSlide data={slide} />;
           case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'channel-performance': return <ChannelPerformanceSlide data={slide} />;
+          case 'testing-framework': return <TestingFrameworkSlide data={slide} />;
+          case 'implementation-guide': return <ImplementationGuideSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
