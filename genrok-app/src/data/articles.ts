@@ -7024,6 +7024,126 @@ This single question changes everything.
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-next-best-dollar/lesson.html' }
       ]
+    },
+    {
+      id: 906,
+      thumbnail: '/images/lessons/biz-authenticity-engine.png',
+      title: 'The Authenticity Engine',
+      intro: 'The compounding force that makes your brand impossible to replicate.',
+      directUrl: '/learn/lessons/biz-authenticity-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Authenticity Engine
+
+Authenticity is not a marketing tactic. It is a compounding force that makes your brand impossible to replicate.
+
+**The Physics of Authenticity:**
+- Authenticity compounds over time
+- Copycats can steal tactics, but never your story
+- Real connections create price-proof customers
+
+**Open the interactive lesson to build your authenticity engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-authenticity-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 907,
+      thumbnail: '/images/lessons/biz-creator-army.png',
+      title: 'The Creator Army',
+      intro: 'Build 500+ micro-creators instead of hiring expensive agencies.',
+      directUrl: '/learn/lessons/biz-creator-army',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Creator Army
+
+Why pay one agency when you can build an army of 500+ creators who sell for you?
+
+**The Power of Micro-Creators:**
+- 500 small creators > 1 big agency
+- Network effect compounds reach
+- Turn customers into salespeople
+
+**Open the interactive lesson to build your creator army.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-creator-army/lesson.html' }
+      ]
+    },
+    {
+      id: 908,
+      thumbnail: '/images/lessons/biz-mission-driven-brand.png',
+      title: 'The Mission-Driven Brand',
+      intro: 'Why brands with a cause outperform everyone else.',
+      directUrl: '/learn/lessons/biz-mission-driven-brand',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Mission-Driven Brand
+
+Brands with a mission don't just sell products. They create movements.
+
+**The Mission Advantage:**
+- Mission creates emotional connection
+- Transactions become relationships
+- Purpose drives repeat purchases
+
+**Open the interactive lesson to discover your brand mission.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-mission-driven-brand/lesson.html' }
+      ]
+    },
+    {
+      id: 909,
+      thumbnail: '/images/lessons/biz-savage-mentality.png',
+      title: 'The Savage Mentality',
+      intro: 'The relentless execution mindset that separates winners from dreamers.',
+      directUrl: '/learn/lessons/biz-savage-mentality',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Savage Mentality
+
+Most entrepreneurs cope with failure. Elite entrepreneurs get pissed off and take action.
+
+**The Savage Difference:**
+- Action over cope
+- Adapt immediately, don't blame
+- Zero excuses, maximum execution
+
+**Open the interactive lesson to unlock the savage mentality.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-savage-mentality/lesson.html' }
+      ]
+    },
+    {
+      id: 910,
+      thumbnail: '/images/lessons/biz-systems-architect.png',
+      title: 'The Systems Architect',
+      intro: 'The transition from player to systems architect that unlocks $10M+.',
+      directUrl: '/learn/lessons/biz-systems-architect',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Systems Architect
+
+Getting to $1M/month is a marketing challenge. Getting to $10M/month is a systems and people challenge.
+
+**The Architect Framework:**
+- Hire A-players over volume
+- Build teams around winners
+- Align incentives beyond money
+
+**Open the interactive lesson to become a systems architect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-systems-architect/lesson.html' }
+      ]
     }
   ];
 

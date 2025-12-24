@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Mission-Driven Brand | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #10B981; --accent-dark: #059669; --accent-light: #34D399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-mission-driven-brand',
+      title: 'The Mission-Driven Brand',
+      description: 'Why brands with a cause outperform everyone else',
+      accentColor: '#10B981',
+      duration: '6 min',
+      nextLesson: { id: 'biz-savage-mentality', title: 'The Savage Mentality', teaser: 'The relentless execution mindset that separates winners from dreamers.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why brands with a cause win bigger', 'The emotional connection that drives loyalty', 'How to build your brand mission'] },
+      { type: 'hook', headline: 'People do not buy products. They buy what those products stand for.', subtext: 'Comfrt sells blankets. But they also give a blanket to a foster child for every one sold. This mission is not just marketing. It creates an emotional bond that turns customers into lifelong advocates. Brands with a cause outperform brands without one by 3-5X.' },
+      { type: 'hit-rate-comparison', title: 'Mission vs No Mission', subtitle: 'The data behind purpose-driven brands' },
+      { type: 'content', title: 'The Comfrt Foundation Story', body: 'Comfrt started with a simple mission: give every foster child a blanket. For every blanket sold, they donate one. But here is what happened - customers did not just buy blankets. They became part of a movement. They shared their purchases on social media. They told their friends. They came back again and again. A $500M brand was born from giving.' },
+      { type: 'comparison-cards', title: 'Transaction vs Connection', left: { label: 'NO MISSION', iconComponent: 'Camera', items: ['Customers buy once and leave', 'Price is the only differentiator', 'No emotional connection', 'Low word-of-mouth'], color: '#EF4444' }, right: { label: 'MISSION-DRIVEN', iconComponent: 'Users', items: ['Customers become advocates', 'Purpose is the differentiator', 'Deep emotional bond', 'Organic viral growth'], color: '#22C55E' } },
+      { type: 'funnel-visual', title: 'The Mission Impact Funnel', subtitle: 'How purpose creates exponential growth' },
+      { type: 'step-breakdown', title: 'Step 1: Find Your Why', stepNumber: 1, cost: 'SOUL', description: 'What problem in the world genuinely bothers you? What cause would you fight for even if no one was watching? Your mission must be authentic. Customers can smell fake purpose from a mile away. Start with something real.', icon: 'Package', color: '#10B981' },
+      { type: 'step-breakdown', title: 'Step 2: Connect Product to Purpose', stepNumber: 2, cost: 'DESIGN', description: 'Your mission should be woven into every purchase. One-for-one models work. Percentage of profits work. Just make the connection clear and tangible. When customers buy, they should feel like they are contributing to something bigger.', icon: 'BarChart', color: '#3B82F6' },
+      { type: 'step-breakdown', title: 'Step 3: Amplify The Story', stepNumber: 3, cost: 'CONTENT', description: 'Share the impact. Show the blankets being delivered to foster kids. Document the journey. Let your community see where their money goes. This creates content that spreads itself because people want to share stories of hope.', icon: 'Trophy', color: '#22C55E' },
+      { type: 'economics-visual', title: 'The Mission-Driven Economics', subtitle: 'Why giving actually increases profits' },
+      { type: 'quote-slide', quote: 'The foundation is the heart of our brand. Every blanket sold means a foster child gets one too. Our customers are not just buying a product - they are joining a movement to make sure every kid has comfort.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)' },
+      { type: 'quiz', question: 'Why do mission-driven brands outperform traditional brands?', options: ['They have bigger marketing budgets', 'They create emotional bonds that turn customers into advocates', 'They sell cheaper products', 'They have better logistics'], correctIndex: 1, feedback: { correct: 'Exactly! Mission-driven brands create emotional connections that go beyond the transaction. Customers become part of a movement. They share their purchases, tell their friends, and come back again because buying makes them feel good about contributing to something meaningful.', incorrect: 'Not quite. The key advantage of mission-driven brands is the emotional bond they create. When customers feel they are contributing to a cause, they become advocates. This drives organic growth, higher LTV, and word-of-mouth that no marketing budget can buy.' }},
+      { type: 'completion', sources: ['The E-commerce Cheat Code'] }
+    ];
+
+    // Icons
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Camera: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
+      Users: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Package: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      BarChart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Trophy: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      DollarSign: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Quote: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
+    };
+
+    // Animated Counter
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // Hit Rate Comparison Visual
+    const HitRateComparisonSlide = ({ data }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setAnimated(true), 300); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}>
+              <Icons.TrendingUp size={14} color="#F59E0B" />
+              <span>The Data</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Scripted Ads - Low Performance */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #EF4444', boxShadow: '0 0 30px rgba(239, 68, 68, 0.15)' }}>
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }}></div>
+              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>OLD WAY</div>
+
+              <div className="mt-4 mb-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icons.Camera size={28} color="#EF4444" />
+                  <span className="text-white font-bold text-lg">Scripted Ads</span>
+                </div>
+                <p className="text-neutral-400 text-sm">Polished, professional, feels like an ad</p>
+              </div>
+
+              <div className="mb-4">
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-5xl font-bold text-red-500">&lt;5</span>
+                  <span className="text-2xl font-bold text-red-500">%</span>
+                  <span className="text-neutral-500 text-sm ml-2">hit rate</span>
+                </div>
+              </div>
+
+              <div className="h-4 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={animated ? { width: '5%' } : {}}
+                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                  className="h-full rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #EF4444, #DC2626)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.5)' }}
+                />
+              </div>
+
+              <p className="text-neutral-500 text-xs mt-4 italic">People scroll past. It feels like an ad.</p>
+            </motion.div>
+
+            {/* Raw Content - High Performance */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #22C55E', boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22C55E, transparent)' }}></div>
+              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>CHEAT CODE</div>
+
+              <div className="mt-4 mb-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icons.Users size={28} color="#22C55E" />
+                  <span className="text-white font-bold text-lg">Raw Content</span>
+                </div>
+                <p className="text-neutral-400 text-sm">Authentic, real people, feels like a friend</p>
+              </div>
+
+              <div className="mb-4">
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-5xl font-bold text-green-500">14</span>
+                  <span className="text-2xl font-bold text-green-500">%</span>
+                  <span className="text-neutral-500 text-sm ml-2">hit rate</span>
+                </div>
+              </div>
+
+              <div className="h-4 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={animated ? { width: '100%' } : {}}
+                  transition={{ duration: 1.5, ease: 'easeOut', delay: 0.2 }}
+                  className="h-full rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #22C55E, #16A34A)', boxShadow: '0 0 15px rgba(34, 197, 94, 0.5)' }}
+                />
+              </div>
+
+              <p className="text-green-400 text-xs mt-4 font-semibold">Nearly 3X more effective!</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-8 rounded-xl p-4 text-center" style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+            <p className="text-neutral-700 text-sm">Raw content is <span className="font-bold text-black">nearly 3X more effective</span> than scripted ads. The market has spoken.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Creator Hiring Funnel Visual
+    const FunnelVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}>
+            <Icons.Zap />
+            <span>The System</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #333' }}>
+          {/* Funnel Steps */}
+          <div className="space-y-4">
+            {/* Step 1: Product Seeding - Widest */}
+            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.3 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '100%', background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05))', border: '2px solid #3B82F6', boxShadow: '0 0 25px rgba(59, 130, 246, 0.2)' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid #3B82F6' }}>
+                    <Icons.Package size={24} color="#3B82F6" />
+                  </div>
+                  <div>
+                    <span className="text-white font-bold text-lg">Product Seeding</span>
+                    <p className="text-neutral-400 text-sm">Send to aligned creators</p>
+                  </div>
+                </div>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22C55E', border: '1px solid #22C55E' }}>FREE</span>
+              </div>
+            </motion.div>
+
+            {/* Arrow Down */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="flex justify-center">
+              <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
+                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
+
+            {/* Step 2: Test & Validate - Medium */}
+            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.5 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '85%', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05))', border: '2px solid #8B5CF6', boxShadow: '0 0 25px rgba(139, 92, 246, 0.2)' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.2)', border: '1px solid #8B5CF6' }}>
+                    <Icons.BarChart size={24} color="#8B5CF6" />
+                  </div>
+                  <div>
+                    <span className="text-white font-bold text-lg">Test & Validate</span>
+                    <p className="text-neutral-400 text-sm">Run content as ads</p>
+                  </div>
+                </div>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B', border: '1px solid #F59E0B' }}>AD SPEND</span>
+              </div>
+            </motion.div>
+
+            {/* Arrow Down */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="flex justify-center">
+              <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
+                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
+
+            {/* Step 3: Hire Winners - Narrowest */}
+            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.7 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '70%', background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))', border: '2px solid #22C55E', boxShadow: '0 0 25px rgba(34, 197, 94, 0.2)' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)', border: '1px solid #22C55E' }}>
+                    <Icons.Trophy size={24} color="#22C55E" />
+                  </div>
+                  <div>
+                    <span className="text-white font-bold text-lg">Hire Winners</span>
+                    <p className="text-neutral-400 text-sm">Proven performers only</p>
+                  </div>
+                </div>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22C55E', border: '1px solid #22C55E' }}>$500/mo</span>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-6 rounded-xl p-4 text-center" style={{ background: '#fafafa', border: '1px solid #e5e5e5' }}>
+          <p className="text-neutral-700 text-sm font-medium">You build a team of proven A-players who are <span className="font-bold text-black">already profitable</span> before you pay them a retainer.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Step Breakdown Slide
+    const StepBreakdownSlide = ({ data }) => {
+      const StepIcon = Icons[data.icon] || Icons.Package;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `${data.color}15`, color: data.color }}>
+              <span>Step {data.stepNumber} of 3</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: `2px solid ${data.color}`, boxShadow: `0 0 40px ${data.color}20` }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${data.color}, transparent)` }}></div>
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20" style={{ background: data.color }}></div>
+
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-24 h-24 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${data.color}20`, border: `2px solid ${data.color}` }}>
+                <StepIcon size={48} color={data.color} />
+              </div>
+
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                  <span className="text-6xl font-bold" style={{ color: data.color }}>{data.stepNumber}</span>
+                  <div>
+                    <p className="text-neutral-400 text-xs uppercase tracking-wider">Cost</p>
+                    <p className="text-white font-bold text-xl">{data.cost}</p>
+                  </div>
+                </div>
+                <p className="text-neutral-300 text-lg leading-relaxed">{data.description}</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Economics Visual Slide
+    const EconomicsVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}>
+            <Icons.DollarSign size={14} color="#22C55E" />
+            <span>The Math</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Old Model */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 relative" style={{ background: '#0a0a0a', border: '1px solid #EF4444' }}>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>OLD MODEL</div>
+
+            <div className="mt-4 space-y-4">
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Creative Strategist</span>
+                <span className="text-red-400 font-bold">$10,000/mo</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Hit Rate</span>
+                <span className="text-red-400 font-bold">&lt;5%</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Risk Level</span>
+                <span className="text-red-400 font-bold">HIGH</span>
+              </div>
+              <div className="pt-4 border-t border-neutral-800">
+                <p className="text-neutral-500 text-xs text-center italic">You pay $10K/month and HOPE they produce winners.</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Cheat Code Model */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 relative" style={{ background: '#0a0a0a', border: '2px solid #22C55E', boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>CHEAT CODE</div>
+
+            <div className="mt-4 space-y-4">
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Product Seeding</span>
+                <span className="text-green-400 font-bold">FREE</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Hit Rate</span>
+                <span className="text-green-400 font-bold">14%</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
+                <span className="text-neutral-400 text-sm">Risk Level</span>
+                <span className="text-green-400 font-bold">ZERO</span>
+              </div>
+              <div className="pt-4 border-t border-neutral-800">
+                <p className="text-green-400 text-xs text-center font-semibold">Only hire creators AFTER they prove themselves!</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03))', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+          <p className="text-center text-neutral-700 text-sm">These content creators you hire as brand ambassadors... <span className="font-bold text-black">they are like creative strategists for you... for free.</span></p>
+        </motion.div>
+      </div>
+    );
+
+    // Quote Slide
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #F59E0B30', boxShadow: '0 0 50px rgba(245, 158, 11, 0.1)' }}>
+          <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #F59E0B, transparent)' }}></div>
+          <div className="absolute top-4 left-8 opacity-20">
+            <Icons.Quote size={64} color="#F59E0B" />
+          </div>
+
+          <div className="relative z-10">
+            <p className="text-white text-xl md:text-2xl leading-relaxed mb-8 italic">"{data.quote}"</p>
+
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
+                <span className="text-white font-bold text-lg">{data.author.charAt(0)}</span>
+              </div>
+              <div>
+                <p className="text-white font-bold">{data.author}</p>
+                <p className="text-neutral-400 text-sm">{data.company}</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Comparison Cards Slide
+    const ComparisonCardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Left Card - Old Model */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${data.left.color}`, boxShadow: `0 0 25px ${data.left.color}15` }}>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: data.left.color, color: 'white' }}>{data.left.label}</div>
+            <div className="mt-4">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ background: `${data.left.color}20`, border: `1px solid ${data.left.color}` }}>
+                {Icons[data.left.iconComponent] && React.createElement(Icons[data.left.iconComponent], { size: 28, color: data.left.color })}
+              </div>
+              <ul className="space-y-3">
+                {data.left.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5" style={{ background: `${data.left.color}20`, border: `1px solid ${data.left.color}` }}>
+                      <Icons.X />
+                    </span>
+                    <span className="text-neutral-300 text-sm">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+
+          {/* Right Card - Cheat Code */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: `2px solid ${data.right.color}`, boxShadow: `0 0 30px ${data.right.color}20` }}>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: data.right.color, color: 'white' }}>{data.right.label}</div>
+            <div className="mt-4">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ background: `${data.right.color}20`, border: `1px solid ${data.right.color}` }}>
+                {Icons[data.right.iconComponent] && React.createElement(Icons[data.right.iconComponent], { size: 28, color: data.right.color })}
+              </div>
+              <ul className="space-y-3">
+                {data.right.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.08 }} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5" style={{ background: `${data.right.color}20`, border: `1px solid ${data.right.color}` }}>
+                      <Icons.Check />
+                    </span>
+                    <span className="text-neutral-300 text-sm">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Welcome Slide
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    // Hook Slide
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    // Quiz Slide
+    const QuizSlide = ({ data, onAnswer, answered, selectedAnswer }) => {
+      const [gifUrl, setGifUrl] = useState(null);
+      const isCorrect = selectedAnswer === data.correctIndex;
+
+      useEffect(() => {
+        if (answered) {
+          setGifUrl(isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif());
+        }
+      }, [answered, isCorrect]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => {
+              const isSelected = selectedAnswer === i;
+              const showCorrect = answered && i === data.correctIndex;
+              const showWrong = answered && isSelected && !isCorrect;
+
+              return (
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  onClick={() => !answered && onAnswer(i)}
+                  disabled={answered}
+                  className={`w-full p-4 rounded-xl text-left transition-all ${answered ? 'cursor-default' : 'hover:scale-[1.01]'}`}
+                  style={{
+                    background: showCorrect ? 'rgba(34, 197, 94, 0.1)' : showWrong ? 'rgba(239, 68, 68, 0.1)' : '#0a0a0a',
+                    border: showCorrect ? '2px solid #22C55E' : showWrong ? '2px solid #EF4444' : '1px solid #333'
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{
+                      background: showCorrect ? '#22C55E' : showWrong ? '#EF4444' : 'rgba(var(--accent-rgb), 0.2)',
+                      color: showCorrect || showWrong ? 'white' : 'var(--accent)'
+                    }}>
+                      {showCorrect ? <Icons.Check /> : showWrong ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className={showCorrect ? 'text-green-400' : showWrong ? 'text-red-400' : 'text-neutral-300'}>{option}</span>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-xl p-5" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}` }}>
+                <div className="flex items-start gap-4">
+                  {gifUrl && (
+                    <video autoPlay loop muted playsInline className="w-20 h-20 rounded-xl object-cover flex-shrink-0">
+                      <source src={gifUrl} type="video/mp4" />
+                    </video>
+                  )}
+                  <div>
+                    <p className={`font-bold mb-1 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                      {isCorrect ? 'Correct!' : 'Not quite!'}
+                    </p>
+                    <p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = ({ data, userName, onRestart, onNextLesson }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+          <Icons.Check />
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-600 text-lg mb-8 max-w-md">Well done, <span className="font-bold">{userName}</span>! You now understand the power of mission-driven brands and how purpose creates loyalty that no marketing budget can buy.</motion.p>
+
+        {LESSON_CONFIG.nextLesson && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5 mb-6 max-w-sm w-full" style={{ background: '#0a0a0a', border: '1px solid #333' }}>
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+            <p className="text-white font-bold mb-1">{LESSON_CONFIG.nextLesson.title}</p>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        )}
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex gap-3">
+          <button onClick={onRestart} className="px-5 py-2.5 rounded-xl text-sm font-medium border border-neutral-300 hover:bg-neutral-100 transition-colors">Restart</button>
+          {LESSON_CONFIG.nextLesson && (
+            <button onClick={onNextLesson} className="px-5 py-2.5 rounded-xl text-sm font-medium text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Next Lesson</button>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    // Main App
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [quizAnswers, setQuizAnswers] = useState({});
+      const [backgroundGif, setBackgroundGif] = useState(null);
+      const [gifHeight, setGifHeight] = useState('65%');
+      const [gifSide, setGifSide] = useState('left');
+      const userName = getUserName();
+
+      const showGif = useCallback((url, height = '65%', side = 'left') => {
+        setBackgroundGif(url);
+        setGifHeight(height);
+        setGifSide(side);
+      }, []);
+      const hideGif = useCallback(() => setBackgroundGif(null), []);
+
+      const nextSlide = useCallback(() => {
+        if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1);
+      }, [currentSlide]);
+
+      const prevSlide = useCallback(() => {
+        if (currentSlide > 0) setCurrentSlide(prev => prev - 1);
+      }, [currentSlide]);
+
+      const handleQuizAnswer = useCallback((answerIndex) => {
+        setQuizAnswers(prev => ({ ...prev, [currentSlide]: answerIndex }));
+      }, [currentSlide]);
+
+      const handleRestart = useCallback(() => {
+        setCurrentSlide(0);
+        setQuizAnswers({});
+      }, []);
+
+      const handleNextLesson = useCallback(() => {
+        if (LESSON_CONFIG.nextLesson) {
+          window.location.href = `/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html?userName=${encodeURIComponent(userName)}`;
+        }
+      }, [userName]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const renderSlide = () => {
+        const slide = slides[currentSlide];
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'hit-rate-comparison': return <HitRateComparisonSlide data={slide} />;
+          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
+          case 'funnel-visual': return <FunnelVisualSlide data={slide} />;
+          case 'step-breakdown': return <StepBreakdownSlide data={slide} />;
+          case 'economics-visual': return <EconomicsVisualSlide data={slide} />;
+          case 'quote-slide': return <QuoteSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={handleQuizAnswer} answered={quizAnswers[currentSlide] !== undefined} selectedAnswer={quizAnswers[currentSlide]} />;
+          case 'completion': return <CompletionSlide data={slide} userName={userName} onRestart={handleRestart} onNextLesson={handleNextLesson} />;
+          default: return <ContentSlide data={slide} />;
+        }
+      };
+
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      return (
+        <div className="h-screen w-full bg-white flex flex-col overflow-hidden relative">
+          {/* Background GIF */}
+          <AnimatePresence>
+            {backgroundGif && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`absolute bottom-0 ${gifSide === 'left' ? 'left-0' : 'right-0'} z-10 pointer-events-none`} style={{ height: gifHeight }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain">
+                  <source src={backgroundGif} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Progress Bar */}
+          <div className="h-1 w-full bg-neutral-100 flex-shrink-0">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 overflow-hidden relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="h-full">
+                {renderSlide()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex-shrink-0 px-6 py-4 border-t border-neutral-100 flex items-center justify-between">
+            <button onClick={prevSlide} disabled={currentSlide === 0} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:bg-neutral-100 transition-colors">
+              <Icons.ArrowLeft /><span className="hidden sm:inline">Previous</span>
+            </button>
+            <div className="text-xs text-neutral-400">{currentSlide + 1} / {slides.length}</div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors" style={{ background: 'var(--accent)' }}>
+              <span className="hidden sm:inline">Next</span><Icons.ArrowRight />
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
