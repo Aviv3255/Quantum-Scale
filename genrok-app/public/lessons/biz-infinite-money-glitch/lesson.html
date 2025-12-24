@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #22C55E; --accent-dark: #16A34A; --accent-light: #4ADE80; }
+    :root { --accent: #22C55E; --accent-dark: #16A34A; --accent-light: #4ADE80; --accent-rgb: 34, 197, 94; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -27,7 +27,7 @@
 
   <script type="text/babel">
     const { motion, AnimatePresence } = window.Motion;
-    const { useState, useEffect, useCallback } = React;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
@@ -40,10 +40,18 @@
       nextLesson: { id: 'biz-price-anchoring', title: 'Price Anchoring Power', teaser: 'Why premium offers multiply everything.' }
     };
 
-    const celebrationGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'];
-    const getRandomCelebrationGif = () => celebrationGifs[0];
-    const empathyGifs = ['https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'];
-    const getRandomEmpathyGif = () => empathyGifs[0];
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_victory_fist_pump_arms_flexed_strong_p_b7635e9d-ceed-45f2-b5f3-ea32a689e200_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_approvingly_arms_crossed_confident_sta_75d6baae-3620-48c5-a3f1-fecbdb6543a4_1.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_making_a_thinking_chin_scratch_like_hmm_lets_t_7d0403f7-08dd-4abb-9a7c-c3194f4548c2_2.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: ['The flywheel that funds itself', 'Why LTV > CAC unlocks infinite scaling', 'Building your money printing machine'] },
@@ -278,15 +286,21 @@
     // Content
     const ContentSlide = ({ data }) => (<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8"><motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}><h2 className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</h2><p className="text-neutral-600 text-lg leading-relaxed">{data.body}</p></motion.div></div>);
 
-    // Welcome
-    const WelcomeSlide = ({ data }) => {
-      const userName = getUserName();
-      const greeting = window.getGreeting ? window.getGreeting() : 'Welcome';
+    // Welcome - With GIF overlay integration
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}><Icons.Zap /><span>Growth Engine</span></div>
-            <h1 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{greeting}, {userName}!</h1>
+            <h1 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{formatGreeting(welcomeData.greeting, userName)}</h1>
             <p className="text-neutral-500 text-lg mb-8">Here's what you'll discover:</p>
             <div className="space-y-3">{data.learningGoals.map((goal, i) => (<motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: '#fafafa', border: '1px solid #eee' }}><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: '#22C55E' }}>{i + 1}</div><span className="text-neutral-700 font-medium">{goal}</span></motion.div>))}</div>
           </motion.div>
@@ -297,12 +311,29 @@
     // Hook
     const HookSlide = ({ data }) => (<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8"><motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 leading-tight">{data.headline}</h2><p className="text-neutral-600 text-lg leading-relaxed">{data.subtext}</p></motion.div></div>);
 
-    // Quiz
-    const QuizSlide = ({ data }) => {
+    // Quiz - With GIF overlay integration
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
       const isCorrect = selected === data.correctIndex;
-      const handleSelect = (i) => { if (!showFeedback) { setSelected(i); setShowFeedback(true); } };
+
+      const handleSelect = (i) => {
+        if (!showFeedback) {
+          setSelected(i);
+          setShowFeedback(true);
+          const gifSide = Math.random() > 0.5 ? 'left' : 'right';
+          if (i === data.correctIndex) {
+            onShowGif(getRandomCelebrationGif(), '55%', gifSide);
+          } else {
+            onShowGif(getRandomEmpathyGif(), '55%', gifSide);
+          }
+        }
+      };
+
+      useEffect(() => {
+        return () => onHideGif();
+      }, [onHideGif]);
+
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8"><div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}><span>Quick Check</span></div><h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2></motion.div>
@@ -313,15 +344,14 @@
     };
 
     // Completion
-    const CompletionSlide = ({ data }) => {
-      const userName = getUserName();
+    const CompletionSlide = ({ data, userName }) => {
       return (<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center"><motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}><div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)' }}><Icons.Check /></div><h2 className="slide-title text-2xl md:text-3xl text-black mb-4">Lesson Complete!</h2><p className="text-neutral-500 text-lg mb-8">Great work, {userName}! You now understand how to activate the infinite money glitch.</p>{LESSON_CONFIG.nextLesson && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-left" style={{ background: '#0a0a0a', border: '1px solid #222' }}><div className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Up Next</div><h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3><p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p></motion.div>)}</motion.div></div>);
     };
 
-    // Router
-    const SlideRouter = ({ slide }) => {
+    // Slide Router
+    const renderSlide = (slide, { onShowGif, onHideGif, userName }) => {
       switch (slide.type) {
-        case 'welcome': return <WelcomeSlide data={slide} />;
+        case 'welcome': return <WelcomeSlide data={slide} userName={userName} onShowGif={onShowGif} onHideGif={onHideGif} />;
         case 'hook': return <HookSlide data={slide} />;
         case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
         case 'math-visual': return <MathVisualSlide data={slide} />;
@@ -331,30 +361,71 @@
         case 'before-after': return <BeforeAfterSlide data={slide} />;
         case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
         case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-        case 'quiz': return <QuizSlide data={slide} />;
-        case 'completion': return <CompletionSlide data={slide} />;
+        case 'quiz': return <QuizSlide data={slide} onShowGif={onShowGif} onHideGif={onHideGif} />;
+        case 'completion': return <CompletionSlide data={slide} userName={userName} />;
         default: return <ContentSlide data={slide} />;
       }
     };
 
-    const ProgressDots = ({ current, total }) => (<div className="flex items-center gap-1">{Array.from({ length: total }).map((_, i) => (<div key={i} className={`h-1 rounded-full transition-all ${i === current ? 'w-6' : 'w-1'}`} style={{ background: i === current ? '#22C55E' : i < current ? '#22C55E80' : '#E5E7EB' }} />))}</div>);
-
-    const App = () => {
+    const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
+      const [gifConfig, setGifConfig] = useState({ visible: false, src: '', maxHeight: '60%', side: 'right' });
+      const userName = getUserName();
       const totalSlides = slides.length;
+
+      const showGif = useCallback((src, maxHeight = '60%', side = 'right') => {
+        setGifConfig({ visible: true, src, maxHeight, side });
+      }, []);
+
+      const hideGif = useCallback(() => {
+        setGifConfig(prev => ({ ...prev, visible: false }));
+      }, []);
+
       const goNext = useCallback(() => { if (currentSlide < totalSlides - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide, totalSlides]);
       const goPrev = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [goNext, goPrev]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+          else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [goNext, goPrev]);
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < totalSlides - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="min-h-screen bg-white">
-          <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100"><div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between"><div className="flex items-center gap-3"><button onClick={goPrev} disabled={currentSlide === 0} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowLeft /></button><ProgressDots current={currentSlide} total={totalSlides} /><button onClick={goNext} disabled={currentSlide === totalSlides - 1} className="p-2 rounded-lg hover:bg-neutral-100 disabled:opacity-30 transition-all"><Icons.ArrowRight /></button></div><div className="flex items-center gap-2 text-neutral-400 text-sm"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></div></div></header>
-          <main className="pt-14 min-h-screen"><AnimatePresence mode="wait"><motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="min-h-[calc(100vh-3.5rem)]"><SlideRouter slide={slides[currentSlide]} /></motion.div></AnimatePresence></main>
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide], { onShowGif: showGif, onHideGif: hideGif, userName })}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={goPrev} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={goNext} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => setCurrentSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? '#22C55E' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig.visible && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, maxHeight: gifConfig.maxHeight }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none', maxHeight: gifConfig.maxHeight }}>
+                  <source src={gifConfig.src} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>
