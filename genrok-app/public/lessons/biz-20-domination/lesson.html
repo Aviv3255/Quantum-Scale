@@ -101,6 +101,7 @@
       ]},
       { type: 'tool-integration', title: 'How to Find Your Top 20%', subtitle: 'Step 1: See who your whales actually are', tool: { name: 'DataDrew', description: 'Free Shopify app that shows your customer lifetime value and segments', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/46.webp', link: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', features: ['See LTV by customer segment', 'Identify your top 25% spenders', 'RFM segmentation built-in', '100% free to use'] } },
       { type: 'tool-integration-export', title: 'Export & Target Your Best Customers', subtitle: 'Step 2: Build lookalike audiences from your whales', tool: { name: 'DataDrew', description: 'Export your top customer segments to create Meta lookalikes', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202025-12-19%20144624.png', features: ['Export top 25% as CSV', 'Upload to Meta as custom audience', 'Create 1% lookalike of your whales', 'Watch CAC drop, LTV rise'] } },
+      { type: 'lookalike-creation', title: 'Step 3: Create Your Lookalike Audience', subtitle: 'Now Meta finds MORE customers just like your best ones', topLtv: '$800-1,200', dataDrewLink: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' },
       { type: 'customer-tiers', title: 'Your Customer Value Pyramid', tiers: [
         { name: 'VIP WHALES', percentage: '5%', revenue: '35%', ltv: '$1,200+', color: '#22C55E', icon: 'Crown' },
         { name: 'LOYAL BUYERS', percentage: '15%', revenue: '45%', ltv: '$400-800', color: '#3B82F6', icon: 'Star' },
@@ -444,7 +445,143 @@
       </div>
     );
 
-    // Customer Tiers Slide with animated pyramid and TARGET indicators
+    // Step 3: Lookalike Creation Slide with Meta visualization - CENTERED PROPERLY
+    const LookalikeCreationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6' }}>
+            <Icons.Users size={14} color="#3B82F6" />
+            <span>Step 3: The Magic</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-1">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        {/* Meta Lookalike Visualization - Grid layout for perfect centering */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-2xl p-6 md:p-8 mb-5 relative overflow-hidden"
+          style={{ background: '#0a0a0a', border: '1px solid #333' }}
+        >
+          <div className="absolute inset-0 opacity-15" style={{ background: 'radial-gradient(ellipse at center, #3B82F6 0%, transparent 70%)' }}></div>
+
+          {/* 5-column grid for perfect symmetry */}
+          <div className="relative z-10 grid grid-cols-5 items-center gap-2 md:gap-4">
+            {/* Column 1: Your Whales */}
+            <div className="flex flex-col items-center col-span-1">
+              <p className="text-neutral-500 text-[10px] mb-2 uppercase tracking-wider text-center">Your Whales</p>
+              <div className="flex flex-col gap-1.5">
+                {[1, 2, 3].map((i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.1 }}
+                    className="w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center mx-auto"
+                    style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)', boxShadow: '0 0 12px rgba(34, 197, 94, 0.4)' }}
+                  >
+                    <Icons.User size={16} color="white" />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Column 2: Arrow */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="flex items-center justify-center col-span-1">
+              <svg width="40" height="20" viewBox="0 0 40 20" fill="none">
+                <path d="M0 10H36M36 10L28 4M36 10L28 16" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
+
+            {/* Column 3: Meta (CENTER) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7 }}
+              className="flex flex-col items-center col-span-1"
+            >
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-2 relative" style={{ background: 'linear-gradient(135deg, #1877F2, #0D47A1)', boxShadow: '0 0 30px rgba(24, 119, 242, 0.5)' }}>
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <path d="M20 5L35 12.5V27.5L20 35L5 27.5V12.5L20 5Z" stroke="white" strokeWidth="2" fill="none"/>
+                  <circle cx="20" cy="20" r="5" fill="white"/>
+                </svg>
+                <motion.div
+                  className="absolute inset-0 rounded-2xl"
+                  style={{ border: '2px solid rgba(255,255,255,0.3)' }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+              <span className="text-blue-400 text-xs font-semibold">Meta AI</span>
+              <span className="text-neutral-500 text-[9px]">Finds patterns</span>
+            </motion.div>
+
+            {/* Column 4: Arrow */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="flex items-center justify-center col-span-1">
+              <svg width="40" height="20" viewBox="0 0 40 20" fill="none">
+                <path d="M0 10H36M36 10L28 4M36 10L28 16" stroke="#22C55E" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
+
+            {/* Column 5: New Customers */}
+            <div className="flex flex-col items-center col-span-1">
+              <p className="text-neutral-500 text-[10px] mb-2 uppercase tracking-wider text-center">New Matches</p>
+              <div className="grid grid-cols-2 gap-1">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.9 + i * 0.06, type: 'spring' }}
+                    className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)', boxShadow: '0 0 8px rgba(34, 197, 94, 0.3)' }}
+                  >
+                    <Icons.User size={12} color="white" />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Key Message */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="rounded-xl p-5 text-center mb-4"
+          style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1))', border: '1px solid rgba(34, 197, 94, 0.2)' }}
+        >
+          <p className="text-neutral-700 text-sm leading-relaxed mb-2">
+            Now you attract <span className="font-bold text-black">ONLY</span> new customers worth{' '}
+            <span className="font-bold text-green-600">{data.topLtv}</span>/year.
+          </p>
+          <p className="text-neutral-500 text-xs">
+            Check your top 10%/25% LTV for free{' '}
+            <a href={data.dataDrewLink} target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-blue-600" style={{ color: '#3B82F6' }}>here</a>.
+          </p>
+        </motion.div>
+
+        {/* CTA Button */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4 }} className="text-center">
+          <a
+            href={data.dataDrewLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+            style={{ background: '#000000', color: 'white', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}
+          >
+            <Icons.Database size={18} color="white" />
+            <span>Check Your LTV & Export for Free</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+      </div>
+    );
+
+    // Customer Tiers Slide - Clean pyramid with simple bracket indicators
     const CustomerTiersSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -455,105 +592,106 @@
           <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
 
-        <div className="space-y-3 mb-6">
-          {data.tiers.map((tier, i) => {
-            const TierIcon = Icons[tier.icon] || Icons.User;
-            const widthPercent = 100 - (i * 15);
-            const isTargetTier = i < 2; // First two tiers are TARGET
+        {/* Main layout with side annotations */}
+        <div className="flex items-start gap-4 md:gap-6">
+          {/* Left annotation - TARGET bracket */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.7 }}
+            className="hidden md:flex flex-col items-end pt-2"
+            style={{ width: '80px' }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <p className="text-[11px] font-medium text-neutral-800 tracking-wide">TARGET</p>
+                <p className="text-[10px] text-neutral-500">these</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <svg width="12" height="110" viewBox="0 0 12 110" fill="none">
+                  <path d="M10 4 L6 4 L6 106 L10 106" stroke="#1a1a1a" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </motion.div>
 
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20, scaleX: 0.8 }}
-                animate={{ opacity: 1, y: 0, scaleX: 1 }}
-                transition={{ delay: 0.15 + i * 0.12 }}
-                className="mx-auto rounded-xl p-4 relative overflow-hidden"
-                style={{
-                  width: `${widthPercent}%`,
-                  background: '#0a0a0a',
-                  border: isTargetTier ? `2px solid ${tier.color}` : `1px solid ${tier.color}40`,
-                  boxShadow: isTargetTier ? `0 0 30px ${tier.color}30, inset 0 0 20px ${tier.color}10` : 'none'
-                }}
-              >
-                {/* Glow effect for target tiers */}
-                {isTargetTier && (
-                  <>
-                    <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }}></div>
-                    <div className="absolute inset-0 opacity-5" style={{ background: `radial-gradient(ellipse at center, ${tier.color}, transparent)` }}></div>
-                  </>
-                )}
-                <div className="absolute inset-0 opacity-10" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }}></div>
+          {/* Pyramid tiers */}
+          <div className="flex-1 space-y-2.5">
+            {data.tiers.map((tier, i) => {
+              const TierIcon = Icons[tier.icon] || Icons.User;
+              const widthPercent = 100 - (i * 10);
+              const isTargetTier = i < 2;
 
-                <div className="flex items-center justify-between relative z-10">
-                  {/* LEFT: TARGET arrow indicator for top 2 tiers */}
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20, scaleX: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scaleX: 1 }}
+                  transition={{ delay: 0.15 + i * 0.1 }}
+                  className="mx-auto rounded-xl p-3.5 relative overflow-hidden"
+                  style={{
+                    width: `${widthPercent}%`,
+                    background: '#0a0a0a',
+                    border: isTargetTier ? `2px solid ${tier.color}` : `1px solid ${tier.color}30`,
+                    boxShadow: isTargetTier ? `0 0 20px ${tier.color}20` : 'none'
+                  }}
+                >
                   {isTargetTier && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + i * 0.15 }}
-                      className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 flex items-center gap-1"
-                    >
-                      <div className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center" style={{ background: tier.color, boxShadow: `0 0 15px ${tier.color}` }}>
-                        <Icons.Target size={14} color="white" />
-                      </div>
-                      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" className="hidden md:block">
-                        <path d="M0 6H14M14 6L9 1M14 6L9 11" stroke={tier.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </motion.div>
+                    <div className="absolute top-0 left-0 w-full h-0.5" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }}></div>
                   )}
 
-                  <div className="flex items-center gap-3" style={{ marginLeft: isTargetTier ? '40px' : '0' }}>
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${tier.color}20`, border: `1px solid ${tier.color}` }}>
-                      <TierIcon size={16} color={tier.color} />
-                    </div>
-                    <div>
-                      <span className="text-white font-bold text-sm">{tier.name}</span>
-                      <span className="text-neutral-500 text-xs ml-2">({tier.percentage} of customers)</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 md:gap-6 text-right">
-                    <div>
-                      <div className="text-lg font-bold" style={{ color: tier.color }}>{tier.revenue}</div>
-                      <div className="text-[10px] text-neutral-500 uppercase">Revenue</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-white">{tier.ltv}</div>
-                      <div className="text-[10px] text-neutral-500 uppercase">LTV</div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${tier.color}20`, border: `1px solid ${tier.color}` }}>
+                        <TierIcon size={14} color={tier.color} />
+                      </div>
+                      <div>
+                        <span className="text-white font-bold text-xs">{tier.name}</span>
+                        <span className="text-neutral-500 text-[10px] ml-1.5">({tier.percentage})</span>
+                      </div>
                     </div>
 
-                    {/* RIGHT: TARGET badge for top 2 tiers */}
-                    {isTargetTier && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.6 + i * 0.15, type: 'spring' }}
-                        className="px-2 py-1 rounded-lg text-[9px] md:text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"
-                        style={{
-                          background: `linear-gradient(135deg, ${tier.color}, ${tier.color}CC)`,
-                          color: 'white',
-                          boxShadow: `0 0 12px ${tier.color}50`
-                        }}
-                      >
-                        <Icons.Target size={10} color="white" />
-                        <span>TARGET</span>
-                      </motion.div>
-                    )}
+                    <div className="flex items-center gap-4 md:gap-6 text-right">
+                      <div>
+                        <div className="text-lg font-bold" style={{ color: tier.color }}>{tier.revenue}</div>
+                        <div className="text-[10px] text-neutral-500 uppercase">Revenue</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-white">{tier.ltv}</div>
+                        <div className="text-[10px] text-neutral-500 uppercase">LTV</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Right annotation - 80% PROFIT bracket */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
+            className="hidden md:flex flex-col items-start pt-2"
+            style={{ width: '80px' }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="flex flex-col items-center">
+                <svg width="12" height="110" viewBox="0 0 12 110" fill="none">
+                  <path d="M2 4 L6 4 L6 106 L2 106" stroke="#1a1a1a" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="text-left">
+                <p className="text-[11px] font-medium text-neutral-800 tracking-wide">80%</p>
+                <p className="text-[10px] text-neutral-500">profit</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* Updated insight with focus message */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="rounded-xl p-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(59, 130, 246, 0.1))', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
-          <div className="absolute inset-0 opacity-20" style={{ background: 'linear-gradient(90deg, #22C55E, #3B82F6)' }}></div>
-          <div className="relative z-10 flex items-center justify-center gap-3">
-            <Icons.Target size={18} color="#22C55E" />
-            <p className="text-neutral-800 text-sm font-semibold">Focus ALL marketing on attracting and retaining these TOP 2 tiers</p>
-            <Icons.Target size={18} color="#3B82F6" />
-          </div>
+        {/* Bottom insight */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-5 rounded-xl p-4 text-center" style={{ background: '#fafafa', border: '1px solid #e5e5e5' }}>
+          <p className="text-neutral-700 text-sm">The top <span className="font-bold text-black">20%</span> (VIP + Loyal) generate <span className="font-bold text-black">80%</span> of your revenue. Focus here.</p>
         </motion.div>
       </div>
     );
@@ -866,6 +1004,7 @@
           case 'ltv-scenario': return <LtvScenarioSlide data={slide} />;
           case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
           case 'tool-integration-export': return <ToolIntegrationExportSlide data={slide} />;
+          case 'lookalike-creation': return <LookalikeCreationSlide data={slide} />;
           case 'customer-tiers': return <CustomerTiersSlide data={slide} />;
           case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
