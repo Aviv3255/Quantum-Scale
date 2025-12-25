@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['How Davie Fogarty built The Oodie to $1B', 'The 6-month pre-sale strategy that changed everything', 'Why outside capital becomes unnecessary with the right model'] },
-      { type: 'hook', headline: 'Most businesses beg for investment. Davie Fogarty used customer money to build a billion-dollar brand.', subtext: 'The Oodie went from zero to nearly $1 billion in revenue. No venture capital. No angel investors. No bank loans. Just one radical decision: collect customer money before ordering inventory. This is the negative cash conversion cycle. It\'s the ultimate model advantage. And once you understand it, you\'ll never think about business the same way.' },
+      { type: 'hook', headline: 'Most businesses beg for investment. Davie Fogarty used customer money to build a billion-dollar brand.', subtext: 'The Oodie went from zero to nearly $1 billion in revenue. No venture capital. No angel investors. No bank loans. Just one radical decision: collect customer money before ordering inventory. This is the negative cash conversion cycle. It\'s the ultimate model advantage. And once you understand it, you\'ll never think about business the same way.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png', personName: 'Davie Fogarty' },
       { type: 'content', title: 'The Normal Way (Expensive)', body: 'Most businesses do this: Order $50,000 in inventory. Wait 60 days for it to arrive. Pay to store it. Spend money on ads. Finally make sales. Collect payment. Then repeat. You\'re always funding inventory out of pocket. Your cash is tied up for months. This is positive cash conversion—you pay first, collect later.' },
       { type: 'content', title: 'The Oodie Way (Genius)', body: 'Davie Fogarty flipped it. He ran ads for a product that didn\'t exist yet. Pre-sale only. Customers paid upfront. Then he ordered inventory using their money. Six months later, products shipped. By then, he\'d already collected enough cash to fund the next batch. No inventory risk. No cash crunch. This is negative cash conversion—collect first, pay later.' },
       { type: 'visual', title: 'Cash Flow Comparison', visualType: 'comparison', data: {
@@ -145,12 +145,25 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

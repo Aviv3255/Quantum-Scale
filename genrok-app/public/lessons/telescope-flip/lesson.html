@@ -81,7 +81,7 @@
         { value: '6%', label: 'focus on customer psychology', subtext: 'What THEY actually need' },
         { value: '5%', label: 'focus on raw emotional language', subtext: 'What converts like crazy' }
       ]},
-      { type: 'content', title: 'The Robert Greene Truth Bomb', body: '"The key to power is the ability to judge who is best able to further your interests in all situations. Keep friends for friendship, but work with the skilled and competent." - Robert Greene. Translation for ecommerce? Stop thinking about yourself first. The fundamental error is narcissism disguised as marketing. Your product page should be a mirror reflecting THEIR world, not a billboard showcasing yours.' },
+      { type: 'content', title: 'The Robert Greene Truth Bomb', body: '"The key to power is the ability to judge who is best able to further your interests in all situations. Keep friends for friendship, but work with the skilled and competent." - Robert Greene. Translation for ecommerce? Stop thinking about yourself first. The fundamental error is narcissism disguised as marketing. Your product page should be a mirror reflecting THEIR world, not a billboard showcasing yours.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert-Greene-profile-01-removebg-preview.png', personName: 'Robert Greene' },
       { type: 'example', scenario: 'Posture Corrector Store', before: { label: 'Telescope Backwards', text: '"Premium Medical-Grade Posture Corrector - Adjustable Straps, Breathable Material, Clinically Tested Design - Order Now!"' }, after: { label: 'Telescope Flipped', text: '"Stop Wincing Every Time You Stand Up. End the Back Pain That Makes You Feel 20 Years Older. (Finally.)"' }, insight: 'See the shift? Before = talking about US. After = living in THEIR pain.' },
       { type: 'cards', title: 'The Inner World You\'re Ignoring', items: [
         { title: 'Their Secret Pain', description: 'The embarrassment they won\'t admit. The frustration that keeps them up at 3 AM. The physical sensation that reminds them daily.' },
@@ -157,9 +157,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

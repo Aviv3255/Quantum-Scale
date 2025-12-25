@@ -85,7 +85,7 @@
         { title: 'Know True CAC', description: 'Include ALL costs: ads, software, team time. Don\'t lie to yourself about the real number.' },
         { title: 'Monitor The Ratio', description: 'LTV:CAC below 3:1 = danger zone. At 3:1 = healthy. Above 5:1 = scale aggressively.' }
       ]},
-      { type: 'content', title: 'Pillar II: Decode the Human Algorithm', body: 'Rory Sutherland calls it "psychological moonshots." Logic says lower fat is good. Psychology says people want indulgence. Your customers don\'t buy products. They buy feelings, identities, transformations. Frame your offer around what they FEEL, not what you SELL.' },
+      { type: 'content', title: 'Pillar II: Decode the Human Algorithm', body: 'Rory Sutherland calls it "psychological moonshots." Logic says lower fat is good. Psychology says people want indulgence. Your customers don\'t buy products. They buy feelings, identities, transformations. Frame your offer around what they FEEL, not what you SELL.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/6aab00d0-a2dc-11ed-bfe6-65e61c4b531d-Rory_Headshot_Colour_Change_16-removebg-preview.png', personName: 'Rory Sutherland' },
       { type: 'cards', title: 'Pillar II Checklist', items: [
         { title: 'Find The Real Buy', description: 'What emotion are they purchasing? Status? Relief? Belonging? That\'s your marketing angle.' },
         { title: 'Frame, Don\'t List', description: 'Features bore. Frames convert. "Save time" < "Never miss another moment with your kids."' },
@@ -161,9 +161,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

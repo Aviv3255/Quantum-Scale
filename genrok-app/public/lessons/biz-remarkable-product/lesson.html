@@ -83,7 +83,9 @@
       { type: 'hook', headline: 'A plain gray t-shirt. Nothing special. Sells okay. But you\'re stuck in an endless loop of discounts, ads, and customer churn. Now picture TOMS Shoes: "Buy a pair, give a pair." Distinctive design. Built-in story. People line up. Not because of ads. Because the product is worth talking about.', subtext: 'Marketing starts BEFORE the product is finished. You can\'t create a high-LTV business by selling mediocre products and hoping ads fix it. The goal is to invent something worth making a remark about. That\'s where everything changes.' },
       { type: 'quoteSpotlight', data: {
         quote: 'Stop making average crap for average people.',
-        context: 'Seth Godin - The foundation of remarkable marketing'
+        context: 'Seth Godin - The foundation of remarkable marketing',
+        personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/seth-godin-brian-bloom-xl.jpg',
+        personName: 'Seth Godin'
       }},
       { type: 'content', title: 'The Foundation: Marketing Starts Before the Product', body: 'Here\'s what most people get wrong: They build a product first. Then they try to find customers. But that sequence creates mediocrity. Because you\'re designing for "everyone" - which means you\'re designing for no one. Remarkable products start with a different question: "What could I make that a SPECIFIC group of people would miss if it were gone?" Not what can I sell to anyone. What would make a small audience CARE so much they tell others? That\'s the shift. Marketing isn\'t what happens after. Marketing is the reason the product exists at all.' },
       { type: 'vsBattle', title: 'Mediocre vs Remarkable', data: {
@@ -389,14 +391,27 @@
     );
 
     const QuoteSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center relative">
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-            <span className="text-white text-xl">"</span>
-          </div>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-white text-xl md:text-2xl font-medium leading-relaxed mb-4">{data.data.quote}</motion.p>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-400">{data.data.context}</motion.p>
-        </motion.div>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center relative">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+              <span className="text-white text-xl">"</span>
+            </div>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-white text-xl md:text-2xl font-medium leading-relaxed mb-4">{data.data.quote}</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-400">{data.data.context}</motion.p>
+          </motion.div>
+        </div>
+        {data.data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.data.personImage} alt={data.data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

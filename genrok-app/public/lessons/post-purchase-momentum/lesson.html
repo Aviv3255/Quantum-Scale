@@ -174,7 +174,7 @@
       ]},
       { type: 'content', title: 'Why This Moment Matters', body: 'Picture a customer immediately after checkout. Their brain is rationalizing the purchase. "This was a smart decision." "I needed this." "This will solve my problem." They are in peak trust mode. Now imagine showing them a complementary product. Something that enhances what they just bought. Not random. Not pushy. Just relevant. The psychology works in your favor. They already committed to solving this problem. Adding one more thing that helps solve it better? That feels like doubling down on a smart decision, not being upsold.' },
       { type: 'comparison-grid', title: 'Thank You Page Reality Check', old: { title: 'What Most Stores Do', content: '"Thanks for your order! You will receive a confirmation email." [End of page]', insight: 'Wasting the highest-trust moment by saying nothing' }, new: { title: 'What Smart Stores Do', content: '"Perfect choice! Customers who bought this also loved [complementary product]. Add it now for 20% off."', insight: 'Leveraging commitment psychology when trust is highest' }},
-      { type: 'content', title: 'The Consistency Principle', body: 'Psychologist Robert Cialdini documented this in his research on influence. Once people commit to something, they will go to great lengths to appear consistent with that commitment. This is why post-purchase upsells convert at much higher rates than pre-purchase ones. You are not asking them to start fresh. You are asking them to continue the decision they already made. "You bought a yoga mat. Want the matching blocks?" That is consistent. "You bought running shoes. Want a blender?" That breaks the consistency.' },
+      { type: 'content', title: 'The Consistency Principle', body: 'Psychologist Robert Cialdini documented this in his research on influence. Once people commit to something, they will go to great lengths to appear consistent with that commitment. This is why post-purchase upsells convert at much higher rates than pre-purchase ones. You are not asking them to start fresh. You are asking them to continue the decision they already made. "You bought a yoga mat. Want the matching blocks?" That is consistent. "You bought running shoes. Want a blender?" That breaks the consistency.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert+Cialdini-removebg-preview.png', personName: 'Robert Cialdini' },
       { type: 'cards', title: 'What Makes Post-Purchase Offers Work', items: [
         { title: 'Commitment is Already Made', description: 'They crossed the psychological threshold. They are a customer now, not a browser.' },
         { title: 'Trust is at Peak Level', description: 'They just trusted you with their money. That trust carries forward immediately.' },
@@ -247,9 +247,22 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

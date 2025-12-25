@@ -73,7 +73,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why "logical" marketing decisions backfire', 'The framing secret from Ogilvy\'s vice chairman', 'How to decode what customers really want'] },
       { type: 'hook', headline: 'A Belgian biscuit company made one "smart" change to their packaging. Sales fell off a cliff.', subtext: 'They didn\'t change the recipe. Didn\'t raise the price. Didn\'t touch the product. They just added two words to the label. Two words that seemed like a no-brainer. Two words that destroyed their business.' },
-      { type: 'content', title: 'The Two Words That Killed Sales', body: 'The words? "Lower fat." Sounds smart, right? Health-conscious. Modern. Progressive. But here\'s what Rory Sutherland, Vice Chairman of Ogilvy UK, realized: People who buy biscuits don\'t want to be reminded they\'re unhealthy. They\'re not buying nutrition. They\'re buying a moment of indulgence. A treat. An escape.' },
+      { type: 'content', title: 'The Two Words That Killed Sales', body: 'The words? "Lower fat." Sounds smart, right? Health-conscious. Modern. Progressive. But here\'s what Rory Sutherland, Vice Chairman of Ogilvy UK, realized: People who buy biscuits don\'t want to be reminded they\'re unhealthy. They\'re not buying nutrition. They\'re buying a moment of indulgence. A treat. An escape.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/6aab00d0-a2dc-11ed-bfe6-65e61c4b531d-Rory_Headshot_Colour_Change_16-removebg-preview.png', personName: 'Rory Sutherland' },
       { type: 'visual', title: 'The Psychology Gap', visualType: 'comparison', data: {
         left: { label: 'Logic Says', value: '"Lower Fat"', result: 'Health = Good', color: '#ef4444' },
         right: { label: 'Psychology Says', value: '"Indulgent"', result: 'Pleasure = Good', color: '#22c55e' },
@@ -145,9 +145,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

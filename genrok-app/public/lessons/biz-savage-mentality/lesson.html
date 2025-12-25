@@ -86,9 +86,9 @@
         { trigger: 'Product margins squeezed', action: 'Test premium positioning or find new suppliers', result: 'Better margins or better product' }
       ] },
       { type: 'grind-stories', title: 'The Grind Is The Price of Entry', stories: [
-        { name: 'Ben Francis', brand: 'Gymshark', worth: '$1.3B valuation', grind: 'University classes during the day. Pizza Hut delivery driver at night. Built a fitness empire from a garage with zero sleep and maximum hustle.', color: '#3B82F6' },
-        { name: 'Christian Guzman', brand: 'Alphalete', worth: '$10M+ brand', grind: 'Opened a 1,500 sq ft gym. Failed in 10 months. Slept on a futon. Ate ramen. Refused to quit. Now runs a premium activewear empire.', color: '#8B5CF6' },
-        { name: 'Hudson Leogrande', brand: 'Comfrt', worth: '$20M+ brand', grind: 'Homeless at 16. Living in a drug dealer\'s studio apartment. Started selling hoodies. Now runs a 7-figure streetwear brand. Zero excuses.', color: '#F59E0B' }
+        { name: 'Ben Francis', brand: 'Gymshark', worth: '$1.3B valuation', grind: 'University classes during the day. Pizza Hut delivery driver at night. Built a fitness empire from a garage with zero sleep and maximum hustle.', color: '#3B82F6', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/channels4_profile__2_-removebg-preview.png' },
+        { name: 'Christian Guzman', brand: 'Alphalete', worth: '$10M+ brand', grind: 'Opened a 1,500 sq ft gym. Failed in 10 months. Slept on a futon. Ate ramen. Refused to quit. Now runs a premium activewear empire.', color: '#8B5CF6', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/image.webp' },
+        { name: 'Hudson Leogrande', brand: 'Comfrt', worth: '$500M/year', grind: 'Homeless at 16. Living in a drug dealer\'s studio apartment. Started selling hoodies. Now runs a $500M/year blanket empire. Zero excuses.', color: '#F59E0B', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/584271bU03giJ3-removebg-preview.png' }
       ] },
       { type: 'highlight-box', title: 'Success Isn\'t A Fantasy', body: 'Every billion-dollar brand started in a garage, a dorm room, or a shitty apartment. The founders weren\'t special. They didn\'t have advantages. They had problems. They had setbacks. They had every reason to quit. But they didn\'t cope. They didn\'t blame external conditions. They took action. They adapted. They refused to be victims.', highlight: 'Success isn\'t a fantasy. It\'s forged in failure.' },
       { type: 'mindset-audit', title: 'Your Mindset Audit', scenarios: [
@@ -313,15 +313,15 @@
       </div>
     );
 
-    // NEW: Grind Stories Slide - 3 founder cards
+    // NEW: Grind Stories Slide - 3 founder cards with images
     const GrindStoriesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-4 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
             <Icons.Users size={14} color="var(--accent)" />
             <span>Founder Stories</span>
           </div>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-4">
@@ -331,22 +331,40 @@
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.15 }}
-              className="rounded-2xl p-5 relative overflow-hidden"
-              style={{ background: '#0a0a0a', border: `1px solid ${story.color}40`, boxShadow: `0 0 20px ${story.color}10` }}
+              className="flex flex-col"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl -mr-12 -mt-12" style={{ background: `${story.color}30` }} />
-              <div className="relative z-10">
-                <div className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center" style={{ background: `${story.color}30`, border: `1px solid ${story.color}` }}>
-                  <Icons.Award size={20} color={story.color} />
+              {/* Story Card */}
+              <div className="rounded-2xl p-4 relative overflow-hidden flex-1" style={{ background: '#0a0a0a', border: `1px solid ${story.color}40`, boxShadow: `0 0 20px ${story.color}10` }}>
+                <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl -mr-12 -mt-12" style={{ background: `${story.color}30` }} />
+                <div className="relative z-10">
+                  <div className="w-8 h-8 rounded-lg mb-2 flex items-center justify-center" style={{ background: `${story.color}30`, border: `1px solid ${story.color}` }}>
+                    <Icons.Award size={16} color={story.color} />
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-1">{story.name}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-semibold" style={{ color: story.color }}>{story.brand}</span>
+                    <span className="text-[8px] text-neutral-600">•</span>
+                    <span className="text-[10px] text-neutral-500">{story.worth}</span>
+                  </div>
+                  <p className="text-neutral-400 text-[11px] leading-relaxed">{story.grind}</p>
                 </div>
-                <h3 className="text-white font-bold text-base mb-1">{story.name}</h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-semibold" style={{ color: story.color }}>{story.brand}</span>
-                  <span className="text-[10px] text-neutral-600">•</span>
-                  <span className="text-[10px] text-neutral-500">{story.worth}</span>
-                </div>
-                <p className="text-neutral-400 text-xs leading-relaxed">{story.grind}</p>
               </div>
+              {/* Founder Image */}
+              {story.image && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + i * 0.15 }}
+                  className="flex justify-center mt-3"
+                >
+                  <img
+                    src={story.image}
+                    alt={story.name}
+                    className="h-20 w-auto object-contain"
+                    style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}
+                  />
+                </motion.div>
+              )}
             </motion.div>
           ))}
         </div>
@@ -354,8 +372,8 @@
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="text-center text-neutral-500 text-sm mt-6"
+          transition={{ delay: 0.8 }}
+          className="text-center text-neutral-500 text-xs mt-3"
         >
           Zero advantages. Maximum struggle. Billion-dollar outcomes.
         </motion.p>

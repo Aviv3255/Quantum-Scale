@@ -74,7 +74,7 @@
         { title: 'Commitment to Mastery', description: 'Getting 1% better every single day for decades. Never arriving. Always a student.' }
       ]},
       { type: 'content', title: 'Trait 1: Radical Consistency', body: 'Amateurs seek hacks. Professionals understand compounding. And compounding only works when you do not stop. Ship every day. Post every week. Improve every month. For years. While everyone else quits after 90 days. Mr. Beast bets the farm on every single video. Not just the first one. Not just the viral ones. Every. Single. Video. For over a decade. That is radical consistency.' },
-      { type: 'content', title: 'Trait 2: Delusional Resilience', body: 'This is not blind optimism. It is seeing clearly how bad things are... and continuing anyway. Most people have high expectations and low resilience. They expect success fast and quit when it is hard. Legends flip this: they expect pain and use it as fuel. Jensen Huang, Nvidia CEO: People with very high expectations have very low resilience. Unfortunately, resilience matters in success.' },
+      { type: 'content', title: 'Trait 2: Delusional Resilience', body: 'This is not blind optimism. It is seeing clearly how bad things are... and continuing anyway. Most people have high expectations and low resilience. They expect success fast and quit when it is hard. Legends flip this: they expect pain and use it as fuel. Jensen Huang, Nvidia CEO: People with very high expectations have very low resilience. Unfortunately, resilience matters in success.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/NVIDIA-Jensen-Huang-removebg-preview.png', personName: 'Jensen Huang' },
       { type: 'content', title: 'Trait 3: Maniacal Obsession', body: 'Legendary founders are not balanced. They are obsessed. They think about their craft in the shower, at dinner, at 3 AM. This is not unhealthy—it is the natural state of someone who has found their life\'s work. They do not hustle. They cannot not work on it. Jiro Ono: 70+ years making sushi. At age 90+, he still says he has not perfected rice. That is not humility. That is obsession.' },
       { type: 'content', title: 'Trait 4: Commitment to Mastery', body: 'Most people want to make it so they can stop learning. Legends know there is no making it. Only deeper mastery. When you commit to mastery, you are committing to never being satisfied. Every win reveals a deeper layer. Every success exposes a new weakness to fix. When amateurs brag about 6 months of work, you will have decades and still consider yourself a student.' },
       { type: 'example', scenario: 'How These Traits Compound', before: { label: 'Good Founder', text: 'Works hard. Ships consistently. Plateaus after 18 months. Optimizes tactics but misses the operating system.' }, after: { label: 'Legendary Founder', text: 'Radical consistency creates volume. Delusional resilience survives dark periods. Maniacal obsession fuels consistency. Commitment to mastery ensures improvement with each rep.' }, insight: 'While competitors plateau after 18 months, legends are still accelerating after 18 years.' },
@@ -133,9 +133,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

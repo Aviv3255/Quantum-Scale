@@ -72,7 +72,7 @@
       { type: 'step-breakdown', title: 'Step 2: Connect Product to Purpose', stepNumber: 2, cost: 'DESIGN', description: 'Your mission should be woven into every purchase. One-for-one models work. Percentage of profits work. Just make the connection clear and tangible. When customers buy, they should feel like they are contributing to something bigger.', icon: 'BarChart', color: '#3B82F6' },
       { type: 'step-breakdown', title: 'Step 3: Amplify The Story', stepNumber: 3, cost: 'CONTENT', description: 'Share the impact. Show the blankets being delivered to foster kids. Document the journey. Let your community see where their money goes. This creates content that spreads itself because people want to share stories of hope.', icon: 'Trophy', color: '#22C55E' },
       { type: 'economics-visual', title: 'The Mission-Driven Economics', subtitle: 'Why giving actually increases profits' },
-      { type: 'quote-slide', quote: 'The foundation is the heart of our brand. Every blanket sold means a foster child gets one too. Our customers are not just buying a product - they are joining a movement to make sure every kid has comfort.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)' },
+      { type: 'quote-slide', quote: 'The foundation is the heart of our brand. Every blanket sold means a foster child gets one too. Our customers are not just buying a product - they are joining a movement to make sure every kid has comfort.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/584271bU03giJ3-removebg-preview.png' },
       { type: 'quiz', question: 'Why do mission-driven brands outperform traditional brands?', options: ['They have bigger marketing budgets', 'They create emotional bonds that turn customers into advocates', 'They sell cheaper products', 'They have better logistics'], correctIndex: 1, feedback: { correct: 'Exactly! Mission-driven brands create emotional connections that go beyond the transaction. Customers become part of a movement. They share their purchases, tell their friends, and come back again because buying makes them feel good about contributing to something meaningful.', incorrect: 'Not quite. The key advantage of mission-driven brands is the emotional bond they create. When customers feel they are contributing to a cause, they become advocates. This drives organic growth, higher LTV, and word-of-mouth that no marketing budget can buy.' }},
       { type: 'completion', sources: ['The E-commerce Cheat Code'] }
     ];
@@ -112,7 +112,7 @@
       return <span>{prefix}{count}{suffix}</span>;
     };
 
-    // Hit Rate Comparison Visual
+    // Mission vs No Mission Comparison Visual
     const HitRateComparisonSlide = ({ data }) => {
       const [animated, setAnimated] = useState(false);
       useEffect(() => { const timer = setTimeout(() => setAnimated(true), 300); return () => clearTimeout(timer); }, []);
@@ -120,8 +120,8 @@
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}>
-              <Icons.TrendingUp size={14} color="#F59E0B" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10B981' }}>
+              <Icons.TrendingUp size={14} color="#10B981" />
               <span>The Data</span>
             </div>
             <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
@@ -129,87 +129,85 @@
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Scripted Ads - Low Performance */}
+            {/* No Mission - Transactional */}
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #EF4444', boxShadow: '0 0 30px rgba(239, 68, 68, 0.15)' }}>
               <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }}></div>
-              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>OLD WAY</div>
+              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>NO MISSION</div>
 
               <div className="mt-4 mb-6">
                 <div className="flex items-center gap-3 mb-2">
                   <Icons.Camera size={28} color="#EF4444" />
-                  <span className="text-white font-bold text-lg">Scripted Ads</span>
+                  <span className="text-white font-bold text-lg">Transactional Brand</span>
                 </div>
-                <p className="text-neutral-400 text-sm">Polished, professional, feels like an ad</p>
+                <p className="text-neutral-400 text-sm">Competing on price, features, and discounts</p>
               </div>
 
-              <div className="mb-4">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-5xl font-bold text-red-500">&lt;5</span>
-                  <span className="text-2xl font-bold text-red-500">%</span>
-                  <span className="text-neutral-500 text-sm ml-2">hit rate</span>
+              <div className="space-y-4 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Customer Retention</span>
+                  <span className="text-red-400 font-bold">12%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                  <motion.div initial={{ width: 0 }} animate={animated ? { width: '12%' } : {}} transition={{ duration: 1.5, ease: 'easeOut' }} className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, #EF4444, #DC2626)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.5)' }} />
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Word-of-Mouth Rate</span>
+                  <span className="text-red-400 font-bold">8%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                  <motion.div initial={{ width: 0 }} animate={animated ? { width: '8%' } : {}} transition={{ duration: 1.5, ease: 'easeOut', delay: 0.1 }} className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, #EF4444, #DC2626)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.5)' }} />
                 </div>
               </div>
 
-              <div className="h-4 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={animated ? { width: '5%' } : {}}
-                  transition={{ duration: 1.5, ease: 'easeOut' }}
-                  className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #EF4444, #DC2626)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.5)' }}
-                />
-              </div>
-
-              <p className="text-neutral-500 text-xs mt-4 italic">People scroll past. It feels like an ad.</p>
+              <p className="text-neutral-500 text-xs mt-4 italic">Customers buy once and forget you exist.</p>
             </motion.div>
 
-            {/* Raw Content - High Performance */}
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #22C55E', boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
-              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22C55E, transparent)' }}></div>
-              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>CHEAT CODE</div>
+            {/* Mission-Driven - Purpose */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #10B981', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #10B981, transparent)' }}></div>
+              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#10B981', color: 'white' }}>MISSION-DRIVEN</div>
 
               <div className="mt-4 mb-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Icons.Users size={28} color="#22C55E" />
-                  <span className="text-white font-bold text-lg">Raw Content</span>
+                  <Icons.Users size={28} color="#10B981" />
+                  <span className="text-white font-bold text-lg">Purpose-Driven Brand</span>
                 </div>
-                <p className="text-neutral-400 text-sm">Authentic, real people, feels like a friend</p>
+                <p className="text-neutral-400 text-sm">Competing on values, impact, and belonging</p>
               </div>
 
-              <div className="mb-4">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-5xl font-bold text-green-500">14</span>
-                  <span className="text-2xl font-bold text-green-500">%</span>
-                  <span className="text-neutral-500 text-sm ml-2">hit rate</span>
+              <div className="space-y-4 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Customer Retention</span>
+                  <span className="text-green-400 font-bold">47%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                  <motion.div initial={{ width: 0 }} animate={animated ? { width: '47%' } : {}} transition={{ duration: 1.5, ease: 'easeOut', delay: 0.2 }} className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, #10B981, #059669)', boxShadow: '0 0 15px rgba(16, 185, 129, 0.5)' }} />
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Word-of-Mouth Rate</span>
+                  <span className="text-green-400 font-bold">34%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                  <motion.div initial={{ width: 0 }} animate={animated ? { width: '34%' } : {}} transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }} className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, #10B981, #059669)', boxShadow: '0 0 15px rgba(16, 185, 129, 0.5)' }} />
                 </div>
               </div>
 
-              <div className="h-4 rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={animated ? { width: '100%' } : {}}
-                  transition={{ duration: 1.5, ease: 'easeOut', delay: 0.2 }}
-                  className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #22C55E, #16A34A)', boxShadow: '0 0 15px rgba(34, 197, 94, 0.5)' }}
-                />
-              </div>
-
-              <p className="text-green-400 text-xs mt-4 font-semibold">Nearly 3X more effective!</p>
+              <p className="text-green-400 text-xs mt-4 font-semibold">3-5X better retention and viral growth!</p>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-8 rounded-xl p-4 text-center" style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
-            <p className="text-neutral-700 text-sm">Raw content is <span className="font-bold text-black">nearly 3X more effective</span> than scripted ads. The market has spoken.</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-8 rounded-xl p-4 text-center" style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+            <p className="text-neutral-700 text-sm">Mission-driven brands have <span className="font-bold text-black">3-5X higher retention</span> and <span className="font-bold text-black">4X more word-of-mouth</span>. Purpose pays.</p>
           </motion.div>
         </div>
       );
     };
 
-    // Creator Hiring Funnel Visual
+    // Mission Impact Funnel Visual
     const FunnelVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10B981' }}>
             <Icons.Zap />
             <span>The System</span>
           </div>
@@ -218,32 +216,32 @@
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #333' }}>
-          {/* Funnel Steps */}
+          {/* Funnel Steps - Mission Impact */}
           <div className="space-y-4">
-            {/* Step 1: Product Seeding - Widest */}
-            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.3 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '100%', background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05))', border: '2px solid #3B82F6', boxShadow: '0 0 25px rgba(59, 130, 246, 0.2)' }}>
+            {/* Step 1: Authentic Mission - Widest */}
+            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.3 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '100%', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05))', border: '2px solid #10B981', boxShadow: '0 0 25px rgba(16, 185, 129, 0.2)' }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid #3B82F6' }}>
-                    <Icons.Package size={24} color="#3B82F6" />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #10B981' }}>
+                    <Icons.Package size={24} color="#10B981" />
                   </div>
                   <div>
-                    <span className="text-white font-bold text-lg">Product Seeding</span>
-                    <p className="text-neutral-400 text-sm">Send to aligned creators</p>
+                    <span className="text-white font-bold text-lg">Authentic Mission</span>
+                    <p className="text-neutral-400 text-sm">A cause customers genuinely care about</p>
                   </div>
                 </div>
-                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22C55E', border: '1px solid #22C55E' }}>FREE</span>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', border: '1px solid #10B981' }}>FOUNDATION</span>
               </div>
             </motion.div>
 
             {/* Arrow Down */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="flex justify-center">
               <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
-                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#10B981" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </motion.div>
 
-            {/* Step 2: Test & Validate - Medium */}
+            {/* Step 2: Emotional Connection */}
             <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.5 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '85%', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05))', border: '2px solid #8B5CF6', boxShadow: '0 0 25px rgba(139, 92, 246, 0.2)' }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -251,41 +249,41 @@
                     <Icons.BarChart size={24} color="#8B5CF6" />
                   </div>
                   <div>
-                    <span className="text-white font-bold text-lg">Test & Validate</span>
-                    <p className="text-neutral-400 text-sm">Run content as ads</p>
+                    <span className="text-white font-bold text-lg">Emotional Connection</span>
+                    <p className="text-neutral-400 text-sm">Customers feel part of something bigger</p>
                   </div>
                 </div>
-                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B', border: '1px solid #F59E0B' }}>AD SPEND</span>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#8B5CF6', border: '1px solid #8B5CF6' }}>LOYALTY</span>
               </div>
             </motion.div>
 
             {/* Arrow Down */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="flex justify-center">
               <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
-                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M12 0V28M12 28L4 20M12 28L20 20" stroke="#10B981" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </motion.div>
 
-            {/* Step 3: Hire Winners - Narrowest */}
-            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.7 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '70%', background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))', border: '2px solid #22C55E', boxShadow: '0 0 25px rgba(34, 197, 94, 0.2)' }}>
+            {/* Step 3: Viral Advocacy */}
+            <motion.div initial={{ opacity: 0, y: 20, scaleX: 0.8 }} animate={{ opacity: 1, y: 0, scaleX: 1 }} transition={{ delay: 0.7 }} className="mx-auto rounded-xl p-5 relative" style={{ width: '70%', background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05))', border: '2px solid #3B82F6', boxShadow: '0 0 25px rgba(59, 130, 246, 0.2)' }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)', border: '1px solid #22C55E' }}>
-                    <Icons.Trophy size={24} color="#22C55E" />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid #3B82F6' }}>
+                    <Icons.Trophy size={24} color="#3B82F6" />
                   </div>
                   <div>
-                    <span className="text-white font-bold text-lg">Hire Winners</span>
-                    <p className="text-neutral-400 text-sm">Proven performers only</p>
+                    <span className="text-white font-bold text-lg">Viral Advocacy</span>
+                    <p className="text-neutral-400 text-sm">Customers become evangelists</p>
                   </div>
                 </div>
-                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22C55E', border: '1px solid #22C55E' }}>$500/mo</span>
+                <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#3B82F6', border: '1px solid #3B82F6' }}>GROWTH</span>
               </div>
             </motion.div>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-6 rounded-xl p-4 text-center" style={{ background: '#fafafa', border: '1px solid #e5e5e5' }}>
-          <p className="text-neutral-700 text-sm font-medium">You build a team of proven A-players who are <span className="font-bold text-black">already profitable</span> before you pay them a retainer.</p>
+          <p className="text-neutral-700 text-sm font-medium">Mission creates emotional bonds. Emotional bonds create advocates. Advocates create <span className="font-bold text-black">exponential growth</span>.</p>
         </motion.div>
       </div>
     );
@@ -328,12 +326,12 @@
       );
     };
 
-    // Economics Visual Slide
+    // Mission-Driven Economics Visual Slide
     const EconomicsVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}>
-            <Icons.DollarSign size={14} color="#22C55E" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10B981' }}>
+            <Icons.DollarSign size={14} color="#10B981" />
             <span>The Math</span>
           </div>
           <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
@@ -341,82 +339,90 @@
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Old Model */}
+          {/* No Mission Model */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 relative" style={{ background: '#0a0a0a', border: '1px solid #EF4444' }}>
-            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>OLD MODEL</div>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#EF4444', color: 'white' }}>NO MISSION</div>
 
             <div className="mt-4 space-y-4">
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Creative Strategist</span>
-                <span className="text-red-400 font-bold">$10,000/mo</span>
+                <span className="text-neutral-400 text-sm">CAC (Acquisition Cost)</span>
+                <span className="text-red-400 font-bold">$45</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Hit Rate</span>
-                <span className="text-red-400 font-bold">&lt;5%</span>
+                <span className="text-neutral-400 text-sm">Repeat Purchase Rate</span>
+                <span className="text-red-400 font-bold">12%</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Risk Level</span>
-                <span className="text-red-400 font-bold">HIGH</span>
+                <span className="text-neutral-400 text-sm">Referral Rate</span>
+                <span className="text-red-400 font-bold">3%</span>
               </div>
               <div className="pt-4 border-t border-neutral-800">
-                <p className="text-neutral-500 text-xs text-center italic">You pay $10K/month and HOPE they produce winners.</p>
+                <p className="text-neutral-500 text-xs text-center italic">You pay for every single customer. No organic growth.</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Cheat Code Model */}
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 relative" style={{ background: '#0a0a0a', border: '2px solid #22C55E', boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
-            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>CHEAT CODE</div>
+          {/* Mission-Driven Model */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 relative" style={{ background: '#0a0a0a', border: '2px solid #10B981', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+            <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#10B981', color: 'white' }}>MISSION-DRIVEN</div>
 
             <div className="mt-4 space-y-4">
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Product Seeding</span>
-                <span className="text-green-400 font-bold">FREE</span>
+                <span className="text-neutral-400 text-sm">CAC (Acquisition Cost)</span>
+                <span className="text-green-400 font-bold">$28</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Hit Rate</span>
-                <span className="text-green-400 font-bold">14%</span>
+                <span className="text-neutral-400 text-sm">Repeat Purchase Rate</span>
+                <span className="text-green-400 font-bold">47%</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: '#1f1f1f' }}>
-                <span className="text-neutral-400 text-sm">Risk Level</span>
-                <span className="text-green-400 font-bold">ZERO</span>
+                <span className="text-neutral-400 text-sm">Referral Rate</span>
+                <span className="text-green-400 font-bold">18%</span>
               </div>
               <div className="pt-4 border-t border-neutral-800">
-                <p className="text-green-400 text-xs text-center font-semibold">Only hire creators AFTER they prove themselves!</p>
+                <p className="text-green-400 text-xs text-center font-semibold">Customers market FOR you because they believe in the mission!</p>
               </div>
             </div>
           </motion.div>
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03))', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
-          <p className="text-center text-neutral-700 text-sm">These content creators you hire as brand ambassadors... <span className="font-bold text-black">they are like creative strategists for you... for free.</span></p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03))', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+          <p className="text-center text-neutral-700 text-sm">The math is simple: <span className="font-bold text-black">giving actually increases profits</span> because it creates advocates who market for free.</p>
         </motion.div>
       </div>
     );
 
     // Quote Slide
     const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #F59E0B30', boxShadow: '0 0 50px rgba(245, 158, 11, 0.1)' }}>
-          <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #F59E0B, transparent)' }}></div>
-          <div className="absolute top-4 left-8 opacity-20">
-            <Icons.Quote size={64} color="#F59E0B" />
-          </div>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #F59E0B30', boxShadow: '0 0 50px rgba(245, 158, 11, 0.1)' }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #F59E0B, transparent)' }}></div>
+            <div className="absolute top-4 left-8 opacity-20">
+              <Icons.Quote size={64} color="#F59E0B" />
+            </div>
 
-          <div className="relative z-10">
-            <p className="text-white text-xl md:text-2xl leading-relaxed mb-8 italic">"{data.quote}"</p>
+            <div className="relative z-10">
+              <p className="text-white text-xl md:text-2xl leading-relaxed mb-8 italic">"{data.quote}"</p>
 
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
-                <span className="text-white font-bold text-lg">{data.author.charAt(0)}</span>
-              </div>
-              <div>
-                <p className="text-white font-bold">{data.author}</p>
-                <p className="text-neutral-400 text-sm">{data.company}</p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
+                  <span className="text-white font-bold text-lg">{data.author.charAt(0)}</span>
+                </div>
+                <div>
+                  <p className="text-white font-bold">{data.author}</p>
+                  <p className="text-neutral-400 text-sm">{data.company}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.author || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -100,7 +100,7 @@
         { title: 'Anchor Effect', description: 'A $5 add-on feels tiny next to a $150 primary purchase.' },
         { title: 'Positive Emotional State', description: 'Buying something they want creates positive feelings. They are in a "yes" mood.' }
       ]},
-      { type: 'content', title: 'The Yes Ladder Psychology', body: 'Robert Cialdini calls this the "commitment and consistency" principle. Once someone says yes to something small, they are more likely to say yes to something bigger. Each yes builds momentum. Each commitment strengthens the identity. You are not tricking them. You are aligning with a natural psychological pattern. Small yes. Bigger yes. Even bigger yes. The ladder works because humans want to be consistent with their previous actions. "I already bought the camera. Of course I need the lens." It feels logical because it IS logical. But only after the first yes.' },
+      { type: 'content', title: 'The Yes Ladder Psychology', body: 'Robert Cialdini calls this the "commitment and consistency" principle. Once someone says yes to something small, they are more likely to say yes to something bigger. Each yes builds momentum. Each commitment strengthens the identity. You are not tricking them. You are aligning with a natural psychological pattern. Small yes. Bigger yes. Even bigger yes. The ladder works because humans want to be consistent with their previous actions. "I already bought the camera. Of course I need the lens." It feels logical because it IS logical. But only after the first yes.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert+Cialdini-removebg-preview.png', personName: 'Robert Cialdini' },
       { type: 'example', scenario: 'Camera Store Checkout Flow', before: { label: 'Standard Checkout (Old)', text: 'Customer buys $800 camera. Checkout page shows payment form. They pay. They leave. Total order value: $800. Missed opportunity for memory card, lens, case - items they will buy elsewhere next week.' }, after: { label: 'Checkout Line Effect (Smart)', text: 'Customer buys $800 camera. Before checkout, they see: "Protect your investment - add camera case for $29?" They add it. Next: "Never run out of storage - add 128GB card for $24?" They add it. Total order value: $853. Same customer. Better experience.' }, insight: 'The timing matters. After the big yes, small yeses feel effortless. This is not pushy. It is helpful. They need these items anyway.' },
       { type: 'content', title: 'The Ethical Line You Must Not Cross', body: 'Here is the critical difference between smart psychology and scammy manipulation. Ethical checkout offers solve real problems. Camera case protects their $800 investment. Extended warranty gives peace of mind. Batteries mean they can actually USE the product. Unethical checkout offers exploit the psychological state. "Add $47 mystery bonus" creates false urgency. "Special one-time offer you will never see again" is pressure. "97% of customers add this" is social proof manipulation. The line is simple: Does this genuinely help them? Or are you exploiting a vulnerable psychological state? If you would not recommend it to your mom, do not add it to checkout.' },
       { type: 'cards', title: 'Ethical vs Manipulative Checkout Offers', items: [
@@ -174,9 +174,22 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

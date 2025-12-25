@@ -75,7 +75,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why giving first creates powerful sales psychology', 'The 3 types of gifts that trigger maximum reciprocity', 'How to build a reciprocity flywheel in your Shopify store'] },
       { type: 'hook', headline: 'A flower saved a fundraising organization. A piece of bread saved a soldier\'s life. A free calculator built a $10M company.', subtext: 'The pattern? They all gave FIRST. They created value before asking for anything. And the human brain simply cannot resist reciprocating. This isn\'t manipulation - it\'s biology. When someone gives you something of value, you feel a deep psychological need to give something back. Today you\'ll learn how to weaponize generosity.' },
-      { type: 'content', title: 'The Reciprocation Rule', body: 'Robert Cialdini spent decades studying influence and discovered one of the most powerful forces in human psychology: reciprocity. When someone gives us something - especially something unexpected - we feel an almost overpowering obligation to return the favor. This isn\'t learned behavior. It\'s hardwired into our DNA. Societies that didn\'t reciprocate died out. The ones that did thrived. We are the descendants of reciprocators.' },
+      { type: 'content', title: 'The Reciprocation Rule', body: 'Robert Cialdini spent decades studying influence and discovered one of the most powerful forces in human psychology: reciprocity. When someone gives us something - especially something unexpected - we feel an almost overpowering obligation to return the favor. This isn\'t learned behavior. It\'s hardwired into our DNA. Societies that didn\'t reciprocate died out. The ones that did thrived. We are the descendants of reciprocators.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert+Cialdini-removebg-preview.png', personName: 'Robert Cialdini' },
       { type: 'visual', title: 'The Hare Krishna Effect', visualType: 'stats', data: [
         { value: '500%', label: 'donation increase', subtext: 'By giving a flower first' },
         { value: '100%', label: 'felt obligated to give', subtext: 'Even if they didn\'t want the flower' },
@@ -158,9 +158,22 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

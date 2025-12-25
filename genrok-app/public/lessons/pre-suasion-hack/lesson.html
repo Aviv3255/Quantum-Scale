@@ -78,7 +78,7 @@
         right: { label: 'German Music', value: '4x', result: 'German wine sales increase', color: '#f59e0b' },
         center: { label: 'Customer Awareness', value: '0%', result: 'None realized music affected them', color: '#ef4444' }
       }},
-      { type: 'content', title: 'What Is Pre-Suasion?', body: 'Pre-Suasion is the art of framing your customer\'s mindset BEFORE they encounter your offer. It\'s not about what you say during the pitch - it\'s about what happens in the moments leading up to it. Robert Cialdini discovered that the highest-performing persuaders spend more time preparing their audience than actually presenting. They "set the stage" so the customer arrives at the offer already leaning toward "yes."' },
+      { type: 'content', title: 'What Is Pre-Suasion?', body: 'Pre-Suasion is the art of framing your customer\'s mindset BEFORE they encounter your offer. It\'s not about what you say during the pitch - it\'s about what happens in the moments leading up to it. Robert Cialdini discovered that the highest-performing persuaders spend more time preparing their audience than actually presenting. They "set the stage" so the customer arrives at the offer already leaning toward "yes."', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert+Cialdini-removebg-preview.png', personName: 'Robert Cialdini' },
       { type: 'content', title: 'Why It Works: Priming', body: 'Your brain uses recent experiences to interpret new information. If you just saw images of clouds, you\'ll rate things as "lighter" and "softer." If you just thought about money, you become more self-focused. This is called priming. The first thing you expose someone to colors EVERYTHING that comes after. In marketing, what your customer sees, reads, or experiences right before your offer shapes how they perceive it. The offer itself hasn\'t changed - but their perception has.' },
       { type: 'cards', title: 'Pre-Suasion In Action', items: [
         { title: 'Images Before Price', description: 'Show images of luxury before revealing price. Their brain associates your product with premium quality, making the price seem justified.' },
@@ -149,9 +149,22 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
+            style={{ height: '45%', maxHeight: '350px' }}
+          >
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

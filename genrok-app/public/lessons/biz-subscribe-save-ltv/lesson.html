@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Subscribe & Save Cheat Code - Quantum Scale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors */
+            --white: #FFFFFF;
+            --black: #000000;
+            --text-primary: #0A0A0A;
+            --text-secondary: #525252;
+            --text-muted: #737373;
+            --accent: #8B5CF6;
+            --accent-dark: #7C3AED;
+            --accent-light: #A78BFA;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --border: #E5E5E5;
+            --bg-subtle: #FAFAFA;
+
+            /* Spacing */
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --space-40: 40px;
+            --space-48: 48px;
+            --space-64: 64px;
+            --space-80: 80px;
+            --space-96: 96px;
+
+            /* Typography */
+            --font-display: 'Fraunces', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .lesson-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: none;
+            opacity: 0;
+            padding: var(--space-96) var(--space-24) var(--space-80);
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Typography */
+        .display-xl {
+            font-family: var(--font-display);
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--black);
+            margin-bottom: var(--space-24);
+        }
+
+        .display-lg {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--black);
+            margin-bottom: var(--space-20);
+        }
+
+        .headline {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--black);
+            margin-bottom: var(--space-16);
+        }
+
+        .subtitle {
+            font-size: clamp(20px, 2.5vw, 28px);
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-32);
+        }
+
+        .body-large {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-16);
+        }
+
+        .body {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: var(--space-8);
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        /* Dark Block */
+        .dark-block {
+            background: var(--black);
+            border-radius: 24px;
+            padding: var(--space-48);
+            color: var(--white);
+            margin: var(--space-48) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+        }
+
+        .dark-block h3 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--space-16);
+            color: var(--white);
+        }
+
+        .dark-block p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-24);
+            margin: var(--space-48) 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: var(--space-32);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+            margin: var(--space-32) 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-16);
+            margin-bottom: var(--space-24);
+            padding: var(--space-24);
+            background: var(--bg-subtle);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: var(--white);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: var(--space-8);
+        }
+
+        .feature-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Visual Block */
+        .visual-block {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 24px;
+            padding: var(--space-48);
+            margin: var(--space-48) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-block::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: var(--space-48);
+            margin: var(--space-48) 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-40);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: var(--space-24);
+        }
+
+        .timeline-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: var(--space-8);
+        }
+
+        /* Quiz */
+        .quiz-container {
+            max-width: 800px;
+            margin: var(--space-48) auto;
+        }
+
+        .quiz-question {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: var(--space-32);
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: var(--space-16);
+        }
+
+        .quiz-option {
+            padding: var(--space-24);
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #EF4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .quiz-feedback {
+            margin-top: var(--space-24);
+            padding: var(--space-24);
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            padding: var(--space-24);
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: var(--space-16) var(--space-32);
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            flex: 1;
+            margin: 0 var(--space-32);
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: var(--space-64) var(--space-16) var(--space-80);
+            }
+
+            .dark-block,
+            .visual-block {
+                padding: var(--space-32);
+                margin: var(--space-32) 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-content {
+                flex-wrap: wrap;
+                gap: var(--space-16);
+            }
+
+            .progress-bar {
+                order: -1;
+                width: 100%;
+                margin: 0 0 var(--space-16) 0;
+            }
+        }
+
+        /* Icons */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        /* Completion Badge */
+        .completion-badge {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-32);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .completion-badge svg {
+            width: 64px;
+            height: 64px;
+            stroke: white;
+            stroke-width: 3;
+        }
+
+        /* Number Animation */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-count {
+            animation: countUp 0.6s ease-out;
+        }
+
+        /* Subscription Visual */
+        .subscription-visual {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-8);
+            margin: var(--space-32) 0;
+        }
+
+        .month-bar {
+            background: var(--accent-light);
+            border-radius: 8px;
+            height: 80px;
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0.3;
+        }
+
+        .month-bar.active {
+            opacity: 1;
+            background: var(--accent);
+            animation: growBar 0.5s ease-out;
+        }
+
+        @keyframes growBar {
+            from {
+                height: 0;
+                opacity: 0;
+            }
+            to {
+                height: 80px;
+                opacity: 1;
+            }
+        }
+
+        .month-bar::after {
+            content: attr(data-month);
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Revenue Comparison */
+        .revenue-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-32);
+            margin: var(--space-48) 0;
+        }
+
+        .revenue-column {
+            padding: var(--space-32);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .revenue-column.regular {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+        }
+
+        .revenue-column.subscription {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: var(--white);
+        }
+
+        .revenue-amount {
+            font-family: var(--font-display);
+            font-size: 56px;
+            font-weight: 900;
+            margin: var(--space-16) 0;
+        }
+
+        .revenue-label {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active" data-slide="0">
+            <div class="slide-content">
+                <div class="label">Business Strategy</div>
+                <h1 class="display-xl">The Subscribe & Save Cheat Code</h1>
+                <p class="subtitle">Turn one-time buyers into recurring revenue with the ultimate LTV multiplier</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">10x</div>
+                        <div class="stat-label">Customer Value</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">70%</div>
+                        <div class="stat-label">Revenue Predictability</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2-3x</div>
+                        <div class="stat-label">Purchase Frequency</div>
+                    </div>
+                </div>
+
+                <div class="dark-block">
+                    <h3>What You'll Learn</h3>
+                    <ul class="feature-list" style="list-style: none; padding: 0; margin-top: var(--space-24);">
+                        <li style="display: flex; align-items: center; gap: var(--space-12); margin-bottom: var(--space-16); color: rgba(255,255,255,0.9);">
+                            <svg class="icon" style="stroke: var(--accent-light);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12l2 2 4-4"></path>
+                            </svg>
+                            Why purchase frequency is the #1 LTV lever
+                        </li>
+                        <li style="display: flex; align-items: center; gap: var(--space-12); margin-bottom: var(--space-16); color: rgba(255,255,255,0.9);">
+                            <svg class="icon" style="stroke: var(--accent-light);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12l2 2 4-4"></path>
+                            </svg>
+                            How Subscribe & Save compounds revenue
+                        </li>
+                        <li style="display: flex; align-items: center; gap: var(--space-12); color: rgba(255,255,255,0.9);">
+                            <svg class="icon" style="stroke: var(--accent-light);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12l2 2 4-4"></path>
+                            </svg>
+                            Creative subscription models for ANY product
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Hook -->
+        <div class="slide" data-slide="1">
+            <div class="slide-content">
+                <h2 class="display-lg">What if every customer automatically came back?</h2>
+                <p class="subtitle">Most businesses fight for every sale. Smart businesses make the sale automatic.</p>
+
+                <div class="visual-block">
+                    <div style="text-align: center; position: relative; z-index: 1;">
+                        <div style="font-size: 64px; margin-bottom: var(--space-24);">🔁</div>
+                        <h3 style="font-family: var(--font-display); font-size: 36px; color: white; margin-bottom: var(--space-16);">
+                            The Subscription Advantage
+                        </h3>
+                        <p style="font-size: 20px; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">
+                            Instead of convincing customers to buy again and again, you convince them ONCE to subscribe.
+                            Then the revenue keeps flowing.
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-64); text-align: center;">
+                    <div style="display: inline-block; background: var(--bg-subtle); padding: var(--space-32); border-radius: 20px;">
+                        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: var(--space-12);">
+                            Traditional Business
+                        </div>
+                        <div style="font-size: 18px; color: var(--text-secondary); margin-bottom: var(--space-32);">
+                            Convince → Buy → Repeat → Convince → Buy → Repeat
+                        </div>
+                        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: var(--space-12);">
+                            Subscription Business
+                        </div>
+                        <div style="font-size: 18px; color: var(--text-primary); font-weight: 600;">
+                            Convince → Subscribe → Buy → Buy → Buy → Buy
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: LTV Formula Reminder -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <div class="label">Foundation</div>
+                <h2 class="display-lg">The LTV Formula: Frequency is the Multiplier</h2>
+                <p class="subtitle">Let's revisit the math that powers every successful eCommerce business</p>
+
+                <div class="dark-block">
+                    <div style="text-align: center; padding: var(--space-32) 0;">
+                        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: var(--space-24);">
+                            The Formula
+                        </div>
+                        <div style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: white; margin-bottom: var(--space-48);">
+                            LTV = AOV × Frequency × Margin
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-32); margin-top: var(--space-48);">
+                            <div>
+                                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-16); font-size: 36px;">
+                                    💰
+                                </div>
+                                <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: var(--space-8);">AOV</div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">How much they spend</div>
+                            </div>
+                            <div>
+                                <div style="width: 80px; height: 80px; background: var(--accent); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-16); font-size: 36px; box-shadow: 0 8px 24px rgba(139,92,246,0.4);">
+                                    🔁
+                                </div>
+                                <div style="font-size: 18px; font-weight: 600; color: var(--accent-light); margin-bottom: var(--space-8);">Frequency</div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">How often they buy</div>
+                            </div>
+                            <div>
+                                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-16); font-size: 36px;">
+                                    📊
+                                </div>
+                                <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: var(--space-8);">Margin</div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">How much you keep</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-48); padding: var(--space-32); background: rgba(139,92,246,0.05); border-radius: 20px; border-left: 4px solid var(--accent);">
+                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-12);">
+                        Why Frequency is the Game-Changer
+                    </h4>
+                    <p class="body-large">
+                        Increasing AOV requires better products or upsells. Improving margin requires negotiating costs or raising prices.
+                        But <strong style="color: var(--accent);">increasing frequency</strong>? That's pure leverage.
+                        Get customers to buy 2x as often = 2x the LTV. It's that simple.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Subscribe & Save Concept -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content">
+                <div class="label">Strategy #2</div>
+                <h2 class="display-lg">The Subscribe & Save Model</h2>
+                <p class="subtitle">The ultimate weapon for increasing purchase frequency</p>
+
+                <div class="revenue-comparison">
+                    <div class="revenue-column regular">
+                        <div class="revenue-label">One-Time Purchase</div>
+                        <div class="revenue-amount" style="color: var(--text-primary);">$100</div>
+                        <div style="font-size: 14px; color: var(--text-secondary); margin-top: var(--space-16);">
+                            Customer buys once<br>You hope they come back
+                        </div>
+                    </div>
+                    <div class="revenue-column subscription">
+                        <div class="revenue-label">Subscribe & Save</div>
+                        <div class="revenue-amount">$1,200</div>
+                        <div style="font-size: 14px; margin-top: var(--space-16); opacity: 0.9;">
+                            Customer subscribes<br>$100/month × 12 months
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <path d="M12 2v20M2 12h20"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Predictable Revenue</h4>
+                            <p>Know exactly how much money is coming in each month. No more guessing.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Locked-In LTV</h4>
+                            <p>Subscriptions have 70-90% retention rates. Once they subscribe, they stay.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Compounding Growth</h4>
+                            <p>Every new subscriber adds to your monthly recurring revenue (MRR). Growth compounds.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: The Compounding Effect -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <h2 class="display-lg">The Compounding Effect</h2>
+                <p class="subtitle">Watch how subscription revenue builds on itself month after month</p>
+
+                <div class="visual-block">
+                    <div style="position: relative; z-index: 1;">
+                        <div style="text-align: center; margin-bottom: var(--space-40);">
+                            <h3 style="font-family: var(--font-display); font-size: 28px; color: white; margin-bottom: var(--space-12);">
+                                Monthly Recurring Revenue Growth
+                            </h3>
+                            <p style="font-size: 16px; color: rgba(255,255,255,0.7);">
+                                Adding 100 subscribers/month at $50/month (90% retention)
+                            </p>
+                        </div>
+
+                        <div class="subscription-visual">
+                            <div class="month-bar active" data-month="M1" style="height: 20px;"></div>
+                            <div class="month-bar active" data-month="M2" style="height: 30px;"></div>
+                            <div class="month-bar active" data-month="M3" style="height: 40px;"></div>
+                            <div class="month-bar active" data-month="M4" style="height: 50px;"></div>
+                            <div class="month-bar active" data-month="M5" style="height: 60px;"></div>
+                            <div class="month-bar active" data-month="M6" style="height: 70px;"></div>
+                            <div class="month-bar active" data-month="M7" style="height: 75px;"></div>
+                            <div class="month-bar active" data-month="M8" style="height: 78px;"></div>
+                            <div class="month-bar active" data-month="M9" style="height: 80px;"></div>
+                            <div class="month-bar active" data-month="M10" style="height: 80px;"></div>
+                            <div class="month-bar active" data-month="M11" style="height: 80px;"></div>
+                            <div class="month-bar active" data-month="M12" style="height: 80px;"></div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-top: var(--space-64);">
+                            <div style="text-align: center;">
+                                <div style="font-family: var(--font-display); font-size: 48px; font-weight: 900; color: var(--accent-light); margin-bottom: var(--space-8);">
+                                    $5K
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">Month 1 MRR</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-family: var(--font-display); font-size: 48px; font-weight: 900; color: var(--accent-light); margin-bottom: var(--space-8);">
+                                    $27K
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">Month 6 MRR</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-family: var(--font-display); font-size: 48px; font-weight: 900; color: white; margin-bottom: var(--space-8);">
+                                    $54K
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">Month 12 MRR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-48); padding: var(--space-32); background: var(--bg-subtle); border-radius: 20px;">
+                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-16);">
+                        The Math of Compounding
+                    </h4>
+                    <p class="body-large" style="margin-bottom: var(--space-16);">
+                        <strong>Month 1:</strong> 100 subscribers × $50 = $5,000 MRR
+                    </p>
+                    <p class="body-large" style="margin-bottom: var(--space-16);">
+                        <strong>Month 2:</strong> (90 retained + 100 new) × $50 = $9,500 MRR
+                    </p>
+                    <p class="body-large" style="margin-bottom: var(--space-16);">
+                        <strong>Month 6:</strong> ~540 subscribers × $50 = $27,000 MRR
+                    </p>
+                    <p class="body-large">
+                        <strong>Month 12:</strong> ~1,080 subscribers × $50 = <span style="color: var(--accent); font-weight: 700;">$54,000 MRR</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Creative Applications -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <h2 class="display-lg">Beyond Consumables: Creative Subscription Models</h2>
+                <p class="subtitle">You can turn ANYTHING into a subscription if you're creative enough</p>
+
+                <div class="dark-block">
+                    <h3 style="margin-bottom: var(--space-32);">Traditional Subscription Products</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-24);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: var(--space-12);">🧴</div>
+                            <div style="font-size: 16px; font-weight: 600; color: white;">Skincare</div>
+                            <div style="font-size: 14px; color: rgba(255,255,255,0.7); margin-top: var(--space-8);">Runs out monthly</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: var(--space-12);">☕</div>
+                            <div style="font-size: 16px; font-weight: 600; color: white;">Coffee</div>
+                            <div style="font-size: 14px; color: rgba(255,255,255,0.7); margin-top: var(--space-8);">Daily consumption</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: var(--space-12);">💊</div>
+                            <div style="font-size: 16px; font-weight: 600; color: white;">Supplements</div>
+                            <div style="font-size: 14px; color: rgba(255,255,255,0.7); margin-top: var(--space-8);">30-day supply</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: var(--space-12);">🐕</div>
+                            <div style="font-size: 16px; font-weight: 600; color: white;">Pet Food</div>
+                            <div style="font-size: 14px; color: rgba(255,255,255,0.7); margin-top: var(--space-8);">Regular refills</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-48);">
+                    <h3 class="headline" style="color: var(--accent);">Creative Subscription Ideas</h3>
+                    <p class="body-large" style="margin-bottom: var(--space-32);">
+                        Think your product can't be a subscription? Think again.
+                    </p>
+
+                    <div style="display: grid; gap: var(--space-24);">
+                        <div style="background: white; border: 1px solid var(--border); border-radius: 20px; padding: var(--space-32);">
+                            <div style="display: flex; align-items: flex-start; gap: var(--space-20);">
+                                <div style="font-size: 48px;">👕</div>
+                                <div>
+                                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                        T-Shirt of the Month Club
+                                    </h4>
+                                    <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.6;">
+                                        "We don't sell t-shirts. We sell a curated collection." Send a new design every month.
+                                        Customers stay subscribed for the surprise and delight.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border: 1px solid var(--border); border-radius: 20px; padding: var(--space-32);">
+                            <div style="display: flex; align-items: flex-start; gap: var(--space-20);">
+                                <div style="font-size: 48px;">🎨</div>
+                                <div>
+                                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                        Art Supplies Subscription
+                                    </h4>
+                                    <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.6;">
+                                        "New brushes, paints, and canvases delivered quarterly." Artists always need supplies.
+                                        Predict what they need and send it automatically.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border: 1px solid var(--border); border-radius: 20px; padding: var(--space-32);">
+                            <div style="display: flex; align-items: flex-start; gap: var(--space-20);">
+                                <div style="font-size: 48px;">🎮</div>
+                                <div>
+                                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                        Gaming Gear VIP Club
+                                    </h4>
+                                    <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.6;">
+                                        "Exclusive accessories, early releases, and member-only discounts."
+                                        Turn enthusiasts into recurring revenue with exclusive access.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border: 1px solid var(--border); border-radius: 20px; padding: var(--space-32);">
+                            <div style="display: flex; align-items: flex-start; gap: var(--space-20);">
+                                <div style="font-size: 48px;">📚</div>
+                                <div>
+                                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                        Book Club Box
+                                    </h4>
+                                    <p style="font-size: 16px; color: var(--text-secondary); line-height: 1.6;">
+                                        "A curated book + reading accessories delivered monthly."
+                                        Readers love discovering new books. Make it automatic.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-48); padding: var(--space-32); background: rgba(139,92,246,0.05); border-radius: 20px; border-left: 4px solid var(--accent);">
+                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-12);">
+                        The Key to Non-Consumable Subscriptions
+                    </h4>
+                    <p class="body-large">
+                        It's not about replenishment—it's about <strong style="color: var(--accent);">curation, exclusivity, and convenience</strong>.
+                        Give customers something they can't get anywhere else, and they'll stay subscribed.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Other Frequency Tactics -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content">
+                <h2 class="display-lg">3 More Ways to Increase Purchase Frequency</h2>
+                <p class="subtitle">Subscriptions are powerful, but they're not the only tool in your arsenal</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="label" style="color: var(--accent);">Strategy #1</div>
+                            <h4>Sell More Products (Cross-Sell)</h4>
+                            <p class="body" style="margin-top: var(--space-8);">
+                                After someone buys Product A, immediately offer Product B in a post-purchase flow.
+                                "Customers who bought this also loved..." Increase frequency by selling complementary items.
+                            </p>
+                            <div style="margin-top: var(--space-16); padding: var(--space-16); background: var(--bg-subtle); border-radius: 12px;">
+                                <strong style="color: var(--black);">Example:</strong>
+                                <span style="color: var(--text-secondary);"> Sell a yoga mat → Offer yoga blocks in thank-you email</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="label" style="color: var(--accent);">Strategy #2</div>
+                            <h4>New Product Launches (Launch to Customers First)</h4>
+                            <p class="body" style="margin-top: var(--space-8);">
+                                When you launch new products, email your customer list FIRST. They already trust you.
+                                They already bought once. They're 10x more likely to buy again than cold traffic.
+                            </p>
+                            <div style="margin-top: var(--space-16); padding: var(--space-16); background: var(--bg-subtle); border-radius: 12px;">
+                                <strong style="color: var(--black);">Example:</strong>
+                                <span style="color: var(--text-secondary);"> "VIP Early Access: New Summer Collection Drops Tomorrow"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="label" style="color: var(--accent);">Strategy #3</div>
+                            <h4>Loyalty Programs (Reward Repeat Purchases)</h4>
+                            <p class="body" style="margin-top: var(--space-8);">
+                                Give customers points, discounts, or rewards for coming back. Make them WANT to buy again.
+                                "Buy 5, get 1 free" or "Earn points on every purchase" keeps them engaged.
+                            </p>
+                            <div style="margin-top: var(--space-16); padding: var(--space-16); background: var(--bg-subtle); border-radius: 12px;">
+                                <strong style="color: var(--black);">Example:</strong>
+                                <span style="color: var(--text-secondary);"> Starbucks Rewards: Free drinks after X purchases</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dark-block" style="margin-top: var(--space-48);">
+                    <h3>The Frequency Stack</h3>
+                    <p style="margin-bottom: var(--space-24); color: rgba(255,255,255,0.8);">
+                        Don't just pick one. Use ALL of these strategies together for maximum LTV:
+                    </p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>Subscribe & Save</strong> for core products
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>Cross-sell</strong> complementary items after purchase
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>Launch</strong> new products to existing customers first
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; color: white;">
+                            ✓ <strong>Loyalty program</strong> to incentivize repeat purchases
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Implementation Guide -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <h2 class="display-lg">How to Implement Subscribe & Save</h2>
+                <p class="subtitle">3 steps to turn your one-time buyers into recurring revenue</p>
+
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Step 1: Choose Your Subscription App</h4>
+                            <p>
+                                <strong>Recharge, Skio, or Smartrr</strong> are the top Shopify subscription apps.
+                                Install one, connect to your store, and select which products to offer as subscriptions.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Step 2: Add a Discount Incentive</h4>
+                            <p>
+                                Offer <strong>10-15% off</strong> for subscribing. "Save 15% when you subscribe" converts hesitant buyers.
+                                The discount pays for itself with the increased LTV.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="feature-item">
+                        <div class="feature-icon">
+                            <svg class="icon" style="stroke: white;">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Step 3: Optimize the Subscription Experience</h4>
+                            <p>
+                                Make it easy to <strong>skip, pause, or modify</strong> subscriptions.
+                                Flexibility reduces churn. Send reminder emails before charges. Keep customers happy and retained.
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div style="margin-top: var(--space-48); padding: var(--space-32); background: var(--bg-subtle); border-radius: 20px;">
+                    <h4 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: var(--space-16);">
+                        Pro Tips for Success
+                    </h4>
+                    <div style="display: grid; gap: var(--space-16);">
+                        <div style="display: flex; gap: var(--space-12); align-items: flex-start;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                <svg style="width: 14px; height: 14px; stroke: white; stroke-width: 3; fill: none;">
+                                    <path d="M3 8l3 3 6-6"></path>
+                                </svg>
+                            </div>
+                            <p class="body">
+                                <strong>Default to subscription:</strong> Make "Subscribe & Save" the pre-selected option on product pages
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: var(--space-12); align-items: flex-start;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                <svg style="width: 14px; height: 14px; stroke: white; stroke-width: 3; fill: none;">
+                                    <path d="M3 8l3 3 6-6"></path>
+                                </svg>
+                            </div>
+                            <p class="body">
+                                <strong>Show the savings:</strong> "$120/year when you subscribe vs $160 one-time" makes the value obvious
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: var(--space-12); align-items: flex-start;">
+                            <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+                                <svg style="width: 14px; height: 14px; stroke: white; stroke-width: 3; fill: none;">
+                                    <path d="M3 8l3 3 6-6"></path>
+                                </svg>
+                            </div>
+                            <p class="body">
+                                <strong>Win-back campaigns:</strong> If someone cancels, send a discount to reactivate (e.g., "Come back for 20% off")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Quiz -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content">
+                <div class="quiz-container">
+                    <div class="label" style="text-align: center;">Knowledge Check</div>
+                    <h2 class="quiz-question">Which of the following is the PRIMARY benefit of Subscribe & Save?</h2>
+
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">
+                            A) It increases your Average Order Value (AOV)
+                        </div>
+                        <div class="quiz-option" data-correct="false">
+                            B) It improves your profit margins
+                        </div>
+                        <div class="quiz-option" data-correct="true">
+                            C) It dramatically increases purchase frequency and locks in LTV
+                        </div>
+                        <div class="quiz-option" data-correct="false">
+                            D) It reduces customer acquisition costs (CAC)
+                        </div>
+                    </div>
+
+                    <div class="quiz-feedback">
+                        <div class="feedback-content"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-64); padding: var(--space-32); background: var(--bg-subtle); border-radius: 20px;">
+                    <h4 style="font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: var(--space-16);">
+                        💡 Remember
+                    </h4>
+                    <p class="body">
+                        Subscribe & Save is all about <strong style="color: var(--accent);">frequency</strong>.
+                        Instead of convincing customers to buy again and again, you convince them ONCE to subscribe—then the purchases happen automatically.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Completion -->
+        <div class="slide" data-slide="9">
+            <div class="slide-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <div class="completion-badge">
+                    <svg class="icon" style="width: 64px; height: 64px;">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+
+                <h2 class="display-lg">Lesson Complete!</h2>
+                <p class="subtitle">You now understand the power of Subscribe & Save</p>
+
+                <div class="dark-block" style="text-align: left; margin-top: var(--space-48);">
+                    <h3 style="margin-bottom: var(--space-24);">Key Takeaways</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>Purchase frequency is the #1 LTV multiplier</strong> — Get customers to buy more often = instant LTV growth
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>Subscribe & Save builds predictable, compounding revenue</strong> — Every subscriber adds to MRR, which compounds month over month
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: var(--space-12); color: white;">
+                            ✓ <strong>You can turn ANY product into a subscription</strong> — Consumables are easy, but curation/exclusivity works for everything
+                        </li>
+                        <li style="padding: var(--space-16); background: rgba(255,255,255,0.05); border-radius: 12px; color: white;">
+                            ✓ <strong>Combine frequency tactics for maximum LTV</strong> — Use subscriptions + cross-sells + launches + loyalty together
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: var(--space-48);">
+                    <h3 class="headline" style="color: var(--accent);">Next Steps</h3>
+                    <div style="display: grid; gap: var(--space-16); text-align: left; margin-top: var(--space-24);">
+                        <div style="padding: var(--space-24); background: white; border: 1px solid var(--border); border-radius: 16px;">
+                            <div style="font-size: 24px; margin-bottom: var(--space-12);">📋</div>
+                            <h4 style="font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                Audit Your Products
+                            </h4>
+                            <p class="body">Which products could be subscriptions? Consumables? Curated boxes? Memberships?</p>
+                        </div>
+                        <div style="padding: var(--space-24); background: white; border: 1px solid var(--border); border-radius: 16px;">
+                            <div style="font-size: 24px; margin-bottom: var(--space-12);">🛠️</div>
+                            <h4 style="font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                Install a Subscription App
+                            </h4>
+                            <p class="body">Research Recharge, Skio, or Smartrr and set up your first subscription offering</p>
+                        </div>
+                        <div style="padding: var(--space-24); background: white; border: 1px solid var(--border); border-radius: 16px;">
+                            <div style="font-size: 24px; margin-bottom: var(--space-12);">📧</div>
+                            <h4 style="font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: var(--space-8);">
+                                Email Your Customer List
+                            </h4>
+                            <p class="body">Announce your new Subscribe & Save option with an exclusive discount for existing customers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-64); padding: var(--space-32); background: rgba(139,92,246,0.05); border-radius: 20px; border-left: 4px solid var(--accent); text-align: left;">
+                    <p class="body-large" style="margin: 0;">
+                        <strong style="color: var(--black);">Remember:</strong>
+                        <span style="color: var(--text-secondary);">
+                            The best time to start a subscription model was a year ago. The second best time is TODAY.
+                            Every month you wait is compounding revenue you're leaving on the table.
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-container">
+            <div class="nav-content">
+                <button class="nav-btn" id="prevBtn" disabled>← Previous</button>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+                </div>
+                <button class="nav-btn" id="nextBtn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lesson State
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        // Elements
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+
+        // Update slide display
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // Update navigation
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.textContent = currentSlide === totalSlides - 1 ? 'Finish' : 'Next →';
+
+            // Update progress
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressFill.style.width = progress + '%';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navigation handlers
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                // Finish lesson
+                alert('Lesson completed! Returning to Learning Center...');
+                // In production, this would navigate back or mark lesson complete
+            }
+        });
+
+        // Quiz functionality
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        const quizFeedback = document.querySelector('.quiz-feedback');
+        const feedbackContent = document.querySelector('.feedback-content');
+
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Disable all options after selection
+                quizOptions.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    const isCorrect = opt.getAttribute('data-correct') === 'true';
+                    if (isCorrect) {
+                        opt.classList.add('correct');
+                    }
+                });
+
+                // Check if selected answer is correct
+                const selectedCorrect = this.getAttribute('data-correct') === 'true';
+
+                if (selectedCorrect) {
+                    this.classList.add('correct');
+                    quizFeedback.classList.add('show', 'correct');
+                    feedbackContent.innerHTML = '<strong>✓ Correct!</strong><br>Subscribe & Save is all about increasing purchase frequency. It turns one-time buyers into recurring customers, which locks in LTV and builds predictable revenue.';
+                } else {
+                    this.classList.add('incorrect');
+                    quizFeedback.classList.add('show', 'incorrect');
+                    feedbackContent.innerHTML = '<strong>✗ Not quite.</strong><br>While subscriptions can indirectly help with CAC and margins, the PRIMARY benefit is <strong>increasing purchase frequency</strong>. This locks in LTV and creates predictable, compounding revenue.';
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+
+        // Animate subscription bars on slide 5
+        const subscriptionSlide = document.querySelector('[data-slide="4"]');
+        if (subscriptionSlide) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bars = entry.target.querySelectorAll('.month-bar');
+                        bars.forEach((bar, index) => {
+                            setTimeout(() => {
+                                bar.classList.add('active');
+                            }, index * 100);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(subscriptionSlide);
+        }
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

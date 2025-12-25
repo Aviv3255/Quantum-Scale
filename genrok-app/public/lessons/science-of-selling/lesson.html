@@ -81,7 +81,7 @@
         center: { label: 'Lesson', value: 'Clarity', result: 'Always beats creativity', color: '#6366f1' }
       }},
       { type: 'content', title: 'Your Ad Has One Job: Sell', body: 'Entertainment is a bonus. Memorability without conversion is just an expensive brand exercise. The most beautiful, award-winning ad in the world is worthless if nobody buys. Before you write a single word, ask yourself: "Will this make my customer click, call, or buy?" If the answer is "no" or "maybe," kill it.' },
-      { type: 'content', title: 'The 5 Stages of Awareness', body: 'Eugene Schwartz revolutionized copywriting with a simple insight: your prospect exists somewhere on a spectrum of awareness. The fatal mistake most marketers make is assuming everyone is ready to buy. They jump to features and pricing when the audience hasn\'t even acknowledged the problem.' },
+      { type: 'content', title: 'The 5 Stages of Awareness', body: 'Eugene Schwartz revolutionized copywriting with a simple insight: your prospect exists somewhere on a spectrum of awareness. The fatal mistake most marketers make is assuming everyone is ready to buy. They jump to features and pricing when the audience hasn\'t even acknowledged the problem.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eugene-schwartz.webp', personName: 'Eugene Schwartz' },
       { type: 'cards', title: 'Where Is Your Customer?', items: [
         { title: '1. Unaware', description: 'They don\'t know they have a problem. Your job: Pattern-interrupt. Show them a symptom they recognize but never named.' },
         { title: '2. Problem Aware', description: 'They feel the pain but don\'t know solutions exist. Your job: Articulate their pain better than they can.' },
@@ -160,9 +160,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 

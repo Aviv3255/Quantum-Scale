@@ -135,7 +135,7 @@
       { type: 'content', subtitle: 'Step 2', title: 'Define Your Avatar', body: 'Who are they TODAY? Who do they WANT to become? Call them what THEY call themselves. Speak their language. Understand their fears, dreams, and the gap between where they are and where they want to be.', callout: 'The gap between Current Identity and Ideal Identity is where your product lives.' },
       { type: 'example', subtitle: 'Avatar Journey', bad: { label: 'Generic', text: '"For entrepreneurs who want to grow their business"' }, good: { label: 'Specific Identity', text: '"For exhausted Shopify owners working 80-hour weeks who dream of hitting $50K months while working 20 hours"' }, insight: 'Specificity creates resonance. Generic language creates indifference.' },
       { type: 'visual', visualType: 'awareness' },
-      { type: 'content', subtitle: 'Step 3', title: 'The 5 Awareness Levels', body: 'Eugene Schwartz nailed this decades ago. Your customer is at ONE of these levels: Unaware, Problem Aware, Solution Aware, Product Aware, or Most Aware. Your copy MUST meet them where they are.', highlight: { label: 'The Mistake', text: 'Writing "Most Aware" copy for "Problem Aware" audiences kills conversions.' }},
+      { type: 'content', subtitle: 'Step 3', title: 'The 5 Awareness Levels', body: 'Eugene Schwartz nailed this decades ago. Your customer is at ONE of these levels: Unaware, Problem Aware, Solution Aware, Product Aware, or Most Aware. Your copy MUST meet them where they are.', highlight: { label: 'The Mistake', text: 'Writing "Most Aware" copy for "Problem Aware" audiences kills conversions.' }, personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eugene-schwartz.webp', personName: 'Eugene Schwartz' },
       { type: 'content', subtitle: 'Step 4', title: 'The 3-Phase Campaign', body: 'Think of your funnel as a house. Phase 1: Curiosity (Front Steps) - Stop them scrolling. Phase 2: Enlightenment (Porch) - Educate and build trust. Phase 3: Commitment (Door) - Make the offer irresistible.', callout: 'Ad → Landing Page → Checkout. Each phase has a different job.' },
       { type: 'cards', title: 'Campaign Architecture', subtitle: 'The three phases that convert:', cards: [
         { icon: 'curiosity', title: 'Curiosity', desc: 'Stop the scroll. Create a pattern interrupt. Make them look.' },
@@ -305,15 +305,23 @@
 
     // Content Slide (25% larger)
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-3xl md:text-4xl text-black mb-5">{data.title}</motion.h2>
-        {data.body && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-5">{data.body}</motion.p>}
-        {data.callout && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="text-neutral-500 text-base italic">{data.callout}</motion.p>}
-        {data.highlight && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
-            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
-            <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-3xl md:text-4xl text-black mb-5">{data.title}</motion.h2>
+          {data.body && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-5">{data.body}</motion.p>}
+          {data.callout && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="text-neutral-500 text-base italic">{data.callout}</motion.p>}
+          {data.highlight && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
+              <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+            </motion.div>
+          )}
+        </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
+            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
           </motion.div>
         )}
       </div>
