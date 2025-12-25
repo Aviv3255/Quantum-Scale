@@ -268,7 +268,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why knowing your audience is the most powerful weapon in copy', 'How to read your customers\' minds with post-purchase surveys', 'The exact method to uncover their motivations, fears, and price points'] },
-      { type: 'hook', headline: 'Time to read minds', subtext: 'The most powerful weapon in copy isn\'t clever wordplay or persuasion tricks. It\'s knowing exactly what your customer is thinking. Their deepest motivations. Their hidden fears. The price they\'re willing to pay. Post-purchase surveys give you that power - for free. After this lesson, you\'ll never guess again.' },
+      { type: 'hook', headline: 'Time to read minds', subtext: 'The most powerful weapon in copy isn\'t clever wordplay or persuasion tricks. It\'s knowing exactly what your customer is thinking. Their deepest motivations. Their hidden fears. The price they\'re willing to pay. Post-purchase surveys give you that power - for free. After this lesson, you\'ll never guess again.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
       { type: 'content', title: 'Your Customers Already Know Everything', body: 'Your best copy already exists. Your customers wrote it. They know why they bought, what almost stopped them, what they were searching for, and how much they\'re willing to pay. The problem? You\'ve never asked them. Post-purchase surveys capture this goldmine of data automatically. Every sale becomes an insight. Every customer becomes a teacher.' },
       { type: 'insight-reveal', setup: 'What if 85% of your customers told you exactly why they bought?', insight: 'They Will - If You Ask', explanation: 'Post-purchase surveys capture responses from 60-85% of customers. They WANT to tell you.' },
       { type: 'survey-preview', title: 'The Survey That Prints Money', question: 'How did you first hear about us?', options: ['Instagram/TikTok', 'Google Search', 'A friend told me', 'Saw an ad'], insight: 'This single question reveals your TRUE acquisition channels - often shocking how different it is from analytics.' },
@@ -329,12 +329,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

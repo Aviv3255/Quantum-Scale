@@ -56,7 +56,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why CAPI + Pixel together beat either alone', 'How event_id deduplication prevents double-counting', 'Value Bidding vs Volume Bidding explained'] },
-      { type: 'hook', headline: 'You have the perfect campaign structure. 12 distinct creatives. Everything ready. But your data is garbage. Meta learns from noise. Andromeda optimizes for the wrong people. Your ROAS tanks.', subtext: 'The system is only as smart as your signals. Clean data = smart AI. Dirty data = expensive mistakes. Here\'s the data hygiene checklist.' },
+      { type: 'hook', headline: 'You have the perfect campaign structure. 12 distinct creatives. Everything ready. But your data is garbage. Meta learns from noise. Andromeda optimizes for the wrong people. Your ROAS tanks.', subtext: 'The system is only as smart as your signals. Clean data = smart AI. Dirty data = expensive mistakes. Here\'s the data hygiene checklist.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'Principle #3: The System is Only as Smart as Your Signals', body: 'Andromeda is powerful.\nBut it\'s not magic.\n\nIt learns from YOUR data:\n• Who clicked\n• Who converted\n• What they bought\n• How much they spent\n\nGarbage in = Garbage out.\n\nIf your tracking is broken, Andromeda optimizes for the wrong people.\nYou get clicks from people who never buy.\nYou get conversions worth $10 when you need $100.\n\nClean signals = Smart AI.' },
       { type: 'checklist', title: 'Data Hygiene Checklist', items: [
         { id: 1, item: 'CAPI + Pixel (both active)', status: 'Must have', description: 'Dual tracking catches what browser-only misses' },
@@ -132,12 +132,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

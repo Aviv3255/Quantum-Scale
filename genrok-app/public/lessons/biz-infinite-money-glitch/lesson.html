@@ -55,7 +55,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The flywheel that funds itself', 'Why LTV > CAC unlocks infinite scaling', 'Building your money printing machine'] },
-      { type: 'hook', headline: 'What if every customer you acquired funded the acquisition of two more?', subtext: 'That is not a fantasy. It is a flywheel. When your LTV significantly exceeds your CAC, something magical happens: your business becomes self-fueling. Each customer generates enough profit to acquire the next one. And the next. And the next. No external funding needed. No bootstrapping grind. Just a machine that prints money as long as you keep feeding it customers.' },
+      { type: 'hook', headline: 'What if every customer you acquired funded the acquisition of two more?', subtext: 'That is not a fantasy. It is a flywheel. When your LTV significantly exceeds your CAC, something magical happens: your business becomes self-fueling. Each customer generates enough profit to acquire the next one. And the next. And the next. No external funding needed. No bootstrapping grind. Just a machine that prints money as long as you keep feeding it customers.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/REI_logo.svg.png', brandName: 'REI' },
       { type: 'flywheel-visual', title: 'The Infinite Money Flywheel', steps: [
         { label: 'Acquire Customer', description: 'Spend $50 to acquire', color: '#3B82F6' },
         { label: 'Generate LTV', description: 'Customer worth $200', color: '#22C55E' },
@@ -309,68 +309,23 @@
     };
 
     // Hook
-    const HookSlide = ({ data }) => (<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8"><motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 leading-tight">{data.headline}</h2><p className="text-neutral-600 text-lg leading-relaxed">{data.subtext}</p></motion.div></div>);
-
-    // Quiz - With GIF overlay integration
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
-      const [selected, setSelected] = useState(null);
-      const [showFeedback, setShowFeedback] = useState(false);
-      const isCorrect = selected === data.correctIndex;
-
-      const handleSelect = (i) => {
-        if (!showFeedback) {
-          setSelected(i);
-          setShowFeedback(true);
-          const gifSide = Math.random() > 0.5 ? 'left' : 'right';
-          if (i === data.correctIndex) {
-            onShowGif(getRandomCelebrationGif(), '55%', gifSide);
-          } else {
-            onShowGif(getRandomEmpathyGif(), '55%', gifSide);
-          }
-        }
-      };
-
-      useEffect(() => {
-        return () => onHideGif();
-      }, [onHideGif]);
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8"><div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}><span>Quick Check</span></div><h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2></motion.div>
-          <div className="space-y-3 mb-8">{data.options.map((option, i) => (<motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all ${showFeedback ? (i === data.correctIndex ? 'ring-2 ring-green-500' : i === selected ? 'ring-2 ring-red-500' : '') : 'hover:bg-neutral-100'}`} style={{ background: showFeedback && i === data.correctIndex ? 'rgba(34, 197, 94, 0.1)' : showFeedback && i === selected && i !== data.correctIndex ? 'rgba(239, 68, 68, 0.1)' : '#fafafa', border: '1px solid #eee' }}><div className="flex items-center gap-3"><div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-500 text-white' : 'bg-white text-neutral-600 border border-neutral-200'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected ? <Icons.X /> : String.fromCharCode(65 + i)}</div><span className="text-neutral-700">{option}</span></div></motion.button>))}</div>
-          <AnimatePresence>{showFeedback && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl p-6" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}` }}><div className={`font-bold mb-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>{isCorrect ? 'Correct!' : 'Not quite!'}</div><p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p></motion.div>)}</AnimatePresence>
+    const HookSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-      );
-    };
-
-    // Completion
-    const CompletionSlide = ({ data, userName }) => {
-      return (<div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center"><motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}><div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)' }}><Icons.Check /></div><h2 className="slide-title text-2xl md:text-3xl text-black mb-4">Lesson Complete!</h2><p className="text-neutral-500 text-lg mb-8">Great work, {userName}! You now understand how to activate the infinite money glitch.</p>{LESSON_CONFIG.nextLesson && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-left" style={{ background: '#0a0a0a', border: '1px solid #222' }}><div className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Up Next</div><h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3><p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p></motion.div>)}</motion.div></div>);
-    };
-
-    // Slide Router
-    const renderSlide = (slide, { onShowGif, onHideGif, userName }) => {
-      switch (slide.type) {
-        case 'welcome': return <WelcomeSlide data={slide} userName={userName} onShowGif={onShowGif} onHideGif={onHideGif} />;
-        case 'hook': return <HookSlide data={slide} />;
-        case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
-        case 'math-visual': return <MathVisualSlide data={slide} />;
-        case 'content': return <ContentSlide data={slide} />;
-        case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-        case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
-        case 'before-after': return <BeforeAfterSlide data={slide} />;
-        case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
-        case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-        case 'quiz': return <QuizSlide data={slide} onShowGif={onShowGif} onHideGif={onHideGif} />;
-        case 'completion': return <CompletionSlide data={slide} userName={userName} />;
-        default: return <ContentSlide data={slide} />;
-      }
-    };
-
-    const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
-      const [gifConfig, setGifConfig] = useState({ visible: false, src: '', maxHeight: '60%', side: 'right' });
-      const userName = getUserName();
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
+      </div>
+    );
       const totalSlides = slides.length;
 
       const showGif = useCallback((src, maxHeight = '60%', side = 'right') => {

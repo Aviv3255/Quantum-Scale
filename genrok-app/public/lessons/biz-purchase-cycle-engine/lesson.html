@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['How Le Creuset engineered repeat purchases', 'The 4-5 annual touchpoint strategy', 'How to apply "planned obsolescence" without the sleaze'] },
-      { type: 'hook', headline: 'Cookware lasts decades. Le Creuset sells it like it\'s fashion.', subtext: 'A Dutch oven can last 50 years. Most cookware brands accept this—they sell once and hope for referrals. Le Creuset said: "What if we gave customers a reason to buy every single year?" They engineered the purchase cycle. And built an empire.' },
+      { type: 'hook', headline: 'Cookware lasts decades. Le Creuset sells it like it\'s fashion.', subtext: 'A Dutch oven can last 50 years. Most cookware brands accept this—they sell once and hope for referrals. Le Creuset said: "What if we gave customers a reason to buy every single year?" They engineered the purchase cycle. And built an empire.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Klaviyo-primary-logo-charcoal.svg.png', brandName: 'Klaviyo' },
       { type: 'content', title: 'The Le Creuset Problem', body: 'Imagine you sell cookware that lasts forever. Premium cast iron. Lifetime warranty. Your product is so good, customers only need one. That\'s a terrible business problem. Your LTV is stuck at one purchase. You\'re constantly chasing new customers because old ones don\'t need you anymore. Le Creuset faced this exact problem. Their solution was genius.' },
       { type: 'content', title: 'The Color Strategy', body: 'Every year, Le Creuset introduces new colors. Cherry Red. Caribbean Blue. Nectar Yellow. And every year, they retire old ones. This creates something magical: your cookware collection is never "complete." There\'s always a new color that would look perfect next to what you already have. What was a utility purchase became a collectible hobby.' },
       { type: 'visual', title: 'The Annual Touchpoint Machine', visualType: 'stats', data: [
@@ -139,12 +139,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

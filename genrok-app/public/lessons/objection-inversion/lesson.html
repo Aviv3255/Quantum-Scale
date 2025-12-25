@@ -92,7 +92,7 @@
         'The Judo technique - agree, then redirect',
         'Common inversions for price, time, trust, and "I need to think"'
       ]},
-      { type: 'hook', headline: 'The objection killing your sales is actually your best selling point.', subtext: 'You just need to flip it. What feels like a dealbreaker is often the exact reason they should buy. Stop defending. Start redirecting.' },
+      { type: 'hook', headline: 'The objection killing your sales is actually your best selling point.', subtext: 'You just need to flip it. What feels like a dealbreaker is often the exact reason they should buy. Stop defending. Start redirecting.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'content', title: 'Why Objections Feel Like Walls', body: 'Most sellers treat objections as roadblocks. "I can\'t afford it" feels like game over. But here\'s the truth: objections are doors in disguise. When someone objects, they\'re still engaged. They\'re processing. They\'re considering. The sale isn\'t dead - it\'s just at a crossroads. And you get to choose which direction it goes.' },
       { type: 'visual', title: 'The Objection Reality', visualType: 'stats', data: [
         { value: '93%', label: 'smokescreens', subtext: 'Most objections hide the real concern' },
@@ -155,12 +155,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

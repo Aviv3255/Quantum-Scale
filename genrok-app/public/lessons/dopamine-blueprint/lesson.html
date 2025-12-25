@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why anticipation releases MORE dopamine than the reward itself', 'The Habit Loop: Trigger → Routine → Reward', 'How to make customers CRAVE coming back with Variable Rewards'] },
-      { type: 'hook', headline: 'Scientists gave monkeys juice when a light turned on. The monkeys\' dopamine spiked. But here\'s the twist...', subtext: 'After the pattern was learned, dopamine stopped spiking at the juice. It spiked at the LIGHT. The anticipation became more rewarding than the reward itself. This is the secret casinos, social media, and the world\'s most addictive products exploit. Your customers\' brains work exactly the same way. The question is: are you triggering dopamine, or just delivering products?' },
+      { type: 'hook', headline: 'Scientists gave monkeys juice when a light turned on. The monkeys\' dopamine spiked. But here\'s the twist...', subtext: 'After the pattern was learned, dopamine stopped spiking at the juice. It spiked at the LIGHT. The anticipation became more rewarding than the reward itself. This is the secret casinos, social media, and the world\'s most addictive products exploit. Your customers\' brains work exactly the same way. The question is: are you triggering dopamine, or just delivering products?' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'visual', title: 'The Dopamine Shift', visualType: 'comparison', data: {
         left: { label: 'Before Learning', value: 'Reward', result: 'Dopamine spikes at juice', color: '#94a3b8' },
         right: { label: 'After Learning', value: 'Trigger', result: 'Dopamine spikes at light', color: '#8b5cf6' },
@@ -143,12 +143,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

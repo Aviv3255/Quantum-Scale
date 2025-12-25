@@ -125,7 +125,7 @@
         'The 4 types of admissions that filter for ideal customers',
         'How to use strategic honesty to 2x your trust transfer'
       ]},
-      { type: 'hook', title: 'Your Customers Don\'t Trust You', body: 'They\'ve been burned before. Bought the miracle serum that didn\'t work. Trusted the 5-star reviews that were fake. Believed the "guaranteed results" that were empty promises.', punchline: 'Every bold claim makes their walls go higher.' },
+      { type: 'hook', title: 'Your Customers Don\'t Trust You', body: 'They\'ve been burned before. Bought the miracle serum that didn\'t work. Trusted the 5-star reviews that were fake. Believed the "guaranteed results" that were empty promises.', punchline: 'Every bold claim makes their walls go higher.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', subtitle: 'The Pattern Break', title: 'Admit the Weakness First', body: 'When you voluntarily reveal a drawback before they discover it, something shifts in their brain. If you\'re honest about what doesn\'t work, you must be honest about what does.', highlight: { label: 'The Truth', text: 'This is how trusted advisors talk. Not salespeople.' }},
       { type: 'example', subtitle: 'See It In Action', bad: { label: 'Generic Claim', text: '"Our skincare serum delivers amazing results for all skin types!"' }, good: { label: 'Damaging Admission', text: '"Our serum takes 6 weeks to show results. Most people quit at week 3. But those who stick with it? 89% see visible reduction in fine lines."' }, insight: 'The admission of slow results makes the 89% claim believable. Plus it filters out impatient buyers who would leave bad reviews.' },
       { type: 'content', subtitle: 'The Mechanism', title: 'Why This Works', body: 'Your brain expects salespeople to hide flaws. When someone reveals a weakness voluntarily, you automatically assume they\'re being honest about everything else.', callout: 'This credibility transfer is automatic and powerful. One strategic admission can make every other claim land with 2x the impact.' },
@@ -264,12 +264,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-8">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-6">
-          <p className="text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--accent)' }}>{data.punchline}</p>
-        </motion.div>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The 3 pillars Poppy used to disrupt Coca-Cola and Pepsi', 'How founder-led narrative creates authentic brand personality', 'Why celebrity association beats traditional celebrity ads', 'How mere exposure across all channels creates ubiquitous brand presence'] },
-      { type: 'hook', headline: 'How do you disrupt a $200B industry dominated by Coca-Cola and Pepsi?', subtext: 'You do not have their billion-dollar ad budgets. You do not have their distribution. You do not have their shelf space. But you have something they do not: modern psychology, authentic narrative, and cost-effective social virality. Poppy (prebiotic soda) went from zero to $2B+ valuation in record time by doing everything traditional brands do, but with more personality, more social reach, and superior cost-effectiveness. This is the blueprint.' },
+      { type: 'hook', headline: 'How do you disrupt a $200B industry dominated by Coca-Cola and Pepsi?', subtext: 'You do not have their billion-dollar ad budgets. You do not have their distribution. You do not have their shelf space. But you have something they do not: modern psychology, authentic narrative, and cost-effective social virality. Poppy (prebiotic soda) went from zero to $2B+ valuation in record time by doing everything traditional brands do, but with more personality, more social reach, and superior cost-effectiveness. This is the blueprint.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Pepsi_2023.svg', brandName: 'Pepsi' },
       { type: 'content', title: 'The Traditional Brand Playbook (Expensive, Outdated)', body: 'Traditional beverage brands spend billions on TV ads, celebrity endorsements, and stadium sponsorships. They hire celebrities to hold their product and smile. They plaster logos everywhere. They dominate retail shelf space through distributor relationships. It works, but it requires massive capital and decades of momentum. For a new brand? Impossible to compete on those terms.' },
       { type: 'content', title: 'The Poppy Playbook (Modern, Psychology-Driven, Cost-Effective)', body: 'Poppy used three psychological pillars to achieve what traditional brands do, but faster, cheaper, and with deeper consumer connection. Instead of celebrity ads, they created celebrity CONTENT. Instead of founder anonymity, they made the founder the core personality. Instead of scattered presence, they ensured ubiquitous exposure across every channel simultaneously. Same outcomes. Different psychology. Massive cost advantage.' },
       { type: 'cards', title: 'The 3 Pillars of Modern Disruption', items: [
@@ -141,12 +141,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

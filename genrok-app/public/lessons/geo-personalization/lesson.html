@@ -106,7 +106,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['How GEO-location personalization taps into identity psychology', 'Why price-income fit drops resistance instantly', 'How this works best for multi-product catalogs'] },
-      { type: 'hook', headline: 'A Brazilian visits your store on Independence Day and sees: "Happy Brazil Independence Day! Special offer for our Brazilian customers."', subtext: 'That customer just experienced emotional elevation. Not because of the discount - but because you acknowledged their identity. Their country. Their moment. And when the offer matches their economic reality? Resistance evaporates. Here\'s how this works.' },
+      { type: 'hook', headline: 'A Brazilian visits your store on Independence Day and sees: "Happy Brazil Independence Day! Special offer for our Brazilian customers."', subtext: 'That customer just experienced emotional elevation. Not because of the discount - but because you acknowledged their identity. Their country. Their moment. And when the offer matches their economic reality? Resistance evaporates. Here\'s how this works.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'What Is GEO-Location Personalization?', body: 'Simple: Your announcement bar detects visitor location and displays a personalized message. Country-specific holidays. Currency in their format. Pricing adjusted to local purchasing power. It\'s not about being clever - it\'s about making them feel SEEN.' },
       { type: 'visual', title: 'The Psychology: Price-Income Fit', visualType: 'image', imageUrl: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/48.jpg?v=1763054191' },
       { type: 'content', title: 'Why Price-Income Fit Matters', body: 'When the offer matches economic reality, resistance drops. A $50 product feels expensive in Brazil (where average income is lower). But when you show "R$180 - Special Brazil Pricing" instead of "$50 USD," it FITS their world. Same product. Different frame. Massive psychological shift.' },
@@ -175,12 +175,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

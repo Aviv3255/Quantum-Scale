@@ -91,7 +91,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why GA4 + Meta integration is a competitive advantage', 'The "all traffic" setting that most advertisers miss', 'How enhanced conversions feed Meta higher-quality signals'] },
-      { type: 'hook', headline: 'Your competitors are feeding Meta blurry photos. You can feed it 4K.', subtext: 'Most advertisers only send Meta their Facebook traffic data. That\'s like giving someone a puzzle with 70% of the pieces missing. GA4 integration lets you share ALL your traffic data - including organic, Google Ads, email - giving Meta\'s AI complete night vision to find your best customers.' },
+      { type: 'hook', headline: 'Your competitors are feeding Meta blurry photos. You can feed it 4K.', subtext: 'Most advertisers only send Meta their Facebook traffic data. That\'s like giving someone a puzzle with 70% of the pieces missing. GA4 integration lets you share ALL your traffic data - including organic, Google Ads, email - giving Meta\'s AI complete night vision to find your best customers.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'Why GA4 Integration Matters', body: 'Meta\'s Andromeda AI learns who to target based on conversion signals. More signals = better learning. But here\'s what 90% of advertisers don\'t realize: you can feed Meta your ENTIRE GA4 audience - not just Facebook traffic. That means Meta sees customers who came from Google, organic, email, direct - everywhere. It learns patterns invisible to competitors who only share Meta-only data.' },
       { type: 'visual-comparison', title: 'Data Quality: Standard vs GA4 Enhanced', leftCard: { label: 'Standard Setup', icon: 'camera', quality: 'Blurry', items: ['Only sees Meta traffic', 'Misses 60-70% of conversions', 'Learning period: weeks', 'Optimization: limited'], color: '#EF4444' }, rightCard: { label: 'GA4 Integration', icon: 'microscope', quality: '4K Ultra HD', items: ['Sees ALL traffic sources', 'Captures 95%+ of conversions', 'Learning period: days', 'Optimization: surgical precision'], color: '#10B981' }},
       { type: 'ga4-mockup', title: 'Inside GA4: Data Collection Settings', description: 'This is where most advertisers stop. They enable basic tracking but miss the critical setting that shares ALL traffic data with advertising partners.' },
@@ -157,12 +157,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

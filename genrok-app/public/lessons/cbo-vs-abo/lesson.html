@@ -106,7 +106,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why CBO and ABO are not alternatives - they solve different problems', 'The exact testing structure that feeds Andromeda\'s prediction engine', 'The 6-adset scaling structure that works under Andromeda'] },
-      { type: 'hook', headline: 'Most store owners treat CBO and ABO like choosing between coffee or tea.', subtext: 'That\'s like asking: "Should I use a hammer or a screwdriver?" Wrong question. They\'re different tools for different jobs. Trying to scale with ABO is like hammering with a screwdriver. And testing with CBO? That\'s screwing with a hammer. Both work terribly. Here\'s what actually works.' },
+      { type: 'hook', headline: 'Most store owners treat CBO and ABO like choosing between coffee or tea.', subtext: 'That\'s like asking: "Should I use a hammer or a screwdriver?" Wrong question. They\'re different tools for different jobs. Trying to scale with ABO is like hammering with a screwdriver. And testing with CBO? That\'s screwing with a hammer. Both work terribly. Here\'s what actually works.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.' },
       { type: 'comparison-battle', title: 'ABO vs CBO: Different Jobs', left: { label: 'ABO', subtitle: 'Testing Lab', color: '#EF4444', features: ['Small budgets ($20-50/day)', 'Test one concept at a time', 'Controlled experiments', 'Learn what resonates', '40-50 creatives weekly'] }, right: { label: 'CBO', subtitle: 'Scaling Engine', color: '#10B981', features: ['High budgets ($500+/day)', 'Feed 12-30 winners', 'Dynamic optimization', 'Andromeda distributes spend', 'Let AI find buyers'] } },
       { type: 'testing-scaling-toggle', title: 'The Complete Campaign Structure' },
@@ -160,12 +160,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

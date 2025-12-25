@@ -185,7 +185,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why geo-targeted discounts outperform static ones', 'The psychology behind location-based personalization', 'Real test results from 64,000+ visitors'] },
-      { type: 'hook', headline: 'Same store. Same products. Same traffic. But visitors from India saw 15% off while New York saw 5% off.', subtext: 'Result? Typical CVR increase of 40-75% across tested stores. Not by changing the product. Not by improving the copy. Just by matching the discount to purchasing power. This is the geographic advantage most stores completely ignore.' },
+      { type: 'hook', headline: 'Same store. Same products. Same traffic. But visitors from India saw 15% off while New York saw 5% off.', subtext: 'Result? Typical CVR increase of 40-75% across tested stores. Not by changing the product. Not by improving the copy. Just by matching the discount to purchasing power. This is the geographic advantage most stores completely ignore.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'before-after-visual', title: 'Generic vs. Personal', before: { text: 'Get 10% off your first order!', feeling: 'Feels like spam' }, after: { text: 'India Summer Sale: 15% off sitewide!', feeling: 'Feels made for YOU' }, insight: 'One announcement bar talks TO everyone. The other talks WITH each visitor.' },
       { type: 'content', title: 'The Problem: Generic Messaging', body: 'Most stores treat every visitor the same. A shopper in Mumbai sees the exact same discount as someone in Manhattan. Same message, same percentage, same timing. But here\'s the thing: a 10% discount means completely different things in different markets. In one country, it\'s compelling. In another, it barely registers. You\'re not personalizing - you\'re broadcasting.' },
       { type: 'dramatic-number', number: '67', suffix: '%', label: 'Typical CVR Increase', subtext: 'When discounts match local purchasing power' },
@@ -266,12 +266,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

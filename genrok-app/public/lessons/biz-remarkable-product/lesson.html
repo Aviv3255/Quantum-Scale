@@ -80,7 +80,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why mediocre products force you to fight forever', 'The Smallest Viable Audience - your secret weapon', 'The 3-question litmus test for remarkable products'] },
-      { type: 'hook', headline: 'A plain gray t-shirt. Nothing special. Sells okay. But you\'re stuck in an endless loop of discounts, ads, and customer churn. Now picture TOMS Shoes: "Buy a pair, give a pair." Distinctive design. Built-in story. People line up. Not because of ads. Because the product is worth talking about.', subtext: 'Marketing starts BEFORE the product is finished. You can\'t create a high-LTV business by selling mediocre products and hoping ads fix it. The goal is to invent something worth making a remark about. That\'s where everything changes.' },
+      { type: 'hook', headline: 'A plain gray t-shirt. Nothing special. Sells okay. But you\'re stuck in an endless loop of discounts, ads, and customer churn. Now picture TOMS Shoes: "Buy a pair, give a pair." Distinctive design. Built-in story. People line up. Not because of ads. Because the product is worth talking about.', subtext: 'Marketing starts BEFORE the product is finished. You can\'t create a high-LTV business by selling mediocre products and hoping ads fix it. The goal is to invent something worth making a remark about. That\'s where everything changes.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tiktok-app-icon-social-media-logo_277909-647.png', brandName: 'TikTok'},
       { type: 'quoteSpotlight', data: {
         quote: 'Stop making average crap for average people.',
         context: 'Seth Godin - The foundation of remarkable marketing',
@@ -152,12 +152,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

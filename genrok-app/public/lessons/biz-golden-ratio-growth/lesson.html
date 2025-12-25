@@ -75,7 +75,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why LTV:CAC ratio is THE metric that matters', 'The three zones: Broken (<1:1), Healthy (3:1), Opportunity (>6:1)', 'How to calculate and improve your ratio'] },
-      { type: 'hook', headline: 'One ratio separates winners from everyone else.', subtext: 'The entire game of business growth is won or lost on a single equation: LTV > CAC. Customer Lifetime Value must exceed Customer Acquisition Cost. But by how much? That\'s where the 3:1 Golden Ratio comes in. It\'s the sweet spot. The benchmark. The north star. Below it, you\'re bleeding money. Above 6:1, you\'re leaving growth on the table. Hit 3:1 and you\'ve cracked the code.' },
+      { type: 'hook', headline: 'One ratio separates winners from everyone else.', subtext: 'The entire game of business growth is won or lost on a single equation: LTV > CAC. Customer Lifetime Value must exceed Customer Acquisition Cost. But by how much? That\'s where the 3:1 Golden Ratio comes in. It\'s the sweet spot. The benchmark. The north star. Below it, you\'re bleeding money. Above 6:1, you\'re leaving growth on the table. Hit 3:1 and you\'ve cracked the code.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/REI_logo.svg.png', brandName: 'REI'},
       { type: 'visual', title: 'The Equation', visualType: 'equation' },
       { type: 'content', title: 'The Foundation', body: 'LTV (Customer Lifetime Value) is the total gross profit a customer generates over their entire relationship with your business. CAC (Customer Acquisition Cost) is every dollar spent to acquire that customer—ads, marketing, sales, the whole stack. The ratio between them determines everything. It tells you if your business model works. If you can scale. If you\'ll survive. This isn\'t vanity metrics. This is the truth.' },
       { type: 'gauge', title: 'The Three Zones', zones: [
@@ -143,12 +143,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

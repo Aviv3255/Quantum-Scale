@@ -90,7 +90,7 @@
         'The Hermès Birkin waitlist strategy - manufactured scarcity',
         'Limited editions as psychological triggers for desire'
       ]},
-      { type: 'hook', headline: 'A leather bag costs $200 to make. Hermès sells it for $12,000. And people wait years for it.', subtext: 'The difference? They don\'t sell bags. They sell mythology. Luxury brands understand something most eCommerce stores miss: Scarcity + Story = irresistible desire. Your products don\'t need to be premium. Your story does.' },
+      { type: 'hook', headline: 'A leather bag costs $200 to make. Hermès sells it for $12,000. And people wait years for it.', subtext: 'The difference? They don\'t sell bags. They sell mythology. Luxury brands understand something most eCommerce stores miss: Scarcity + Story = irresistible desire. Your products don\'t need to be premium. Your story does.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/ritual-logo.svg', brandName: 'Ritual'},
       { type: 'content', title: 'The Birkin Bag Myth', body: 'Hermès doesn\'t advertise Birkin bags. You can\'t just buy one online. There\'s no "Add to Cart" button. You have to know someone. You have to build a relationship with a sales associate. You have to prove you\'re worthy. The waitlist can take years. And when you finally get the call? You feel like you\'ve won the lottery. That\'s not sales. That\'s mythology.' },
       { type: 'example', scenario: 'The Hermès Strategy', before: { label: 'Normal Brand', text: 'Premium leather bag. High quality. $12,000. Buy now while supplies last!' }, after: { label: 'Hermès Mythology', text: 'No public inventory. No advertising. Invite-only access. Waitlist of 2-5 years. Each bag has a story, a craftsman, a legacy.' }, insight: 'Same bag. Different mythology. One feels like a purchase. The other feels like an achievement.' },
       { type: 'cards', title: 'The Elements of Luxury Mythology', items: [
@@ -165,12 +165,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

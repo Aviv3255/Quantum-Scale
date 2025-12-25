@@ -242,7 +242,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['How browser extensions are silently stealing your profit', 'Why customers who\'d pay full price are getting unnecessary discounts', 'The FREE solution that blocks coupon leaking extensions'] },
-      { type: 'hook', headline: 'Browser extensions are leaking your discount codes to everyone. And you have no idea it\'s happening.', subtext: 'Every day, customers who would gladly pay full price are getting automatic discounts they never earned. Honey, Capital One Shopping, Coupert - these extensions scrape your coupon codes and apply them to every single visitor. You\'re losing pure profit. Silently. Invisibly. Every. Single. Day.' },
+      { type: 'hook', headline: 'Browser extensions are leaking your discount codes to everyone. And you have no idea it\'s happening.', subtext: 'Every day, customers who would gladly pay full price are getting automatic discounts they never earned. Honey, Capital One Shopping, Coupert - these extensions scrape your coupon codes and apply them to every single visitor. You\'re losing pure profit. Silently. Invisibly. Every. Single. Day.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/unnamed%20(1).png', brandName: 'Honey'},
       { type: 'profit-flow', title: 'The Silent Profit Killer' },
       { type: 'real-example', title: 'Real Example: $50 Product Sale' },
       { type: 'cards', title: 'How Coupon Extensions Work', items: [
@@ -298,12 +298,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

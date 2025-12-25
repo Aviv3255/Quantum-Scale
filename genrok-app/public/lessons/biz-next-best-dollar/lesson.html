@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why you are a capital allocator', 'The one question that changes everything', 'How to find the perfect spend level'] },
-      { type: 'hook', headline: 'Most marketers manage channels. Elite marketers allocate capital.', subtext: 'One question separates the two. Most marketers ask "how do I improve my Meta ads?" Elite marketers ask "where does my next dollar generate the highest return?" The first optimizes in silos. The second optimizes the entire portfolio. One manages platforms. The other deploys capital for maximum efficiency.' },
+      { type: 'hook', headline: 'Most marketers manage channels. Elite marketers allocate capital.', subtext: 'One question separates the two. Most marketers ask "how do I improve my Meta ads?" Elite marketers ask "where does my next dollar generate the highest return?" The first optimizes in silos. The second optimizes the entire portfolio. One manages platforms. The other deploys capital for maximum efficiency.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/YouTube_Logo_2017.svg.png', brandName: 'YouTube' },
       { type: 'capital-allocation', title: 'How 9-Figure Brands Allocate Capital', subtitle: 'The proven 50/20/20/10 formula', segments: [
         { label: 'Primary Channel', percentage: 50, color: '#22C55E', description: 'Your top performer - scale aggressively' },
         { label: 'Secondary', percentage: 20, color: '#3B82F6', description: 'Strong ROI - maintain & optimize' },
@@ -184,12 +184,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

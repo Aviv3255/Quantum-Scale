@@ -90,7 +90,7 @@
         'How to consolidate variants, upsells, and subscriptions into one visible offer',
         'Why scattered trust signals kill conversion (and how to integrate them properly)'
       ]},
-      { type: 'hook', headline: 'Your product page has 3 seconds to convince someone to stay. Most fail in 1.5.', subtext: 'Why? They bury the offer. Hide the variants. Scatter reviews at the bottom. Make benefits vague. Force visitors to hunt for answers. High-converting pages don\'t make you work. They guide you through 5 critical elements in perfect order. Miss one? Conversion tanks.' },
+      { type: 'hook', headline: 'Your product page has 3 seconds to convince someone to stay. Most fail in 1.5.', subtext: 'Why? They bury the offer. Hide the variants. Scatter reviews at the bottom. Make benefits vague. Force visitors to hunt for answers. High-converting pages don\'t make you work. They guide you through 5 critical elements in perfect order. Miss one? Conversion tanks.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The 5 Elements of a Converting Product Page', body: 'Element 1: Hero Section (clear headline, compelling sub-headline, high-quality imagery). Element 2: Consolidated Offer Block (variants, quantity bumps, subscribe & save - all visible). Element 3: Clear Benefits (icons, punchy lines, expandable accordions). Element 4: Integrated Trust (top reviews using "At first I thought" framework, UGC, policy info). Element 5: Objection Handling (recipes/tutorials answering "How would I use this?"). Get all 5 right and CVR soars.' },
       { type: 'cards', title: 'Element 1: Hero Section', items: [
         { title: 'Clear Headline', description: 'Not a creative tagline. A clear promise. "Portable Blender That Actually Crushes Ice" beats "Blend Your Way to Better."' },
@@ -176,12 +176,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -87,7 +87,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why 97% of your traffic leaves without buying (and how top stores fix this)', 'The Machine/Mind/Method system to double your conversion rate', 'How to identify and plug the leaks in your funnel'] },
-      { type: 'hook', headline: '97 out of 100 visitors leave without buying. That is not a traffic problem.', subtext: 'You could have millions of visitors. If only 3% convert, you are leaving 97% of potential revenue on the table. Most stores assume they need more traffic. Wrong. They need better conversion. Top ecommerce stores convert at 4.7%+. That is 57% more revenue from the SAME traffic. The difference? They understand the Machine/Mind/Method system. Not tactics. Not hacks. A complete framework for turning browsers into buyers.' },
+      { type: 'hook', headline: '97 out of 100 visitors leave without buying. That is not a traffic problem.', subtext: 'You could have millions of visitors. If only 3% convert, you are leaving 97% of potential revenue on the table. Most stores assume they need more traffic. Wrong. They need better conversion. Top ecommerce stores convert at 4.7%+. That is 57% more revenue from the SAME traffic. The difference? They understand the Machine/Mind/Method system. Not tactics. Not hacks. A complete framework for turning browsers into buyers.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'visual', title: 'The 97% Leak', visualType: 'funnel', data: { visitors: 1000, converters: 30, leakers: 970 }, caption: 'Out of 1,000 visitors, 970 leave. That is $97,000 in lost revenue if your AOV is $100.' },
       { type: 'content', title: 'This Is Not a Traffic Problem', body: 'Most store owners obsess over getting more visitors. More ads. More influencers. More SEO. But if 97% of visitors leave anyway, you are just paying to show your store to people who bounce. The real leverage is not in the top of the funnel. It is in the middle. Fix conversion first. THEN scale traffic. Otherwise you are pouring water into a leaky bucket.' },
       { type: 'cards', title: 'The Machine/Mind/Method System', items: [
@@ -161,12 +161,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Problem</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

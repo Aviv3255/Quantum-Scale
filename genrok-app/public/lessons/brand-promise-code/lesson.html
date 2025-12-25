@@ -90,7 +90,7 @@
         'The Starbucks lesson: objectively strange logo, powerfully clear promise',
         'The one question that defines your entire brand positioning'
       ]},
-      { type: 'hook', headline: 'Starbucks\' logo is objectively weird. A green mermaid with two tails. Yet it\'s one of the world\'s most valuable brands.', subtext: 'Why? Because the logo doesn\'t matter. The promise does. Starbucks doesn\'t sell coffee - they promise "your third place between home and work." Once you understand this, everything about brand building changes.' },
+      { type: 'hook', headline: 'Starbucks\' logo is objectively weird. A green mermaid with two tails. Yet it\'s one of the world\'s most valuable brands.', subtext: 'Why? Because the logo doesn\'t matter. The promise does. Starbucks doesn\'t sell coffee - they promise "your third place between home and work." Once you understand this, everything about brand building changes.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'Your Brand Is NOT a Logo', body: 'Most founders obsess over logos, color palettes, and aesthetic vibes. They think that\'s "branding." It\'s not. Your brand is the promise you make to a specific person about the change you\'ll create in their life. Everything else - the visual identity, the messaging, the design - exists only to communicate and reinforce that promise.' },
       { type: 'example', scenario: 'Logo vs Promise', before: { label: 'Weak Brand Thinking', text: 'Question: "What should our logo look like?"\nFocus: Visual aesthetics\nResult: Pretty design, no conversions\n\nThe logo looks great. Nobody buys.' }, after: { label: 'Strong Brand Thinking', text: 'Question: "What change are we making for whom?"\nFocus: Promise clarity\nResult: Clear positioning, strong conversions\n\nThe promise is clear. They buy.' }, insight: 'Pretty logos don\'t convert. Clear promises do.' },
       { type: 'content', title: 'The Starbucks Promise', body: 'Starbucks\' promise: "Your third place." Not home. Not work. A comfortable space in between where you belong. That promise is so powerful, people will pay $7 for a coffee they could make at home for 50 cents. The green mermaid logo is just a symbol. The promise is what drives the empire.' },
@@ -155,12 +155,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why you only have 3 seconds to win or lose attention', 'The 3 instant questions every visitor\'s brain asks', 'How to pass the 3-second test on every Shopify page'] },
-      { type: 'hook', headline: 'Right now, someone is looking at your store. Their thumb is ready to scroll.', subtext: '3... 2... 1... In that tiny window, their brain asks: Is this relevant? Is this interesting? Is this worth my time? If you don\'t answer all three with a resounding YES - they\'re gone. Forever. And you never even knew they were there.' },
+      { type: 'hook', headline: 'Right now, someone is looking at your store. Their thumb is ready to scroll.', subtext: '3... 2... 1... In that tiny window, their brain asks: Is this relevant? Is this interesting? Is this worth my time? If you don\'t answer all three with a resounding YES - they\'re gone. Forever. And you never even knew they were there.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
       { type: 'visual', title: 'The Brutal Reality', visualType: 'stats', data: [
         { value: '3s', label: 'to capture attention', subtext: 'That\'s your entire window' },
         { value: '80%', label: 'bounce before scrolling', subtext: 'Never see your offer' },
@@ -149,12 +149,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

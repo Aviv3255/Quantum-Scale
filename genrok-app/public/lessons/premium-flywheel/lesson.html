@@ -161,7 +161,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why racing to the bottom on price attracts the worst customers who drain your resources', 'How price-quality inference shapes customer expectations before they even see your product', 'The self-reinforcing cycle: Premium price → Better margins → Better service → Stronger brand → Premium perception'] },
-      { type: 'hook', headline: 'The cheapest product in your category is a ticking time bomb.', subtext: 'Every dollar you cut from your price attracts a different type of customer. Not just "budget-conscious." Price-obsessed. Entitlement-driven. Support-draining. These customers cost more to serve, complain more often, and never become brand advocates. Meanwhile, premium brands charge 3-5x more for similar products and their customers LOVE them. The difference is not the product. It is the psychology of price-quality inference and the self-reinforcing flywheel it creates.' },
+      { type: 'hook', headline: 'The cheapest product in your category is a ticking time bomb.', subtext: 'Every dollar you cut from your price attracts a different type of customer. Not just "budget-conscious." Price-obsessed. Entitlement-driven. Support-draining. These customers cost more to serve, complain more often, and never become brand advocates. Meanwhile, premium brands charge 3-5x more for similar products and their customers LOVE them. The difference is not the product. It is the psychology of price-quality inference and the self-reinforcing flywheel it creates.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/REI_logo.svg.png', brandName: 'REI' },
       { type: 'content', title: 'The Race to the Bottom is a Race to Bankruptcy', body: 'Picture two brands selling water bottles. Brand A charges $12. Brand B charges $48. Same materials. Same factory. Same function. Brand A fights for every sale. Constant discounts. Price shoppers who return products for tiny defects. One-star reviews over shipping delays. Support tickets about $2 refunds. Brand B? Customers brag about their purchase. Instagram it. Recommend it to friends. Never complain. Reorder without hesitation. The price IS the product. It signals quality. It attracts a specific customer psychographic. It creates expectations. And those expectations shape the entire relationship.' },
       { type: 'comparison-table', title: 'Budget vs Premium Customer Profiles', budget: { title: 'Budget Customers ($12 bottle)', characteristics: [
         { label: 'Purchase Trigger', value: 'Lowest price, discount codes, sales' },
@@ -247,12 +247,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

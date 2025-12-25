@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why click fraud is more dangerous than just wasted budget', 'How invalid clicks pollute data and harm campaign optimization', 'Manual defense #1: IP exclusions to block suspicious patterns', 'Manual defense #2: Geo-targeting and placement exclusions'] },
-      { type: 'hook', headline: 'Every click fraud isn\'t just costing you money. It\'s worse than that. Invalid clicks from competitors and bots are feeding garbage data into Google\'s algorithm, poisoning the optimization process that determines which ads perform best.', subtext: 'Budget waste is obvious. Data pollution is insidious. When your conversion data includes fake clicks, Google optimizes toward the wrong signals. You can\'t win a race with a broken compass.' },
+      { type: 'hook', headline: 'Every click fraud isn\'t just costing you money. It\'s worse than that. Invalid clicks from competitors and bots are feeding garbage data into Google\'s algorithm, poisoning the optimization process that determines which ads perform best.', subtext: 'Budget waste is obvious. Data pollution is insidious. When your conversion data includes fake clicks, Google optimizes toward the wrong signals. You can\'t win a race with a broken compass.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Real Danger: Data Pollution', body: 'Most advertisers only think about click fraud as wasted budget:\n\n"Competitor clicked my ad 10 times. That\'s $50 down the drain."\n\nBut budget waste is the LEAST of your problems.\n\nThe real damage is DATA POLLUTION.\n\nGoogle\'s algorithm learns from your campaign data. Which ads get clicks. Which audiences convert. Which placements drive sales. It uses this data to optimize your campaigns automatically.\n\nBut what happens when that data includes:\n- Competitor clicks with zero purchase intent\n- Bot traffic that inflates click counts\n- Invalid clicks from countries you don\'t ship to\n\nGoogle\'s algorithm thinks these signals are real. It optimizes toward them. It shows your ads to more people like the bots and competitors.\n\nThis is why click fraud isn\'t just expensive - it\'s poisonous.' },
       { type: 'content', title: 'Defense #1: IP Exclusions', body: 'Your first line of defense is manual IP blocking.\n\n**How it works:**\nIn your Google Ads account settings, you can manually exclude specific IP addresses from seeing your ads.\n\n**When to use it:**\nWhen you notice repeated clicking patterns from the same IP address. Check your campaign data for IPs with:\n- High click frequency, zero conversions\n- Clicks at unusual times (3am, weekends)\n- Same IP clicking across multiple campaigns\n\n**Why it matters:**\nThis is CRUCIAL for high-cost-per-click industries. If your CPC is $20, a competitor clicking 5 times costs you $100. Block their IP, stop the bleeding.\n\n**How to do it:**\nAccount Settings → IP Exclusions → Add IP addresses to block list\n\nThis won\'t catch sophisticated fraud, but it stops the obvious repeat offenders.' },
       { type: 'content', title: 'Defense #2: Geo-Targeting Adjustments', body: 'Not all countries produce equal-quality traffic. Some regions are known for high bot activity and click farms.\n\n**Strategy:**\nExclude countries with high fraud rates unless they\'re core markets.\n\n**Focus your budget on:**\n- Countries where your best customers are located\n- Regions with proven conversion history\n- Markets you can actually ship to and support\n\n**Why this works:**\nBy tightening your geographic targeting, you reduce exposure to international click fraud operations. Your ads only show to people in locations where real customers exist.\n\n**Example:**\nIf 90% of your revenue comes from US, Canada, UK, and Australia - why are your ads showing in countries you\'ve never shipped to? Tighten the targeting. Protect the budget.\n\nEvery excluded region is one less source of potential fraud.' },
@@ -120,12 +120,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

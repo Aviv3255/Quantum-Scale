@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The 4 questions that define your entire business strategy', 'How to kill shiny object syndrome with one simple document', 'Why a business plan is useless but a one-pager is a weapon'] },
-      { type: 'hook', headline: 'Shiny object syndrome has killed more businesses than bad products. New opportunity appears, focus fractures, resources drain. Three products. Five marketing channels. Zero traction.', subtext: 'The antidote? A one-pager that makes saying "no" effortless. If you can\'t fit your business on one page, you don\'t understand it. Davie Fogarty built multiple eight-figure brands using this exact framework.' },
+      { type: 'hook', headline: 'Shiny object syndrome has killed more businesses than bad products. New opportunity appears, focus fractures, resources drain. Three products. Five marketing channels. Zero traction.', subtext: 'The antidote? A one-pager that makes saying "no" effortless. If you can\'t fit your business on one page, you don\'t understand it. Davie Fogarty built multiple eight-figure brands using this exact framework.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'Business Plan vs One-Pager', body: 'A business plan is 40 pages of projections that nobody reads and becomes outdated in three months. It\'s useless for making decisions.\n\nA one-pager is four critical questions that never change. You memorize it instantly. It makes every decision effortless.\n\nBusiness plan: "Let me review the 15-page market analysis section."\n\nOne-pager: "Does this align with my four questions? No? Then no."\n\nThe one-pager is your filter. Everything gets run through it. Alignment means yes. Misalignment means no. No confusion. No hesitation.' },
       { type: 'mockup', title: 'The One-Pager Document', description: 'Four questions. One page. Your entire business strategy locked in place.', mockupType: 'one-pager-doc' },
       { type: 'content', title: 'The 4 Questions That Define Everything', body: '1. The problem I am solving - Not a vague market gap. A specific pain point people feel every day.\n\n2. My solution - Not a feature list. The transformation you deliver in one sentence.\n\n3. My unique positioning - Not "quality" or "affordability." The ONE thing that makes you different from everyone else.\n\n4. My primary marketing channel - Not "we\'re everywhere." The single channel where your audience lives and you double down.\n\nThese four questions become your North Star. Every opportunity gets filtered through them. Partnership offer? Check the one-pager. New product idea? Check the one-pager. Marketing channel suggestion? Check the one-pager.' },
@@ -123,12 +123,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

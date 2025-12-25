@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why desperation at checkout kills conversions', 'The "Digital Pause" technique that increases trust', 'How to turn objections into opportunities'] },
-      { type: 'hook', headline: 'The moment you offer a last-second discount, you\'ve lost.', subtext: 'That desperate pop-up saying "Wait! Here\'s 10% off!" screams: "We don\'t believe in our own price." Customers feel it. Trust evaporates. And ironically, fewer people buy. The masters do the opposite—they pause. Confidently. Silently. And customers convince themselves.' },
+      { type: 'hook', headline: 'The moment you offer a last-second discount, you\'ve lost.', subtext: 'That desperate pop-up saying "Wait! Here\'s 10% off!" screams: "We don\'t believe in our own price." Customers feel it. Trust evaporates. And ironically, fewer people buy. The masters do the opposite—they pause. Confidently. Silently. And customers convince themselves.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'bigStatement', pretext: 'The closing mindset shift:', statement: 'Position, don\'t pitch.', posttext: 'The final CTA isn\'t a pitch—it\'s a logical conclusion. Your copy should frame it as: "Based on everything you\'ve seen, this is the best vehicle to get you to your goal."' },
       { type: 'content', title: 'The Power of the Digital Pause', body: 'After you present the price and "Add to Cart" button, STOP. No pop-ups with last-minute discounts. No apologetic language. No extra fluff. Present the price with absolute confidence in its value and let the customer think. This confident silence makes them justify the price to themselves. When YOU seem certain it\'s worth it, they believe it too.' },
       { type: 'priceDemo', title: 'Confident Pricing In Action', price: '$99', buttonText: 'Add to Cart', caption: 'No "Wait!" pop-ups. No "Apply coupon?" No "Still thinking?" Just confident silence.', subtext: 'This confident presentation makes customers justify the price to themselves—which is far more powerful than YOU trying to justify it.' },
@@ -142,12 +142,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

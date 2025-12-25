@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why most marketing fails before it even starts', 'The "telescope flip" that changes everything', 'How to mine your customers\' exact words for killer copy'] },
-      { type: 'hook', headline: 'You\'ve been looking through the telescope backwards.', subtext: 'Every feature you obsess over. Every "brilliant" headline you craft. Every product description you polish. None of it matters—because you\'re staring at yourself while your customers walk right past you.' },
+      { type: 'hook', headline: 'You\'ve been looking through the telescope backwards.', subtext: 'Every feature you obsess over. Every "brilliant" headline you craft. Every product description you polish. None of it matters—because you\'re staring at yourself while your customers walk right past you.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'bigStatement', pretext: 'Robert Greene said it best:', statement: '"You\'re usually going at it from the wrong end. You\'re thinking first and foremost about yourself."', posttext: 'This is The Marketer\'s Delusion—and it\'s killing your conversions.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert-Greene-profile-01-removebg-preview.png', personName: 'Robert Greene' },
       { type: 'content', title: 'The Fatal Error', body: 'We\'re trained to obsess over our product. Our features. Our brilliant copy. We craft the perfect pitch, then wonder why no one is listening. But here\'s the uncomfortable truth: your customers don\'t care about your product. They care about themselves. Their problems. Their desires. Their internal monologue at 2 AM. Until you understand this, you\'re just shouting into the void.' },
       { type: 'visual', title: 'The Telescope Problem', visualType: 'comparison', data: { left: { value: '95%', label: 'Looking Inward', result: 'Your features, your story, your pitch', color: '#ef4444' }, center: { value: 'FLIP', label: 'The Shift', result: 'Turn the telescope around' }, right: { value: '5%', label: 'Looking Outward', result: 'Their pain, their dreams, their words', color: '#22c55e' } } },
@@ -131,12 +131,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

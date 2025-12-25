@@ -66,7 +66,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why competing on price is a losing game', 'How stories sell better than features ever could', 'The shift from one-off sales to lifetime value thinking', 'Why brand equity beats paid ads every time'] },
-      { type: 'hook', headline: 'Stop Building a Store. Start Building a World.', subtext: 'Most sellers optimize for transactions. Premium brands optimize for transformation. The shift from one to the other? Four fundamental changes in how you think. This is not about tactics. This is about the mental models that separate mass-market from premium.' },
+      { type: 'hook', headline: 'Stop Building a Store. Start Building a World.', subtext: 'Most sellers optimize for transactions. Premium brands optimize for transformation. The shift from one to the other? Four fundamental changes in how you think. This is not about tactics. This is about the mental models that separate mass-market from premium.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'content', title: 'The Difference Between Selling and Building', body: 'Mass-market brands play the short game. Premium brands play the infinite game. The difference is not in what you sell. It is in how you think about what you are building. Every decision comes down to a choice: optimize for today or build for forever. These four mindset shifts are the difference between a store and an empire.' },
       { type: 'example', scenario: 'Mindset Shift 1: Price', before: { label: 'Old Thinking', text: 'How cheap can I sell this to win? Someone will always go cheaper. Always. You enter a race to the bottom and never escape.' }, after: { label: 'New Thinking', text: 'How much value can I create to justify premium pricing? The $3,500 Dior bag uses price as a signal of exclusivity. The price IS the product.' }, insight: 'Premium brands do not ask "How cheap?" They ask "How valuable?" The price becomes the value signal.' },
       { type: 'content', title: 'When You Compete on Price, You Lose', body: 'Price wars destroy brands. When your only advantage is being cheaper, you have no advantage at all. Because someone will always undercut you. Premium brands flip the script. They use high prices to filter FOR premium buyers, not against sales. A $500 candle is not expensive. It is exclusive. That distinction changes everything.' },
@@ -133,12 +133,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

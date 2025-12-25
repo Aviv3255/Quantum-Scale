@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why most ads bleed money answering objections AFTER the click', 'The pinned comment strategy that eliminates friction before people even click', 'Exact template for hair supplements that works for ANY product'] },
-      { type: 'hook', headline: 'Most ads answer objections AFTER the click. That\'s too late.', subtext: 'Think about it. Someone sees your ad. They have questions. Doubts. Objections. But to get answers, they have to click, wait for the page to load, scroll around, hunt for FAQs. Most just... leave. Your CAC skyrockets because you\'re paying for clicks from people with unresolved objections. But what if you could eliminate those objections BEFORE they even click? That\'s the pinned comment strategy.' },
+      { type: 'hook', headline: 'Most ads answer objections AFTER the click. That\'s too late.', subtext: 'Think about it. Someone sees your ad. They have questions. Doubts. Objections. But to get answers, they have to click, wait for the page to load, scroll around, hunt for FAQs. Most just... leave. Your CAC skyrockets because you\'re paying for clicks from people with unresolved objections. But what if you could eliminate those objections BEFORE they even click? That\'s the pinned comment strategy.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Invisible Leak in Your Funnel', body: 'Every Meta ad has a comment section. Most advertisers ignore it or let random people fill it with questions and complaints. Big mistake. Because that comment section is the FIRST place people look when they\'re skeptical. They want social proof. They want answers. They want reassurance. And if they don\'t find it immediately? They scroll past. You just paid for an impression that never had a chance of converting.' },
       { type: 'visual', title: 'The CAC Impact', visualType: 'comparison', data: {
         left: { label: 'No Pinned Comment', value: '$47', result: 'Typical CAC with unaddressed objections', color: '#ef4444' },
@@ -193,12 +193,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

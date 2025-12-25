@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What Ad Assets are and why they\'re completely free to use', 'How assets make your ads bigger and more visible on the page', 'Which assets have the highest impact on click-through rates', 'Why most advertisers leave this money on the table'] },
-      { type: 'hook', headline: 'Most advertisers run tiny 3-line text ads. Meanwhile, their competitors\' ads take up half the screen with sitelinks, promotions, and images - all for the exact same cost per click.', subtext: 'Ad Assets (formerly called Extensions) are Google\'s gift to advertisers willing to do the work. They make your ads bigger, more informative, and more clickable - completely free.' },
+      { type: 'hook', headline: 'Most advertisers run tiny 3-line text ads. Meanwhile, their competitors\' ads take up half the screen with sitelinks, promotions, and images - all for the exact same cost per click.', subtext: 'Ad Assets (formerly called Extensions) are Google\'s gift to advertisers willing to do the work. They make your ads bigger, more informative, and more clickable - completely free.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Adidas_Logo.svg.png', brandName: 'Adidas'},
       { type: 'content', title: 'The Opportunity: Ad Assets', body: 'Ad Assets are free additions that make your ads bigger, more informative, and more clickable. They appear alongside your standard text ad at no extra cost.\n\nThe Problem:\nMany advertisers get lazy and don\'t use them all. They run basic 3-line text ads and wonder why their competitors get higher click-through rates.\n\nThe Reality:\nGoogle gives you free real estate to make your ads massive. Sitelinks, promotions, structured snippets, images, callouts - all of these expand your ad size and visibility.\n\nAnd here\'s the kicker: You pay the same cost-per-click whether your ad has zero assets or ten assets.\n\nSo why wouldn\'t you use them all?' },
       { type: 'mockup', title: 'Before vs After: Ad Assets', description: 'A basic ad vs an ad with all assets enabled. Same cost per click. Dramatically different visibility.', mockupType: 'ad-comparison' },
       { type: 'content', title: 'Key Benefits of Ad Assets', body: 'Using all available Ad Assets creates three major advantages:\n\n1. Increased Visibility\nAds with more assets take up more screen space. On mobile, a fully-loaded ad can dominate the entire first screen. More visibility = more clicks.\n\n2. Higher Click-Through Rate (CTR)\nMore information means users can find exactly what they\'re looking for before clicking. Sitelinks let them jump directly to specific pages. Promotions highlight special offers. Higher CTR = better Quality Score = lower costs.\n\n3. Better User Experience\nAssets provide more context and options. Users can see pricing, product categories, special offers, and images before clicking. This pre-qualifies clicks and improves conversion rates.\n\nThe best part? All of this is free. You\'re not paying extra for the expanded ad space.' },
@@ -109,12 +109,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

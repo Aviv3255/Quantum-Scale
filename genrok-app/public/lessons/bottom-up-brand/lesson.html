@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why old branding vs pure DR is a false choice', 'Bottom-up brands: built like movements, not mandates', 'How to measure brand success: "How many people believe you"'] },
-      { type: 'hook', headline: 'The false choice: Traditional branding or direct response hamster wheel.', subtext: 'Old school says: spend millions on brand awareness, hope it converts eventually. DR purists say: fuck branding, track every dollar, scale what works. Both are half right. Both leave money on the table. The real answer? Direct Response Brands. You engineer belief into action. Bottom-up, not top-down.' },
+      { type: 'hook', headline: 'The false choice: Traditional branding or direct response hamster wheel.', subtext: 'Old school says: spend millions on brand awareness, hope it converts eventually. DR purists say: fuck branding, track every dollar, scale what works. Both are half right. Both leave money on the table. The real answer? Direct Response Brands. You engineer belief into action. Bottom-up, not top-down.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'content', title: 'The Old Branding Playbook (Broken)', body: 'Hire expensive agency. Create "brand guidelines" in a 50-page PDF no one reads. Run TV commercials with emotional music. Measure nothing. Hope people "remember you" when they\'re ready to buy. Requires massive budgets. Takes years to see results. Works for Coca-Cola. Doesn\'t work for you. You need revenue this quarter, not brand recall in 2027.' },
       { type: 'content', title: 'The Pure DR Trap (Also Broken)', body: 'Track every pixel. Obsess over ROAS. Scale ads that convert. Rinse, repeat. The problem? You\'re on a hamster wheel. The moment you stop running ads, revenue stops. No loyalty. No pricing power. Customers don\'t care about you - they care about the discount. You\'re a commodity. Competitors can outspend you tomorrow and you\'re done.' },
       { type: 'visual', title: 'The Third Way: Direct Response Brand', visualType: 'stats', data: [
@@ -135,12 +135,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

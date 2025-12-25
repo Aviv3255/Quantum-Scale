@@ -90,7 +90,7 @@
         'Tylenol vs Generic - same ingredients, different perceived effectiveness',
         'Every touchpoint shapes experience - not just the product itself'
       ]},
-      { type: 'hook', headline: 'This will blow your mind.', subheadline: 'Your product doesn\'t work the way you think it does.', subtext: 'Branded Tylenol and generic ibuprofen have IDENTICAL active ingredients. But the branded pill is perceived as MORE effective. The placebo effect isn\'t just in medicine - it\'s in EVERY product you sell. Perception literally alters reality.' },
+      { type: 'hook', headline: 'This will blow your mind.', subheadline: 'Your product doesn\'t work the way you think it does.', subtext: 'Branded Tylenol and generic ibuprofen have IDENTICAL active ingredients. But the branded pill is perceived as MORE effective. The placebo effect isn\'t just in medicine - it\'s in EVERY product you sell. Perception literally alters reality.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Mastercard-Logo.png', brandName: 'MasterCard'},
       { type: 'content', title: 'The Placebo Effect in Commerce', body: 'Studies show that branded painkillers are rated as more effective than generic versions - even when they contain the exact same active ingredients. Why? Because your brain uses contextual cues (packaging, price, brand recognition) to predict efficacy. And those predictions become self-fulfilling. You\'re not selling a product. You\'re engineering a perception that changes physical experience.' },
       { type: 'example', scenario: 'The Tylenol Paradox', before: { label: 'Generic Version', text: 'White bottle. Simple label. $4.99 for 100 pills. Same active ingredient as branded.' }, after: { label: 'Branded Tylenol', text: 'Red packaging. Trusted name. $12.99 for 100 pills. Perceived as 40% more effective.' }, insight: 'Same chemical compound. Different perceived effectiveness. The packaging, price, and brand ARE part of the product experience.' },
       { type: 'visual', title: 'Perception Shapes Reality', visualType: 'stats', data: [
@@ -160,13 +160,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          {data.subheadline && <h3 className="slide-title text-2xl md:text-3xl lg:text-4xl mt-2" style={{ color: 'var(--accent)' }}>{data.subheadline}</h3>}
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

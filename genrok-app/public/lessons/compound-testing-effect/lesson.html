@@ -194,7 +194,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why 1% weekly improvements compound to 67% annual growth', 'The psychology difference between random changes and systematic testing', 'How to build a testing system that generates compounding wins'] },
-      { type: 'hook', headline: 'Most stores make random changes. The best stores run systematic tests.', subtext: 'One generates noise. The other generates compound growth. Think about it: If you improve your conversion rate by just 1% every week through A/B testing, you do not end the year 52% better. You end it 67% better. That is compound interest for your business. Random tweaks might get lucky once. Systematic testing wins every single week. The gains stack. The momentum builds. And after a year, you are not competing with stores making random changes anymore. You are in a completely different league.' },
+      { type: 'hook', headline: 'Most stores make random changes. The best stores run systematic tests.', subtext: 'One generates noise. The other generates compound growth. Think about it: If you improve your conversion rate by just 1% every week through A/B testing, you do not end the year 52% better. You end it 67% better. That is compound interest for your business. Random tweaks might get lucky once. Systematic testing wins every single week. The gains stack. The momentum builds. And after a year, you are not competing with stores making random changes anymore. You are in a completely different league.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'content', title: 'The Compound Testing Effect', body: 'Here is the psychology most people miss: Small improvements do not add up. They multiply. Week 1: You test button colors. Win: +1.2% conversion. Week 2: You test headline copy. Win: +0.8% conversion. Week 3: You test image placement. Win: +1.5% conversion. These are not three separate 1% wins that total 3%. They stack ON TOP of each other. 100 × 1.012 × 1.008 × 1.015 = 103.5%. Each win becomes the new baseline. The next win builds on ALL previous wins. That is compounding.' },
       { type: 'compound-growth', title: '1% Weekly = 67% Yearly', weeks: 52, weeklyIncrease: 0.01, insight: 'Small systematic wins compound into massive advantages over time.' },
       { type: 'content', title: 'Why Random Changes Fail', body: 'Random changes feel productive. You tweak the homepage. You adjust the pricing page. You change the CTA button. You feel busy. You feel like you are improving. But here is the problem: You have no idea what worked. You changed five things. Conversion went up 2%. Which change did it? Was it even the changes? Maybe it was seasonal traffic. Maybe it was a viral post. You learned nothing. You cannot repeat it. You are guessing.' },
@@ -263,12 +263,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -152,7 +152,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why 5% of customers generate 50%+ of your revenue', 'The psychology of high-LTV buyers and how they think differently', 'Why treating all customers equally leaves massive money on the table'] },
-      { type: 'hook', headline: '5% of your customers are worth more than the other 95% combined.', subtext: 'Not all customers are created equal. While you are spending equal time and resources on everyone, a tiny fraction is generating the majority of your revenue. They are your whales. They buy more. They return faster. They spend bigger. And most importantly: they respond to completely different psychology than average buyers. If you treat them the same as everyone else, you are leaving life-changing money on the table. The Pareto Principle is not just math. It is customer psychology you can leverage.' },
+      { type: 'hook', headline: '5% of your customers are worth more than the other 95% combined.', subtext: 'Not all customers are created equal. While you are spending equal time and resources on everyone, a tiny fraction is generating the majority of your revenue. They are your whales. They buy more. They return faster. They spend bigger. And most importantly: they respond to completely different psychology than average buyers. If you treat them the same as everyone else, you are leaving life-changing money on the table. The Pareto Principle is not just math. It is customer psychology you can leverage.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew' },
       { type: 'content', title: 'The 80/20 Rule of Customer Value', body: 'You have heard of the Pareto Principle. 80% of results come from 20% of effort. But in eCommerce, the distribution is even more extreme. Typically, 5% of customers generate 50-60% of revenue. Another 15% contribute 30%. The remaining 80% barely move the needle. This is not a bug. It is human nature. Some people are just wired to spend more. Higher disposable income. Impulse buying tendencies. Status-driven psychology. Collector mentality. These are your whales.' },
       { type: 'customer-tier', title: 'The Reality of Customer Value Distribution', tiers: [
         { label: 'Whale Customers', percentage: '5%', revenue: '55% of revenue', width: '100%', color: '#3b82f6', colorDark: '#2563eb' },
@@ -226,12 +226,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

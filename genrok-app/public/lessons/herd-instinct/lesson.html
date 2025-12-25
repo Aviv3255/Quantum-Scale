@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why we instinctively follow the crowd when uncertain', 'The difference between Macro Social Proof (the crowd) and Micro Social Proof (people like me)', 'How to layer both types for maximum conversions on your store'] },
-      { type: 'hook', headline: 'Would you jump off a bridge if everyone else did?', subtext: 'Your mom asked you this when you were 12. Science says the answer is... maybe. When we\'re uncertain, we look to others to guide us. And in ecommerce? Every visitor is uncertain. They don\'t know if your product works. If your brand is legit. If they should trust you. So they look for one thing: proof that OTHER people already made the jump.' },
+      { type: 'hook', headline: 'Would you jump off a bridge if everyone else did?', subtext: 'Your mom asked you this when you were 12. Science says the answer is... maybe. When we\'re uncertain, we look to others to guide us. And in ecommerce? Every visitor is uncertain. They don\'t know if your product works. If your brand is legit. If they should trust you. So they look for one thing: proof that OTHER people already made the jump.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'visual', title: 'The Dog-Phobic Children Study', visualType: 'stats', data: [
         { value: '67%', label: 'overcame their fear', subtext: 'Just by watching others' },
         { value: '4 Days', label: 'of observation', subtext: 'Watching kids play with a dog' },
@@ -152,12 +152,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -90,7 +90,7 @@
         'The 4 main levers: Color, Fonts, Tone, Layout',
         'How to choose colors based on customer psychology (not your preference)'
       ]},
-      { type: 'hook', headline: 'People can\'t tell you WHY they don\'t trust a site. But their wallet knows.', subtext: 'You land on two stores selling the same product. One has random fonts, clashing colors, and inconsistent spacing. The other is clean, consistent, predictable. Which do you trust? You can\'t explain why. But you FEEL it. That feeling is subconscious pattern recognition. Your brain is scanning for consistency. Consistency = predictable = safe = trust. Inconsistency = chaos = risk = bounce.' },
+      { type: 'hook', headline: 'People can\'t tell you WHY they don\'t trust a site. But their wallet knows.', subtext: 'You land on two stores selling the same product. One has random fonts, clashing colors, and inconsistent spacing. The other is clean, consistent, predictable. Which do you trust? You can\'t explain why. But you FEEL it. That feeling is subconscious pattern recognition. Your brain is scanning for consistency. Consistency = predictable = safe = trust. Inconsistency = chaos = risk = bounce.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'Brand Consistency Isn\'t Aesthetics', body: 'Most people think brand consistency is about "looking pretty." It\'s not. It\'s about building subconscious trust through repetition. When your colors, fonts, tone, and layout are consistent, your customer\'s brain stops questioning. It recognizes the pattern. It relaxes. When they\'re inconsistent, the brain stays alert. Suspicious. Looking for danger. That suspicion kills conversions.' },
       { type: 'visual', title: 'The Trust Equation', visualType: 'stats', data: [
         { value: '94%', label: 'of first impressions', subtext: 'Are design-related' },
@@ -171,12 +171,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

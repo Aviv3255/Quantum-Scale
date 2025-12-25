@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The shocking truth about Meta\'s attribution accuracy', 'Why blindly trusting Meta kills your best ads', 'How to see the REAL performance of your creatives'] },
-      { type: 'hook', headline: 'We ran a LIVE test: Meta Pixel vs. External Pixel. Same store. Same week. The results? Meta missed 33% of purchases.', subtext: 'Not a typo. One-third of real purchases never showed up in Meta\'s dashboard. And it gets worse: Meta told us to turn off our BEST creative because their data was completely wrong. This isn\'t just an attribution problem. It\'s a profitability killer.' },
+      { type: 'hook', headline: 'We ran a LIVE test: Meta Pixel vs. External Pixel. Same store. Same week. The results? Meta missed 33% of purchases.', subtext: 'Not a typo. One-third of real purchases never showed up in Meta\'s dashboard. And it gets worse: Meta told us to turn off our BEST creative because their data was completely wrong. This isn\'t just an attribution problem. It\'s a profitability killer.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/67e3c7b0162e6313d4bdc706_Logo%20Icon.webp', brandName: 'Triple Whale'},
       { type: 'content', title: 'The Test Setup', body: 'We installed two tracking pixels on the same Shopify store: Meta\'s native pixel and an external attribution tool (Triple Whale). Both tracked the same traffic, same ads, same checkout flow. We ran Facebook ads for 7 days and compared the results. The hypothesis: if Meta\'s attribution is accurate, both tools should report similar numbers. Spoiler alert - they didn\'t.' },
       { type: 'stat-counter', title: 'Finding #1: Meta\'s Tracking Gap', stats: [
         { label: 'Purchases Meta Tracked', target: 67, suffix: '%', duration: 1800, color: '#f59e0b' },
@@ -236,12 +236,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

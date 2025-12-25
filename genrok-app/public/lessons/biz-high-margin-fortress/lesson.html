@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The fatal flaw of low margin businesses', 'Why premium equals profit fortress', 'How to position for thick margins'] },
-      { type: 'hook', headline: 'Two stores. Same product. One charges $29. One charges $129.', subtext: 'The $129 store is printing money. The $29 store is bleeding to death. Same product. Same ads. Same traffic. But one business has a fortress around its profits. The other is one bad month away from collapse.' },
+      { type: 'hook', headline: 'Two stores. Same product. One charges $29. One charges $129.', subtext: 'The $129 store is printing money. The $29 store is bleeding to death. Same product. Same ads. Same traffic. But one business has a fortress around its profits. The other is one bad month away from collapse.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'margin-meter', title: 'The Margin Reality Check', lowMargin: { price: 29, cost: 18, profit: 11, margin: 38, label: 'Low Margin Product' }, highMargin: { price: 129, cost: 25, profit: 104, margin: 81, label: 'High Margin Product' } },
       { type: 'content', title: 'The Low Margin Trap', body: 'Selling cheap feels safe. It feels like the path to volume. But low margins create fragile businesses built on glass foundations. One tariff increase. One shipping delay. One ad platform change. The whole thing shatters. You are running a business with zero room for error. Every external shock threatens survival.' },
       { type: 'profit-waterfall', title: 'Where Your Money Actually Goes', scenarios: [
@@ -669,12 +669,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

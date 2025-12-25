@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What GEM is and why it\'s the largest foundation model in the industry', 'How GEM processes thousands of events to predict what you\'ll do next', 'The quantum leap in performance: 23x FLOPS, 4x efficiency, +5% IG conversions'] },
-      { type: 'hook', headline: 'Every time you scroll Facebook or Instagram, a decision is made in milliseconds. Which ad do you see? That\'s not random. That\'s GEM - Meta\'s central brain processing thousands of signals about your journey to predict what you\'ll do next.', subtext: 'GEM is the Generative Ads Recommendation Model. It\'s not just another algorithm. It\'s Meta\'s most advanced foundation model, built on an LLM-inspired paradigm, learning from the entirety of Meta\'s ecosystem. Understanding how GEM thinks is the new key to unlocking performance.' },
+      { type: 'hook', headline: 'Every time you scroll Facebook or Instagram, a decision is made in milliseconds. Which ad do you see? That\'s not random. That\'s GEM - Meta\'s central brain processing thousands of signals about your journey to predict what you\'ll do next.', subtext: 'GEM is the Generative Ads Recommendation Model. It\'s not just another algorithm. It\'s Meta\'s most advanced foundation model, built on an LLM-inspired paradigm, learning from the entirety of Meta\'s ecosystem. Understanding how GEM thinks is the new key to unlocking performance.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Instagram_logo_2016.svg.webp', brandName: 'Instagram'},
       { type: 'content', title: 'Below the Surface: Meet GEM, The Central Brain', body: 'At the heart of Meta\'s ad system is the Generative Ads Recommendation Model (GEM). It is not just another algorithm; it is Meta\'s most advanced ads foundation model, built on an LLM-inspired paradigm.\n\nGEM is the largest foundation model for recommendation systems in the industry. It acts as a "central brain," learning from the entirety of Meta\'s ecosystem and propagating its intelligence to every other ad model in the stack.\n\nIt connects Facebook, Instagram, and Messenger into one unified intelligence. Every interaction on any platform feeds GEM. Every lesson GEM learns gets shared across the entire network.\n\nThis is why your Instagram ad performance suddenly improves when you run Facebook campaigns. GEM is connecting the dots across platforms in ways the old system never could.' },
       { type: 'mockup', title: 'The GEM Architecture', description: 'GEM sits at the center, learning from Facebook, Instagram, and Messenger simultaneously. It processes user behavior across all platforms to build a complete picture of intent.', mockupType: 'gem-diagram' },
       { type: 'content', title: 'The Scale of the Machine', body: 'GEM operates at a scale previously reserved for the world\'s largest AI models. This isn\'t incremental improvement; it\'s a quantum leap in capability.\n\n23x increase in effective training FLOPS, powered by 16x more GPUs. That\'s not a typo. Twenty-three times more computational power dedicated to understanding your customers.\n\n4x more efficient at driving ad performance gains than previous models for a given amount of data and compute. GEM does more with less, faster than ever before.\n\n2x more effective at knowledge transfer than standard techniques. When GEM learns something about one audience, it can apply that intelligence to completely different audiences.\n\n+5% increase in ad conversions on Instagram. +3% increase in ad conversions on Facebook Feed. These aren\'t small gains. In the world of Meta advertising, these numbers represent billions of dollars in additional performance.' },
@@ -124,12 +124,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -90,7 +90,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why purchase commitment opens a psychological window for additional buys', 'The "Yes Ladder" and commitment-consistency principle', 'How to use checkout upsells ethically (without destroying trust)'] },
-      { type: 'hook', headline: 'Ever wonder why grocery stores put candy at checkout?', subtext: 'It is not random. It is one of the most researched psychological tactics in retail. Once someone commits to buying, their brain enters a unique state. The decision fatigue that normally blocks purchases? Gone. The internal "should I really buy this?" voice? Quieter. They already said YES to spending money. The mental barrier is down. That is the Checkout Line Effect. And it works the exact same way in eCommerce. Not with candy bars, but with complementary products, warranties, and bundles. Timing matters. Psychology matters. And when done right, everyone wins.' },
+      { type: 'hook', headline: 'Ever wonder why grocery stores put candy at checkout?', subtext: 'It is not random. It is one of the most researched psychological tactics in retail. Once someone commits to buying, their brain enters a unique state. The decision fatigue that normally blocks purchases? Gone. The internal "should I really buy this?" voice? Quieter. They already said YES to spending money. The mental barrier is down. That is the Checkout Line Effect. And it works the exact same way in eCommerce. Not with candy bars, but with complementary products, warranties, and bundles. Timing matters. Psychology matters. And when done right, everyone wins.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'content', title: 'The Grocery Store Blueprint', body: 'Picture the checkout line at Target. You are buying groceries. Your cart is full. You have already committed to spending money. Then you see it: Candy bars. Gum. Magazines. Batteries. Small, impulse items. Things you did not come for. But somehow... you grab one. Why? Because your brain already said "yes" to spending. Adding one more small item feels trivial compared to the $150 cart you are already buying. The mental resistance is gone. The decision is easy. That is not manipulation. That is understanding how humans make decisions.' },
       { type: 'content', title: 'What Is the Checkout Line Effect?', body: 'The Checkout Line Effect is the psychological state where someone becomes significantly more likely to make additional purchases immediately after committing to a primary purchase. Once they have decided to buy, three things happen. First, their mental resistance to spending drops. The hardest part (deciding to open their wallet) is already done. Second, decision fatigue works in your favor. They have already made the big decision. Small additions feel effortless. Third, commitment consistency kicks in. They have identified as "someone buying from this store." Adding more aligns with that identity.' },
       { type: 'cards', title: 'Why Post-Commitment Works', items: [
@@ -164,12 +164,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

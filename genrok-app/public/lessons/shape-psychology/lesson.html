@@ -90,7 +90,7 @@
         'Curves vs angles: which triggers trust, which triggers power',
         'Using shape psychology for buttons, logos, and layouts'
       ]},
-      { type: 'hook', headline: 'The shape of your buttons is making you money. Or losing it.', subtext: 'Rounded corners feel safe and approachable. Sharp angles feel precise and powerful. Your brain decides in 50 milliseconds which one to trust. Porsche uses curves to say "elegant performance." Lamborghini uses angles to say "aggressive dominance." Same product category. Opposite shapes. Opposite emotions. This isn\'t random. It\'s neuroscience.' },
+      { type: 'hook', headline: 'The shape of your buttons is making you money. Or losing it.', subtext: 'Rounded corners feel safe and approachable. Sharp angles feel precise and powerful. Your brain decides in 50 milliseconds which one to trust. Porsche uses curves to say "elegant performance." Lamborghini uses angles to say "aggressive dominance." Same product category. Opposite shapes. Opposite emotions. This isn\'t random. It\'s neuroscience.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/BMW.svg', brandName: 'Porsche'},
       { type: 'content', title: 'Shapes Are Emotional Triggers', body: 'Your reptilian brain evolved to read the environment fast. Curves in nature = safe (rolling hills, fruit, faces). Angles in nature = danger (thorns, rocks, claws). This hardwiring is instant and subconscious. Before you read a word, the shape has already told your brain how to feel. Rounded = comfortable. Angular = precise.' },
       { type: 'visual', title: 'The Shape Psychology Spectrum', visualType: 'comparison', data: {
         left: { label: 'Curves', value: '●', result: 'Safe, Warm, Organic', color: '#06b6d4' },
@@ -171,12 +171,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

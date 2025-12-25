@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The "Cope" trap that kills progress', 'How elite entrepreneurs respond to adversity', 'The brutal grind stories behind billion-dollar brands'] },
-      { type: 'hook', headline: 'Most entrepreneurs cope with failure. Elite entrepreneurs get pissed off and take action.', subtext: 'The algorithm changed. Tariffs hit. Ads stopped working. Most people blame external forces. They cope. They complain. They make excuses. Elite entrepreneurs don\'t cope. They take massive, immediate action. This mindset difference separates winners from wishers.' },
+      { type: 'hook', headline: 'Most entrepreneurs cope with failure. Elite entrepreneurs get pissed off and take action.', subtext: 'The algorithm changed. Tariffs hit. Ads stopped working. Most people blame external forces. They cope. They complain. They make excuses. Elite entrepreneurs don\'t cope. They take massive, immediate action. This mindset difference separates winners from wishers.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'cope-vs-action', title: 'Cope vs Action: The Split', copeResponse: { label: 'THE COPE RESPONSE', items: ['Blame the algorithm', 'Complain about tariffs', 'Say the market is saturated', 'Wait for conditions to improve', 'Make excuses'], color: '#6B7280', icon: 'MessageCircle' }, actionResponse: { label: 'THE ACTION RESPONSE', items: ['F*** that, make 10 new creatives', 'Test different products immediately', 'Launch new campaigns today', 'Adapt strategy in real-time', 'Refuse to be a victim'], color: '#EF4444', icon: 'Zap' } },
       { type: 'cope-examples', title: 'What "Cope" Sounds Like', examples: [
         { quote: 'The algorithm hates me.', reality: 'Your creative sucks. The algorithm is neutral.' },
@@ -520,12 +520,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

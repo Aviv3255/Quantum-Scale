@@ -71,7 +71,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why moving slow is the most dangerous place to be', 'How to reframe mistakes as paid research', 'The proven frameworks top founders use to move 10x faster'] },
-      { type: 'hook', headline: 'Speed isn\'t reckless. Slow is dangerous.', subtext: 'Most entrepreneurs think moving slow is safer. They research for months. Perfect their product. Wait for certainty. Then they launch... and fail anyway. Why? Because slow businesses generate no data. Fast businesses learn. Adapt. Win.' },
+      { type: 'hook', headline: 'Speed isn\'t reckless. Slow is dangerous.', subtext: 'Most entrepreneurs think moving slow is safer. They research for months. Perfect their product. Wait for certainty. Then they launch... and fail anyway. Why? Because slow businesses generate no data. Fast businesses learn. Adapt. Win.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer' },
       { type: 'quote', quote: 'The biggest unfair advantage in business isn\'t money, talent, or connections. It\'s how fast you operate.', author: 'Davie Fogarty', context: 'Founder, The Oodie ($400M+ brand)' },
       { type: 'highlight-box', title: 'The Fallacy of Safety', body: 'Moving slowly feels safer. You do more research. Perfect the details. Avoid mistakes. But this is an illusion. Slow doesn\'t reduce risk. It increases it. Why? Because slow generates no new data. You operate on assumptions. Guesses. Theories. You have no real feedback from the market. No customers telling you what works. No sales proving your hypothesis.', highlight: 'The most dangerous place in business is moving too slowly to learn.' },
       { type: 'content', title: 'The Paradigm Shift', body: 'Winners don\'t avoid mistakes. They seek them out. Every mistake is paid research. Every failure is information. The faster you act, the faster life gives you feedback. Launch a product and it flops? Great. Now you know what doesn\'t work. Test an ad and it bombs? Perfect. One less thing to wonder about. Most people see failure as a stop sign. Winners see it as a green light to the next iteration. Speed creates data. Data creates clarity. Clarity creates wins.' },
@@ -184,49 +184,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-      </div>
-    );
-
-    // Entrepreneur images
-    const entrepreneurImages = {
-      'Davie Fogarty': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png',
-      'Alex Hormozi': 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png'
-    };
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
-        {/* Entrepreneur image - positioned on right side, behind text */}
-        {entrepreneurImages[data.author] && (
-          <motion.img
-            src={entrepreneurImages[data.author]}
-            alt={data.author}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 0.15, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="absolute z-0 pointer-events-none select-none"
-            style={{
-              right: '5%',
-              bottom: '5%',
-              maxHeight: '60vh',
-              width: 'auto',
-              objectFit: 'contain'
-            }}
-          />
-        )}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10">
-          <div className="absolute -top-6 -left-4 text-8xl opacity-10" style={{ color: 'var(--accent)' }}>"</div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl text-black leading-relaxed mb-6 relative z-10 italic">{data.quote}</motion.p>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="border-l-4 pl-4" style={{ borderColor: 'var(--accent)' }}>
-            <p className="text-lg font-bold text-neutral-900">{data.author}</p>
-            <p className="text-sm text-neutral-500">{data.context}</p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-        </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

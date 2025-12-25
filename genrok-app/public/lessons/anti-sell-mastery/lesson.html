@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why "Psychological Reactance" makes customers resist your pitch', 'The counter-intuitive power of pulling AWAY instead of pushing', 'How to make customers convince THEMSELVES to buy'] },
-      { type: 'hook', headline: '"This product probably isn\'t for you." That one sentence increased conversions by 31%.', subtext: 'It sounds insane. Every marketing instinct says PUSH harder. "Buy now!" "Don\'t miss out!" "Limited time!" But here\'s what actually happens: the harder you push, the harder they resist. It\'s called Psychological Reactance. The brain has an automatic defense against being told what to do. The solution? Stop pushing. Start pulling away. Make them CHASE you.' },
+      { type: 'hook', headline: '"This product probably isn\'t for you." That one sentence increased conversions by 31%.', subtext: 'It sounds insane. Every marketing instinct says PUSH harder. "Buy now!" "Don\'t miss out!" "Limited time!" But here\'s what actually happens: the harder you push, the harder they resist. It\'s called Psychological Reactance. The brain has an automatic defense against being told what to do. The solution? Stop pushing. Start pulling away. Make them CHASE you.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Science of Resistance', body: 'Psychological Reactance is the brain\'s automatic defense mechanism. When you feel your freedom is being threatened - when someone is trying to control your decision - your brain rebels. You don\'t just ignore the pitch. You actively move in the OPPOSITE direction. "Buy now!" makes you want to wait. "You need this!" makes you skeptical. "Last chance!" makes you walk away. The pushier the sell, the stronger the pushback. This is why aggressive marketing backfires on sophisticated buyers.' },
       { type: 'visual', title: 'The Reactance Effect', visualType: 'comparison', data: {
         left: { label: 'Push Harder', value: '-31%', result: 'Aggressive tactics decrease trust', color: '#ef4444' },
@@ -139,12 +139,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

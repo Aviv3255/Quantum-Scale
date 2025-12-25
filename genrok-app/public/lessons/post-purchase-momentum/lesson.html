@@ -163,7 +163,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why the moment after payment has the highest trust level in the entire customer journey', 'The psychology of commitment and consistency that makes post-purchase offers convert better', 'How to ethically leverage this momentum without breaking trust'] },
-      { type: 'hook', headline: 'Most stores waste their highest-trust moment.', subtext: 'Someone just gave you money. Their credit card was charged. The purchase is confirmed. Right now, in this exact moment, they trust you more than they ever will again. This is not a theory. This is commitment and consistency psychology. Once someone commits to a decision, they rationalize it. They convince themselves it was the right choice. And in that window, they are more likely to say yes to related offers. Yet most stores show a boring "Thank you for your order" page and send them away. The opportunity evaporates.' },
+      { type: 'hook', headline: 'Most stores waste their highest-trust moment.', subtext: 'Someone just gave you money. Their credit card was charged. The purchase is confirmed. Right now, in this exact moment, they trust you more than they ever will again. This is not a theory. This is commitment and consistency psychology. Once someone commits to a decision, they rationalize it. They convince themselves it was the right choice. And in that window, they are more likely to say yes to related offers. Yet most stores show a boring "Thank you for your order" page and send them away. The opportunity evaporates.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CIuoqfrDj_sCEAE=.webp', brandName: 'ReConvert' },
       { type: 'content', title: 'The Commitment Psychology Window', body: 'When someone clicks "Complete Purchase," something shifts in their brain. Before payment: doubt, hesitation, comparison shopping. After payment: commitment. They have psychologically crossed a threshold. They are now a customer, not a visitor. And humans have a deep need for consistency. Once we commit to something, we want our future actions to align with that commitment. This is why the thank you page converts better than any other page on your site. They already said yes once. Saying yes again feels consistent.' },
       { type: 'timeline', title: 'The Customer Trust Journey', stages: [
         { title: 'First Visit', description: 'Who is this store? Can I trust them?', trust: 'Low', color: '#ef4444' },
@@ -237,12 +237,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

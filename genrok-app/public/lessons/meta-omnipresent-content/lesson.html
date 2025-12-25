@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why omnipresent content works for high-LTV businesses ($1,000+ customer value)', 'The exact structure: 14 ad sets, 1 ad each, frequency cap 1/7 days', 'How this creates 2 unique touchpoints daily without ad fatigue'] },
-      { type: 'hook', headline: 'Your prospects see you everywhere. Not annoying. Not spammy. Just... present. Value. Proof. Testimonial. Brand. Different messages. Different angles. Every single day. Until you\'re the only logical choice when they\'re ready to buy.', subtext: 'This is Omnipresent Content - a framework designed to build deep relationships with your target audience over time. It\'s not about immediate conversion. It\'s about becoming famous within your niche by delivering consistent value, building unshakeable trust, and being perpetually top-of-mind.' },
+      { type: 'hook', headline: 'Your prospects see you everywhere. Not annoying. Not spammy. Just... present. Value. Proof. Testimonial. Brand. Different messages. Different angles. Every single day. Until you\'re the only logical choice when they\'re ready to buy.', subtext: 'This is Omnipresent Content - a framework designed to build deep relationships with your target audience over time. It\'s not about immediate conversion. It\'s about becoming famous within your niche by delivering consistent value, building unshakeable trust, and being perpetually top-of-mind.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Strategy: Omnipresent Content', body: 'The Omnipresent Content strategy is a framework designed to build a deep relationship with your target audience over time. It\'s not about immediate conversion; it\'s about becoming the only logical choice when they are ready to buy.\n\nBest suited for:\n• Businesses with a customer lifetime value greater than $1,000\n• Expertise-based services (coaches, consultants, agencies)\n• High-end or bespoke products with longer sales cycles' },
       { type: 'content', title: 'The Goal of Omnipresence', body: 'To become "famous" within your niche audience by delivering consistent value, building unshakeable trust, and being perpetually top-of-mind.\n\nThis is a marathon, not a sprint. The returns compound over time as your brand becomes synonymous with expertise in your space.\n\nWhen someone in your niche needs what you offer, you\'re the first (and often only) name that comes to mind.' },
       { type: 'content', title: 'Why This Works for High-LTV Businesses', body: 'When your customer is worth $1,000, $5,000, or $10,000+, the math changes completely.\n\nYou can afford to invest in relationship-building. A $2,000 ad spend to acquire a $10,000 client is profitable. Most advertisers are chasing $50 sales and can\'t afford this strategy.' },
@@ -131,12 +131,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

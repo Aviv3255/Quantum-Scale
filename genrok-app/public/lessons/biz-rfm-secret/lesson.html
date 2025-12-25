@@ -81,7 +81,7 @@
         { value: 'Frequency', label: 'How often they buy', subtext: 'High frequency = high loyalty' },
         { value: 'Value', label: 'How much they spend', subtext: 'Big spenders overcome price fear' }
       ]},
-      { type: 'content', title: 'Why Recency Matters Most', body: 'A customer who bought yesterday is HOT. Their wallet is already out. They just proved they trust you. They're 5x more likely to buy again than someone who bought 6 months ago. This is why Amazon hits you with "Customers who bought this also bought..." immediately after checkout. Strike while the iron is hot.' },
+      { type: 'content', title: 'Why Recency Matters Most', body: 'A customer who bought yesterday is HOT. Their wallet is already out. They just proved they trust you. They're 5x more likely to buy again than someone who bought 6 months ago. This is why Amazon hits you with "Customers who bought this also bought..." immediately after checkout. Strike while the iron is hot.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew'},
       { type: 'content', title: 'Frequency Reveals Loyalty', body: 'Someone who buys from you every month is not a customer. They're a fan. High frequency means they've overcome the biggest barrier—doubt. They know you deliver. They trust you. They're predictable. These people will buy your next product before you even launch it. They're pure gold.' },
       { type: 'content', title: 'Value Shows Spending Power', body: 'High spenders have crossed the price barrier. A customer who drops $500 without blinking will do it again. They're not price-sensitive. They're value-focused. They want the BEST, not the cheapest. These are the customers you build premium offers for. They're waiting for you to sell them more.' },
       { type: 'example', scenario: 'The One-Click Upsell That Made $47K', before: { label: 'Before RFM', text: 'Sent the same email to everyone. 2.1% conversion. Most people ignored it. Revenue: $8,400/month.' }, after: { label: 'After RFM Segmentation', text: 'Sent one-click upsell ONLY to recent buyers (high recency). 18.7% conversion. Same email. Different audience. Revenue: $47,000 in 3 weeks.' }, insight: 'Same product. Same email. Different timing. Recency is everything.' },
@@ -141,12 +141,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why strangers in uniforms get instant trust (and you don\'t)', 'The psychology of borrowed authority and liking', 'How to ethically borrow credibility for your Shopify store'] },
-      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you to move. You ignore them.', subtext: 'Same command. Same situation. Different uniform. Why does the uniform win? Because your brain has a shortcut: Authority = Trust. And trust = sales. The question is: How do you borrow that trust when you\'re nobody in your market yet?' },
+      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you to move. You ignore them.', subtext: 'Same command. Same situation. Different uniform. Why does the uniform win? Because your brain has a shortcut: Authority = Trust. And trust = sales. The question is: How do you borrow that trust when you\'re nobody in your market yet?' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Uniform Study That Changes Everything', body: 'Psychologist Leonard Bickman ran a simple experiment. A researcher asked people on the street to do something trivial - pick up a bag, give money for parking, move away from a bus stop. Same person. Same request. Only one thing changed: what they wore. In street clothes, 42% complied. In a security guard uniform? 92% complied. The uniform alone increased compliance by 119%. The person had ZERO actual authority. But the symbol of authority was enough.' },
       { type: 'visual', title: 'The Power of Borrowed Authority', visualType: 'stats', data: [
         { value: '42%', label: 'Street Clothes', subtext: 'No authority signal' },
@@ -146,12 +146,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The mindset shift: hyper-focus beats broad reach', 'How to filter out waste and only pay for profitable clicks', 'The two-step process: common sense list + weekly reviews', 'Strategic filtering: focus only on where you can win'] },
-      { type: 'hook', headline: 'Your ad just showed up for "free leather wallet" and "DIY leather repair". You paid $3 for those clicks. Zero sales. This happens every day until you build your filter.', subtext: 'Negative keywords are your colander. They filter out the waste and let only the profitable clicks flow through. Without them, you\'re paying for garbage traffic.' },
+      { type: 'hook', headline: 'Your ad just showed up for "free leather wallet" and "DIY leather repair". You paid $3 for those clicks. Zero sales. This happens every day until you build your filter.', subtext: 'Negative keywords are your colander. They filter out the waste and let only the profitable clicks flow through. Without them, you\'re paying for garbage traffic.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/dfb96cc174513093cd6ed61489ccb750.svg', brandName: 'Canva'},
       { type: 'content', title: 'The Mindset Shift', body: 'Here\'s the truth most advertisers miss:\n\nYour job isn\'t to get ads in front of as many people as possible.\n\nYour job is to get the best return possible by being hyper-focused.\n\nBroad reach sounds good. But broad reach includes:\n- People searching for "free" versions of your product\n- People looking for "DIY" solutions\n- People searching for "reviews" (not buyers)\n- People searching for jobs in your industry\n- People searching for your competitors\n\nThese searches trigger your ads. You pay for the click. They don\'t buy.\n\nThis is where negative keywords save you thousands. They filter out the waste before you pay for it.' },
       { type: 'mockup', title: 'The Negative Keyword Colander', description: 'Bad keywords drain your budget. Good keywords drive sales. Your colander filters out the waste and lets only profitable clicks through.', mockupType: 'colander' },
       { type: 'content', title: 'Two-Step Process', body: 'Building your negative keyword list isn\'t complicated. It\'s systematic.\n\nStep 1: Build a "Common Sense" List First\nBefore you launch, list all the terms you know are irrelevant:\n- "free" - You don\'t sell free products\n- "DIY" - You sell finished products, not materials\n- "jobs" - You\'re not hiring\n- "reviews" - Review sites, not buyers\n- "how to" - Tutorial seekers, not buyers\n- Competitor names - Don\'t pay for their brand traffic\n\nStep 2: Review Your Search Terms Report Weekly\nEvery week, check what searches triggered your ads. Add negatives in two levels:\n\nLevel 1 (Obvious): Add completely irrelevant search terms immediately.\n\nLevel 2 (Strategic): Add terms that are kind of relevant but not your specialty. Focus only on where you can win.' },
@@ -109,12 +109,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

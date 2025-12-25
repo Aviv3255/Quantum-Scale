@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The private equity playbook for growth', 'Why 80% of customers hurt your business', 'How to identify & dominate your top 20%'] },
-      { type: 'hook', headline: 'Private equity firms buy companies and instantly 3X their value.', subtext: 'Their secret? They fire 80% of the customers. Sounds insane. But it works every single time. They identify the top 20% who generate 80% of profit. Then they rebuild the entire business to serve only those people. The rest get cut. Revenue stays the same. Profit triples. This is the 20% domination strategy.' },
+      { type: 'hook', headline: 'Private equity firms buy companies and instantly 3X their value.', subtext: 'Their secret? They fire 80% of the customers. Sounds insane. But it works every single time. They identify the top 20% who generate 80% of profit. Then they rebuild the entire business to serve only those people. The rest get cut. Revenue stays the same. Profit triples. This is the 20% domination strategy.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew' },
       { type: 'pareto-visual', title: 'The Pareto Principle in Action', subtitle: 'This is not theory. This is math.' },
       { type: 'content', title: 'The Private Equity Playbook', body: 'PE firms have a playbook. They acquire a company and analyze its customer base. They identify the top 20% of customers who generate 80% of the revenue and profit. Then they do something most founders never would. They stop all marketing aimed at the other 80%. They rebuild the entire business to exclusively serve the top 20%. The result? Higher LTV. Higher margins. Lower churn. Explosive growth.' },
       { type: 'comparison-cards', title: 'Focus on the 20% That Matter', left: { label: 'THE 80%', iconComponent: 'Users', value: '80%', subtext: 'of your customers', percentage: '20%', items: ['Generate only 20% of profit', 'High support costs', 'Price sensitive buyers', 'Cut them loose'], color: 'gray' }, right: { label: 'THE 20%', iconComponent: 'Crown', value: '20%', subtext: 'of your customers', percentage: '80%', items: ['Generate 80% of profit', 'Low maintenance', 'Pay premium prices', 'Dominate this niche'], color: 'green' } },
@@ -725,12 +725,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

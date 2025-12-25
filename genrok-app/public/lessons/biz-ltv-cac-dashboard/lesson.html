@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What LTV:CAC ratios actually mean for your business', 'The automation multiplier nobody talks about', 'Why CAC always rises over time (and what to do)'] },
-      { type: 'hook', headline: 'Everyone asks: "What\'s a good LTV:CAC ratio?" The answer depends on how automated your business is.', subtext: 'A 3:1 ratio is amazing for fully automated businesses. But it\'s bankruptcy waiting to happen if you\'re manually fulfilling orders. The more people involved, the more profit padding you need. This is the operator\'s dashboard—the one metric that tells you if you\'re building a machine or digging a hole.' },
+      { type: 'hook', headline: 'Everyone asks: "What\'s a good LTV:CAC ratio?" The answer depends on how automated your business is.', subtext: 'A 3:1 ratio is amazing for fully automated businesses. But it\'s bankruptcy waiting to happen if you\'re manually fulfilling orders. The more people involved, the more profit padding you need. This is the operator\'s dashboard—the one metric that tells you if you\'re building a machine or digging a hole.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'What LTV:CAC Actually Measures', body: 'LTV is Lifetime Value—total profit from a customer over their entire relationship with you. CAC is Customer Acquisition Cost—what you spend to get one customer. The ratio tells you: for every dollar spent acquiring customers, how many dollars do you make back? A 3:1 ratio means you make $3 for every $1 spent. Simple math. Massive implications.' },
       { type: 'content', title: 'The Automation Multiplier', body: 'Fully automated businesses—lead gen, ecommerce with dropshipping, digital products—can run on thin margins. A 3:1 ratio works because there\'s no labor cost eating profits. But the moment you add people—customer service, manual fulfillment, personal delivery—you need more buffer. Why? Because people cost money. Lots of it.' },
       { type: 'visual', title: 'LTV:CAC Targets by Automation Level', visualType: 'stats', data: [
@@ -146,12 +146,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

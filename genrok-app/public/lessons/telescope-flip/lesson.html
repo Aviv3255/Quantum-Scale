@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why obsessing over YOUR product kills conversions', 'The fatal "telescope backwards" error 97% of marketers make', 'How to mine your customers\' inner world for pure conversion gold'] },
-      { type: 'hook', headline: 'You\'re staring at your product description. Tweaking features. Refining copy. Meanwhile, your customer is scrolling past, completely uninterested.', subtext: 'Why? Because you\'re looking through the wrong end of the telescope. You\'re obsessed with what you\'re selling - while they only care about what they\'re feeling, fearing, and fantasizing about. This is the fundamental error. And it\'s costing you everything.' },
+      { type: 'hook', headline: 'You\'re staring at your product description. Tweaking features. Refining copy. Meanwhile, your customer is scrolling past, completely uninterested.', subtext: 'Why? Because you\'re looking through the wrong end of the telescope. You\'re obsessed with what you\'re selling - while they only care about what they\'re feeling, fearing, and fantasizing about. This is the fundamental error. And it\'s costing you everything.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
       { type: 'content', title: 'The Marketer\'s Delusion', body: 'Here\'s the brutal truth that most store owners never realize: Your customer doesn\'t think about your product. Not even for a second. They think about themselves - their problems, their pain, their secret desires, the voice in their head that won\'t shut up. But you? You obsess over YOUR features, YOUR benefits, YOUR brand story. You\'re holding the telescope backwards, staring at yourself while the customer is on the other side, invisible to you.' },
       { type: 'visual', title: 'Where Marketers Actually Focus', visualType: 'stats', data: [
         { value: '89%', label: 'focus on product features', subtext: 'What WE think matters' },
@@ -147,12 +147,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

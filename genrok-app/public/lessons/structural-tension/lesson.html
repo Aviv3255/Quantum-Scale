@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What structural tension is and why it hooks readers', 'The 4 core tension techniques that captivate any audience', 'How to open loops without feeling like clickbait'] },
-      { type: 'hook', headline: 'Why do you keep reading articles you know will disappoint you?', subtext: 'Because your brain physically cannot handle an unfinished story. Structural tension is the invisible psychological force that keeps readers glued to every word—even when they want to leave. Master this, and people read your copy like a thriller novel they can\'t put down.' },
+      { type: 'hook', headline: 'Why do you keep reading articles you know will disappoint you?', subtext: 'Because your brain physically cannot handle an unfinished story. Structural tension is the invisible psychological force that keeps readers glued to every word—even when they want to leave. Master this, and people read your copy like a thriller novel they can\'t put down.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'What Is Structural Tension?', body: 'Think of a rubber band stretched between two fingers. That pull you feel? That\'s structural tension. In copywriting, it\'s the psychological gap between where your reader is and where they want to be. Every great story, every compelling sales message, every piece of content that holds attention uses this force. The human brain is hardwired to seek resolution. When you create an open question or unfulfilled promise, you activate a cognitive need that can only be satisfied by continuing to read.' },
       { type: 'visual', title: 'The Tension Arc', visualType: 'stats', data: [
         { value: '89%', label: 'higher engagement', subtext: 'When tension is used correctly' },
@@ -142,12 +142,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

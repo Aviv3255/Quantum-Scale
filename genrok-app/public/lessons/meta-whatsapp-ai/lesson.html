@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why WhatsApp is Meta\'s next frontier of collaboration', 'How Business AI automates high-touch conversations at scale', 'The 3 strategic advantages of Click-to-WhatsApp ads'] },
-      { type: 'hook', headline: 'Your competitor sends prospects to a landing page. Form. Email. Wait. Cold. Generic. You send them to WhatsApp. Instant reply. Personal conversation. AI-powered relationship. They answer questions, handle objections, send videos. Who wins?', subtext: 'WhatsApp has 3 billion monthly users. Meta is betting conversational AI is the future of customer interaction. Click-to-WhatsApp ads + Business AI = high-touch sales at scale. Here\'s how it works.' },
+      { type: 'hook', headline: 'Your competitor sends prospects to a landing page. Form. Email. Wait. Cold. Generic. You send them to WhatsApp. Instant reply. Personal conversation. AI-powered relationship. They answer questions, handle objections, send videos. Who wins?', subtext: 'WhatsApp has 3 billion monthly users. Meta is betting conversational AI is the future of customer interaction. Click-to-WhatsApp ads + Business AI = high-touch sales at scale. Here\'s how it works.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Future Is Conversational', body: 'Meta isn\'t just an ads platform. They\'re building the infrastructure for AI-powered conversations at global scale.\n\nWhatsApp: 3 billion monthly active users. The world\'s most trusted messaging platform.\n\nBusiness AI: Automated conversations that feel personal. Answer questions. Handle objections. Guide prospects through your sales process.\n\nThe result? High-touch communication without hiring 100 sales reps. Personal support at scale. Relationships that convert.' },
       { type: 'stats', title: 'WhatsApp by the Numbers', items: [
         { value: '3B', label: 'Monthly Active Users', description: 'More than any social platform except Facebook itself' },
@@ -201,12 +201,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

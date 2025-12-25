@@ -177,7 +177,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why owned audiences compound while rented audiences drain', 'The psychology of platform dependency and algorithm anxiety', 'How to build direct relationships that survive any platform change'] },
-      { type: 'hook', headline: 'One algorithm change can kill your entire business overnight.', subtext: 'You wake up. Check your phone. Your ad account is restricted. No explanation. No appeal. Just gone. Or Instagram changes the algorithm. Your reach drops 80% overnight. Years of audience building. Vanished. This is the terror of rented audiences. You built your business on someone else\'s land. They change the rules. You lose everything. Email lists are different. They are yours. No platform can take them. No algorithm can hide them. When you own the relationship, you own your business.' },
+      { type: 'hook', headline: 'One algorithm change can kill your entire business overnight.', subtext: 'You wake up. Check your phone. Your ad account is restricted. No explanation. No appeal. Just gone. Or Instagram changes the algorithm. Your reach drops 80% overnight. Years of audience building. Vanished. This is the terror of rented audiences. You built your business on someone else\'s land. They change the rules. You lose everything. Email lists are different. They are yours. No platform can take them. No algorithm can hide them. When you own the relationship, you own your business.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Klaviyo-primary-logo-charcoal.svg.png', brandName: 'Klaviyo'},
       { type: 'content', title: 'The Psychological Truth About Platforms', body: 'Every minute you spend building on someone else\'s platform, you are renting. Renting attention. Renting reach. Renting the ability to communicate with your own customers. And the landlord can change the rules anytime. Raise the rent (increase ad costs). Change the locks (restrict your account). Demolish the building (shut down the platform). You have zero control. This creates constant anxiety. "Will my ads still work tomorrow?" "What if they ban my account?" "What happens when reach drops again?" The psychology of rented audiences is fear-based. You are always one decision away from losing everything.' },
       { type: 'platform-risk', title: 'Rented vs Owned Audiences', rented: { title: 'Rented (Platform-Dependent)', items: ['Algorithm decides who sees your content', 'Can be banned or restricted anytime', 'Reach decreases as platform monetizes', 'You pay more every year for same results', 'Zero guarantee of access tomorrow'], insight: 'You are building on rented land. The platform owns the relationship.' }, owned: { title: 'Owned (Direct Relationship)', items: ['You control who sees your message', 'No one can ban or restrict you', 'Reach stays consistent over time', 'Cost per email decreases as list grows', 'Guaranteed access to your audience'], insight: 'You own the relationship. No platform can take it away.' }},
       { type: 'content', title: 'Why Email Feels Like Insurance', body: 'Here is the mental shift: Email is not just marketing. It is business insurance. Insurance against algorithm changes. Insurance against ad account bans. Insurance against platform collapses. When you have 50,000 email subscribers, you have direct access to 50,000 people who said yes to hearing from you. No Facebook needed. No Instagram required. No Google approval necessary. You write. You send. They receive. That is a direct relationship. And direct relationships are the only real business asset you control.' },
@@ -245,12 +245,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

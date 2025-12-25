@@ -159,7 +159,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why local holidays convert 40-70% better than generic "limited time" offers', 'The psychology of cultural anchoring and legitimate urgency', 'How to automatically personalize offers by visitor location'] },
-      { type: 'hook', headline: 'Your "Limited Time Offer" banner is training customers to ignore you.', subtext: 'Every store runs the same fake urgency. "FLASH SALE!" "Only 2 hours left!" "Limited stock!" Your customers have seen it 10,000 times. They are immune. But here is what they cannot ignore: their own cultural calendar. When a German sees "Oktoberfest Special" in September, it is not a marketing trick. It is a real event. Real urgency. Real reason to buy NOW.' },
+      { type: 'hook', headline: 'Your "Limited Time Offer" banner is training customers to ignore you.', subtext: 'Every store runs the same fake urgency. "FLASH SALE!" "Only 2 hours left!" "Limited stock!" Your customers have seen it 10,000 times. They are immune. But here is what they cannot ignore: their own cultural calendar. When a German sees "Oktoberfest Special" in September, it is not a marketing trick. It is a real event. Real urgency. Real reason to buy NOW.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(19).jpg', brandName: 'Geo Convert' },
       { type: 'content', title: 'The Death of Fake Scarcity', body: 'Look at your inbox. How many "LAST CHANCE!" emails did you get this week? Now how many did you open? Fake urgency worked in 2015. Today it is background noise. Your brain automatically filters it. But real calendar events? Those hit different. Black Friday. Valentine\'s Day. Your birthday. These have REAL deadlines. The day comes and goes whether you bought or not. That is legitimate urgency.' },
       { type: 'comparison-grid', title: 'Fake Urgency vs Real Urgency', fake: { title: 'Manufactured Scarcity', items: ['"Only 3 left in stock!" (always 3)', '"Sale ends tonight!" (resets tomorrow)', '"Limited time offer!" (running for 6 months)', '"Exclusive deal just for you!" (sent to everyone)'], insight: 'Customers can smell fake urgency. It destroys trust.' }, real: { title: 'Calendar Anchoring', items: ['Oktoberfest sale for German visitors (Sept-Oct)', 'Diwali special for Indian visitors (Oct-Nov)', 'Singles Day for Chinese visitors (Nov 11)', 'Midsummer offer for Swedish visitors (June)'], insight: 'Real events create real deadlines. No manipulation needed.' }},
       { type: 'content', title: 'The Power of Cultural Anchoring', body: 'When you reference a real cultural moment, three things happen: First, you signal that you KNOW the customer. You are not a faceless global store. Second, the deadline is externally imposed. The holiday ends when it ends. You are not making it up. Third, the offer feels RELEVANT. A Thanksgiving deal in November makes sense. The same deal in March feels random.' },
@@ -229,12 +229,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

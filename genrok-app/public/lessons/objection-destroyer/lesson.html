@@ -90,7 +90,7 @@
         'The At First I Thought framework for addressing objections before they\'re asked',
         'Where to mine objections: Amazon 1-stars, TikTok comments, Reddit threads'
       ]},
-      { type: 'hook', headline: 'Your 5-star review: "Amazing product! Love it!" Cool. Useless.', subtext: 'Compare to this: "At first I thought the resistance bands would rip after a week. I\'ve been using them daily for 3 months and they\'re still perfect." THAT review just crushed your #1 objection. THAT review converts browsers into buyers. The best reviews don\'t praise. They address doubts.' },
+      { type: 'hook', headline: 'Your 5-star review: "Amazing product! Love it!" Cool. Useless.', subtext: 'Compare to this: "At first I thought the resistance bands would rip after a week. I\'ve been using them daily for 3 months and they\'re still perfect." THAT review just crushed your #1 objection. THAT review converts browsers into buyers. The best reviews don\'t praise. They address doubts.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tiktok-app-icon-social-media-logo_277909-647.png', brandName: 'TikTok'},
       { type: 'content', title: 'The At First I Thought Framework', body: 'Structure: "At first I thought [OBJECTION], but actually [REALITY]." Example 1: "At first I thought this serum was too expensive, but one bottle lasts 4 months so it\'s actually cheaper per day than drugstore brands." Example 2: "At first I thought assembly would take hours, but it snapped together in 12 minutes with zero tools." This framework pre-emptively destroys objections.' },
       { type: 'visual', title: 'Review Types That Actually Convert', visualType: 'comparison', data: {
         left: { label: 'Useless Review', value: '★★★★★', result: '"Great product! Love it!"', color: '#dc2626' },
@@ -160,12 +160,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

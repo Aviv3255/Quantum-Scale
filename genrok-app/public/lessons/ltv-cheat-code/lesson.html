@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why the 80/20 rule is actually 95/5 in eCommerce', 'Dan Kennedy\'s billion-dollar customer acquisition principle', 'How to weaponize LTV data to scale profitably'] },
-      { type: 'hook', headline: 'The person who can spend the most to acquire a customer wins.', subtext: 'Dan Kennedy said this decades ago. It\'s still the most important sentence in direct response marketing. If you can afford to pay more than competitors to acquire a customer, you own the market. The secret? Knowing what a customer is actually worth - not just their first purchase.' },
+      { type: 'hook', headline: 'The person who can spend the most to acquire a customer wins.', subtext: 'Dan Kennedy said this decades ago. It\'s still the most important sentence in direct response marketing. If you can afford to pay more than competitors to acquire a customer, you own the market. The secret? Knowing what a customer is actually worth - not just their first purchase.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew'},
       { type: 'content', title: 'The Pareto Principle: 80/20', body: 'You\'ve heard it before: 20% of your actions generate 80% of your results. It shows up everywhere. 20% of your clients cause 80% of your headaches. 20% of your products drive 80% of your revenue. But in eCommerce? The ratio is even more extreme. And most store owners have no idea.' },
       { type: 'content', title: 'The LTV Blindness Problem', body: 'Most store owners have no idea what their customers are actually worth. They look at first-order profit and make all their decisions based on incomplete data. They cap ad spend too low. They treat all customers the same. They leave millions on the table. Meanwhile, competitors who understand LTV outbid them every time.' },
       { type: 'visual', title: 'The Reality: It\'s Not 80/20', visualType: 'twoStats', data: [
@@ -149,12 +149,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

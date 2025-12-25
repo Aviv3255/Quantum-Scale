@@ -90,7 +90,7 @@
         'The 3 brutal realities of the modern DTC battlefield',
         'The Performance Engine framework: Strategic Foundation → Conversion Engine → Value Multiplier'
       ]},
-      { type: 'hook', headline: 'Your brand is not a logo. It\'s not a vibe. It\'s definitely not "something you build over years."', subtext: 'In 2025, the DTC battlefield is brutal. Rising CAC. Platform saturation. Competition from every angle. If your brand doesn\'t convert immediately and retain efficiently, you\'re already dead. This lesson rewrites everything you thought you knew about brand building.' },
+      { type: 'hook', headline: 'Your brand is not a logo. It\'s not a vibe. It\'s definitely not "something you build over years."', subtext: 'In 2025, the DTC battlefield is brutal. Rising CAC. Platform saturation. Competition from every angle. If your brand doesn\'t convert immediately and retain efficiently, you\'re already dead. This lesson rewrites everything you thought you knew about brand building.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/framer-1.svg', brandName: 'Framer'},
       { type: 'content', title: 'The Old Brand Playbook Is Dead', body: 'For decades, brand was treated like a long-term investment. Build awareness. Create emotional connections. Wait years to see results. That worked when CAC was $5 and Facebook ads were magic money printers. But the battlefield has changed. Now, your brand must convert immediately and retain efficiently - or you lose.' },
       { type: 'visual', title: 'The DTC Battlefield Today', visualType: 'stats', data: [
         { value: '3x', label: 'CAC increase', subtext: 'Since 2019 across platforms' },
@@ -158,12 +158,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 
