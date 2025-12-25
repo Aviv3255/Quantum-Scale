@@ -61,7 +61,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The 7,000 mistakes that built Gymshark', 'Ben Francis\'s "radical self-awareness" hack', 'Why courage is the only variable that matters'] },
-      { type: 'hook', headline: 'A 19-year-old Pizza Hut delivery driver built a billion-dollar empire. His secret wasn\'t talent. It was courage.', subtext: 'Ben Francis started Gymshark with a sewing machine, a screen printer, and his life savings of £2,000. He made 7,000 mistakes. Every single one made him stronger.' },
+      { type: 'hook', headline: 'A 19-year-old Pizza Hut delivery driver built a billion-dollar empire. His secret wasn\'t talent. It was courage.', subtext: 'Ben Francis started Gymshark with a sewing machine, a screen printer, and his life savings of £2,000. He made 7,000 mistakes. Every single one made him stronger.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Gymshark_Limited_Logo.png', brandName: 'Gymshark' },
       { type: 'mentor', name: 'Ben Francis', title: 'Founder & CEO, Gymshark', image: defined.benFrancisImage, quote: 'Every decision we\'ve made, we\'ve made with courage. That\'s the only thing that separates those who succeed from those who don\'t.', insight: 'Built Gymshark from his garage to $1.4B valuation without taking a single dollar of outside funding.' },
       { type: 'content', title: 'The Pizza Hut Origin Story', body: 'Ben was 19. Delivering pizzas for minimum wage. He\'d wake up at 5am to work on his supplement business before his shift. Then a fitness clothing business. Then another. Each one failed. But each one taught him something nobody else knew.' },
       { type: 'visual', title: 'The 7,000 Mistakes', visualType: 'stats', data: [
@@ -127,12 +127,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: "var(--accent)" }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: "30%", maxHeight: "200px", marginRight: "3%", marginBottom: "5%" }}>
+            <img src={data.brandImage} alt={data.brandName || ""} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 

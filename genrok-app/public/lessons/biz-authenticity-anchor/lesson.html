@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why chasing trends kills brands', 'The Nike Air Force 1 secret to 40 years of relevance', 'Greg Hoffman\'s "Emotion Before Product" framework'] },
-      { type: 'hook', headline: 'In 1982, Nike released a shoe. 40+ years later, it\'s still their best seller. Zero redesigns.', subtext: 'Competitors chase trends. They redesign every season. They follow what\'s hot. And they wonder why their products die after 2 years. Nike did the opposite. And created a $3 billion icon.' },
+      { type: 'hook', headline: 'In 1982, Nike released a shoe. 40+ years later, it\'s still their best seller. Zero redesigns.', subtext: 'Competitors chase trends. They redesign every season. They follow what\'s hot. And they wonder why their products die after 2 years. Nike did the opposite. And created a $3$3 billion icon.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Nike-Logo.png', brandName: 'Nike' },
       { type: 'content', title: 'The Air Force 1 Paradox', body: 'Nike never updated the Air Force 1. Same silhouette since 1982. While competitors obsessed over innovation, Nike focused on something else: cultural authenticity. They didn\'t chase cool. They let cool find them. And it did—decade after decade.' },
       { type: 'visual', title: 'Two Brand Strategies', visualType: 'comparison', data: {
         left: { label: 'Trend Chasers', value: 'FOLLOW', result: '2-year lifespan', color: '#ef4444' },
@@ -135,12 +135,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: "var(--accent)" }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-[10%] right-[5%] z-0 pointer-events-none" style={{ height: "35%", maxHeight: "250px" }}>
+            <img src={data.brandImage} alt={data.brandName || ""} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 

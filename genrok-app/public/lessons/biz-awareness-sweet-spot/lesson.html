@@ -72,7 +72,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The 5 stages of consumer awareness and why most fail', 'Why Problem Aware is the lowest CAC entry point', 'How The Oodie captured $200M by entering at the perfect stage'] },
-      { type: 'hook', headline: 'The Oodie didn\'t create demand for wearable blankets. They found millions of people who were already cold at home, frustrated, searching for comfort - and showed them a solution they didn\'t know existed.', subtext: 'That\'s the market awareness sweet spot. Enter where customers feel the pain but don\'t know the solution exists. No expensive education. No price wars. Just instant relevance and the lowest CAC of any stage.' },
+      { type: 'hook', headline: 'The Oodie didn\'t create demand for wearable blankets. They found millions of people who were already cold at home, frustrated, searching for comfort - and showed them a solution they didn\'t know existed.', subtext: 'That\'s the market awareness sweet spot. Enter where customers feel the pain but don\'t know the solution exists. No expensive education. No price wars. Just instant relevance and the lowest CAC of any stage.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Oodie-Logo-RGB-R.webp', brandName: 'The Oodie' },
       { type: 'content', title: 'The Awareness Spectrum: Not All Markets Are Equal', body: 'Not all markets are created equal. Some are impossible to crack. Others are gold mines.\n\nThe difference? Where customers sit on the awareness spectrum.\n\nEvery customer moves through 5 stages:\n\nStage 1: Unaware - No problem, no interest\nStage 2: Problem Aware - Feels pain, no solution known\nStage 3: Solution Aware - Knows category exists\nStage 4: Product Aware - Comparing specific options\nStage 5: Most Aware - Knows your brand specifically\n\nEnter at the wrong stage and you bleed cash. Enter at the right stage and customers find you.' },
       { type: 'mockup', title: 'The 5 Stages of Market Awareness', description: 'The Problem Aware stage is the sweet spot - customers feel the pain but don\'t know solutions exist yet. This is where CAC is lowest and response is highest.', mockupType: 'awareness-spectrum' },
       { type: 'content', title: 'The Sweet Spot: Problem Aware', body: 'Problem Aware is the goldilocks zone of market entry.\n\nThey already feel the pain. You don\'t need to convince them a problem exists. They\'re already searching for relief.\n\nBut they don\'t know the solution category yet. No comparison shopping. No crowded auctions. No price wars.\n\nYou show up with the answer they didn\'t know existed. Instant relevance.\n\nThis is how The Oodie captured $200M+. Millions were cold at home. They didn\'t know wearable blankets existed. The Oodie showed them. Boom. Market leadership.\n\nNo expensive education (like Stage 1). No brutal competition (like Stages 4-5). Just pure problem-solution match.' },
@@ -123,12 +123,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: "var(--accent)" }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: "30%", maxHeight: "200px", marginRight: "3%", marginBottom: "5%" }}>
+            <img src={data.brandImage} alt={data.brandName || ""} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 
