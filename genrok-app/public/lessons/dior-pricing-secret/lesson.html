@@ -63,7 +63,7 @@
         { value: '$3,500', label: 'Retail Price', subtext: '6,140% markup' }
       ]},
       { type: 'content', title: 'They Are Not Selling Cotton. They Are Selling Status.', body: 'Here is what most sellers miss: Dior is not competing with other bags. They are competing with Chanel. Hermès. Louis Vuitton. The customer is not buying a bag to carry stuff. They are buying a signal to the world that says: I can afford this. The price itself becomes the product. When you price at $3,500, you are not just setting a number. You are creating a price prime—anchoring value at an elite level that filters OUT everyone except your most qualified buyers.' },
-      { type: 'content', title: 'The Rolex Waitlist: Selling What You DO NOT Have', body: 'You walk into a Rolex authorized dealer. You want a Daytona. A Submariner. Anything desirable. The answer? We do not have it. But we can put you on the list. The wait? 2-5 years. Sometimes never. Rolex makes more money selling the waitlist than selling the actual watches. The offer is not the timepiece. The offer is the promise of future access. The ultimate exclusivity signal.' },
+      { type: 'content', title: 'The Rolex Waitlist: Selling What You DO NOT Have', body: 'You walk into a Rolex authorized dealer. You want a Daytona. A Submariner. Anything desirable. The answer? We do not have it. But we can put you on the list. The wait? 2-5 years. Sometimes never. Rolex makes more money selling the waitlist than selling the actual watches. The offer is not the timepiece. The offer is the promise of future access. The ultimate exclusivity signal.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Logo_da_Rolex.png', brandName: 'Rolex' },
       { type: 'example', scenario: 'Rolex Strategy vs Regular Brand', before: { label: 'Regular Brand', text: 'We have 100 in stock! Buy now! Limited time only! Please buy!' }, after: { label: 'Rolex Strategy', text: 'You cannot have it. Join the waitlist. Maybe in 3 years. If you are lucky.' }, insight: 'Scarcity IS the product. The watch is just a bonus.' },
       { type: 'cards', title: 'What This Means for YOUR Store', items: [
         { title: 'Price = Signal', description: 'Your price tells customers who the product is for. Low price = mass market. High price = exclusivity. Choose your signal.' },
@@ -134,9 +134,17 @@
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 

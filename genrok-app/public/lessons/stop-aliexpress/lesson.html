@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The brutal truth about AliExpress fulfillment', 'Why your packaging kills sales in 0.4 seconds', 'Six advantages of private agents that build real brands'] },
-      { type: 'hook', headline: 'Your customer judges your product in 0.4 seconds. Before they even open the package.', subtext: 'A flimsy plastic bag with Chinese characters screams "cheap knockoff" before they touch the product. It doesn\'t matter if your product is amazing. The packaging already decided their opinion. This is why AliExpress fulfillment is destroying your brand - one plastic bag at a time.' },
+      { type: 'hook', headline: 'Your customer judges your product in 0.4 seconds. Before they even open the package.', subtext: 'A flimsy plastic bag with Chinese characters screams "cheap knockoff" before they touch the product. It doesn\'t matter if your product is amazing. The packaging already decided their opinion. This is why AliExpress fulfillment is destroying your brand - one plastic bag at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Aliexpress_logo.svg.png', brandName: 'AliExpress' },
       { type: 'content', title: 'The Packaging Problem Nobody Talks About', body: 'Most dropshippers obsess over finding winning products. They test creatives, optimize landing pages, perfect their funnels. Then the package arrives in a plastic bag with Chinese text. Everything you built? Gone in 0.4 seconds. The first impression isn\'t the product - it\'s the packaging. And AliExpress packaging screams cheap.' },
       { type: 'visual', title: 'What Your Customers Actually See', visualType: 'stats', data: [
         { value: '0.4s', label: 'to judge quality', subtext: 'Packaging decides first' },
@@ -156,12 +156,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 
