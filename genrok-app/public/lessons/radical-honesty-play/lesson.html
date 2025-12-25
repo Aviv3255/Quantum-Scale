@@ -111,6 +111,8 @@
             {
                 type: 'visual',
                 title: 'Case Study: Liquid Death',
+                brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Liquid-Death-Emblem.png',
+                brandName: 'Liquid Death',
                 examples: [
                     {
                         label: 'TRADITIONAL WATER BRAND',
@@ -459,14 +461,14 @@
                                     )}
 
                                     {slide.type === 'visual' && (
-                                        <div className="max-w-3xl mx-auto space-y-8">
-                                            <div className="text-center mb-12">
+                                        <div className="max-w-3xl mx-auto space-y-8 relative">
+                                            <div className="text-center mb-12 relative z-10">
                                                 <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
                                                     {slide.title}
                                                 </h2>
                                             </div>
 
-                                            <div className="space-y-6">
+                                            <div className="space-y-6 relative z-10">
                                                 {slide.examples.map((example, index) => (
                                                     <motion.div
                                                         key={index}
@@ -486,6 +488,17 @@
                                                     </motion.div>
                                                 ))}
                                             </div>
+                                            {slide.brandImage && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, x: 30 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: 0.4, duration: 0.5 }}
+                                                    className="absolute z-0 pointer-events-none"
+                                                    style={{ height: '25%', maxHeight: '180px', right: '-10%', bottom: '0' }}
+                                                >
+                                                    <img src={slide.brandImage} alt={slide.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+                                                </motion.div>
+                                            )}
                                         </div>
                                     )}
 

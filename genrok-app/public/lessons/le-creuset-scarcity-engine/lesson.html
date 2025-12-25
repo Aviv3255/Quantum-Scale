@@ -265,7 +265,9 @@
             },
             {
                 type: 'hook',
-                content: "Le Creuset sells pots. They're worth $2.5B. Here's their secret."
+                content: "Le Creuset sells pots. They're worth $2.5B. Here's their secret.",
+                brandImage: "https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Le_Creuset_Logo.png",
+                brandName: "Le Creuset"
             },
             {
                 type: 'content',
@@ -380,10 +382,21 @@
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
+                        style={{ position: 'relative' }}
                     >
-                        <div style={{ textAlign: 'center' }}>
+                        <div style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
                             <h1>{slide.content}</h1>
                         </div>
+                        {slide.brandImage && (
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3, duration: 0.5 }}
+                                style={{ position: 'absolute', bottom: 0, right: 0, height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%', zIndex: 0, pointerEvents: 'none' }}
+                            >
+                                <img src={slide.brandImage} alt={slide.brandName || ''} style={{ height: '100%', width: 'auto', objectFit: 'contain', opacity: 0.15 }} />
+                            </motion.div>
+                        )}
                     </motion.div>
                 );
             }

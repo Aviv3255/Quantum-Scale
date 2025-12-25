@@ -66,7 +66,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why fashion and luxury are fundamentally different games', 'The fatal mistake that destroyed Gucci\'s brand value', 'How to protect scarcity and avoid commoditization'] },
-      { type: 'hook', headline: 'Gucci was unstoppable. Then everything collapsed.', subtext: 'Under creative director Alessandro Michele, sales tripled. Young people went crazy for it. The Princetown slippers became a status symbol. The Marmont bag was everywhere. Then stock tumbled. Profits cratered. Parent company Kering now makes far less than rival LVMH. What happened?' },
+      { type: 'hook', headline: 'Gucci was unstoppable. Then everything collapsed.', subtext: 'Under creative director Alessandro Michele, sales tripled. Young people went crazy for it. The Princetown slippers became a status symbol. The Marmont bag was everywhere. Then stock tumbled. Profits cratered. Parent company Kering now makes far less than rival LVMH. What happened?', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/gucci-logo-png_seeklogo-64069.png', brandName: 'Gucci' },
       { type: 'content', title: 'The Fatal Mistake', body: 'Gucci confused "fashion" with "luxury"—and paid a billion-dollar price for it. Fashion relies on trends. What is hot right now. This season must-have. Fast-moving, constantly changing. Luxury relies on timelessness. Heritage. Scarcity. Permanence. It does not chase trends—it transcends them. Gucci hit products were fashion, not luxury. And here is the trap.' },
       { type: 'content', title: 'The Three-Phase Collapse', body: 'Phase 1: Create a hit product. Princetown slippers become THE status symbol. Sales explode. Everyone wants them. Phase 2: Milk the hit for all it is worth. Create variations. More colors. Different materials. Flood the market. Maximize revenue NOW. Phase 3: Destroy long-term value. Product goes from exclusive to ubiquitous. No longer special. No longer desirable. Sales collapse.' },
       { type: 'content', title: 'From Exclusive to Ubiquitous', body: 'That is exactly what Gucci did. They overexposed their hits. Endless variations. Available everywhere. Products went from exclusive to ubiquitous. And when luxury becomes common, it is no longer luxury. The restriction itself creates the value. Remove the restriction, remove the value.' },
@@ -127,12 +127,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.15 }} />
+          </motion.div>
+        )}
       </div>
     );
 
