@@ -85,7 +85,7 @@
         { value: 67, suffix: '%', label: 'Do Not Know Their CAC', subtext: 'Flying completely blind' },
         { value: 1, suffix: '%', label: 'Know LTV:CAC Ratio', subtext: 'The math-driven elite' }
       ]},
-      { type: 'content', title: 'The One Number That Changes Everything', body: 'There is one ratio that separates struggling stores from 8-figure brands: LTV:CAC. Lifetime Value divided by Customer Acquisition Cost. It tells you exactly how much you can spend to acquire a customer and still make money. Without it, you are gambling. With it, you are investing. The best businesses know this number down to the penny.' },
+      { type: 'content', title: 'The One Number That Changes Everything', body: 'There is one ratio that separates struggling stores from 8-figure brands: LTV:CAC. Lifetime Value divided by Customer Acquisition Cost. It tells you exactly how much you can spend to acquire a customer and still make money. Without it, you are gambling. With it, you are investing. The best businesses know this number down to the penny.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'right'},
       { type: 'ratio-visual', title: 'LTV:CAC - Your North Star', ratios: [
         { label: 'Below 1:1', value: '0.8:1', description: 'Losing money on every customer', color: '#EF4444', status: 'danger' },
         { label: 'Survival', value: '1.5:1', description: 'Breaking even after overhead', color: '#F59E0B', status: 'warning' },
@@ -463,7 +463,7 @@
               return (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + i * 0.15 }}
                   className="rounded-2xl p-6 text-center relative overflow-hidden"
@@ -552,7 +552,7 @@
 
           <div className="space-y-4">
             {data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${step.color}30` }}>
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${step.color}30` }}>
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 relative" style={{ background: `${step.color}15` }}>
                     {IconComponent(step.icon, step.color)}
@@ -613,7 +613,7 @@
     // Highlight Box Slide
     const HighlightBoxSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
           <p className="text-white text-lg font-bold">{data.highlight}</p>
@@ -624,8 +624,21 @@
     // Content Slide
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -633,7 +646,7 @@
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>

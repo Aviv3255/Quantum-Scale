@@ -70,10 +70,10 @@
         { count: 20, label: '20 Creatives', doors: '2,000 potential buyers', color: '#F59E0B' },
         { count: 50, label: '50 Creatives', doors: '5,000+ potential buyers', color: '#10B981' }
       ], insight: 'Each creative unlocks a different segment. More keys = more doors = more customers.' }},
-      { type: 'content', title: 'What "Meaningfully Different" Actually Means', body: 'Changing the CTA button color isn\'t meaningfully different. Swapping one word in the headline isn\'t meaningfully different. Meaningfully different means:\n\n• Different opening hook/first 3 seconds\n• Different primary message angle\n• Different visual format (static vs video vs carousel)\n• Different tone (UGC vs polished vs meme)\n• Different audience pain point addressed\n\nThe AI should classify them as reaching DIFFERENT people.' },
+      { type: 'content', title: 'What "Meaningfully Different" Actually Means', body: 'Changing the CTA button color isn\'t meaningfully different. Swapping one word in the headline isn\'t meaningfully different. Meaningfully different means:\n\n• Different opening hook/first 3 seconds\n• Different primary message angle\n• Different visual format (static vs video vs carousel)\n• Different tone (UGC vs polished vs meme)\n• Different audience pain point addressed\n\nThe AI should classify them as reaching DIFFERENT people.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'left'},
       { type: 'example-grid', title: 'Meaningfully Different vs Minor Variations', examples: [
         { type: 'wrong', label: 'NOT Meaningfully Different', items: ['Same video, different thumbnail', 'Same hook, different CTA', 'Same UGC, trimmed shorter', 'Same message, different font'] },
-        { type: 'right', label: 'MEANINGFULLY Different', items: ['UGC testimonial vs product demo', 'Problem-first hook vs benefit-first hook', 'Static image vs video', 'Social proof angle vs how-to angle'] }
+        { type: 'right', label: 'MEANINGFULLY Different', items: ['UGC testimonial vs product demo', 'Problem-first hook vs benefit-first hook', 'Static image vs video', 'Social proof angle vs how-to angle'] , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'left'}
       ]},
       { type: 'creative-matrix', title: 'The Creative Ecosystem Matrix', axes: { formats: ['Static', 'Video', 'Carousel', 'Stories'], angles: ['Problem Agitation', 'Social Proof', 'How-To/Demo', 'Transformation', 'Urgency/FOMO'] }, insight: 'Cross format × angle = 20 meaningfully different concepts before even changing hooks or visuals.' },
       { type: 'creative-library-mockup', title: 'Your Creative Library (Organized)', data: {
@@ -139,7 +139,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -162,7 +162,7 @@
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
@@ -179,8 +179,21 @@
 
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -189,7 +202,7 @@
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid md:grid-cols-3 gap-4 mb-6">
           {data.data.keys.map((key, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="text-center p-6 rounded-xl" style={{ background: `${key.color}15`, border: `2px solid ${key.color}` }}>
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="text-center p-6 rounded-xl" style={{ background: `${key.color}15`, border: `2px solid ${key.color}` }}>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: `${key.color}25` }}>
                 <Icons.Key size={28} color={key.color} />
               </div>
@@ -281,7 +294,7 @@
           </motion.div>
 
           {/* Meta-style Creative Library UI */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-xl border border-neutral-200 overflow-hidden shadow-lg" style={{ background: '#f0f2f5' }}>
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-xl border border-neutral-200 overflow-hidden shadow-lg" style={{ background: '#f0f2f5' }}>
             {/* Header bar */}
             <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200">
               <div className="flex items-center gap-3">
@@ -395,9 +408,9 @@
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
               <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
@@ -411,7 +424,7 @@
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {data.phases.map((phase, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
               <div className="text-xs font-bold text-neutral-400 mb-2">{phase.week}</div>
               <div className="text-sm font-bold text-neutral-900 mb-2">{phase.task}</div>
               <div className="text-xs text-neutral-500">{phase.description}</div>

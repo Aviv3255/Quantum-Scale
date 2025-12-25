@@ -143,7 +143,7 @@
         { icon: 'step2', title: 'Step 2', desc: 'Show who it filters out (lazy, cheap, impatient)' },
         { icon: 'step3', title: 'Step 3', desc: 'Immediately follow with powerful proof of results for those who qualify' }
       ]},
-      { type: 'quote', quote: 'When a friend recommends a restaurant but mentions the service is slow, you trust the food recommendation more. Your copy can tap into the same trust mechanism.', attribution: 'Trust Psychology Research' },
+      { type: 'quote', quote: 'When a friend recommends a restaurant but mentions the service is slow, you trust the food recommendation more. Your copy can tap into the same trust mechanism.', attribution: 'Trust Psychology Research' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sharing_with_a_friend_two_monkeys_one_explaini_b30f53d7-8f44-4b0a-8c27-ad2e11f08a64_1.mp4', characterPosition: 'left'},
       { type: 'example', subtitle: 'High-Ticket Example', bad: { label: 'Generic', text: '"Our agency delivers unmatched marketing results for growing businesses."' }, good: { label: 'Strategic Admission', text: '"We turn away 40% of potential clients because our methods don\'t work for every business. For the ones we take on, average ROI is 847%."' }, insight: 'Being selective proves quality without claiming it. The rejection makes accepted clients feel special and trust the 847% number.' },
       { type: 'quiz', question: 'A skincare brand says "not recommended for sensitive skin." What does this admission accomplish?', options: ['Reduces total addressable market size', 'Makes claims more believable AND filters bad-fit customers', 'Protects against lawsuits', 'Shows honesty but hurts sales'], correctIndex: 1, feedback: { correct: 'Exactly! The admission does double duty: it makes all other claims more credible through honesty, AND it prevents sensitive-skin customers who would have bad experiences and leave negative reviews. Strategic admissions filter for ideal customers while building trust.', incorrect: 'The power of strategic admission is that it works on two levels: it makes your claims more believable through demonstrated honesty, AND it filters out customers who would have bad experiences. This actually increases profits by reducing refunds and negative reviews.' }},
       { type: 'completion' }
@@ -236,7 +236,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
               {LESSON_CONFIG.title}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
@@ -266,7 +266,7 @@
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
@@ -291,6 +291,19 @@
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
             <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
             <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+          </motion.div>
+        )}
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
           </motion.div>
         )}
       </div>

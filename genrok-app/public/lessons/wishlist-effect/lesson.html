@@ -166,7 +166,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why "Add to Wishlist" increases both CVR and AOV', 'The Endowment Effect - psychological ownership without commitment', 'How wishlists bypass the frugal defense mechanism'] },
-      { type: 'hook', headline: 'A visitor clicks "Add to Wishlist." No payment. No commitment. Just a heart icon. They feel nothing. Then they come back three days later and buy everything on the list.', subtext: 'What happens next is pure psychology. Not discounts. Not pressure. Just a simple mechanism that creates ownership without commitment - and turns window shoppers into repeat buyers.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CLnu1ve1jY0DEAE=.webp', brandName: 'KeepCart' },
+      { type: 'hook', headline: 'A visitor clicks "Add to Wishlist." No payment. No commitment. Just a heart icon. They feel nothing. Then they come back three days later and buy everything on the list.', subtext: 'What happens next is pure psychology. Not discounts. Not pressure. Just a simple mechanism that creates ownership without commitment - and turns window shoppers into repeat buyers.' },
       { type: 'psychology-insight', title: 'The Zeigarnik Effect', subtitle: 'Why Unfinished Tasks Haunt Your Mind', body: 'In 1927, psychologist Bluma Zeigarnik noticed waiters remembered unpaid orders better than completed ones. Once paid, the mental tension dissolved. Unfinished tasks create cognitive itch - your brain literally can\'t let go until completion. This is why cliffhangers work. Why open loops drive you crazy. And why a wishlist with items waiting feels different than an empty cart.' },
       { type: 'dramatic-number', value: '68%', label: 'Cart Abandonment Rate', subtext: 'Visitors add items to cart but never complete purchase', context: 'The problem: "Add to Cart" triggers decision anxiety before they\'re ready to commit.' },
       { type: 'content', title: 'The Psychology Problem', body: 'When someone clicks "Add to Cart," their brain activates the frugal defense mechanism. Questions flood in: Can I afford this? Do I really need it? Should I wait for a sale? The mental negotiation starts immediately. Most visitors lose. They abandon the cart and never return. The interest was real, but the pressure was too early.' },
@@ -272,6 +272,19 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
+            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
