@@ -74,7 +74,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What a unique mechanism is and why it creates category of one', 'How to identify where other solutions fail', 'The 3-step framework for building your mechanism', 'Why mechanism naming makes you impossible to compare'] },
-      { type: 'hook', headline: 'Apple had "the ecosystem." Peloton has "the connected fitness experience." Tesla owns "the electric revolution."', subtext: 'These aren\'t just marketing terms. They\'re frameworks that make comparison impossible. When you have a unique mechanism, you stop competing. Instead of being compared to alternatives, you become incomparable. Prospects can\'t price-shop because there\'s nothing else like what you offer.' },
+      { type: 'hook', headline: 'Apple had "the ecosystem." Peloton has "the connected fitness experience." Tesla owns "the electric revolution."', subtext: 'These aren\'t just marketing terms. They\'re frameworks that make comparison impossible. When you have a unique mechanism, you stop competing. Instead of being compared to alternatives, you become incomparable. Prospects can\'t price-shop because there\'s nothing else like what you offer.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
       { type: 'content', title: 'What Is a Unique Mechanism?', body: 'A unique mechanism is your proprietary explanation for how your product or service delivers results. It\'s not just what you do - it\'s your special method, system, or approach that makes your solution fundamentally different from everything else. When done right, it creates a new mental category. Your prospect stops thinking "Which weight loss program should I choose?" and starts thinking "I need the Metabolic Reset Method." You\'ve exited the comparison game entirely.' },
       { type: 'visual', title: 'The Mechanism Effect', visualType: 'comparison', data: {
         left: { label: 'Without', value: 'Generic', result: 'Competing on price', color: '#ef4444' },
@@ -152,12 +152,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

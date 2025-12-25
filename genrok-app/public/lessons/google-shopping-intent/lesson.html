@@ -63,7 +63,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['The fundamental difference between passive and active intent', 'Why social media users scroll but Google users search with purpose', 'How Google Shopping captures high-intent buyers ready to purchase', 'Why cost-per-click matters less when conversion rates are higher'] },
-      { type: 'hook', headline: 'Social media users are scrolling through feeds, barely paying attention. Google Shopping users are typing "men\'s corduroy trousers" into the search bar. Which one do you think is more likely to buy?', subtext: 'The difference between passive discovery and active intent is the difference between hoping someone might want your product and showing up exactly when they\'re searching for it.' },
+      { type: 'hook', headline: 'Social media users are scrolling through feeds, barely paying attention. Google Shopping users are typing "men\'s corduroy trousers" into the search bar. Which one do you think is more likely to buy?', subtext: 'The difference between passive discovery and active intent is the difference between hoping someone might want your product and showing up exactly when they\'re searching for it.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Google_2015_logo.svg.png', brandName: 'Google' },
       { type: 'content', title: 'Passive Discovery vs Active Intent', body: 'Let\'s start with the fundamental truth that changes everything:\n\nPassive Discovery (Social Media):\nUsers are scrolling through feeds, looking at friends\' photos, watching videos. An ad appears. Maybe it catches their eye. Maybe it doesn\'t. They weren\'t looking for your product. They didn\'t ask to see it. Low intent.\n\nActive Intent (Google Shopping):\nUsers open Google and type "men\'s corduroy trousers" into the search bar. They\'re ACTIVELY searching for exactly what you sell. They have a need. They\'re comparing options. They\'re ready to buy. High intent.\n\nThis isn\'t a small difference. This is everything.\n\nOne person is casually browsing. The other person is actively shopping. Who do you think converts better?' },
       { type: 'mockup', title: 'Passive vs Active Intent', description: 'Social media users discover products they weren\'t looking for. Google Shopping users actively search for products they want to buy. The intent difference is massive.', mockupType: 'intent-comparison' },
       { type: 'content', title: 'Why Google Shopping Wins', body: 'Google Shopping Ads capture users at the exact moment they\'re searching for your product. This creates three massive advantages:\n\n1. Higher Conversion Rates\nSomeone searching "buy running shoes" is infinitely more likely to purchase than someone who saw a running shoe ad while scrolling Instagram. They\'re already in buying mode.\n\n2. Better ROAS (Return on Ad Spend)\nYou only pay when someone clicks. And because they\'re actively searching for what you sell, they convert at much higher rates. Higher conversion = better ROAS.\n\n3. Intent-Based Pricing\nYes, Google clicks might cost more than social clicks. But a $2 click that converts at 5% is better than a $0.50 click that converts at 0.5%. You\'re paying for quality, not quantity.\n\nThe businesses that win understand this: Cost per click means nothing. Cost per CUSTOMER is everything.' },
@@ -109,12 +109,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

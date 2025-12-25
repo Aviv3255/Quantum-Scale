@@ -106,7 +106,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['What Andromeda is and why it changes everything', 'Why manual targeting died overnight', 'The new creative-first strategy that actually works'] },
-      { type: 'hook', headline: 'Meta just replaced its advertising brain. And you\'re still running ads like it\'s 2019.', subtext: 'While you sleep, Andromeda analyzes 47 million visual patterns per second. It watches how users scroll. Where they pause. Who buys vs who bounces. The old playbook? Dead. Interest targeting? Useless. Complex campaign structures? Killing your results. Welcome to the AI era of Facebook Ads.' },
+      { type: 'hook', headline: 'Meta just replaced its advertising brain. And you\'re still running ads like it\'s 2019.', subtext: 'While you sleep, Andromeda analyzes 47 million visual patterns per second. It watches how users scroll. Where they pause. Who buys vs who bounces. The old playbook? Dead. Interest targeting? Useless. Complex campaign structures? Killing your results. Welcome to the AI era of Facebook Ads.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
       { type: 'content', title: 'What Is Andromeda?', body: 'Andromeda is Meta\'s brand-new AI advertising engine. Built on NVIDIA chips plus Meta\'s proprietary MTIA chip. This isn\'t a small update - it\'s a complete brain transplant. The old system matched interests and demographics. Andromeda analyzes creative visual structure, user micro-behaviors, scrolling patterns, and predicts who will buy before they even know it.' },
       { type: 'spotlight-card', title: 'Meet Andromeda', spotlight: 'Built on NVIDIA + Meta MTIA chips', description: 'This is not an incremental update. This is a complete brain transplant for Facebook Ads. Andromeda processes 47 million visual patterns per second, tracking 2+ billion users in real-time. It predicts purchases before users know they want to buy.', keyPoints: ['Analyzes creative visual structure', 'Tracks scrolling micro-behaviors', 'Predicts buyer intent automatically', '100% AI-driven optimization'] },
       { type: 'content', title: 'What Changed (And Why You\'re Losing)', body: 'Manual targeting used to work because Meta\'s AI was dumb. You told it who to show ads to. Now? Andromeda is smarter than you. It knows who will convert better than your customer avatar ever could. Fighting it with narrow targeting is like trying to outsmart Google\'s search algorithm. You will lose every single time.' },
@@ -165,12 +165,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 
