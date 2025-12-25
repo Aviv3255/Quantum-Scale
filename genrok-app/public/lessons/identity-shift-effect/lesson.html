@@ -124,7 +124,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why identity-based brands outsell feature-based competitors', 'The psychology behind "this is who I am" vs "this is what I need"', 'How to position your product as an identity upgrade, not just a purchase'] },
-      { type: 'hook', headline: 'Nike doesn\'t sell shoes. Apple doesn\'t sell computers. Patagonia doesn\'t sell jackets.', subtext: 'They sell who you BECOME when you buy them. The athlete. The creative. The environmental activist. This is the Identity Shift Effect. When customers buy your product, they are not just getting features and benefits. They are buying permission to see themselves differently. To BE different. The best brands understand this instinctively. They sell transformation, not transactions. Identity, not inventory. And when you nail this, price becomes irrelevant.' },
+      { type: 'hook', headline: 'Nike doesn\'t sell shoes. Apple doesn\'t sell computers. Patagonia doesn\'t sell jackets.', subtext: 'They sell who you BECOME when you buy them. The athlete. The creative. The environmental activist. This is the Identity Shift Effect. When customers buy your product, they are not just getting features and benefits. They are buying permission to see themselves differently. To BE different. The best brands understand this instinctively. They sell transformation, not transactions. Identity, not inventory. And when you nail this, price becomes irrelevant.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
       { type: 'content', title: 'The Psychology of Self-Concept', body: 'Every human has a self-concept. Who they believe they are. Who they want to become. The gap between these two creates psychological tension. And that tension drives behavior. When a brand positions itself as the bridge between current self and ideal self, it becomes irresistible. You are not selling a product. You are selling the identity upgrade. The permission to become who they aspire to be.' },
       { type: 'brand-identity', title: 'Feature Selling vs Identity Selling', old: { emoji: '👟', title: 'Regular Shoe Brand', pitch: 'High-performance running shoes with responsive cushioning and breathable mesh upper.', insight: 'Focuses on what the product IS' }, new: { emoji: '✓', title: 'Nike', pitch: 'Just Do It. Become the athlete who doesn\'t make excuses. Who pushes harder. Who wins.', insight: 'Focuses on who the customer BECOMES' }},
       { type: 'content', title: 'Why This Works So Powerfully', body: 'People do not buy rationally. They buy emotionally and justify logically. When you sell features, you engage the rational brain. "Does this have what I need?" When you sell identity, you engage the emotional brain. "Is this who I want to be?" Emotion wins. Every time. The customer who buys Nikes is not just buying cushioning technology. They are buying the right to call themselves an athlete. To feel like someone who takes action. Who conquers challenges.' },
@@ -195,12 +195,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

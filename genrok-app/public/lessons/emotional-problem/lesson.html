@@ -90,7 +90,7 @@
         'The 4 foundational questions that define your entire brand',
         'How emotional problems create brand filters for every decision'
       ]},
-      { type: 'hook', headline: 'The Oodie doesn\'t sell wearable blankets. They sell comfort and peace during anxiety and lockdown.', subtext: 'This isn\'t marketing fluff. This is the difference between a commodity and a brand. Every successful brand solves an emotional problem first, practical problem second. The Oodie could be anything - a pillow, a chair, a candle. What they\'re really selling is the feeling. That\'s what people pay for.' },
+      { type: 'hook', headline: 'The Oodie doesn\'t sell wearable blankets. They sell comfort and peace during anxiety and lockdown.', subtext: 'This isn\'t marketing fluff. This is the difference between a commodity and a brand. Every successful brand solves an emotional problem first, practical problem second. The Oodie could be anything - a pillow, a chair, a candle. What they\'re really selling is the feeling. That\'s what people pay for.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Oodie-Logo-RGB-R.webp', brandName: 'The Oodie' },
       { type: 'content', title: 'The Product Is The Vehicle', body: 'Your product is just the delivery mechanism for the emotion you\'re selling. People don\'t buy drills. They buy the feeling of being a competent homeowner. They don\'t buy Peloton bikes. They buy the identity of being someone who prioritizes health. The Oodie understood: people were anxious, isolated, cold. The wearable blanket was just the vehicle to deliver warmth, safety, comfort.' },
       { type: 'example', scenario: 'The Oodie\'s Real Business', before: { label: 'What They Sell', text: 'Product: Oversized wearable blanket\nFeatures: Soft sherpa fleece, giant hood\nPrice: $89\n\nJust another blanket' }, after: { label: 'What They Really Sell', text: 'Emotional solution: Peace during chaos\nFeeling: Warm, safe, comforted\nIdentity: Self-care during hard times\n\n$200M brand' }, insight: 'Same product. Different emotional framing. Completely different value.' },
       { type: 'content', title: 'Define The Emotion First', body: 'Before you write a single ad, design a logo, or pick colors, answer this: what emotional problem am I solving? Not "what features does my product have." What does my customer FEEL before they find me? What do they feel after? That emotional gap is your brand. Everything else just reinforces it.' },
@@ -155,12 +155,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

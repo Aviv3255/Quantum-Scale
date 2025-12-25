@@ -141,7 +141,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why your fulfillment partner makes or breaks your brand', 'The criteria that actually matter when choosing an agent', 'Which agent won our testing - and how to connect'] },
-      { type: 'hook', headline: 'Your customer just received their package. In the next 3 seconds, they decide if they\'ll ever buy from you again.', subtext: 'A thin plastic envelope. No branding. No note. Just... product. Their brain instantly processes: "cheap store." Decision made. Never ordering again. This happens thousands of times daily with AliExpress fulfillment.' },
+      { type: 'hook', headline: 'Your customer just received their package. In the next 3 seconds, they decide if they\'ll ever buy from you again.', subtext: 'A thin plastic envelope. No branding. No note. Just... product. Their brain instantly processes: "cheap store." Decision made. Never ordering again. This happens thousands of times daily with AliExpress fulfillment.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Aliexpress_logo.svg.png', brandName: 'AliExpress' },
       { type: 'example', scenario: 'The Fulfillment Experience Gap', before: { label: 'AliExpress Reality', text: '21-45 day shipping. Thin plastic packaging. Zero branding. No quality check. Customer thinks: "I could have gotten this cheaper on Wish."' }, after: { label: 'Private Agent', text: '5-7 day shipping. Branded packaging. Custom inserts. Quality inspection. Customer thinks: "This feels premium. I\'ll order again."' }, insight: 'Same product. Different experience. One creates customers, the other creates one-time buyers.' },
       { type: 'content', title: 'So Which Private Agent Is Actually the Best?', body: 'For 3 months we worked with the 6 leading companies across 3 different niches: fashion, home decor, and kids clothing. Here\'s what we found.' },
       { type: 'cards', title: 'What We Measured', items: [
@@ -247,12 +247,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 

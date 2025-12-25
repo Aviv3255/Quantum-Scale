@@ -90,7 +90,7 @@
         'The "Missing Piece Effect" that makes accessories feel essential',
         'Building product ladders that maximize customer lifetime value'
       ]},
-      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.' },
+      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
       { type: 'content', title: 'The iPad Trap: A Masterclass', body: 'Here\'s how it works: Entry iPad at $329 looks perfect. Until you see it has the old Lightning port (outdated) and only 64GB storage (fills fast). For $120 more, you get USB-C and peace of mind. Now you\'re at $449. But wait - for $150 more you get 256GB storage. That\'s future-proofing. You\'re at $599. Suddenly, the $599 base iPad and $599 iPad Air are the same price. One\'s a "base" model, one\'s "Air". Which sounds better? You upgrade to Air. Now you\'re at $749 - more than double where you started.' },
       { type: 'visual', title: 'The Ladder In Action', visualType: 'ladder', data: [
         { price: '$329', label: 'Entry iPad', feature: 'Lightning port, 64GB', color: '#94a3b8', concern: 'Outdated port, low storage' },
@@ -172,12 +172,20 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '3%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.2 }} />
+          </motion.div>
+        )}
       </div>
     );
 
