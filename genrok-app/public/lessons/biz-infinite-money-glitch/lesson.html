@@ -361,7 +361,27 @@
         return () => window.removeEventListener('keydown', handleKeyDown);
       }, [goNext, goPrev]);
 
-      const showPrev = currentSlide > 0;
+      
+      const renderSlide = (slide, props) => {
+        const { onShowGif, onHideGif, userName } = props || {};
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={() => setCurrentSlide(1)} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'math-visual': return <MathVisualSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
+          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return <div className="h-full flex items-center justify-center text-red-500">Unknown slide type: {slide.type}</div>;
+        }
+      };
+
+const showPrev = currentSlide > 0;
       const showNext = currentSlide < totalSlides - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
