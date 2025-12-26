@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Price Anchoring Power | Quantum Scale</title>
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
-  <script src="../shared/greetings.js" defer></script>
+  <title>The Price Anchoring Power | Business Lessons</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #F59E0B; --accent-dark: #D97706; --accent-light: #FBBF24; --accent-rgb: 245, 158, 11; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
-    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
-    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
-    ::selection { background: var(--accent); color: white; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1a1a1a; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: 'Fraunces', serif; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    .shimmer { background: linear-gradient(90deg, transparent, rgba(245,158,11,0.3), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
     @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.3); } 50% { box-shadow: 0 0 40px rgba(245,158,11,0.6); } }
     .pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
   </style>
@@ -28,478 +30,1296 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, AnimatePresence } = window.Motion;
-    const { useState, useEffect, useCallback, useMemo, useRef } = React;
+    const { useState, useEffect, useRef } = React;
+    const { motion, AnimatePresence } = Motion;
 
-    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    // Slide wrapper component
+    const SlideWrapper = ({ children, className = "" }) => (
+      <div className={`min-h-screen w-full flex items-center justify-center p-4 sm:p-6 md:p-8 ${className}`}>
+        <div className="max-w-5xl w-full">
+          {children}
+        </div>
+      </div>
+    );
 
-    const LESSON_CONFIG = {
-      id: 'biz-price-anchoring',
-      title: 'The Price Anchoring Power',
-      description: 'Why your $47 offer looks irresistible next to a $297 option',
-      accentColor: '#F59E0B',
-      duration: '6 min',
-      nextLesson: { id: 'biz-look-back-window', title: 'The Look-Back Window', teaser: 'The attribution setting that changes everything.' }
-    };
-
-    const celebrationGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_victory_fist_pump_arms_flexed_strong_p_b7635e9d-ceed-45f2-b5f3-ea32a689e200_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_approvingly_arms_crossed_confident_sta_75d6baae-3620-48c5-a3f1-fecbdb6543a4_1.mp4'
-    ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
-    const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_making_a_thinking_chin_scratch_like_hmm_lets_t_7d0403f7-08dd-4abb-9a7c-c3194f4548c2_2.mp4'
-    ];
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why your brain can\'t judge prices alone', 'The 6X anchoring rule', 'How to build irresistible pricing tiers'] },
-      { type: 'hook', headline: 'Your brain doesn\'t know what anything is worth.', subtext: 'It only knows what something is worth compared to something else. This is why smart brands always show you a more expensive option before the one they actually want you to buy.' },
-      { type: 'anchoring-visual' },
-      { type: 'six-x-rule' },
-      { type: 'real-examples' },
-      { type: 'pricing-page' },
-      { type: 'elasticity' },
-      { type: 'implementation' },
-      { type: 'holy-shit' },
-      { type: 'quiz', question: 'Your anchor price should be...', options: ['2x higher than your main offer', '5-6x higher than your main offer', 'Exactly the same as your main offer', '10x higher than your main offer'], correctIndex: 1, feedback: { correct: 'Perfect! The 5-6x rule creates enough contrast to anchor perception without seeming absurdly expensive. This is the sweet spot for maximum conversion.', incorrect: 'Not quite. The 5-6x rule creates the ideal contrast without seeming unrealistic. Too low and it doesn\'t work, too high and it seems fake.' }},
-      { type: 'takeaways', points: [{ icon: '🧲', title: 'Anchors Set Reality', description: 'The first price creates the reference point for everything after' }, { icon: '💎', title: '6X Is The Sweet Spot', description: 'Premium anchor at 5-6x your target makes the main offer irresistible' }, { icon: '📈', title: 'AOV Jumps 23-47%', description: 'Proper anchoring significantly increases average order value' }] },
-      { type: 'completion', sources: [] }
-    ];
-
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-    };
-
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    // Animated counter
+    const Counter = ({ value, duration = 2, prefix = "", suffix = "" }) => {
       const [count, setCount] = useState(0);
       const ref = useRef(null);
       const [isVisible, setIsVisible] = useState(false);
+
       useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.3 });
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) setIsVisible(true);
+        }, { threshold: 0.3 });
         if (ref.current) observer.observe(ref.current);
         return () => observer.disconnect();
       }, []);
+
       useEffect(() => {
         if (!isVisible) return;
         let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => { start += increment; if (start >= target) { setCount(target); clearInterval(timer); } else { setCount(Math.floor(start)); } }, 16);
+        const increment = value / (duration * 60);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= value) {
+            setCount(value);
+            clearInterval(timer);
+          } else {
+            setCount(Math.floor(start));
+          }
+        }, 1000 / 60);
         return () => clearInterval(timer);
-      }, [isVisible, target, duration]);
-      return <span ref={ref}>{prefix}{count}{suffix}</span>;
+      }, [isVisible, value, duration]);
+
+      return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
     };
 
+    // Animated progress bar
     const ProgressBar = ({ percentage, color = "#F59E0B", delay = 0 }) => {
       const ref = useRef(null);
       const [isVisible, setIsVisible] = useState(false);
+
       useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.3 });
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) setIsVisible(true);
+        }, { threshold: 0.3 });
         if (ref.current) observer.observe(ref.current);
         return () => observer.disconnect();
       }, []);
+
       return (
         <div ref={ref} className="w-full h-3 rounded-full overflow-hidden" style={{ background: 'rgba(245,158,11,0.15)' }}>
-          <motion.div className="h-full rounded-full" style={{ background: color }} initial={{ width: 0 }} animate={isVisible ? { width: `${percentage}%` } : {}} transition={{ duration: 1.2, delay, ease: [0.25, 0.4, 0.25, 1] }} />
+          <motion.div
+            className="h-full rounded-full"
+            style={{ background: color }}
+            initial={{ width: 0 }}
+            animate={isVisible ? { width: `${percentage}%` } : {}}
+            transition={{ duration: 1.2, delay, ease: [0.25, 0.4, 0.25, 1] }}
+          />
         </div>
       );
     };
 
-    // Welcome Slide with GIF overlay
-    const WelcomeSlide = ({ data, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}><Icons.DollarSign /><span>Pricing Psychology</span></div>
-            <h1 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{formatGreeting(welcomeData.greeting, userName)}</h1>
-            <p className="text-neutral-500 text-lg mb-8">Here's what you'll discover:</p>
-            <div className="space-y-3">{data.learningGoals.map((goal, i) => (<motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: '#fafafa', border: '1px solid #eee' }}><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: '#F59E0B' }}>{i + 1}</div><span className="text-neutral-700 font-medium">{goal}</span></motion.div>))}</div>
+    // Slides
+    const TitleSlide = () => (
+      <SlideWrapper>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center"
+        >
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            className="w-20 h-20 mx-auto mb-8 rounded-2xl flex items-center justify-center pulse-gold"
+            style={{ background: '#0a0a0a' }}
+          >
+            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="#F59E0B" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </motion.div>
-        </div>
-      );
-    };
 
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-6"
+            style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}
+          >
+            PRICING PSYCHOLOGY
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
+            style={{ color: '#0a0a0a' }}
+          >
+            The Price Anchoring
+            <span className="block mt-2" style={{ color: '#F59E0B' }}>Power</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto mb-8"
+          >
+            Why your $47 offer looks <span className="font-semibold">irresistible</span> when
+            sitting next to a $297 option
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+            className="flex items-center justify-center gap-6 text-sm text-gray-500"
+          >
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              6 min read
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              Pricing Strategy
+            </span>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
+        </motion.div>
+      </SlideWrapper>
+    );
+
+    const HookSlide = () => (
+      <SlideWrapper>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="rounded-3xl p-8 md:p-12 text-white relative overflow-hidden" style={{ background: '#0a0a0a' }}>
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-10 left-10 w-32 h-32 rounded-full" style={{ background: 'radial-gradient(circle, #F59E0B 0%, transparent 70%)' }} />
+              <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full" style={{ background: 'radial-gradient(circle, #F59E0B 0%, transparent 70%)' }} />
+            </div>
+
+            <div className="relative z-10">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-6xl mb-6"
+              >
+                🧠
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-3xl md:text-4xl font-bold mb-6"
+              >
+                Your brain doesn't know what
+                <span className="block" style={{ color: '#F59E0B' }}>anything is worth.</span>
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-xl text-gray-300 mb-8 max-w-2xl"
+              >
+                It only knows what something is worth <span className="text-white font-semibold">compared to something else</span>.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="p-6 rounded-2xl border-l-4"
+                style={{ background: 'rgba(245,158,11,0.1)', borderColor: '#F59E0B' }}
+              >
+                <p className="text-lg">
+                  <span className="font-bold text-white">This is why</span> smart brands always show you a
+                  <span style={{ color: '#F59E0B' }}> more expensive option </span>
+                  before the one they actually want you to buy.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </SlideWrapper>
     );
 
     const AnchoringVisualSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">The Anchoring Effect</h2>
-          <p className="text-neutral-500">The first number you see becomes your reference point</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            The Anchoring Effect
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            The first number you see becomes your reference point for everything after
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Without Anchor */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-8 border-2 border-gray-200"
+              style={{ background: '#FAFAFA' }}
+            >
+              <div className="text-center mb-6">
+                <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Without Anchor</span>
+              </div>
+
+              <div className="flex justify-center mb-8">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="rounded-2xl p-6 text-center border-2"
+                  style={{ background: 'white', borderColor: '#E5E7EB' }}
+                >
+                  <p className="text-sm text-gray-500 mb-2">Course</p>
+                  <p className="text-4xl font-bold" style={{ color: '#0a0a0a' }}>$197</p>
+                </motion.div>
+              </div>
+
+              <div className="text-center p-4 rounded-xl bg-gray-100">
+                <p className="text-gray-600">Customer thinks:</p>
+                <p className="text-lg font-semibold text-gray-800 mt-1">"Is this worth it? 🤔"</p>
+              </div>
+            </motion.div>
+
+            {/* With Anchor */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="rounded-2xl p-8 border-2"
+              style={{ background: '#0a0a0a', borderColor: '#F59E0B' }}
+            >
+              <div className="text-center mb-6">
+                <span className="text-sm font-semibold uppercase tracking-wide" style={{ color: '#F59E0B' }}>With Anchor</span>
+              </div>
+
+              <div className="flex justify-center gap-4 mb-8">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7 }}
+                  className="rounded-2xl p-6 text-center border-2 relative"
+                  style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)' }}
+                >
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#F59E0B', color: '#0a0a0a' }}>
+                    PREMIUM
+                  </div>
+                  <p className="text-sm text-gray-400 mb-2 mt-2">VIP Package</p>
+                  <p className="text-3xl font-bold" style={{ color: '#F59E0B' }}>$997</p>
+                  <p className="text-xs text-gray-500 mt-2">The Anchor</p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="rounded-2xl p-6 text-center border-2 pulse-gold"
+                  style={{ background: 'white', borderColor: '#22C55E' }}
+                >
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>
+                    BEST VALUE
+                  </div>
+                  <p className="text-sm text-gray-500 mb-2 mt-2">Course</p>
+                  <p className="text-3xl font-bold" style={{ color: '#0a0a0a' }}>$197</p>
+                  <p className="text-xs text-green-600 mt-2 font-semibold">80% OFF!</p>
+                </motion.div>
+              </div>
+
+              <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.1)' }}>
+                <p className="text-gray-400">Customer thinks:</p>
+                <p className="text-lg font-semibold text-white mt-1">"What a deal! 🤩"</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1 }}
+            className="text-center mt-8"
+          >
+            <p className="text-gray-600">
+              <span className="font-semibold">Same $197 price.</span> Completely different perception.
+            </p>
+          </motion.div>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6" style={{ background: '#fafafa', border: '2px solid #e5e7eb' }}>
-            <div className="text-center mb-4"><span className="text-sm font-semibold text-neutral-500 uppercase">Without Anchor</span></div>
-            <div className="flex justify-center mb-6">
-              <div className="rounded-xl p-6 text-center bg-white border border-neutral-200">
-                <p className="text-sm text-neutral-500 mb-2">Course</p>
-                <p className="text-4xl font-bold text-black">$197</p>
-              </div>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-neutral-100">
-              <p className="text-neutral-600">Customer thinks:</p>
-              <p className="text-lg font-semibold text-neutral-800">"Is this worth it? 🤔"</p>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="rounded-2xl p-6" style={{ background: '#0a0a0a', border: '2px solid #F59E0B' }}>
-            <div className="text-center mb-4"><span className="text-sm font-semibold uppercase" style={{ color: '#F59E0B' }}>With Anchor</span></div>
-            <div className="flex justify-center gap-4 mb-6">
-              <div className="rounded-xl p-4 text-center relative" style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)' }}>
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-xs font-bold" style={{ background: '#F59E0B', color: '#000' }}>PREMIUM</div>
-                <p className="text-sm text-neutral-400 mb-1 mt-2">VIP Package</p>
-                <p className="text-2xl font-bold" style={{ color: '#F59E0B' }}>$997</p>
-                <p className="text-xs text-neutral-500 mt-1">The Anchor</p>
-              </div>
-              <div className="rounded-xl p-4 text-center pulse-gold bg-white" style={{ border: '2px solid #22C55E' }}>
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-xs font-bold" style={{ background: '#22C55E', color: 'white' }}>BEST VALUE</div>
-                <p className="text-sm text-neutral-500 mb-1 mt-2">Course</p>
-                <p className="text-2xl font-bold text-black">$197</p>
-                <p className="text-xs text-green-600 mt-1 font-semibold">80% OFF!</p>
-              </div>
-            </div>
-            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.1)' }}>
-              <p className="text-neutral-400">Customer thinks:</p>
-              <p className="text-lg font-semibold text-white">"What a deal! 🤩"</p>
-            </div>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-600 mt-6">
-          <span className="font-semibold">Same $197 price.</span> Completely different perception.
-        </motion.p>
-      </div>
+      </SlideWrapper>
     );
 
     const SixXRuleSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">The 6X Rule</h2>
-          <p className="text-neutral-500">Your anchor should be <span className="font-semibold">5-6x higher</span> than your main offer</p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8" style={{ background: '#0a0a0a' }}>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="space-y-6">
-              <div>
-                <div className="flex justify-between mb-2"><span className="text-neutral-400 text-sm">Premium Anchor</span><span className="font-bold" style={{ color: '#F59E0B' }}>$594</span></div>
-                <ProgressBar percentage={100} />
-              </div>
-              <div>
-                <div className="flex justify-between mb-2"><span className="text-neutral-400 text-sm">Your Main Offer</span><span className="font-bold text-white">$99</span></div>
-                <ProgressBar percentage={16.7} color="#22C55E" delay={0.2} />
-              </div>
-              <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
-                <p className="text-3xl font-bold" style={{ color: '#F59E0B' }}>6X</p>
-                <p className="text-neutral-400 text-sm">Ratio</p>
-              </div>
-            </div>
-            <div className="space-y-4">
-              {[{ num: 1, title: 'Anchor Sets The Reference', desc: '$594 becomes "normal" in their mind' }, { num: 2, title: 'Main Offer Feels Cheap', desc: '$99 suddenly looks like a steal' }, { num: 3, title: 'Decision Becomes Easy', desc: '"I\'m saving $500!" feels like a win' }].map((step, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#F59E0B' }}><span className="text-sm font-bold text-black">{step.num}</span></div>
-                  <div><p className="text-white font-semibold">{step.title}</p><p className="text-neutral-400 text-sm">{step.desc}</p></div>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            The 6X Rule
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            Your anchor should be <span className="font-semibold">5-6x higher</span> than your main offer
+          </motion.p>
+
+          <div className="rounded-3xl p-8 md:p-12" style={{ background: '#0a0a0a' }}>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Visual */}
+              <div className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex items-center gap-4"
+                >
+                  <div className="w-full">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-400 text-sm">Premium Anchor</span>
+                      <span className="font-bold" style={{ color: '#F59E0B' }}>$594</span>
+                    </div>
+                    <ProgressBar percentage={100} />
+                  </div>
                 </motion.div>
-              ))}
-              <div className="p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.1)', borderLeft: '4px solid #22C55E' }}>
-                <p className="text-white text-sm"><span className="font-bold">Pro tip:</span> Make sure your premium anchor is a <span style={{ color: '#22C55E' }}>real, valuable offer</span>—some people WILL buy it!</p>
+
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex items-center gap-4"
+                >
+                  <div className="w-full">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-400 text-sm">Your Main Offer</span>
+                      <span className="font-bold text-white">$99</span>
+                    </div>
+                    <ProgressBar percentage={16.7} color="#22C55E" delay={0.2} />
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                  className="p-4 rounded-xl text-center"
+                  style={{ background: 'rgba(245,158,11,0.1)' }}
+                >
+                  <p className="text-3xl font-bold" style={{ color: '#F59E0B' }}>6X</p>
+                  <p className="text-gray-400 text-sm">Ratio</p>
+                </motion.div>
               </div>
+
+              {/* Explanation */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-6"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: '#F59E0B' }}>
+                      <span className="text-sm font-bold text-black">1</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">Anchor Sets The Reference</p>
+                      <p className="text-gray-400 text-sm">$594 becomes "normal" in their mind</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: '#F59E0B' }}>
+                      <span className="text-sm font-bold text-black">2</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">Main Offer Feels Cheap</p>
+                      <p className="text-gray-400 text-sm">$99 suddenly looks like a steal</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: '#F59E0B' }}>
+                      <span className="text-sm font-bold text-black">3</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold">Decision Becomes Easy</p>
+                      <p className="text-gray-400 text-sm">"I'm saving $500!" feels like a win</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl border-l-4" style={{ background: 'rgba(34,197,94,0.1)', borderColor: '#22C55E' }}>
+                  <p className="text-white text-sm">
+                    <span className="font-bold">Pro tip:</span> Make sure your premium anchor is a
+                    <span style={{ color: '#22C55E' }}> real, valuable offer</span>—some people WILL buy it!
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>
-      </div>
+      </SlideWrapper>
     );
 
     const RealExamplesSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Anchoring In The Wild</h2>
-          <p className="text-neutral-500">Every successful brand uses this strategy</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            Anchoring In The Wild
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            Every successful brand uses this strategy
+          </motion.p>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                brand: "Apple",
+                anchor: "$1,599",
+                anchorProduct: "MacBook Pro 16\"",
+                target: "$999",
+                targetProduct: "MacBook Air",
+                color: "#3B82F6"
+              },
+              {
+                brand: "SaaS Tools",
+                anchor: "$499/mo",
+                anchorProduct: "Enterprise Plan",
+                target: "$49/mo",
+                targetProduct: "Pro Plan",
+                color: "#8B5CF6"
+              },
+              {
+                brand: "Courses",
+                anchor: "$2,997",
+                anchorProduct: "1-on-1 Coaching",
+                target: "$497",
+                targetProduct: "Self-Paced Course",
+                color: "#F59E0B"
+              }
+            ].map((example, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.15 }}
+                whileHover={{ y: -5 }}
+                className="rounded-2xl overflow-hidden"
+                style={{ background: '#0a0a0a' }}
+              >
+                <div className="p-2" style={{ background: example.color }}>
+                  <p className="text-center text-sm font-bold text-white">{example.brand}</p>
+                </div>
+                <div className="p-6 space-y-4">
+                  <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Anchor</p>
+                    <p className="text-2xl font-bold" style={{ color: example.color }}>{example.anchor}</p>
+                    <p className="text-xs text-gray-400 mt-1">{example.anchorProduct}</p>
+                  </div>
+                  <div className="text-center text-gray-500">↓</div>
+                  <div className="p-4 rounded-xl text-center border-2" style={{ borderColor: '#22C55E', background: 'rgba(34,197,94,0.1)' }}>
+                    <p className="text-xs text-green-400 uppercase tracking-wide mb-1">Target</p>
+                    <p className="text-2xl font-bold text-white">{example.target}</p>
+                    <p className="text-xs text-gray-400 mt-1">{example.targetProduct}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-center text-gray-600 mt-8"
+          >
+            The anchor makes the target feel like a <span className="font-semibold">no-brainer</span>.
+          </motion.p>
         </motion.div>
-        <div className="grid md:grid-cols-3 gap-4">
-          {[{ brand: 'Apple', anchor: '$1,599', anchorProduct: 'MacBook Pro 16"', target: '$999', targetProduct: 'MacBook Air', color: '#3B82F6' }, { brand: 'SaaS Tools', anchor: '$499/mo', anchorProduct: 'Enterprise Plan', target: '$49/mo', targetProduct: 'Pro Plan', color: '#8B5CF6' }, { brand: 'Courses', anchor: '$2,997', anchorProduct: '1-on-1 Coaching', target: '$497', targetProduct: 'Self-Paced Course', color: '#F59E0B' }].map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="rounded-2xl overflow-hidden" style={{ background: '#0a0a0a' }}>
-              <div className="p-2" style={{ background: ex.color }}><p className="text-center text-sm font-bold text-white">{ex.brand}</p></div>
-              <div className="p-5 space-y-3">
-                <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <p className="text-xs text-neutral-500 uppercase mb-1">Anchor</p>
-                  <p className="text-xl font-bold" style={{ color: ex.color }}>{ex.anchor}</p>
-                  <p className="text-xs text-neutral-400">{ex.anchorProduct}</p>
-                </div>
-                <div className="text-center text-neutral-500">↓</div>
-                <div className="p-3 rounded-xl text-center" style={{ border: '2px solid #22C55E', background: 'rgba(34,197,94,0.1)' }}>
-                  <p className="text-xs text-green-400 uppercase mb-1">Target</p>
-                  <p className="text-xl font-bold text-white">{ex.target}</p>
-                  <p className="text-xs text-neutral-400">{ex.targetProduct}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+      </SlideWrapper>
     );
 
     const PricingPageSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">The Perfect Pricing Page</h2>
-          <p className="text-neutral-500">3 tiers, one clear winner</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            The Perfect Pricing Page
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            3 tiers, one clear winner
+          </motion.p>
+
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {/* Basic - Small */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6 border-2 border-gray-200"
+              style={{ background: '#FAFAFA' }}
+            >
+              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Basic</p>
+              <p className="text-3xl font-bold text-gray-600 mb-4">$29<span className="text-base font-normal">/mo</span></p>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Basic features
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  1 user
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Email support
+                </li>
+              </ul>
+              <button className="w-full mt-6 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+                Get Started
+              </button>
+            </motion.div>
+
+            {/* Pro - Highlighted (Target) */}
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 1.05 }}
+              animate={{ opacity: 1, y: 0, scale: 1.05 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl p-6 relative z-10 shadow-2xl"
+              style={{ background: '#0a0a0a', boxShadow: '0 0 40px rgba(245,158,11,0.2)' }}
+            >
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold" style={{ background: '#F59E0B', color: '#0a0a0a' }}>
+                MOST POPULAR
+              </div>
+              <p className="text-sm font-semibold uppercase tracking-wide mb-2" style={{ color: '#F59E0B' }}>Pro</p>
+              <p className="text-3xl font-bold text-white mb-1">$79<span className="text-base font-normal text-gray-400">/mo</span></p>
+              <p className="text-xs text-green-400 mb-4">Save $480/year</p>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  All Pro features
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  5 users
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Priority support
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Analytics
+                </li>
+              </ul>
+              <button className="w-full mt-6 py-3 rounded-lg text-sm font-bold text-black transition" style={{ background: '#F59E0B' }}>
+                Start Free Trial
+              </button>
+            </motion.div>
+
+            {/* Enterprise - Anchor */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="rounded-2xl p-6 border-2"
+              style={{ background: '#0a0a0a', borderColor: 'rgba(245,158,11,0.3)' }}
+            >
+              <p className="text-sm font-semibold uppercase tracking-wide mb-2" style={{ color: '#F59E0B' }}>Enterprise</p>
+              <p className="text-3xl font-bold text-white mb-4">$499<span className="text-base font-normal text-gray-400">/mo</span></p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4" style={{ color: '#F59E0B' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Everything in Pro
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4" style={{ color: '#F59E0B' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Unlimited users
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4" style={{ color: '#F59E0B' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Dedicated support
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4" style={{ color: '#F59E0B' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Custom integrations
+                </li>
+              </ul>
+              <button className="w-full mt-6 py-2 rounded-lg text-sm font-medium border text-white transition hover:bg-white/5" style={{ borderColor: '#F59E0B', color: '#F59E0B' }}>
+                Contact Sales
+              </button>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="text-center mt-8 p-4 rounded-xl max-w-md mx-auto"
+            style={{ background: 'rgba(245,158,11,0.1)' }}
+          >
+            <p className="text-gray-600 text-sm">
+              <span className="font-semibold" style={{ color: '#F59E0B' }}>$499 anchor</span> makes $79 feel like a bargain
+            </p>
+          </motion.div>
         </motion.div>
-        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-5 border-2 border-neutral-200" style={{ background: '#fafafa' }}>
-            <p className="text-sm font-semibold text-neutral-500 uppercase mb-2">Basic</p>
-            <p className="text-3xl font-bold text-neutral-600 mb-4">$29<span className="text-sm font-normal">/mo</span></p>
-            <ul className="space-y-2 text-sm text-neutral-500">{['Basic features', '1 user', 'Email support'].map((f, i) => (<li key={i} className="flex items-center gap-2"><Icons.Check />{f}</li>))}</ul>
-            <button className="w-full mt-4 py-2 rounded-lg text-sm font-medium border border-neutral-300 text-neutral-600 hover:bg-neutral-100 transition">Get Started</button>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20, scale: 1.05 }} animate={{ opacity: 1, y: 0, scale: 1.05 }} transition={{ delay: 0.3 }} className="rounded-2xl p-5 relative z-10 shadow-2xl" style={{ background: '#0a0a0a', boxShadow: '0 0 40px rgba(245,158,11,0.2)' }}>
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#F59E0B', color: '#000' }}>MOST POPULAR</div>
-            <p className="text-sm font-semibold uppercase mb-2" style={{ color: '#F59E0B' }}>Pro</p>
-            <p className="text-3xl font-bold text-white mb-1">$79<span className="text-sm font-normal text-neutral-400">/mo</span></p>
-            <p className="text-xs text-green-400 mb-4">Save $480/year</p>
-            <ul className="space-y-2 text-sm text-neutral-300">{['All Pro features', '5 users', 'Priority support', 'Analytics'].map((f, i) => (<li key={i} className="flex items-center gap-2"><span className="text-green-400"><Icons.Check /></span>{f}</li>))}</ul>
-            <button className="w-full mt-4 py-3 rounded-lg text-sm font-bold text-black transition" style={{ background: '#F59E0B' }}>Start Free Trial</button>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="rounded-2xl p-5" style={{ background: '#0a0a0a', border: '2px solid rgba(245,158,11,0.3)' }}>
-            <p className="text-sm font-semibold uppercase mb-2" style={{ color: '#F59E0B' }}>Enterprise</p>
-            <p className="text-3xl font-bold text-white mb-4">$499<span className="text-sm font-normal text-neutral-400">/mo</span></p>
-            <ul className="space-y-2 text-sm text-neutral-400">{['Everything in Pro', 'Unlimited users', 'Dedicated support', 'Custom integrations'].map((f, i) => (<li key={i} className="flex items-center gap-2"><span style={{ color: '#F59E0B' }}><Icons.Check /></span>{f}</li>))}</ul>
-            <button className="w-full mt-4 py-2 rounded-lg text-sm font-medium border text-white transition hover:bg-white/5" style={{ borderColor: '#F59E0B', color: '#F59E0B' }}>Contact Sales</button>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-500 mt-6 text-sm">
-          <span className="font-semibold" style={{ color: '#F59E0B' }}>$499 anchor</span> makes $79 feel like a bargain
-        </motion.p>
-      </div>
+      </SlideWrapper>
     );
 
     const ElasticitySlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Price Elasticity Reality</h2>
-          <p className="text-neutral-500">The "hidden money" most stores leave on the table</p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8" style={{ background: '#0a0a0a' }}>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="p-6 rounded-2xl" style={{ background: 'rgba(245,158,11,0.1)', borderLeft: '4px solid #F59E0B' }}>
-                <p className="text-xl font-bold text-white mb-2">Most stores price too LOW</p>
-                <p className="text-neutral-400">Because they're scared of losing sales. But you're leaving money on the table.</p>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="flex items-center justify-between"><span className="text-neutral-400">10% price increase</span><span className="text-white font-semibold">= 2-5% fewer sales</span></div>
-              </div>
-              <div className="p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.1)' }}>
-                <div className="flex items-center justify-between"><span className="text-neutral-400">Net effect</span><span className="font-bold" style={{ color: '#22C55E' }}>+5-8% more profit</span></div>
-              </div>
-              <p className="text-neutral-500 text-sm">With anchoring, you can push even higher—the premium tier "justifies" your prices.</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            Price Elasticity Reality
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            The "hidden money" most stores leave on the table
+          </motion.p>
+
+          <div className="rounded-3xl p-8 md:p-12" style={{ background: '#0a0a0a' }}>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Chart visual */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="space-y-6"
+              >
+                <div className="text-center mb-6">
+                  <p className="text-gray-400 text-sm uppercase tracking-wide mb-2">Price vs. Demand Curve</p>
+                </div>
+
+                {/* Simplified demand curve */}
+                <div className="relative h-48 border-l-2 border-b-2 border-gray-600">
+                  <motion.div
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.5, duration: 1.5 }}
+                    className="absolute inset-0"
+                  >
+                    <svg viewBox="0 0 200 100" className="w-full h-full">
+                      <motion.path
+                        d="M 10 10 Q 60 15 100 50 T 190 90"
+                        fill="none"
+                        stroke="#F59E0B"
+                        strokeWidth="3"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ delay: 0.5, duration: 1.5 }}
+                      />
+                      {/* Sweet spot */}
+                      <motion.circle
+                        cx="100"
+                        cy="50"
+                        r="8"
+                        fill="#22C55E"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 1.5 }}
+                      />
+                    </svg>
+                  </motion.div>
+                  <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-gray-500">Price →</div>
+                  <div className="absolute -left-8 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-gray-500">Demand</div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.7 }}
+                  className="flex justify-center"
+                >
+                  <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ background: '#22C55E' }} />
+                      <span className="text-gray-400">Sweet Spot</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Insight */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-6"
+              >
+                <div className="p-6 rounded-2xl border-l-4" style={{ background: 'rgba(245,158,11,0.1)', borderColor: '#F59E0B' }}>
+                  <p className="text-xl font-bold text-white mb-2">Most stores price too LOW</p>
+                  <p className="text-gray-400">
+                    Because they're scared of losing sales. But you're leaving money on the table.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">10% price increase</span>
+                      <span className="text-white font-semibold">= 2-5% fewer sales</span>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.1)' }}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">Net effect</span>
+                      <span className="font-bold" style={{ color: '#22C55E' }}>+5-8% more profit</span>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-gray-500 text-sm">
+                  With anchoring, you can push even higher—the premium tier "justifies" your prices.
+                </p>
+              </motion.div>
             </div>
           </div>
         </motion.div>
-      </div>
+      </SlideWrapper>
     );
 
     const ImplementationSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Your Anchoring Playbook</h2>
-          <p className="text-neutral-500">4 steps to implement price anchoring today</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            Your Anchoring Playbook
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-600 text-center mb-12 max-w-2xl mx-auto"
+          >
+            4 steps to implement price anchoring today
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                step: "1",
+                title: "Create Your Anchor",
+                description: "Build a premium offer at 5-6x your main price. Bundle extra value, 1-on-1 access, or exclusive features.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )
+              },
+              {
+                step: "2",
+                title: "Position It First",
+                description: "Show the premium option before (or alongside) your main offer. Left to right, or top of the page.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  </svg>
+                )
+              },
+              {
+                step: "3",
+                title: "Make It Real",
+                description: "Your anchor must be a legitimate offer with real value. Some customers will buy it—be ready to deliver.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )
+              },
+              {
+                step: "4",
+                title: "Highlight The Contrast",
+                description: "Use visual cues: strike-through original prices, \"Save X%\" badges, or \"Most Popular\" labels on the target tier.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                  </svg>
+                )
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="rounded-2xl p-6 border-2 transition-all duration-300"
+                style={{
+                  background: '#0a0a0a',
+                  borderColor: 'rgba(245,158,11,0.2)'
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#F59E0B', color: '#0a0a0a' }}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#F59E0B' }}>Step {item.step}</p>
+                    <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                    <p className="text-gray-400 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4">
-          {[{ step: '1', title: 'Create Your Anchor', desc: 'Build a premium offer at 5-6x your main price. Bundle extra value, 1-on-1 access, or exclusive features.' }, { step: '2', title: 'Position It First', desc: 'Show the premium option before (or alongside) your main offer. Left to right, or top of the page.' }, { step: '3', title: 'Make It Real', desc: "Your anchor must be a legitimate offer with real value. Some customers will buy it—be ready to deliver." }, { step: '4', title: 'Highlight The Contrast', desc: 'Use visual cues: strike-through original prices, "Save X%" badges, or "Most Popular" labels on the target tier.' }].map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="rounded-2xl p-5" style={{ background: '#0a0a0a', border: '1px solid rgba(245,158,11,0.2)' }}>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#F59E0B', color: '#000' }}><span className="font-bold">{item.step}</span></div>
-                <div><p className="text-xs font-semibold uppercase mb-1" style={{ color: '#F59E0B' }}>Step {item.step}</p><h3 className="text-lg font-bold text-white mb-1">{item.title}</h3><p className="text-neutral-400 text-sm">{item.desc}</p></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+      </SlideWrapper>
     );
 
     const HolyShitSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 text-center relative overflow-hidden" style={{ background: '#0a0a0a' }}>
-          <div className="absolute inset-0 opacity-30"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, #F59E0B 0%, transparent 70%)' }} /></div>
-          <div className="relative z-10">
-            <div className="text-5xl mb-6">💰</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-white mb-6">The anchor doesn't just sell <span className="block mt-2" style={{ color: '#F59E0B' }}>your main offer.</span></h2>
-            <div className="space-y-3 mb-8">
-              <p className="text-lg text-neutral-300">It <span className="font-bold text-white">protects your margins</span>.</p>
-              <p className="text-lg text-neutral-300">It <span className="font-bold text-white">captures premium buyers</span>.</p>
-              <p className="text-lg text-neutral-300">It makes price objections <span className="font-bold text-white">disappear</span>.</p>
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <div className="rounded-3xl p-8 md:p-12 text-center relative overflow-hidden" style={{ background: '#0a0a0a' }}>
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, #F59E0B 0%, transparent 70%)' }} />
             </div>
-            <div className="inline-block p-6 rounded-2xl" style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid #F59E0B' }}>
-              <p className="text-neutral-300 mb-2">Stores with proper anchoring see:</p>
-              <p className="text-4xl font-bold" style={{ color: '#F59E0B' }}><AnimatedCounter target={23} suffix="%" /> to <AnimatedCounter target={47} suffix="%" /></p>
-              <p className="text-white font-semibold mt-2">higher average order value</p>
+
+            <div className="relative z-10">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring" }}
+                className="text-6xl mb-8"
+              >
+                💰
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-3xl md:text-4xl font-bold mb-6"
+              >
+                <span className="text-white">The anchor doesn't just sell</span>
+                <span className="block mt-2" style={{ color: '#F59E0B' }}>your main offer.</span>
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="max-w-2xl mx-auto space-y-4 mb-8"
+              >
+                <p className="text-xl text-gray-300">
+                  It <span className="font-bold text-white">protects your margins</span>.
+                </p>
+                <p className="text-xl text-gray-300">
+                  It <span className="font-bold text-white">captures premium buyers</span>.
+                </p>
+                <p className="text-xl text-gray-300">
+                  It makes price objections <span className="font-bold text-white">disappear</span>.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8 }}
+                className="inline-block p-8 rounded-2xl"
+                style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid #F59E0B' }}
+              >
+                <p className="text-lg text-gray-300 mb-2">Stores with proper anchoring see:</p>
+                <p className="text-5xl font-bold" style={{ color: '#F59E0B' }}>
+                  <Counter value={23} suffix="%" /> to <Counter value={47} suffix="%" />
+                </p>
+                <p className="text-white font-semibold mt-2">higher average order value</p>
+              </motion.div>
             </div>
           </div>
         </motion.div>
-      </div>
+      </SlideWrapper>
     );
 
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+    const QuizSlide = () => {
       const [selected, setSelected] = useState(null);
-      const [showFeedback, setShowFeedback] = useState(false);
-      const isCorrect = selected === data.correctIndex;
-      const handleSelect = (i) => {
-        if (!showFeedback) {
-          setSelected(i);
-          setShowFeedback(true);
-          const gifSide = Math.random() > 0.5 ? 'left' : 'right';
-          if (i === data.correctIndex) { onShowGif(getRandomCelebrationGif(), '55%', gifSide); }
-          else { onShowGif(getRandomEmpathyGif(), '55%', gifSide); }
-        }
+      const [showResult, setShowResult] = useState(false);
+      const correctAnswer = 1;
+
+      const options = [
+        "2x higher than your main offer",
+        "5-6x higher than your main offer",
+        "Exactly the same as your main offer",
+        "10x higher than your main offer"
+      ];
+
+      const handleSelect = (index) => {
+        setSelected(index);
+        setTimeout(() => setShowResult(true), 500);
       };
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8"><div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' }}><span>Quick Check</span></div><h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2></motion.div>
-          <div className="space-y-3 mb-8">{data.options.map((option, i) => (<motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all ${showFeedback ? (i === data.correctIndex ? 'ring-2 ring-green-500' : i === selected ? 'ring-2 ring-red-500' : '') : 'hover:bg-neutral-100'}`} style={{ background: showFeedback && i === data.correctIndex ? 'rgba(34, 197, 94, 0.1)' : showFeedback && i === selected && i !== data.correctIndex ? 'rgba(239, 68, 68, 0.1)' : '#fafafa', border: '1px solid #eee' }}><div className="flex items-center gap-3"><div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-500 text-white' : 'bg-white text-neutral-600 border border-neutral-200'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected ? <Icons.X /> : String.fromCharCode(65 + i)}</div><span className="text-neutral-700">{option}</span></div></motion.button>))}</div>
-          <AnimatePresence>{showFeedback && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl p-6" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}` }}><div className={`font-bold mb-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>{isCorrect ? 'Correct!' : 'Not quite!'}</div><p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p></motion.div>)}</AnimatePresence>
-        </div>
+        <SlideWrapper>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+            <div className="rounded-3xl p-8 md:p-12" style={{ background: '#0a0a0a' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-8"
+              >
+                <span className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4" style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B' }}>
+                  QUICK CHECK
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                  Your anchor price should be...
+                </h2>
+              </motion.div>
+
+              <div className="grid gap-4 max-w-2xl mx-auto mb-8">
+                {options.map((option, i) => (
+                  <motion.button
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    onClick={() => !showResult && handleSelect(i)}
+                    disabled={showResult}
+                    className={`p-4 rounded-xl text-left transition-all duration-300 border-2 ${
+                      showResult
+                        ? i === correctAnswer
+                          ? 'border-green-500 bg-green-500/10'
+                          : selected === i
+                          ? 'border-red-500 bg-red-500/10'
+                          : 'border-gray-700 opacity-50'
+                        : selected === i
+                        ? 'border-amber-500 bg-amber-500/10'
+                        : 'border-gray-700 hover:border-gray-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                        showResult && i === correctAnswer
+                          ? 'bg-green-500 text-white'
+                          : showResult && selected === i && i !== correctAnswer
+                          ? 'bg-red-500 text-white'
+                          : 'bg-gray-700 text-gray-300'
+                      }`}>
+                        {showResult && i === correctAnswer ? '✓' : String.fromCharCode(65 + i)}
+                      </div>
+                      <span className="text-white">{option}</span>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+
+              <AnimatePresence>
+                {showResult && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center"
+                  >
+                    {selected === correctAnswer ? (
+                      <div className="space-y-4">
+                        <video
+                          autoPlay
+                          muted
+                          playsInline
+                          className="w-48 h-48 mx-auto rounded-2xl object-cover"
+                          src="https://cdn.genrok.io/celebrations/celebration1.mp4"
+                        />
+                        <p className="text-green-400 font-semibold text-lg">Perfect! You got it! 🎉</p>
+                        <p className="text-gray-400">5-6x creates the ideal contrast without seeming unrealistic.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <video
+                          autoPlay
+                          muted
+                          playsInline
+                          className="w-48 h-48 mx-auto rounded-2xl object-cover"
+                          src="https://cdn.genrok.io/empathy/empathy1.mp4"
+                        />
+                        <p className="text-amber-400 font-semibold text-lg">Not quite!</p>
+                        <p className="text-gray-400">The 5-6x rule creates enough contrast to anchor perception without seeming absurdly expensive.</p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        </SlideWrapper>
       );
     };
 
-    const TakeawaysSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8"><h2 className="slide-title text-2xl md:text-3xl text-black">Key Takeaways</h2></motion.div>
-        <div className="grid md:grid-cols-3 gap-4 mb-8">
-          {data.points.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="rounded-2xl p-5 text-center" style={{ background: '#0a0a0a', border: '1px solid rgba(245,158,11,0.2)' }}>
-              <div className="text-4xl mb-3">{item.icon}</div>
-              <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-              <p className="text-neutral-400 text-sm">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-5 text-center max-w-2xl mx-auto" style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid rgba(245,158,11,0.3)' }}>
-          <p className="text-black"><span className="font-bold">Your next step:</span> Create a premium tier 5-6x your main offer.</p>
-          <p className="text-neutral-600 text-sm mt-2">Even if only 5% buy it, it makes the other 95% convert at higher rates.</p>
+    const TakeawaysSlide = () => (
+      <SlideWrapper>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-12"
+            style={{ color: '#0a0a0a' }}
+          >
+            Key Takeaways
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: "🧲",
+                title: "Anchors Set Reality",
+                description: "The first price creates the reference point for everything after"
+              },
+              {
+                icon: "💎",
+                title: "6X Is The Sweet Spot",
+                description: "Premium anchor at 5-6x your target makes the main offer irresistible"
+              },
+              {
+                icon: "📈",
+                title: "AOV Jumps 23-47%",
+                description: "Proper anchoring significantly increases average order value"
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.15 }}
+                className="rounded-2xl p-6 text-center border-2"
+                style={{ background: '#0a0a0a', borderColor: 'rgba(245,158,11,0.2)' }}
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-gray-400 text-sm">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="rounded-2xl p-6 text-center max-w-2xl mx-auto"
+            style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid rgba(245,158,11,0.3)' }}
+          >
+            <p className="text-lg" style={{ color: '#0a0a0a' }}>
+              <span className="font-bold">Your next step:</span> Create a premium tier 5-6x your main offer.
+              <span className="block mt-2 text-gray-600">Even if only 5% buy it, it makes the other 95% convert at higher rates.</span>
+            </p>
+          </motion.div>
         </motion.div>
-      </div>
+      </SlideWrapper>
     );
 
-    const CompletionSlide = ({ userName }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}><Icons.Check /></div>
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-4">Lesson Complete!</h2>
-          <p className="text-neutral-500 text-lg mb-8">Great work, {userName}! You now understand the psychology of price anchoring.</p>
-          {LESSON_CONFIG.nextLesson && (<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-left" style={{ background: '#0a0a0a', border: '1px solid #222' }}><div className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Up Next</div><h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3><p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p></motion.div>)}
+    const EndSlide = () => (
+      <SlideWrapper>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className="w-24 h-24 mx-auto mb-8 rounded-3xl flex items-center justify-center"
+            style={{ background: '#0a0a0a', boxShadow: '0 0 40px rgba(245,158,11,0.3)' }}
+          >
+            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="#F59E0B" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: '#0a0a0a' }}
+          >
+            Lesson Complete!
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-gray-600 text-lg mb-8"
+          >
+            You now understand the psychology of price anchoring.
+          </motion.p>
+
+          <motion.a
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            href="/learn"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-black transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            style={{ background: '#F59E0B' }}
+          >
+            Continue Learning
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </motion.a>
         </motion.div>
-      </div>
+      </SlideWrapper>
     );
 
-    const renderSlide = (slide, { onShowGif, onHideGif, userName }) => {
-      switch (slide.type) {
-        case 'welcome': return <WelcomeSlide data={slide} userName={userName} onShowGif={onShowGif} onHideGif={onHideGif} />;
-        case 'hook': return <HookSlide data={slide} />;
-        case 'anchoring-visual': return <AnchoringVisualSlide />;
-        case 'six-x-rule': return <SixXRuleSlide />;
-        case 'real-examples': return <RealExamplesSlide />;
-        case 'pricing-page': return <PricingPageSlide />;
-        case 'elasticity': return <ElasticitySlide />;
-        case 'implementation': return <ImplementationSlide />;
-        case 'holy-shit': return <HolyShitSlide />;
-        case 'quiz': return <QuizSlide data={slide} onShowGif={onShowGif} onHideGif={onHideGif} />;
-        case 'takeaways': return <TakeawaysSlide data={slide} />;
-        case 'completion': return <CompletionSlide userName={userName} />;
-        default: return null;
-      }
-    };
-
-    const LessonApp = () => {
+    // Main App
+    function App() {
       const [currentSlide, setCurrentSlide] = useState(0);
-      const [gifConfig, setGifConfig] = useState({ visible: false, src: '', maxHeight: '60%', side: 'right' });
-      const userName = getUserName();
-      const totalSlides = slides.length;
+      const containerRef = useRef(null);
 
-      const showGif = useCallback((src, maxHeight = '60%', side = 'right') => {
-        setGifConfig({ visible: true, src, maxHeight, side });
-      }, []);
+      const slides = [
+        TitleSlide,
+        HookSlide,
+        AnchoringVisualSlide,
+        SixXRuleSlide,
+        RealExamplesSlide,
+        PricingPageSlide,
+        ElasticitySlide,
+        ImplementationSlide,
+        HolyShitSlide,
+        QuizSlide,
+        TakeawaysSlide,
+        EndSlide
+      ];
 
-      const hideGif = useCallback(() => {
-        setGifConfig(prev => ({ ...prev, visible: false }));
-      }, []);
-
-      const goNext = useCallback(() => { if (currentSlide < totalSlides - 1) setCurrentSlide(prev => prev + 1); }, [currentSlide, totalSlides]);
-      const goPrev = useCallback(() => { if (currentSlide > 0) setCurrentSlide(prev => prev - 1); }, [currentSlide]);
+      const goToSlide = (index) => {
+        if (index >= 0 && index < slides.length) {
+          setCurrentSlide(index);
+          containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
 
       useEffect(() => {
         const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
-          else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+          if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            goToSlide(currentSlide + 1);
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            goToSlide(currentSlide - 1);
+          }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [goNext, goPrev]);
+      }, [currentSlide]);
 
-      const showPrev = currentSlide > 0;
-      const showNext = currentSlide < totalSlides - 1 && slides[currentSlide].type !== 'welcome';
+      const CurrentSlideComponent = slides[currentSlide];
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
+        <div className="min-h-screen bg-white">
+          {/* Progress bar */}
+          <div className="fixed top-0 left-0 right-0 h-1 bg-gray-100 z-50">
+            <motion.div
+              className="h-full"
+              style={{ background: '#F59E0B' }}
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+
+          {/* Main content */}
+          <div ref={containerRef} className="min-h-screen overflow-auto hide-scrollbar">
             <AnimatePresence mode="wait">
-              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
-                {renderSlide(slides[currentSlide], { onShowGif: showGif, onHideGif: hideGif, userName })}
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CurrentSlideComponent />
               </motion.div>
             </AnimatePresence>
-            {showPrev && <button onClick={goPrev} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={goNext} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => setCurrentSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? '#F59E0B' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+
+          {/* Navigation */}
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 rounded-full shadow-lg border border-gray-200" style={{ background: 'white' }}>
+            <button
+              onClick={() => goToSlide(currentSlide - 1)}
+              disabled={currentSlide === 0}
+              className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToSlide(i)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === currentSlide ? 'w-6' : 'hover:bg-gray-400'
+                  }`}
+                  style={{
+                    background: i === currentSlide ? '#F59E0B' : '#E5E7EB'
+                  }}
+                />
+              ))}
             </div>
+
+            <button
+              onClick={() => goToSlide(currentSlide + 1)}
+              disabled={currentSlide === slides.length - 1}
+              className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
-          <AnimatePresence>
-            {gifConfig.visible && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, maxHeight: gifConfig.maxHeight }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none', maxHeight: gifConfig.maxHeight }}>
-                  <source src={gifConfig.src} type="video/mp4" />
-                </video>
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+          {/* Slide counter */}
+          <div className="fixed bottom-8 right-8 text-sm text-gray-400">
+            {currentSlide + 1} / {slides.length}
+          </div>
         </div>
       );
-    };
+    }
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>

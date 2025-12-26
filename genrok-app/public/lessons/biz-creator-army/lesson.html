@@ -72,7 +72,7 @@
       { type: 'step-breakdown', title: 'Step 2: Let Them Create Freely', stepNumber: 2, cost: 'PRODUCT', description: 'Do not script them. Do not control them. Give them creative freedom. The best UGC comes from genuine enthusiasm, not corporate briefs. Their content will feel real because it IS real.', icon: 'Package', color: '#3B82F6' },
       { type: 'step-breakdown', title: 'Step 3: Scale Your Army', stepNumber: 3, cost: 'RELATIONSHIP', description: 'The creators who perform become your core army. Offer them affiliate deals, small retainers, or commission structures. Each creator brings their network. 500 creators x 500 average followers = 250,000+ people seeing your brand authentically.', icon: 'Trophy', color: '#22C55E' },
       { type: 'economics-visual', title: 'The Creator Army Economics', subtitle: '70% lower cost. 100X more content. 3X conversion.' },
-      { type: 'quote-slide', quote: 'We built a creator army of over 500 people creating content for us. Every single one of them is a brand ambassador. The network effect is exponential - each creator brings their own network of followers who trust them.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/584271bU03giJ3-removebg-preview.png' },
+      { type: 'quote-slide', quote: 'We built a creator army of over 500 people creating content for us. Every single one of them is a brand ambassador. The network effect is exponential - each creator brings their own network of followers who trust them.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)' },
       { type: 'quiz', question: 'Why does a creator army beat a single agency?', options: ['Agencies produce higher quality content', 'Creators provide authentic content plus network effect', 'Agencies have better distribution', 'Creators are more professional'], correctIndex: 1, feedback: { correct: 'Exactly! A creator army provides authentic content that feels real (not like ads) PLUS the network effect. 500 creators x their followers = exponential reach. Each creator is a trusted voice in their community, driving 3X higher conversions than polished agency content.', incorrect: 'Not quite. The power of a creator army is twofold: (1) authentic content that does not feel like advertising, and (2) the network effect where each creator brings their own trusted audience. This combination crushes traditional agency models.' }},
       { type: 'completion', sources: ['The E-commerce Cheat Code'] }
     ];
@@ -396,35 +396,27 @@
 
     // Quote Slide
     const QuoteSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 relative z-10">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #F59E0B30', boxShadow: '0 0 50px rgba(245, 158, 11, 0.1)' }}>
-            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #F59E0B, transparent)' }}></div>
-            <div className="absolute top-4 left-8 opacity-20">
-              <Icons.Quote size={64} color="#F59E0B" />
-            </div>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #F59E0B30', boxShadow: '0 0 50px rgba(245, 158, 11, 0.1)' }}>
+          <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #F59E0B, transparent)' }}></div>
+          <div className="absolute top-4 left-8 opacity-20">
+            <Icons.Quote size={64} color="#F59E0B" />
+          </div>
 
-            <div className="relative z-10">
-              <p className="text-white text-xl md:text-2xl leading-relaxed mb-8 italic">"{data.quote}"</p>
+          <div className="relative z-10">
+            <p className="text-white text-xl md:text-2xl leading-relaxed mb-8 italic">"{data.quote}"</p>
 
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
-                  <span className="text-white font-bold text-lg">{data.author.charAt(0)}</span>
-                </div>
-                <div>
-                  <p className="text-white font-bold">{data.author}</p>
-                  <p className="text-neutral-400 text-sm">{data.company}</p>
-                </div>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
+                <span className="text-white font-bold text-lg">{data.author.charAt(0)}</span>
+              </div>
+              <div>
+                <p className="text-white font-bold">{data.author}</p>
+                <p className="text-neutral-400 text-sm">{data.company}</p>
               </div>
             </div>
-          </motion.div>
-        </div>
-        {data.personImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
-            <img src={data.personImage} alt={data.author || ''} className="h-full w-auto object-contain object-bottom" />
-          </motion.div>
-        )}
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -510,22 +502,139 @@
 
     // Hook Slide
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
+
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
+
+    // Quiz Slide
+    const QuizSlide = ({ data, onAnswer, answered, selectedAnswer }) => {
+      const [gifUrl, setGifUrl] = useState(null);
+      const isCorrect = selectedAnswer === data.correctIndex;
+
+      useEffect(() => {
+        if (answered) {
+          setGifUrl(isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif());
+        }
+      }, [answered, isCorrect]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Knowledge Check</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {data.options.map((option, i) => {
+              const isSelected = selectedAnswer === i;
+              const showCorrect = answered && i === data.correctIndex;
+              const showWrong = answered && isSelected && !isCorrect;
+
+              return (
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  onClick={() => !answered && onAnswer(i)}
+                  disabled={answered}
+                  className={`w-full p-4 rounded-xl text-left transition-all ${answered ? 'cursor-default' : 'hover:scale-[1.01]'}`}
+                  style={{
+                    background: showCorrect ? 'rgba(34, 197, 94, 0.1)' : showWrong ? 'rgba(239, 68, 68, 0.1)' : '#0a0a0a',
+                    border: showCorrect ? '2px solid #22C55E' : showWrong ? '2px solid #EF4444' : '1px solid #333'
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{
+                      background: showCorrect ? '#22C55E' : showWrong ? '#EF4444' : 'rgba(var(--accent-rgb), 0.2)',
+                      color: showCorrect || showWrong ? 'white' : 'var(--accent)'
+                    }}>
+                      {showCorrect ? <Icons.Check /> : showWrong ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className={showCorrect ? 'text-green-400' : showWrong ? 'text-red-400' : 'text-neutral-300'}>{option}</span>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          <AnimatePresence>
+            {answered && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-xl p-5" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)', border: `1px solid ${isCorrect ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}` }}>
+                <div className="flex items-start gap-4">
+                  {gifUrl && (
+                    <video autoPlay loop muted playsInline className="w-20 h-20 rounded-xl object-cover flex-shrink-0">
+                      <source src={gifUrl} type="video/mp4" />
+                    </video>
+                  )}
+                  <div>
+                    <p className={`font-bold mb-1 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                      {isCorrect ? 'Correct!' : 'Not quite!'}
+                    </p>
+                    <p className="text-neutral-600 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = ({ data, userName, onRestart, onNextLesson }) => (
+      <div className="h-full flex flex-col justify-center items-center text-center px-6 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+          <Icons.Check />
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-3xl md:text-4xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-600 text-lg mb-8 max-w-md">Well done, <span className="font-bold">{userName}</span>! You now understand the Creator Army model and how 500 micro-creators can outperform any expensive agency.</motion.p>
+
+        {LESSON_CONFIG.nextLesson && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5 mb-6 max-w-sm w-full" style={{ background: '#0a0a0a', border: '1px solid #333' }}>
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+            <p className="text-white font-bold mb-1">{LESSON_CONFIG.nextLesson.title}</p>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        )}
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex gap-3">
+          <button onClick={onRestart} className="px-5 py-2.5 rounded-xl text-sm font-medium border border-neutral-300 hover:bg-neutral-100 transition-colors">Restart</button>
+          {LESSON_CONFIG.nextLesson && (
+            <button onClick={onNextLesson} className="px-5 py-2.5 rounded-xl text-sm font-medium text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Next Lesson</button>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    // Main App
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [quizAnswers, setQuizAnswers] = useState({});
+      const [backgroundGif, setBackgroundGif] = useState(null);
+      const [gifHeight, setGifHeight] = useState('65%');
+      const [gifSide, setGifSide] = useState('left');
+      const userName = getUserName();
+
+      const showGif = useCallback((url, height = '65%', side = 'left') => {
+        setBackgroundGif(url);
+        setGifHeight(height);
+        setGifSide(side);
+      }, []);
+      const hideGif = useCallback(() => setBackgroundGif(null), []);
 
       const nextSlide = useCallback(() => {
         if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1);
