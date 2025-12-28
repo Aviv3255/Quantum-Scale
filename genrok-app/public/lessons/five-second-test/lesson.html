@@ -36,6 +36,21 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
     const LESSON_CONFIG = {
       id: 'five-second-test',
       title: 'Lesson',
@@ -73,9 +88,7 @@
     const slides = [
                 {
                     type: 'welcome',
-                    title: 'The 5-Second Test',
-                    subtitle: 'Why Clarity Crushes Cleverness',
-                    accentText: 'Your headline has 5 seconds to prove itself'
+                    learningGoals: ['Why you only have 5 seconds to win or lose a visitor', 'The difference between clever and clear headlines', 'How to pass the 5-second test every time']
                 },
                 {
                     type: 'hook',
@@ -213,22 +226,32 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
@@ -275,13 +298,13 @@
       if (data.visualType === 'stats') {
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
               {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
+                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
+                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
                 </motion.div>
               ))}
             </div>
@@ -292,18 +315,30 @@
     };
 
     const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
+                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '45%', maxHeight: '350px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
+
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -386,6 +421,16 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
