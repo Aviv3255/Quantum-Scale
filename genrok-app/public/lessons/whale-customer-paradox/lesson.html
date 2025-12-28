@@ -180,7 +180,12 @@
       ]},
       { type: 'pro-tip', title: 'The Power of Recognition', body: 'Sometimes the smallest gestures create the biggest reciprocity. A handwritten note thanking a whale customer for their loyalty costs you 2 minutes and $0.50. But to them? It is recognition. It is being seen. It is emotional connection. That note can trigger thousands in repeat purchases. Not because they feel obligated, but because they feel valued.', action: 'Start simple: Identify your top 5% by revenue and send them a personal thank-you email this week.' },
       { type: 'content', title: 'Identifying Your Whales', body: 'You cannot treat whales differently if you do not know who they are. Most brands have no idea which customers drive real revenue. They look at total customer count and celebrate growth. But growth in low-value customers is not growth - it is noise. You need clarity. Who are your top 5% by lifetime value? Who buys repeatedly? Who has the highest average order value? Once you know, you can segment and personalize.' },
-      { type: 'tool', title: 'Know Your Whales with Precision', toolName: 'DataDrew', toolUrl: 'https://datadrew.com', image: 'https://cdn.shopify.com/app-store/listing_images/f9e5fc8eb77e3e8fac72264af5d22b3f/icon/CPb87YiO-JQDEAE=.png', body: 'DataDrew automatically segments your customers by lifetime value, purchase frequency, and spending patterns. See exactly who your whales are, what they buy, and when they buy. Then create targeted VIP campaigns that convert at 3-5x normal rates.', questions: ['Do you know which 5% of customers generate 50%+ of revenue?', 'Can you instantly identify your highest-LTV customers?', 'Are you able to send VIP-only campaigns to your whales?'], insight: 'When you know your whales, you can treat them like whales. DataDrew gives you that clarity in minutes, not hours of spreadsheet analysis.' },
+      { type: 'implementation', title: 'Know Your Whales with Precision', intro: "You can't improve what you can't measure. Here's how to set up your tracking:", steps: [
+        { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
+        { step: 2, title: 'Connect your store data', description: 'The app syncs with your orders and customer data to show actual LTV by segment, cohort, and acquisition channel.' },
+        { step: 3, title: 'Identify your best customers', description: 'Filter to see which customer segments have the highest LTV. These are your blueprint for growth.' },
+        { step: 4, title: 'Track weekly and optimize', description: 'Set a reminder to check your metrics every Monday. Small improvements compound into massive results.' }
+      ], toolUrl: 'https://datadrew.com', cta: 'Get Started Free' },
       { type: 'content', title: 'The Psychological Moat', body: 'Here is the beautiful part: Once you build emotional connection with whales through VIP treatment, they become nearly impossible to poach. Competitors can match your prices. They can copy your products. But they cannot replicate the relationship and recognition you have built. Whales stay loyal not because of what you sell, but because of how you make them feel. Status. Exclusivity. Belonging. These are psychological moats that protect your highest-value revenue streams.' },
       { type: 'quiz', question: 'Why does VIP treatment trigger higher spending from whale customers?', options: ['Because they have more money to spend', 'Because reciprocity creates psychological obligation to give back when they feel valued', 'Because exclusive products are always more expensive', 'Because whales love showing off to friends'], correctIndex: 1, feedback: { correct: 'Exactly! VIP treatment triggers reciprocity - a deep psychological principle where humans feel compelled to give back when given something valuable. When whales receive exclusive access, personalized service, and recognition, they reciprocate with loyalty and higher spending. It is not about having more money - it is about feeling valued and responding with increased investment in the relationship.', incorrect: 'Not quite. The answer is reciprocity. When you give whale customers VIP treatment - early access, personalized communication, exclusive perks - they feel valued and recognized. This triggers reciprocity, a fundamental human drive to give back when receiving something valuable. They spend more not just because they can, but because they WANT to reciprocate the special treatment. It is pure psychology.' }},
       { type: 'completion', sources: [{ name: 'Segment Your Customers by LTV', url: 'https://datadrew.com' }] }
@@ -299,39 +304,30 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white flex items-center justify-center p-8">
-            <img src={data.image} alt={data.toolName} className="w-48 h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Explore {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
+      </div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -450,7 +446,7 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'customer-tier': return <CustomerTierSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

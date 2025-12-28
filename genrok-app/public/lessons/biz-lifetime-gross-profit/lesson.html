@@ -178,21 +178,12 @@
             },
 
             // Slide 10: Tool Integration - DataDrew
-            {
-                type: 'tool',
-                title: 'Track Your REAL LTV',
-                toolName: 'DataDrew',
-                toolDescription: 'The free app that shows your TRUE customer lifetime gross profit',
-                toolImage: datadrewImage,
-                toolUrl: datadrewUrl,
-                benefits: [
-                    'See gross profit per customer, not just revenue',
-                    'Segment by acquisition channel',
-                    'Find your REAL whales (profit, not revenue)',
-                    'Know exactly what you can spend on ads'
-                ],
-                cta: 'Get DataDrew Free'
-            , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
+            { type: 'implementation', title: 'Track Your REAL LTV', intro: "You can't improve what you can't measure. Here's how to set up your tracking:", steps: [
+        { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
+        { step: 2, title: 'Connect your store data', description: 'The app syncs with your orders and customer data to show actual LTV by segment, cohort, and acquisition channel.' },
+        { step: 3, title: 'Identify your best customers', description: 'Filter to see which customer segments have the highest LTV. These are your blueprint for growth.' },
+        { step: 4, title: 'Track weekly and optimize', description: 'Set a reminder to check your metrics every Monday. Small improvements compound into massive results.' }
+      ], toolUrl: '', cta: 'Get DataDrew Free' },
 
             // Slide 11: Quiz
             {
@@ -359,17 +350,31 @@
       return null;
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    const CardsSlide = ({ data }) 
+
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
     const StatCountdownSlide = ({ data }) => (

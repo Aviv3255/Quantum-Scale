@@ -85,7 +85,12 @@
       { type: 'content', title: '94% of Audience Assumptions Are Wrong', body: 'A Shopify store selling supplements assumed their customers cared about "natural ingredients." They built an entire brand around purity and organic sourcing. Then they ran a post-purchase survey. The #1 reason people bought? "A friend recommended it." The #2 reason? "Saw results on Reddit." Natural ingredients didn\'t even make the top 5. They had spent $40K on the wrong message for 9 months.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._face-palming_embarrassedfrustrated_100_pure_2ecf9cf3-57a5-44c8-8958-1ee07c06f4b2_3.mp4', characterPosition: 'right'},
       { type: 'example', scenario: 'Fashion Store - Assumption vs Reality', before: { label: 'The Assumption', text: '"Our customers care about sustainable fashion and eco-friendly materials. Let\'s build our whole brand around that."' }, after: { label: 'The Reality (After Survey)', text: '"67% said they chose us because of fast shipping and easy returns. Only 12% mentioned sustainability. We were marketing to the wrong motivation."' }, insight: 'Don\'t assume. Ask. The answer will surprise you every time.' },
       { type: 'content', title: 'How to ACTUALLY Know Your 40%', body: 'Stop guessing. Start surveying. The most valuable marketing data you\'ll ever get comes from one simple moment: right after someone buys from you. They\'re in a truth-telling state. They just gave you money. They\'ll tell you exactly why. Ask them 3-4 short questions and you\'ll learn more in 48 hours than 6 months of analytics.' },
-      { type: 'tool', title: 'The Smartest Way to Know Your Audience', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Post-purchase surveys appear right after checkout when customers are most honest. Ask the questions that matter and get the truth about your 40%.', questions: ['How did you first hear about us?', 'What almost stopped you from buying?', 'What made you choose us over competitors?', 'How many times did you visit before ordering?'], insight: 'Out of 100 responses, you\'ll often find 80+ saying the same unexpected thing. That\'s your real audience insight.' },
+      { type: 'implementation', title: 'The Smartest Way to Know Your Audience', intro: "Stop guessing what your customers want. Here's how to get the truth:", steps: [
+        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
+        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
+        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
+        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
+      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
       { type: 'cards', title: 'Common Deadly Assumptions', items: [
         { title: 'Price Assumption', description: '"They want the cheapest option." Reality: 73% of buyers choose mid-tier when given three choices, not the cheapest.' },
         { title: 'Feature Assumption', description: '"They need to know all the specs." Reality: Most buyers decide based on ONE benefit, not a list of features.' },
@@ -261,38 +266,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -411,7 +407,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

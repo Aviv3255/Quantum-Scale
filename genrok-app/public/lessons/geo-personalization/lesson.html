@@ -136,7 +136,12 @@
         { country: 'Brazil', flag: '🇧🇷', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/51.webp', message: 'Independence Day + Portuguese greeting + R$ currency' },
         { country: 'France', flag: '🇫🇷', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/52.webp', message: 'Father\'s Day + French message + EUR pricing' }
       ]},
-      { type: 'tool', title: 'Install Geo Convert', toolName: 'Geo Convert', toolUrl: 'https://geo-convert.com', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/WhatsApp%20Image%202025-12-19%20at%2014.59.31.jpeg', body: 'Geo Convert automatically detects visitor location and displays country-specific announcements. Holiday-aware messaging, local currency, and pricing adjusted to purchasing power - all automated.', questions: ['How do I set different discounts per country?', 'How does it know which holidays are happening?', 'Can I adjust prices based on purchasing power?', 'How does it look on my store?'], insight: 'Used by 220,000+ stores worldwide. Conversion lifts of 45-70% depending on niche.' },
+      { type: 'implementation', title: 'Install Geo Convert', intro: "Make every visitor feel like your store was built for them. Here's how:", steps: [
+        { step: 1, title: 'Install geo-personalization', description: 'Apps like Geo Convert detect visitor location automatically and adjust your messaging in real-time.' },
+        { step: 2, title: 'Set up country-specific pricing', description: 'Configure pricing tiers: Tier 1 countries (USA/UK) = standard, Tier 2 = slight discount, Tier 3 = adjusted for local purchasing power.' },
+        { step: 3, title: 'Enable local holiday detection', description: 'The app knows 100+ holidays worldwide. "Happy Diwali!" for India, "Bonne fête!" for France - automatic relevance.' },
+        { step: 4, title: 'Show local currency', description: 'Display prices in visitor\'s currency with familiar symbols. ₹ for India, € for Europe, R$ for Brazil.' }
+      ], toolUrl: 'https://geo-convert.com', cta: 'Get Started Free' },
       { type: 'tool-setup', title: 'How We Set It Up', toolName: 'Geo Convert', steps: [
         { step: 1, title: 'Install the App', description: 'Add Geo Convert from the Shopify App Store and connect to your store' },
         { step: 2, title: 'Set Base Discount', description: 'Configure your default discount code and percentage (e.g., 10% for tier 1 countries)' },
@@ -290,38 +295,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Questions This Answers</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Add this to your store</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -614,7 +610,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'tool-results': return <ToolResultsSlide data={slide} />;
           case 'tool-examples': return <ToolExamplesSlide data={slide} />;
           case 'tool-setup': return <ToolSetupSlide data={slide} />;

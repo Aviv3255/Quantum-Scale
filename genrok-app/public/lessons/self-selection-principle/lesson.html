@@ -116,7 +116,12 @@
       ]},
       { type: 'content', title: 'The Dark Side: Why Bad Quizzes Fail', body: 'Not all quizzes convert. Bad quizzes feel like thinly veiled sales pitches. "What is your budget?" "When are you ready to buy?" These scream: "I just want your money." Good quizzes feel genuinely helpful. "What is your biggest challenge?" "What have you tried?" These signal: "I want to understand you first." The difference is intention. If your quiz exists only to manipulate, customers sense it. If it exists to guide and educate, they engage willingly.' },
       { type: 'content', title: 'Building Your Quiz: The Framework', body: 'Effective quiz funnels follow a proven structure: Start with their problem or goal. "What are you trying to achieve?" Next, explore context and severity. "How long has this been an issue?" Then, past attempts and frustrations. "What have you tried?" Finally, preferences and constraints. "What matters most to you?" Each layer deepens their self-awareness. By the end, the recommended solution feels inevitable, not pushy. They built the case themselves. You just connected the dots.' },
-      { type: 'tool', title: 'Build Quiz Funnels Without Code', toolName: 'Presidio Quiz Kit', toolUrl: 'https://apps.shopify.com/presidio-product-quiz-app?mref=lsbqcbva', image: 'https://cdn.shopify.com/app-store/listing_images/f64aa61ce35bb5f8b20b77614a08ef4c/icon/COH9tPX0lu8CEAE=.png', body: 'Create high-converting quiz funnels with drag-and-drop simplicity. Conditional logic, email capture, personalized results, and seamless product recommendations. No coding required. Integrates with your store in minutes.', questions: ['Do your customers need help choosing the right product?', 'Are you leaving money on the table with static landing pages?', 'Do you want to capture emails with 40%+ opt-in rates?'], insight: 'Quizzes work 24/7 qualifying leads, capturing emails, and converting browsers into buyers through self-persuasion. The setup takes an hour. The results compound forever.' },
+      { type: 'implementation', title: 'Build Quiz Funnels Without Code', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://apps.shopify.com/presidio-product-quiz-app?mref=lsbqcbva', cta: 'Get Started Free' },
       { type: 'quiz', question: 'Why do quiz funnels convert better than static pages?', options: ['Because they look more professional and modern', 'Because they create cognitive commitment through self-reflection and active participation', 'Because customers prefer clicking buttons over reading text', 'Because quizzes are trending and customers like new things'], correctIndex: 1, feedback: { correct: 'Exactly right! Quiz funnels convert because they activate self-persuasion. When customers answer questions about their challenges, preferences, and goals, they build a mental case for why they need the solution. This cognitive commitment is far more powerful than any sales copy. They convinced themselves. You just facilitated the discovery. That is the Self-Selection Principle in action.', incorrect: 'Not quite. The answer is cognitive commitment through self-reflection and active participation. When people answer questions about themselves, they activate self-persuasion. Each answer creates micro-commitment. Each reflection makes the problem feel more real. By the time they see the result, they have already decided they need it. You did not sell them. They sold themselves. That is why quizzes convert 3-5x better than static pages.' }},
       { type: 'completion', sources: [{ name: 'Build Your Quiz Funnel', url: 'https://apps.shopify.com/presidio-product-quiz-app?mref=lsbqcbva' }] }
     ];
@@ -254,38 +259,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white flex items-center justify-center p-8">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto max-w-xs" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -404,7 +400,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

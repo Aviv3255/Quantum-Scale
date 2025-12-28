@@ -184,7 +184,12 @@
       ]},
       { type: 'example', scenario: 'A Skincare Brand Goes Local', before: { label: 'Generic Approach', text: 'Same "Holiday Sale - 20% OFF!" banner for everyone worldwide. December focus only. Runs Black Friday, Cyber Monday, Christmas. Ignores the other 10 months. Competes with every other store doing the exact same thing.' }, after: { label: 'Localized Approach', text: 'German visitors see Oktoberfest skincare bundles in September. Indian visitors see Diwali glow kits in October. Brazilian visitors see Carnival prep sets in February. Chinese visitors see Singles Day self-care specials on 11/11. Year-round relevance. Zero competition on these local moments.' }, insight: 'While competitors fight over Black Friday scraps, smart brands own local holidays nobody else is targeting.' },
       { type: 'tool-results', title: 'The Numbers Behind Holiday Personalization', toolName: 'Geo Convert', stats: { visitors: '64,091', increase: '67.9%', description: 'Conversion Rate Increase' }, image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/48.jpg', insight: 'A/B tested across 4 stores. Location-aware holiday messaging crushed generic "Limited Time Offer" banners every time.' },
-      { type: 'tool', title: 'Automate Location-Based Personalization', toolName: 'Geo Convert', toolUrl: 'https://geo-convert.com', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/WhatsApp%20Image%202025-12-19%20at%2014.59.31.jpeg', body: 'Automatically detect visitor location and show personalized content. Holiday-specific banners. Local currency. Shipping estimates. No coding required. Works on any Shopify store in minutes.', questions: ['Do you get traffic from multiple countries?', 'Are you running the same generic promotions for everyone?', 'Would you like to 2-3x conversion rates with zero extra ad spend?'], insight: 'Stores using Geo Convert see 45-70% higher conversion on localized campaigns. Same traffic. More sales.' },
+      { type: 'implementation', title: 'Automate Location-Based Personalization', intro: "Make every visitor feel like your store was built for them. Here's how:", steps: [
+        { step: 1, title: 'Install geo-personalization', description: 'Apps like Geo Convert detect visitor location automatically and adjust your messaging in real-time.' },
+        { step: 2, title: 'Set up country-specific pricing', description: 'Configure pricing tiers: Tier 1 countries (USA/UK) = standard, Tier 2 = slight discount, Tier 3 = adjusted for local purchasing power.' },
+        { step: 3, title: 'Enable local holiday detection', description: 'The app knows 100+ holidays worldwide. "Happy Diwali!" for India, "Bonne fête!" for France - automatic relevance.' },
+        { step: 4, title: 'Show local currency', description: 'Display prices in visitor\'s currency with familiar symbols. ₹ for India, € for Europe, R$ for Brazil.' }
+      ], toolUrl: 'https://geo-convert.com', cta: 'Get Started Free' },
       { type: 'tool-setup', title: 'How to Set Up Holiday Automation', toolName: 'Geo Convert', steps: ['Install Geo Convert from the Shopify App Store (2-click setup)', 'Enable the Local Holidays feature - it auto-detects 200+ holidays worldwide', 'Set your discount tiers by country (higher for emerging markets, lower for premium markets)', 'Customize the announcement bar template for each major region'], proTip: 'Focus on your top 5-10 traffic countries first. The app handles the rest automatically with smart defaults.' },
       { type: 'content', title: 'The Compounding Effect', body: 'Here is what happens when you go local: You stop competing for the same crowded holidays. You spread revenue across the entire year. You build deeper customer relationships. You charge premium prices (localized feels exclusive). Your email list sees relevant offers, not spam. And the best part? Once set up, it runs automatically. Every visitor sees the right offer without you lifting a finger.' },
       { type: 'quiz', question: 'Why do local holiday offers convert better than generic "Limited Time" sales?', options: ['They use bigger discounts', 'They create externally-imposed deadlines with cultural relevance', 'They target fewer customers', 'They run for longer periods'], correctIndex: 1, feedback: { correct: 'Exactly! Local holiday offers work because the deadline is REAL and externally imposed. When you tie an offer to Diwali, Oktoberfest, or Singles Day, the urgency is legitimate. The holiday ends whether the customer buys or not. This creates authentic urgency that cannot be ignored, unlike "FLASH SALE!" banners that customers have learned to tune out.', incorrect: 'Not quite. The power of local holidays is about externally-imposed deadlines with cultural relevance. The customer already knows and respects these dates. The urgency is real because the holiday actually ends. Compare this to fake scarcity like "Only 3 left!" which customers have learned to ignore. Cultural anchoring creates authentic urgency that converts.' }},
@@ -357,38 +362,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try Geo Convert Free</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -509,7 +505,7 @@
           case 'calendar-visual': return <CalendarVisual data={slide} />;
           case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'tool-results': return <ToolResultsSlide data={slide} />;
           case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;

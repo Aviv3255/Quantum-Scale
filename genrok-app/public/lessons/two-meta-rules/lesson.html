@@ -96,7 +96,12 @@
         { icon: 'audience', label: 'Minimum TAM', value: '1', suffix: 'M+', description: 'Addressable audience size' }
       ]},
       { type: 'content', title: 'Before You Test: Run the 2-Rule Check', body: 'Before spending a dollar on Meta ads, ask yourself: Does my product generate a 2-second "this is special, I want it now" reaction? Can millions of people buy it without confusion or friction? If the answer to either is no, fix the product first. Meta rewards products that pass both rules. Everything else is a money pit.' },
-      { type: 'tool', title: 'Want to Master Product Selection for Meta?', toolName: 'Product Mapping Manipulation Course', toolUrl: 'https://quantum-scale.co/pages/product-mapping-manipulation', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'This course breaks down the exact framework for choosing products that win on Meta. You\'ll learn how to identify products with winning characteristics and avoid common traps that drain ad budgets.', questions: ['How to spot products that pass the 2-second test', 'The minimum audience size for profitable Meta campaigns', 'How to validate product-market fit before testing', 'The USP formula that stops the scroll'], insight: 'Learn the product selection framework used by successful Meta advertisers.' },
+      { type: 'implementation', title: 'Want to Master Product Selection for Meta?', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://quantum-scale.co/pages/product-mapping-manipulation', cta: 'Get Started Free' },
       { type: 'quiz', question: 'Which product would PASS both Meta rules and scale profitably?', options: ['"Custom-fitted compression pants for powerlifters with knee issues"', '"Generic black backpack identical to 200 other brands"', '"Bold, minimalist water bottle with unique ergonomic grip - for active lifestyles"', '"Specialized gardening tool for left-handed bonsai enthusiasts"'], correctIndex: 2, feedback: { correct: 'Exactly! The water bottle passes both rules: Special enough (bold design, unique grip = 2-second desire), and not too specific (active lifestyles = millions of people, zero friction). Sharp USP + broad market fit = Meta gold.', incorrect: 'Not quite. The winner is the water bottle. Why? It\'s special enough to stop the scroll (bold design, unique grip), but not too specific (active lifestyles = huge audience, no friction). Sharp USP + broad fit = scalable Meta campaigns.' }},
       { type: 'completion', sources: [{ name: 'Product Mapping Manipulation Course', url: 'https://quantum-scale.co/pages/product-mapping-manipulation' }] }
     ];
@@ -372,38 +377,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">What You'll Learn</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Learn More</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -524,7 +520,7 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'product-framework': return <ProductFrameworkSlide data={slide} />;
           case 'metrics-battle': return <MetricsBattleSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

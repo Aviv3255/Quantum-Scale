@@ -206,7 +206,12 @@
         { label: 'AOV Increase', percentage: 25, color: '#8b5cf6' },
         { label: 'Return Visit Rate', percentage: 35, color: '#10b981' }
       ]},
-      { type: 'tool', title: 'Add Wishlist Feature to Your Store', toolName: 'Vitals Wishlist', toolUrl: 'https://vitals.app/shopify/12548540', body: 'One-click wishlist with heart icons, email reminders, and customer dashboard. Tracks what visitors save, sends re-engagement emails, and turns window shoppers into return buyers. Manual wishlist management takes hours of custom development. This takes 5 minutes to install.', questions: [], insight: 'Both manual implementation and tools work. Your call on which path fits your workflow.' },
+      { type: 'implementation', title: 'Add Wishlist Feature to Your Store', intro: "Turn window shoppers into buyers with the Endowment Effect. Here's how:", steps: [
+        { step: 1, title: 'Add wishlist functionality', description: 'Apps like Vitals add a heart icon to every product. One click saves items without the pressure of "Add to Cart."' },
+        { step: 2, title: 'Enable email reminders', description: 'When someone adds items to their wishlist, they get gentle reminders. "Your saved items are waiting..."' },
+        { step: 3, title: 'Track wishlist behavior', description: 'See which products get saved most. This reveals purchase intent without the commitment barrier.' },
+        { step: 4, title: 'Create urgency on saved items', description: 'Send alerts when wishlist items go on sale or low stock. Loss aversion kicks in - they\'ll buy to not lose "their" items.' }
+      ], toolUrl: 'https://vitals.app/shopify/12548540', cta: 'Get Started Free' },
       { type: 'quiz', question: 'Why does "Add to Wishlist" increase conversions better than "Add to Cart"?', options: ['Wishlists are more visually appealing', 'It creates psychological ownership without triggering the frugal defense mechanism', 'It automatically applies a discount', 'It sends more email reminders'], correctIndex: 1, feedback: { correct: 'Exactly! "Add to Wishlist" bypasses the mental resistance that "Add to Cart" creates. No purchase pressure. Just curiosity and desire. Visitors feel partial ownership without commitment - then return later with the Endowment Effect fully active.', incorrect: 'Not quite. The core insight is psychological: "Add to Wishlist" creates the Endowment Effect (partial ownership feeling) without activating the frugal defense mechanism that "Add to Cart" triggers. No purchase pressure = higher conversions + higher AOV.' }},
       { type: 'completion', sources: [{ name: 'Vitals Wishlist - Add Wishlist Feature', url: 'https://vitals.app/shopify/12548540' }] }
     ];
@@ -354,26 +359,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -621,7 +629,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           case 'vsBattle': return <VsBattleSlide data={slide} />;

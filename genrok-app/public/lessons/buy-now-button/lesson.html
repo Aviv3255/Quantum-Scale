@@ -202,7 +202,12 @@
         { title: 'Higher AOV', description: 'More items per cart = higher average order value = more profit.' }
       ]},
       { type: 'stat-countdown', title: 'The Multiplier In Action', stats: [{ value: 45, prefix: '$', label: 'Single item purchase', color: '#ef4444' }, { value: 108, prefix: '$', label: 'With first upsell (3-pack)', color: '#f59e0b' }, { value: 138, prefix: '$', label: 'With second upsell added', color: '#22c55e' }], insight: 'Each upsell unlocks another. Buy Now kills this chain.' },
-      { type: 'tool', title: 'Build The Perfect Cart Experience', toolName: 'Shoffi Cart Upsells', toolUrl: 'https://platform.shoffi.app/r/rl_cm697iNI', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/60.jpg', body: 'Replace Buy Now with a high-converting cart drawer that shows smart upsells, free shipping progress, and product recommendations right when customers are ready to buy.', questions: ['Slide-out cart drawer with upsells', 'Free shipping progress bar', 'Product recommendations engine', 'Wishlist integration'], insight: 'The cart drawer is not just a cart. It is a revenue multiplier. Every interaction is an opportunity to increase order value.' },
+      { type: 'implementation', title: 'Build The Perfect Cart Experience', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://platform.shoffi.app/r/rl_cm697iNI', cta: 'Get Started Free' },
       { type: 'quiz', question: 'What was the revenue increase when removing Buy Now buttons in the A/B test?', options: ['+8.3%', '+12.5%', '+15.9%', '+21.7%'], correctIndex: 2, feedback: { correct: 'Exactly right! Removing Buy Now buttons and using Add to Cart with a cart drawer increased revenue per visit by 15.9%. Why? Because the cart drawer creates opportunities for upsells, cross-sells, and higher average order values. Buy Now bypasses all of that, sending customers straight to checkout with just one item.', incorrect: 'Not quite. The answer is +15.9% revenue increase. When you remove Buy Now buttons and use Add to Cart with a cart drawer instead, you create opportunities for upsells and cross-sells that Buy Now completely eliminates. That 15.9% boost comes from customers adding more items before checkout.' }},
       { type: 'completion', sources: [{ name: 'Vitals Wishlist App', url: 'https://vitals.app/shopify/12548540' }, { name: 'Shoffi Cart Upsells', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }] }
     ];
@@ -389,38 +394,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <span className="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-8 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden border border-neutral-200 bg-white shadow-sm">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-base md:text-lg leading-relaxed mb-6">{data.body}</p>
-            <div className="bg-neutral-50 rounded-2xl p-6 mb-6 border border-neutral-100">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-4">Key Features</p>
-              <ul className="space-y-3">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-3 text-neutral-700 text-sm md:text-base">
-                    <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-semibold text-base transition-all hover:scale-[1.02] shadow-md" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Add Cart Upsells</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-2xl p-6 text-center">
-          <p className="text-neutral-300 text-base"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -586,7 +582,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

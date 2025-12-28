@@ -69,7 +69,12 @@
       { type: 'mockup', title: 'Store Trust Checklist', description: 'These 4 elements must be perfect before submitting to Google Merchant Center. Missing even one can result in immediate suspension.', mockupType: 'trust-checklist' },
       { type: 'content', title: 'The #1 Suspension Cause', body: 'Want to know the most common reason stores get suspended? Mismatched information.\n\nHere\'s how it happens:\n\n- Your website says "Free shipping on orders over $50"\n- Your Google Merchant Center settings say "Free shipping on all orders"\n- REJECTED.\n\nOr:\n\n- Your website footer shows contact@mystore.com\n- Your Merchant Center business info shows info@mystore.com\n- REJECTED.\n\nOr:\n\n- Your refund policy says "30-day returns"\n- Your product feed shows "No returns accepted"\n- REJECTED.\n\nGoogle cross-checks EVERYTHING. Your website policies must match your Merchant Center settings exactly. Your contact information must be consistent. Your shipping details must align.\n\nBefore submitting to Merchant Center, audit every detail. One mismatch = suspension. And getting unsuspended is a nightmare.' },
       { type: 'content', title: 'Action Steps Before Launch', body: 'Here\'s exactly what to do before submitting your store to Google Merchant Center:\n\nStep 1: Audit Your Store\nGo through every page. Footer, contact page, about page, checkout. Is all information consistent? Professional? Complete?\n\nStep 2: Write Unique Policies\nDon\'t copy. Write your own Shipping, Refund, Privacy, and Terms policies. Make them specific to your business. Display them prominently in your footer.\n\nStep 3: Verify Contact Info\nEnsure your business phone number and professional email are visible on every page footer. Make sure they match what you\'ll enter in Merchant Center.\n\nStep 4: Quality Check Products\nEvery product needs a unique title and description. No supplier copy-paste. If you have 100 products, this takes time. Do it anyway.\n\nStep 5: Cross-Check Everything\nCompare your website to your Merchant Center settings line by line. Shipping? Match. Returns? Match. Contact info? Match. Business address? Match.\n\nThen submit. Not before.' },
-      { type: 'tool', title: 'Visual Trust Signals For Google Approval', toolName: 'Essential Trust Badges', toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202025-12-20%20211820.png', body: 'Trust badges are powerful visual signals that tell Google (and customers) your store is legitimate. Payment icons, security seals, and guarantee badges make your store look professional. Google reviewers notice these signals when evaluating your store for approval.', questions: ['Do you display accepted payment methods?', 'Are security badges visible at checkout?', 'Do you show return policy badges?', 'Are trust signals consistent across all pages?'], insight: 'Google\'s reviewers are looking for signs of a professional store. Trust badges are an easy win that signals you\'re a legitimate business.' },
+      { type: 'implementation', title: 'Visual Trust Signals For Google Approval', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', cta: 'Get Started Free' },
       { type: 'tool-setup', title: 'Adding Trust Badges', toolName: 'Essential Trust Badges', steps: ['Install Essential Trust Badges from the Shopify App Store', 'Enable payment icons that match your actual payment methods', 'Add security badges (SSL, secure checkout)', 'Display guarantee badges that match your policies', 'Ensure badges appear on product pages AND checkout'], proTip: 'Make sure your badge content matches your policies. If you show a "30-day returns" badge, your refund policy must say 30 days. Google checks for consistency.' },
       { type: 'quiz', question: 'What\'s the most common cause of Google Merchant Center suspension?', options: ['Too many products', 'Low prices', 'Mismatched information between your website and Merchant Center', 'New account age'], correctIndex: 2, feedback: { correct: 'Exactly! Mismatched information is the #1 suspension killer. Google cross-checks everything: shipping policies, return policies, contact info, business address. If your website says one thing and your Merchant Center says another, you\'re done. Before submitting, audit every detail. Website footer contact info must match Merchant Center business info. Shipping policy on your site must match shipping settings in Merchant Center. One mismatch = suspension.', incorrect: 'Not quite. The #1 suspension cause is mismatched information between your website and Google Merchant Center. If your site says "30-day returns" but your feed says "no returns," you\'re rejected. If your footer shows one email but Merchant Center shows another, you\'re rejected. Google cross-checks everything. Before submitting, verify that every policy, contact detail, and shipping setting matches exactly between your website and Merchant Center. One inconsistency = suspension.' }},
       { type: 'completion', sources: [{ name: 'Google Merchant Center - Store Requirements', url: 'https://support.google.com/merchants/answer/6363310' }, { name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }] }
@@ -229,38 +234,29 @@
       }
     };
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -387,7 +383,7 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'mockup': return <MockupSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onAnswer={handleAnswer} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

@@ -221,7 +221,12 @@
         { country: 'Brazil', flag: '🇧🇷', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/51.webp', message: 'Independence Day greeting + Portuguese message + R$ currency' },
         { country: 'France', flag: '🇫🇷', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/52.webp', message: 'Local holiday reference + French greeting + EUR pricing' }
       ]},
-      { type: 'tool', title: 'Install Geo Convert', toolName: 'Geo Convert', toolUrl: 'https://geo-convert.com', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/WhatsApp%20Image%202025-12-19%20at%2014.59.31.jpeg', body: 'Automatically detect visitor location and show personalized announcement bars. Matches discounts to purchasing power, references local holidays, displays local currency. Zero coding required.', insight: 'Stores using Geo Convert see 40-70% higher conversion on localized campaigns. Same traffic. More sales.' },
+      { type: 'implementation', title: 'Install Geo Convert', intro: "Make every visitor feel like your store was built for them. Here's how:", steps: [
+        { step: 1, title: 'Install geo-personalization', description: 'Apps like Geo Convert detect visitor location automatically and adjust your messaging in real-time.' },
+        { step: 2, title: 'Set up country-specific pricing', description: 'Configure pricing tiers: Tier 1 countries (USA/UK) = standard, Tier 2 = slight discount, Tier 3 = adjusted for local purchasing power.' },
+        { step: 3, title: 'Enable local holiday detection', description: 'The app knows 100+ holidays worldwide. "Happy Diwali!" for India, "Bonne fête!" for France - automatic relevance.' },
+        { step: 4, title: 'Show local currency', description: 'Display prices in visitor\'s currency with familiar symbols. ₹ for India, € for Europe, R$ for Brazil.' }
+      ], toolUrl: 'https://geo-convert.com', cta: 'Get Started Free' },
       { type: 'tool-setup', title: 'Setup in 3 Minutes', toolName: 'Geo Convert', steps: ['Install the Geo Convert app from Shopify App Store', 'Set your discount tiers by country/region (e.g., 15% for India, 5% for USA)', 'Enable local holiday detection for automatic seasonal messaging', 'Activate VPN protection to prevent discount gaming'], proTip: 'Start with your top 5 traffic countries. Add more regions as you see results.' },
       { type: 'revealSteps', title: 'How VPN Protection Works', steps: [
         'Tool detects and blocks known VPN IP addresses',
@@ -543,27 +548,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -745,7 +752,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'tool-natural': return <ToolNaturalSlide data={slide} />;
           case 'tool-results': return <ToolResultsSlide data={slide} />;
           case 'tool-examples': return <ToolExamplesSlide data={slide} />;

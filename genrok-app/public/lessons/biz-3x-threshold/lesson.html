@@ -93,7 +93,12 @@
         right: { label: 'Money Machine', value: 'LTV > 3x CAC', result: 'Exponential growth', color: '#22c55e' },
         center: { label: 'Your Goal', value: '3x+', result: 'Infinite scale', color: '#f97316' }
       }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_climbing_a_ladder_progressgrowth_100_pure_whit_4fc6107a-c510-4afc-ac20-a4cf12e8180b_3.mp4', characterPosition: 'right'},
-      { type: 'tool', title: 'Track Your Numbers', tool: { name: 'DataDrew', description: 'Stop guessing your LTV. DataDrew shows you exactly what each customer is worth—by segment, by cohort, by source. Know your whales. Know your threshold.', url: 'https://datadrew.io', cta: 'See Your LTV' }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left'},
+      { type: 'implementation', title: 'Track Your Numbers', intro: "You can't improve what you can't measure. Here's how to set up your tracking:", steps: [
+        { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
+        { step: 2, title: 'Connect your store data', description: 'The app syncs with your orders and customer data to show actual LTV by segment, cohort, and acquisition channel.' },
+        { step: 3, title: 'Identify your best customers', description: 'Filter to see which customer segments have the highest LTV. These are your blueprint for growth.' },
+        { step: 4, title: 'Track weekly and optimize', description: 'Set a reminder to check your metrics every Monday. Small improvements compound into massive results.' }
+      ], toolUrl: 'https://datadrew.io', cta: 'See Your LTV' }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left'},
       { type: 'quiz', question: 'Why is the 3x threshold specifically important (not 2x or 4x)?', options: ['It sounds better for marketing', 'It gives enough margin to reinvest aggressively and outspend competitors', 'It\'s required by Facebook Ads', 'It matches industry average'], correctIndex: 1, feedback: { correct: 'Exactly. At 3x, you have enough profit margin to reinvest aggressively in growth, outspend competitors on ads, and afford to lose money on first purchases because you\'re buying long-term assets. Below 3x, you\'re just surviving.', incorrect: 'Not quite. The 3x threshold matters because it gives you enough profit margin to reinvest aggressively in growth. At 3x+, you can outspend competitors, afford losses on first purchases, and scale exponentially.' }},
       { type: 'completion', sources: [] }
     ];
@@ -254,19 +259,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
+    const ImplementationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Tool Spotlight</span>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
           <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-6 md:p-8 text-center">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{data.tool.name}</h3>
-          <p className="text-neutral-400 text-sm md:text-base mb-6 leading-relaxed">{data.tool.description}</p>
-          <a href={data.tool.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            {data.tool.cta} <Icons.ExternalLink />
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
           </a>
-        </motion.div>
+        </motion.div>}
       </div>
     );
 
@@ -372,7 +387,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

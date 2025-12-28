@@ -101,7 +101,12 @@
         { title: 'Marketing Fuel', description: 'Excess cash from pre-sales goes into ads. Every customer acquisition is funded by previous customers.' }
       ]},
       { type: 'content', title: 'The Tool: Track Your LTV', body: 'To make this work, you need to understand customer lifetime value. Use DataDrew to track LTV by cohort, segment, and channel. Know exactly which customers fund your growth engine. This data is the foundation of a pre-sale financing model.' },
-      { type: 'tool', tool: { name: 'DataDrew', description: 'Track customer lifetime value and understand which segments fund your growth.', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/46.webp' } , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
+      { type: 'implementation', title: 'How To Implement This', intro: "You can't improve what you can't measure. Here's how to set up your tracking:", steps: [
+        { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
+        { step: 2, title: 'Connect your store data', description: 'The app syncs with your orders and customer data to show actual LTV by segment, cohort, and acquisition channel.' },
+        { step: 3, title: 'Identify your best customers', description: 'Filter to see which customer segments have the highest LTV. These are your blueprint for growth.' },
+        { step: 4, title: 'Track weekly and optimize', description: 'Set a reminder to check your metrics every Monday. Small improvements compound into massive results.' }
+      ], toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', cta: 'Get Started Free' } , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'quiz', question: 'What is the negative cash conversion cycle?', options: ['Getting paid before you pay suppliers', 'Paying suppliers before customers pay', 'Using debt to fund inventory', 'Raising venture capital'], correctIndex: 0, feedback: { correct: 'Exactly. The negative cash conversion cycle means customers pay you FIRST, then you use their money to pay suppliers. This creates free capital to fund growth without debt or investors. It\'s how The Oodie scaled to $1B bootstrapped.', incorrect: 'Not quite. The negative cash conversion cycle means getting paid by customers BEFORE paying suppliers. You use customer money to fund inventory, not debt or investors. This creates a self-sustaining financing engine.' }},
       { type: 'completion', sources: [] }
     ];
@@ -263,24 +268,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Recommended Tool</span>
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-8 hover:border-neutral-300 transition-all">
-          {data.tool.image && (
-            <div className="mb-6 rounded-xl overflow-hidden">
-              <img src={data.tool.image} alt={data.tool.name} className="w-full h-auto" />
-            </div>
-          )}
-          <h3 className="text-2xl font-bold text-neutral-900 mb-4">{data.tool.name}</h3>
-          <p className="text-neutral-600 text-base mb-6 leading-relaxed">{data.tool.description}</p>
-          <a href={data.tool.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold transition-all hover:scale-105" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <span>Get {data.tool.name}</span>
-            <Icons.ExternalLink />
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
           </a>
-        </motion.div>
+        </motion.div>}
       </div>
     );
 
@@ -386,7 +396,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

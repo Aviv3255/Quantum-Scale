@@ -259,7 +259,12 @@
       { type: 'example', scenario: 'The Customer Experience Difference', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
       { type: 'content', title: 'The Implementation Reality Check', body: 'Here is the good news: Most Shopify themes already support image swatches natively. You do not need custom code. You do not need a developer. You just need product images for each variant. Upload them. Enable swatches in theme settings. Done. 10 minutes of work for a conversion boost that compounds forever.' },
       { type: 'content', title: 'The Premium Perception Bonus', body: 'Beyond conversion rates, image swatches make your store look more professional. Compare Amazon (text dropdowns) to luxury brands (visual swatches). Which feels premium? Which builds trust? Visual swatches signal quality and attention to detail. Customers subconsciously associate this polish with product quality. It is not just about UX. It is about brand perception.' },
-      { type: 'tool', title: 'Easiest Way to Add Swatches', toolName: 'Section Factory', toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', body: 'Drag-and-drop visual variant swatches for any product. No coding required. Works with your existing theme. Mobile-optimized. Lightning fast.', questions: ['Do your products have color or pattern variants?', 'Are customers hesitating at the variant selection step?', 'Do you want to look more premium and convert better?'], insight: 'One-time setup. Permanent conversion boost. The swatches work 24/7 removing friction you did not know existed.' },
+      { type: 'implementation', title: 'Easiest Way to Add Swatches', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', cta: 'Get Started Free' },
       { type: 'quiz', question: 'Why do image swatches convert better than text labels?', options: ['They look prettier', 'They reduce cognitive load and enable instant visual understanding', 'They take up more space on the page', 'Customers prefer clicking images over text'], correctIndex: 1, feedback: { correct: 'Exactly right! Image swatches convert better because they reduce cognitive load. When customers SEE the color or pattern instead of reading the name and imagining it, their brains process the choice much faster. This eliminates hesitation, speeds up decisions, and removes the mental friction that causes cart abandonment. It is pure psychology applied to UX design.', incorrect: 'Not quite. The answer is reducing cognitive load and enabling instant visual understanding. When customers have to read "Forest Green" and imagine what it looks like, that is mental work. Mental work creates friction. Friction kills conversions. Image swatches remove that work entirely - they SEE it, they KNOW it, they BUY it. The brain processes images much faster than text.' }},
       { type: 'completion', sources: [{ name: 'Add Swatches to Your Store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }] }
     ];
@@ -408,38 +413,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-              <span>Add Swatches to Your Store</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -561,7 +557,7 @@
           case 'product-preview': return <ProductPreviewSlide data={slide} />;
           case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

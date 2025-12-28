@@ -116,7 +116,12 @@
         { title: 'Target Strategically', description: 'Run acquisition ads to the Lookalike. Test performance vs broad targeting. Measure LTV difference over time.' }
       ]},
       { type: 'highlight-box', title: 'Data-Driven Decision Making', body: 'You can\'t optimize what you don\'t measure. Many stores don\'t know which customers are worth $2,000 vs $85. Standard analytics show total revenue but not actionable customer-level LTV segmentation.', highlight: 'Successful stores track LTV, segment customers, and make targeting decisions based on data - not guesses.' },
-      { type: 'tool', title: 'Automatic LTV Tracking Tool', toolName: 'Customer LTV App', toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', body: 'This Shopify app automatically tracks customer lifetime value, segments top spenders, and helps you export lists for Meta Lookalike Audiences.', questions: ['Which customers have spent $500+ lifetime?', 'What percentage are repeat buyers?', 'Which cohorts have highest LTV?', 'Who to target for VIP campaigns?'], insight: 'Seeing your LTV distribution clearly can transform your entire acquisition and retention strategy.' },
+      { type: 'implementation', title: 'Automatic LTV Tracking Tool', intro: "Here's how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', cta: 'Get Started Free' },
       { type: 'quiz', question: 'In eCommerce, what percentage of customers can generate up to 95% of lifetime profit?', options: ['20% (Traditional Pareto)', '10% (Moderate concentration)', '5% (Extreme concentration)', '1% (Ultra-rare whales)'], correctIndex: 2, feedback: { correct: 'Exactly! Industry data shows the top 5% of eCommerce customers can generate up to 95% of lifetime profit - far more extreme than the traditional 80/20 rule. While most customers might buy once (avg $85), the top 5% can reach $2,000+ LTV over time. This is why treating all customers identically limits margins.', incorrect: 'Not quite. The answer is 5%. In eCommerce, value concentration can be far more extreme than traditional business. Industry patterns show the top 5% generating up to 95% of lifetime profit - worth $2,000+ while one-time buyers average $85. The traditional 80/20 rule often doesn\'t apply here.' }},
       { type: 'completion', sources: [{ name: 'Customer LTV Tracker App', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }] }
     ];
@@ -387,38 +392,29 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
       </div>
     );
 
@@ -538,7 +534,7 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'image': return <ImageSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'process-flow': return <ProcessFlowSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
