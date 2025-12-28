@@ -80,6 +80,8 @@
         { value: '20,000+', label: 'Lost Opportunities', subtext: 'Revenue walking away' }
       ]},
       { type: 'content', title: 'Strategy 1: Post-Purchase One-Click Upsell', body: 'Here\'s the unlock: immediately after checkout, before the thank you page, show ONE perfectly timed offer. They already bought. Card is saved. One click adds it to their order. No re-entering payment info. No friction. Just "Add this for 20% off?" Studies show 10-30% take rate. That\'s pure profit on top of every sale.' },
+      { type: 'tool', title: 'The Easiest Post-Purchase Upsell Setup', toolName: 'ReConvert', toolUrl: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CIuoqfrDj_sCEAE=.webp', body: 'ReConvert adds one-click post-purchase upsells to your thank you page. No coding. Customer payment info is already saved, so adding another product is frictionless. Average stores see $7.4 pure profit per order from post-purchase upsells.', questions: ['Are you using your thank you page for anything right now?', 'Do you have complementary products customers often buy together?', 'Would you like to increase AOV without extra ad spend?'], insight: '$7.4 average profit per order. That is 1:46 ROI. Most stores see 10-30% of customers accept post-purchase offers.' },
+      { type: 'tool-setup', title: 'Setup ReConvert in 5 Minutes', toolName: 'ReConvert', steps: ['Install ReConvert from the Shopify App Store', 'Select complementary products to offer based on what was just purchased', 'Set your discount (10-20% works best)', 'Customize the thank you page layout', 'Enable one-click add - no re-entering payment'], proTip: 'Offer products that enhance what they just bought. Camera buyer? Offer a memory card. Skincare buyer? Offer the matching serum. Relevance is everything.' },
       { type: 'example', scenario: 'Post-Purchase Upsell in Action', before: { label: 'Without Upsell', text: 'Customer buys $45 serum. Sees generic thank you page. Done. AOV: $45. You paid $30 to acquire them. Profit: $15.' }, after: { label: 'With One-Click Upsell', text: 'Customer buys $45 serum. Instantly offered $28 moisturizer at 20% off ($22). 25% accept. New AOV: $45 + $5.50 avg = $50.50. Profit: $20.50.' }, insight: 'You just increased profit by 37% without spending a single dollar on ads.' },
       { type: 'content', title: 'Strategy 2: Subscriptions for Consumables', body: 'If you sell anything that runs out - supplements, skincare, food, consumables - you NEED subscriptions. Not as an afterthought. As a core offer. The math is obscene. Customer pays $10 to acquire. They subscribe at $27/month. That\'s $81 for 3 months (typical initial commitment). You just turned $10 CAC into $81 revenue. 8x ROAS. Instantly. Then it renews. Month after month.' },
       { type: 'visual', title: 'Subscription Economics', visualType: 'stats', data: [
@@ -96,7 +98,7 @@
       { type: 'content', title: 'Building the Cult Following', body: 'Post-purchase isn\'t just upsells and recovery. It\'s relationship building. Your packaging arrives. Inside: a handwritten-style founder note, cross-sell card for related products, VIP exclusive discount code for next purchase. Then the email sequence starts. Day 1: Founder story. Day 3: How to use product + tips. Day 7: Request review with photo incentive. Day 14: Cross-sell complementary product. This is how you turn customers into loyalists.' },
       { type: 'example', scenario: 'The Review Loop That Prints Money', before: { label: 'No Review System', text: 'Customer receives product. Uses it. Maybe loves it. You never know. No reviews on site. New visitors don\'t trust you. Conversion suffers.' }, after: { label: 'Automated Review Loop', text: 'Day 7 email: "How\'s the product?" with easy 1-click review link. Incentive: 15% off next order for photo review. You get 5-star review with photo. Display it on product page. New visitor sees real proof. Conversion jumps 20-40%.' }, insight: 'Reviews aren\'t just social proof. They\'re conversion multipliers that compound over time.' },
       { type: 'quiz', question: 'You have 35,000 cart adds, 8,600 purchases. What\'s the FASTEST way to capture missed revenue?', options: ['Lower prices to convert more upfront', 'Run more ads to get new traffic', 'Deploy AI SMS + email recovery flows to re-engage the 20,000+ who abandoned', 'Add more products to homepage'], correctIndex: 2, feedback: { correct: 'Exactly! Those 20,000+ people already WANTED your product. They showed intent. Re-engaging them with AI SMS and interactive email flows is the fastest, cheapest revenue unlock. One brand added $60K in month 1 doing exactly this.', incorrect: 'Not quite. The fastest revenue is in the 20,000+ people who ALREADY added to cart. They wanted your product - they just got distracted. AI SMS + email recovery flows bring them back. One brand added $60K in revenue in month 1. That\'s your goldmine.' }},
-      { type: 'completion', sources: [{ name: 'Post-Purchase Upsell Strategies', url: 'https://quantum-scale.co/learn' }, { name: 'Subscription Revenue Models', url: 'https://quantum-scale.co/learn' }] }
+      { type: 'completion', sources: [{ name: 'Post-Purchase Upsell Strategies', url: 'https://quantum-scale.co/learn' }, { name: 'Subscription Revenue Models', url: 'https://quantum-scale.co/learn' }, { name: 'ReConvert Post-Purchase Upsell', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva' }] }
     ];
 
     const Icons = {
@@ -232,6 +234,61 @@
       </div>
     );
 
+    const ToolSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
+            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
+            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
+              <ul className="space-y-1.5">
+                {data.questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+              <span>Try {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
+          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ToolSetupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="space-y-3 mb-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
+          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
+        </motion.div>
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -347,6 +404,8 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'tool': return <ToolSlide data={slide} />;
+          case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

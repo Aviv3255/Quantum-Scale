@@ -284,9 +284,9 @@
       { type: 'insight-reveal', setup: 'Want to go next level?', insight: 'Analyze Your Whales', explanation: 'Don\'t just analyze all customers. Analyze your TOP customers - the ones generating 95% of your profit.' },
       { type: 'whale-visual', title: 'Finding Your Whales', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/whale-customers.png', metaphor: 'Hunt the Whales, Not the Minnows', explanation: 'Your top 5% of customers generate 95% of your lifetime value. Find what makes THEM tick.', insight: 'Filter survey data by high-LTV customers. Their patterns reveal your golden segment.' },
       { type: 'content', title: 'The Whale Analysis Method', body: 'Pull the 200 customers who spent $2,000+ in the last 6 months. Now look at THEIR survey answers. Find the commonalities: same motivations, same fears, same price tolerance. These are your whales. Now you know exactly who to target. When you know WHO your whales are and WHY they buy, you stop fishing for minnows and start landing giants.' },
-      { type: 'tool', title: 'Install and Start Reading Minds', toolName: 'Fairing Post-Purchase Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(5).jpg', body: 'Displays simple surveys right after checkout when customers are most willing to share. Free to start, easy 5-minute setup, 60-85% response rates. Uncover motivations, fears, and price points.', questions: ['How did you first hear about us?', 'What almost stopped you from buying?', 'What were you looking for?', 'What convinced you to buy TODAY?'], insight: 'Install it. Ask the right questions. Start reading minds today.' },
+      { type: 'implementation', title: 'Setting Up Your Mind-Reading System', concept: 'The psychology is clear: customers WANT to tell you why they bought - you just need to ask at the right moment. Post-checkout is when willingness peaks. Here is how to capture that goldmine.', steps: ['Set up a post-purchase survey that displays immediately after checkout - this is when response rates hit 60-85% because customers feel invested in helping you succeed.', 'Ask the four money questions: "How did you hear about us?" (reveals true channels), "What almost stopped you?" (reveals conversion killers), "What were you looking for?" (reveals motivations), "What convinced you to buy TODAY?" (reveals triggers).', 'After 20-30 responses, look for patterns. 75% same motivation? That is your headline. 80% same fear? That is what your body copy must address.', 'Segment your data by high-LTV customers. What do your top 5% buyers have in common? Those patterns reveal your golden audience to target.'], insight: 'Stores using post-purchase surveys report 50-100% improvements in ad targeting and copy conversion once they stop guessing and start asking.', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' },
       { type: 'quiz', question: 'What\'s the most valuable insight post-purchase surveys reveal for copywriting?', options: ['Customer demographics only', 'Motivations, fears, and price tolerance', 'Just acquisition channels', 'Only customer satisfaction'], correctIndex: 1, feedback: { correct: 'Exactly right! Post-purchase surveys reveal the holy trinity of copy: what motivates customers to buy (use in headlines), what fears almost stopped them (address in body copy), and their price tolerance (position your offers perfectly). Demographics and channels are useful, but motivations and fears are the conversion goldmine.', incorrect: 'Not quite. While surveys reveal demographics and channels, the real copywriting goldmine is understanding motivations (what drives them to buy), fears (what almost stopped them), and price tolerance. These three insights let you write copy that resonates deeply and converts consistently.' }},
-      { type: 'completion', sources: [{ name: 'Fairing Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+      { type: 'completion', sources: [{ name: 'Grapevine Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
     ];
 
     const Icons = {
@@ -298,6 +298,7 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ClipboardList: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 18h6"/><path d="M9 10h6"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -446,38 +447,34 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.ClipboardList /> Implementation
+          </span>
           <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-              <span>Install Now - FREE</span>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
+        <div className="space-y-2.5 mb-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+        {data.toolUrl && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
+              <span>Tool: {data.toolName}</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        )}
       </div>
     );
 
@@ -596,7 +593,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           case 'survey-preview': return <SurveyPreviewSlide data={slide} />;

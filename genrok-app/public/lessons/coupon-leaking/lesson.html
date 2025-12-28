@@ -222,20 +222,36 @@
       </div>
     );
 
-    // Tool Minimal Slide - no photo, just logo
-    const ToolMinimalSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+    // Implementation Slide - educational focus
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Shield />
+            Implementation
+          </span>
           <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-6 border-2 border-neutral-200">
-          <img src={data.logoUrl} alt={data.toolName} className="w-16 h-16 object-contain" />
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-5 text-center">{data.concept}</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-5">
+          <div className="space-y-3">
+            {data.steps.map((step, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                <p className="text-neutral-700 text-sm leading-relaxed">{step}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
-        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-neutral-900 mb-3">{data.toolName}</motion.h3>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-600 text-center text-sm md:text-base mb-6 max-w-md">{data.body}</motion.p>
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-          <span>Install {data.toolName} (FREE)</span>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-4 mb-4">
+          <p className="text-neutral-300 text-sm leading-relaxed flex items-start gap-2">
+            <Icons.Zap className="flex-shrink-0 mt-0.5" />
+            <span>{data.insight}</span>
+          </p>
+        </motion.div>
+        <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="text-center text-xs text-neutral-500 hover:text-neutral-700 transition-colors flex items-center justify-center gap-1">
+          <span>Tool: {data.toolName}</span>
+          <Icons.ExternalLink />
         </motion.a>
       </div>
     );
@@ -253,13 +269,14 @@
       { type: 'three-offenders', title: 'The Three Worst Offenders' },
       { type: 'blocked-comparison', title: 'Extensions Blocked vs Unblocked' },
       { type: 'solution-reveal', title: 'The Solution', subtitle: 'And the best part? The fix is completely FREE.' },
-      { type: 'tool-minimal', title: 'Stop the Profit Leak', toolName: 'KeepCart', toolUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE', logoUrl: 'https://cdn.shopify.com/app-store/listing_images/8c0f5c0b6d7e4e2a8b9c0d1e2f3a4b5c/icon/CMbYnI-M4fkCEAE=.png', body: 'A FREE tool that blocks coupon extensions from auto-injecting codes. Protects your margin without hurting conversion.' },
+      { type: 'implementation', title: 'Blocking the Coupon Leak', concept: 'The psychology is clear: customers with coupon extensions installed aren\'t looking for discounts - they\'re just being offered one automatically. You\'re giving away margin to people who would have paid full price anyway. Here\'s how to stop it.', steps: ['Install a coupon extension blocker on your store. These tools detect when Honey, Capital One Shopping, Coupert and 125+ other extensions try to inject codes.', 'The blocker prevents extensions from auto-filling or testing discount codes at checkout - but customers can still manually enter codes you give them.', 'Monitor your margin recovery. Most stores see 10-15% of lost margin recovered immediately as full-price buyers stay at full price.', 'Keep using strategic discount codes for email, SMS, and retargeting. The blocker only stops automatic injection from browser extensions.'], insight: 'Stores using coupon blockers typically recover $5-15 per 100 orders in margin that was being silently given away to extensions. The fix is completely free.', toolName: 'KeepCart', toolUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE' },
       { type: 'quiz', question: 'What percentage of online shoppers have coupon-finding extensions installed?', options: ['10-15%', '20-25%', '30-40%', '50-60%'], correctIndex: 2, feedback: { correct: 'Exactly right! Industry research shows 30-40% of online shoppers have extensions like Honey, Capital One Shopping, or Coupert installed. That means nearly 1 in 3 of your customers are automatically testing and applying codes they were never supposed to have. Stores that block these extensions typically recover 10-15% of lost margin.', incorrect: 'Not quite. Research indicates 30-40% is the typical range - nearly 1 in 3 shoppers have these extensions installed. Honey alone has 17 million users. Capital One Shopping has 10 million. Combined with others like Coupert, these extensions are scraping and testing your codes on a substantial portion of your traffic.' }},
       { type: 'completion', sources: [{ name: 'Install KeepCart (FREE)', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }] }
     ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Shield: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
@@ -651,7 +668,7 @@
           case 'three-offenders': return <ThreeOffendersSlide data={slide} />;
           case 'blocked-comparison': return <BlockedComparisonSlide data={slide} />;
           case 'solution-reveal': return <SolutionRevealSlide data={slide} />;
-          case 'tool-minimal': return <ToolMinimalSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

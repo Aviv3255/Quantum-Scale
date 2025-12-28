@@ -100,7 +100,7 @@
         { title: 'Identify winning creatives', description: 'Stop killing ads that Meta says are "bad" but are actually your best performers.' },
         { title: 'Make data-driven decisions', description: 'Know which campaigns to scale and which to kill - based on reality, not Meta\'s guesses.' }
       ]},
-      { type: 'tool', title: 'Install External Attribution in 5 Minutes', toolName: 'Triple Whale', toolUrl: 'https://www.triplewhale.com/', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/57.jpg?v=1763063431', body: 'Triple Whale tracks every purchase, every source, every creative - even when Meta can\'t. Install their pixel alongside Meta\'s and see the REAL performance of your ads.', questions: ['Tracks 100% of purchases (not just what Meta sees)', 'Shows true creative performance (no guessing)', 'Reveals hidden revenue Meta misses', 'Integrates with Shopify in under 5 minutes'], insight: 'In our test, this tool revealed 33% more revenue and saved our best creative from being killed.' },
+      { type: 'implementation', title: 'Getting Your Real Attribution Data', concept: 'Meta\'s pixel sees maybe 67% of what actually happens. External attribution sees 100%. The difference is the gap between guessing and knowing - between killing your best ads and scaling what actually works.', steps: ['Install an external pixel alongside Meta\'s (not instead of) - both track the same traffic', 'Run both for 7+ days to build comparison data', 'Compare creative-level CPA: which ads does Meta say are bad but external shows are good?', 'Make decisions based on external data, especially for creatives Meta claims are "underperforming"'], insight: 'In our test, we almost killed our best creative because Meta showed $25 CPA when the real CPA was $17. External attribution saved that ad - and the revenue it generates.', toolName: 'Triple Whale', toolUrl: 'https://www.triplewhale.com/' },
       { type: 'quiz', question: 'In the live test, what percentage of purchases did Meta\'s pixel miss?', options: ['10%', '20%', '33%', '50%'], correctIndex: 2, feedback: { correct: 'Exactly. Meta only tracked 67% of purchases - missing a full third of real revenue. And their creative attribution was off by 43%, nearly causing us to kill our best ad. This is why external attribution is non-negotiable.', incorrect: 'Not quite. Meta missed 33% of purchases in our test - that\'s one-third of all revenue invisible in their dashboard. Plus, their creative data was off by 43%. External attribution reveals the truth Meta can\'t see.' }},
       { type: 'completion', sources: [{ name: 'Triple Whale Attribution', url: 'https://www.triplewhale.com/' }] }
     ];
@@ -114,6 +114,7 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      BarChart: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
     };
 
     // Animated Counter Component
@@ -412,6 +413,37 @@
       </div>
     );
 
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.BarChart /> Implementation
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
+        <div className="space-y-2.5 mb-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+        {data.toolUrl && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
+              <span>Tool: {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        )}
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -534,6 +566,7 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

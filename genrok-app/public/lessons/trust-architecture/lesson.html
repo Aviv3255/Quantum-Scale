@@ -98,10 +98,12 @@
         { value: '47%', label: 'trust increase', subtext: 'When prospects see detailed "why they bought"' }
       ]},
       { type: 'tool', title: 'Turn Every Purchase Into Trust-Building Social Proof', toolName: 'Grapevine Post-Purchase Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Responses_2.svg', body: 'Grapevine displays a quick 3-4 question survey immediately after checkout. Customers are in their most honest, excited state. They tell you the REAL reasons they bought, what almost stopped them, and what sealed the deal.', questions: ['How did you first hear about us?', 'What made you decide to buy right now?', 'Was there anything that almost stopped you?', 'What result are you most excited about?'], insight: 'These responses become your most powerful testimonials. Specific, genuine, addressing real objections. Use them everywhere: product pages, ads, emails, landing pages.' },
+      { type: 'tool', title: 'Visual Trust Signals That Convert', toolName: 'Essential Trust Badges', toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202025-12-20%20211616.png', body: 'Trust badges instantly signal security and legitimacy. Payment icons, security seals, guarantee badges, and certification logos reduce buyer anxiety at the critical moment of purchase. Studies show trust badges can increase conversions by 15-30%.', questions: ['Do you display payment method icons?', 'Is your SSL/security visible?', 'Do you show money-back guarantee badges?', 'Are trust signals visible above the fold?'], insight: 'Place trust badges near CTAs and checkout buttons. The closer to the action, the more impact they have on reducing last-second hesitation.' },
+      { type: 'tool-setup', title: 'Implementing Trust Badges', toolName: 'Essential Trust Badges', steps: ['Install Essential Trust Badges from the Shopify App Store', 'Choose badge styles that match your brand aesthetic', 'Place badges near Add to Cart buttons and at checkout', 'Enable payment icons (Visa, Mastercard, PayPal, etc.)', 'Add guarantee badges (money-back, free shipping, secure checkout)'], proTip: 'Less is more. Pick 4-5 of the most relevant badges. Too many badges can look desperate and have the opposite effect.' },
       { type: 'example', scenario: 'Skincare Store - Survey Response Transformation', before: { label: 'Generic Testimonial', text: '"Love this serum! Works great. 5 stars!"' }, after: { label: 'Post-Purchase Survey Response', text: '"I bought this because my dermatologist quoted me $400 for laser treatment. I saw your ingredient breakdown and realized this has the same active compound at 1/10th the price. I was hesitant because I\'ve been burned by cheap alternatives before, but your 90-day guarantee removed the risk. If this works half as well as the $400 treatment, I\'m thrilled."' }, insight: 'Survey responses give you the specificity that makes social proof actually WORK. This is trust-building gold.' },
       { type: 'content', title: 'When There\'s No Risk, There\'s No Reason to Say No', body: 'The goal isn\'t to convince people to trust you. It\'s to remove every reason they have NOT to trust you. Build your trust architecture brick by brick: credibility through expertise, reliability through consistency, intimacy through empathy. Remove financial risk with guarantees. Remove performance risk with results promises. Remove social risk with proof. Remove time risk with quick-start promises. And capture real customer voices the moment they buy. Stack these systematically, and conversions become inevitable.' },
       { type: 'quiz', question: 'According to the Trust Architecture, what\'s the most powerful form of social proof?', options: ['Generic 5-star reviews saying "Great product!"', 'Celebrity endorsements and influencer mentions', 'Post-purchase survey responses explaining WHY they bought', 'Number of followers on social media'], correctIndex: 2, feedback: { correct: 'Exactly! Survey responses captured right after purchase are the most powerful because they\'re specific, genuine, and address real objections. Prospects believe other customers way more than they believe you. And detailed "why they bought" testimonials move the needle because they speak to doubts and outcomes.', incorrect: 'Not quite. While all social proof helps, post-purchase survey responses are the most powerful because they capture the REAL reasons why someone bought - specific, detailed, genuine. Generic reviews like "Great!" don\'t address objections or outcomes. Survey responses do. That\'s why they convert.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }, { name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }] }
     ];
 
     const Icons = {
@@ -296,6 +298,26 @@
       </div>
     );
 
+    const ToolSetupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="space-y-3 mb-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
+          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
+        </motion.div>
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -412,6 +434,7 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
+          case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

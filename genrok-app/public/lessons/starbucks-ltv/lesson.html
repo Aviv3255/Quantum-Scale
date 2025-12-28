@@ -88,9 +88,10 @@
       { type: 'comparison-battle', title: 'The Strategy Shift', before: { title: 'Old Thinking', points: ['Treat all customers equally', 'Spend evenly across audiences', 'Try to "activate" low spenders', 'Guess who your best customers are'] }, after: { title: 'New Thinking', points: ['Segment by actual value', 'Invest heavily in top 5%', 'Clone high spenders with Lookalikes', 'Data-driven customer targeting'] }},
       { type: 'visual', title: 'The Customer Value Pyramid', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216', caption: 'Most customers are break-even. Top 5% fund everything.' },
       { type: 'content', title: 'The Strategy Shift', body: 'Stop treating all customers the same. Your top 5% deserves VIP treatment, exclusive offers, personal outreach. Your middle 70%? Standard experience is fine. Bottom 25%? Automated nurture until they graduate or churn. Most importantly: Use your top 5% as a seed audience for Meta Lookalike campaigns. Upload their emails, let Facebook find more of them. This is how you scale profitably.' },
+      { type: 'implementation', title: 'How Starbucks CREATES That $14,099 Customer', concept: 'Segmenting customers is step one. But Starbucks doesn\'t just identify high-value customers - they CREATE them. Their rewards program makes every purchase feel like progress. Points accumulate. Customers don\'t want to "lose" their progress by shopping elsewhere. This is how 4.5 visits per week happens.', steps: ['Launch a points-based loyalty program (example: 1 point per $1 spent)', 'Create tiered rewards that feel achievable (50 points = $5 off, 100 points = $10 off)', 'Display points balance at checkout and in email - make progress visible', 'Send "points expiring" reminders to create urgency without pressure'], insight: 'The psychological anchor works both ways: customers see points as an asset they own, and switching to competitors means losing that "investment." That\'s how Starbucks gets 20-year customers.', toolName: 'Joy Loyalty & Referral Program', toolUrl: 'https://apps.shopify.com/joyio' },
       { type: 'ltv-tool', title: 'Track Your Customer LTV', toolName: 'Customer Lifetime Value App', toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', questions: ['Who are my top 5% most valuable customers?', 'What\'s the average LTV by segment?', 'Which customers to prioritize for retention?', 'Who should I upload to Meta for Lookalikes?'] },
       { type: 'quiz', question: 'You have 8,000 customers. Top 25% spent $796 avg, bottom 75% spent $117 avg. Where should you focus ad spend?', options: ['Equal budget across all customers', 'Target bottom 75% to "activate" them', 'Create Meta Lookalike from top 25% to find more high-value customers', 'Focus on middle 50% for "quick wins"'], correctIndex: 2, feedback: { correct: 'Exactly! You don\'t fix low spenders - you CLONE high spenders. Upload your top 25% (or top 5% if you have enough data) to Meta, create a Lookalike audience, and let the algorithm find more people who match that profile. That\'s how you scale profitably.', incorrect: 'Not quite. The answer is: Create Meta Lookalike from top 25%. Why waste time trying to "activate" low-value customers when you can clone your best ones? Upload your top 25% to Meta, create a Lookalike, and acquire MORE people who naturally spend $796 instead of $117.' }},
-      { type: 'completion', sources: [{ name: 'Customer Lifetime Value App', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }, { name: 'Full LTV Strategy Course', url: 'https://quantum-scale.co/pages/test1' }] }
+      { type: 'completion', sources: [{ name: 'Joy Loyalty & Referral Program', url: 'https://apps.shopify.com/joyio' }, { name: 'Customer Lifetime Value App', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }, { name: 'Full LTV Strategy Course', url: 'https://quantum-scale.co/pages/test1' }] }
     ];
 
     const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
@@ -134,6 +135,7 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -599,6 +601,37 @@
       );
     };
 
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Star /> Implementation
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
+        <div className="space-y-2.5 mb-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+        {data.toolUrl && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
+              <span>Tool: {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        )}
+      </div>
+    );
+
     const LtvToolSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center px-8 md:px-12 max-w-2xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center w-full">
@@ -691,6 +724,7 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'tool': return <ToolSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

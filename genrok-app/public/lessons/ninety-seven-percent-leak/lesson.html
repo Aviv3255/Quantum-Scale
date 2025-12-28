@@ -117,12 +117,14 @@
         { value: '69%', label: 'Cart Abandonment', subtext: 'Add to cart, never checkout' }
       ]},
       { type: 'content', title: 'Plug the Leaks One by One', body: 'You do not fix everything overnight. Start with the biggest leak. For most stores, that is cart abandonment. 69% add to cart and leave. Why? Checkout friction. Surprise shipping costs. No trust badges. Complex forms. Fix cart abandonment first. Then product page optimization. Then homepage. One leak at a time. Each fix compounds.' },
+      { type: 'implementation', title: 'Protect Your Margins From Silent Leaks', concept: 'There\'s one leak most stores don\'t even know exists: browser extensions giving away your discount codes to everyone. 30-40% of visitors have Honey, Capital One Shopping, or Coupert installed. These extensions auto-apply codes to customers who were ready to pay full price. Pure margin evaporation.', steps: ['Install a coupon extension blocker on your Shopify store. These tools detect and block 125+ browser extensions from auto-injecting discount codes.', 'The blocker doesn\'t affect customers using legitimate codes you provide - it only stops extensions from automatically testing and applying codes at checkout.', 'Monitor your margin recovery in the first week. Most stores see immediate impact as full-price buyers actually pay full price.', 'This is a "set and forget" fix. Once installed, you\'re protected from the silent margin leak indefinitely.'], insight: 'This is the rare "Machine" fix that costs nothing and generates immediate ROI. Most stores recover $5-15 per 100 orders in margin that was silently being given away.', toolName: 'KeepCart', toolUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE' },
       { type: 'quiz', question: 'What is the PRIMARY reason most stores have low conversion rates?', options: ['Not enough traffic', 'Bad products', 'Friction in the buying process and weak psychological triggers', 'Poor branding'], correctIndex: 2, feedback: { correct: 'Exactly. Conversion problems are rarely about traffic volume or product quality. They are about friction (Machine) and psychology (Mind). When the path to purchase is smooth and the emotional triggers are strong, people buy. When there is friction or weak desire, they leave. Fix the Machine and Mind, THEN scale traffic with the Method.', incorrect: 'Not quite. The answer is friction in the buying process and weak psychological triggers. Most stores have enough traffic and decent products. What they lack is a frictionless path to purchase (Machine) and psychological engineering (Mind). Remove obstacles, engineer desire, measure results. That is the system.' }},
-      { type: 'completion' }
+      { type: 'completion', sources: [{ name: 'KeepCart (Margin Protection)', url: 'https://platform.shoffi.app/r/rl_U2L0seLE' }] }
     ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Shield: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
@@ -319,6 +321,40 @@
       );
     };
 
+    // Implementation Slide - educational focus
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Shield />
+            Implementation
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-5 text-center">{data.concept}</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-5">
+          <div className="space-y-3">
+            {data.steps.map((step, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                <p className="text-neutral-700 text-sm leading-relaxed">{step}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-4 mb-4">
+          <p className="text-neutral-300 text-sm leading-relaxed flex items-start gap-2">
+            <Icons.Zap className="flex-shrink-0 mt-0.5" />
+            <span>{data.insight}</span>
+          </p>
+        </motion.div>
+        <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="text-center text-xs text-neutral-500 hover:text-neutral-700 transition-colors flex items-center justify-center gap-1">
+          <span>Tool: {data.toolName}</span>
+          <Icons.ExternalLink />
+        </motion.a>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -378,6 +414,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
