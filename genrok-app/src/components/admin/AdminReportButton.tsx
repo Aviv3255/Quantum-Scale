@@ -9,6 +9,10 @@ import type { LessonSlideContext } from '@/types/admin';
 
 export function AdminReportButton() {
   const { isAdmin, isLoading } = useAdmin();
+
+  useEffect(() => {
+    console.log('[AdminReportButton] Mounted, isAdmin:', isAdmin, 'isLoading:', isLoading);
+  }, [isAdmin, isLoading]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lessonContext, setLessonContext] = useState<LessonSlideContext | null>(null);
 
