@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/auth';
 
+interface UserProfileAdmin {
+  is_admin: boolean | null;
+}
+
 export function useAdmin() {
   const { user } = useAuthStore();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -22,7 +26,7 @@ export function useAdmin() {
           .from('user_profiles')
           .select('is_admin')
           .eq('user_id', user.id)
-          .single();
+          .single<UserProfileAdmin>();
 
         if (error) {
           console.error('Error checking admin status:', error);
