@@ -27,13 +27,14 @@ export function useAdmin() {
           .eq('user_id', user.id)
           .single();
 
-        console.log('[useAdmin] Query result:', { data, error });
+        const result = data as { is_admin: boolean | null } | null;
+        console.log('[useAdmin] Query result:', { data: result, error });
 
         if (error) {
           console.error('[useAdmin] Error:', error);
           setIsAdmin(false);
         } else {
-          const adminStatus = data?.is_admin === true;
+          const adminStatus = result?.is_admin === true;
           console.log('[useAdmin] Setting isAdmin:', adminStatus);
           setIsAdmin(adminStatus);
         }
