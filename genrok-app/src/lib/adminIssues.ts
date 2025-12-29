@@ -1,17 +1,42 @@
 import { supabase } from './supabase';
 import type { AdminIssue, AdminIssueCreate } from '@/types/admin';
 
+// Type for database operations (Supabase doesn't know our custom table)
+type AdminIssueInsert = {
+  page_url: string;
+  page_type: string;
+  lesson_slug?: string | null;
+  slide_index?: number | null;
+  section_id?: string | null;
+  title: string;
+  description: string;
+  priority: string;
+  status: string;
+  reported_by: string | null;
+  direct_link: string;
+};
+
 // Create a new issue
 export async function createIssue(issue: AdminIssueCreate) {
   const { data: userData } = await supabase.auth.getUser();
 
+  const insertData: AdminIssueInsert = {
+    page_url: issue.page_url,
+    page_type: issue.page_type,
+    lesson_slug: issue.lesson_slug,
+    slide_index: issue.slide_index,
+    section_id: issue.section_id,
+    title: issue.title,
+    description: issue.description,
+    priority: issue.priority,
+    direct_link: issue.direct_link,
+    reported_by: userData.user?.id || null,
+    status: 'pending',
+  };
+
   const { data, error } = await supabase
     .from('admin_issues')
-    .insert({
-      ...issue,
-      reported_by: userData.user?.id || null,
-      status: 'pending',
-    })
+    .insert(insertData as never)
     .select()
     .single();
 
@@ -63,7 +88,7 @@ export async function updateIssueStatus(
   status: AdminIssue['status'],
   fixedBy?: string
 ) {
-  const updates: Partial<AdminIssue> = { status };
+  const updates: Record<string, string | null> = { status };
 
   if (status === 'fixed') {
     updates.fixed_at = new Date().toISOString();
@@ -79,7 +104,7 @@ export async function updateIssueStatus(
 
   const { data, error } = await supabase
     .from('admin_issues')
-    .update(updates)
+    .update(updates as never)
     .eq('id', id)
     .select()
     .single();
