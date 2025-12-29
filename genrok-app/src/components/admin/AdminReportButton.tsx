@@ -54,10 +54,20 @@ export function AdminReportButton() {
     }
   }, []);
 
-  // Don't render if not admin or still loading
-  if (isLoading || !isAdmin) {
+  // Debug mode - always show button if ?debug=admin in URL
+  const [debugMode, setDebugMode] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setDebugMode(params.get('debug') === 'admin');
+  }, []);
+
+  // Don't render if not admin or still loading (unless debug mode)
+  if (!debugMode && (isLoading || !isAdmin)) {
+    console.log('[AdminReportButton] Not showing - isLoading:', isLoading, 'isAdmin:', isAdmin, 'debugMode:', debugMode);
     return null;
   }
+
+  console.log('[AdminReportButton] Rendering button - isAdmin:', isAdmin, 'debugMode:', debugMode);
 
   return (
     <>
