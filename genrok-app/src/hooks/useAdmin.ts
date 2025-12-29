@@ -4,10 +4,6 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/auth';
 
-interface UserProfileAdmin {
-  is_admin: boolean | null;
-}
-
 export function useAdmin() {
   const { user } = useAuthStore();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -15,7 +11,10 @@ export function useAdmin() {
 
   useEffect(() => {
     async function checkAdminStatus() {
+      console.log('[useAdmin] Checking admin status, user:', user?.id);
+
       if (!user?.id) {
+        console.log('[useAdmin] No user ID, setting isAdmin=false');
         setIsAdmin(false);
         setIsLoading(false);
         return;
@@ -26,16 +25,20 @@ export function useAdmin() {
           .from('user_profiles')
           .select('is_admin')
           .eq('user_id', user.id)
-          .single<UserProfileAdmin>();
+          .single();
+
+        console.log('[useAdmin] Query result:', { data, error });
 
         if (error) {
-          console.error('Error checking admin status:', error);
+          console.error('[useAdmin] Error:', error);
           setIsAdmin(false);
         } else {
-          setIsAdmin(data?.is_admin === true);
+          const adminStatus = data?.is_admin === true;
+          console.log('[useAdmin] Setting isAdmin:', adminStatus);
+          setIsAdmin(adminStatus);
         }
       } catch (err) {
-        console.error('Error checking admin status:', err);
+        console.error('[useAdmin] Catch error:', err);
         setIsAdmin(false);
       } finally {
         setIsLoading(false);
