@@ -45,6 +45,81 @@
       nextLesson: { id: 'biz-closer-framework', title: 'The CLOSER Framework', teaser: 'Alex Hormozi\'s battle-tested sales system that converts prospects into buyers without being pushy.' }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      if (!__isAdmin) return null;
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
@@ -74,30 +149,30 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['How Ralph Lauren, LEGO, and Le Creuset engineer LTV', 'Why high LTV comes from brand strategy, not tactics', 'Three strategies to create endless reasons to return'] },
-      { type: 'hook', headline: 'Most brands spend millions chasing new customers. The smartest brands spend zero and make billions by engineering reasons for customers to return forever.', subtext: 'Ralph Lauren owns narratives. LEGO became a platform. Le Creuset engineers purchase cycles through color retirement. High LTV is not luck. It's deliberate brand strategy. These companies don't sell products—they build systems that create endless reasons to buy again. And again. And again.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Le_Creuset_logo.svg.png', brandName: 'Le Creuset' },
+      { type: 'hook', headline: 'Most brands spend millions chasing new customers. The smartest brands spend zero and make billions by engineering reasons for customers to return forever.', subtext: 'Ralph Lauren owns narratives. LEGO became a platform. Le Creuset engineers purchase cycles through color retirement. High LTV is not luck. It\'s deliberate brand strategy. These companies don\'t sell products—they build systems that create endless reasons to buy again. And again. And again.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Le_Creuset_Logo.png', brandName: 'Le Creuset' },
       { type: 'content', title: 'The LTV Problem', body: 'Most brands think LTV is about customer service, email sequences, or loyalty programs. Wrong. Those are tactics. High LTV comes from brand strategy—owning a narrative, becoming a platform, or engineering scarcity. The best brands make customers WANT to come back. Not because of a discount. Because of identity, community, or FOMO.' },
-      { type: 'content', title: 'Strategy 1: Own a Narrative (Ralph Lauren)', body: 'Ralph Lauren doesn't sell clothes. He sells American aspiration. Polo isn't a shirt brand—it's the Olympics, Wimbledon, Ivy League, old money, American lifestyle. When you wear Ralph Lauren, you're not buying fabric. You're buying into a story. This narrative creates emotional attachment. And emotional attachment creates lifetime value. You don't outgrow a narrative.' },
+      { type: 'content', title: 'Strategy 1: Own a Narrative (Ralph Lauren)', body: 'Ralph Lauren doesn\'t sell clothes. He sells American aspiration. Polo isn\'t a shirt brand—it\'s the Olympics, Wimbledon, Ivy League, old money, American lifestyle. When you wear Ralph Lauren, you\'re not buying fabric. You\'re buying into a story. This narrative creates emotional attachment. And emotional attachment creates lifetime value. You don\'t outgrow a narrative.' },
       { type: 'example', scenario: 'Ralph Lauren: The Olympics Play', before: { label: 'Product Thinking', text: 'Sell polos and jackets. Compete on quality and price. Hope customers come back for more.' }, after: { label: 'Narrative Thinking', text: 'Own the Olympics. Dress Team USA. Become synonymous with American excellence, tradition, and aspiration. Customers buy the story, not the shirt.' }, insight: 'Customers outgrow products. They never outgrow stories they identify with.' },
       { type: 'content', title: 'Strategy 2: Become a Platform (LEGO)', body: 'LEGO used to make bricks. Now they make universes. Star Wars LEGO. Harry Potter LEGO. Marvel LEGO. They stopped being a toy company and became a platform. Every new movie, franchise, or IP becomes a new reason to buy LEGO. This is genius. External IP creates internal demand. And demand creates lifetime value. Every new release is a new purchase reason.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
       { type: 'cards', title: 'The Platform Playbook', items: [
-        { title: '1. Stop Owning Everything', description: 'LEGO doesn't create Star Wars. They partner with it. The IP does the heavy lifting. LEGO just builds the bricks.' },
+        { title: '1. Stop Owning Everything', description: 'LEGO doesn\'t create Star Wars. They partner with it. The IP does the heavy lifting. LEGO just builds the bricks.' },
         { title: '2. Leverage External Demand', description: 'Every new Marvel movie creates demand for Marvel LEGO. Every new franchise creates a new product line. Infinite demand engine.' },
-        { title: '3. Make Collecting the Game', description: 'Customers don't buy one LEGO set. They collect. Harry Potter fans buy ALL Harry Potter sets. Platform thinking creates repeat purchases.' }
+        { title: '3. Make Collecting the Game', description: 'Customers don\'t buy one LEGO set. They collect. Harry Potter fans buy ALL Harry Potter sets. Platform thinking creates repeat purchases.' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'Strategy 3: Engineer Purchase Cycles (Le Creuset)', body: 'Le Creuset makes $400 pots. They release limited edition colors and then retire them. Forever. This creates urgency, scarcity, and collectibility. Customers don't just buy one pot. They buy six—because they might never get that color again. This is engineered LTV. Not through discounts. Through deliberate scarcity and FOMO. Brilliant.' },
+      { type: 'content', title: 'Strategy 3: Engineer Purchase Cycles (Le Creuset)', body: 'Le Creuset makes $400 pots. They release limited edition colors and then retire them. Forever. This creates urgency, scarcity, and collectibility. Customers don\'t just buy one pot. They buy six—because they might never get that color again. This is engineered LTV. Not through discounts. Through deliberate scarcity and FOMO. Brilliant.' },
       { type: 'visual', title: 'The LTV Strategies', visualType: 'stats', data: [
         { value: 'Narrative', label: 'Ralph Lauren', subtext: 'Own a story people identify with' },
         { value: 'Platform', label: 'LEGO', subtext: 'Leverage external IP for demand' },
         { value: 'Scarcity', label: 'Le Creuset', subtext: 'Engineer FOMO and collectibility' }
       ]},
-      { type: 'content', title: 'Why This Matters for You', body: 'You don't need to be Ralph Lauren to use these strategies. You can own a micro-narrative in your niche. You can become a platform for trending products. You can engineer scarcity through limited drops. The principle is the same: Give customers endless reasons to return. Not through discounts. Through identity, demand, and FOMO.' },
+      { type: 'content', title: 'Why This Matters for You', body: 'You don\'t need to be Ralph Lauren to use these strategies. You can own a micro-narrative in your niche. You can become a platform for trending products. You can engineer scarcity through limited drops. The principle is the same: Give customers endless reasons to return. Not through discounts. Through identity, demand, and FOMO.' },
       { type: 'cards', title: 'How to Apply This', items: [
-        { title: 'Own a Narrative', description: 'What story does your brand tell? Not what you sell, but what you stand for. Make customers feel like they're part of something bigger.' },
+        { title: 'Own a Narrative', description: 'What story does your brand tell? Not what you sell, but what you stand for. Make customers feel like they\'re part of something bigger.' },
         { title: 'Become a Platform', description: 'Stop creating everything yourself. Partner with trending products, influencers, or IP. Ride external demand waves to create internal sales.' },
-        { title: 'Engineer Scarcity', description: 'Limited drops. Seasonal colors. Exclusive collaborations. Make customers feel like "If I don't buy now, I'll miss it forever."' }
+        { title: 'Engineer Scarcity', description: 'Limited drops. Seasonal colors. Exclusive collaborations. Make customers feel like "If I don\'t buy now, I\'ll miss it forever."' }
       ]},
-      { type: 'example', scenario: 'The Limited Drop That Sold Out in 4 Hours', before: { label: 'Always Available', text: 'Product always in stock. Customers procrastinate. "I'll buy it later." Conversion rate: 2.8%. Average LTV: $240.' }, after: { label: 'Limited Drop Strategy', text: 'Announced 48-hour limited drop. Sold out in 4 hours. Customers FOMO'd in. Conversion rate: 18%. Average LTV: $680 (bought multiple colors).' }, insight: 'Scarcity creates urgency. Urgency creates action. Action creates LTV.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
-      { type: 'quiz', question: 'What is the MAIN reason Ralph Lauren, LEGO, and Le Creuset have high LTV?', options: ['They have great customer service', 'They send lots of email campaigns', 'They engineer reasons for customers to return forever', 'They offer the cheapest prices'], correctIndex: 2, feedback: { correct: 'Exactly! They don't rely on tactics like discounts or emails. They engineer REASONS to return—narratives, platforms, scarcity. This is brand strategy, not marketing tactics. And it creates lifetime value that compounds forever.', incorrect: 'Not quite. Great service and emails are tactics. High LTV comes from brand STRATEGY—owning narratives (Ralph Lauren), becoming a platform (LEGO), or engineering scarcity (Le Creuset). They create endless reasons to return. That's the difference.' }},
+      { type: 'example', scenario: 'The Limited Drop That Sold Out in 4 Hours', before: { label: 'Always Available', text: 'Product always in stock. Customers procrastinate. "I\'ll buy it later." Conversion rate: 2.8%. Average LTV: $240.' }, after: { label: 'Limited Drop Strategy', text: 'Announced 48-hour limited drop. Sold out in 4 hours. Customers FOMO\'d in. Conversion rate: 18%. Average LTV: $680 (bought multiple colors).' }, insight: 'Scarcity creates urgency. Urgency creates action. Action creates LTV.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
+      { type: 'quiz', question: 'What is the MAIN reason Ralph Lauren, LEGO, and Le Creuset have high LTV?', options: ['They have great customer service', 'They send lots of email campaigns', 'They engineer reasons for customers to return forever', 'They offer the cheapest prices'], correctIndex: 2, feedback: { correct: 'Exactly! They don\'t rely on tactics like discounts or emails. They engineer REASONS to return—narratives, platforms, scarcity. This is brand strategy, not marketing tactics. And it creates lifetime value that compounds forever.', incorrect: 'Not quite. Great service and emails are tactics. High LTV comes from brand STRATEGY—owning narratives (Ralph Lauren), becoming a platform (LEGO), or engineering scarcity (Le Creuset). They create endless reasons to return. That\'s the difference.' }},
       { type: 'completion', sources: [] }
     ];
 
@@ -142,22 +217,32 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
@@ -340,6 +425,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -388,6 +483,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

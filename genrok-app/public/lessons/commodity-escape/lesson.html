@@ -55,7 +55,22 @@
 
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };      return params.get('userName') || 'Builder';
     };
 
     const LESSON_CONFIG = {
@@ -70,6 +85,81 @@
         teaser: 'People don\'t buy products - they buy versions of themselves.'
       }
     };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      if (!__isAdmin) return null;
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -104,7 +194,7 @@
         'How Starbucks escaped commodity pricing for coffee',
         'The 3 layers to transform your product from commodity to premium'
       ]},
-      { type: 'hook', headline: 'Starbucks charges $6 for coffee that costs them $0.50.', subheadline: 'And customers gladly pay it.', subtext: 'Coffee is a commodity. Anyone can sell it. So why does Starbucks dominate while generic coffee shops die? Because they escaped the commodity trap. They stopped selling coffee and started selling something else entirely.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/ritual-logo.svg', brandName: 'Ritual' },
+      { type: 'hook', headline: 'Starbucks charges $6 for coffee that costs them $0.50.', subheadline: 'And customers gladly pay it.', subtext: 'Coffee is a commodity. Anyone can sell it. So why does Starbucks dominate while generic coffee shops die? Because they escaped the commodity trap. They stopped selling coffee and started selling something else entirely.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/ritual-logo.svg', brandName: 'Ritual', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_presenting_with_open_palms_both_hands_showing__3bb09a42-0e67-411b-ba4f-7a4abd96adb8_0.mp4', characterPosition: 'left' },
       { type: 'content', title: 'The Commodity Trap', body: 'When your product is a commodity, price becomes the only differentiator. Customers compare you to every competitor. They filter by lowest price. Your margins shrink. You race to the bottom. The trap? You\'re selling the PRODUCT, not the experience, story, or identity. Coffee is a commodity. A "third place between work and home" is not. That\'s the escape.' },
       { type: 'comparison', title: 'Commodity vs Premium Product', bad: { title: 'Commodity Mindset', description: 'Sell the product. Compete on features. Lower prices to win. Customers see you as interchangeable. Margins shrink. Death by a thousand price cuts.' }, good: { title: 'Premium Mindset', description: 'Sell the experience. Create a story. Build an identity. Customers see you as irreplaceable. Margins expand. Loyalty becomes default.' } },
       { type: 'content', title: 'The Starbucks Blueprint', body: 'Starbucks didn\'t invent coffee. They invented the "third place." Not home. Not work. Somewhere in between where you belong. They sell the ritual, the customization, the feeling of having your name on a cup. Coffee is just the vehicle. The experience is what customers pay for. That\'s why $6 feels fair.' },
@@ -151,7 +241,7 @@
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.2)' }}>
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
               <ul className="space-y-1.5 md:space-y-2">
                 {data.learningGoals.map((goal, i) => (
@@ -170,16 +260,25 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}><Icons.Zap />The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
@@ -188,7 +287,13 @@
 
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Key Concept
+          </span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</h2>
+        </motion.div>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
       
         {data.characterVideo && (
@@ -222,33 +327,25 @@
             <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15)' }}>
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.insight}</p>
         </motion.div>
       </div>
     );
 
     const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
+      if (data.visualType === 'stats') {
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
+                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
+                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
             </div>
           </div>
         );
@@ -256,19 +353,36 @@
       return null;
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    const CardsSlide = ({ data }) => {
+      const cardIcons = ['💎', '✨', '🎭', '🏆', '🚀', '💡', '🛡️'];
+      return (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-neutral-900 rounded-xl p-4 md:p-5" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.12)' }}>
+                <div className="flex items-center gap-2 mb-2 md:mb-3">
+                  <span className="text-lg md:text-xl">{cardIcons[i % cardIcons.length]}</span>
+                  <h3 className="font-bold text-white text-sm md:text-base">{item.title}</h3>
+                </div>
+                <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '45%', maxHeight: '350px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
+    };
 
     const ComparisonSlide = ({ data }) => (
       <div className="comparison-container">
@@ -339,7 +453,7 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand how to escape the commodity trap. Add story, design experience, build identity. Stop competing on price.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
           <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -359,6 +473,16 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -409,6 +533,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

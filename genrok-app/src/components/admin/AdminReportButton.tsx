@@ -2,39 +2,128 @@
 
 import { useState, useEffect } from 'react';
 import { Bug } from 'lucide-react';
+import { useAdmin } from '@/hooks/useAdmin';
+import { AdminReportModal } from './AdminReportModal';
+import type { LessonSlideContext } from '@/types/admin';
 
 export function AdminReportButton() {
-  const [mounted, setMounted] = useState(false);
+  const { isAdmin, isLoading } = useAdmin();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lessonContext, setLessonContext] = useState<LessonSlideContext | null>(null);
 
+  // Send admin status to iframes when admin status changes
   useEffect(() => {
-    console.log('[AdminReportButton] Component mounted!');
-    setMounted(true);
-  }, []);
+    if (!isLoading) {
+      // Send to all iframes
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((iframe) => {
+        try {
+          iframe.contentWindow?.postMessage({ type: 'ADMIN_STATUS', isAdmin }, '*');
+        } catch (e) {
+          // Ignore cross-origin errors
+        }
+      });
+    }
+  }, [isAdmin, isLoading]);
 
-  // Always show a simple button for debugging
+  // Listen for slide context from lesson iframes
+  useEffect(() => {
+    const handleSlideContext = (event: CustomEvent<LessonSlideContext>) => {
+      setLessonContext(event.detail);
+    };
+
+    // Listen for messages from lesson iframes
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'ADMIN_REPORT_REQUEST') {
+        // Admin wants to report an issue for a specific slide/element
+        setLessonContext({
+          slideIndex: event.data.slideIndex,
+          slideType: event.data.slideType,
+          lessonSlug: event.data.lessonSlug,
+          elementId: event.data.elementId
+        });
+        setIsModalOpen(true);
+      } else if (event.data?.type === 'LESSON_SLIDE_UPDATE') {
+        // Just update context (for floating button)
+        setLessonContext({
+          slideIndex: event.data.slideIndex,
+          slideType: event.data.slideType,
+          lessonSlug: event.data.lessonSlug
+        });
+      } else if (event.data?.type === 'CHECK_ADMIN_STATUS') {
+        // Iframe is asking for admin status - respond
+        const sourceWindow = event.source as Window;
+        if (sourceWindow) {
+          sourceWindow.postMessage({ type: 'ADMIN_STATUS', isAdmin }, '*');
+        }
+      }
+    };
+
+    window.addEventListener('lessonSlideContext', handleSlideContext as EventListener);
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('lessonSlideContext', handleSlideContext as EventListener);
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [isAdmin]);
+
+  // Don't render if not admin
+  if (isLoading || !isAdmin) {
+    return null;
+  }
+
   return (
-    <button
-      onClick={() => alert('Admin button clicked! mounted=' + mounted)}
-      style={{
-        position: 'fixed',
-        bottom: '24px',
-        right: '24px',
-        width: '56px',
-        height: '56px',
-        borderRadius: '50%',
-        backgroundColor: '#ef4444',
-        color: 'white',
-        border: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 99999,
-        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
-      }}
-      title="Report an issue (DEBUG MODE)"
-    >
-      <Bug style={{ width: '24px', height: '24px' }} />
-    </button>
+    <>
+      {/* Floating Report Button */}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          width: '56px',
+          height: '56px',
+          borderRadius: '50%',
+          backgroundColor: '#ef4444',
+          color: 'white',
+          border: 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 99999,
+          boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
+          transition: 'transform 0.2s, box-shadow 0.2s',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.1)';
+          e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.5)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
+        }}
+        title={lessonContext
+          ? `Report issue for Slide ${lessonContext.slideIndex + 1} (${lessonContext.slideType})`
+          : 'Report an issue on this page'
+        }
+      >
+        <Bug style={{ width: '24px', height: '24px' }} />
+      </button>
+
+      {/* Report Modal */}
+      <AdminReportModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          // Clear element-specific context after closing
+          if (lessonContext?.elementId) {
+            setLessonContext(prev => prev ? { ...prev, elementId: undefined } : null);
+          }
+        }}
+        lessonContext={lessonContext}
+      />
+    </>
   );
 }

@@ -925,6 +925,14 @@
                 currentSlide = slideNumber;
                 updateProgress();
 
+                // Send slide update to parent for admin issue tracking
+                window.parent.postMessage({
+                    type: 'LESSON_SLIDE_UPDATE',
+                    slideIndex: currentSlide - 1, // Convert 1-based to 0-based
+                    slideType: 'content',
+                    lessonSlug: window.location.pathname.split('/').filter(Boolean).pop()?.replace('/lesson.html', '') || 'unknown'
+                }, '*');
+
                 // Scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }

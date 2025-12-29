@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>The 5-Second Test | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -36,29 +36,89 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
-    };
     const LESSON_CONFIG = {
       id: 'five-second-test',
-      title: 'Lesson',
-      description: '',
+      title: 'The 5-Second Test',
+      description: 'Why clarity crushes cleverness in converting visitors',
       accentColor: '#f97316',
       duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+      nextLesson: { id: 'cognitive-load-trap', title: 'The Cognitive Load Trap', teaser: 'Why too many choices kill conversions.' }
     };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      if (!__isAdmin) return null;
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -86,114 +146,77 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-                {
-                    type: 'welcome',
-                    learningGoals: ['Why you only have 5 seconds to win or lose a visitor', 'The difference between clever and clear headlines', 'How to pass the 5-second test every time']
-                },
-                {
-                    type: 'hook',
-                    title: 'You have 5 seconds.',
-                    subtitle: 'That\'s it.',
-                    content: 'A visitor lands on your site.\n\nTheir brain asks ONE question:\n\n"Am I in the right place?"\n\nIf the answer isn\'t INSTANTLY clear:\n\nThey bounce.\n\nYou lost the sale in 5 seconds.\n\nNot because your product was bad.\n\nBecause your headline was clever instead of clear.'
-                },
-                {
-                    type: 'content',
-                    title: 'The Brain Craves Fluency',
-                    content: 'Cognitive fluency = how EASY something is to process.\n\nYour brain uses fluency as a trust signal:\n\n→ Easy to understand = safe, trustworthy\n→ Hard to understand = risky, suspicious\n\nThis happens subconsciously.\n\nYou don\'t think "This is confusing, therefore untrustworthy."\n\nYou just feel uneasy and leave.\n\nClarity isn\'t just good copywriting.\n\nIt\'s a survival mechanism.'
-                },
-                {
-                    type: 'example',
-                    title: 'The Vague Headline',
-                    negative: true,
-                    content: '"Better Together"\n\nWhat does this company do?\n\nRelationship coaching?\nTeam building software?\nDating app?\nCouples therapy?\n\nYou have NO IDEA.\n\nYour brain feels the confusion.\n\nYou don\'t consciously think "I\'m confused."\n\nYou just hit the back button.\n\n5-second test: FAILED.'
-                },
-                {
-                    type: 'example',
-                    title: 'The Clear Headline',
-                    content: '"Leadership Coaching for Mid-Level Managers"\n\nWhat does this company do?\n\nLeadership coaching.\n\nWho is it for?\n\nMid-level managers.\n\nAm I in the right place?\n\nIf you\'re a mid-level manager who wants leadership coaching: YES.\n\nIf not: NO (and that\'s good - you saved both of you time).\n\n5-second test: PASSED.'
-                },
-                {
-                    type: 'content',
-                    title: 'Why Clever Fails',
-                    content: 'Marketers love clever headlines.\n\n"Where Vision Meets Execution"\n"Unleash Your Potential"\n"Innovation Starts Here"\n\nThese sound good in the boardroom.\n\nThey FEEL sophisticated.\n\nBut they communicate NOTHING.\n\nYour visitor\'s brain does extra work to decode them.\n\nExtra work = cognitive strain.\n\nCognitive strain = distrust.\n\nDistrust = bounce.\n\nClever lost you the sale.'
-                },
-                {
-                    type: 'visual',
-                    title: 'The 5-Second Test Protocol',
-                    content: 'Show your homepage to someone for 5 seconds.\n\nThen hide it.\n\nAsk: "What does this company do?"\n\nIf they can\'t answer clearly:\n→ Your headline has failed\n\nIf they hesitate:\n→ Your headline has failed\n\nIf they guess:\n→ Your headline has failed\n\nThe ONLY passing grade is instant, accurate clarity.\n\n"Oh, they do [exact thing you do] for [exact audience]."\n\nAnything less is costing you money.'
-                , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._face-palming_embarrassedfrustrated_100_pure_2ecf9cf3-57a5-44c8-8958-1ee07c06f4b2_3.mp4', characterPosition: 'left'},
-                {
-                    type: 'cards',
-                    title: 'Clarity Formula',
-                    cards: [
-                        {
-                            title: 'What You Do',
-                            description: 'The actual service/product in plain language (not "solutions" or "platforms")'
-                        },
-                        {
-                            title: 'Who It\'s For',
-                            description: 'Specific audience, not "everyone" or "businesses"'
-                        },
-                        {
-                            title: 'The Core Benefit',
-                            description: 'One clear outcome they get (not a list of features)'
-                        },
-                        {
-                            title: 'No Jargon',
-                            description: 'If a 12-year-old can\'t understand it, rewrite it'
-                        }
-                    ]
-                },
-                {
-                    type: 'quiz',
-                    question: 'Which headline would pass the 5-second test for a meal prep delivery service?',
-                    options: [
-                        '"Fuel Your Journey to Greatness"',
-                        '"Where Nutrition Meets Convenience"',
-                        '"Healthy Meal Prep Delivered to Your Door"',
-                        '"Empowering Your Wellness Revolution"'
-                    ],
-                    correctAnswer: 2,
-                    explanation: 'Option C is the ONLY clear headline. It says exactly what they do (meal prep), the key benefit (healthy), and how it works (delivered). The others are vague corporate speak that communicate nothing specific. Clarity crushes cleverness.'
-                },
-                {
-                    type: 'content',
-                    title: 'The Confusion Tax',
-                    content: 'Every second of confusion costs you conversions.\n\nIf 1,000 visitors land on your vague homepage:\n\n→ 700 bounce immediately (confused)\n→ 200 stay but don\'t convert (uncertain)\n→ 100 convert despite the confusion\n\n10% conversion rate.\n\nNow make it CLEAR:\n\n→ 200 bounce (not the right fit - good)\n→ 300 stay and browse (curious)\n→ 500 convert (they know they\'re in the right place)\n\n50% conversion rate.\n\nSame traffic. Same product.\n\n5X conversions from one headline change.'
-                },
-                {
-                    type: 'content',
-                    title: 'Clarity Checklist',
-                    content: 'Run your headline through this filter:\n\n1. Can a stranger understand it in 5 seconds?\n2. Does it use industry jargon?\n3. Would a 12-year-old get it?\n4. Does it say WHAT you do, not how you feel about it?\n5. Could it apply to 10 other companies?\n\nIf you failed any of these:\n\nYour headline is too clever.\n\nRewrite it to be brutally, obviously, almost-insultingly clear.\n\nThat\'s the one that converts.'
-                , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._face-palming_embarrassedfrustrated_100_pure_2ecf9cf3-57a5-44c8-8958-1ee07c06f4b2_3.mp4', characterPosition: 'left'},
-                {
-                    type: 'content',
-                    title: 'The Brutal Truth',
-                    content: 'You think clarity is boring.\n\nYou want to sound innovative, disruptive, visionary.\n\nYou want a headline that impresses your competitors.\n\nBut your customers don\'t care about impressive.\n\nThey care about KNOWING if this is for them.\n\nDescriptive beats clever.\nSpecific beats vague.\nClear beats creative.\n\nEvery. Single. Time.\n\nYour job isn\'t to impress.\n\nYour job is to convert.'
-                },
-                {
-                    type: 'completion',
-                    title: 'You Now Know',
-                    lessons: [
-                        'Why the brain uses fluency as a trust signal',
-                        'The 5-second test protocol to audit your headlines',
-                        'Why clever headlines destroy conversions',
-                        'The 4-part clarity formula (what, who, benefit, no jargon)',
-                        'How confusion is a conversion tax you can\'t afford'
-                    ],
-                    nextLesson: 'Next: The $1.7 Billion Speed Bump - Why milliseconds matter'
-                }
-            ];
+      { type: 'welcome', learningGoals: ['Why you only have 5 seconds to win or lose a visitor', 'The difference between clever and clear headlines', 'How to pass the 5-second test every time'] },
+      { type: 'hook', headline: 'You have 5 seconds. That\'s it.', subtext: 'A visitor lands on your site. Their brain asks ONE question: "Am I in the right place?" If the answer isn\'t INSTANTLY clear, they bounce. You lost the sale in 5 seconds. Not because your product was bad. Because your headline was clever instead of clear.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'left' },
+      { type: 'stat-countdown', title: 'The 5-Second Reality', stats: [
+        { value: 5, suffix: ' sec', label: 'Decision Time', subtext: 'How long visitors give you' },
+        { value: 55, suffix: '%', label: 'Bounce Rate', subtext: 'From confused headlines' },
+        { value: 10, suffix: 'x', label: 'Clarity Wins', subtext: 'Clear vs clever conversions' }
+      ]},
+      { type: 'content', title: 'The Brain Craves Fluency', body: 'Cognitive fluency is how EASY something is to process. Your brain uses fluency as a trust signal. Easy to understand equals safe and trustworthy. Hard to understand equals risky and suspicious. This happens subconsciously. You don\'t think "This is confusing, therefore untrustworthy." You just feel uneasy and leave. Clarity isn\'t just good copywriting. It\'s a survival mechanism.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'right' },
+      { type: 'comparison-cards', title: 'Vague vs Clear Headlines', left: { label: 'VAGUE HEADLINE', iconComponent: 'X', value: '"Better Together"', subtext: 'What does this mean?', percentage: '10%', items: ['Relationship coaching?', 'Team building software?', 'Dating app?', 'Couples therapy?'], color: 'red' }, right: { label: 'CLEAR HEADLINE', iconComponent: 'Check', value: '"Leadership Coaching for Mid-Level Managers"', subtext: 'Instantly understood', percentage: '50%', items: ['What: Leadership coaching', 'Who: Mid-level managers', 'Am I in the right place? YES', 'No confusion. No bounce.'], color: 'green' } },
+      { type: 'content', title: 'Why Clever Fails', body: 'Marketers love clever headlines. "Where Vision Meets Execution." "Unleash Your Potential." "Innovation Starts Here." These sound good in the boardroom. They FEEL sophisticated. But they communicate NOTHING. Your visitor\'s brain does extra work to decode them. Extra work means cognitive strain. Cognitive strain means distrust. Distrust means bounce. Clever lost you the sale.' },
+      { type: 'strategy-steps', title: 'The 5-Second Test Protocol', steps: [
+        { number: 1, title: 'SHOW', icon: 'Eye', color: '#3B82F6', description: 'Show your homepage to someone for 5 seconds. Then hide it immediately.' },
+        { number: 2, title: 'ASK', icon: 'MessageCircle', color: '#8B5CF6', description: 'Ask: "What does this company do?" If they can\'t answer clearly, your headline has failed.' },
+        { number: 3, title: 'FIX', icon: 'Wrench', color: '#22C55E', description: 'The ONLY passing grade is instant, accurate clarity. "They do [exact thing] for [exact audience]."' }
+      ]},
+      { type: 'cards', title: 'The Clarity Formula', items: [
+        { title: 'What You Do', description: 'The actual service/product in plain language. Not "solutions" or "platforms."' },
+        { title: 'Who It\'s For', description: 'Specific audience. Not "everyone" or "businesses."' },
+        { title: 'The Core Benefit', description: 'One clear outcome they get. Not a list of features.' },
+        { title: 'No Jargon', description: 'If a 12-year-old can\'t understand it, rewrite it.' }
+      ]},
+      { type: 'quiz', question: 'Which headline would pass the 5-second test for a meal prep delivery service?', options: ['"Fuel Your Journey to Greatness"', '"Where Nutrition Meets Convenience"', '"Healthy Meal Prep Delivered to Your Door"', '"Empowering Your Wellness Revolution"'], correctIndex: 2, feedback: { correct: 'Option C is the ONLY clear headline. It says exactly what they do (meal prep), the key benefit (healthy), and how it works (delivered). The others are vague corporate speak that communicate nothing specific. Clarity crushes cleverness.', incorrect: 'Not quite. The correct answer is "Healthy Meal Prep Delivered to Your Door." It\'s the only headline that tells you exactly what the company does, for whom, and how. The others sound impressive but say nothing specific.' }},
+      { type: 'before-after', title: 'The Confusion Tax', before: [
+        '1,000 visitors land on vague page',
+        '700 bounce immediately (confused)',
+        '200 stay but don\'t convert (uncertain)',
+        '100 convert despite confusion',
+        '10% conversion rate'
+      ], after: [
+        '1,000 visitors land on clear page',
+        '200 bounce (not the right fit - good!)',
+        '300 stay and browse (curious)',
+        '500 convert (right place certainty)',
+        '50% conversion rate'
+      ]},
+      { type: 'highlight-box', title: 'The Brutal Truth', body: 'You think clarity is boring. You want to sound innovative, disruptive, visionary. You want a headline that impresses your competitors. But your customers don\'t care about impressive. They care about KNOWING if this is for them.', highlight: 'Descriptive beats clever. Specific beats vague. Clear beats creative. Every. Single. Time.' },
+      { type: 'completion', sources: [] }
+    ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Check: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Eye: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      MessageCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      Wrench: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+    };
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -207,7 +230,7 @@
             <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto" style={{ boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
               <ul className="space-y-1.5 md:space-y-2">
                 {data.learningGoals.map((goal, i) => (
@@ -218,7 +241,7 @@
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.4)' }}>Let's Go</motion.button>
           </div>
         </div>
       );
@@ -228,10 +251,12 @@
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Zap /> The Hook
+            </span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed whitespace-pre-line">{data.subtext}</motion.p>
         </div>
         {data.characterVideo && (
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
@@ -242,27 +267,40 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={1500 + i * 300} />
+              </div>
+              <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
+              <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
 
+    const ContentSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Target size={14} /> Key Insight
+            </span>
+          </motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
+        </div>
         {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
             style={{ height: '35%', maxHeight: '280px' }}>
             <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
               <source src={data.characterVideo} type="video/mp4" />
@@ -272,73 +310,163 @@
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+    const ComparisonCardsSlide = ({ data }) => {
+      const IconComponent = (name) => Icons[name] || Icons.Target;
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            {/* Left Card - Bad */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-5 md:p-6 border-2 border-red-500/30" style={{ boxShadow: '0 0 30px rgba(239, 68, 68, 0.15)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
+                  {React.createElement(IconComponent(data.left.iconComponent), { size: 18, color: '#EF4444' })}
+                </div>
+                <span className="text-red-400 font-bold text-sm uppercase tracking-wider">{data.left.label}</span>
+              </div>
+              <div className="text-white font-bold text-lg md:text-xl mb-2 italic">"{data.left.value.replace(/"/g, '')}"</div>
+              <div className="text-neutral-400 text-sm mb-4">{data.left.subtext}</div>
+              <div className="space-y-2">
+                {data.left.items.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-neutral-700">
+                <div className="text-red-400 text-2xl font-bold">{data.left.percentage}</div>
+                <div className="text-neutral-500 text-xs">Conversion Rate</div>
+              </div>
+            </motion.div>
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
+            {/* Right Card - Good */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-5 md:p-6 border-2 border-green-500/30" style={{ boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                  {React.createElement(IconComponent(data.right.iconComponent), { size: 18, color: '#22C55E' })}
+                </div>
+                <span className="text-green-400 font-bold text-sm uppercase tracking-wider">{data.right.label}</span>
+              </div>
+              <div className="text-white font-bold text-lg md:text-xl mb-2 italic">"{data.right.value.replace(/"/g, '')}"</div>
+              <div className="text-neutral-400 text-sm mb-4">{data.right.subtext}</div>
+              <div className="space-y-2">
+                {data.right.items.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-neutral-700">
+                <div className="text-green-400 text-2xl font-bold">{data.right.percentage}</div>
+                <div className="text-neutral-500 text-xs">Conversion Rate</div>
+              </div>
+            </motion.div>
           </div>
-        );
-      }
-      return null;
+        </div>
+      );
+    };
+
+    const StrategyStepsSlide = ({ data }) => {
+      const IconComponent = (name) => Icons[name] || Icons.Target;
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }}
+                className="bg-neutral-900 rounded-xl p-4 md:p-5 flex items-start gap-4" style={{ boxShadow: `0 0 30px ${step.color}20` }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${step.color}20` }}>
+                  {React.createElement(IconComponent(step.icon), { size: 24, color: step.color })}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-neutral-500 text-xs font-bold">STEP {step.number}</span>
+                    <span className="font-bold text-white">{step.title}</span>
+                  </div>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
     };
 
     const CardsSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
           <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+          <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
             {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }}
+                className="bg-neutral-900 rounded-xl p-4 md:p-5" style={{ boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.1)' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style={{ background: `rgba(var(--accent-rgb), 0.15)` }}>
+                  <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>{i + 1}</span>
+                </div>
+                <h3 className="font-bold text-white mb-2 text-sm md:text-base">{item.title}</h3>
+                <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '45%', maxHeight: '350px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-5 border-l-4 border-red-500">
+            <div className="flex items-center gap-2 mb-4">
+              <Icons.TrendingDown size={20} color="#EF4444" />
+              <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Before (Vague)</span>
+            </div>
+            <div className="space-y-2">
+              {data.before.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="flex items-start gap-2 text-neutral-300 text-sm">
+                  <Icons.X size={14} color="#EF4444" />
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-5 border-l-4 border-green-500">
+            <div className="flex items-center gap-2 mb-4">
+              <Icons.TrendingUp size={20} color="#22C55E" />
+              <span className="text-green-400 font-bold text-sm uppercase tracking-wider">After (Clear)</span>
+            </div>
+            <div className="space-y-2">
+              {data.after.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.05 }} className="flex items-start gap-2 text-neutral-300 text-sm">
+                  <Icons.Check size={14} color="#22C55E" />
+                  <span>{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const HighlightBoxSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Zap /> Key Takeaway
+          </span>
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5 border-l-4" style={{ borderColor: 'var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.2)' }}>
+          <p className="text-white font-medium text-base md:text-lg leading-relaxed">{data.highlight}</p>
+        </motion.div>
+      </div>
+    );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -364,7 +492,7 @@
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
                     <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                      {showFeedback && i === data.correctIndex ? <Icons.Check size={16} /> : showFeedback && i === selected && !isCorrect ? <Icons.X size={16} /> : String.fromCharCode(65 + i)}
                     </span>
                     <span className="text-neutral-700 text-sm md:text-base">{option}</span>
                   </div>
@@ -387,25 +515,12 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've mastered the 5-second test.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -422,7 +537,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -461,10 +575,13 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
+          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
+          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -480,6 +597,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

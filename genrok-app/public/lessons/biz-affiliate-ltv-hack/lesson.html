@@ -822,6 +822,14 @@
         const totalSlides = document.querySelectorAll('.slide').length;
 
         function updateSlide() {
+            // Send slide update to parent for admin issue tracking
+            window.parent.postMessage({
+                type: 'LESSON_SLIDE_UPDATE',
+                slideIndex: currentSlide - 1, // Convert 1-based to 0-based
+                slideType: 'content',
+                lessonSlug: window.location.pathname.split('/').filter(Boolean).pop()?.replace('/lesson.html', '') || 'unknown'
+            }, '*');
+
             // Hide all slides
             document.querySelectorAll('.slide').forEach(slide => {
                 slide.classList.remove('active');

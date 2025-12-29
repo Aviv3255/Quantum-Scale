@@ -38,12 +38,87 @@
 
     const LESSON_CONFIG = {
       id: 'psychological-moat',
-      title: 'Lesson',
-      description: '',
-      accentColor: '#f97316',
-      duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+      title: "De Beers' Psychological Moat",
+      description: 'How De Beers survived the lab diamond threat through psychological positioning.',
+      accentColor: '#B8860B',
+      duration: '7 min',
+      nextLesson: { id: 'emotional-gap', title: 'The Emotional Gap', teaser: 'Why the gap between logic and emotion is where fortunes are made.' }
     };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      if (!__isAdmin) return null;
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -73,147 +148,38 @@
     const slides = [
         {
           type: 'welcome',
-          content: {
-            greeting: greeting,
-            title: "De Beers' Psychological Moat",
-            description: "Lab diamonds are chemically IDENTICAL and cheaper. Yet mined diamonds survive. Why?",
-            accent: '#B8860B'
-          }
+          learningGoals: [
+            'How De Beers survived the lab diamond threat',
+            'The psychological moat strategy that protects premium pricing',
+            'Why meaning beats features in luxury markets'
+          ]
         },
         {
           type: 'hook',
-          content: {
-            title: "A $100 Billion Industry Under Attack",
-            points: [
-              "Scientists create IDENTICAL diamonds in labs",
-              "Chemically the same. Structurally the same.",
-              "Price? 70% cheaper.",
-              "The mined diamond industry should have COLLAPSED.",
-              "It didn't. Why?"
-            ]
-          }
-        , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/De-Beers-Logo-before-2018.png', brandName: 'De Beers'},
-        {
-          type: 'content',
-          content: {
-            title: "The Campaign That Changed Culture",
-            subtitle: "\"A Diamond is Forever\"",
-            body: "De Beers launched this campaign in 1947.\n\nIt didn't just sell a product.\n\nIt INGRAINED a diamond into the cultural fabric of commitment.\n\nEngagement = Diamond.\n\nThis wasn't advertising. This was CULTURAL PROGRAMMING."
-          }
+          headline: 'Lab diamonds are chemically IDENTICAL. 70% cheaper. Yet De Beers survived.',
+          subtext: 'Scientists create perfect diamonds in labs. Chemically the same. Structurally the same. The mined diamond industry should have collapsed. It didn\'t. De Beers built something money can\'t buy: a psychological moat.',
+          brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/De-Beers-Logo-before-2018.png',
+          brandName: 'De Beers'
         },
-        {
-          type: 'visual',
-          content: {
-            title: "The Two Months' Salary Rule",
-            stat: "2X",
-            label: "Monthly Salary",
-            description: "De Beers invented this \"rule\" through marketing. They ANCHORED the perceived value at an EXTREMELY high level. Pure psychological engineering."
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: "The Disruption Arrives",
-            body: "Lab-grown diamonds emerge.\n\nChemically IDENTICAL.\n\nSignificantly CHEAPER.\n\nBy all RATIONAL measures, the mined diamond industry should have collapsed.\n\nLogic says: buy the cheaper identical product.\n\nBut humans aren't logical."
-          }
-        },
-        {
-          type: 'example',
-          content: {
-            title: "The Psychological Moat",
-            scenario: "The decades of marketing created a powerful GUT FEELING:",
-            result: "The \"real\" diamond from the earth was EMOTIONALLY SUPERIOR.",
-            insight: "This moat didn't last FOREVER. But it bought the industry YEARS to adapt. A timeframe that would be IMPOSSIBLE without the brand equity."
-          }
-        },
-        {
-          type: 'cards',
-          content: {
-            title: "The 5 Heuristics That Shape Perceived Value",
-            cards: [
-              {
-                number: "1",
-                title: "Price-Quality Heuristic",
-                description: "We believe higher price = better product. A Birkin isn't 10x better than a $3K bag. But the price creates the perception."
-              },
-              {
-                number: "2",
-                title: "Brand Prestige",
-                description: "We use brand as a shortcut for quality. Would you pay the same for a bag without the logo? The brand IS the value."
-              },
-              {
-                number: "3",
-                title: "Scarcity",
-                description: "Desire for what's rare is incredibly powerful. Limited drops. \"Last chance.\" It's psychological manipulation that WORKS."
-              },
-              {
-                number: "4",
-                title: "Social Proof",
-                description: "We're influenced by perception in our social circle. Reviews. Influencers. What others value becomes what WE value."
-              },
-              {
-                number: "5",
-                title: "Aesthetic Appeal",
-                description: "We perceive attractive/elegant as higher quality. Apple products aren't technically superior. But they FEEL premium."
-              }
-            ]
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: "Brand = Economic Moat",
-            body: "Your brand is the sum of every gut feeling created at every touchpoint.\n\nIt's not your logo.\n\nIt's not your colors.\n\nIt's the ECONOMIC VALUE of a reputation.\n\nIt's what lets you survive when a cheaper competitor arrives.\n\nIt's your moat."
-          }
-        },
-        {
-          type: 'quiz',
-          content: {
-            question: "A competitor launches an identical product at 50% your price. What protects you?",
-            options: [
-              { id: 'a', text: "Lower your price to match", correct: false },
-              { id: 'b', text: "The psychological moat you've built through brand equity", correct: true },
-              { id: 'c', text: "Add more features to justify price", correct: false },
-              { id: 'd', text: "Nothing - cheaper always wins", correct: false }
-            ],
-            correctFeedback: "EXACTLY. Your brand is your defense. The emotional connection you've built lets you charge more because customers FEEL the difference, even when there isn't one.",
-            incorrectFeedback: "Not quite. Competing on price is a race to the bottom. Features can be copied. Your BRAND - the psychological moat - is what actually protects you."
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: "Holy Shit Moment",
-            body: "Your brand is your MOAT.\n\nIt's what lets you survive disruption.\n\nIt's what lets you charge more.\n\nIt's what keeps customers loyal when cheaper options exist.\n\nBuild it NOW.\n\nBefore the disruption arrives."
-          }
-        },
-        {
-          type: 'tools',
-          content: {
-            title: "Build Your Moat",
-            description: "Track and identify your most valuable customers:",
-            tools: [
-              {
-                name: "DataDrew",
-                description: "Shows who your \"diamond\" customers are - track customer value and identify your most loyal segment",
-                link: "#"
-              },
-              {
-                name: "Section Store",
-                description: "Build brand consistency across all touchpoints with premium design elements",
-                link: "#"
-              }
-            ]
-          }
-        },
-        {
-          type: 'completion',
-          content: {
-            title: "Moat Built",
-            message: "You now understand how psychological barriers create economic value. Use it.",
-            nextLesson: "Next: The Endowment Effect"
-          }
-        }
+        { type: 'content', title: 'The Campaign That Changed Culture', body: 'De Beers launched "A Diamond is Forever" in 1947. It didn\'t just sell a product. It INGRAINED a diamond into the cultural fabric of commitment. Engagement = Diamond. This wasn\'t advertising. This was CULTURAL PROGRAMMING.' },
+        { type: 'visual', title: 'The Two Months\' Salary Rule', visualType: 'stats', data: [
+          { value: '2X', label: 'Monthly Salary', subtext: 'The "rule" De Beers invented through marketing' },
+          { value: '1947', label: 'Campaign Started', subtext: 'Still influencing purchases today' },
+          { value: '$80B', label: 'Industry Value', subtext: 'Built on psychological anchoring' }
+        ]},
+        { type: 'content', title: 'The Disruption Arrives', body: 'Lab-grown diamonds emerge. Chemically IDENTICAL. Significantly CHEAPER. By all RATIONAL measures, the mined diamond industry should have collapsed. Logic says: buy the cheaper identical product. But humans aren\'t logical.' },
+        { type: 'example', scenario: 'The Psychological Moat in Action', before: { label: 'Rational Logic', text: 'Lab diamond is identical and 70% cheaper. The logical choice is obvious.' }, after: { label: 'Emotional Reality', text: 'The "real" diamond from the earth feels EMOTIONALLY SUPERIOR. Decades of brand building created a gut feeling that logic can\'t override.' }, insight: 'This moat didn\'t last forever. But it bought the industry YEARS to adapt—impossible without the brand equity.' },
+        { type: 'cards', title: '5 Heuristics That Shape Perceived Value', items: [
+          { title: 'Price-Quality Heuristic', description: 'We believe higher price = better product. A Birkin isn\'t 10x better. But the price creates the perception.' },
+          { title: 'Brand Prestige', description: 'We use brand as a shortcut for quality. The brand IS the value.' },
+          { title: 'Scarcity', description: 'Desire for what\'s rare is incredibly powerful. Limited drops create urgency.' },
+          { title: 'Social Proof', description: 'What others value becomes what WE value. Reviews and influencers shape perception.' },
+          { title: 'Aesthetic Appeal', description: 'We perceive attractive as higher quality. Apple products aren\'t technically superior—they FEEL premium.' }
+        ]},
+        { type: 'content', title: 'Brand = Economic Moat', body: 'Your brand is the sum of every gut feeling created at every touchpoint. It\'s not your logo. It\'s not your colors. It\'s the ECONOMIC VALUE of a reputation. It\'s what lets you survive when a cheaper competitor arrives. It\'s your moat.' },
+        { type: 'quiz', question: 'A competitor launches an identical product at 50% your price. What protects you?', options: ['Lower your price to match', 'The psychological moat you\'ve built through brand equity', 'Add more features to justify price', 'Nothing—cheaper always wins'], correctIndex: 1, feedback: { correct: 'EXACTLY. Your brand is your defense. The emotional connection you\'ve built lets you charge more because customers FEEL the difference, even when there isn\'t one.', incorrect: 'Not quite. Competing on price is a race to the bottom. Features can be copied. Your BRAND—the psychological moat—is what actually protects you.' }},
+        { type: 'content', title: 'The Takeaway', body: 'Your brand is your MOAT. It\'s what lets you survive disruption. It\'s what lets you charge more. It\'s what keeps customers loyal when cheaper options exist. Build it NOW. Before the disruption arrives.' },
+        { type: 'completion', sources: [] }
       ];
 
     const Icons = {
@@ -257,22 +223,32 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
@@ -851,6 +827,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -933,6 +919,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

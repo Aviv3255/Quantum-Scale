@@ -45,6 +45,81 @@
       nextLesson: { id: 'biz-infinite-money-loop', title: 'The Infinite Money Loop', teaser: 'Discover the flywheel that turns $1 into $10 repeatedly.' }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      if (!__isAdmin) return null;
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -79,7 +154,7 @@
         { value: '$100K', label: 'Daily cap per winning creative', color: 'var(--accent)' },
         { value: '10+', label: 'Winners needed for $1M/day spend', color: '#8b5cf6' }
       ] },
-      { type: 'content', title: 'The Old Playbook is Gone', body: "Hyper-targeted audiences. Interest stacking. Custom lookalikes. All outdated. Meta's Andromeda AI handles targeting now. Your job changed: give the AI options. 100 ads? It finds winners. 5 ads? You're gambling.", highlight: "The bottleneck shifted from finding customers to producing creative." },
+      { type: 'content', title: 'The Old Playbook is Gone', body: "Hyper-targeted audiences. Interest stacking. Custom lookalikes. All outdated. Meta\'s Andromeda AI handles targeting now. Your job changed: give the AI options. 100 ads? It finds winners. 5 ads? You\'re gambling.", highlight: "The bottleneck shifted from finding customers to producing creative." },
       { type: 'triangle', title: 'The Creative Triangle', subtitle: 'Master all three to win at scale', pillars: [
         { name: 'VOLUME', color: '#3B82F6', desc: '100s of ads', position: 'top' },
         { name: 'DIVERSITY', color: '#10B981', desc: 'Different angles', position: 'left' },
@@ -91,15 +166,15 @@
         { icon: 'BarChart', title: 'Measurement', desc: 'Track concepts, hooks, edits with MTA tools. Data drives decisions. Gut instinct gets expensive.', color: '#F59E0B' }
       ] },
       { type: 'example', title: 'Old Way vs New Way', before: { label: 'Targeting Focus', items: ['Hyper-targeted audiences', 'Interest stacking', 'Custom lookalikes', '5-10 ads per month'] }, after: { label: 'Creative Focus', items: ['Broad targeting', 'Volume production', 'Diverse creative', '100+ ads per week'] } },
-      { type: 'content', title: 'Volume: The Math', body: "One winning ad maxes out at ~$100K/day spend. To spend $1M/day? You need 10 winners running. To spend $10M/day? 100 winners. You can't find winners without volume.", highlight: "The AI needs options to test. Feed the beast or starve." },
-      { type: 'content', title: 'Diversity: What It Actually Means', body: "Tweaking a background isn't diversity. You need: UGC vs studio production, pain point A vs pain point B, question hooks vs statement hooks, \"pretty people\" vs \"real people\".", highlight: "Radically different creative = more signals for the AI to test." , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'right'},
+      { type: 'content', title: 'Volume: The Math', body: "One winning ad maxes out at ~$100K/day spend. To spend $1M/day? You need 10 winners running. To spend $10M/day? 100 winners. You can\'t find winners without volume.", highlight: "The AI needs options to test. Feed the beast or starve." },
+      { type: 'content', title: 'Diversity: What It Actually Means', body: "Tweaking a background isn\'t diversity. You need: UGC vs studio production, pain point A vs pain point B, question hooks vs statement hooks, \"pretty people\" vs \"real people\".", highlight: "Radically different creative = more signals for the AI to test." , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'right'},
       { type: 'flywheel', title: 'The Creative Flywheel', steps: [
         { label: 'LAUNCH', desc: '100s of ads', color: '#3B82F6' },
         { label: 'MEASURE', desc: 'MTA tracking', color: '#10B981' },
         { label: 'LEARN', desc: 'Find patterns', color: '#F59E0B' },
         { label: 'ITERATE', desc: 'More winners', color: '#EF4444' }
       ] },
-      { type: 'content', title: 'Naming Convention System', body: "Every ad needs a naming convention. Format: [Product]_[Angle]_[Hook]_[Format]_[Version]. Example: Skincare_AntiAging_Question_UGC_v1. Now you can see which hooks outperform, which formats win.", highlight: "Data drives better creative. 'Question hooks beat stats by 30%' - that's actionable." },
+      { type: 'content', title: 'Naming Convention System', body: "Every ad needs a naming convention. Format: [Product]_[Angle]_[Hook]_[Format]_[Version]. Example: Skincare_AntiAging_Question_UGC_v1. Now you can see which hooks outperform, which formats win.", highlight: "Data drives better creative. 'Question hooks beat stats by 30%' - that\'s actionable." },
       { type: 'quiz', question: 'What is the biggest lever in Meta ads at scale?', options: ['Hyper-targeted audience segmentation', 'Creative volume and diversity', 'Increasing daily ad spend', 'Retargeting campaigns'], correctIndex: 1, feedback: { correct: "Exactly! Creative volume and diversity is the biggest lever. The AI needs OPTIONS to find winners.", incorrect: "Not quite. Andromeda is so advanced that creative matters more than targeting. Give the AI more options." } },
       { type: 'action-checklist', title: 'Your Creative System', items: ['Set up naming conventions for all ads', 'Build a creative production pipeline (aim for 100+/week)', 'Implement MTA tracking to measure what works', 'Kill losers fast, scale winners hard'] },
       { type: 'completion' }
@@ -146,22 +221,32 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
@@ -740,6 +825,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -822,6 +917,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
