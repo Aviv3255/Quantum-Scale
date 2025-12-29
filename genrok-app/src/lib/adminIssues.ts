@@ -131,11 +131,12 @@ export async function getIssueCounts() {
 
   if (error) throw error;
 
+  const issues = (data || []) as { status: string }[];
   const counts = {
-    all: data?.length || 0,
-    pending: data?.filter(i => i.status === 'pending').length || 0,
-    fixed: data?.filter(i => i.status === 'fixed').length || 0,
-    validated: data?.filter(i => i.status === 'validated').length || 0,
+    all: issues.length,
+    pending: issues.filter(i => i.status === 'pending').length,
+    fixed: issues.filter(i => i.status === 'fixed').length,
+    validated: issues.filter(i => i.status === 'validated').length,
   };
 
   return counts;
