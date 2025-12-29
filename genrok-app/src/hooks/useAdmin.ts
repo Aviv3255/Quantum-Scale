@@ -31,19 +31,20 @@ export function useAdmin() {
           .eq('id', user.id)
           .single();
 
-        console.log('[useAdmin] RAW RESPONSE - data:', data);
+        const profile = data as { id: string; email: string; is_admin: boolean | null } | null;
+        console.log('[useAdmin] RAW RESPONSE - data:', profile);
         console.log('[useAdmin] RAW RESPONSE - error:', error);
 
         if (error) {
           console.error('[useAdmin] QUERY ERROR:', error.message, error.code, error.details);
           setIsAdmin(false);
-        } else if (!data) {
+        } else if (!profile) {
           console.log('[useAdmin] NO DATA RETURNED - profile may not exist');
           setIsAdmin(false);
         } else {
-          console.log('[useAdmin] Profile found:', data);
-          console.log('[useAdmin] is_admin value:', data.is_admin, 'type:', typeof data.is_admin);
-          const adminStatus = data.is_admin === true;
+          console.log('[useAdmin] Profile found:', profile);
+          console.log('[useAdmin] is_admin value:', profile.is_admin, 'type:', typeof profile.is_admin);
+          const adminStatus = profile.is_admin === true;
           console.log('[useAdmin] SETTING isAdmin to:', adminStatus);
           setIsAdmin(adminStatus);
         }
