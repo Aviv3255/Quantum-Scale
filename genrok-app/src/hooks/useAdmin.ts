@@ -22,9 +22,9 @@ export function useAdmin() {
 
       try {
         const { data, error } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('is_admin')
-          .eq('user_id', user.id)
+          .eq('id', user.id)
           .single();
 
         const result = data as { is_admin: boolean | null } | null;

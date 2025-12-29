@@ -3,11 +3,11 @@
 -- Run this in Supabase Dashboard → SQL Editor
 -- ================================================
 
--- 1. Add is_admin column to user_profiles
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+-- 1. Add is_admin column to profiles table
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
 
--- 2. Set you as admin
-UPDATE user_profiles SET is_admin = TRUE WHERE user_id = 'cdb46ae9-f2a7-4a93-8f02-4b43bd10ebfe';
+-- 2. Set yourself as admin (REPLACE with your actual user ID from Supabase Auth → Users)
+-- UPDATE profiles SET is_admin = TRUE WHERE id = 'YOUR_USER_ID_HERE';
 
 -- 3. Create admin_issues table
 CREATE TABLE IF NOT EXISTS admin_issues (
@@ -48,8 +48,8 @@ ALTER TABLE admin_issues ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Admins can manage issues" ON admin_issues
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid() AND user_profiles.is_admin = TRUE
+      SELECT 1 FROM profiles
+      WHERE profiles.id = auth.uid() AND profiles.is_admin = TRUE
     )
   );
 
