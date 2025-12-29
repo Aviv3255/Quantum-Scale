@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -431,14 +431,37 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
 export default function LessonPage() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const slug = params.slug as string;
   const { user, isLoading } = useAuthStore();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [userName, setUserName] = useState<string>('Builder');
 
+  // Get slide parameter for deep linking (from admin issue direct links)
+  const slideParam = searchParams.get('slide');
+
   // Derive lesson data from slug - no need for state
   const lesson = useMemo(() => lessonMeta[slug], [slug]);
   const lessonExists = Boolean(lesson);
+
+  // Listen for slide updates from the lesson iframe (for admin issue tracking)
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'LESSON_SLIDE_UPDATE') {
+        // Dispatch custom event for AdminReportButton to capture
+        window.dispatchEvent(new CustomEvent('lessonSlideContext', {
+          detail: {
+            slideIndex: event.data.slideIndex,
+            slideType: event.data.slideType,
+            lessonSlug: event.data.lessonSlug || slug
+          }
+        }));
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [slug]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -492,8 +515,8 @@ export default function LessonPage() {
     );
   }
 
-  // Pass user's first name to the lesson via URL param
-  const lessonUrl = `/lessons/${slug}/lesson.html?userName=${encodeURIComponent(userName)}`;
+  // Pass user's first name and optional slide index to the lesson via URL param
+  const lessonUrl = `/lessons/${slug}/lesson.html?userName=${encodeURIComponent(userName)}${slideParam ? `&slide=${slideParam}` : ''}`;
 
   return (
     <DashboardLayout>
@@ -543,6 +566,7 @@ export default function LessonPage() {
             className="w-full h-full border-0"
             title={lesson.title}
             allow="fullscreen"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
           />
         </div>
       </div>
