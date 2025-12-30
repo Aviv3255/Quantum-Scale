@@ -23,7 +23,8 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
   const [usePlaywright, setUsePlaywright] = useState(true);
 
   const pageUrl = typeof window !== 'undefined' ? window.location.pathname : '';
-  const pageType = detectPageType(pageUrl);
+  // Override pageType to 'lesson' when we have lesson context (iframe reports)
+  const pageType = lessonContext ? 'lesson' : detectPageType(pageUrl);
 
   const locationInfo = lessonContext
     ? `Lesson: ${lessonContext.lessonSlug} | Slide ${lessonContext.slideIndex + 1} (${lessonContext.slideType})`

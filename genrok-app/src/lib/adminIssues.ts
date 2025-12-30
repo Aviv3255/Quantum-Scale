@@ -123,6 +123,19 @@ export async function deleteIssue(id: string) {
   if (error) throw error;
 }
 
+// Update issue feedback
+export async function updateIssueFeedback(id: string, feedback: string) {
+  const { data, error } = await supabase
+    .from('admin_issues')
+    .update({ feedback } as never)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as AdminIssue;
+}
+
 // Get issue counts by status
 export async function getIssueCounts() {
   const { data, error } = await supabase

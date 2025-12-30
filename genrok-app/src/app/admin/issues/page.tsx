@@ -14,9 +14,11 @@ import {
   Filter,
   Search,
   ArrowLeft,
+  MessageSquare,
+  Send,
 } from 'lucide-react';
 import Link from 'next/link';
-import { getIssues, getIssueCounts, updateIssueStatus, deleteIssue } from '@/lib/adminIssues';
+import { getIssues, getIssueCounts, updateIssueStatus, deleteIssue, updateIssueFeedback } from '@/lib/adminIssues';
 import type { AdminIssue } from '@/types/admin';
 
 type StatusFilter = 'all' | 'pending' | 'fixed' | 'validated';
@@ -28,6 +30,8 @@ export default function AdminIssuesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null);
+  const [feedbackText, setFeedbackText] = useState('');
 
   // Fetch issues and counts
   const fetchData = async () => {
@@ -85,6 +89,33 @@ export default function AdminIssuesPage() {
       console.error('Error deleting issue:', err);
     } finally {
       setActionLoading(null);
+    }
+  };
+
+  // Handle feedback submission
+  const handleFeedbackSubmit = async (id: string) => {
+    if (!feedbackText.trim()) return;
+    setActionLoading(id);
+    try {
+      await updateIssueFeedback(id, feedbackText.trim());
+      setFeedbackText('');
+      setExpandedFeedback(null);
+      await fetchData();
+    } catch (err) {
+      console.error('Error saving feedback:', err);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Toggle feedback panel
+  const toggleFeedback = (id: string, currentFeedback: string | null) => {
+    if (expandedFeedback === id) {
+      setExpandedFeedback(null);
+      setFeedbackText('');
+    } else {
+      setExpandedFeedback(id);
+      setFeedbackText(currentFeedback || '');
     }
   };
 
@@ -257,6 +288,17 @@ export default function AdminIssuesPage() {
                       {issue.status === 'fixed' && (
                         <>
                           <button
+                            onClick={() => toggleFeedback(issue.id, issue.feedback)}
+                            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+                              issue.feedback || expandedFeedback === issue.id
+                                ? 'bg-purple-100 hover:bg-purple-200'
+                                : 'bg-neutral-100 hover:bg-neutral-200'
+                            }`}
+                            title={issue.feedback ? 'View/Edit Feedback' : 'Add Feedback'}
+                          >
+                            <MessageSquare className={`w-4 h-4 ${issue.feedback || expandedFeedback === issue.id ? 'text-purple-600' : 'text-neutral-600'}`} />
+                          </button>
+                          <button
                             onClick={() => handleStatusChange(issue.id, 'validated')}
                             disabled={actionLoading === issue.id}
                             className="w-9 h-9 rounded-lg bg-green-100 hover:bg-green-200 flex items-center justify-center transition-colors disabled:opacity-50"
@@ -297,6 +339,52 @@ export default function AdminIssuesPage() {
                       </button>
                     </div>
                   </div>
+
+                  {/* Feedback Panel (for fixed issues) */}
+                  {expandedFeedback === issue.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-4 pt-4 border-t border-neutral-100"
+                    >
+                      <label className="block text-sm font-medium text-neutral-700 mb-2">
+                        Feedback on Fix
+                      </label>
+                      <div className="flex gap-2">
+                        <textarea
+                          value={feedbackText}
+                          onChange={(e) => setFeedbackText(e.target.value)}
+                          placeholder="Describe what's wrong with this fix or what needs to change..."
+                          rows={2}
+                          className="flex-1 px-4 py-2.5 rounded-xl border border-neutral-200 focus:border-purple-400 focus:ring-0 outline-none transition-colors text-sm resize-none"
+                        />
+                        <button
+                          onClick={() => handleFeedbackSubmit(issue.id)}
+                          disabled={actionLoading === issue.id || !feedbackText.trim()}
+                          className="px-4 py-2.5 rounded-xl bg-purple-500 text-white hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                          <Send className="w-4 h-4" />
+                          Save
+                        </button>
+                      </div>
+                      {issue.feedback && (
+                        <div className="mt-3 p-3 rounded-lg bg-purple-50 text-sm text-purple-700">
+                          <span className="font-medium">Current feedback:</span> {issue.feedback}
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Show existing feedback indicator */}
+                  {issue.feedback && expandedFeedback !== issue.id && (
+                    <div className="mt-3 pt-3 border-t border-neutral-100">
+                      <div className="flex items-start gap-2 text-sm text-purple-600">
+                        <MessageSquare className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                        <p className="line-clamp-1">{issue.feedback}</p>
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>
