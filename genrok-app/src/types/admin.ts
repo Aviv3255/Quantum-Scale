@@ -29,6 +29,9 @@ export interface AdminIssue {
 
   // Direct link
   direct_link: string;
+
+  // Feedback on fix (for issues marked as fixed)
+  feedback: string | null;
 }
 
 export interface AdminIssueCreate {
