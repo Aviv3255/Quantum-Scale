@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS admin_issues (
 -- 4. Enable RLS
 ALTER TABLE admin_issues ENABLE ROW LEVEL SECURITY;
 
--- 5. Create policy for admins
+-- 5. Create policy for admins to manage (UPDATE, DELETE)
 CREATE POLICY "Admins can manage issues" ON admin_issues
   FOR ALL USING (
     EXISTS (
@@ -53,6 +53,31 @@ CREATE POLICY "Admins can manage issues" ON admin_issues
     )
   );
 
--- 6. Allow public read for Claude to see issues
+-- 6. Allow ANY authenticated user to INSERT issues (for bug reporting)
+CREATE POLICY "Authenticated users can report issues" ON admin_issues
+  FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+
+-- 7. Allow public read for Claude to see issues
 CREATE POLICY "Public can read issues" ON admin_issues
   FOR SELECT USING (true);
+
+
+-- ================================================
+-- RUN THIS TO FIX EXISTING DATABASE:
+-- ================================================
+-- If you already ran the setup, run these commands to update:
+--
+-- DROP POLICY IF EXISTS "Admins can manage issues" ON admin_issues;
+--
+-- CREATE POLICY "Admins can manage issues" ON admin_issues
+--   FOR UPDATE USING (
+--     EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.is_admin = TRUE)
+--   );
+--
+-- CREATE POLICY "Admins can delete issues" ON admin_issues
+--   FOR DELETE USING (
+--     EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.is_admin = TRUE)
+--   );
+--
+-- CREATE POLICY "Authenticated users can report issues" ON admin_issues
+--   FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
