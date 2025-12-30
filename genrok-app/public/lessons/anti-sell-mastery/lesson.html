@@ -47,25 +47,17 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -148,33 +140,48 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why "Psychological Reactance" makes customers resist your pitch', 'The counter-intuitive power of pulling AWAY instead of pushing', 'How to make customers convince THEMSELVES to buy'] },
-      { type: 'hook', headline: '"This product probably isn\'t for you." That one sentence increased conversions by 31%.', subtext: 'It sounds insane. Every marketing instinct says PUSH harder. "Buy now!" "Don\'t miss out!" "Limited time!" But here\'s what actually happens: the harder you push, the harder they resist. It\'s called Psychological Reactance. The brain has an automatic defense against being told what to do. The solution? Stop pushing. Start pulling away. Make them CHASE you.' },
-      { type: 'content', title: 'The Science of Resistance', body: 'Psychological Reactance is the brain\'s automatic defense mechanism. When you feel your freedom is being threatened - when someone is trying to control your decision - your brain rebels. You don\'t just ignore the pitch. You actively move in the OPPOSITE direction. "Buy now!" makes you want to wait. "You need this!" makes you skeptical. "Last chance!" makes you walk away. The pushier the sell, the stronger the pushback. This is why aggressive marketing backfires on sophisticated buyers.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
-      { type: 'visual', title: 'The Reactance Effect', visualType: 'comparison', data: {
-        left: { label: 'Push Harder', value: '-31%', result: 'Aggressive tactics decrease trust', color: '#ef4444' },
-        right: { label: 'Pull Back', value: '+31%', result: 'Anti-sell increases conversions', color: '#10b981' },
-        center: { label: 'Total Gap', value: '62%', result: 'Between push and pull strategies', color: '#8b5cf6' }
-      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
-      { type: 'cards', title: 'The Anti-Sell Principles', items: [
-        { title: 'Disqualify First', description: '"This isn\'t for everyone. If you\'re looking for quick fixes, this isn\'t it." You just made them want to prove they\'re NOT the wrong fit.' },
-        { title: 'Give Permission to Leave', description: '"Honestly, if this doesn\'t feel right, close the page. No pressure." Removing pressure paradoxically increases desire to stay.' },
-        { title: 'Acknowledge Downsides', description: '"Fair warning: this takes work. Most people quit in week 2." Brutal honesty builds trust. They lower their guard.' },
-        { title: 'Make Them Chase', description: '"I\'m not sure I should even share this..." Pulling away creates pursuit. They lean IN when you pull BACK.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'right'},
-      { type: 'content', title: 'Why "Not For Everyone" Works', body: 'When you say "this isn\'t for everyone," several psychological triggers fire at once: 1) EXCLUSIVITY - If it\'s not for everyone, it must be special. 2) IDENTITY - They want to prove they\'re the RIGHT kind of person. 3) REACTANCE REVERSAL - You\'re not pushing, so there\'s nothing to resist. 4) CURIOSITY - Who IS it for then? They need to find out. The customer\'s brain shifts from "Why should I buy?" to "Am I good enough to buy?" That\'s a completely different conversation.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'right'},
-      { type: 'example', scenario: 'Online Course Sales Page', before: { label: 'Push Strategy', text: '"Enroll NOW! 500+ students already inside! Don\'t miss out on this life-changing opportunity! Only 24 hours left!"' }, after: { label: 'Anti-Sell', text: '"Fair warning: this course is NOT for people who want passive income or quick wins. It\'s 12 weeks of work. Most people aren\'t ready for that. If that\'s you - no problem. This page will still be here if you change your mind."' }, insight: 'The first triggers reactance ("stop pushing me"). The second triggers self-selection ("I AM ready for work!") and eliminates resistance. Same product, opposite psychology.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Takeaway Close', body: 'One of the most powerful anti-sell techniques is the "takeaway." Right when they\'re interested, you PULL BACK. "Actually, before you buy, let me make sure this is right for you. What exactly are you hoping to achieve?" This does two things: 1) It positions you as an advisor, not a salesperson. 2) It creates scarcity of YOUR attention, not just the product. When you\'re willing to walk away from a sale, your value goes UP.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'right'},
-      { type: 'cards', title: 'Anti-Sell Language Swaps', items: [
-        { title: '"Buy Now!" → "Take your time"', description: 'Removing urgency paradoxically creates it. They think: "Why isn\'t this person pushing? Must not need my money. Must be good."' },
-        { title: '"You Need This" → "You Might Not"', description: 'Challenging their need makes them defend it. "Actually, I DO need this!" They\'re now selling themselves.' },
-        { title: '"Don\'t Miss Out" → "It\'s Okay to Wait"', description: 'Giving permission to delay makes staying feel like their OWN choice. The resistance melts.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'left'},
-      { type: 'example', scenario: 'High-Ticket Coaching Offer', before: { label: 'Traditional Hard Close', text: '"Spots are filling fast! If you\'re serious about success, you\'ll invest in yourself. Don\'t let fear hold you back. Sign up before it\'s too late!"' }, after: { label: 'Anti-Sell Approach', text: '"I only work with 5 clients at a time, and honestly, I\'m picky. Before we even talk about working together, I need to know: are you actually ready to do the work? Because most people aren\'t. And that\'s fine."' }, insight: 'The first makes them defensive ("stop pressuring me"). The second makes them prove themselves ("I AM ready!"). They\'re now competing for YOUR attention, not the other way around.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'When NOT to Anti-Sell', body: 'Anti-sell works best with: sophisticated buyers who\'ve seen it all, high-ticket offers where trust matters, markets drowning in pushy competitors, and audiences who value authenticity. It works LESS well for: impulse purchases where quick action is genuinely needed, commoditized products with little differentiation, audiences unfamiliar with your category. The key is reading your market. If everyone\'s screaming "BUY NOW," your whisper stands out. If everyone\'s already quiet, you might need a different approach.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'left'},
+      { type: 'hook', headline: '"This product probably isn\'t for you." That one sentence increased conversions by 31%.', subtext: 'It sounds insane. Every marketing instinct says PUSH harder. "Buy now!" "Don\'t miss out!" "Limited time!" But here\'s what actually happens: the harder you push, the harder they resist. It\'s called Psychological Reactance. The brain has an automatic defense against being told what to do. The solution? Stop pushing. Start pulling away. Make them CHASE you.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'left' },
+      { type: 'reactance-visual', title: 'The Reactance Effect', subtitle: 'When you push, they push back harder' },
+      { type: 'push-pull-scale', title: 'The Push vs Pull Gap', data: {
+        push: { label: 'Push Harder', value: -31, description: 'Aggressive tactics decrease trust', tactics: ['"Buy NOW!"', '"Don\'t miss out!"', '"Limited time!"'] },
+        pull: { label: 'Pull Back', value: 31, description: 'Anti-sell increases conversions', tactics: ['"Take your time"', '"Not for everyone"', '"It\'s okay to wait"'] }
+      }},
+      { type: 'content', title: 'The Science of Resistance', body: 'Psychological Reactance is the brain\'s automatic defense mechanism. When you feel your freedom is being threatened - when someone is trying to control your decision - your brain rebels. You don\'t just ignore the pitch. You actively move in the OPPOSITE direction. "Buy now!" makes you want to wait. "You need this!" makes you skeptical. "Last chance!" makes you walk away. The pushier the sell, the stronger the pushback. This is why aggressive marketing backfires on sophisticated buyers.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right' },
+      { type: 'anti-sell-principles', title: 'The 4 Anti-Sell Principles', principles: [
+        { number: 1, title: 'Disqualify First', description: '"This isn\'t for everyone. If you\'re looking for quick fixes, this isn\'t it."', effect: 'Makes them want to prove they\'re NOT the wrong fit', icon: 'UserMinus' },
+        { number: 2, title: 'Give Permission to Leave', description: '"Honestly, if this doesn\'t feel right, close the page. No pressure."', effect: 'Removes pressure, paradoxically increases desire to stay', icon: 'DoorOpen' },
+        { number: 3, title: 'Acknowledge Downsides', description: '"Fair warning: this takes work. Most people quit in week 2."', effect: 'Brutal honesty builds trust. They lower their guard.', icon: 'AlertTriangle' },
+        { number: 4, title: 'Make Them Chase', description: '"I\'m not sure I should even share this..."', effect: 'Pulling away creates pursuit. They lean IN when you pull BACK.', icon: 'Magnet' }
+      ]},
+      { type: 'psychology-triggers', title: 'Why "Not For Everyone" Works', triggers: [
+        { name: 'EXCLUSIVITY', description: 'If it\'s not for everyone, it must be special', icon: 'Crown', color: '#8B5CF6' },
+        { name: 'IDENTITY', description: 'They want to prove they\'re the RIGHT kind of person', icon: 'User', color: '#3B82F6' },
+        { name: 'REACTANCE REVERSAL', description: 'You\'re not pushing, so there\'s nothing to resist', icon: 'RefreshCw', color: '#22C55E' },
+        { name: 'CURIOSITY', description: 'Who IS it for then? They need to find out.', icon: 'HelpCircle', color: '#F59E0B' }
+      ], insight: 'The customer\'s brain shifts from "Why should I buy?" to "Am I good enough to buy?" That\'s a completely different conversation.' },
+      { type: 'before-after-example', title: 'Online Course Sales Page', before: { label: 'Push Strategy', text: '"Enroll NOW! 500+ students already inside! Don\'t miss out on this life-changing opportunity! Only 24 hours left!"', color: '#EF4444' }, after: { label: 'Anti-Sell', text: '"Fair warning: this course is NOT for people who want passive income or quick wins. It\'s 12 weeks of work. Most people aren\'t ready for that. If that\'s you - no problem. This page will still be here if you change your mind."', color: '#22C55E' }, insight: 'The first triggers reactance ("stop pushing me"). The second triggers self-selection ("I AM ready for work!") and eliminates resistance.' },
+      { type: 'language-swap-cards', title: 'Anti-Sell Language Swaps', swaps: [
+        { before: '"Buy Now!"', after: '"Take your time"', why: 'Removing urgency paradoxically creates it. They think: "Why isn\'t this person pushing? Must not need my money. Must be good."' },
+        { before: '"You Need This"', after: '"You Might Not"', why: 'Challenging their need makes them defend it. "Actually, I DO need this!" They\'re now selling themselves.' },
+        { before: '"Don\'t Miss Out"', after: '"It\'s Okay to Wait"', why: 'Giving permission to delay makes staying feel like their OWN choice. The resistance melts.' }
+      ]},
+      { type: 'before-after-example', title: 'High-Ticket Coaching Offer', before: { label: 'Traditional Hard Close', text: '"Spots are filling fast! If you\'re serious about success, you\'ll invest in yourself. Don\'t let fear hold you back. Sign up before it\'s too late!"', color: '#EF4444' }, after: { label: 'Anti-Sell Approach', text: '"I only work with 5 clients at a time, and honestly, I\'m picky. Before we even talk about working together, I need to know: are you actually ready to do the work? Because most people aren\'t. And that\'s fine."', color: '#22C55E' }, insight: 'The first makes them defensive ("stop pressuring me"). The second makes them prove themselves ("I AM ready!"). They\'re now competing for YOUR attention.' },
+      { type: 'highlight-box', title: 'The Takeaway Close', body: 'One of the most powerful anti-sell techniques is the "takeaway." Right when they\'re interested, you PULL BACK. "Actually, before you buy, let me make sure this is right for you. What exactly are you hoping to achieve?" This does two things:', highlights: ['It positions you as an advisor, not a salesperson', 'It creates scarcity of YOUR attention, not just the product'], footer: 'When you\'re willing to walk away from a sale, your value goes UP.' },
+      { type: 'when-to-use', title: 'When to Use Anti-Sell', works: [
+        'Sophisticated buyers who\'ve seen it all',
+        'High-ticket offers where trust matters',
+        'Markets drowning in pushy competitors',
+        'Audiences who value authenticity'
+      ], doesntWork: [
+        'Impulse purchases needing quick action',
+        'Commoditized products with little differentiation',
+        'Audiences unfamiliar with your category'
+      ], insight: 'If everyone\'s screaming "BUY NOW," your whisper stands out. If everyone\'s already quiet, you might need a different approach.' },
       { type: 'quiz', question: 'A luxury watch brand wants to increase conversions on their $5,000 timepiece. Which approach uses Anti-Sell correctly?', options: ['"Order now and get free shipping! Only 3 left in stock!"', '"These watches take 6 months to craft. Honestly, if you want something quick and trendy, we\'re not it. This is for the 1% who appreciate true craftsmanship."', '"Best watches of 2024! Celebrities love them! Buy before prices go up!"', '"Limited edition release - buy now or regret it forever!"'], correctIndex: 1, feedback: { correct: 'Perfect! This disqualifies the wrong buyers ("quick and trendy"), creates exclusivity ("1% who appreciate craftsmanship"), and never PUSHES. The right buyer leans in harder because they want to BE that 1%. Pure anti-sell psychology.', incorrect: 'The winner is the one that PULLS AWAY: "If you want something quick and trendy, we\'re not it." This disqualifies the wrong buyers and makes the right ones lean in harder to prove they\'re the "1% who appreciate craftsmanship." That\'s anti-sell.' }},
       { type: 'completion', sources: [] }
     ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -184,7 +191,364 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      UserMinus: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>,
+      DoorOpen: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg>,
+      AlertTriangle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Magnet: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15"/><path d="m5 8 4 4"/><path d="m12 15 4 4"/></svg>,
+      Crown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      User: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      RefreshCw: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
+      HelpCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      CheckCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      XCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+      ShieldOff: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.69 14a6.9 6.9 0 0 0 .31-2V5l-8-3-3.16 1.18"/><path d="M4.73 4.73 4 5v7c0 6 8 10 8 10a20.29 20.29 0 0 0 5.62-4.38"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Shield: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     };
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const absTarget = Math.abs(target);
+        const increment = absTarget / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= absTarget) { setCount(absTarget); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{target < 0 ? '-' : '+'}{count}{suffix}</span>;
+    };
+
+    // ============ CUSTOM SLIDE COMPONENTS ============
+
+    // Reactance Visual - Animated brain resistance diagram
+    const ReactanceVisualSlide = ({ data }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setAnimated(true), 300); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444' }}>
+              <Icons.ShieldOff size={14} color="#EF4444" />
+              <span>Psychological Reactance</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 md:p-10" style={{ background: '#0a0a0a', border: '1px solid #222', boxShadow: '0 0 40px rgba(239, 68, 68, 0.1)' }}>
+            <div className="flex items-center justify-center gap-6 md:gap-12">
+              {/* Push Arrow */}
+              <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="flex flex-col items-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(239, 68, 68, 0.2)', border: '2px solid #EF4444' }}>
+                  <span className="text-2xl md:text-3xl">👉</span>
+                </div>
+                <span className="text-red-400 font-bold text-sm">PUSH</span>
+              </motion.div>
+
+              {/* Brain with shield */}
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6, type: 'spring' }} className="relative">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '3px solid #EF4444', boxShadow: '0 0 30px rgba(239, 68, 68, 0.3)' }}>
+                  <span className="text-4xl md:text-5xl">🧠</span>
+                </div>
+                <motion.div initial={{ scale: 0 }} animate={animated ? { scale: [1, 1.2, 1] } : {}} transition={{ repeat: Infinity, duration: 1.5 }} className="absolute -top-2 -right-2 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center" style={{ background: '#EF4444' }}>
+                  <Icons.Shield size={20} color="white" />
+                </motion.div>
+              </motion.div>
+
+              {/* Push Back Arrow */}
+              <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.8 }} className="flex flex-col items-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(239, 68, 68, 0.2)', border: '2px solid #EF4444' }}>
+                  <span className="text-2xl md:text-3xl">👈</span>
+                </div>
+                <span className="text-red-400 font-bold text-sm">RESIST</span>
+              </motion.div>
+            </div>
+
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="text-center text-neutral-400 text-sm mt-8 max-w-md mx-auto">
+              The harder you push, the harder the brain pushes back. It's automatic - not conscious.
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Push vs Pull Scale - Visual comparison with animated scale
+    const PushPullScaleSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>The Data</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            {/* Push Side */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 0 30px rgba(239, 68, 68, 0.1)' }}>
+              <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Icons.TrendingDown size={20} color="#EF4444" />
+                </div>
+                <h3 className="text-white font-bold text-lg">{data.data.push.label}</h3>
+              </div>
+              <div className="text-4xl md:text-5xl font-bold mb-3 title-font" style={{ color: '#EF4444', textShadow: '0 0 20px rgba(239, 68, 68, 0.4)' }}>
+                <AnimatedCounter target={data.data.push.value} suffix="%" duration={1500} />
+              </div>
+              <p className="text-neutral-400 text-sm mb-4">{data.data.push.description}</p>
+              <div className="space-y-2">
+                {data.data.push.tactics.map((tactic, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-center gap-2">
+                    <Icons.X />
+                    <span className="text-red-400 text-xs">{tactic}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Pull Side */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid rgba(var(--accent-rgb), 0.3)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.1)' }}>
+              <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <Icons.TrendingUp size={20} color="var(--accent)" />
+                </div>
+                <h3 className="text-white font-bold text-lg">{data.data.pull.label}</h3>
+              </div>
+              <div className="text-4xl md:text-5xl font-bold mb-3 title-font" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb), 0.4)' }}>
+                <AnimatedCounter target={data.data.pull.value} suffix="%" duration={1500} />
+              </div>
+              <p className="text-neutral-400 text-sm mb-4">{data.data.pull.description}</p>
+              <div className="space-y-2">
+                {data.data.pull.tactics.map((tactic, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.1 }} className="flex items-center gap-2">
+                    <Icons.Check />
+                    <span className="text-green-400 text-xs">{tactic}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05))', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+            <p className="text-neutral-700 text-sm font-medium">Total gap between strategies: <span className="font-bold" style={{ color: '#8B5CF6' }}>62%</span></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Anti-Sell Principles Slide
+    const AntiSellPrinciplesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+            <Icons.Zap />
+            <span>The Framework</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.principles.map((principle, i) => {
+            const IconComponent = Icons[principle.icon] || Icons.Zap;
+            const colors = ['#3B82F6', '#8B5CF6', '#F59E0B', '#22C55E'];
+            const color = colors[i % colors.length];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="rounded-xl p-4 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${color}30`, boxShadow: `0 0 20px ${color}10` }}>
+                <div className="h-0.5 w-full absolute top-0 left-0" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${color}20`, border: `1px solid ${color}` }}>
+                    <span className="font-bold" style={{ color }}>{principle.number}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-sm mb-1">{principle.title}</h3>
+                    <p className="text-neutral-500 text-xs italic mb-2">{principle.description}</p>
+                    <p className="text-xs px-2 py-1 rounded inline-block" style={{ background: `${color}15`, color }}>{principle.effect}</p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Psychology Triggers Slide
+    const PsychologyTriggersSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">4 triggers fire at once</p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {data.triggers.map((trigger, i) => {
+            const IconComponent = Icons[trigger.icon] || Icons.Zap;
+            return (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 + i * 0.1 }} className="rounded-xl p-4 text-center relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${trigger.color}30` }}>
+                <div className="h-0.5 w-full absolute top-0 left-0" style={{ background: `linear-gradient(90deg, transparent, ${trigger.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: `${trigger.color}20` }}>
+                  <IconComponent size={24} color={trigger.color} />
+                </div>
+                <h3 className="font-bold text-sm mb-1" style={{ color: trigger.color }}>{trigger.name}</h3>
+                <p className="text-neutral-400 text-xs">{trigger.description}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <p className="text-neutral-700 text-sm">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Before/After Example Slide
+    const BeforeAfterExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${data.before.color}40` }}>
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: `linear-gradient(90deg, transparent, ${data.before.color}, transparent)` }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: data.before.color }}><Icons.X /></div>
+              <span className="font-semibold text-sm" style={{ color: data.before.color }}>{data.before.label}</span>
+            </div>
+            <p className="text-neutral-400 text-sm leading-relaxed italic">"{data.before.text}"</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${data.after.color}40` }}>
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: `linear-gradient(90deg, transparent, ${data.after.color}, transparent)` }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: data.after.color }}><Icons.Check /></div>
+              <span className="font-semibold text-sm" style={{ color: data.after.color }}>{data.after.label}</span>
+            </div>
+            <p className="text-neutral-400 text-sm leading-relaxed italic">"{data.after.text}"</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #0a0a0a)', border: '1px solid #333' }}>
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Language Swap Cards Slide
+    const LanguageSwapCardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="space-y-3">
+          {data.swaps.map((swap, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.15 }} className="rounded-xl p-4 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #333' }}>
+              <div className="h-0.5 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, #EF4444, transparent 30%, transparent 70%, var(--accent))' }} />
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex-1 text-center">
+                  <span className="text-red-400 font-bold text-sm line-through">{swap.before}</span>
+                </div>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <Icons.ArrowRight />
+                </div>
+                <div className="flex-1 text-center">
+                  <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>{swap.after}</span>
+                </div>
+              </div>
+              <p className="text-neutral-400 text-xs text-center">{swap.why}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Highlight Box Slide
+    const HighlightBoxSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid rgba(var(--accent-rgb), 0.3)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.1)' }}>
+          <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <p className="text-neutral-300 text-base leading-relaxed mb-6">{data.body}</p>
+          <div className="space-y-2 mb-6">
+            {data.highlights.map((highlight, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <span className="font-bold text-xs" style={{ color: 'var(--accent)' }}>{i + 1}</span>
+                </div>
+                <span className="text-white text-sm">{highlight}</span>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+            <p className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>{data.footer}</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // When To Use Slide
+    const WhenToUseSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <Icons.CheckCircle size={20} color="var(--accent)" />
+              <span className="font-bold text-white text-sm">Works Best For</span>
+            </div>
+            <div className="space-y-2">
+              {data.works.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
+                  <span className="text-neutral-400 text-xs">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid rgba(107, 114, 128, 0.3)' }}>
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, #6B7280, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <Icons.XCircle size={20} color="#6B7280" />
+              <span className="font-bold text-white text-sm">Less Effective For</span>
+            </div>
+            <div className="space-y-2">
+              {data.doesntWork.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + i * 0.08 }} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
+                  <span className="text-neutral-500 text-xs">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <p className="text-neutral-700 text-sm">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -232,21 +596,14 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full relative flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -259,86 +616,6 @@
             </video>
           </motion.div>
         )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -395,19 +672,6 @@
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -424,7 +688,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -464,9 +727,14 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'reactance-visual': return <ReactanceVisualSlide data={slide} />;
+          case 'push-pull-scale': return <PushPullScaleSlide data={slide} />;
+          case 'anti-sell-principles': return <AntiSellPrinciplesSlide data={slide} />;
+          case 'psychology-triggers': return <PsychologyTriggersSlide data={slide} />;
+          case 'before-after-example': return <BeforeAfterExampleSlide data={slide} />;
+          case 'language-swap-cards': return <LanguageSwapCardsSlide data={slide} />;
+          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
+          case 'when-to-use': return <WhenToUseSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
