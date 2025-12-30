@@ -11,16 +11,22 @@ export function AdminReportButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lessonContext, setLessonContext] = useState<LessonSlideContext | null>(null);
 
+  // Debug logging
+  console.log('[AdminReportButton] Render - isAdmin:', isAdmin, 'isLoading:', isLoading);
+
   // Send admin status to iframes when admin status changes
   useEffect(() => {
+    console.log('[AdminReportButton] useEffect - isLoading:', isLoading, 'isAdmin:', isAdmin);
     if (!isLoading) {
       // Send to all iframes
       const iframes = document.querySelectorAll('iframe');
-      iframes.forEach((iframe) => {
+      console.log('[AdminReportButton] Found iframes:', iframes.length);
+      iframes.forEach((iframe, index) => {
         try {
+          console.log('[AdminReportButton] Sending ADMIN_STATUS to iframe', index, 'isAdmin:', isAdmin);
           iframe.contentWindow?.postMessage({ type: 'ADMIN_STATUS', isAdmin }, '*');
         } catch (e) {
-          // Ignore cross-origin errors
+          console.log('[AdminReportButton] Error sending to iframe', index, e);
         }
       });
     }
@@ -70,8 +76,11 @@ export function AdminReportButton() {
 
   // Don't render if not admin
   if (isLoading || !isAdmin) {
+    console.log('[AdminReportButton] NOT RENDERING - isLoading:', isLoading, 'isAdmin:', isAdmin);
     return null;
   }
+
+  console.log('[AdminReportButton] RENDERING BUTTON - isAdmin is true!');
 
   return (
     <>
