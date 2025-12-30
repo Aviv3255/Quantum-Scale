@@ -330,41 +330,47 @@
       </div>
     );
 
-    const ComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <div className="text-center mb-4">
-              <h3 className="text-xl font-bold text-red-700 mb-1">{data.fredProfile.name}</h3>
-              <p className="text-sm text-red-600 italic">{data.fredProfile.subtitle}</p>
-            </div>
-            <ul className="space-y-3">
-              {data.fredProfile.traits.map((trait, i) => (
-                <li key={i} className="flex items-start gap-2 text-red-700">
-                  <span className="text-red-500 text-lg">✗</span>
-                  <span className="text-sm">{trait}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-            <div className="text-center mb-4">
-              <h3 className="text-xl font-bold text-green-700 mb-1">{data.williamProfile.name}</h3>
-              <p className="text-sm text-green-600 italic">{data.williamProfile.subtitle}</p>
-            </div>
-            <ul className="space-y-3">
-              {data.williamProfile.traits.map((trait, i) => (
-                <li key={i} className="flex items-start gap-2 text-green-700">
-                  <span className="text-green-500 text-lg">✓</span>
-                  <span className="text-sm">{trait}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+    const ComparisonSlide = ({ data }) => {
+      const redGlow = 'rgba(239, 68, 68, 0.2)';
+      const greenGlow = 'rgba(16, 185, 129, 0.3)';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative rounded-xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a0a0a, #2d1515)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${redGlow}` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold mb-1" style={{ color: '#ef4444', textShadow: `0 0 20px ${redGlow}` }}>{data.fredProfile.name}</h3>
+                <p className="text-sm italic" style={{ color: 'rgba(239, 68, 68, 0.7)' }}>{data.fredProfile.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.fredProfile.traits.map((trait, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-2">
+                    <span className="text-lg" style={{ color: '#ef4444' }}>✗</span>
+                    <span className="text-sm text-neutral-300">{trait}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative rounded-xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a1a0a, #152d15)', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${greenGlow}` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold mb-1" style={{ color: '#10b981', textShadow: `0 0 20px ${greenGlow}` }}>{data.williamProfile.name}</h3>
+                <p className="text-sm italic" style={{ color: 'rgba(16, 185, 129, 0.7)' }}>{data.williamProfile.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.williamProfile.traits.map((trait, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }} className="flex items-start gap-2">
+                    <span className="text-lg" style={{ color: '#10b981' }}>✓</span>
+                    <span className="text-sm text-neutral-300">{trait}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
@@ -443,80 +449,101 @@
       </div>
     );
 
-    const HighlightBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-          <p className="text-white text-lg font-bold">{data.highlight}</p>
-        </motion.div>
-      </div>
-    );
+    const HighlightBoxSlide = ({ data }) => {
+      const glowColor = 'rgba(16, 185, 129, 0.3)';
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+          <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="relative rounded-xl p-6 text-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${glowColor}` }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <p className="text-lg font-bold" style={{ color: 'var(--accent)', textShadow: `0 0 25px ${glowColor}` }}>{data.highlight}</p>
+          </motion.div>
+        </div>
+      );
+    };
 
-    const ProcessStepsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-5">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.number}</div>
-              <div>
-                <h3 className="text-lg font-bold text-neutral-900 mb-2">{step.title}</h3>
-                <p className="text-sm text-neutral-600 leading-relaxed">{step.description}</p>
+    const ProcessStepsSlide = ({ data }) => {
+      const glowColor = 'rgba(16, 185, 129, 0.25)';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative flex items-start gap-4 rounded-xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(16, 185, 129, 0.2)', boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 30px ${glowColor}` }}>
+                <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 0 20px ${glowColor}` }}>{step.number}</div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
+                  <p className="text-sm text-neutral-400 leading-relaxed">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const BeforeAfterSlide = ({ data }) => {
+      const redGlow = 'rgba(239, 68, 68, 0.2)';
+      const greenGlow = 'rgba(16, 185, 129, 0.3)';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
+              <div className="absolute -top-3 left-4 px-3 py-1 text-white text-xs font-bold rounded-full z-10" style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', boxShadow: `0 0 15px ${redGlow}` }}>Before</div>
+              <div className="relative rounded-xl p-6 pt-8 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a0a0a, #2d1515)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${redGlow}` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+                <ul className="space-y-3">
+                  {data.before.map((item, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.06 }} className="flex items-start gap-2">
+                      <span className="text-lg" style={{ color: '#ef4444' }}>✗</span>
+                      <span className="text-sm text-neutral-300">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BeforeAfterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
-            <div className="absolute -top-3 left-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">BEFORE</div>
-            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 pt-8">
-              <ul className="space-y-3">
-                {data.before.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-red-700">
-                    <span className="text-red-500 text-lg">✗</span>
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
-            <div className="absolute -top-3 left-4 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">AFTER</div>
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 pt-8">
-              <ul className="space-y-3">
-                {data.after.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-green-700">
-                    <span className="text-green-500 text-lg">✓</span>
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-base md:text-lg">{item.title}</h3>
-              <p className="text-neutral-600 text-sm md:text-base leading-relaxed">{item.description}</p>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
+              <div className="absolute -top-3 left-4 px-3 py-1 text-white text-xs font-bold rounded-full z-10" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', boxShadow: `0 0 15px ${greenGlow}` }}>After</div>
+              <div className="relative rounded-xl p-6 pt-8 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a1a0a, #152d15)', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${greenGlow}` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+                <ul className="space-y-3">
+                  {data.after.map((item, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.06 }} className="flex items-start gap-2">
+                      <span className="text-lg" style={{ color: '#10b981' }}>✓</span>
+                      <span className="text-sm text-neutral-300">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
             </motion.div>
-          ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
+
+    const CardsSlide = ({ data }) => {
+      const glowColor = 'rgba(16, 185, 129, 0.2)';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="relative rounded-xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(16, 185, 129, 0.2)', boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 25px ${glowColor}` }}>
+                <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <h3 className="font-bold text-white mb-2 text-base md:text-lg">{item.title}</h3>
+                <p className="text-neutral-400 text-sm md:text-base leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
