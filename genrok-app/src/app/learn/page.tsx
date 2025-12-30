@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen,
@@ -350,10 +350,12 @@ const itemVariants = {
 
 export default function LearnPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isLoading } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
+  const [initialSlide, setInitialSlide] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('Builder');
 
   useEffect(() => {
@@ -361,6 +363,21 @@ export default function LearnPage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Handle URL parameters to auto-open lessons (e.g., /learn?lesson=best-private-agent&slide=1)
+  useEffect(() => {
+    const lessonParam = searchParams.get('lesson');
+    const slideParam = searchParams.get('slide');
+
+    if (lessonParam && lessonMeta[lessonParam]) {
+      setSelectedLesson(lessonParam);
+      if (slideParam) {
+        setInitialSlide(parseInt(slideParam, 10));
+      }
+      // Clear the URL params after opening the lesson
+      router.replace('/learn', { scroll: false });
+    }
+  }, [searchParams, router]);
 
   // Fetch user's name for lesson personalization
   useEffect(() => {
@@ -392,6 +409,7 @@ export default function LearnPage() {
   // Handle closing a lesson
   const closeLesson = useCallback(() => {
     setSelectedLesson(null);
+    setInitialSlide(null);
   }, []);
 
   // Get lesson info for modal
@@ -450,6 +468,7 @@ export default function LearnPage() {
             description={selectedLessonInfo.description}
             userName={userName}
             onClose={closeLesson}
+            initialSlide={initialSlide}
           />
         )}
 
