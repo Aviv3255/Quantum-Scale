@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/components/providers/AuthProvider";
+import { RootProviders } from "@/components/providers/RootProviders";
 
 export const metadata: Metadata = {
   title: "Quantum Scale | Follow the Monkey",
@@ -46,9 +46,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-white text-[var(--text-secondary)]">
-        <AuthProvider>
+        <RootProviders>
           {children}
-        </AuthProvider>
+        </RootProviders>
       </body>
     </html>
   );
