@@ -32,6 +32,7 @@
     const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'meta-radical-diversity',
@@ -455,7 +456,7 @@
     );
 
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
 
       // Send slide update to parent for admin issue tracking
       useEffect(() => {

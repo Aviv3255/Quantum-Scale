@@ -35,6 +35,7 @@
     const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'biz-rat-brain-hijack',
@@ -505,7 +506,7 @@
     );
 
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
