@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -348,9 +348,31 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function LearnPage() {
+// Component to handle URL search params (must be wrapped in Suspense)
+function LessonParamsHandler({
+  onLessonOpen
+}: {
+  onLessonOpen: (slug: string, slide: number | null) => void
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const lessonParam = searchParams.get('lesson');
+    const slideParam = searchParams.get('slide');
+
+    if (lessonParam && lessonMeta[lessonParam]) {
+      onLessonOpen(lessonParam, slideParam ? parseInt(slideParam, 10) : null);
+      // Clear the URL params after opening the lesson
+      router.replace('/learn', { scroll: false });
+    }
+  }, [searchParams, router, onLessonOpen]);
+
+  return null;
+}
+
+export default function LearnPage() {
+  const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -358,26 +380,17 @@ export default function LearnPage() {
   const [initialSlide, setInitialSlide] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('Builder');
 
+  // Callback for URL params handler
+  const handleLessonFromUrl = useCallback((slug: string, slide: number | null) => {
+    setSelectedLesson(slug);
+    setInitialSlide(slide);
+  }, []);
+
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
-
-  // Handle URL parameters to auto-open lessons (e.g., /learn?lesson=best-private-agent&slide=1)
-  useEffect(() => {
-    const lessonParam = searchParams.get('lesson');
-    const slideParam = searchParams.get('slide');
-
-    if (lessonParam && lessonMeta[lessonParam]) {
-      setSelectedLesson(lessonParam);
-      if (slideParam) {
-        setInitialSlide(parseInt(slideParam, 10));
-      }
-      // Clear the URL params after opening the lesson
-      router.replace('/learn', { scroll: false });
-    }
-  }, [searchParams, router]);
 
   // Fetch user's name for lesson personalization
   useEffect(() => {
@@ -436,6 +449,11 @@ export default function LearnPage() {
 
   return (
     <DashboardLayout>
+      {/* URL params handler wrapped in Suspense for SSR compatibility */}
+      <Suspense fallback={null}>
+        <LessonParamsHandler onLessonOpen={handleLessonFromUrl} />
+      </Suspense>
+
       <div className="page-wrapper">
         {/* Page Header */}
         <header className="page-header">
