@@ -9,6 +9,7 @@ interface LessonModalProps {
   description: string;
   userName: string;
   onClose: () => void;
+  initialSlide?: number | null;
 }
 
 export default function LessonModal({
@@ -17,6 +18,7 @@ export default function LessonModal({
   description,
   userName,
   onClose,
+  initialSlide,
 }: LessonModalProps) {
   // ESC key to close
   const handleKeyDown = useCallback(
@@ -39,8 +41,8 @@ export default function LessonModal({
     };
   }, [handleKeyDown]);
 
-  // Generate iframe URL with userName
-  const lessonUrl = `/lessons/${slug}/lesson.html?userName=${encodeURIComponent(userName)}`;
+  // Generate iframe URL with userName and optional initialSlide
+  const lessonUrl = `/lessons/${slug}/lesson.html?userName=${encodeURIComponent(userName)}${initialSlide !== null && initialSlide !== undefined ? `&slide=${initialSlide}` : ''}`;
 
   return (
     <div className="fixed inset-0 z-[9999]">

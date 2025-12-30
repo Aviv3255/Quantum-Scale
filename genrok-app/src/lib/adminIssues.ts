@@ -163,7 +163,8 @@ export function generateDirectLink(
   slideIndex?: number | null
 ): string {
   if (pageType === 'lesson' && lessonSlug && slideIndex !== null && slideIndex !== undefined) {
-    return `/learn/lessons/${lessonSlug}?slide=${slideIndex}`;
+    // Use query params to open lesson modal on /learn page with specific slide
+    return `/learn?lesson=${lessonSlug}&slide=${slideIndex}`;
   }
   return pageUrl;
 }
