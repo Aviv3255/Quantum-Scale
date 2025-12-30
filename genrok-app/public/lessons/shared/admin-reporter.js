@@ -11,9 +11,8 @@
   window.addEventListener('message', function(event) {
     if (event.data?.type === 'ADMIN_STATUS') {
       isAdmin = event.data.isAdmin;
-      if (isAdmin) {
-        addReportButtons();
-      }
+      // TEMPORARILY showing for all users (for debugging) - TODO: restore admin check before going live
+      addReportButtons();
     }
   });
 
@@ -134,7 +133,8 @@
 
   // Add report buttons to all slides
   function addReportButtons() {
-    if (!isAdmin) return;
+    // TEMPORARILY removed admin check (for debugging) - TODO: restore before going live
+    // if (!isAdmin) return;
 
     const lessonSlug = getLessonSlug();
 

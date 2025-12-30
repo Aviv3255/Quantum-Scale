@@ -74,13 +74,13 @@ export function AdminReportButton() {
     };
   }, [isAdmin]);
 
-  // Don't render if not admin
-  if (isLoading || !isAdmin) {
-    console.log('[AdminReportButton] NOT RENDERING - isLoading:', isLoading, 'isAdmin:', isAdmin);
+  // TEMPORARILY showing for all users (for debugging) - TODO: restore admin check before going live
+  if (isLoading) {
+    console.log('[AdminReportButton] NOT RENDERING - isLoading:', isLoading);
     return null;
   }
 
-  console.log('[AdminReportButton] RENDERING BUTTON - isAdmin is true!');
+  console.log('[AdminReportButton] RENDERING BUTTON for all users (debug mode)');
 
   return (
     <>
