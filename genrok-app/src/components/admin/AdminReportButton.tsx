@@ -6,7 +6,13 @@ import { useAdmin } from '@/hooks/useAdmin';
 import { AdminReportModal } from './AdminReportModal';
 import type { LessonSlideContext } from '@/types/admin';
 
+// Debug: Log when module is loaded
+console.log('[AdminReportButton] Module loaded');
+
 export function AdminReportButton() {
+  // Debug: Log immediately when function is called
+  console.log('[AdminReportButton] Function called - about to call useAdmin');
+
   const { isAdmin, isLoading } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lessonContext, setLessonContext] = useState<LessonSlideContext | null>(null);
