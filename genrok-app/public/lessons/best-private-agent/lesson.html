@@ -50,7 +50,7 @@
         }, 16);
         return () => clearInterval(timer);
       }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      return <span>{count.toLocaleString()}{suffix}</span>;
     };
 
     // Ranking Colors based on position
@@ -64,37 +64,76 @@
       return labels[index] || `${index + 1}th`;
     };
 
-    // Ranking Circles Component with colored borders
+    // Elite Ranking Circles Component with glow effects and dark styling
     const RankingCircles = ({ items, showLinks = false }) => (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-        {items.map((item, i) => (
-          <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex flex-col items-center">
-            <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-2 bg-white" style={{ borderColor: getRankColor(i) }}>
-              <span className="text-2xl font-bold" style={{ color: getRankColor(i) }}>{i + 1}</span>
-            </div>
-            <p className="text-sm font-semibold text-neutral-900 text-center">{item.name}</p>
-            <p className="text-xs text-neutral-600 text-center mt-1">{item.value}</p>
-            {showLinks && item.url && (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 px-3 py-1 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors">
-                Create Account
-              </a>
-            )}
-          </motion.div>
-        ))}
+        {items.map((item, i) => {
+          const color = getRankColor(i);
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 + i * 0.1 }}
+              className="flex flex-col items-center"
+            >
+              <div
+                className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-2 relative"
+                style={{
+                  borderColor: color,
+                  background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  boxShadow: `0 0 20px ${color}40, 0 0 40px ${color}20, inset 0 1px 0 rgba(255,255,255,0.1)`
+                }}
+              >
+                <span className="text-2xl font-bold" style={{ color: color, textShadow: `0 0 10px ${color}60` }}>{i + 1}</span>
+              </div>
+              <p className="text-sm font-semibold text-neutral-900 text-center">{item.name}</p>
+              <p className="text-xs text-neutral-600 text-center mt-1">{item.value}</p>
+              {showLinks && item.url && (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 px-3 py-1 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors">
+                  Create Account
+                </a>
+              )}
+            </motion.div>
+          );
+        })}
       </div>
     );
 
-    // Winner Highlight Circles (for "How we chose the winner" section)
+    // Elite Winner Highlight Circles with glow effects
     const WinnerHighlightCircles = ({ items }) => (
       <div className="grid grid-cols-3 gap-6 mt-6">
         {items.map((item, i) => (
           <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }} className="flex flex-col items-center">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full border-4 border-neutral-200 flex items-center justify-center bg-white">
-                <span className="text-lg font-bold text-neutral-900 text-center">{item.value}</span>
+              <div
+                className="w-24 h-24 rounded-full border-4 flex items-center justify-center"
+                style={{
+                  borderColor: item.isWinner ? '#10b981' : '#2d2d2d',
+                  background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  boxShadow: item.isWinner
+                    ? '0 0 30px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)'
+                    : '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
+                }}
+              >
+                <span
+                  className="text-lg font-bold text-center"
+                  style={{
+                    color: item.isWinner ? '#10b981' : '#ffffff',
+                    textShadow: item.isWinner ? '0 0 10px rgba(16, 185, 129, 0.6)' : 'none'
+                  }}
+                >
+                  {item.value}
+                </span>
               </div>
               {item.isWinner && (
-                <div className="absolute -inset-2 rounded-full border-4 border-red-500 pointer-events-none" />
+                <div
+                  className="absolute -inset-2 rounded-full pointer-events-none"
+                  style={{
+                    border: '2px solid transparent',
+                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.3), transparent) border-box'
+                  }}
+                />
               )}
             </div>
             <p className="text-sm font-semibold text-neutral-900 text-center mt-3">{item.label}</p>
@@ -114,25 +153,19 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
 
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
 
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -187,9 +220,6 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -218,13 +248,13 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why your fulfillment partner makes or breaks your brand', 'The criteria that actually matter when choosing an agent', 'Which agent won our testing - and how to connect'] },
       { type: 'hook', headline: 'Your customer just received their package. In the next 3 seconds, they decide if they\'ll ever buy from you again.', subtext: 'A thin plastic envelope. No branding. No note. Just... product. Their brain instantly processes: "cheap store." Decision made. Never ordering again. This happens thousands of times daily with AliExpress fulfillment.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Aliexpress_logo.svg.png', brandName: 'AliExpress' },
-      { type: 'example', scenario: 'The Fulfillment Experience Gap', before: { label: 'AliExpress Reality', text: '21-45 day shipping. Thin plastic packaging. Zero branding. No quality check. Customer thinks: "I could have gotten this cheaper on Wish."' }, after: { label: 'Private Agent', text: '5-7 day shipping. Branded packaging. Custom inserts. Quality inspection. Customer thinks: "This feels premium. I\'ll order again."' }, insight: 'Same product. Different experience. One creates customers, the other creates one-time buyers.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_listening_carefully_hand_cupped_to_ear_100_pur_01938e87-bc4d-4e54-8675-cf6bdcd739c2_3.mp4', characterPosition: 'left'},
+      { type: 'example', scenario: 'The Fulfillment Experience Gap', before: { label: 'AliExpress Reality', text: '21-45 day shipping. Thin plastic packaging. Zero branding. No quality check. Customer thinks: "I could have gotten this cheaper on Wish."' }, after: { label: 'Private Agent', text: '5-7 day shipping. Branded packaging. Custom inserts. Quality inspection. Customer thinks: "This feels premium. I\'ll order again."' }, insight: 'Same product. Different experience. One creates customers, the other creates one-time buyers.' },
       { type: 'content', title: 'So Which Private Agent Is Actually the Best?', body: 'For 3 months we worked with the 6 leading companies across 3 different niches: fashion, home decor, and kids clothing. Here\'s what we found.' },
       { type: 'cards', title: 'What We Measured', items: [
-        { title: 'Shipping Speed', description: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers. This was our primary metric.' },
-        { title: 'Quality Control', description: 'When defective products reach customers, you lose money on returns AND lose the customer forever. Proper inspection prevents both.' },
-        { title: 'Support Response', description: 'When something goes wrong (and it will), you need answers in minutes, not days. Real humans on WhatsApp, not automated tickets.' },
-        { title: 'Pricing at Scale', description: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress when you scale. Price is not the differentiator.' }
+        { title: 'Shipping Speed', description: 'The difference between 5-7 days and 21+ days is the difference between repeat customers and one-time buyers. This was our primary metric.', icon: 'truck' },
+        { title: 'Quality Control', description: 'When defective products reach customers, you lose money on returns AND lose the customer forever. Proper inspection prevents both.', icon: 'shield' },
+        { title: 'Support Response', description: 'When something goes wrong (and it will), you need answers in minutes, not days. Real humans on WhatsApp, not automated tickets.', icon: 'headphones' },
+        { title: 'Pricing at Scale', description: 'Here\'s the surprise: the best agents often cost the SAME or LESS than AliExpress when you scale. Price is not the differentiator.', icon: 'dollar' }
       ]},
       { type: 'visual', title: 'Our Testing Results', visualType: 'singleStat', data: { value: 60000, label: 'Orders Tracked', subtext: 'Across 6 leading agents in 3 niches' }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
       { type: 'agentRankings', title: 'The Agents We Tested', agents: [
@@ -244,7 +274,7 @@
         { name: 'HyperSKU', value: '1% Cheaper', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' },
         { name: 'AutoDS', value: 'Price Match', url: 'https://autods.com' },
         { name: 'Others', value: '5-15% More' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_climbing_a_ladder_progressgrowth_100_pure_whit_4fc6107a-c510-4afc-ac20-a4cf12e8180b_3.mp4', characterPosition: 'right'},
+      ]},
       { type: 'content', title: 'Finding #3: Support Quality', body: 'When a customer complains about a broken product, you have hours - not days - to fix it. Mate & HyperSKU offer 18/6 personal WhatsApp support with real humans answering in minutes. AutoDS has no personal support - only automated tickets. This is where most agents fail - and where the best ones shine.', ranking: [
         { name: 'Mate', value: '18/6 WhatsApp' },
         { name: 'HyperSKU', value: '18/6 WhatsApp' },
@@ -260,12 +290,12 @@
         { label: 'Shipping Speed', sublabel: 'Days to Delivery', value: '7 Days', isWinner: true },
         { label: 'Pricing vs AliExpress', sublabel: 'Cost Difference', value: '4% Less', isWinner: true },
         { label: 'Support Quality', sublabel: 'Response Time', value: '18/6', isWinner: true }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'right'},
+      ]},
       { type: 'cards', title: 'Why Mate Dropshipping Won', items: [
-        { title: 'Fastest Consistent Delivery', description: '5-7 day shipping to most destinations. Not "up to 7 days" - actually 5-7 days consistently.' },
-        { title: 'Quality Inspection', description: 'They check products before shipping. Catches defects before your customer does. Fewer returns, fewer chargebacks.' },
-        { title: 'WhatsApp Support', description: 'Real humans answering in minutes. 18/6 availability. When things go wrong, you get help immediately.' },
-        { title: 'Competitive Pricing', description: 'Pricing that improves as you scale. At volume, often matches or beats AliExpress pricing.' }
+        { title: 'Fastest Consistent Delivery', description: '5-7 day shipping to most destinations. Not "up to 7 days" - actually 5-7 days consistently.', icon: 'zap' },
+        { title: 'Quality Inspection', description: 'They check products before shipping. Catches defects before your customer does. Fewer returns, fewer chargebacks.', icon: 'check' },
+        { title: 'WhatsApp Support', description: 'Real humans answering in minutes. 18/6 availability. When things go wrong, you get help immediately.', icon: 'message' },
+        { title: 'Competitive Pricing', description: 'Pricing that improves as you scale. At volume, often matches or beats AliExpress pricing.', icon: 'trending' }
       ]},
       { type: 'howItWorksFlow', title: 'How It Works', steps: [
         { step: 1, title: 'Connect Your Primary Agent', description: 'Free Shopify app. No monthly fees. No minimums. When an order comes in, the price appears. Pay via PayPal or credit card.', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg' },
@@ -293,6 +323,26 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Truck: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Headphones: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>,
+      Dollar: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Message: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Trending: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+    };
+
+    const getCardIcon = (iconName) => {
+      switch(iconName) {
+        case 'truck': return <Icons.Truck />;
+        case 'shield': return <Icons.Shield />;
+        case 'headphones': return <Icons.Headphones />;
+        case 'dollar': return <Icons.Dollar />;
+        case 'zap': return <Icons.Zap />;
+        case 'check': return <Icons.Check />;
+        case 'message': return <Icons.Message />;
+        case 'trending': return <Icons.Trending />;
+        default: return <Icons.Zap />;
+      }
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -332,15 +382,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 0.15, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '18%', maxHeight: '100px', marginRight: '40px', marginBottom: '3%' }}>
@@ -350,25 +391,12 @@
       </div>
     );
 
-    
+
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
         {data.ranking && <RankingCircles items={data.ranking} />}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -393,32 +421,75 @@
             <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-neutral-900 text-base mb-4">{data.before.label}</h3>
+            {/* AliExpress - Dark gradient card with red accent */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-xl p-5 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 0 30px rgba(239, 68, 68, 0.15), 0 4px 20px rgba(0,0,0,0.3)'
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}
+              />
+              <h3 className="font-bold text-white text-base mb-4">{data.before.label}</h3>
               <ul className="space-y-2.5">
                 {aliexpressItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-red-500 mt-0.5 text-lg flex-shrink-0">❌</span>
-                    <span className="text-neutral-700 text-sm">{item}</span>
+                    <span className="text-red-500 mt-0.5 text-lg flex-shrink-0">X</span>
+                    <span className="text-neutral-300 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
               <p className="text-neutral-500 text-xs mt-4 italic">Customer thinks: "I could have gotten this cheaper on Wish."</p>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-neutral-900 text-base mb-4">{data.after.label}</h3>
+            {/* Private Agent - Dark gradient card with green accent */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-xl p-5 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 0 30px rgba(16, 185, 129, 0.15), 0 4px 20px rgba(0,0,0,0.3)'
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }}
+              />
+              <h3 className="font-bold text-white text-base mb-4">{data.after.label}</h3>
               <ul className="space-y-2.5">
                 {privateAgentItems.map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="text-green-500 mt-0.5 text-lg flex-shrink-0">✓</span>
-                    <span className="text-neutral-700 text-sm">{item}</span>
+                    <span className="text-neutral-300 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
               <p className="text-neutral-500 text-xs mt-4 italic">Customer thinks: "This feels premium. I'll order again."</p>
             </motion.div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl p-4 text-center relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+              boxShadow: '0 0 20px rgba(16, 185, 129, 0.1)'
+            }}
+          >
+            <div
+              className="absolute top-0 left-0 right-0 h-0.5"
+              style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+            />
             <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
           </motion.div>
         </div>
@@ -428,110 +499,178 @@
     const VisualSlide = ({ data }) => {
       if (data.visualType === 'singleStat') {
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center max-w-lg mx-auto">
-              <div className="text-5xl md:text-7xl font-bold mb-3" style={{ color: 'var(--accent)' }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl p-8 md:p-12 text-center max-w-lg mx-auto relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 0 60px rgba(16, 185, 129, 0.2), 0 0 100px rgba(16, 185, 129, 0.1), 0 4px 30px rgba(0,0,0,0.4)'
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+              />
+              <div className="text-5xl md:text-7xl font-bold mb-3" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(16, 185, 129, 0.5)' }}>
                 <AnimatedCounter target={data.data.value} duration={2000} />+
               </div>
               <div className="text-lg md:text-xl font-semibold text-white mb-2">{data.data.label}</div>
               <div className="text-sm text-neutral-400">{data.data.subtext}</div>
             </motion.div>
+            {data.characterVideo && (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+                style={{ height: '45%', maxHeight: '350px' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                  <source src={data.characterVideo} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
           </div>
         );
       }
       if (data.visualType === 'testingResults') {
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
             <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-green-500 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.sublabel}</div>
+              {/* Left card - dark gradient with green glow */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl p-4 md:p-6 text-center relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  boxShadow: '0 0 30px rgba(16, 185, 129, 0.2), 0 4px 20px rgba(0,0,0,0.3)'
+                }}
+              >
+                <div
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }}
+                />
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#10b981', textShadow: '0 0 20px rgba(16, 185, 129, 0.5)' }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white mb-1">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-400">{data.data.left.sublabel}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-black rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg">
-                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.center.sublabel}</div>
+              {/* Center card - Winner highlight */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl p-4 md:p-6 text-center transform scale-105 relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  boxShadow: '0 0 40px rgba(255, 215, 0, 0.3), 0 0 80px rgba(255, 215, 0, 0.15), 0 4px 30px rgba(0,0,0,0.4)'
+                }}
+              >
+                <div
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: 'linear-gradient(90deg, transparent, #FFD700, transparent)' }}
+                />
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#FFD700', textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white mb-1">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-400">{data.data.center.sublabel}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-green-500 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold text-black mb-2">{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-1">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.sublabel}</div>
+              {/* Right card */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="rounded-xl p-4 md:p-6 text-center relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  boxShadow: '0 0 30px rgba(16, 185, 129, 0.2), 0 4px 20px rgba(0,0,0,0.3)'
+                }}
+              >
+                <div
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }}
+                />
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#10b981', textShadow: '0 0 20px rgba(16, 185, 129, 0.5)' }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white mb-1">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-400">{data.data.right.sublabel}</div>
               </motion.div>
             </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+            {data.characterVideo && (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+                style={{ height: '40%', maxHeight: '300px' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                  <source src={data.characterVideo} type="video/mp4" />
+                </video>
               </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
-                    {stat.value.includes('+') ? <><AnimatedCounter target={parseInt(stat.value)} duration={1500} />+</> : stat.value.includes('Mo') ? <><AnimatedCounter target={3} duration={1500} /> Mo</> : stat.value}
-                  </div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
+            )}
           </div>
         );
       }
       return null;
     };
 
-    // Agent Rankings Slide
+    // Elite Agent Rankings Slide with dark gradient and glow effects
     const AgentRankingsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {data.agents.map((agent, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex flex-col items-center">
-              <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-3 bg-white" style={{ borderColor: getRankColor(i) }}>
-                <span className="text-2xl font-bold" style={{ color: getRankColor(i) }}>{i + 1}</span>
-              </div>
-              <p className="text-sm font-semibold text-neutral-900 text-center mb-2">{agent.name}</p>
-              {agent.url && (
-                <a href={agent.url} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
-                  Create Account
-                </a>
-              )}
-            </motion.div>
-          ))}
+          {data.agents.map((agent, i) => {
+            const color = getRankColor(i);
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="flex flex-col items-center"
+              >
+                <div
+                  className="w-20 h-20 rounded-full border-4 flex items-center justify-center mb-3"
+                  style={{
+                    borderColor: color,
+                    background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                    boxShadow: `0 0 25px ${color}40, 0 0 50px ${color}20, inset 0 1px 0 rgba(255,255,255,0.1)`
+                  }}
+                >
+                  <span
+                    className="text-2xl font-bold"
+                    style={{ color: color, textShadow: `0 0 15px ${color}60` }}
+                  >
+                    {i + 1}
+                  </span>
+                </div>
+                <p className="text-sm font-semibold text-neutral-900 text-center mb-2">{agent.name}</p>
+                {agent.url && (
+                  <a
+                    href={agent.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs px-3 py-1.5 rounded-full text-white transition-all hover:scale-105"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+                    }}
+                  >
+                    Create Account
+                  </a>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     );
 
-    // Winner Highlight Slide
+    // Elite Winner Highlight Slide
     const WinnerHighlightSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -539,24 +678,46 @@
       </div>
     );
 
-    // How It Works Flow Slide
+    // Elite How It Works Flow Slide with dark gradient cards
     const HowItWorksFlowSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid md:grid-cols-2 gap-6">
           {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              className="rounded-xl overflow-hidden relative"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 0 30px rgba(16, 185, 129, 0.1), 0 4px 20px rgba(0,0,0,0.3)'
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1 z-10"
+                style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+              />
               <div className="aspect-video relative">
-                <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
+                <img src={step.image} alt={step.title} className="w-full h-full object-cover opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                  <span
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                      boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)'
+                    }}
+                  >
                     {step.step}
                   </span>
-                  <h3 className="font-bold text-neutral-900">{step.title}</h3>
+                  <h3 className="font-bold text-white">{step.title}</h3>
                 </div>
-                <p className="text-sm text-neutral-600 leading-relaxed">{step.description}</p>
+                <p className="text-sm text-neutral-400 leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}
@@ -564,74 +725,77 @@
       </div>
     );
 
+    // Elite Cards Slide with dark gradient styling
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.08 }}
+              className="rounded-xl p-4 relative overflow-hidden group transition-all duration-300 hover:scale-[1.02]"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 0 20px rgba(16, 185, 129, 0.1), 0 4px 15px rgba(0,0,0,0.3)'
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                className="absolute top-0 left-0 right-0 h-0.5 opacity-60 group-hover:opacity-100 transition-opacity"
+                style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+              />
+              {/* Icon */}
+              {item.icon && (
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))',
+                    color: 'var(--accent)',
+                    boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)'
+                  }}
+                >
+                  {getCardIcon(item.icon)}
+                </div>
+              )}
+              <h3 className="font-bold text-white mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
+    // Elite Images Slide with dark gradient overlay
     const ImagesSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid md:grid-cols-3 gap-4">
           {data.images.map((img, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl overflow-hidden relative"
+              style={{
+                boxShadow: '0 0 20px rgba(16, 185, 129, 0.1), 0 4px 15px rgba(0,0,0,0.3)'
+              }}
+            >
               <img src={img} alt={`Warehouse ${i + 1}`} className="w-full h-auto object-cover" />
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1"
+                style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+              />
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const ToolSlide = ({ data }) => {
-      const buttonStyle = data.buttonStyle === 'green'
-        ? { background: 'linear-gradient(135deg, #10b981, #059669)' }
-        : { background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-          </motion.div>
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-              <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-              <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-              <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-                <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Key Advantages</p>
-                <ul className="space-y-1.5">
-                  {data.questions.map((q, i) => (
-                    <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                      <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
-                      {q}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={buttonStyle}>
-                <span>Connect {data.toolName}</span>
-                <Icons.ExternalLink />
-              </a>
-            </motion.div>
-          </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-            <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-          </motion.div>
-        </div>
-      );
-    };
-
+    // Elite Implementation Slide with dark gradient styling
     const ImplementationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
@@ -644,19 +808,59 @@
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed text-center mb-6">{data.concept}</motion.p>
         <div className="space-y-3 mb-6">
           {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border border-neutral-200 rounded-xl p-3">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 + i * 0.08 }}
+              className="flex items-start gap-3 rounded-xl p-3 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+              }}
+            >
+              <span
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                style={{
+                  background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+                  boxShadow: '0 0 10px rgba(16, 185, 129, 0.3)'
+                }}
+              >
+                {i + 1}
+              </span>
+              <p className="text-neutral-300 text-sm leading-relaxed pt-0.5">{step}</p>
             </motion.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="rounded-xl p-4 text-center mb-4 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+            boxShadow: '0 0 20px rgba(16, 185, 129, 0.15)'
+          }}
+        >
+          <div
+            className="absolute top-0 left-0 right-0 h-0.5"
+            style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+          />
           <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap className="flex-shrink-0" /><span>{data.insight}</span></p>
         </motion.div>
         {data.toolName && data.toolUrl && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
+            <a
+              href={data.toolUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]"
+              style={{
+                background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)'
+              }}
+            >
+              <span>Connect {data.toolName}</span>
               <Icons.ExternalLink />
             </a>
           </motion.div>
@@ -685,12 +889,31 @@
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.08 + i * 0.06 }}
+                  onClick={() => handleSelect(i)}
+                  disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all ${showFeedback ? i === data.correctIndex ? 'border-2 border-green-500' : i === selected ? 'border-2 border-red-400' : 'opacity-40' : 'hover:scale-[1.01]'}`}
+                  style={{
+                    background: showFeedback
+                      ? (i === data.correctIndex ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))'
+                        : i === selected ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))'
+                        : 'linear-gradient(135deg, #f5f5f5, #e5e5e5)')
+                      : 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                    boxShadow: showFeedback ? 'none' : '0 2px 10px rgba(0,0,0,0.2)'
+                  }}
+                >
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : showFeedback ? 'bg-neutral-200 text-neutral-500' : 'text-neutral-400'}`}
+                      style={!showFeedback ? { background: 'linear-gradient(135deg, #2d2d2d, #3d3d3d)' } : {}}
+                    >
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className={`text-sm md:text-base ${showFeedback ? 'text-neutral-700' : 'text-neutral-300'}`}>{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -709,16 +932,49 @@
 
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white"
+          style={{
+            background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+            boxShadow: `0 0 30px rgba(var(--accent-rgb), 0.5), 0 6px 24px rgba(var(--accent-rgb), 0.35)`
+          }}
+        >
+          <Icons.Check />
+        </motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know which private agent wins - and why having a backup costs nothing but gives you smart flexibility. Connect both and you're ahead of most dropshippers.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="rounded-xl p-5 max-w-md w-full mb-4 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+            boxShadow: '0 0 30px rgba(16, 185, 129, 0.15), 0 4px 20px rgba(0,0,0,0.3)'
+          }}
+        >
+          <div
+            className="absolute top-0 left-0 right-0 h-1"
+            style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+          />
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="rounded-xl p-4 max-w-md w-full relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #f8f8f8, #f0f0f0)',
+              border: '1px solid #e0e0e0'
+            }}
+          >
             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
@@ -746,7 +1002,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -790,7 +1045,6 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'images': return <ImagesSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;
           case 'agentRankings': return <AgentRankingsSlide data={slide} />;
           case 'winnerHighlight': return <WinnerHighlightSlide data={slide} />;

@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
@@ -47,25 +47,17 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -120,9 +112,6 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -150,18 +139,17 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why most "hot niches" are dead-end traps', 'The 3 conditions every high-LTV niche must pass', 'The exact 5 niches winning in 2026 and beyond'] },
-      { type: 'hook', headline: 'Everyone wants to find the "hot niche" that prints money overnight.', subtext: 'Here\'s what nobody tells you: Hot niches burn out fast. What you actually need is a niche with a long customer journey. One where customers come back month after month, year after year. That\'s where the real wealth lives. Not in the viral product that dies in 90 days.'  },
-      { type: 'content', title: 'Think LTV, Not First Sale', body: 'The amateur thinks: "How much can I make on the first order?" The pro thinks: "How much will this customer spend over 12 months?" If you\'re optimizing for one-time sales, you\'re building a hamster wheel. You run ads, make sales, then start over. The real game is lifetime value - getting customers who stick around and buy again.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
+      { type: 'hook', headline: 'Everyone wants to find the "hot niche" that prints money overnight.', subtext: 'Here\'s what nobody tells you: Hot niches burn out fast. What you actually need is a niche with a long customer journey. One where customers come back month after month, year after year. That\'s where the real wealth lives. Not in the viral product that dies in 90 days.' },
+      { type: 'content', title: 'Think LTV, Not First Sale', body: 'The amateur thinks: "How much can I make on the first order?" The pro thinks: "How much will this customer spend over 12 months?" If you\'re optimizing for one-time sales, you\'re building a hamster wheel. You run ads, make sales, then start over. The real game is lifetime value - getting customers who stick around and buy again.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right' },
       { type: 'visual', title: 'The LTV Reality Check', visualType: 'stats', data: [
         { value: '2.5x', label: 'minimum markup', subtext: 'Room for profit and growth' },
         { value: '3+', label: 'repeat purchases', subtext: 'The actual business model' },
         { value: '12mo', label: 'customer journey', subtext: 'Where millionaires live' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The 3 Non-Negotiables for High-LTV Niches', body: 'Every winning niche in 2026 passes this test. Three conditions. No exceptions. If your niche fails even one of these, you\'re setting yourself up for the grind instead of the gold. Let\'s break them down.' },
-      { type: 'cards', title: 'The 3 LTV Conditions', items: [
-        { title: '1. High-Value Purchases', description: 'Products need real price tags. Not $9.99 impulse buys. Think $40+. Why? Because you need margin for ads, customer acquisition, and actual profit. Low prices = low margins = constant stress.' },
-        { title: '2. Recurring Customers', description: 'One-and-done customers are not a business. You need people who come back. Monthly? Seasonal? Lifecycle stages? Doesn\'t matter. What matters: they return without you begging.' },
-        { title: '3. Markup of 2.5x Minimum', description: 'If you can\'t mark up at least 2.5x your cost, you can\'t scale. Period. You need room to run ads, handle returns, pay for support, and still profit. Thin margins = slow death.' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left' },
+      { type: 'ltv-conditions-framework', title: 'The 3 Non-Negotiables for High-LTV Niches', subtitle: 'Every winning niche passes this test. No exceptions.', conditions: [
+        { number: 1, title: 'High-Value Purchases', metric: '$40+', description: 'Products need real price tags. Not $9.99 impulse buys. You need margin for ads, acquisition, and profit.', icon: 'dollar' },
+        { number: 2, title: 'Recurring Customers', metric: '3+ Orders', description: 'One-and-done customers are not a business. Monthly, seasonal, or lifecycle - they must return naturally.', icon: 'repeat' },
+        { number: 3, title: 'Markup of 2.5x Min', metric: '2.5x+', description: 'Room to run ads, handle returns, pay support, and still profit. Thin margins = slow death.', icon: 'trending' }
       ]},
       { type: 'ltv-comparison', title: 'Real Numbers: Low LTV vs. High LTV', low: { firstOrder: 35, repeatRate: '5%', ltv: 37, description: 'Customer buys once, maybe returns in 2 years. Building on sand.' }, high: { firstOrder: 48, repeatRate: '65%', ltv: 680, description: 'Customer reorders every 6-8 weeks. Predictable, scalable revenue.' }, insight: 'Same effort to acquire. 18x difference in revenue per customer. This is why LTV matters.' },
       { type: 'niche-showcase', title: 'The 5 Winning Niches for 2026', niches: [
@@ -171,16 +159,61 @@
         { name: 'Supplements', descriptor: 'Health routine habits' },
         { name: 'Babies & Kids', descriptor: 'Constant replenishables' }
       ]},
-      { type: 'content', title: 'Niche #1: Fashion (Focused Sub-Niche Only)', body: 'Not generic fashion. That\'s a bloodbath. But a FOCUSED sub-niche? Gold. Think: premium activewear for runners. Minimalist jewelry for professionals. Sustainable swimwear for eco-conscious buyers. The key: deep focus + lifestyle identity. They buy the first piece, love it, come back for the collection. Repeat for seasons.' },
-      { type: 'content', title: 'Niche #2: Home Decor (Lifestyle Upgrade Pathway)', body: 'People upgrading their homes don\'t stop at one item. They start with a throw pillow. Then curtains. Then wall art. Then furniture. It\'s a journey, not a transaction. The trick: create a cohesive aesthetic so each purchase leads to the next. Build the "complete the look" pathway and watch LTV skyrocket.' },
-      { type: 'content', title: 'Niche #3: Men\'s Grooming (Monthly Journey)', body: 'Shaving kits, beard oils, skincare routines. These aren\'t one-offs. They\'re habits. Once a guy finds a product he likes? He reorders. Every. Single. Month. High margins, predictable revenue, loyal customers. The grooming journey never ends - and neither does your cash flow.' },
-      { type: 'content', title: 'Niche #4: Supplements & Functional Health (Lifestyle)', body: 'Vitamins. Protein. Nootropics. Sleep aids. This is the subscription gold mine. People commit to health routines and stick with them for months, even years. First order around $50. Reorder every 30-45 days. Based on industry data, high-quality supplement brands typically see customer lifetime values of $500-800 in the first year.' },
-      { type: 'content', title: 'Niche #5: Babies & Kids (Replenishable Only)', body: 'Not toys. Not one-time gadgets. Replenishables: diapers, wipes, skincare, feeding supplies. Parents need these products constantly. The purchase cycle is predictable and unavoidable. Win their trust once, and they\'re yours until the kid grows up.' },
-      { type: 'cards', title: 'What Makes These Niches Win', items: [
-        { title: 'Long Customer Journey', description: 'These aren\'t one-purchase niches. Customers stay for months or years. Each transaction is the beginning, not the end.' },
-        { title: 'Natural Repurchase Cycles', description: 'The product runs out. The season changes. The routine continues. Customers come back without heavy remarketing spend.' },
-        { title: 'High Lifetime Value', description: 'Industry benchmarks show successful brands in these niches achieve $400-1,200 LTV in year one. That\'s the difference between scraping by and scaling to 7 figures.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_listening_carefully_hand_cupped_to_ear_100_pur_01938e87-bc4d-4e54-8675-cf6bdcd739c2_3.mp4', characterPosition: 'left'},
+      { type: 'niche-deep-dive', nicheNumber: 1, nicheName: 'Fashion', nicheTagline: 'Focused Sub-Niches Only', color: '#10B981', icon: 'fashion',
+        keyStats: [
+          { label: 'Avg Order Value', value: '$65+' },
+          { label: 'Repeat Rate', value: '45%' },
+          { label: 'Typical LTV', value: '$280' }
+        ],
+        whyItWorks: 'Not generic fashion - that\'s a bloodbath. A FOCUSED sub-niche? Gold.',
+        examples: ['Premium activewear for runners', 'Minimalist jewelry for professionals', 'Sustainable swimwear'],
+        secretSauce: 'Deep focus + lifestyle identity. They buy the first piece, love it, come back for the collection. Repeat for seasons.'
+      },
+      { type: 'niche-deep-dive', nicheNumber: 2, nicheName: 'Home Decor', nicheTagline: 'Lifestyle Upgrade Pathway', color: '#3B82F6', icon: 'home',
+        keyStats: [
+          { label: 'Avg Order Value', value: '$85+' },
+          { label: 'Repeat Rate', value: '55%' },
+          { label: 'Typical LTV', value: '$420' }
+        ],
+        whyItWorks: 'People upgrading their homes don\'t stop at one item. It\'s a journey, not a transaction.',
+        examples: ['Throw pillow to curtains to wall art', 'Cohesive aesthetic collections', 'Room-by-room upgrades'],
+        secretSauce: 'Create a cohesive aesthetic so each purchase leads to the next. Build the "complete the look" pathway.'
+      },
+      { type: 'niche-deep-dive', nicheNumber: 3, nicheName: 'Men\'s Grooming', nicheTagline: 'Monthly Replenishment Cycle', color: '#8B5CF6', icon: 'grooming',
+        keyStats: [
+          { label: 'Avg Order Value', value: '$48+' },
+          { label: 'Repeat Rate', value: '70%' },
+          { label: 'Typical LTV', value: '$580' }
+        ],
+        whyItWorks: 'Shaving kits, beard oils, skincare routines - these aren\'t one-offs. They\'re habits.',
+        examples: ['Premium shaving subscriptions', 'Beard care bundles', 'Men\'s skincare routines'],
+        secretSauce: 'Once a guy finds a product he likes? He reorders. Every. Single. Month. The grooming journey never ends.'
+      },
+      { type: 'niche-deep-dive', nicheNumber: 4, nicheName: 'Supplements', nicheTagline: 'Health Routine Habits', color: '#F59E0B', icon: 'health',
+        keyStats: [
+          { label: 'Avg Order Value', value: '$55+' },
+          { label: 'Repeat Rate', value: '75%' },
+          { label: 'Typical LTV', value: '$680' }
+        ],
+        whyItWorks: 'This is the subscription gold mine. People commit to health routines and stick for months, even years.',
+        examples: ['Vitamins & minerals', 'Protein & fitness', 'Nootropics & sleep aids'],
+        secretSauce: 'First order around $50. Reorder every 30-45 days. High-quality brands see $500-800 LTV in year one.'
+      },
+      { type: 'niche-deep-dive', nicheNumber: 5, nicheName: 'Babies & Kids', nicheTagline: 'Constant Replenishables', color: '#EF4444', icon: 'baby',
+        keyStats: [
+          { label: 'Avg Order Value', value: '$42+' },
+          { label: 'Repeat Rate', value: '80%' },
+          { label: 'Typical LTV', value: '$720' }
+        ],
+        whyItWorks: 'Not toys. Not one-time gadgets. Replenishables that parents need constantly.',
+        examples: ['Diapers & wipes', 'Baby skincare', 'Feeding supplies'],
+        secretSauce: 'The purchase cycle is predictable and unavoidable. Win their trust once, and they\'re yours until the kid grows up.'
+      },
+      { type: 'elite-cards', title: 'What Makes These Niches Win', items: [
+        { title: 'Long Customer Journey', description: 'These aren\'t one-purchase niches. Customers stay for months or years. Each transaction is the beginning, not the end.', icon: 'journey', color: '#10B981' },
+        { title: 'Natural Repurchase Cycles', description: 'The product runs out. The season changes. The routine continues. Customers come back without heavy remarketing spend.', icon: 'cycle', color: '#3B82F6' },
+        { title: 'High Lifetime Value', description: 'Industry benchmarks show successful brands in these niches achieve $400-1,200 LTV in year one. That\'s 7-figure scale territory.', icon: 'value', color: '#F59E0B' }
+      ]},
       { type: 'example', scenario: 'Short Journey vs. Long Journey', before: { label: 'Short Journey (Bad)', text: 'Wall clock. Bought once. Never again. LTV = $35.' }, after: { label: 'Long Journey (Good)', text: 'Functional mushroom coffee. Bought monthly. Typical LTV around $680 over 12 months for subscription models.' }, insight: 'Similar first order values. But long customer journey creates exponentially higher total revenue per customer.' },
       { type: 'quiz', question: 'Which niche passes the 3 LTV conditions and wins in 2026?', options: ['"Viral gadgets from TikTok with $8 price points"', '"Generic kitchen utensils with 1.5x markup"', '"Premium yoga gear for serious practitioners with monthly restocks"', '"Phone accessories people buy once every 2 years"'], correctIndex: 2, feedback: { correct: 'Exactly! Premium yoga gear hits all 3 conditions: High-value purchases ($40+ mats, $30 blocks), recurring customers (wear and tear = restocks), 2.5x+ markup (premium positioning). Long customer journey = sustainable LTV.', incorrect: 'Not quite. The winner is premium yoga gear. Why? It passes all 3 conditions: High-value purchases, recurring customers (products wear out, new styles drop), and 2.5x+ markup. The longer the journey, the higher the LTV.' }},
       { type: 'completion', sources: [] }
@@ -191,10 +224,10 @@
     // ============================================
     const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
-      const [hasAnimated, setHasAnimated] = useState(false);
+      const hasAnimatedRef = React.useRef(false);
       useEffect(() => {
-        if (hasAnimated) return;
-        setHasAnimated(true);
+        if (hasAnimatedRef.current) return;
+        hasAnimatedRef.current = true;
         let start = 0;
         const increment = target / (duration / 16);
         const timer = setInterval(() => {
@@ -203,7 +236,7 @@
           else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration, decimals, hasAnimated]);
+      }, [target, duration, decimals]);
       return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
     };
 
@@ -237,7 +270,16 @@
       ShoppingBag: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
       Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
       Home: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-      Baby: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6z"/></svg> };
+      Baby: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6z"/></svg>,
+      Dollar: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Repeat: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
+      Journey: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="5" cy="6" r="3"/><circle cx="19" cy="18" r="3"/><path d="M5 9v3a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V9"/></svg>,
+      Cycle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>,
+      Value: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Fashion: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l2.3 2.3a2.4 2.4 0 0 0 3.4-3.4L15 14l2.7-2.7a2.4 2.4 0 0 0-3.4-3.4L12 10.6 9.7 8.3a2.4 2.4 0 0 0-3.4 3.4L9 14l-2.7 2.7a2.4 2.4 0 0 0 0 3.6z"/></svg>,
+      Grooming: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="5"/><path d="M12 13v8"/><path d="M9 18h6"/></svg>,
+      Health: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -276,30 +318,13 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -338,7 +363,6 @@
     );
 
     const VisualSlide = ({ data }) => {
-      // Parse stat value to get number and suffix
       const parseStatValue = (value) => {
         const match = value.match(/^([\d.]+)(.*)$/);
         if (match) {
@@ -352,17 +376,18 @@
         const glowColors = ['rgba(var(--accent-rgb),0.5)', 'rgba(59,130,246,0.5)', 'rgba(245,158,11,0.5)'];
 
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8 relative z-10">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4 relative z-10">
               {data.data.map((stat, i) => {
                 const parsed = parseStatValue(stat.value);
-                const displayPercent = Math.min(parsed.num * 20, 100); // Scale for visual bar
+                const displayPercent = Math.min(parsed.num * 20, 100);
 
                 return (
                   <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
-                    className="rounded-xl p-6 text-center"
+                    className="rounded-xl p-6 text-center relative overflow-hidden"
                     style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${glowColors[i]}` }}>
+                    <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${accentColors[i]}, transparent)` }} />
                     <div className="text-4xl md:text-5xl font-bold mb-3" style={{ color: accentColors[i], textShadow: `0 0 25px ${glowColors[i]}` }}>
                       <AnimatedCounter target={parsed.num} suffix={parsed.suffix} duration={1800 + i * 200} decimals={parsed.suffix === 'x' ? 1 : 0} />
                     </div>
@@ -373,25 +398,253 @@
                 );
               })}
             </div>
+            {data.characterVideo && (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+                style={{ height: '35%', maxHeight: '280px' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                  <source src={data.characterVideo} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
           </div>
         );
       }
       return null;
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    // ============================================
+    // LTV CONDITIONS FRAMEWORK SLIDE (NEW ELITE COMPONENT)
+    // ============================================
+    const LTVConditionsFrameworkSlide = ({ data }) => {
+      const iconMap = {
+        'dollar': <Icons.Dollar />,
+        'repeat': <Icons.Repeat />,
+        'trending': <Icons.TrendingUp />
+      };
+      const colors = ['#10B981', '#3B82F6', '#F59E0B'];
+      const glows = ['rgba(16,185,129,0.4)', 'rgba(59,130,246,0.4)', 'rgba(245,158,11,0.4)'];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Framework</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.conditions.map((condition, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.15 + i * 0.12, type: 'spring', stiffness: 100 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 50px ${glows[i]}` }}
+              >
+                {/* Top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${colors[i]}, transparent)` }} />
+
+                {/* Number badge */}
+                <div className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                  style={{ background: `${colors[i]}20`, color: colors[i], boxShadow: `0 0 15px ${glows[i]}` }}>
+                  {condition.number}
+                </div>
+
+                {/* Icon */}
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: `${colors[i]}15`, color: colors[i], boxShadow: `0 0 20px ${glows[i]}` }}>
+                  {iconMap[condition.icon] || <Icons.TrendingUp />}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-bold text-white text-lg mb-2">{condition.title}</h3>
+
+                {/* Metric */}
+                <div className="text-3xl font-bold mb-3" style={{ color: colors[i], textShadow: `0 0 20px ${glows[i]}` }}>
+                  {condition.metric}
+                </div>
+
+                {/* Description */}
+                <p className="text-neutral-400 text-sm leading-relaxed">{condition.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom callout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-6 text-center"
+          >
+            <p className="text-neutral-500 text-sm">
+              <span className="font-semibold text-white">Miss even ONE?</span> You're setting yourself up for the grind instead of the gold.
+            </p>
+          </motion.div>
         </div>
-      </div>
-    );
+      );
+    };
+
+    // ============================================
+    // NICHE DEEP DIVE SLIDE (NEW ELITE COMPONENT)
+    // ============================================
+    const NicheDeepDiveSlide = ({ data }) => {
+      const iconMap = {
+        'fashion': <Icons.ShoppingBag />,
+        'home': <Icons.Home />,
+        'grooming': <Icons.Heart />,
+        'health': <Icons.Health />,
+        'baby': <Icons.Baby />
+      };
+
+      const glowColor = `${data.color}40`;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          {/* Header */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{ background: `${data.color}20`, color: data.color, boxShadow: `0 0 30px ${glowColor}` }}>
+              {iconMap[data.icon] || <Icons.TrendingUp />}
+            </div>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: data.color }}>Niche #{data.nicheNumber}</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">{data.nicheName}</h2>
+              <p className="text-neutral-500 text-sm">{data.nicheTagline}</p>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Left Column - Stats & Why */}
+            <div className="space-y-4">
+              {/* Key Stats Card */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${glowColor}` }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${data.color}, transparent)` }} />
+                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-4">Key Metrics</h4>
+                <div className="space-y-3">
+                  {data.keyStats.map((stat, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <span className="text-neutral-400 text-sm">{stat.label}</span>
+                      <span className="text-xl font-bold" style={{ color: data.color, textShadow: `0 0 15px ${glowColor}` }}>{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Why It Works */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-2xl p-5"
+                style={{ background: `${data.color}10`, border: `1px solid ${data.color}30` }}
+              >
+                <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: data.color }}>Why It Works</h4>
+                <p className="text-neutral-700 text-sm leading-relaxed">{data.whyItWorks}</p>
+              </motion.div>
+            </div>
+
+            {/* Right Column - Examples & Secret */}
+            <div className="space-y-4">
+              {/* Examples */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 }}
+                className="rounded-2xl p-5 bg-neutral-50 border border-neutral-200"
+              >
+                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-3">Winning Examples</h4>
+                <ul className="space-y-2">
+                  {data.examples.map((example, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 + i * 0.05 }}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="w-2 h-2 rounded-full" style={{ background: data.color }} />
+                      <span className="text-neutral-700 text-sm">{example}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              {/* Secret Sauce */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.4)` }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, ${data.color}, transparent)` }} />
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.Zap />
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400">The Secret Sauce</h4>
+                </div>
+                <p className="text-neutral-300 text-sm leading-relaxed">{data.secretSauce}</p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============================================
+    // ELITE CARDS SLIDE (ENHANCED DARK GRADIENT)
+    // ============================================
+    const EliteCardsSlide = ({ data }) => {
+      const iconMap = {
+        'journey': <Icons.Journey />,
+        'cycle': <Icons.Cycle />,
+        'value': <Icons.Value />
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.items.map((item, i) => {
+              const glowColor = `${item.color}40`;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
+                  className="rounded-2xl p-6 relative overflow-hidden"
+                  style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 50px ${glowColor}` }}
+                >
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
+
+                  {/* Icon */}
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: `${item.color}15`, color: item.color, boxShadow: `0 0 20px ${glowColor}` }}>
+                    {iconMap[item.icon] || <Icons.TrendingUp />}
+                  </div>
+
+                  <h3 className="font-bold text-white text-lg mb-3" style={{ textShadow: `0 0 20px ${glowColor}` }}>{item.title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
 
     const NicheShowcaseSlide = ({ data }) => {
       const iconMap = {
@@ -407,26 +660,40 @@
 
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Winners</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {data.niches.map((niche, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 150 }}
-                className="rounded-2xl p-6 text-center"
+                className="rounded-2xl p-5 text-center relative overflow-hidden"
                 style={{ background: '#0a0a0a', boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 40px ${nicheGlows[i]}` }}
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                {/* Top accent */}
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${nicheColors[i]}, transparent)` }} />
+
+                <div className="w-14 h-14 mx-auto mb-3 rounded-full flex items-center justify-center"
                   style={{ background: `${nicheColors[i]}20`, color: nicheColors[i], boxShadow: `0 0 20px ${nicheGlows[i]}` }}>
                   {iconMap[niche.name] || <Icons.TrendingUp />}
                 </div>
-                <h3 className="font-bold text-white text-sm mb-2">{niche.name}</h3>
+                <h3 className="font-bold text-white text-sm mb-1">{niche.name}</h3>
                 <p className="text-xs text-neutral-400">{niche.descriptor}</p>
               </motion.div>
             ))}
           </div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="text-center text-neutral-500 text-sm mt-6"
+          >
+            Each niche passes the 3 LTV conditions. Let's dive deep into each one.
+          </motion.p>
         </div>
       );
     };
@@ -441,7 +708,8 @@
               style={{ boxShadow: '0 0 20px rgba(239,68,68,0.5)' }}>
               <Icons.X />
             </div>
-            <div className="rounded-2xl p-6" style={{ background: '#0a0a0a', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(239,68,68,0.15)' }}>
+            <div className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(239,68,68,0.15)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
               <h3 className="text-xl font-bold text-red-400 mb-4" style={{ textShadow: '0 0 15px rgba(239,68,68,0.4)' }}>Low LTV Trap</h3>
               <div className="space-y-4 mb-4">
                 <div className="flex justify-between items-center">
@@ -470,7 +738,8 @@
               style={{ background: 'var(--accent)', boxShadow: '0 0 20px rgba(var(--accent-rgb),0.5)' }}>
               <Icons.Check />
             </div>
-            <div className="rounded-2xl p-6" style={{ background: '#0a0a0a', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+            <div className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
               <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--accent)', textShadow: '0 0 15px rgba(var(--accent-rgb),0.4)' }}>High LTV Winner</h3>
               <div className="space-y-4 mb-4">
                 <div className="flex justify-between items-center">
@@ -590,7 +859,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -632,8 +900,10 @@
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'ltv-conditions-framework': return <LTVConditionsFrameworkSlide data={slide} />;
           case 'niche-showcase': return <NicheShowcaseSlide data={slide} />;
+          case 'niche-deep-dive': return <NicheDeepDiveSlide data={slide} />;
+          case 'elite-cards': return <EliteCardsSlide data={slide} />;
           case 'ltv-comparison': return <LTVComparisonSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

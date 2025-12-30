@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fbbf24; --accent-rgb: 245, 158, 11; }
@@ -37,6 +37,22 @@
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
     const LESSON_CONFIG = {
       id: 'architecture-of-belief',
       title: 'The Architecture of Belief',
@@ -47,25 +63,17 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -120,9 +128,6 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -150,43 +155,20 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why great copywriting is "change work" - not word work', 'The 3 levels of persuasion: attention, thinking, and belief', 'The psychology insight that separates masters from beginners'] },
-      { type: 'hook', headline: 'You think your job is to convince people. It\'s not.', subtext: 'The moment you try to force a belief, you lose. Your brain resists being told what to think. But here\'s what the masters know: you can\'t convince anyone of anything. All you can do is create the conditions for them to convince themselves. This is the Architecture of Belief.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook' },
-      { type: 'content', title: 'Your True Identity', body: 'You\'re not a content writer. Content writers inform. They educate. They provide information. But copywriters? We transform. We don\'t just give people insight - we change who they are by the time they finish reading. We\'re architects of belief, facilitators of choice, agents of change. That\'s where your true value lies.' },
-      { type: 'visual', title: 'Writer vs. Copywriter', visualType: 'comparison', data: {
-        left: { label: 'Content Writer', value: 'Inform', result: 'Education', color: '#6b7280' },
-        right: { label: 'Copywriter', value: 'Transform', result: 'New Identity', color: '#f59e0b' },
-        center: { label: 'Goal', value: 'Change', result: 'Who they are', color: '#f59e0b' }
-      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Three Levels of Mastery', body: 'All great copywriting operates on three levels, like a pyramid. Level 1 is the Hook - changing attention through curiosity and benefit. Level 2 is Strategy - changing thinking through differentiation and reframing. Level 3 is Psychology - changing belief through self-persuasion. Most marketers never get past Level 1. You\'re about to master all three.' },
-      { type: 'cards', title: 'The Persuasion Pyramid', items: [
-        { title: 'Level 1: The Hook', description: 'Change in Attention. Tools: Curiosity and benefit. Example: "How to scale to $10K/month without paid ads." Pattern-interrupt. Stop the scroll.' },
-        { title: 'Level 2: The Strategy', description: 'Change in Thinking. Tools: Differentiation and reframing. Example: "You\'re not a seller. You\'re a problem-solver." Engineer the argument.' },
-        { title: 'Level 3: The Psychology', description: 'Change in Belief. Tools: Self-persuasion and choice. Example: "You don\'t buy to GET the feeling. You buy to KEEP it." Deep mastery.' }
-      ]},
-      { type: 'example', scenario: 'Fitness Equipment Store', before: { label: 'Level 1 Only (Hook)', text: '"Get Ripped Fast With Our New Resistance Bands - 50% Off Today!"' }, after: { label: 'All 3 Levels (Hook + Strategy + Psychology)', text: '"Most home gyms collect dust. Why? Wrong equipment. You don\'t need a full setup - you need 3 tools that make working out easier than skipping. This starter kit removes every excuse."' }, insight: 'The hook grabs attention. Strategy reframes the problem. Psychology removes resistance.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Emotional Spending Shift', body: 'Here\'s what Alen Sultanic discovered: at the START of your copy, the prospect is considering GAINING a new feeling. But by the time they reach your CTA, something magical happens. They\'ve already "tried on" the outcome emotionally. They\'ve imagined the result, felt the relief, visualized the transformation. Now, NOT buying feels like LOSING something they already have.' },
-      { type: 'visual', title: 'The Psychology of Loss Aversion', visualType: 'stats', data: [
-        { value: 'GET', label: 'At the start', subtext: 'Considering gaining a feeling' },
-        { value: 'KEEP', label: 'At the CTA', subtext: 'Fighting to keep what they have' },
-        { value: '2x', label: 'pain multiplier', subtext: 'Losses feel twice as strong' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left'},
+      { type: 'hook', headline: 'You think your job is to convince people. It\'s not.', subtext: 'The moment you try to force a belief, you lose. Your brain resists being told what to think. But here\'s what the masters know: you can\'t convince anyone of anything. All you can do is create the conditions for them to convince themselves. This is the Architecture of Belief.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left' },
+      { type: 'writer-copywriter-split', title: 'Your True Identity' },
+      { type: 'persuasion-pyramid', title: 'The Three Levels of Mastery' },
+      { type: 'content', title: 'Level 1: The Hook', body: 'The Hook changes ATTENTION. Your tools are curiosity and benefit. "How to scale to $10K/month without paid ads." It\'s a pattern-interrupt. Stop the scroll. Grab their focus. Most marketers only operate at this level - writing clever headlines but never going deeper. You\'re about to go far beyond this.' },
+      { type: 'content', title: 'Level 2: The Strategy', body: 'The Strategy changes THINKING. Your tools are differentiation and reframing. "You\'re not a seller. You\'re a problem-solver." You engineer the argument. Shift their perspective. Make them see their situation - and your solution - in a completely new light. This is where positioning lives.' },
+      { type: 'content', title: 'Level 3: The Psychology', body: 'The Psychology changes BELIEF. Your tools are self-persuasion and choice architecture. This is deep mastery. You don\'t tell them what to believe - you create the conditions for them to arrive at the belief themselves. When they conclude it on their own, resistance disappears.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right' },
+      { type: 'get-keep-shift', title: 'The Psychology of Loss Aversion' },
       { type: 'content', title: 'You\'re Not Paying to Get It', body: 'This is the insight that changes everything: "You\'re not paying to get the feeling. You\'re paying to keep the feeling." By the time they see the price, they\'ve already emotionally experienced the outcome. Loss aversion kicks in. Not buying means losing that feeling. This is why great copy doesn\'t "sell" - it allows them to protect what they\'ve already claimed.' },
-      { type: 'cards', title: 'The Four Primal Needs', items: [
-        { title: 'Survival', description: 'The foundational need. Health, safety, security. Example: "Protect your income with this backup skill."' },
-        { title: 'Reproduction', description: 'The drive to attract and multiply. Beauty, luxury, appeal. Example: "Turn heads everywhere you go."' },
-        { title: 'Safety', description: 'Protect oneself and family. Strong for mothers. Example: "Sleep soundly knowing your store is protected."' },
-        { title: 'Status', description: 'Hierarchy and social standing. Strong for men. Example: "Join the top 1% of Shopify stores."' }
-      ]},
+      { type: 'primal-needs-grid', title: 'The Four Primal Needs' },
       { type: 'example', scenario: 'Skincare Store', before: { label: 'Generic Appeal', text: '"Premium anti-aging serum with proven ingredients. Look younger in 30 days or your money back!"' }, after: { label: 'Primal Need: Reproduction', text: '"Remember when strangers asked if you were sisters, not mother-daughter? That confidence. That energy. You didn\'t lose it because of time. You lost it because your skin lost this ONE ingredient."' }, insight: 'Tap into reproduction (attraction) and survival (vitality). Primal needs bypass logic.' },
-      { type: 'content', title: 'The Ultimate Truth', body: 'Here\'s the delusion we all have as copywriters: we think we can convince somebody of something. We can\'t. All we can do is get them to convince themselves. Your job isn\'t to force a belief. It\'s to engineer a story, create a frame, and provide the components that allow their own mind to build the conviction to act.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
-      { type: 'visual', title: 'The Belief Architecture Framework', visualType: 'stats', data: [
-        { value: 'Hook', label: 'changes attention', subtext: 'Curiosity + benefit = stop scroll' },
-        { value: 'Strategy', label: 'changes thinking', subtext: 'Reframe + differentiate = new lens' },
-        { value: 'Psychology', label: 'changes belief', subtext: 'Self-persuasion = conviction' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'Your New Identity', body: 'You are an Architect of Belief. You construct the framework that shifts perspectives. You are a Facilitator of Choice. You create the conditions for their own decision. You are an Agent of Change. You transform who they are through words. That is where your true value lies. And your greatest leverage.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
-      { type: 'example', scenario: 'Dropshipping Course', before: { label: 'Selling Features', text: '"Learn Facebook ads, product research, store setup, and scaling strategies in our 12-week course. 50+ video lessons, templates, and support."' }, after: { label: 'Architecting Belief', text: '"Most dropshippers fail because they\'re taught tactics, not strategy. You don\'t need more lessons. You need a system that removes every bottleneck between you and your first $10K month. This isn\'t a course. It\'s a transformation machine."' }, insight: 'Architecture of belief: reframe what success requires, position yourself uniquely, let them convince themselves.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4', characterPosition: 'left'},
-      { type: 'quiz', question: 'According to the Architecture of Belief, what\'s the true role of a copywriter?', options: ['To write words that inform and educate', 'To convince people to buy through logic', 'To create conditions for self-persuasion', 'To use manipulation tactics to force sales'], correctIndex: 2, feedback: { correct: 'Exactly! The master copywriter doesn\'t force belief - they engineer the story, frame, and components that allow the reader\'s own mind to build conviction. You create the architecture. They build the belief.', incorrect: 'Not quite. Remember Alen Sultanic\'s insight: "There\'s this delusion we have as copywriters that we can convince somebody of something. We can\'t. All we can do is get them to convince themselves." Your job is to create the conditions for self-persuasion.' }},
+      { type: 'belief-framework', title: 'The Belief Architecture Framework' },
+      { type: 'identity-roles', title: 'Your New Identity' },
+      { type: 'example', scenario: 'Dropshipping Course', before: { label: 'Selling Features', text: '"Learn Facebook ads, product research, store setup, and scaling strategies in our 12-week course. 50+ video lessons, templates, and support."' }, after: { label: 'Architecting Belief', text: '"Most dropshippers fail because they\'re taught tactics, not strategy. You don\'t need more lessons. You need a system that removes every bottleneck between you and your first $10K month. This isn\'t a course. It\'s a transformation machine."' }, insight: 'Architecture of belief: reframe what success requires, position yourself uniquely, let them convince themselves.' },
+      { type: 'quiz', question: 'According to the Architecture of Belief, what\'s the true role of a copywriter?', options: ['To write words that inform and educate', 'To convince people to buy through logic', 'To create conditions for self-persuasion', 'To use manipulation tactics to force sales'], correctIndex: 2, feedback: { correct: 'Exactly! The master copywriter doesn\'t force belief - they engineer the story, frame, and components that allow the reader\'s own mind to build conviction. You create the architecture. They build the belief.', incorrect: 'Not quite. Remember the insight: "There\'s this delusion we have as copywriters that we can convince somebody of something. We can\'t. All we can do is get them to convince themselves." Your job is to create the conditions for self-persuasion.' }},
       { type: 'completion', sources: [] }
     ];
 
@@ -199,6 +181,12 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -256,18 +244,302 @@
       </div>
     );
 
-    
+    // ============ CUSTOM SLIDE TYPE 1: Writer vs Copywriter Split ============
+    const WriterCopywriterSplitSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Writer Side */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(107, 114, 128, 0.2)' }}
+            className="rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #6b7280, transparent)' }} />
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(107, 114, 128, 0.2)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-400 mb-2">Content Writer</h3>
+              <div className="text-4xl font-bold text-gray-500 mb-3">INFORM</div>
+              <p className="text-gray-400 text-sm leading-relaxed">Education. Information. Facts. They give people insight. Readers leave knowing more...</p>
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <span className="text-gray-500 text-xs uppercase tracking-wider">Result</span>
+                <div className="text-gray-400 font-semibold mt-1">Smarter Reader</div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Copywriter Side */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.2)' }}
+            className="rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--accent)' }}>Copywriter</h3>
+              <div className="text-4xl font-bold text-white mb-3">TRANSFORM</div>
+              <p className="text-gray-300 text-sm leading-relaxed">Change work. Identity shift. New beliefs. Readers leave as a different person...</p>
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <span className="text-gray-500 text-xs uppercase tracking-wider">Result</span>
+                <div className="text-white font-semibold mt-1" style={{ color: 'var(--accent)' }}>New Identity</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center text-neutral-500 text-sm mt-6">
+          You're not a content writer. You're an architect of belief, a facilitator of choice, an agent of change.
+        </motion.p>
+      </div>
+    );
+
+    // ============ CUSTOM SLIDE TYPE 2: Persuasion Pyramid ============
+    const PersuasionPyramidSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="flex flex-col items-center gap-4">
+          {/* Level 3 - Top */}
+          <motion.div initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3 }}
+            className="w-48 md:w-64 rounded-xl p-4 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.3)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--accent)' }}>Level 3</div>
+            <div className="text-xl md:text-2xl font-bold text-white mb-1">PSYCHOLOGY</div>
+            <div className="text-xs text-gray-400">Changes BELIEF</div>
+            <div className="text-[10px] text-gray-500 mt-2">Self-persuasion + Choice</div>
+          </motion.div>
+
+          {/* Level 2 - Middle */}
+          <motion.div initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2 }}
+            className="w-64 md:w-80 rounded-xl p-4 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.2)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+            <div className="text-xs font-bold uppercase tracking-wider mb-1 text-purple-400">Level 2</div>
+            <div className="text-xl md:text-2xl font-bold text-white mb-1">STRATEGY</div>
+            <div className="text-xs text-gray-400">Changes THINKING</div>
+            <div className="text-[10px] text-gray-500 mt-2">Differentiation + Reframing</div>
+          </motion.div>
+
+          {/* Level 1 - Base */}
+          <motion.div initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1 }}
+            className="w-80 md:w-96 rounded-xl p-4 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+            <div className="text-xs font-bold uppercase tracking-wider mb-1 text-blue-400">Level 1</div>
+            <div className="text-xl md:text-2xl font-bold text-white mb-1">HOOK</div>
+            <div className="text-xs text-gray-400">Changes ATTENTION</div>
+            <div className="text-[10px] text-gray-500 mt-2">Curiosity + Benefit</div>
+          </motion.div>
+        </div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-500 text-sm mt-6">
+          Most marketers never get past Level 1. You're about to master all three.
+        </motion.p>
+      </div>
+    );
+
+    // ============ CUSTOM SLIDE TYPE 3: GET to KEEP Shift ============
+    const GetKeepShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="relative">
+          {/* Timeline Arrow */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 hidden md:block" style={{ background: 'linear-gradient(180deg, #3b82f6, var(--accent))' }} />
+
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* GET - Start */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(59, 130, 246, 0.2)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.2)' }}>
+                  <Icons.Target />
+                </div>
+                <div>
+                  <div className="text-xs text-blue-400 uppercase tracking-wider">At the START</div>
+                  <div className="text-2xl font-bold text-white">GET</div>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm">Prospect is considering <span className="text-blue-400 font-semibold">GAINING</span> a new feeling. They want to acquire something they don't have.</p>
+            </motion.div>
+
+            {/* KEEP - End */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.3)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <Icons.Shield />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider" style={{ color: 'var(--accent)' }}>At the CTA</div>
+                  <div className="text-2xl font-bold text-white">KEEP</div>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm">They've emotionally "tried on" the outcome. NOT buying now feels like <span className="font-semibold" style={{ color: 'var(--accent)' }}>LOSING</span> something they already have.</p>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Loss Aversion Stat */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="mt-8 rounded-xl p-6 text-center mx-auto max-w-sm"
+          style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
+          <div className="text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb), 0.4)' }}>
+            <AnimatedCounter target={2} suffix="x" />
+          </div>
+          <div className="text-white font-semibold text-sm">Pain Multiplier</div>
+          <div className="text-gray-500 text-xs mt-1">Losses feel twice as strong as gains</div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ CUSTOM SLIDE TYPE 4: Primal Needs Grid ============
+    const PrimalNeedsGridSlide = ({ data }) => {
+      const needs = [
+        { name: 'Survival', icon: Icons.Target, color: '#ef4444', desc: 'Health, safety, security', example: '"Protect your income with this backup skill."' },
+        { name: 'Reproduction', icon: Icons.Heart, color: '#ec4899', desc: 'Beauty, luxury, appeal', example: '"Turn heads everywhere you go."' },
+        { name: 'Safety', icon: Icons.Shield, color: '#3b82f6', desc: 'Protect family (strong for mothers)', example: '"Sleep soundly knowing your store is protected."' },
+        { name: 'Status', icon: Icons.Crown, color: '#f59e0b', desc: 'Hierarchy (strong for men)', example: '"Join the top 1% of Shopify stores."' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {needs.map((need, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="rounded-xl p-5 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 25px ${need.color}20` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${need.color}, transparent)` }} />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${need.color}20` }}>
+                    <need.icon />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-lg mb-1" style={{ color: need.color }}>{need.name}</h3>
+                    <p className="text-gray-400 text-sm mb-2">{need.desc}</p>
+                    <p className="text-gray-500 text-xs italic">{need.example}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-neutral-500 text-sm mt-6">
+            Primal needs bypass logic. They've been controlling behavior for millions of years.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ CUSTOM SLIDE TYPE 5: Belief Framework ============
+    const BeliefFrameworkSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-8">
+          The delusion: you can convince somebody of something. The truth: you can only get them to convince themselves.
+        </motion.p>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl p-5 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', boxShadow: '0 0 30px rgba(59, 130, 246, 0.15)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+            <div className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(59, 130, 246, 0.15)' }}>
+              <Icons.Eye />
+            </div>
+            <div className="text-3xl font-bold text-blue-400 mb-2">HOOK</div>
+            <div className="text-white font-semibold text-sm mb-1">Changes Attention</div>
+            <div className="text-gray-500 text-xs">Curiosity + benefit = stop scroll</div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-xl p-5 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.15)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+            <div className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(139, 92, 246, 0.15)' }}>
+              <Icons.Brain />
+            </div>
+            <div className="text-3xl font-bold text-purple-400 mb-2">STRATEGY</div>
+            <div className="text-white font-semibold text-sm mb-1">Changes Thinking</div>
+            <div className="text-gray-500 text-xs">Reframe + differentiate = new lens</div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="rounded-xl p-5 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.2)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.15)' }}>
+              <Icons.Heart />
+            </div>
+            <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>PSYCHOLOGY</div>
+            <div className="text-white font-semibold text-sm mb-1">Changes Belief</div>
+            <div className="text-gray-500 text-xs">Self-persuasion = conviction</div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+          className="mt-6 rounded-xl p-4 text-center"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <p className="text-gray-300 text-sm">Your job isn't to force a belief. It's to engineer the story, create the frame, and provide the components that allow their own mind to build the conviction to act.</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ CUSTOM SLIDE TYPE 6: Identity Roles ============
+    const IdentityRolesSlide = ({ data }) => {
+      const roles = [
+        { title: 'Architect of Belief', desc: 'You construct the framework that shifts perspectives.' },
+        { title: 'Facilitator of Choice', desc: 'You create the conditions for their own decision.' },
+        { title: 'Agent of Change', desc: 'You transform who they are through words.' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="space-y-4">
+            {roles.map((role, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                className="rounded-xl p-5 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.15)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold"
+                    style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    {i + 1}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: 'var(--accent)' }}>{role.title}</h3>
+                    <p className="text-gray-400 text-sm">{role.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-8 text-center">
+            <p className="text-neutral-600 text-sm">That is where your true value lies. And your greatest leverage.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        </div>
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
             style={{ height: '35%', maxHeight: '280px' }}>
             <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
               <source src={data.characterVideo} type="video/mp4" />
@@ -296,64 +568,6 @@
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
           <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-5 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-3xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -439,7 +653,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -480,8 +693,12 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'writer-copywriter-split': return <WriterCopywriterSplitSlide data={slide} />;
+          case 'persuasion-pyramid': return <PersuasionPyramidSlide data={slide} />;
+          case 'get-keep-shift': return <GetKeepShiftSlide data={slide} />;
+          case 'primal-needs-grid': return <PrimalNeedsGridSlide data={slide} />;
+          case 'belief-framework': return <BeliefFrameworkSlide data={slide} />;
+          case 'identity-roles': return <IdentityRolesSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
